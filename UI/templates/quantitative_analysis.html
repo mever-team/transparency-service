@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user_input.css') }}">
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
+</head>
+<body>
+    <div><button class="dynamic-btn" data-button-name="Back">Back</button></div>
+    <b>Quantitative Analysis</b>
+    <textarea id="quantitative_analysis" placeholder="Waiting for input...">{{ quantitative_analysis }}</textarea>
+    <button class="dynamic-btn" data-button-name="Submit from quantitative analysis">Submit Form</button>
+    <button class="dynamic-btn" data-button-name="Upload Metrics">Upload Metrics</button>
+    {{ metrics_table|safe }}
+
+</body>
+</html>

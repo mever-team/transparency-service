@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Card</title>
+    <style>body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+.title {
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+    margin: 20px 0;
+    color: #333;
+}
+.plot-inline-div {
+    display: inline-block;
+    margin-right: 10px;
+}
+/* tabs */
+.tab-container {
+    display: flex;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 20px;
+}
+.tab {
+    flex: 1;
+    padding: 15px;
+    background-color: #f9f9f9;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border-right: 1px solid #ddd;
+    border-radius: 10px 10px 0 0;
+}
+.tab:hover {
+    background-color: #6bb2ff;
+    transform: translateY(-2px);
+}
+.tab:last-child {
+    border-right: none;
+}
+.active-tab {
+    background-color: #007BFF;
+    color: white;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.4);
+    transform: translateY(-5px);
+    border-radius: 10px 10px 0 0;
+}
+.tab-content {
+    display: none;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 5px;
+    margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.active-content {
+    display: block;
+}
+.content-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* AI generated indicator */
+.ai_generated {
+  position: relative;
+  display: inline-block;
+  cursor: default;
+  color: #007BFF
+}
+
+.ai_generated .text {
+  visibility: hidden;
+  color: #000000;
+  padding: 8px;
+  border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 5px;
+    margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ai_generated:hover .text {
+  visibility: visible;
+}
+
+/* Show more info dropdown */
+.show-more-container {
+
+}
+
+.show-more-btn {
+    text-shadow: 2px 2px 2px grey;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+
+.show-more-btn:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+.show-more-content {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/*************************** tool tips**************************************/
+.tooltip {
+    position: relative;
+    color: #007BFF;
+}
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+.default {
+    border-bottom: none;
+    cursor: default;
+}
+.default .tooltiptext {
+    display: none; /* Hide tooltiptext in default state */
+}
+/************************************************************************************/</style>
+</head>
+<body>
+    <div class="content-container">
+        <div class="title">Model Card</div>
+        <div class="model-details"><p><p><strong>Name:</strong> </p><p><strong>Overview:</strong> </p><p><strong>Version:</strong> </p><p><strong>License:</strong> </p><p><strong>GitHub:</strong> </p><p><strong>Paper:</strong> </p></p></div>
+        <div class="tab-container">
+            
+            <div class="tab active-tab" onclick="showTabContent('tab0')">
+                Considerations
+            </div>
+            
+            <div class="tab " onclick="showTabContent('tab1')">
+                Training Set
+            </div>
+            
+            <div class="tab " onclick="showTabContent('tab2')">
+                Eval Set
+            </div>
+            
+            <div class="tab " onclick="showTabContent('tab3')">
+                Quantitative Analysis
+            </div>
+            
+        </div>
+        <div class="tab-content-container">
+            
+            <div id="tab0" class="tab-content active-content">
+                <p><p><strong>Use Case:</strong> </p><p><strong>Limitations:</strong> </p><p><strong>Ethical Risks:</strong> </p></p>
+            </div>
+            
+            <div id="tab1" class="tab-content ">
+                <p><p></p></p>
+            </div>
+            
+            <div id="tab2" class="tab-content ">
+                <p><p></p></p>
+            </div>
+            
+            <div id="tab3" class="tab-content ">
+                <p><p>The llama3.2 model was evaluated on various datasets using a range of classification metrics. One interesting observation is that the model achieved high precision, recall, and F1 scores on the "RAGTruth" dataset compared to other datasets. This indicates that the model performed well in correctly classifying instances as true or false in this particular dataset. The high values for precision, recall, and F1 scores suggest that the model had a good balance between minimizing false positives and false negatives.<br><br>On the other hand, the model performed relatively poorly on the "FactCheck-GPT" and "TofuEval-MeetB" datasets, as indicated by the lower precision, recall, and F1 scores. This could imply that the model struggled with the classification task in these datasets, possibly due to the complexity or nature of the data.<br><br>Additionally, looking at the ROC-AUC scores, we can see that the model had the highest performance on the "Reveal" dataset. The ROC-AUC score is particularly important in binary classification tasks, indicating the model's ability to distinguish between positive and negative classes. The high ROC-AUC score for the "Reveal" dataset suggests that the model excelled in this aspect for this specific dataset.<br><br>Overall, the evaluation of the llama3.2 model across multiple datasets highlights its varying performance based on the nature of the data. The model's strengths and weaknesses are evident in different metrics, emphasizing the importance of assessing model performance across diverse datasets to gain a comprehensive understanding of its capabilities.<br>&nbsp;</p><figure class="table" style="overflow-x: auto;"><table><thead><tr><th>model</th><th>dataset</th><th>precision micro</th><th>precision macro</th><th>precision weighted</th><th>recall micro</th><th>recall macro</th><th>recall weighted</th><th>f1 micro</th><th>f1 macro</th><th>f1 weighted</th><th>top-1 acc micro</th><th>top-1 acc macro</th><th>top-1 acc weighted</th><th>roc-auc macro</th><th>roc-auc weighted</th></tr></thead><tbody><tr><td>llama3.2</td><td>AggreFact-CNN</td><td>0.9042</td><td>0.9042</td><td>0.9042</td><td>0.9042</td><td>0.9042</td><td>0.9042</td><td>0.9042</td><td>0.9042</td><td>0.9042</td><td>0.828</td><td>0.828</td><td>0.828</td><td>0.5124</td><td>0.5124</td></tr><tr><td>llama3.2</td><td>FactCheck-GPT</td><td>0.2892</td><td>0.2892</td><td>0.2892</td><td>0.5691</td><td>0.5691</td><td>0.5691</td><td>0.3835</td><td>0.3835</td><td>0.3835</td><td>0.5607</td><td>0.5607</td><td>0.5607</td><td>0.5772</td><td>0.5772</td></tr><tr><td>llama3.2</td><td>Lfqa</td><td>0.6142</td><td>0.6142</td><td>0.6142</td><td>0.8394</td><td>0.8394</td><td>0.8394</td><td>0.7094</td><td>0.7094</td><td>0.7094</td><td>0.5965</td><td>0.5965</td><td>0.5965</td><td>0.5621</td><td>0.5621</td></tr><tr><td>llama3.2</td><td>ClaimVerify</td><td>0.7531</td><td>0.7531</td><td>0.7531</td><td>0.8542</td><td>0.8542</td><td>0.8542</td><td>0.8005</td><td>0.8005</td><td>0.8005</td><td>0.6912</td><td>0.6912</td><td>0.6912</td><td>0.5449</td><td>0.5449</td></tr><tr><td>llama3.2</td><td>Wice</td><td>0.3358</td><td>0.3358</td><td>0.3358</td><td>0.8108</td><td>0.8108</td><td>0.8108</td><td>0.4749</td><td>0.4749</td><td>0.4749</td><td>0.4441</td><td>0.4441</td><td>0.4441</td><td>0.5453</td><td>0.5453</td></tr><tr><td>llama3.2</td><td>RAGTruth</td><td>0.9383</td><td>0.9383</td><td>0.9383</td><td>0.622</td><td>0.622</td><td>0.622</td><td>0.7481</td><td>0.7481</td><td>0.7481</td><td>0.6135</td><td>0.6135</td><td>0.6135</td><td>0.5804</td><td>0.5804</td></tr><tr><td>llama3.2</td><td>AggreFact-XSum</td><td>0.5503</td><td>0.5503</td><td>0.5503</td><td>0.6912</td><td>0.6912</td><td>0.6912</td><td>0.6128</td><td>0.6128</td><td>0.6128</td><td>0.5538</td><td>0.5538</td><td>0.5538</td><td>0.5497</td><td>0.5497</td></tr><tr><td>llama3.2</td><td>ExpertQA</td><td>0.8235</td><td>0.8235</td><td>0.8235</td><td>0.6752</td><td>0.6752</td><td>0.6752</td><td>0.742</td><td>0.742</td><td>0.742</td><td>0.6232</td><td>0.6232</td><td>0.6232</td><td>0.5461</td><td>0.5461</td></tr><tr><td>llama3.2</td><td>TofuEval-MediaS</td><td>0.7844</td><td>0.7844</td><td>0.7844</td><td>0.6697</td><td>0.6697</td><td>0.6697</td><td>0.7225</td><td>0.7225</td><td>0.7225</td><td>0.6074</td><td>0.6074</td><td>0.6074</td><td>0.5652</td><td>0.5652</td></tr><tr><td>llama3.2</td><td>Reveal</td><td>0.3419</td><td>0.3419</td><td>0.3419</td><td>0.8625</td><td>0.8625</td><td>0.8625</td><td>0.4897</td><td>0.4897</td><td>0.4897</td><td>0.5795</td><td>0.5795</td><td>0.5795</td><td>0.6795</td><td>0.6795</td></tr><tr><td>llama3.2</td><td>TofuEval-MeetB</td><td>0.8412</td><td>0.8412ooooooooo</td><td>0.8412</td><td>0.4855</td><td>0.4855</td><td>0.4855</td><td>0.6157</td><td>0.6157</td><td>0.6157</td><td>0.5117</td><td>0.5117</td><td>0.5117</td><td>0.5423</td><td>0.5423</td></tr></tbody></table></figure></p>
+            </div>
+            
+        </div>
+    </div>
+    <script>function showTabContent(tabId) {
+    // Select all elements with the class 'tab-content'
+    const contents = document.querySelectorAll('.tab-content');
+    // Loop through each content element and remove the 'active-content' class
+    contents.forEach(content => content.classList.remove('active-content'));
+
+    // Select all elements with the class 'tab'
+    const tabs = document.querySelectorAll('.tab');
+    // Loop through each tab element and remove the 'active-tab' class
+    tabs.forEach(tab => tab.classList.remove('active-tab'));
+
+    // Find the specific tab content by its ID and add the 'active-content' class
+    document.getElementById(tabId).classList.add('active-content');
+
+    // Find the currently active tab by matching the onclick attribute with the given tabId
+    const activeTab = document.querySelector('.tab[onclick="showTabContent(\'' + tabId + '\')"]');
+    // Add the 'active-tab' class to the currently active tab
+    activeTab.classList.add('active-tab');
+}
+
+function toggleShowMoreContent(button) {
+    const content = button.nextElementSibling;
+    if (content.style.display === "none") {
+        content.style.display = "block";
+    } else {
+        content.style.display = "none";
+    }
+}</script>
+</body>
+</html>

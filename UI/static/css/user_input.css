@@ -1,0 +1,44 @@
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            height: auto;
+            overflow: auto;
+            resize: none;
+            box-sizing: border-box;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+        }
+
+        /* Style for the processing text */
+        #processingText {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #555;
+            display: none; /* Hidden by default */
+        }
+
+        /* Animation for the dots */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .dot {
+            animation: blink 1.4s infinite;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+
+        /* CKEditor containers */
+        .ck-editor__editable {
+            min-height: 200px !important; /* Force the height */
+            resize: vertical;        /* Allow vertical resizing */
+        }

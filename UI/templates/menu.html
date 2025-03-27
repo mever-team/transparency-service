@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Buttons</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
+    <script src="{{ url_for('static', filename='js/menu.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/buttonchangehtml.js') }}"></script>
+
+</head>
+<body>
+
+    <div id="main-menu">
+        <button class="dynamic-btn" data-button-name="Model Details">Model Details</button>
+        <button class="dynamic-btn" data-button-name="Considerations">Considerations</button>
+        <button class="dynamic-btn" data-button-name="Training Set">Training Set</button>
+        <button class="dynamic-btn" data-button-name="Eval Set">Eval Set</button>
+        <button class="dynamic-btn" data-button-name="Quantitative Analysis">Quantitative Analysis</button>
+        <hr>
+        <hr>
+        <hr>
+        <button onclick="showVersionControl()">Version Control</button>
+        <button class="dynamic-btn" data-button-name="Save">Save</button>
+        <!-- <button class="dynamic-btn" data-button-name="Load">Load</button> -->
+    </div>
+
+    <div id="other-menu" style="display: none;">
+        <button class="dynamic-btn" data-button-name="Data Set Summary">Data Set Summary</button>
+        <button class="dynamic-btn" data-button-name="Create Overview">Create Overview</button>
+        <button class="dynamic-btn" data-button-name="Find info in document">Find info in document</button>
+        <button class="dynamic-btn" data-button-name="Evaluation">Evaluation</button>
+    </div>
+
+    <div id="version-control-menu" style="display: none;">
+        <button onclick="showMainMenu()">Back</button>
+        <button class="dynamic-btn" data-button-name="Save and Commit">Save and Commit</button>
+        <button class="dynamic-btn" data-button-name="Check out">Check out</button>
+        <button class="dynamic-btn" data-button-name="See changes">See changes</button>
+    </div>
+</body>
+</html>

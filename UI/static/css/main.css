@@ -1,0 +1,30 @@
+/* static/css/styles.css */
+
+body {
+    display: flex;
+    height: 100vh;
+    overflow: auto;
+}
+
+#leftPane, #rightPane {
+    padding: 20px;
+    height: 100%;
+}
+
+#leftPane {
+    width: 75%;
+    border-right: 2px solid #ccc;
+}
+
+#rightPane {
+    width: 25%;
+}
+
+.divider {
+    width: 3px;
+    background-color: #ccc;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 74%;
+}

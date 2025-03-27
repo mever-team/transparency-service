@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user_input.css') }}">
+    <script src="{{ url_for('static', filename='js/buttonchangehtml.js') }}"></script>
+
+</head>
+<body>
+    <div><button class="dynamic-btn" data-button-name="Back">Back</button></div>
+    <b>Training Set</b>
+    <textarea id="training_set" placeholder="Waiting for input...">{{ training_set }}</textarea>
+    <div>{{ training_set_plots|safe }}</div>
+    <button class="dynamic-btn" data-button-name="Submit from training set">Submit Form</button>
+    <button class="dynamic-btn" data-button-name="AI Data Summary Train Set">AI Data Summary</button>
+    <div>{{ data_set_outline_training|safe }}</div>
+    <div>{{ create_plot_buttons_train|safe }}</div>
+</body>
+</html>

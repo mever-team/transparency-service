@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Area with Submit Button</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user_input.css') }}">
+    <script src="{{ url_for('static', filename='js/buttonchangehtml.js') }}"></script>
+</head>
+<body>
+    <button class="dynamic-btn" data-button-name="Back">Back</button>
+    <textarea id="textInput" placeholder="Waiting for input..."></textarea>
+    <button id="submitButton">Submit</button>
+    <div id="processingText">Processing<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
+
+</body>
+</html>

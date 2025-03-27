@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user_input.css') }}">
+    <script src="{{ url_for('static', filename='js/buttonchangehtml.js') }}"></script>
+
+</head>
+<body>
+    <div><button class="dynamic-btn" data-button-name="Back">Back</button></div>
+    <b>Evaluation Set</b>
+    <textarea id="eval_set" placeholder="Waiting for input...">{{ eval_set }}</textarea>
+    <div>{{ eval_set_plots|safe }}</div>
+    <button class="dynamic-btn" data-button-name="Submit from eval set">Submit Form</button>
+    <div><button class="dynamic-btn" data-button-name="AI Data Summary Eval Set">AI Data Summary</button></div>
+    <input type="file" id="fileInput" style="display: none;" />
+    <div>{{ data_set_outline_eval|safe }}</div>
+    <div>{{ create_plot_buttons_eval|safe }}</div>
+</body>
+</html>

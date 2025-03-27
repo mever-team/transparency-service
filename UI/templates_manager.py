@@ -1,0 +1,34 @@
+import globals
+from flask import render_template
+
+def get_templates(args):
+    left_template = None
+    right_template = None
+    templates = {
+        # Considerations
+        'Submit from aichat': lambda : (render_template('considerations.html', considerations = globals.mc.text['Considerations'], airesponse=globals.airesponse), render_template('menu.html')),
+        'Considerations': lambda : (render_template('considerations.html', airesponse=globals.airesponse, considerations = globals.mc.text['Considerations']), render_template('menu.html')),
+        #'Submit from considerations': lambda : (render_template('~model_card.html'), render_template('menu.html')),
+        # Eval Set
+        'Eval Set': lambda : (render_template('eval_set.html', eval_set = globals.mc.text['Eval Set'], eval_set_plots = ''.join(value for value in globals.mc.plots['Eval Set'].values()) , data_set_outline_eval = globals.data_set_outline_eval,create_plot_buttons_eval = globals.create_plot_buttons_eval), render_template('menu.html')),
+        #'Submit from eval set': lambda : (render_template('~model_card.html'), render_template('menu.html')),
+        'AI Data Summary Eval Set': lambda: (render_template('eval_set.html',eval_set=globals.mc.text['Eval Set'], eval_set_plots = ''.join(value for value in globals.mc.plots['Eval Set'].values()), data_set_outline_eval=globals.data_set_outline_eval, create_plot_buttons_eval=globals.create_plot_buttons_eval), render_template('menu.html')),
+        # Training Set
+        'Training Set': lambda: (render_template('training_set.html', training_set = globals.mc.text['Training Set'], training_set_plots = ''.join(value for value in globals.mc.plots['Training Set'].values()) , data_set_outline_training = globals.data_set_outline_training, create_plot_buttons_train = globals.create_plot_buttons_train), render_template('menu.html')),
+        #'Submit from training set': lambda: (render_template('~model_card.html'), render_template('menu.html')),
+        'AI Data Summary Train Set': lambda: (render_template('training_set.html', training_set = globals.mc.text['Training Set'],data_set_outline_training = globals.data_set_outline_training,create_plot_buttons_train = globals.create_plot_buttons_train), render_template('menu.html')),
+        # Quantitative Analysis
+        'Quantitative Analysis': lambda: (render_template('quantitative_analysis.html', quantitative_analysis = globals.mc.text['Quantitative Analysis'],metrics_table = globals.metrics_table), render_template('menu.html')),
+        #'Submit from quantitative analysis': lambda: (render_template('~model_card.html'), render_template('menu.html')),
+        'Upload Metrics': lambda: (render_template('quantitative_analysis.html', quantitative_analysis = globals.mc.text['Quantitative Analysis'], metrics_table = globals.metrics_table), render_template('menu.html')),
+        # Model Details
+        'Model Details': lambda: (render_template('model_details.html', model_details = globals.mc.text['Model Details']), render_template('menu.html')),
+        #'Submit from model details': lambda: (render_template('~model_card.html'), render_template('menu.html')),
+        'Upload PDF': lambda: (render_template('model_details.html',model_details=globals.mc.text['Model Details']), render_template('menu.html')),
+        #'Add AI tips': lambda: (render_template('~model_card.html'), render_template('menu.html')),
+        # General
+        #'Back': lambda: (render_template('~model_card.html'), render_template('menu.html')),
+
+    }
+
+    return templates.get(args.button, lambda : (render_template('~model_card.html'), render_template('menu.html')))()

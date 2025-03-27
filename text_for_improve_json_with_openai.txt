@@ -1,0 +1,6 @@
+Following common practice [21, 9, 28, 16], we assess our method’s robustness to perturbations typically applied in
+social media by applying blurring, cropping, compression, noise addition, and their combination to each evaluation
+sample with 0.5 probability (experimental setting directly taken from [11]). The results in table 5 indicate high
+robustness against cropping and compression, with minimal performance losses, and a good level of robustness against
+blurring and noise addition. Their combination considerably reduces performance but at similar levels to that of current
+SotA without applying perturbations
