@@ -45,7 +45,7 @@ document.addEventListener('click', function(event) {
 
     const textareaInstances = {
         "Submit from model details": { instance: model_details_textarea_instance, field: "Model Details" },
-        "Add AI tips": { instance: model_details_textarea_instance, field: "Model Details" },
+        "Add AI tips": {field: "Level of Details" },
         "Submit from aichat": { value: textAreas[2]?.value || "", field: "Considerations" },
         "Submit from considerations": { instance: considerations_textarea_instance, field: "Considerations" },
         "Considerations": { field: "Considerations" },
@@ -59,7 +59,10 @@ document.addEventListener('click', function(event) {
         "AI Data Summary Eval Set": { field: "Eval Set" },
         "Upload PDF": { field: "Model Details" },
         "Model Details": { field: "Model Details" },
-        "Upload Metrics": {field: "Quantitative Analysis"}
+        "Level of Details": { field: "Level of Details" },
+        "Upload Metrics": {field: "Quantitative Analysis"},
+        "Add Tip": {value: textAreas[0]?.value + '<term_divider_tip>' + textAreas[1]?.value, field: "Level of Details"},
+        "Create Level of Details": {field: "Level of Details"}
     };
 
     if (textareaInstances[buttonName]) {

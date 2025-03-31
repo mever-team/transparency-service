@@ -25,8 +25,10 @@ def init():
 
     # considerations.html
     globals.suggest_ethical_considerations_chat_list = []
+    globals.airesponse = ''
 
     # quantitative_analysis.html
     globals.metrics_table = ''
 
-    globals.airesponse = ''
+    # level of details
+    globals.tips = {}

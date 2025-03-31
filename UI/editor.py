@@ -55,15 +55,48 @@ def construct_metrics_table_html(metrics):
         globals.metrics_table += '</tr>'
     globals.metrics_table += '</tbody></table></div>'
 
+def construct_terms_tips_table():
+    globals.terms_tips_table = ''
+    for term, tip in globals.tips.items():
+        globals.terms_tips_table += '<div class="container">'
+        globals.terms_tips_table += f'<textarea id="term_{term}">{term}</textarea>'
+        globals.terms_tips_table += f'<textarea id="tip_{tip}">{tip}</textarea>'
+        globals.terms_tips_table += f'<button class="dynamic-btn" data-button-name="save_{term}">Save</button>'
+        globals.terms_tips_table += f'<button class="dynamic-btn" data-button-name="remove_{term}">Remove</button>'
+        globals.terms_tips_table += '</div>'
+
+def level_of_details_editor(args):
+    if args.button == "Add AI tips":
+        globals.tips = globals.tips | globals.aia._create_hints(globals.mc.text['Model Details'])
+        globals.tips = globals.tips | globals.aia._create_hints(globals.mc.text['Considerations'])
+        globals.tips = globals.tips | globals.aia._create_hints(globals.mc.text['Training Set'])
+        globals.tips = globals.tips | globals.aia._create_hints(globals.mc.text['Eval Set'])
+        globals.tips = globals.tips | globals.aia._create_hints(globals.mc.text['Quantitative Analysis'])
+        construct_terms_tips_table()
+    elif "remove" in args.button:
+        globals.tips.pop(args.button.split('_',1)[1])
+        construct_terms_tips_table()
+    elif args.button == "Add Tip":
+        print(args.user_input)
+        term = args.user_input.split('<term_divider_tip>')[0]
+        tip = args.user_input.split('<term_divider_tip>')[1]
+        globals.tips = globals.tips | {term: tip}
+        construct_terms_tips_table()
+    elif args.button == "Create Level of Details":
+        if globals.tips:
+            globals.mc.text['Model Details'] = globals.aia._inject_text_with_hints(globals.mc.text['Model Details'], globals.tips)
+            globals.mc.text['Considerations'] = globals.aia._inject_text_with_hints(globals.mc.text['Considerations'], globals.tips)
+            globals.mc.text['Training Set'] = globals.aia._inject_text_with_hints(globals.mc.text['Training Set'], globals.tips)
+            globals.mc.text['Eval Set'] = globals.aia._inject_text_with_hints(globals.mc.text['Eval Set'], globals.tips)
+            globals.mc.text['Quantitative Analysis'] = globals.aia._inject_text_with_hints(globals.mc.text['Quantitative Analysis'], globals.tips)
+
+
 def model_details_editor(args):
     if args.button == "Submit from model details":
         globals.mc.text['Model Details'] = args.textarea
     elif args.button == "Upload PDF":
         file_path = file_dialog()
         globals.mc.text['Model Details'] += "<br>******** This is AI generated start<br>" + globals.aia.create_overview(file_path).replace('\n', '<br>') + "<br>******** This is AI generated stop<br>"
-    elif args.button == "Add AI tips":
-        globals.mc.text['Model Details'] = globals.aia._create_hints(args.textarea)
-
 
 def considerations_editor(args):
     if args.button == "Submit from aichat":
@@ -151,7 +184,8 @@ def call_editor(args):
         'Considerations': considerations_editor,
         'Training Set': training_set_editor,
         'Eval Set': eval_set_editor,
-        'Quantitative Analysis': quantitative_analysis_editor
+        'Quantitative Analysis': quantitative_analysis_editor,
+        'Level of Details': level_of_details_editor,
     }
     return editors.get(args.field, lambda x : None)(args)
 

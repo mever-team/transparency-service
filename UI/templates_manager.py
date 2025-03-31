@@ -25,10 +25,15 @@ def get_templates(args):
         'Model Details': lambda: (render_template('model_details.html', model_details = globals.mc.text['Model Details']), render_template('menu.html')),
         #'Submit from model details': lambda: (render_template('~model_card.html'), render_template('menu.html')),
         'Upload PDF': lambda: (render_template('model_details.html',model_details=globals.mc.text['Model Details']), render_template('menu.html')),
-        #'Add AI tips': lambda: (render_template('~model_card.html'), render_template('menu.html')),
         # General
         #'Back': lambda: (render_template('~model_card.html'), render_template('menu.html')),
+        # Level of Details
+        'Level of Details': lambda: (render_template('level_of_details.html',terms_tips_table=globals.terms_tips_table), render_template('menu.html')),
+        'Add Tip': lambda: (render_template('level_of_details.html',terms_tips_table=globals.terms_tips_table), render_template('menu.html')),
+        'Add AI tips': lambda: (render_template('level_of_details.html',terms_tips_table=globals.terms_tips_table), render_template('menu.html')),
+        'remove': lambda: (render_template('level_of_details.html', terms_tips_table=globals.terms_tips_table),render_template('menu.html')),
 
     }
 
-    return templates.get(args.button, lambda : (render_template('~model_card.html'), render_template('menu.html')))()
+    b = args.button.split('_',1)[0]
+    return templates.get(b, lambda : (render_template('~model_card.html'), render_template('menu.html')))()

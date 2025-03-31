@@ -17,3 +17,7 @@ data_extracted_info_eval = None
 # considerations.html
 suggest_ethical_considerations_chat_list = None
 airesponse = None
+
+# level of details
+tips = None
+terms_tips_table = ''

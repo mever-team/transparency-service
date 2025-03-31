@@ -31,10 +31,9 @@ class AI_Assistant:
 	def _create_hints(self, text: "str"):
 		messages = [{"role": "system",
 					 "content": '''
-							 You will be given a text. Your goal is to provide explanation for all technical words so a non expert can understand its content. Your output should be a JSON where the keys will be the word to be explained and the values will be the explanation of this word.
-							 
+							 You will be given a text. Your goal is to provide explanation for all technical words so a non expert can understand its content. Your output should be a JSON where the keys will be the word to be explained and the values will be the explanation of this word.							 
 							 		 '''},
-					{"role": "user", "content": f'{text}'}]
+					{"role": "user", "content": f'{re.sub(r"<.*?>", " ", text).strip()}'}]
 		tips = self.__run_model(messages, max_tokens=4000, temperature=0.7, top_p=1)
 
 		# extract JSON
@@ -49,6 +48,10 @@ class AI_Assistant:
 		else:
 			print("No dictionary found in the string.")
 
+		return tips
+
+
+	def _inject_text_with_hints(self, text: "str", tips: "dict"):
 		# inject text with tips
 		pattern = re.compile('|'.join(re.escape(key) for key in tips.keys()), re.IGNORECASE)
 		def replacement_function(match):
