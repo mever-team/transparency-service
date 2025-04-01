@@ -32,7 +32,8 @@ def get_templates(args):
         'Add Tip': lambda: (render_template('level_of_details.html',terms_tips_table=globals.terms_tips_table), render_template('menu.html')),
         'Add AI tips': lambda: (render_template('level_of_details.html',terms_tips_table=globals.terms_tips_table), render_template('menu.html')),
         'remove': lambda: (render_template('level_of_details.html', terms_tips_table=globals.terms_tips_table),render_template('menu.html')),
-
+        'Model Card with tips': lambda : (render_template('~model_card_with_tip.html'), render_template('menu.html')),
+        'Model Card Simplified': lambda: (render_template('~model_card_simplified.html'), render_template('menu.html')),
     }
 
     b = args.button.split('_',1)[0]

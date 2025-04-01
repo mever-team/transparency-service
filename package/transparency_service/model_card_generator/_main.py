@@ -56,3 +56,4 @@ class ModelCard(
 		self.data = pd.DataFrame(columns=["label", "acc", "ap", "f1"])
 		self.hash_history = []
 		self.format_version = None
+		self.tips = {}

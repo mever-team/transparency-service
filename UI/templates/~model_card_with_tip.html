@@ -156,7 +156,7 @@
 <body>
     <div class="content-container">
         <div class="title">Model Card</div>
-        <div class="model-details"><p><p><strong>Name:</strong> </p><p><strong>Overview:</strong> </p><p><strong>Version:</strong> </p><p><strong>License:</strong> </p><p><strong>GitHub:</strong> </p><p><strong>Paper:</strong> </p></p></div>
+        <div class="model-details"><p><strong>Name:</strong> </p><p><strong>Overview:</strong> </p><p><strong>Version:</strong> </p><p><strong>License:</strong> </p><p><strong>GitHub:</strong> </p><p><strong>Paper:</strong> </p></div>
         <div class="tab-container">
             
             <div class="tab active-tab" onclick="showTabContent('tab0')">
@@ -179,19 +179,19 @@
         <div class="tab-content-container">
             
             <div id="tab0" class="tab-content active-content">
-                <p><p><strong>Use Case:</strong> </p><p><strong>Limitations:</strong> </p><p><strong>Ethical Risks:</strong> </p></p>
+                <p><strong>Use Case:</strong> </p><p><strong>Limitations:</strong> </p><p><strong>Ethical Risks:</strong> </p>
             </div>
             
             <div id="tab1" class="tab-content ">
-                <p><p></p></p>
+                <p></p>
             </div>
             
             <div id="tab2" class="tab-content ">
-                <p><p></p></p>
+                <p></p>
             </div>
             
             <div id="tab3" class="tab-content ">
-                <p><p>The llama3.2 model has been evaluated on multiple datasets using various metrics. Let's focus on a few key datasets to understand the performance of the model.<br><br>### Performance Analysis<br><br>#### 1. Dataset: AggreFact-CNN<br>- The model achieved a high precision, recall, and F1 score of approximately 0.9042 across all metrics. This indicates that the model performs consistently well in classifying instances in this dataset.<br><br>#### 2. Dataset: Lfqa<br>- In this dataset, the model achieved a precision of 0.6142 and a recall of 0.8394. The F1 score of 0.7094 indicates a good balance between precision and recall. The model also performed moderately well in terms of top-1 accuracy.<br><br>#### 3. Dataset: Reveal<br>- The model demonstrated high recall of 0.8625 on this dataset, while the precision was lower at 0.3419. This resulted in an F1 score of 0.4897, indicating some room for improvement in precision. Interestingly, the model achieved a high roc-auc score of 0.6795, suggesting good overall performance in terms of ranking predictions.<br><br>### Real-World Implications<br>- These metrics are crucial in understanding how well the model generalizes to unseen data. High precision indicates the model's ability to make accurate positive predictions, while high recall shows its capability to capture true positive instances. F1 score balances precision and recall, providing a holistic view of the model's performance. Additionally, metrics like top-1 accuracy and roc-auc scores provide insights into the model's classification and ranking abilities in practical scenarios.<br>&nbsp;</p><figure class="table" style="overflow-x: auto;"><table><thead><tr><th>model</th><th>dataset</th><th>precision micro</th><th>precision macro</th><th>precision weighted</th><th>recall micro</th><th>recall macro</th><th>recall weighted</th><th>f1 micro</th><th>f1 macro</th><th>f1 weighted</th><th>top-1 acc micro</th><th>top-1 acc macro</th><th>top-1 acc weighted</th><th>roc-auc macro</th><th>roc-auc weighted</th></tr></thead><tbody><tr><td>llama3.2</td><td>AggreFact-CNN</td><td>0.9042</td><td>0.9042</td><td>0.9042</td><td>0.9042</td><td>0.9042</td><td>0.9042</td><td>0.9042</td><td>0.9042</td><td>0.9042</td><td>0.828</td><td>0.828</td><td>0.828</td><td>0.5124</td><td>0.5124</td></tr><tr><td>llama3.2</td><td>FactCheck-GPT</td><td>0.2892</td><td>0.2892</td><td>0.2892</td><td>0.5691</td><td>0.5691</td><td>0.5691</td><td>0.3835</td><td>0.3835</td><td>0.3835</td><td>0.5607</td><td>0.5607</td><td>0.5607</td><td>0.5772</td><td>0.5772</td></tr><tr><td>llama3.2</td><td>Lfqa</td><td>0.6142</td><td>0.6142</td><td>0.6142</td><td>0.8394</td><td>0.8394</td><td>0.8394</td><td>0.7094</td><td>0.7094</td><td>0.7094</td><td>0.5965</td><td>0.5965</td><td>0.5965</td><td>0.5621</td><td>0.5621</td></tr><tr><td>llama3.2</td><td>ClaimVerify</td><td>0.7531</td><td>0.7531</td><td>0.7531</td><td>0.8542</td><td>0.8542</td><td>0.8542</td><td>0.8005</td><td>0.8005</td><td>0.8005</td><td>0.6912</td><td>0.6912</td><td>0.6912</td><td>0.5449</td><td>0.5449</td></tr><tr><td>llama3.2</td><td>Wice</td><td>0.3358</td><td>0.3358</td><td>0.3358</td><td>0.8108</td><td>0.8108</td><td>0.8108</td><td>0.4749</td><td>0.4749</td><td>0.4749</td><td>0.4441</td><td>0.4441</td><td>0.4441</td><td>0.5453</td><td>0.5453</td></tr><tr><td>llama3.2</td><td>RAGTruth</td><td>0.9383</td><td>0.9383</td><td>0.9383</td><td>0.622</td><td>0.622</td><td>0.622</td><td>0.7481</td><td>0.7481</td><td>0.7481</td><td>0.6135</td><td>0.6135</td><td>0.6135</td><td>0.5804</td><td>0.5804</td></tr><tr><td>llama3.2</td><td>AggreFact-XSum</td><td>0.5503</td><td>0.5503</td><td>0.5503</td><td>0.6912</td><td>0.6912</td><td>0.6912</td><td>0.6128</td><td>0.6128</td><td>0.6128</td><td>0.5538</td><td>0.5538</td><td>0.5538</td><td>0.5497</td><td>0.5497</td></tr><tr><td>llama3.2</td><td>ExpertQA</td><td>0.8235</td><td>0.8235</td><td>0.8235</td><td>0.6752</td><td>0.6752</td><td>0.6752</td><td>0.742</td><td>0.742</td><td>0.742</td><td>0.6232</td><td>0.6232</td><td>0.6232</td><td>0.5461</td><td>0.5461</td></tr><tr><td>llama3.2</td><td>TofuEval-MediaS</td><td>0.7844</td><td>0.7844</td><td>0.7844</td><td>0.6697</td><td>0.6697</td><td>0.6697</td><td>0.7225</td><td>0.7225</td><td>0.7225</td><td>0.6074</td><td>0.6074</td><td>0.6074</td><td>0.5652</td><td>0.5652</td></tr><tr><td>llama3.2</td><td>Reveal</td><td>0.3419</td><td>0.3419</td><td>0.3419</td><td>0.8625</td><td>0.8625</td><td>0.8625</td><td>0.4897</td><td>0.4897</td><td>0.4897</td><td>0.5795</td><td>0.5795</td><td>0.5795</td><td>0.6795</td><td>0.6795</td></tr><tr><td>llama3.2</td><td>TofuEval-MeetB</td><td>0.8412</td><td>0.8412</td><td>0.8412</td><td>0.4855</td><td>0.4855</td><td>0.4855</td><td>0.6157</td><td>0.6157</td><td>0.6157</td><td>0.5117</td><td>0.5117</td><td>0.5117</td><td>0.5423</td><td>0.5423</td></tr></tbody></table></figure></p>
+                <p></p>
             </div>
             
         </div>

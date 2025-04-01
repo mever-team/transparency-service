@@ -66,6 +66,22 @@ class AI_Assistant:
 		return pattern.sub(replacement_function, text)
 
 
+	def simplify(self, text: "str"):
+		messages = [{"role": "system",
+					 "content":
+					 '''You are an AI specialized in simplifying technical texts while maintaining a professional, academic tone. Your goal is to rewrite technical content in a way that preserves all information but replaces complex terminology with clear, accessible language.
+							Instructions:
+							- Do not shorten the text—keep all details intact.
+							- Avoid technical jargon—instead, explain concepts in a way that an educated reader can understand without specialized knowledge.
+							- Maintain an academic tone—the text should still feel like it belongs in a research paper.
+							- Rephrase rather than omit—if a concept is difficult to explain simply, break it down into intuitive steps.
+							- Use precise language—do not oversimplify to the point of losing meaning. 
+							'''
+					 },
+					{"role": "user", "content": f'{text}'}]
+		simplified = self.__run_model(messages, max_tokens=4000, temperature=0.7, top_p=1)
+		return simplified
+
 	def dataset_summary(self, dataset: "path to csv, json, tsv, parquet and more or dict, list, datasets.Dataset", anns = [None]):
 		dataset_info = _extract_data_info(dataset, anns=anns)
 		messages = [{"role": "system",
@@ -130,30 +146,6 @@ class AI_Assistant:
 		return ethics
 
 
-	# Crate the overview with openai. Fills the self.json['Model Details']['Overview']
-	# def create_overview(self,
-	# 						   user_prompt, # The raw text
-	# 						   model_card = None
-	# 						   ) -> Optional[str]:
-	# 	if model_card is None:
-	# 		model_card = self.model_card
-	# 	Make it simple so a non-expert can read it and understand the use of this model. Assume that the reader doesn't know anything about Machine learning. Don't use technical terminology
-		# system_prompts = """You are a helpful assistant to create an overview for a model card.
-		# 					Your output will be the text that i will directly use for the Overview section of
-		# 					my model card. That means that you should not add any comments to your output.
-		# 					Give me just the Overview of the text you are given.
-		# 					Keep the text simple and professional."""
-		#
-		# messages = [
-		# 			{"role": "system", "content": system_prompts},
-		# 			{"role": "user", "content": user_prompt}
-		# 		]
-		# overview = self.__run_model(messages, max_tokens=4000, temperature=0.7, top_p=1)
-		#
-		# model_card.text['Model Details']['Overview'] = overview + self.__ai_generated_html_indicator()
-		# return overview
-
-
 	def __split_pdf_to_chunks(self,
 							  pdf_path: str,  # path to pdf
 							  max_characters: int=10000
@@ -188,49 +180,6 @@ class AI_Assistant:
 					self.pdf_chunks_for_llm.append(current_chunk.strip())
 		return self.pdf_chunks_for_llm
 
-	# # Improve on json based on input using openai
-	# def improve_json_with_openai(self,
-	# 							 text_file_path: str, # Path to the txt file
-	# 							 model_card = None
-	# 							 ) -> str:
-	# 	if model_card is None:
-	# 		model_card = self.model_card
-	# 	# Read the text file
-	# 	with open(text_file_path, 'r') as f:
-	# 		text_data = f.read()
-	# 	# Split the text into chunks (you can adjust the chunk size as needed)
-	# 	chunk_size = 4000  # Example chunk size, can be adjusted
-	# 	text_chunks = [text_data[i:i + chunk_size] for i in range(0, len(text_data), chunk_size)]
-	# 	last_output = model_card.text
-	# 	role_for_improve_json_with_openai = importlib.resources.read_text("transparency_service.ai_assistant", "role_for_improve_json_with_openai.txt")
-	# 	for i, chunk in enumerate(text_chunks):
-	# 		prompt = f"{last_output}\n\n{chunk}" if last_output else chunk
-	# 		try:
-	# 			# Send the prompt to the OpenAI model
-	# 			response = openai.chat.completions.create(
-	# 				model="gpt-3.5-turbo",  # gpt-4
-	# 				messages=[
-	# 					{"role": "system", "content": role_for_improve_json_with_openai},
-	# 					{"role": "user", "content": f"{prompt}"}
-	# 				],
-	# 				max_tokens=1000,
-	# 				temperature=0.0001,
-	# 				top_p=0.0001
-	# 			)
-	# 			# Get the model's response
-	# 			model_output = response.choices[0].message.content
-	# 			# Update the cumulative output
-	# 			last_output = model_output + "\n"
-	# 			print(last_output)
-	# 		except Exception as e:
-	# 			print(f"Error processing chunk {i + 1}: {e}")
-	# 			break  # Exit the loop on error
-	# 	try:
-	# 		model_card.text = json.loads(last_output)
-	# 	except json.JSONDecodeError as e:
-	# 		print(f"Error parsing JSON: {e}")
-	# 		model_card.text = None
-	# 	return last_output
 
 	# Create the whole json based on a pdf (e.g. a paper)
 	def create_openai_json(self,

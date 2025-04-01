@@ -4,6 +4,8 @@ import transparency_service
 
 def init():
     globals.mc = transparency_service.model_card_generator.ModelCard()
+    globals.mcwithtips = transparency_service.model_card_generator.ModelCard()
+    globals.mcsimplified = transparency_service.model_card_generator.ModelCard()
     globals.mc.load_json('model_card.jsonl')
     if globals.mc.format_version == '1.0':
         globals.mc.text = globals.mc._json2content()
@@ -30,5 +32,3 @@ def init():
     # quantitative_analysis.html
     globals.metrics_table = ''
 
-    # level of details
-    globals.tips = {}

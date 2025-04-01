@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import filedialog
 import transparency_service
 import pandas as pd
+import copy
 
 def file_dialog():
     # Select a file
@@ -57,7 +58,7 @@ def construct_metrics_table_html(metrics):
 
 def construct_terms_tips_table():
     globals.terms_tips_table = ''
-    for term, tip in globals.tips.items():
+    for term, tip in globals.mc.tips.items():
         globals.terms_tips_table += '<div class="container">'
         globals.terms_tips_table += f'<textarea id="term_{term}">{term}</textarea>'
         globals.terms_tips_table += f'<textarea id="tip_{tip}">{tip}</textarea>'
@@ -67,28 +68,36 @@ def construct_terms_tips_table():
 
 def level_of_details_editor(args):
     if args.button == "Add AI tips":
-        globals.tips = globals.tips | globals.aia._create_hints(globals.mc.text['Model Details'])
-        globals.tips = globals.tips | globals.aia._create_hints(globals.mc.text['Considerations'])
-        globals.tips = globals.tips | globals.aia._create_hints(globals.mc.text['Training Set'])
-        globals.tips = globals.tips | globals.aia._create_hints(globals.mc.text['Eval Set'])
-        globals.tips = globals.tips | globals.aia._create_hints(globals.mc.text['Quantitative Analysis'])
+        globals.mc.tips = globals.mc.tips | globals.aia._create_hints(globals.mc.text['Model Details'])
+        globals.mc.tips = globals.mc.tips | globals.aia._create_hints(globals.mc.text['Considerations'])
+        globals.mc.tips = globals.mc.tips | globals.aia._create_hints(globals.mc.text['Training Set'])
+        globals.mc.tips = globals.mc.tips | globals.aia._create_hints(globals.mc.text['Eval Set'])
+        globals.mc.tips = globals.mc.tips | globals.aia._create_hints(globals.mc.text['Quantitative Analysis'])
         construct_terms_tips_table()
     elif "remove" in args.button:
-        globals.tips.pop(args.button.split('_',1)[1])
+        globals.mc.tips.pop(args.button.split('_',1)[1])
         construct_terms_tips_table()
     elif args.button == "Add Tip":
-        print(args.user_input)
         term = args.user_input.split('<term_divider_tip>')[0]
         tip = args.user_input.split('<term_divider_tip>')[1]
-        globals.tips = globals.tips | {term: tip}
+        globals.mc.tips = globals.mc.tips | {term: tip}
         construct_terms_tips_table()
     elif args.button == "Create Level of Details":
-        if globals.tips:
-            globals.mc.text['Model Details'] = globals.aia._inject_text_with_hints(globals.mc.text['Model Details'], globals.tips)
-            globals.mc.text['Considerations'] = globals.aia._inject_text_with_hints(globals.mc.text['Considerations'], globals.tips)
-            globals.mc.text['Training Set'] = globals.aia._inject_text_with_hints(globals.mc.text['Training Set'], globals.tips)
-            globals.mc.text['Eval Set'] = globals.aia._inject_text_with_hints(globals.mc.text['Eval Set'], globals.tips)
-            globals.mc.text['Quantitative Analysis'] = globals.aia._inject_text_with_hints(globals.mc.text['Quantitative Analysis'], globals.tips)
+        if globals.mc.tips:
+            globals.mcwithtips.text['Model Details'] = globals.aia._inject_text_with_hints(globals.mc.text['Model Details'], globals.mc.tips)
+            globals.mcwithtips.text['Considerations'] = globals.aia._inject_text_with_hints(globals.mc.text['Considerations'], globals.mc.tips)
+            globals.mcwithtips.text['Training Set'] = globals.aia._inject_text_with_hints(globals.mc.text['Training Set'], globals.mc.tips)
+            globals.mcwithtips.text['Eval Set'] = globals.aia._inject_text_with_hints(globals.mc.text['Eval Set'], globals.mc.tips)
+            globals.mcwithtips.text['Quantitative Analysis'] = globals.aia._inject_text_with_hints(globals.mc.text['Quantitative Analysis'], globals.mc.tips)
+
+        globals.mcsimplified.text['Model Details'] = globals.aia.simplify(globals.mc.text['Model Details'])
+        globals.mcsimplified.text['Considerations'] = globals.aia.simplify(globals.mc.text['Considerations'])
+        globals.mcsimplified.text['Training Set'] = globals.aia.simplify(globals.mc.text['Training Set'])
+        globals.mcsimplified.text['Eval Set'] = globals.aia.simplify(globals.mc.text['Eval Set'])
+        globals.mcsimplified.text['Quantitative Analysis'] = globals.aia.simplify(globals.mc.text['Quantitative Analysis'])
+        globals.mcsimplified.save('templates/~model_card_simplified')
+        globals.mcwithtips.save('templates/~model_card_with_tip')
+
 
 
 def model_details_editor(args):

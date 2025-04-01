@@ -41,8 +41,12 @@ def change_templates():
 
     if args.button == "Save":
         globals.mc.save('model_card')
+        globals.mcwithtips.save('model_card_with_tips')
+        globals.mcsimplified.save('model_card_simplified')
     elif args.button == "Save and Commit":
         globals.mc.save('model_card')
+        globals.mcwithtips.save('model_card_with_tips')
+        globals.mcsimplified.save('model_card_simplified')
         globals.mc.save('templates/~model_card')
         globals.mc.commit()
 
