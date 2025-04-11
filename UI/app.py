@@ -1,5 +1,7 @@
+import os
 from flask import Flask, render_template, request, jsonify
 import transparency_service
+import argparse
 
 import tkinter as tk
 from tkinter import filedialog
@@ -14,6 +16,9 @@ from templates_manager import get_templates
 import globals
 
 app = Flask(__name__)
+UPLOAD_FOLDER = 'uploads'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 init()
 
 
@@ -51,6 +56,34 @@ def change_templates():
         globals.mc.commit()
 
     # Return the new templates and data to the front-end
+    return jsonify({'new_left_html': left_template,'new_right_html': right_template,})
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    if 'file' not in request.files:
+        print('No file part', 400)
+        return 'No file part', 400
+
+    file = request.files['file']
+    if file.filename == '':
+        print('No selected file', 400)
+        return 'No selected file', 400
+
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+    file.save(filepath)
+    print(f'File uploaded successfully to {filepath}')
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--button')
+    parser.add_argument('--field')
+    parser.add_argument('--file_path')
+    args = parser.parse_args()
+    args.button = "Upload PDF"
+    args.field = "Model Details"
+    args.file_path = filepath
+    edit_mc(args)
+    left_template, right_template = get_templates(args)
+
     return jsonify({'new_left_html': left_template,'new_right_html': right_template,})
 
 if __name__ == '__main__':

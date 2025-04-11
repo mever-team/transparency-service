@@ -14,7 +14,47 @@
     <textarea id="model_details" placeholder="Waiting for input...">{{ model_details }}</textarea>
 
 
-    <div><button class="dynamic-btn" data-button-name="Upload PDF">Upload PDF</button></div>
+    <div><button data-button-name="Upload PDF" id="uploadBtn">Upload PDF</button></div>
+    <input type="file" id="fileInput" style="display: none;">
     <button class="dynamic-btn" data-button-name="Submit from model details">Submit</button>
+
+  <script>
+
+    fileInput = document.getElementById("fileInput");
+    uploadBtn = document.getElementById("uploadBtn");
+
+
+
+          uploadBtn.addEventListener("click", () => {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      fetch("/upload", {
+        method: "POST",
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        changePaneContent(data.new_left_html, data.new_right_html);
+
+        console.log(formData);
+        ClassicEditor.create(document.querySelector("#model_details"))
+             .then(editor => {model_details_textarea_instance = editor;})
+    })
+      .catch(error => {
+        console.error("Error", error);
+      });
+    });
+
+
+  </script>
+
 </body>
 </html>

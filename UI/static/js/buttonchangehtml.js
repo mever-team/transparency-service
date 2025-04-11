@@ -4,10 +4,12 @@ let model_details_textarea_instance;
 let training_set_textarea_instance;
 let eval_set_textarea_instance;
 let previous_field = '';
+let fileInput;
+let uploadBtn;
 
 
 // Function to change content in both left and right panes
-function changePaneContent(leftHtml, rightHtml, buttonName) {
+function changePaneContent(leftHtml, rightHtml) {
     const leftPane = document.getElementById('leftPane');
     const rightPane = document.getElementById('rightPane');
 
@@ -22,6 +24,8 @@ function changePaneContent(leftHtml, rightHtml, buttonName) {
 
 // Function to extract and execute JavaScript from HTML content
 function executeScripts(html) {
+    if (html)
+    {
     const scripts = html.match(/<script[^>]*>([\s\S]*?)<\/script>/g);
     if (scripts) {
         scripts.forEach(script => {
@@ -31,7 +35,10 @@ function executeScripts(html) {
             document.body.appendChild(newScript);  // Appending script to the body executes it
         });
     }
+    }
 }
+
+
 
 document.addEventListener('click', function(event) {
     const button = event.target.closest('.dynamic-btn');
@@ -117,3 +124,5 @@ document.addEventListener('click', function(event) {
     })
     .catch(error => console.error('Error:', error));
 });
+
+

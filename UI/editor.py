@@ -5,6 +5,7 @@ import transparency_service
 import pandas as pd
 import copy
 
+
 def file_dialog():
     # Select a file
     root = tk.Tk()
@@ -104,7 +105,7 @@ def model_details_editor(args):
     if args.button == "Submit from model details":
         globals.mc.text['Model Details'] = args.textarea
     elif args.button == "Upload PDF":
-        file_path = file_dialog()
+        file_path = args.file_path
         globals.mc.text['Model Details'] += "<br>******** This is AI generated start<br>" + globals.aia.create_overview(file_path).replace('\n', '<br>') + "<br>******** This is AI generated stop<br>"
 
 def considerations_editor(args):
