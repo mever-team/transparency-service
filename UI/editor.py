@@ -67,13 +67,28 @@ def construct_terms_tips_table():
         globals.terms_tips_table += f'<button class="dynamic-btn" data-button-name="remove_{term}">Remove</button>'
         globals.terms_tips_table += '</div>'
 
+def construct_model_details_textareas():
+    globals.model_details_textareas = ''
+    for key, text in globals.mc.text["Model Details"].items():
+        globals.model_details_textareas += '<div class="container">'
+        globals.model_details_textareas += f'<b>{key}</b>'
+        globals.model_details_textareas += f'<textarea id="{key}">{text}</textarea>'
+        globals.model_details_textareas += '</div>'
+
+def construct_considerations_fields():
+    globals.considerations_fields = ''
+    for key, text in globals.mc.text["Considerations"].items():
+        globals.considerations_fields += '<div class="container">'
+        globals.considerations_fields += f'<b>{key}</b>'
+        globals.considerations_fields += f'<textarea id="{key}">{text}</textarea>'
+        globals.considerations_fields += '</div>'
+
 def level_of_details_editor(args):
     if args.button == "Add AI tips":
-        globals.mc.tips = globals.mc.tips | globals.aia._create_hints(globals.mc.text['Model Details'])
-        globals.mc.tips = globals.mc.tips | globals.aia._create_hints(globals.mc.text['Considerations'])
-        globals.mc.tips = globals.mc.tips | globals.aia._create_hints(globals.mc.text['Training Set'])
-        globals.mc.tips = globals.mc.tips | globals.aia._create_hints(globals.mc.text['Eval Set'])
-        globals.mc.tips = globals.mc.tips | globals.aia._create_hints(globals.mc.text['Quantitative Analysis'])
+        for field in globals.mc.text:
+            if field != "Title":
+                for text in globals.mc.text[field].values():
+                    globals.mc.tips = globals.mc.tips | globals.aia._create_hints(text)
         construct_terms_tips_table()
     elif "remove" in args.button:
         globals.mc.tips.pop(args.button.split('_',1)[1])
@@ -84,18 +99,25 @@ def level_of_details_editor(args):
         globals.mc.tips = globals.mc.tips | {term: tip}
         construct_terms_tips_table()
     elif args.button == "Create Level of Details":
-        if globals.mc.tips:
-            globals.mcwithtips.text['Model Details'] = globals.aia._inject_text_with_hints(globals.mc.text['Model Details'], globals.mc.tips)
-            globals.mcwithtips.text['Considerations'] = globals.aia._inject_text_with_hints(globals.mc.text['Considerations'], globals.mc.tips)
-            globals.mcwithtips.text['Training Set'] = globals.aia._inject_text_with_hints(globals.mc.text['Training Set'], globals.mc.tips)
-            globals.mcwithtips.text['Eval Set'] = globals.aia._inject_text_with_hints(globals.mc.text['Eval Set'], globals.mc.tips)
-            globals.mcwithtips.text['Quantitative Analysis'] = globals.aia._inject_text_with_hints(globals.mc.text['Quantitative Analysis'], globals.mc.tips)
+        globals.mcsimplified = copy.deepcopy(globals.mc)
+        globals.mcwithtips = copy.deepcopy(globals.mc)
+        print("Deepcopy OK")
 
-        globals.mcsimplified.text['Model Details'] = globals.aia.simplify(globals.mc.text['Model Details'])
-        globals.mcsimplified.text['Considerations'] = globals.aia.simplify(globals.mc.text['Considerations'])
-        globals.mcsimplified.text['Training Set'] = globals.aia.simplify(globals.mc.text['Training Set'])
-        globals.mcsimplified.text['Eval Set'] = globals.aia.simplify(globals.mc.text['Eval Set'])
-        globals.mcsimplified.text['Quantitative Analysis'] = globals.aia.simplify(globals.mc.text['Quantitative Analysis'])
+        if globals.mc.tips:
+            for field in globals.mc.text:
+                if field != "Title":
+                    for key in globals.mc.text[field]:
+                        print(f"old globals.mcwithtips.text[{field}][{key}]" + globals.mcwithtips.text[field][key])
+                        globals.mcwithtips.text[field][key] = globals.aia._inject_text_with_hints(globals.mc.text[field][key], globals.mc.tips)
+                        print(f"new globals.mcwithtips.text[{field}][{key}]" + globals.mcwithtips.text[field][key])
+
+        for field in globals.mc.text:
+            if field != "Title":
+                for key in globals.mc.text[field]:
+                    print(f"old globals.mcsimplified.text[{field}][{key}]" + globals.mcwithtips.text[field][key])
+                    globals.mcsimplified.text[field][key] = globals.aia.simplify(globals.mc.text[field][key])
+                    print(f"old globals.mcsimplified.text[{field}][{key}]" + globals.mcwithtips.text[field][key])
+
         globals.mcsimplified.save('templates/~model_card_simplified')
         globals.mcwithtips.save('templates/~model_card_with_tip')
 
@@ -103,10 +125,12 @@ def level_of_details_editor(args):
 
 def model_details_editor(args):
     if args.button == "Submit from model details":
-        globals.mc.text['Model Details'] = args.textarea
+        for key, text in args.textarea.items():
+            globals.mc.text['Model Details'][key] = text
     elif args.button == "Upload PDF":
         file_path = args.file_path
-        globals.mc.text['Model Details'] += "<br>******** This is AI generated start<br>" + globals.aia.create_overview(file_path).replace('\n', '<br>') + "<br>******** This is AI generated stop<br>"
+        globals.mc.text['Model Details']['Overview'] += "<br>******** This is AI generated start<br>" + globals.aia.create_overview(file_path).replace('\n', '<br>') + "<br>******** This is AI generated stop<br>"
+    construct_model_details_textareas()
 
 def considerations_editor(args):
     if args.button == "Submit from aichat":
@@ -117,17 +141,19 @@ def considerations_editor(args):
         for message in globals.suggest_ethical_considerations_chat_list:
             globals.airesponse = globals.airesponse + '\n' + message['content'] + '\n******************************************'
     elif args.button == "Submit from considerations":
-        globals.mc.content['Considerations'] = args.textarea
+        for key, text in args.textarea.items():
+            globals.mc.text['Considerations'][key] = text
+    construct_considerations_fields()
 
 def training_set_editor(args):
     if args.button == "Submit from training set":
-        globals.mc.text['Training Set'] = args.textarea
+        globals.mc.text['Training Set']["Description"] = args.textarea["training_set"]
     elif args.button == "AI Data Summary Train Set":
         file_path = file_dialog()
         ai_data_summ, globals.data_extracted_info_train = ai_data_summary(file_path)
         globals.data_set_outline_training = construct_html_table_for_data(globals.data_extracted_info_train)
         # write and save mc
-        globals.mc.text['Training Set'] += '<br>****** AI Data Summary Start*****<br>' + ai_data_summ + '<br>****** AI Data Summary End*****<br>'
+        globals.mc.text['Training Set']["Description"] += '<br>****** AI Data Summary Start*****<br>' + ai_data_summ + '<br>****** AI Data Summary End*****<br>'
         # Create create_plot_buttons for training_set.html
         globals.create_plot_buttons_train = "<br><br>Create a plot for:<br>"
         for column_name in globals.data_extracted_info_train['column_names']:
@@ -149,13 +175,13 @@ def training_set_editor(args):
 
 def eval_set_editor(args):
     if args.button == "Submit from eval set":
-        globals.mc.text['Eval Set'] = args.textarea
+        globals.mc.text['Eval Set']["Description"] = args.textarea["eval_set"]
     elif args.button == "AI Data Summary Eval Set":
         file_path = file_dialog()
         ai_data_summ, globals.data_extracted_info_eval = ai_data_summary(file_path)
         globals.data_set_outline_eval = construct_html_table_for_data(globals.data_extracted_info_eval)
         # write and save mc
-        globals.mc.text['Eval Set'] += '<br>****** AI Data Summary Start*****<br>' + ai_data_summ + '<br>****** AI Data Summary End*****<br>'
+        globals.mc.text['Eval Set']["Description"] += '<br>****** AI Data Summary Start*****<br>' + ai_data_summ + '<br>****** AI Data Summary End*****<br>'
         # Create create_plot_buttons_eval for training_set.html
         globals.create_plot_buttons_eval = "<br><br>Create a plot for:<br>"
         for column_name in globals.data_extracted_info_eval['column_names']:
@@ -178,12 +204,12 @@ def eval_set_editor(args):
 
 def quantitative_analysis_editor(args):
     if args.button == "Submit from quantitative analysis":
-        globals.mc.text['Quantitative Analysis'] = args.textarea.replace('<figure class="table"', '<figure class="table" style="overflow-x: auto;"')
+        globals.mc.text['Quantitative Analysis']["Description"] = args.textarea["quantitative_analysis"].replace('<figure class="table"', '<figure class="table" style="overflow-x: auto;"')
     elif args.button == "Upload Metrics":
         file_path = file_dialog()
         metrics = transparency_service.evaluation.read_data(file_path)
         construct_metrics_table_html(metrics)
-        globals.mc.text['Quantitative Analysis'] = globals.aia.metrics_summary(file_path).replace('\n', '<br>') + '<br>' + globals.metrics_table
+        globals.mc.text['Quantitative Analysis']["Description"] = globals.aia.metrics_summary(file_path).replace('\n', '<br>') + '<br>' + globals.metrics_table
 
 
 

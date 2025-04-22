@@ -156,14 +156,13 @@
 <body>
     <div class="content-container">
         <div class="title">Model Card</div>
-        <div class="model-details"><p>The following information is typically provided for a software project: 
+        <div class="model-details"><p><strong>Name:</strong> Hello! How can I assist you today?</p><p><strong>Overview:</strong> The DeBERTa model, which is part of GordonAI, focuses on analyzing sentiments, detecting emotions, and classifying facts in various languages. It is built on the mdeberta-v3-base model that has been fine-tuned on a dataset for fact-checking to sort text into categories like Disinformation, Hoax, FakeNews, or TrueNews. DeBERTa's design includes a disentangled attention mechanism and an improved mask decoder, surpassing human performance on SuperGLUE benchmarks and excelling in tasks related to understanding and generating natural language.
 
-- **Name**: Indicates the title of the project.
-- **Overview**: Offers a brief summary or description of the project.
-- **Version**: Specifies the current version or iteration of the project.
-- **License**: Specifies the terms under which the software is distributed.
-- **GitHub**: Provides a link to the project's repository on GitHub.
-- **Paper**: Refers to any related academic papers or publications associated with the project.</p></div>
+The disentangled attention mechanism in DeBERTa enhances performance by calculating attention weights based on the content and positions of words, improving different Natural Language Processing (NLP) tasks. By using absolute word positions in the mask decoder, DeBERTa enhances predictions when filling masked words in sentences. Its design based on Transformers with stacked blocks and a disentangled attention mechanism leads to superior performance in fact-checking, sentiment analysis, and emotion detection tasks in various languages.
+
+Moreover, the Scale-Invariant Fine-Tuning (SiFT) algorithm enhances training stability by adjusting normalized word embeddings, resulting in better performance, especially in larger DeBERTa models. SiFT normalizes word embedding vectors into stochastic vectors before adjusting them, significantly improving the performance of fine-tuned models in NLP tasks. The Enhanced Mask Decoder (EMD) of the model incorporates absolute word positions after Transformer layers, enhancing performance compared to previous methods like BERT. SiFT's normalization of word embeddings improves training stability, particularly beneficial for larger DeBERTa models, ultimately enhancing the model's overall performance.
+
+It's worth mentioning that SiFT is specifically used for DeBERTa15B in SuperGLUE tasks in the experiments conducted, with the potential for more extensive research on SiFT in future studies.</p><p><strong>Version:</strong> Hello! How can I assist you today?</p><p><strong>License:</strong> How can I assist you today?</p><p><strong>Paper:</strong> Hello! How can I assist you today?</p></div>
         <div class="tab-container">
             
             <div class="tab active-tab" onclick="showTabContent('tab0')">
@@ -186,40 +185,19 @@
         <div class="tab-content-container">
             
             <div id="tab0" class="tab-content active-content">
-                <p><strong>Purpose:</strong> 
-<p>This section outlines the intended applications of the system.</p>
-
-<strong>Constraints:</strong> 
-<p>This section highlights the boundaries and restrictions within which the system operates.</p>
-
-<strong>Ethical Concerns:</strong> 
-<p>This section discusses the potential moral issues related to the system's use.</p></p>
+                <p><strong>Use Case:</strong> Hello! How can I assist you today?</p><p><strong>Limitations:</strong> Hello! How can I assist you today?</p><p><strong>Ethical Risks:</strong> Hello! How can I assist you today?</p>
             </div>
             
             <div id="tab1" class="tab-content ">
-                <p>An empty paragraph element.</p>
+                <p><strong>Description:</strong> Hello! How can I assist you today?</p>
             </div>
             
             <div id="tab2" class="tab-content ">
-                <p>An empty paragraph tag.</p>
+                <p><strong>Description:</strong> How can I assist you today?</p>
             </div>
             
             <div id="tab3" class="tab-content ">
-                <p>The llama3.2 model has been assessed on different datasets using various measures. Let's look closely at a few specific datasets to understand how well the model performs.
-
-### Performance Analysis
-
-#### 1. Dataset: AggreFact-CNN
-- The model achieved high precision, recall, and F1 score of around 0.9042 across all measures. This suggests that the model consistently performs well in categorizing items in this dataset.
-
-#### 2. Dataset: Lfqa
-- In this dataset, the model achieved a precision of 0.6142 and a recall of 0.8394. The F1 score of 0.7094 indicates a good balance between precision and recall. The model also showed moderate performance in terms of top-1 accuracy.
-
-#### 3. Dataset: Reveal
-- The model displayed high recall of 0.8625 on this dataset, while the precision was lower at 0.3419. This led to an F1 score of 0.4897, suggesting some room for improvement in precision. Interestingly, the model obtained a high roc-auc score of 0.6795, indicating good overall performance in terms of ranking predictions.
-
-### Real-World Implications
-- These metrics are essential for understanding how well the model generalizes to new data. High precision indicates the model's ability to make accurate positive predictions, while high recall demonstrates its capability to capture true positive instances. The F1 score balances precision and recall, offering a comprehensive view of the model's performance. Additionally, metrics like top-1 accuracy and roc-auc scores provide insights into the model's classification and ranking abilities in practical scenarios.</p>
+                <p><strong>Description:</strong> Hello! How can I assist you today?</p>
             </div>
             
         </div>

@@ -32,13 +32,13 @@ class ModelCard(
 				"Ethical Risks": ""
 			},
 			"Training Set": {
-				"Text": ""
+				"Description": ""
 			},
 			"Eval Set": {
-				"Text": ""
+				"Description": ""
 			},
 			"Quantitative Analysis": {
-				"Text": ""
+				"Description": ""
 			}
 		}
 		self.plots = {

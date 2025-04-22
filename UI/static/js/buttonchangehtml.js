@@ -6,7 +6,7 @@ let eval_set_textarea_instance;
 let previous_field = '';
 let fileInput;
 let uploadBtn;
-
+let editorInstances = {};
 
 // Function to change content in both left and right panes
 function changePaneContent(leftHtml, rightHtml) {
@@ -47,20 +47,21 @@ document.addEventListener('click', function(event) {
     const buttonName = button.getAttribute('data-button-name');
     console.log("Button clicked, name:", buttonName);
 
-    let formData = { textarea: "", user_input: "", field: previous_field };
+    let formData = { textarea: {}, user_input: "", field: previous_field };
     const textAreas = document.querySelectorAll('#leftPane textarea');
 
     const textareaInstances = {
-        "Submit from model details": { instance: model_details_textarea_instance, field: "Model Details" },
+        //"Submit from model details": { instance: model_details_textarea_instance, field: "Model Details" },
+        "Submit from model details": { instance: editorInstances, field: "Model Details" },
         "Add AI tips": {field: "Level of Details" },
         "Submit from aichat": { value: textAreas[2]?.value || "", field: "Considerations" },
-        "Submit from considerations": { instance: considerations_textarea_instance, field: "Considerations" },
+        "Submit from considerations": { instance: editorInstances, field: "Considerations" },
         "Considerations": { field: "Considerations" },
-        "Submit from training set": { instance: training_set_textarea_instance, field: "Training Set" },
+        "Submit from training set": { instance: editorInstances, field: "Training Set" },
         "Training Set": { field: "Training Set" },
-        "Submit from eval set": { instance: eval_set_textarea_instance, field: "Eval Set" },
+        "Submit from eval set": { instance: editorInstances, field: "Eval Set" },
         "Eval Set": { field: "Eval Set" },
-        "Submit from quantitative analysis": { instance: quantitative_analysis_textarea_instance, field: "Quantitative Analysis" },
+        "Submit from quantitative analysis": { instance: editorInstances, field: "Quantitative Analysis" },
         "Quantitative Analysis": { field: "Quantitative Analysis" },
         "AI Data Summary Train Set": { field: "Training Set" },
         "AI Data Summary Eval Set": { field: "Eval Set" },
@@ -74,7 +75,10 @@ document.addEventListener('click', function(event) {
 
     if (textareaInstances[buttonName]) {
         if (textareaInstances[buttonName].instance) {
-            formData.textarea = textareaInstances[buttonName].instance.getData();
+            for (let key in textareaInstances[buttonName].instance)
+            {
+                formData.textarea[key] = textareaInstances[buttonName].instance[key].getData();
+            }
         } else if (textareaInstances[buttonName].value) {
             formData.user_input = textareaInstances[buttonName].value;
         }
@@ -109,17 +113,31 @@ document.addEventListener('click', function(event) {
             "AI Data Summary Eval Set": "#eval_set"
         };
 
-        console.log(formData);
-        if (ckeditorFields[formData.field]) {
-            ClassicEditor.create(document.querySelector(ckeditorFields[formData.field]))
+        const lefttitle = new DOMParser().parseFromString(data.new_left_html, 'text/html').querySelector('title')?.textContent || "";
+
+        if (lefttitle !== "Level of Details Editor"){
+
+        document.querySelectorAll("textarea").forEach(textarea => {
+            const skipIds = ["airesponse", "textInput"];
+
+            if (skipIds.includes(textarea.id)) {
+                return; // skip this textarea
+            }
+            ClassicEditor
+                .create(textarea)
                 .then(editor => {
-                    if (formData.field.includes("Training Set")) training_set_textarea_instance = editor;
-                    else if (formData.field.includes("Eval Set")) eval_set_textarea_instance = editor;
-                    else if (formData.field.includes("Quantitative Analysis")) quantitative_analysis_textarea_instance = editor;
-                    else if (formData.field.includes("Considerations")) considerations_textarea_instance = editor;
-                    else if (formData.field.includes("Model Details")) model_details_textarea_instance = editor;
+                    editorInstances[textarea.id] = editor;
+
+                    // only show toolbar if focused
+                    const toolbar = editor.ui.view.toolbar.element;
+                    toolbar.style.display = "none";
+                    editor.editing.view.document.on('focus', () => {toolbar.style.display = "";});
+                    editor.editing.view.document.on('blur', () => {toolbar.style.display = "none";});
                 })
-                .catch(error => console.error('Error initializing CKEditor:', error));
+                .catch(error => {
+                    console.error("Editor initialization failed for textarea:", textarea, error);
+                });
+        });
         }
     })
     .catch(error => console.error('Error:', error));

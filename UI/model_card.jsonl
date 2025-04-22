@@ -1,3 +1,2 @@
-{"format_version": "1.1"}
-{"Title": "Model Card", "Model Details": "<p><strong>Name:</strong> </p><p><strong>Overview:</strong> </p><p><strong>Version:</strong> </p><p><strong>License:</strong> </p><p><strong>GitHub:</strong> </p><p><strong>Paper:</strong> </p>", "Considerations": "<p><strong>Use Case:</strong> </p><p><strong>Limitations:</strong> </p><p><strong>Ethical Risks:</strong> </p>", "Training Set": "<p></p>", "Eval Set": "<p></p>", "Quantitative Analysis": ""}
+{"Title": "Model Card", "Model Details": {"Name": "", "Overview": "", "Version": "", "License": "", "Paper": ""}, "Considerations":  {"Use Case": "", "Limitations": "", "Ethical Risks": ""}, "Training Set": {"Description": ""}, "Eval Set": {"Description": ""}, "Quantitative Analysis": {"Description": ""}}
 {"Considerations": {}, "Training Set": {}, "Eval Set": {}, "Quantitative Analysis": {}}

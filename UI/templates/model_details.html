@@ -10,8 +10,11 @@
 </head>
 <body>
     <div><button class="dynamic-btn" data-button-name="Back">Back</button></div>
+    {{ model_details_textareas|safe }}
+    <!---
     <b>Model Details</b>
     <textarea id="model_details" placeholder="Waiting for input...">{{ model_details }}</textarea>
+    -->
 
 
     <div><button data-button-name="Upload PDF" id="uploadBtn">Upload PDF</button></div>
@@ -25,7 +28,7 @@
 
 
 
-          uploadBtn.addEventListener("click", () => {
+    uploadBtn.addEventListener("click", () => {
       fileInput.click();
     });
 
@@ -44,13 +47,32 @@
       .then(data => {
         changePaneContent(data.new_left_html, data.new_right_html);
 
-        console.log(formData);
-        ClassicEditor.create(document.querySelector("#model_details"))
-             .then(editor => {model_details_textarea_instance = editor;})
+
+
+                document.querySelectorAll("textarea").forEach(textarea => {
+            const skipIds = ["airesponse", "textInput"];
+
+            if (skipIds.includes(textarea.id)) {
+                return; // skip this textarea
+            }
+
+            ClassicEditor
+                .create(textarea)
+                .then(editor => {
+                    editorInstances[textarea.id] = editor;
+
+                    // only show toolbar if focused
+                    const toolbar = editor.ui.view.toolbar.element;
+                    toolbar.style.display = "none";
+                    editor.editing.view.document.on('focus', () => {toolbar.style.display = "";});
+                    editor.editing.view.document.on('blur', () => {toolbar.style.display = "none";});
+                })
+                .catch(error => {
+                    console.error("Editor initialization failed for textarea:", textarea, error);
+                });
+        });
     })
-      .catch(error => {
-        console.error("Error", error);
-      });
+    .catch(error => console.error('Error:', error));
     });
 
 

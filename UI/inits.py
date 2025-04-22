@@ -4,11 +4,11 @@ import transparency_service
 
 def init():
     globals.mc = transparency_service.model_card_generator.ModelCard()
-    globals.mcwithtips = transparency_service.model_card_generator.ModelCard()
-    globals.mcsimplified = transparency_service.model_card_generator.ModelCard()
+    globals.mcwithtips = None
+    globals.mcsimplified = None
     globals.mc.load_json('model_card.jsonl')
-    if globals.mc.format_version == '1.0':
-        globals.mc.text = globals.mc._json2content()
+    #if globals.mc.format_version == '1.0':
+    #    globals.mc.text = globals.mc._json2content()
 
     globals.mc.save('templates/~model_card')
     globals.aia = transparency_service.ai_assistant.AI_Assistant(model='gpt-3.5-turbo')
@@ -28,6 +28,10 @@ def init():
     # considerations.html
     globals.suggest_ethical_considerations_chat_list = []
     globals.airesponse = ''
+    globals.considerations_fields = ''
+
+    # model_details.html
+    globals.model_details_textareas = ''
 
     # quantitative_analysis.html
     globals.metrics_table = ''

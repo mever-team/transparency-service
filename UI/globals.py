@@ -19,6 +19,10 @@ data_extracted_info_eval = None
 # considerations.html
 suggest_ethical_considerations_chat_list = None
 airesponse = None
+considerations_fields = None
+
+# model_details.html
+model_details_textareas = None
 
 # level of details
 terms_tips_table = ''
