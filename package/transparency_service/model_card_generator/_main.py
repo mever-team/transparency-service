@@ -16,7 +16,7 @@ class ModelCard(
 	):
 	def __init__(self):
 		_Version_Control.__init__(self)
-		self.text = { # for legacy. have to change a bunch of code if I remove this
+		self.text = {
 			"Title": "Model Card",
 			"Model Details": {
 				"Name": "",
@@ -49,8 +49,8 @@ class ModelCard(
 		}
 		self.content = {}
 		self.compiled = None
-		self.jsonsimple = copy.deepcopy(self.text)
-		self.markdown_string = ""
+		#self.jsonsimple = copy.deepcopy(self.text)
+		#self.markdown_string = ""
 		self.html_string = ""
 		self.bar_plot_data = {}
 		self.data = pd.DataFrame(columns=["label", "acc", "ap", "f1"])

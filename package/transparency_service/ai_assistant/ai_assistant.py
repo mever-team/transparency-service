@@ -9,22 +9,38 @@ import importlib.resources
 from ..utils._extract_dataset_info import _extract_data_info
 import re
 import ast
+import requests
 
 class AI_Assistant:
 	def __init__(self, model = "meta-llama/Llama-3.2-3B-Instruct", model_card = None):
-		# gpt-3.5-turbo
+		# gpt-3.5-turbo gpt-4
 		if 'gpt' in model:
 			openai.api_key = os.getenv("OPENAI_API_KEY")
 			self.model_type = 'gpt'
 			self.model = model
-		elif 'llamma' in model or 'Llama' in model:
-			self.pipeline = transformers.pipeline(
-				"text-generation",
-				model=model,
-				model_kwargs={"torch_dtype": torch.bfloat16},
-				device_map="auto",
-			)
-			self.model_type = 'llama'
+		# elif 'llamma' in model or 'Llama' in model:
+		# 	self.pipeline = transformers.pipeline(
+		# 		"text-generation",
+		# 		model=model,
+		# 		model_kwargs={"torch_dtype": torch.bfloat16},
+		# 		device_map="auto",
+		# 	)
+		# 	self.model_type = 'llama'
+		else:
+			# curl -fsSL https://ollama.com/install.sh | sh
+			# ollama run llama3.2:3b
+			# https://ollama.com/search
+			self.ollama_url = "http://localhost:11434/api/chat"
+			#self.ollama_headers = {"Content-Type": "application/json"}
+			data = {"model": model, "messages": [{"role": "user", "content": "Request test"}],"stream": False}
+			response = requests.post(self.ollama_url, json=data)
+			if response.status_code == 200:
+				self.ollama_model = model
+				self.model_type = "ollama"
+				print(f"Model '{self.ollama_model}' initialized successfully.")
+			else:
+				print(f"Failed to initialize model '{self.ollama_model}'.")
+
 		self.model_card = model_card
 		self.pdf_chunks_for_llm = []
 
@@ -249,6 +265,10 @@ class AI_Assistant:
 				top_p=top_p,
 			)
 			model_output = response[0]["generated_text"][-1]['content']
+		elif self.model_type == "ollama":
+			data = {"model": self.ollama_model, "messages": messages,"stream": False}
+			response = requests.post(self.ollama_url, json=data)
+			model_output = json.loads(response.text)["message"]["content"]
 		return model_output
 
 	def __ai_generated_html_indicator(self):
