@@ -4,6 +4,7 @@ import os
 import importlib.resources
 from jinja2 import Environment, BaseLoader
 import copy
+import pickle
 
 
 class _HTMLRenderer:
@@ -124,6 +125,11 @@ class _Utils:
 		self.save_json(f"{filename}.jsonl")
 		self.json_to_html()
 		self.save_html(f"{filename}.html")
+		self.save_pickle(f"{filename}.pkl")
+
+	def save_pickle(self, filename: str):
+		with open(filename, 'wb') as out:
+			pickle.dump(self, out, pickle.HIGHEST_PROTOCOL)
 
 	def save_json(self, filename: str):
 		with open(filename, 'w') as f:
@@ -149,6 +155,9 @@ class _Utils:
 				self.text = json.loads(first_line)
 			self.plots = json.loads(f.readline())
 
+	def from_pickle(self, filename: str):
+		with open(filename, 'rb') as inp:
+			return pickle.load(inp)
 
 	###################################
 	####		other utils			###

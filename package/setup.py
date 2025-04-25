@@ -25,6 +25,7 @@ setup(
         'datasets',
         'torch',
         'torchmetrics',
+        'eco2ai',
 
     ],
     description='The description.',  # Short description

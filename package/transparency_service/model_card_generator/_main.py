@@ -57,3 +57,5 @@ class ModelCard(
 		self.hash_history = []
 		self.format_version = None
 		self.tips = {}
+		self.metrics = None
+		self.emissions = None
