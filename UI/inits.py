@@ -11,9 +11,9 @@ def init():
     #    globals.mc.text = globals.mc._json2content()
 
     globals.mc.save('templates/~model_card')
-    globals.aia = transparency_service.ai_assistant.AI_Assistant(model='gpt-3.5-turbo')
+    # globals.aia = transparency_service.ai_assistant.AI_Assistant(model='gpt-3.5-turbo')
     #globals.aia = transparency_service.ai_assistant.AI_Assistant(model='gpt-4')
-    #globals.aia = transparency_service.ai_assistant.AI_Assistant(model='meta-llama/Llama-3.2-3B-Instruct')
+    globals.aia = transparency_service.ai_assistant.AI_Assistant(model='llama3.2:3b')
 
     # training_set.html
     globals.data_set_outline_training = ''

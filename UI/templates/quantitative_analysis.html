@@ -13,8 +13,68 @@
     <b>Quantitative Analysis</b>
     <textarea id="quantitative_analysis" placeholder="Waiting for input...">{{ quantitative_analysis }}</textarea>
     <button class="dynamic-btn" data-button-name="Submit from quantitative analysis">Submit Form</button>
-    <button class="dynamic-btn" data-button-name="Upload Metrics">Upload Metrics</button>
+    <div><button data-button-name="Upload Metrics" id="uploadBtn">Upload Metrics</button></div>
+    <input type="file" id="fileInput" style="display: none;">
     {{ metrics_table|safe }}
 
+
+  <script>
+
+    fileInput = document.getElementById("fileInput");
+    uploadBtn = document.getElementById("uploadBtn");
+
+
+
+    uploadBtn.addEventListener("click", () => {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("button", "Upload Metrics");
+      formData.append("field", "Quantitative Analysis");
+
+      fetch("/upload", {
+        method: "POST",
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        changePaneContent(data.new_left_html, data.new_right_html);
+
+
+
+                document.querySelectorAll("textarea").forEach(textarea => {
+            const skipIds = ["airesponse", "textInput"];
+
+            if (skipIds.includes(textarea.id)) {
+                return; // skip this textarea
+            }
+
+            ClassicEditor
+                .create(textarea)
+                .then(editor => {
+                    editorInstances[textarea.id] = editor;
+
+                    // only show toolbar if focused
+                    const toolbar = editor.ui.view.toolbar.element;
+                    toolbar.style.display = "none";
+                    editor.editing.view.document.on('focus', () => {toolbar.style.display = "";});
+                    editor.editing.view.document.on('blur', () => {toolbar.style.display = "none";});
+                })
+                .catch(error => {
+                    console.error("Editor initialization failed for textarea:", textarea, error);
+                });
+        });
+    })
+    .catch(error => console.error('Error:', error));
+    });
+
+
+  </script>
 </body>
 </html>

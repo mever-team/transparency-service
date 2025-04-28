@@ -6,14 +6,6 @@ import pandas as pd
 import copy
 
 
-def file_dialog():
-    # Select a file
-    root = tk.Tk()
-    root.withdraw()
-    file_path = filedialog.askopenfilename()
-    root.destroy()
-    return file_path
-
 def ai_data_summary(file_path):
     # Read and create ai summary
     data_pd = transparency_service.evaluation.read_data(file_path)
@@ -149,7 +141,7 @@ def training_set_editor(args):
     if args.button == "Submit from training set":
         globals.mc.text['Training Set']["Description"] = args.textarea["training_set"]
     elif args.button == "AI Data Summary Train Set":
-        file_path = file_dialog()
+        file_path = args.file_path
         ai_data_summ, globals.data_extracted_info_train = ai_data_summary(file_path)
         globals.data_set_outline_training = construct_html_table_for_data(globals.data_extracted_info_train)
         # write and save mc
@@ -177,7 +169,7 @@ def eval_set_editor(args):
     if args.button == "Submit from eval set":
         globals.mc.text['Eval Set']["Description"] = args.textarea["eval_set"]
     elif args.button == "AI Data Summary Eval Set":
-        file_path = file_dialog()
+        file_path = args.file_path
         ai_data_summ, globals.data_extracted_info_eval = ai_data_summary(file_path)
         globals.data_set_outline_eval = construct_html_table_for_data(globals.data_extracted_info_eval)
         # write and save mc
@@ -206,7 +198,7 @@ def quantitative_analysis_editor(args):
     if args.button == "Submit from quantitative analysis":
         globals.mc.text['Quantitative Analysis']["Description"] = args.textarea["quantitative_analysis"].replace('<figure class="table"', '<figure class="table" style="overflow-x: auto;"')
     elif args.button == "Upload Metrics":
-        file_path = file_dialog()
+        file_path = args.file_path
         metrics = transparency_service.evaluation.read_data(file_path)
         construct_metrics_table_html(metrics)
         globals.mc.text['Quantitative Analysis']["Description"] = globals.aia.metrics_summary(file_path).replace('\n', '<br>') + '<br>' + globals.metrics_table

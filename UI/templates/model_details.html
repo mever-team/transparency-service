@@ -38,6 +38,8 @@
 
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("button", "Upload PDF");
+      formData.append("field", "Model Details");
 
       fetch("/upload", {
         method: "POST",

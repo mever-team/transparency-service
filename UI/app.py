@@ -78,8 +78,8 @@ def upload():
     parser.add_argument('--field')
     parser.add_argument('--file_path')
     args = parser.parse_args()
-    args.button = "Upload PDF"
-    args.field = "Model Details"
+    args.button = request.form.get('button')
+    args.field = request.form.get('field')
     args.file_path = filepath
     edit_mc(args)
     left_template, right_template = get_templates(args)

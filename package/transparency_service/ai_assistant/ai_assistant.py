@@ -45,6 +45,9 @@ class AI_Assistant:
 		self.pdf_chunks_for_llm = []
 
 	def _create_hints(self, text: "str"):
+		if not text:
+			return {}
+
 		messages = [{"role": "system",
 					 "content": '''
 							 You will be given a text. Your goal is to provide explanation for all technical words so a non expert can understand its content. Your output should be a JSON where the keys will be the word to be explained and the values will be the explanation of this word.							 
@@ -83,6 +86,9 @@ class AI_Assistant:
 
 
 	def simplify(self, text: "str"):
+		if not text:
+			return ""
+
 		messages = [{"role": "system",
 					 "content":
 					 '''You are an AI specialized in simplifying technical texts while maintaining a professional, academic tone. Your goal is to rewrite technical content in a way that preserves all information but replaces complex terminology with clear, accessible language.
