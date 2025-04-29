@@ -12,7 +12,7 @@ import ast
 import requests
 
 class AI_Assistant:
-	def __init__(self, model = "meta-llama/Llama-3.2-3B-Instruct", model_card = None):
+	def __init__(self, model, model_card = None):
 		# gpt-3.5-turbo gpt-4
 		if 'gpt' in model:
 			openai.api_key = os.getenv("OPENAI_API_KEY")

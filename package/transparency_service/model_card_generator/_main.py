@@ -58,4 +58,4 @@ class ModelCard(
 		self.format_version = None
 		self.tips = {}
 		self.metrics = None
-		self.emissions = None
+		self.emission = None

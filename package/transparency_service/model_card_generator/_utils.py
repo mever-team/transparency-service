@@ -4,7 +4,6 @@ import os
 import importlib.resources
 from jinja2 import Environment, BaseLoader
 import copy
-import pickle
 
 
 class _HTMLRenderer:
@@ -125,16 +124,16 @@ class _Utils:
 		self.save_json(f"{filename}.jsonl")
 		self.json_to_html()
 		self.save_html(f"{filename}.html")
-		self.save_pickle(f"{filename}.pkl")
-
-	def save_pickle(self, filename: str):
-		with open(filename, 'wb') as out:
-			pickle.dump(self, out, pickle.HIGHEST_PROTOCOL)
 
 	def save_json(self, filename: str):
 		with open(filename, 'w') as f:
-			f.write(json.dumps(self.text) + "\n")
-			f.write(json.dumps(self.plots) + "\n")
+			f.write(json.dumps({'format_version': self.format_version}) + "\n")
+			f.write(json.dumps({'text': self.text}) + "\n")
+			f.write(json.dumps({'plots': self.plots}) + "\n")
+			f.write(json.dumps({'hash_history': self.hash_history}) + "\n")
+			f.write(json.dumps({'tips': self.tips}) + "\n")
+			f.write(json.dumps({'metrics': self.metrics}) + "\n")
+			f.write(json.dumps({'emission': self.emission}) + "\n")
 
 	def save_html(self, filename: str):
 		with open(filename, 'w', encoding="utf-8") as f:
@@ -147,17 +146,13 @@ class _Utils:
 
 	def load_json(self, filename: str):
 		with open(filename, 'r') as f:
-			first_line = f.readline()
-			if 'format_version' in first_line:
-				self.format_version = json.loads(first_line)['format_version']
-				self.text = json.loads(f.readline())
-			else:
-				self.text = json.loads(first_line)
-			self.plots = json.loads(f.readline())
-
-	def from_pickle(self, filename: str):
-		with open(filename, 'rb') as inp:
-			return pickle.load(inp)
+			self.format_version = json.loads(f.readline())['format_version']
+			self.text = json.loads(f.readline())['text']
+			self.plots = json.loads(f.readline())['plots']
+			self.hash_history = json.loads(f.readline())['hash_history']
+			self.tips = json.loads(f.readline())['tips']
+			self.metrics = json.loads(f.readline())['metrics']
+			self.emission = json.loads(f.readline())['emission']
 
 	###################################
 	####		other utils			###
