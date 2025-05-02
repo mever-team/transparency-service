@@ -176,4 +176,4 @@ class _Utils:
 		for field in self.compiled:
 			if field in self.plots:
 				for plot in self.plots[field]:
-					self.compiled[field] += self.plots[field][plot]
+					self.compiled[field]['Description'] += self.plots[field][plot]

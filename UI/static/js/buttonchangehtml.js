@@ -54,7 +54,7 @@ document.addEventListener('click', function(event) {
         //"Submit from model details": { instance: model_details_textarea_instance, field: "Model Details" },
         "Submit from model details": { instance: editorInstances, field: "Model Details" },
         "Add AI tips": {field: "Level of Details" },
-        "Submit from aichat": { value: textAreas[2]?.value || "", field: "Considerations" },
+        "Submit from aichat": { value: textAreas[4]?.value || "", field: "Considerations" },
         "Submit from considerations": { instance: editorInstances, field: "Considerations" },
         "Considerations": { field: "Considerations" },
         "Submit from training set": { instance: editorInstances, field: "Training Set" },
