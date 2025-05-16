@@ -3,17 +3,13 @@ from flask import Flask, render_template, request, jsonify
 import transparency_service
 import argparse
 
-import tkinter as tk
-from tkinter import filedialog
-
-import pandas as pd
-
 from types import SimpleNamespace
 
-from editor import edit_mc
-from inits import init
-from templates_manager import get_templates
-import globals
+from .editor import edit_mc
+from .inits import init
+from .templates_manager import get_templates
+
+from . import globals
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'

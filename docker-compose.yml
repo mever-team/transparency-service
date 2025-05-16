@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+
+  ollama:
+    image: ollama/ollama:0.7.0
+    container_name: ollama
+    privileged: true  # Required for FUSE
+    ports:
+      - "11434:11434"
+    networks:
+      - ollama_net
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 2
+              capabilities: [gpu]
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: transparency-app
+    depends_on:
+      - ollama
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./UI:/app/UI
+    networks:
+      - ollama_net
+    environment:
+      OLLAMA_BASE_URL: http://ollama:11434
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
+
+networks:
+  ollama_net:
+    driver: bridge

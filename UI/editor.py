@@ -1,6 +1,5 @@
-import globals
-import tkinter as tk
-from tkinter import filedialog
+from . import globals
+
 import transparency_service
 import pandas as pd
 import copy
@@ -220,4 +219,4 @@ def call_editor(args):
 def edit_mc(args):
     print(args)
     call_editor(args)
-    globals.mc.save('templates/~model_card')
+    globals.mc.save('./UI/templates/~model_card')

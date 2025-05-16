@@ -1,4 +1,4 @@
-import globals
+from . import globals
 
 import transparency_service
 
@@ -6,12 +6,14 @@ def init():
     globals.mc = transparency_service.model_card_generator.ModelCard()
     globals.mcwithtips = None
     globals.mcsimplified = None
-    globals.mc.load_json('model_card.jsonl')
+    globals.mc.load_json('./UI/model_card.jsonl')
 
-    globals.mc.save('templates/~model_card')
-    globals.aia = transparency_service.ai_assistant.AI_Assistant(model='gpt-3.5-turbo')
-    #globals.aia = transparency_service.ai_assistant.AI_Assistant(model='gpt-4')
-    #globals.aia = transparency_service.ai_assistant.AI_Assistant(model='llama3.2:3b')
+    globals.mc.save('./UI/templates/~model_card')
+    # globals.aia = transparency_service.ai_assistant.AI_Assistant(model='gpt-3.5-turbo')
+    # globals.aia = transparency_service.ai_assistant.AI_Assistant(model='gpt-4')
+    # globals.aia = transparency_service.ai_assistant.AI_Assistant(model='llama3.2:3b')
+    globals.aia = transparency_service.ai_assistant.AI_Assistant(model='llama3.2:latest')
+
 
     # training_set.html
     globals.data_set_outline_training = ''

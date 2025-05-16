@@ -11,6 +11,8 @@ import re
 import ast
 import requests
 
+OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+
 class AI_Assistant:
 	def __init__(self, model, model_card = None):
 		# gpt-3.5-turbo gpt-4
@@ -30,7 +32,8 @@ class AI_Assistant:
 			# curl -fsSL https://ollama.com/install.sh | sh
 			# ollama run llama3.2:3b
 			# https://ollama.com/search
-			self.ollama_url = "http://localhost:11434/api/chat"
+			# self.ollama_url = "http://localhost:11434/api/chat"
+			self.ollama_url = f"{OLLAMA_BASE_URL}/api/chat"
 			#self.ollama_headers = {"Content-Type": "application/json"}
 			data = {"model": model, "messages": [{"role": "user", "content": "Request test"}],"stream": False}
 			response = requests.post(self.ollama_url, json=data)
@@ -39,7 +42,9 @@ class AI_Assistant:
 				self.model_type = "ollama"
 				print(f"Model '{self.ollama_model}' initialized successfully.")
 			else:
-				print(f"Failed to initialize model '{self.ollama_model}'.")
+				# Print response text (HTML, JSON string, etc.)
+				print("Response Text:", response.text)
+				print(f"Failed to initialize model '{model}'.")
 
 		self.model_card = model_card
 		self.pdf_chunks_for_llm = []
@@ -105,6 +110,7 @@ class AI_Assistant:
 		return simplified
 
 	def dataset_summary(self, dataset: "path to csv, json, tsv, parquet and more or dict, list, datasets.Dataset", anns = [None]):
+		
 		dataset_info = _extract_data_info(dataset, anns=anns)
 		messages = [{"role": "system",
 					 "content":

@@ -1,4 +1,4 @@
-import globals
+from . import globals
 from flask import render_template
 
 def get_templates(args):
