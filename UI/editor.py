@@ -109,8 +109,8 @@ def level_of_details_editor(args):
                     globals.mcsimplified.text[field][key] = globals.aia.simplify(globals.mc.text[field][key])
                     print(f"old globals.mcsimplified.text[{field}][{key}]" + globals.mcwithtips.text[field][key])
 
-        globals.mcsimplified.save('templates/~model_card_simplified')
-        globals.mcwithtips.save('templates/~model_card_with_tip')
+        globals.mcsimplified.save('./UI/templates/~model_card_simplified')
+        globals.mcwithtips.save('./UI/templates/~model_card_with_tip')
 
 
 

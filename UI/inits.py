@@ -9,6 +9,8 @@ def init():
     globals.mc.load_json('./UI/model_card.jsonl')
 
     globals.mc.save('./UI/templates/~model_card')
+    globals.mc.save('./UI/templates/~model_card_simplified')
+    globals.mc.save('./UI/templates/~model_card_with_tip')
     # globals.aia = transparency_service.ai_assistant.AI_Assistant(model='gpt-3.5-turbo')
     # globals.aia = transparency_service.ai_assistant.AI_Assistant(model='gpt-4')
     # globals.aia = transparency_service.ai_assistant.AI_Assistant(model='llama3.2:3b')

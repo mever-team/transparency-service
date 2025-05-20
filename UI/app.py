@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session
 import transparency_service
 from argparse import Namespace
 
@@ -12,17 +12,31 @@ from .templates_manager import get_templates
 from . import globals
 
 app = Flask(__name__)
+
 app.jinja_env.auto_reload = True
 app.config['TEMPLATES_AUTO_RELOAD'] = True
+
+app.secret_key = os.environ.get("FLASK_SECRET_KEY")
+app.config['SESSION_PERMANENT'] = False
+
+
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 init()
 
 
 # Route for the main page
 @app.route('/')
 def index():
+    # reset on session
+    session.permanent = False
+    force_reset = request.args.get("reset") == "1"
+    if force_reset or not session.get('has_reset'):
+        init()
+        session['has_reset'] = True
+
     # Default templates for left and right panes
     left_src = request.args.get('left_src', '~model_card.html')
     right_src = request.args.get('right_src', 'menu.html')
