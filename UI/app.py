@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, request, jsonify
 import transparency_service
-import argparse
+from argparse import Namespace
 
 from types import SimpleNamespace
 
@@ -12,6 +12,8 @@ from .templates_manager import get_templates
 from . import globals
 
 app = Flask(__name__)
+app.jinja_env.auto_reload = True
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -69,14 +71,11 @@ def upload():
     file.save(filepath)
     print(f'File uploaded successfully to {filepath}')
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--button')
-    parser.add_argument('--field')
-    parser.add_argument('--file_path')
-    args = parser.parse_args()
-    args.button = request.form.get('button')
-    args.field = request.form.get('field')
-    args.file_path = filepath
+
+    button = request.form.get('button')
+    field = request.form.get('field')
+    file_path = filepath
+    args = Namespace(button=button, field=field, file_path=file_path)
     edit_mc(args)
     left_template, right_template = get_templates(args)
 
