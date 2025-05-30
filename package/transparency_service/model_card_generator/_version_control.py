@@ -16,10 +16,10 @@ class _Version_Control():
         snapshot_hash.update(json.dumps(self.compiled, sort_keys=True).encode('utf-8'))
         self.hash = snapshot_hash.hexdigest()
 
-    def commit(self):
+    def commit(self, base = '.'):
         self._update_hash()
         self.hash_history.append(self.hash)
-        self.save_json(filename = f'{self.vc_dir}/{self.hash}')
+        self.save_json(filename = f'{base}/{self.vc_dir}/{self.hash}')
 
     def checkout(self, hash):
         checkout_path = f'{self.vc_dir}/{hash}'

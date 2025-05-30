@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, request, jsonify, session
 import transparency_service
 from argparse import Namespace
+import uuid
 
 from types import SimpleNamespace
 
@@ -9,7 +10,7 @@ from .editor import edit_mc
 from .inits import init
 from .templates_manager import get_templates
 
-from . import globals
+from .globals import globals
 
 app = Flask(__name__)
 
@@ -24,8 +25,25 @@ UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-init()
+import shutil
+from datetime import datetime, timedelta
+def cleanup_old_user_dirs(base_path='./UI/templates/sessions', max_age_minutes=60):
+    now = datetime.utcnow()
+    for session_id in os.listdir(base_path):
+        path = os.path.join(base_path, session_id)
+        if os.path.isdir(path):
+            last_modified = datetime.utcfromtimestamp(os.path.getmtime(path))
+            if now - last_modified > timedelta(minutes=max_age_minutes):
+                shutil.rmtree(path)
+                globals.pop(session_id)
 
+
+# give id to each session
+@app.before_request
+def ensure_session_id():
+    if 'session_id' not in session:
+        session['session_id'] = str(uuid.uuid4())
+    print(session['session_id'])
 
 # Route for the main page
 @app.route('/')
@@ -33,19 +51,22 @@ def index():
     # reset on session
     session.permanent = False
     force_reset = request.args.get("reset") == "1"
-    if force_reset or not session.get('has_reset'):
-        init()
+    if force_reset or not session.get('has_reset') or not os.path.exists(os.path.join("./UI/templates/sessions", session['session_id'])):
+        init(session['session_id'])
         session['has_reset'] = True
 
     # Default templates for left and right panes
-    left_src = request.args.get('left_src', '~model_card.html')
-    right_src = request.args.get('right_src', 'menu.html')
-    return render_template('main.html',left_src=left_src,right_src=right_src)
+    left_src = request.args.get('left_src', 'default/~model_card.html')
+    right_src = request.args.get('right_src', 'default/menu.html')
+    return render_template('default/main.html',left_src=left_src,right_src=right_src)
 
 
 # Route to handle template changes based on button click
 @app.route('/change_templates', methods=['POST'])
 def change_templates():
+    session_id = session.get('session_id')
+    session_templates_path = os.path.join('./UI/templates/sessions', session_id)
+
     form_data = request.json.get('formData', {})
     args = SimpleNamespace()
     args.field = form_data.get('field')
@@ -53,19 +74,19 @@ def change_templates():
     args.user_input = form_data.get('user_input')
     args.button = request.json.get('button')
 
-    edit_mc(args)
-    left_template, right_template = get_templates(args)
+    edit_mc(args, session_id)
+    left_template, right_template = get_templates(args, session_id)
 
     if args.button == "Save":
-        globals.mc.save('model_card')
-        globals.mcwithtips.save('model_card_with_tips')
-        globals.mcsimplified.save('model_card_simplified')
+        globals[session_id].mc.save(f'{session_templates_path}/model_card')
+        globals[session_id].mcwithtips.save(f'{session_templates_path}/model_card_with_tips')
+        globals[session_id].mcsimplified.save(f'{session_templates_path}/model_card_simplified')
     elif args.button == "Save and Commit":
-        globals.mc.save('model_card')
-        globals.mcwithtips.save('model_card_with_tips')
-        globals.mcsimplified.save('model_card_simplified')
-        globals.mc.save('templates/~model_card')
-        globals.mc.commit()
+        globals[session_id].mc.save(f'{session_templates_path}/model_card')
+        globals[session_id].mcwithtips.save(f'{session_templates_path}/model_card_with_tips')
+        globals[session_id].mcsimplified.save(f'{session_templates_path}/model_card_simplified')
+        globals[session_id].mc.save(f'{session_templates_path}/~model_card')
+        globals[session_id].mc.commit(session_templates_path)
 
     # Return the new templates and data to the front-end
     return jsonify({'new_left_html': left_template,'new_right_html': right_template,})
