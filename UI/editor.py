@@ -216,7 +216,11 @@ def call_editor(args, session_id):
         'Quantitative Analysis': quantitative_analysis_editor,
         'Level of Details': level_of_details_editor,
     }
-    return editors.get(args.field, lambda x : None)(args, session_id)
+    try:
+        return editors.get(args.field, lambda x : None)(args, session_id)
+    except Exception as e:
+        print('No valid editor')
+        return
 
 def edit_mc(args, session_id):
     print(args)

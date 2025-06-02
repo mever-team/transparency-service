@@ -56,8 +56,8 @@ def index():
         session['has_reset'] = True
 
     # Default templates for left and right panes
-    left_src = request.args.get('left_src', 'default/~model_card.html')
-    right_src = request.args.get('right_src', 'default/menu.html')
+    left_src = request.args.get('left_src', 'default/welcome.html')
+    right_src = request.args.get('right_src', 'default/welcome_menu.html')
     return render_template('default/main.html',left_src=left_src,right_src=right_src)
 
 

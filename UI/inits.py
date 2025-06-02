@@ -28,9 +28,9 @@ def init(id: 'str path per session'):
     globals[id].mcsimplified = None
     globals[id].mc.load_json('./UI/model_card.jsonl')
 
-    globals[id].mc.save('./UI/templates/~model_card')
-    globals[id].mc.save('./UI/templates/~model_card_simplified')
-    globals[id].mc.save('./UI/templates/~model_card_with_tip')
+    globals[id].mc.save(f'./UI/templates/sessions/{id}/~model_card')
+    globals[id].mc.save(f'./UI/templates/sessions/{id}/~model_card_simplified')
+    globals[id].mc.save(f'./UI/templates/sessions/{id}/~model_card_with_tip')
     # globals.aia = transparency_service.ai_assistant.AI_Assistant(model='gpt-3.5-turbo')
     # globals.aia = transparency_service.ai_assistant.AI_Assistant(model='gpt-4')
     # globals.aia = transparency_service.ai_assistant.AI_Assistant(model='llama3.2:3b')

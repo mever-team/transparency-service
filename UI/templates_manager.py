@@ -34,6 +34,9 @@ def get_templates(args, session_id):
         'remove': lambda: (render_template(f'sessions/{session_id}/level_of_details.html', terms_tips_table=globals[session_id].terms_tips_table),render_template(f'sessions/{session_id}/menu.html')),
         'Model Card with tips': lambda : (render_template(f'sessions/{session_id}/~model_card_with_tip.html'), render_template(f'sessions/{session_id}/menu.html')),
         'Model Card Simplified': lambda: (render_template(f'sessions/{session_id}/~model_card_simplified.html'), render_template(f'sessions/{session_id}/menu.html')),
+        # Welcome
+        #'Create a Model Card': lambda : (render_template(f'sessions/{session_id}/~model_card.html'), render_template(f'sessions/{session_id}/menu.html')),
+        'See an example': lambda : (render_template(f'sessions/{session_id}/Model_Card_example.html'), render_template(f'sessions/{session_id}/welcome_menu.html')),
     }
 
     b = args.button.split('_',1)[0]

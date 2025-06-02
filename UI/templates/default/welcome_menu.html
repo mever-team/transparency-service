@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Buttons</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
+    <script src="{{ url_for('static', filename='js/menu.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/buttonchangehtml.js') }}"></script>
+
+</head>
+<body>
+
+    <div id="main-menu">
+        <button class="dynamic-btn" data-button-name="See an example">See an example</button>
+        <button class="dynamic-btn" data-button-name="Create a Model Card">Create a Model Card</button>
+    </div>
+</body>
+</html>
