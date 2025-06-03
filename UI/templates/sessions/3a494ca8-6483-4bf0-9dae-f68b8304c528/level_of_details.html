@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Level of Details Editor</title>
+    <style>
+        .container {
+<!--            display: flex;-->
+            gap: 10px;
+        }
+textarea {
+    width: 48%;
+    min-height: 75px;
+    height: auto;
+    overflow-y: hidden;
+    resize: none;
+}
+    </style>
+</head>
+<body>
+    <div><button class="dynamic-btn" data-button-name="Back">Back</button></div>
+    <div><button class="dynamic-btn" data-button-name="Add AI tips">Add AI tips</button></div>
+    <div class="container">
+        <textarea id="term_0" placeholder="Term..."></textarea>
+        <textarea id="tip_0" placeholder="Tip..."></textarea>
+        <button class="dynamic-btn" data-button-name="Add Tip">Add</button>
+    </div>
+    {{ terms_tips_table|safe }}
+    <div><button class="dynamic-btn" data-button-name="Create Level of Details">Create Level of Details</button></div>
+
+</body>
+</html>
