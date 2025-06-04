@@ -35,7 +35,7 @@ def cleanup_old_user_dirs(base_path='./UI/templates/sessions', max_age_minutes=6
             last_modified = datetime.utcfromtimestamp(os.path.getmtime(path))
             if now - last_modified > timedelta(minutes=max_age_minutes):
                 shutil.rmtree(path)
-                globals.pop(session_id)
+                globals.pop(session_id, None)
 
 
 # give id to each session
