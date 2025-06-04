@@ -44,6 +44,7 @@ def ensure_session_id():
     if 'session_id' not in session:
         session['session_id'] = str(uuid.uuid4())
     print(session['session_id'])
+    cleanup_old_user_dirs()
 
 # Route for the main page
 @app.route('/')
@@ -64,6 +65,7 @@ def index():
 # Route to handle template changes based on button click
 @app.route('/change_templates', methods=['POST'])
 def change_templates():
+    cleanup_old_user_dirs()
     session_id = session.get('session_id')
     session_templates_path = os.path.join('./UI/templates/sessions', session_id)
 
