@@ -46,6 +46,10 @@ def ensure_session_id():
     print(session['session_id'])
     cleanup_old_user_dirs()
 
+@app.route("/ydata")
+def ydata():
+    return render_template("default/ydata.html")
+
 # Route for the main page
 @app.route('/')
 def index():

@@ -12,12 +12,12 @@ body {
 }
 
 #leftPane {
-    width: 75%;
+    width: 90%;
     border-right: 2px solid #ccc;
 }
 
 #rightPane {
-    width: 25%;
+    width: 10%;
 }
 
 .divider {
