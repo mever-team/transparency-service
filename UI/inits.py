@@ -5,13 +5,17 @@ from .globals import Globals, globals
 import transparency_service
 
 def copy_all(source_folder, destination_folder):
-    # Copy all files (not subfolders)
+    # Copy all files and folders (recursively)
     for filename in os.listdir(source_folder):
         source_path = os.path.join(source_folder, filename)
         destination_path = os.path.join(destination_folder, filename)
 
         if os.path.isfile(source_path):
             shutil.copy2(source_path, destination_path)  # copy2 preserves metadata
+        elif os.path.isdir(source_path):
+            # If destination folder exists, remove it first to avoid errors
+            if os.path.exists(destination_path):
+                shutil.rmtree(destination_path)
 
 def init(id: 'str path per session'):
     # session specific

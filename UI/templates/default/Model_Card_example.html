@@ -4,7 +4,46 @@
 	        
 	        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	        <title>Model Card</title>
+
+            <!-- Prism CSS -->
+<!-- Prism CSS (choose a theme or use default) -->
+<!-- <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" /> -->
+
+<!-- Prism JS -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script> -->
+<!-- Python language support -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script> -->
+
+
 	        <style>
+                    code {
+        background: #e0e0e0;
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin-right: 8px;
+        margin-bottom: 6px;      /* Add vertical space when wrapping */
+        display: inline-block;   /* Ensures margin-bottom is respected */
+        font-size: 95%;
+    }
+        .language-python {
+      background: #FFFFED;
+      color: #444;
+      font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+      font-size: 15px;
+      border-radius: 8px;
+      padding: 18px 20px;
+      line-height: 1.6;
+      overflow-x: auto;
+      border: 1px solid #000;
+      display: block;
+      white-space: pre;
+    }
+    .py-blue   { color: #0070c1; font-weight: bold; }
+    .py-brown  { color: #b75501; font-weight: bold; }
+    .py-green  { color: #008000; }
+    .py-purple { color: #800080; }
+    .py-grey   { color: #757575; font-style: italic; }
+    
 				/******RINE table*****/
 				.table-container {
   max-height: 800px;      /* adjust as needed */
@@ -189,7 +228,7 @@
 						(approximately <span class="default">8 minutes<span class="tooltiptext">The time it takes to train the model.</span></span>), 
 						surpassing the state-of-the-art 
 						by +9.4% 
-						even when trained on a single <span class="default">ProGAN object class.</span></p><p><strong>Version:</strong> 1.0</p><p><strong>Year of production:</strong> 2024</p><p><strong>License:</strong> Apache-2.0</p><p><strong>GitHub: </strong><a href="https://github.com/mever-team/rine" id="arxiv-doi-link" style="font-size: 0.95em; background-color: rgb(255, 255, 255); font-family: &quot;Lucida Grande&quot;, Helvetica, Arial, sans-serif; text-decoration-line: none; display: inline !important;">https://github.com/mever-team/rine</a></p><p><strong>Paper: </strong><a href="https://doi.org/10.48550/arXiv.2402.19091" id="arxiv-doi-link" style="font-size: 0.95em; background-color: rgb(255, 255, 255); font-family: &quot;Lucida Grande&quot;, Helvetica, Arial, sans-serif; text-decoration-line: none; display: inline !important;">https://doi.org/10.48550/arXiv.2402.19091</a></p></div><div class="tab-container"><table summary="Additional metadata" style="font-family: &quot;Lucida Grande&quot;, Helvetica, Arial, sans-serif; font-size: 12.312px; background-color: rgb(255, 255, 255);"><tbody></tbody></table><div class="tab active-tab" onclick="showTabContent(&#39;tab0&#39;)">Considerations</div>
+						even when trained on a single <span class="default">ProGAN object class.</span></p><p><strong>Author:</strong> CERTH - The Centre for Research & Technology, Hellas </p><p></p><p><strong>Version:</strong> 1.0</p><p><strong>Year of production:</strong> 2024</p><p><strong>License:</strong> Apache-2.0</p><p><strong>GitHub: </strong><a href="https://github.com/mever-team/rine" id="arxiv-doi-link" style="font-size: 0.95em; background-color: rgb(255, 255, 255); font-family: &quot;Lucida Grande&quot;, Helvetica, Arial, sans-serif; text-decoration-line: none; display: inline !important;">https://github.com/mever-team/rine</a></p><p><strong>Paper: </strong><a href="https://doi.org/10.48550/arXiv.2402.19091" id="arxiv-doi-link" style="font-size: 0.95em; background-color: rgb(255, 255, 255); font-family: &quot;Lucida Grande&quot;, Helvetica, Arial, sans-serif; text-decoration-line: none; display: inline !important;">https://doi.org/10.48550/arXiv.2402.19091</a></p></div><div class="tab-container"><table summary="Additional metadata" style="font-family: &quot;Lucida Grande&quot;, Helvetica, Arial, sans-serif; font-size: 12.312px; background-color: rgb(255, 255, 255);"><tbody></tbody></table><div class="tab active-tab" onclick="showTabContent(&#39;tab0&#39;)">Considerations</div>
 <div class="tab" onclick="showTabContent(&#39;tab1&#39;)">Training Set</div>
 <div class="tab" onclick="showTabContent(&#39;tab2&#39;)">Eval Set</div>
 <div class="tab" onclick="showTabContent(&#39;tab3&#39;)">Quantitative Analysis</div>
@@ -217,6 +256,41 @@
     <li> <p>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence).
 </p></li><li> <p>Potential misuse in surveillance or censorship applications under the guise of detecting artificially generated content.
 </p></li></ul></div>
+<h2>Software requirements</h2>
+<code>python 3.9</code><code>pytorch 2.1.1</code><code>torchvision 0.16.1</code><code>pytorch-cuda 11.8</code><code>CLIP</code><code>pandas</code><code>pyarrow</code><code>scikit-learn</code><code>opencv-python</code><code>matplotlib</code>
+<h2>Hardware requirements</h2>
+<ul><li><p>A GPU with at least 4GB of memory</p></li></ul>
+
+<h2>Technical usage instructions </h2>
+<pre><code class="language-python">#0 Load model
+from src.utils import get_transforms, get_our_trained_model, get_generators
+generators = get_generators()
+_, transform, _ = get_transforms()
+device = "cuda:0"
+model = get_our_trained_model(ncls=1, device=device)
+model.to(device)
+
+# Define data
+paths = ['16131.png','19030.png','17706.png','14685.png',]
+
+# Run model
+from PIL import Image
+from torch import tensor
+import torch
+
+images = [Image.open(path).convert("RGB") for path in paths]
+images = [transform(img) for img in images]
+images = torch.stack(images).to(device)
+with torch.no_grad():
+    outputs = model(images)[0]
+print(outputs)
+# negative = real, positive = fake
+# tensor([[ -47.6751], [-135.3961], [  18.6749], [  33.2245]], device='cuda:0')</code></pre>
+<h2>Inputs and Outputs</h2>
+<ul>
+    <li>Input: RGB Image</li>
+    <li>Output: A negative or positive float that indicates if the image is real or fake respectively</li>
+</ul>
 	            </div>
 	        
 	            <div id="tab1" class="tab-content">
@@ -1239,6 +1313,58 @@ Our method yields +4.5% mean average precision (mAP) compared to the state-of-th
                 }
             });
         }
+
+<!--                document.addEventListener("DOMContentLoaded", function() {-->
+  function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, function(m) {
+      return ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[m];
+    });
+  }
+
+  function highlightPython(code) {
+    // Placeholders to avoid replacing inside tags
+    const PH = {
+      comment: { re: /(#.*)/g, tag: 'py-grey' },
+      string:  { re: /('[^'\\]*(?:\\.[^'\\]*)*'|"[^"\\]*(?:\\.[^"\\]*)*")/g, tag: 'py-green' },
+      number:  { re: /\b(\d+(\.\d+)?)\b/g, tag: 'py-purple' },
+      fromimp: { re: /\b(from|import)\b/g, tag: 'py-blue' },
+      eq:      { re: /=/g, tag: 'py-brown' }
+    };
+
+    // Store matches and replace with placeholders
+    let i = 0, matches = [];
+    function wrap(re, tag) {
+      code = code.replace(re, function(m) {
+        matches.push({i, tag, m});
+        return `__${tag.toUpperCase()}${i++}__`;
+      });
+    }
+
+    // Order matters: comments, strings, numbers, keywords, eq
+    wrap(PH.comment.re, PH.comment.tag);
+    wrap(PH.string.re, PH.string.tag);
+    wrap(PH.number.re, PH.number.tag);
+    wrap(PH.fromimp.re, PH.fromimp.tag);
+    wrap(PH.eq.re, PH.eq.tag);
+
+    // Escape HTML
+    code = escapeHtml(code);
+
+    // Replace placeholders with spans
+    matches.forEach(obj => {
+      const re = new RegExp(`__${obj.tag.toUpperCase()}${obj.i}__`);
+      code = code.replace(re, `<span class="${obj.tag}">${escapeHtml(obj.m)}</span>`);
+    });
+
+    return code;
+  }
+
+  document.querySelectorAll('code.language-python').forEach(function(block) {
+    block.innerHTML = highlightPython(block.textContent);
+  });
+<!--});-->
 	        </script>
 	    
 	    
