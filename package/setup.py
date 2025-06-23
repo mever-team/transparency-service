@@ -26,6 +26,7 @@ setup(
         'torch',
         'torchmetrics',
         'eco2ai',
+        'ydata-profiling',
 
     ],
     description='The description.',  # Short description

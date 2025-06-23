@@ -48,7 +48,18 @@ def ensure_session_id():
 
 @app.route("/ydata")
 def ydata():
-    return render_template("default/ydata.html")
+    session_id = session.get('session_id')
+    return render_template(f"sessions/{session_id}/ydata.html")
+
+@app.route("/ydata_train")
+def ydata_train():
+    session_id = session.get('session_id')
+    return render_template(f"sessions/{session_id}/ydata_train.html")
+
+@app.route("/ydata_eval")
+def ydata_eval():
+    session_id = session.get('session_id')
+    return render_template(f"sessions/{session_id}/ydata_eval.html")
 
 # Route for the main page
 @app.route('/')
@@ -99,6 +110,7 @@ def change_templates():
 
 @app.route('/upload', methods=['POST'])
 def upload():
+    session_id = session.get('session_id')
     if 'file' not in request.files:
         print('No file part', 400)
         return 'No file part', 400
@@ -117,8 +129,8 @@ def upload():
     field = request.form.get('field')
     file_path = filepath
     args = Namespace(button=button, field=field, file_path=file_path)
-    edit_mc(args)
-    left_template, right_template = get_templates(args)
+    edit_mc(args, session_id)
+    left_template, right_template = get_templates(args, session_id)
 
     return jsonify({'new_left_html': left_template,'new_right_html': right_template,})
 

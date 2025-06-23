@@ -1,4 +1,5 @@
-from ..evaluation._evaluate import read_data, convert_to_datasets, anns_to_datasets, is_path
+from ..evaluation._evaluate import read_data, convert_to_datasets, anns_to_datasets, is_path, read_data_pd
+from ydata_profiling import ProfileReport
 
 def get_forced_sets():
     return {
@@ -65,3 +66,9 @@ def _extract_data_info(
         out = _extract_data_info(data = data, anns = anns, out_in = out_in, task = task, max_out_chars = 3000, number_of_samples = number_of_samples-1, length_of_sample = length_of_sample-20)
 
     return out
+
+
+def ydata_report(path, destination = "ydata.html"):
+    df = read_data_pd(path)
+    profile = ProfileReport(df, title="Dataset Report", explorative=True)
+    profile.to_file(destination)

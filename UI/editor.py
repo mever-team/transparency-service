@@ -143,16 +143,18 @@ def training_set_editor(args, session_id):
         globals[session_id].mc.text['Training Set']["Description"] = args.textarea["training_set"]
     elif args.button == "AI Data Summary Train Set":
         file_path = args.file_path
-        ai_data_summ, globals[session_id].data_extracted_info_train = ai_data_summary(file_path, session_id)
-        globals[session_id].data_set_outline_training = construct_html_table_for_data(globals[session_id].data_extracted_info_train)
+        transparency_service.utils._extract_dataset_info.ydata_report(path = file_path, destination = f'./UI/templates/sessions/{session_id}/ydata_train.html')
+        globals[session_id].mc.text['Training Set']['Data Report'] = '''<iframe src = "{{ url_for('ydata_train') }}" style = "width:100%; height:90vh; border: 2px solid black; border-radius: 8px;"> </iframe>'''
+        # ai_data_summ, globals[session_id].data_extracted_info_train = ai_data_summary(file_path, session_id)
+        # globals[session_id].data_set_outline_training = construct_html_table_for_data(globals[session_id].data_extracted_info_train)
         # write and save mc
-        globals[session_id].mc.text['Training Set']["Description"] += '<br>****** AI Data Summary Start*****<br>' + ai_data_summ + '<br>****** AI Data Summary End*****<br>'
+        # globals[session_id].mc.text['Training Set']["Description"] += '<br>****** AI Data Summary Start*****<br>' + ai_data_summ + '<br>****** AI Data Summary End*****<br>'
         # Create create_plot_buttons for training_set.html
-        globals[session_id].create_plot_buttons_train = "<br><br>Create a plot for:<br>"
-        for column_name in globals[session_id].data_extracted_info_train['column_names']:
-            for key in globals[session_id].data_extracted_info_train:
-                if (column_name in key) and ('number of instances' in key):
-                    globals[session_id].create_plot_buttons_train += f'<button class="dynamic-btn" data-button-name="{key}">{column_name}</button>'
+        # globals[session_id].create_plot_buttons_train = "<br><br>Create a plot for:<br>"
+        # for column_name in globals[session_id].data_extracted_info_train['column_names']:
+        #     for key in globals[session_id].data_extracted_info_train:
+        #         if (column_name in key) and ('number of instances' in key):
+        #             globals[session_id].create_plot_buttons_train += f'<button class="dynamic-btn" data-button-name="{key}">{column_name}</button>'
     elif 'number of instances' in args.button:
         plot_name = ''
         for column_name in globals[session_id].data_extracted_info_train['column_names']:
@@ -171,16 +173,18 @@ def eval_set_editor(args, session_id):
         globals[session_id].mc.text['Eval Set']["Description"] = args.textarea["eval_set"]
     elif args.button == "AI Data Summary Eval Set":
         file_path = args.file_path
-        ai_data_summ, globals[session_id].data_extracted_info_eval = ai_data_summary(file_path, session_id)
-        globals[session_id].data_set_outline_eval = construct_html_table_for_data(globals[session_id].data_extracted_info_eval)
+        transparency_service.utils._extract_dataset_info.ydata_report(path = file_path, destination = f'./UI/templates/sessions/{session_id}/ydata_eval.html')
+        globals[session_id].mc.text['Eval Set']['Data Report'] = '''<iframe src = "{{ url_for('ydata_eval') }}" style = "width:100%; height:90vh; border: 2px solid black; border-radius: 8px;"> </iframe>'''
+        # ai_data_summ, globals[session_id].data_extracted_info_eval = ai_data_summary(file_path, session_id)
+        # globals[session_id].data_set_outline_eval = construct_html_table_for_data(globals[session_id].data_extracted_info_eval)
         # write and save mc
-        globals[session_id].mc.text['Eval Set']["Description"] += '<br>****** AI Data Summary Start*****<br>' + ai_data_summ + '<br>****** AI Data Summary End*****<br>'
+        # globals[session_id].mc.text['Eval Set']["Description"] += '<br>****** AI Data Summary Start*****<br>' + ai_data_summ + '<br>****** AI Data Summary End*****<br>'
         # Create create_plot_buttons_eval for training_set.html
-        globals[session_id].create_plot_buttons_eval = "<br><br>Create a plot for:<br>"
-        for column_name in globals[session_id].data_extracted_info_eval['column_names']:
-            for key in globals[session_id].data_extracted_info_eval:
-                if (column_name in key) and ('number of instances' in key):
-                    globals[session_id].create_plot_buttons_eval += f'<button class="dynamic-btn" data-button-name="{key}">{column_name}</button>'
+        # globals[session_id].create_plot_buttons_eval = "<br><br>Create a plot for:<br>"
+        # for column_name in globals[session_id].data_extracted_info_eval['column_names']:
+        #     for key in globals[session_id].data_extracted_info_eval:
+        #         if (column_name in key) and ('number of instances' in key):
+        #             globals[session_id].create_plot_buttons_eval += f'<button class="dynamic-btn" data-button-name="{key}">{column_name}</button>'
     elif 'number of instances' in args.button:
         plot_name = ''
         for column_name in globals[session_id].data_extracted_info_eval['column_names']:
@@ -217,7 +221,7 @@ def call_editor(args, session_id):
         'Level of Details': level_of_details_editor,
     }
     try:
-        return editors.get(args.field, lambda x : None)(args, session_id)
+        return editors.get(args.field, lambda x,y : None)(args, session_id)
     except Exception as e:
         print('No valid editor')
         return

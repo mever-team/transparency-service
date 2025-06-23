@@ -72,7 +72,7 @@ def determin_xyxy_or_xywh(bbox, img_w, img_h):
     return None
     #warnings.warn("Warning: Can't determine bbox format. Assuming xyxy. Consider using the box_format option")
 
-def read_data(path, delimiter = None, names = None, split = None):
+def read_data_pd(path, delimiter = None, names = None, split = None):
     supported_types = get_supported_types()
     t = determine_type(path)
     if t == supported_types[0]:  # .csv
@@ -102,7 +102,14 @@ def read_data(path, delimiter = None, names = None, split = None):
     else: # not supported file types
         raise ValueError(f"read_data_structure: Type of {t} is not supported")
 
+    return data
+
+def read_data(path, delimiter = None, names = None, split = None):
+    data = read_data_pd(path, delimiter = None, names = None, split = None)
+
     return datasets.Dataset.from_pandas(data)
+
+
 
 def calc_metrics(
         data,
