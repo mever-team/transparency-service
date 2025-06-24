@@ -27,6 +27,7 @@ setup(
         'torchmetrics',
         'eco2ai',
         'ydata-profiling',
+        'GPUtil',
 
     ],
     description='The description.',  # Short description
