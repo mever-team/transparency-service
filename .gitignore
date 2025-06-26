@@ -2,3 +2,4 @@ __pycache__/
 nppBackup/
 package/transparency_service.egg-info/
 .env
+temp.html

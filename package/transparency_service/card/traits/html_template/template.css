@@ -63,6 +63,13 @@ body {
     margin: 0 auto;
     padding: 20px;
 }
+.key_entry {
+    display: inline-block;
+    width: 100px;
+}
+.value_missing {
+    color: #888;
+}
 
 /* AI generated indicator */
 .ai_generated {
