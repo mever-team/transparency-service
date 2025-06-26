@@ -16,7 +16,7 @@ depth_estimation = Task(
 image_segmentation = Task(
     "Image Segmentation",
     targets=targets.segmentation, # special value
-    metrics=[metrics.IoU, metrics.map, metrics.dice_macro, metrics.dice_micro], # TODO: pixel acc
+    metrics=[metrics.IoU,metrics.dice_macro, metrics.dice_micro], # TODO: pixel acc, metrics.map
     parameters=params.image_segmentation,
     toinstance=([np.ndarray], lambda x: isinstance(x, np.ndarray)),
 )
@@ -24,10 +24,10 @@ image_segmentation = Task(
 object_detection = Task(
     "Object Detection",
     targets=targets.objdetect, # special value
-    metrics=[metrics.map, metrics.IoU, metrics.precision_macro, metrics.precision_micro, metrics.f1_macro, metrics.f1_micro],
+    metrics=[metrics.precision_macro, metrics.precision_micro, metrics.f1_macro, metrics.f1_micro], # TODO: metrics.map, metrics.IoU
     parameters=params.object_detection,
     toinstance=(
-            [dict[str, torch.Tensor], list[list[int]], list[int], list[float]],
+            [dict[str, torch.Tensor], Tuple[list[list[int]], list[int], list[float]], list[int], list[float]],
             lambda x: (
                 isinstance(x, list)
                 and len(x) == 3
@@ -42,9 +42,10 @@ object_detection = Task(
                 and all(isinstance(i, int) for i in x[1])
                 and isinstance(x[2], list)
                 and all(isinstance(f, float) for f in x[2])
-            )
+            ) # box, cat_id, score,
             or (
                 isinstance(x, dict)
+                and len(x)==3
                 and "scores" in x
                 and isinstance(x["scores"], torch.Tensor)
                 and "labels" in x
@@ -52,7 +53,7 @@ object_detection = Task(
                 and "boxes" in x
                 and isinstance(x["boxes"], torch.Tensor)
             ),
-        ),  # box, cat_id, score,
+        ),
 )
 
 image_classification = Task(

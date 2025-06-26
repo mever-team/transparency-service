@@ -16,7 +16,7 @@ def classification(data, preds, target_column, num_classes_model, anns, device):
     if isinstance(target[0], int):
         num_classes = num_classes_model if num_classes_model is not None else len(set(target))
         assert num_classes >= 2, f"found only {num_classes} classes in the dataset. Can't calculate metrics"
-        class_task = "binary" if num_classes == 2 else class_task = "multiclass"
+        class_task = "binary" if num_classes == 2 else "multiclass"
     elif isinstance(target[0], list):
         class_task = "multilabel"
         if num_classes_model is not None:
@@ -41,7 +41,7 @@ def classification(data, preds, target_column, num_classes_model, anns, device):
         "num_classes": num_classes
     }
 
-def object_detection(data, preds, target_column, num_classes_model, anns, device):
+def object_detection(data, preds, target_column, num_classes, anns, device):
     anns_source = data if len(anns.features) == 0 else anns
     if len(target_column) == 2:
         bbox_column, label_column = target_column
@@ -97,9 +97,9 @@ def object_detection(data, preds, target_column, num_classes_model, anns, device
         for pred in preds:
             boxes, cat_ids, scores = pred
             preds_ready.append({
-                    "boxes": torch.tensor(boxes).to(device),
-                    "labels": torch.tensor(cat_ids).to(device),
-                    "scores": torch.tensor(scores).to(device),
+                "boxes": torch.tensor(boxes).to(device),
+                "labels": torch.tensor(cat_ids).to(device),
+                "scores": torch.tensor(scores).to(device),
             })
     else:
         preds_ready = preds
@@ -113,12 +113,10 @@ def object_detection(data, preds, target_column, num_classes_model, anns, device
         for batch in anns_source:
             for boxes_target, cat_ids_target in zip(batch[bbox_column], batch[label_column]):
                 if (boxes_target is not None) and (cat_ids_target is not None):  # prevent reading None values that the convertion to datasets creates
-                    target_ready.append(
-                        {
-                            "boxes": torch.tensor(boxes_target).to(device),
-                            "labels": torch.tensor(cat_ids_target).to(device),
-                        }
-                    )
+                    target_ready.append({
+                        "boxes": torch.tensor(boxes_target).to(device),
+                        "labels": torch.tensor(cat_ids_target).to(device),
+                    })
     else:
         # obj, bbox, label = target
         if isinstance(anns_source[0][obj_column], dict):
@@ -129,30 +127,27 @@ def object_detection(data, preds, target_column, num_classes_model, anns, device
                     if (boxes_target is not None) and (
                         cat_ids_target is not None
                     ):  # prevent reading None values that the convertion to datasets creates
-                        target_ready.append(
-                            {
-                                "boxes": torch.tensor(boxes_target).to(device),
-                                "labels": torch.tensor(cat_ids_target).to(device),
-                            }
-                        )
+                        target_ready.append({
+                            "boxes": torch.tensor(boxes_target).to(device),
+                            "labels": torch.tensor(cat_ids_target).to(device),
+                        })
         else:  # elif isinstance(data[obj], list)
             for batch in anns_source:
                 for object in batch[obj_column]:
                     if (object[bbox_column] is not None) and (
                         object[label_column] is not None
                     ):  # prevent reading None values that the convertion to datasets creates
-                        target_ready.append(
-                            {
-                                "boxes": torch.tensor(object[bbox_column]).to(
-                                    device
-                                ),
-                                "labels": torch.tensor(object[label_column]).to(
-                                    device
-                                ),
-                            }
-                        )
-    # TODO: (manios) I am not sure if I understood correctly whether this was the goal
-    return {"preds": preds_ready, "targets": target_ready, "iou_type": iou_type, "box_format": box_format}
+                        target_ready.append({
+                            "boxes": torch.tensor(object[bbox_column]).to(device),
+                            "labels": torch.tensor(object[label_column]).to(device),
+                        })
+    # TODO: (manios) I have literally no idea of what this file is supposed to do
+    return {
+        "iou_type": iou_type,
+        "box_format": box_format,
+        "task": "MULTILABEL",
+        "num_classes": num_classes
+    }
 
 def image_segmentation(data, preds, target_column, num_classes_model, anns, device=None):
     return {"iou_type": "segm"}

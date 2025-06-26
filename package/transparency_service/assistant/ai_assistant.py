@@ -3,8 +3,6 @@ import PyPDF2
 import os
 import json
 from typing import List, Union, Optional
-import transformers
-import torch
 import importlib.resources
 from ..utils._extract_dataset_info import _extract_data_info
 import re
@@ -55,9 +53,7 @@ class AI_Assistant:
         self.pdf_chunks_for_llm = []
 
     def _create_hints(self, text: "str"):
-        if not text:
-            return {}
-
+        if not text: return {}
         messages = [
             {
                 "role": "system",
@@ -74,13 +70,9 @@ class AI_Assistant:
         if match:
             dict_string = match.group(0)
             # Convert string to dictionary
-            try:
-                tips = ast.literal_eval(dict_string)
-            except (ValueError, SyntaxError) as e:
-                print(f"Error converting string to dictionary: {e}")
-        else:
-            print("No dictionary found in the string.")
-
+            try: tips = ast.literal_eval(dict_string)
+            except (ValueError, SyntaxError) as e: print(f"Error converting string to dictionary: {e}")
+        else: print("No dictionary found in the string.")
         return tips
 
     def _inject_text_with_hints(self, text: "str", tips: "dict"):

@@ -1,20 +1,9 @@
-from ..evaluation._evaluate import (
-    read_data,
-    convert_to_datasets,
-    anns_to_datasets,
-    is_path,
-    read_data_pd,
-)
+from transparency_service.evaluation.loaders import read_data, is_path, read_pd
+from transparency_service.evaluation.experiments import convert_to_datasets, anns_to_datasets
 
 
 def get_forced_sets():
-    return {
-        "label",
-        "class_name",
-        "ground_truth",
-        "emotion",
-        "cat",
-    }
+    return {"label","class_name","ground_truth","emotion","cat"}
 
 
 def _unknown_columns_handler(data, number_of_samples, length_of_sample):
