@@ -7,7 +7,8 @@ import sklearn
 import numpy as np
 from PIL import Image
 import pandas as pd
-from transparency_service.model_card_generator import ModelCard
+from transparency_service.card import ModelCard
+
 try:
     import torch
     from torch.utils.data import Dataset
@@ -32,7 +33,9 @@ def check_and_download_data():
         url = "https://huggingface.co/datasets/sywang/CNNDetection/resolve/main/CNN_synth_testset.zip"
         data_dir = os.path.expanduser("~/.transparency_service/data/sid")
         download_and_extract(url, data_dir)
-        url = "https://drive.google.com/uc?id=1FXlGIRh_Ud3cScMgSVDbEWmPDmjcrm1t&authuser"
+        url = (
+            "https://drive.google.com/uc?id=1FXlGIRh_Ud3cScMgSVDbEWmPDmjcrm1t&authuser"
+        )
         download_and_extract(url, data_dir)
     else:
         print(f"Directory {data_dir} already exists. No need to download.")
@@ -46,10 +49,12 @@ def download_file(url, download_path):
         # Standard URL download (for non-Google Drive)
         response = requests.get(url, stream=True)
         # Get the total file size from the response headers (for progress bar)
-        total_size = int(response.headers.get('content-length', 0))
+        total_size = int(response.headers.get("content-length", 0))
         # Initialize tqdm progress bar for download
-        with tqdm(total=total_size, unit='B', unit_scale=True, desc="Downloading") as bar:
-            with open(download_path, 'wb') as file:
+        with tqdm(
+            total=total_size, unit="B", unit_scale=True, desc="Downloading"
+        ) as bar:
+            with open(download_path, "wb") as file:
                 # Download the file in chunks
                 for chunk in response.iter_content(chunk_size=1024):
                     if chunk:
@@ -57,6 +62,7 @@ def download_file(url, download_path):
                         bar.update(len(chunk))  # Update progress bar with chunk size
 
     print(f"Download complete: {download_path}")
+
 
 def download_and_extract(url, data_dir):
     # Step 1: Download the file
@@ -74,7 +80,9 @@ def download_and_extract(url, data_dir):
             total_size = sum([file.file_size for file in zip_ref.infolist()])
 
             # Initialize tqdm progress bar for extraction
-            with tqdm(total=total_size, unit='B', unit_scale=True, desc="Extracting") as bar:
+            with tqdm(
+                total=total_size, unit="B", unit_scale=True, desc="Extracting"
+            ) as bar:
                 for file_info in zip_ref.infolist():
                     # Extract each file one by one
                     zip_ref.extract(file_info, path=data_dir)
@@ -87,6 +95,7 @@ def download_and_extract(url, data_dir):
         print(f"Removed zip file: {download_path}")
     else:
         print("The downloaded file is not a zip file.")
+
 
 def get_test_path():
     return [
@@ -110,14 +119,14 @@ def get_test_path():
         "diffusion_datasets/glide_50_27",
         "diffusion_datasets/glide_100_10",
         "diffusion_datasets/dalle",
-        ]
+    ]
+
 
 class EvaluationDataset(Dataset):
     def __init__(self, generator, transforms=None, perturb=None):
         home_dir = os.path.expanduser("~")
         data_dir = os.path.join(home_dir, ".transparency_service", "data", "sid")
         if generator in ["cyclegan", "progan", "stylegan", "stylegan2"]:
-
 
             self.real = [
                 (f"{data_dir}/{generator}/{y}/0_real/{x}", 0)
@@ -202,7 +211,6 @@ class EvaluationDataset(Dataset):
         self.transforms = transforms
         self.perturb = perturb
 
-
     def __len__(self):
         return len(self.images)
 
@@ -214,21 +222,31 @@ class EvaluationDataset(Dataset):
         image = Image.open(image_path).convert("RGB")
         if self.transforms is not None and self.perturb is None:
             image = self.transforms(image)
-        #elif self.transforms is not None and self.perturb is not None:
+        # elif self.transforms is not None and self.perturb is not None:
         #    if random.random() < 0.5:
         #        image = perturbation(self.perturb)(image)
         #    else:
         #        image = self.transforms(image)
         return [image, target]
 
-def evaluate(model, transformer, device = None, tuple_id = None, batch_size=64, num_workers=12,
-             model_card: ModelCard = None):
+
+def evaluate(
+    model,
+    transformer,
+    device=None,
+    tuple_id=None,
+    batch_size=64,
+    num_workers=12,
+    model_card: ModelCard = None,
+):
     check_and_download_data()
     test_path = get_test_path()
     accs = []
     aps = []
     lbs = []
-    if 'torch' in globals() and 'torchvision' in globals():  # Check if torch is already imported
+    if (
+        "torch" in globals() and "torchvision" in globals()
+    ):  # Check if torch is already imported
         if isinstance(model, torch.nn.Module):
             if device is None:
                 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -246,11 +264,11 @@ def evaluate(model, transformer, device = None, tuple_id = None, batch_size=64, 
                 )
                 for g in test_path
             ]
-            image_counts = {'label': [], 'count': []}
+            image_counts = {"label": [], "count": []}
             for g in test_path:
                 dataset = EvaluationDataset(g)
-                image_counts['label'].append(g.replace("diffusion_datasets/", ""))
-                image_counts['count'].append(dataset.images.__len__())
+                image_counts["label"].append(g.replace("diffusion_datasets/", ""))
+                image_counts["count"].append(dataset.images.__len__())
             print(image_counts)
             model.to(device)
             for g, loader in test:
@@ -261,39 +279,47 @@ def evaluate(model, transformer, device = None, tuple_id = None, batch_size=64, 
                     for data in loader:
                         images, labels = data
                         images, labels = images.to(device), labels.to(device)
-                        outputs = model(images) if tuple_id is None else model(images)[tuple_id]
+                        outputs = (
+                            model(images)
+                            if tuple_id is None
+                            else model(images)[tuple_id]
+                        )
                         y_true.extend(labels.cpu().numpy().tolist())
                         y_score.extend(torch.sigmoid(outputs).cpu().numpy().tolist())
-                test_acc = sklearn.metrics.accuracy_score(np.array(y_true), np.array(y_score) > 0.5)
+                test_acc = sklearn.metrics.accuracy_score(
+                    np.array(y_true), np.array(y_score) > 0.5
+                )
                 test_ap = sklearn.metrics.average_precision_score(y_true, y_score)
                 accs.append(test_acc)
                 aps.append(test_ap)
                 lbs.append(g)
                 print(f"{g}:  {test_acc*100} {test_ap*100}")
     out = pd.DataFrame({"label": lbs, "acc": accs, "ap": aps})
-    #out = todel # TODEL
+    # out = todel # TODEL
     out["acc"] = out["acc"] * 100
     out["ap"] = out["ap"] * 100
     out["label"] = out["label"].str.replace("diffusion_datasets/", "", regex=False)
     meanacc = round(out["acc"].mean(), 1)
     meanap = round(out["ap"].mean(), 1)
     if model_card is not None:
-        model_card.text['Quantitative Analysis']['Text'] = f"""Those plots were generated by the transparency service module.
+        model_card.text["Quantitative Analysis"][
+            "Text"
+        ] = f"""Those plots were generated by the transparency service module.
         The mean accuracy is {meanacc} and the mean average precision is {meanap}."""
 
-        model_card.text['Quantitative Analysis']['SID ACC plot'] = model_card.bar_plot(
+        model_card.text["Quantitative Analysis"]["SID ACC plot"] = model_card.bar_plot(
+            pdata=out, y="acc", x="label", title="ACC", yaxis_title="Accuracy (%)"
+        ).replace("<div>", '<div class="plot-inline-div">')
+        model_card.text["Quantitative Analysis"]["SID AP plot"] = model_card.bar_plot(
             pdata=out,
-            y='acc',
-            x='label',
-            title='ACC',
-            yaxis_title='Accuracy (%)').replace('<div>', '<div class="plot-inline-div">')
-        model_card.text['Quantitative Analysis']['SID AP plot'] = model_card.bar_plot(
-            pdata=out,
-            y='ap',
-            x='label',
-            title='AP',
-            yaxis_title='Average Precision (%)').replace('<div>', '<div class="plot-inline-div">')
-        model_card.text['Eval Set']['Text'] = """
+            y="ap",
+            x="label",
+            title="AP",
+            yaxis_title="Average Precision (%)",
+        ).replace("<div>", '<div class="plot-inline-div">')
+        model_card.text["Eval Set"][
+            "Text"
+        ] = """
         The evaluation set can be found in: 
         <a href="https://huggingface.co/datasets/sywang/CNNDetection/resolve/main/CNN_synth_testset.zip" target="_blank">
     CNN_synth_testset</a> (<a href="https://arxiv.org/abs/1912.11035" target="_blank"> Sheng-Yu Wang et al. </a>) and <a href="https://drive.google.com/file/d/1FXlGIRh_Ud3cScMgSVDbEWmPDmjcrm1t/view" target="_blank">
@@ -328,4 +354,3 @@ def evaluate(model, transformer, device = None, tuple_id = None, batch_size=64, 
         ).replace('<div>', '<div class="plot-inline-div">')
 """
     return out
-

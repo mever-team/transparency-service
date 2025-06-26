@@ -5,17 +5,22 @@ import cpuinfo
 import subprocess
 import json
 
+
 def get_gpu_info():
     try:
         gpus = GPUtil.getGPUs()
-        return [{
-            "name": gpu.name,
-            "memory_total_GB": round(gpu.memoryTotal/1024 , 2),
-            "driver": gpu.driver,
-            "id": gpu.id
-        } for gpu in gpus]
+        return [
+            {
+                "name": gpu.name,
+                "memory_total_GB": round(gpu.memoryTotal / 1024, 2),
+                "driver": gpu.driver,
+                "id": gpu.id,
+            }
+            for gpu in gpus
+        ]
     except Exception as e:
         return [{"error": f"Could not retrieve GPU info: {e}"}]
+
 
 def get_cpu_info():
     try:
@@ -26,7 +31,8 @@ def get_cpu_info():
         }
     except Exception as e:
         return {"error": f"Could not retrieve system info: {e}"}
-    
+
+
 def get_ram_info():
     try:
         return {
@@ -34,7 +40,8 @@ def get_ram_info():
         }
     except Exception as e:
         return {"error": f"Could not retrieve system info: {e}"}
-    
+
+
 def get_system_info():
     try:
         return {
@@ -45,14 +52,19 @@ def get_system_info():
     except Exception as e:
         return {"error": f"Could not retrieve system info: {e}"}
 
+
 def get_cuda_info():
     try:
-        result = subprocess.check_output(["nvidia-smi", "--query-gpu=driver_version,cuda_version", "--format=csv,noheader"], stderr=subprocess.DEVNULL)
-        driver, cuda = result.decode().strip().split(',')
-        return {
-            "nvidia_driver_version": driver.strip(),
-            "cuda_version": cuda.strip()
-        }
+        result = subprocess.check_output(
+            [
+                "nvidia-smi",
+                "--query-gpu=driver_version,cuda_version",
+                "--format=csv,noheader",
+            ],
+            stderr=subprocess.DEVNULL,
+        )
+        driver, cuda = result.decode().strip().split(",")
+        return {"nvidia_driver_version": driver.strip(), "cuda_version": cuda.strip()}
     except Exception:
         return {"warning": "nvidia-smi not available or failed to parse"}
 
@@ -65,6 +77,7 @@ def get_info():
         "system": get_system_info(),
         "cuda": get_cuda_info(),
     }
+
 
 info = json.dumps(get_info(), indent=2)
 print(info)

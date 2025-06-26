@@ -1,7 +1,7 @@
-
 globals = {}
 
-class Globals():
+
+class Globals:
     def __init__(self):
         mc = None
         mcwithtips = None
@@ -30,4 +30,4 @@ class Globals():
         model_details_textareas = None
 
         # level of details
-        terms_tips_table = ''
+        terms_tips_table = ""

@@ -1,3 +1,3 @@
 from . import classification
 
-__all__ = ['classification']
+__all__ = ["classification"]
