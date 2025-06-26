@@ -15,15 +15,16 @@ class ModelCard(
     VersionControl,
 ):
     def __init__(self):
-        VersionControl.__init__(self)
-        self.text = DotDict(
+        object.__setattr__(self, "data", DotDict(
             title="Model Card",
             model=DotDict(name="", overview="", version="", license="", github="", paper=""),
             considerations=DotDict(use_case="", limitations="", ethical_risks=""),
             training_set=DotDict(description="", plot=""),
             eval_set=DotDict(description="", plot=""),
             analysis=DotDict(description="", plot=""),
-        )
+        ))
+        VersionControl.__init__(self)
+        """
         self.content = {}
         self._compiled = None
         self.html_string = ""
@@ -33,30 +34,28 @@ class ModelCard(
         self.format_version = None
         self.tips = {}
         self.metrics = None
-        self.emission = None
+        self.emission = None"""
+
+    def __getattr__(self, key):
+        if key=="data": return object.__getattribute__(self, key)
+        if key in self.data: return self.data[key]
+        raise AttributeError
+
+    def __setattr__(self, key, value):
+        if key=="data": return object.__setattr__(self, key, value)
+        if key in self.data: self.data[key] = value
+        return object.__setattr__(self, key, value)
 
     def to_html(self, editable=False):
-        return HTMLRenderer(self.text, editable=editable).render()
+        return HTMLRenderer(self.data, editable=editable).render()
 
     def save_json(self, filename: str):
         with open(filename, "w") as f:
-            f.write(json.dumps({"format_version": self.format_version}) + "\n")
-            f.write(json.dumps({"text": self.text}) + "\n")
-            f.write(json.dumps({"plots": self.plots}) + "\n")
-            f.write(json.dumps({"hash_history": self.hash_history}) + "\n")
-            f.write(json.dumps({"tips": self.tips}) + "\n")
-            f.write(json.dumps({"metrics": self.metrics}) + "\n")
-            f.write(json.dumps({"emission": self.emission}) + "\n")
+            f.write(json.dumps(self.data))
 
     def load_json(self, filename: str):
         with open(filename, "r") as f:
-            self.format_version = json.loads(f.readline())["format_version"]
-            self.text = json.loads(f.readline())["text"]
-            self.plots = json.loads(f.readline())["plots"]
-            self.hash_history = json.loads(f.readline())["hash_history"]
-            self.tips = json.loads(f.readline())["tips"]
-            self.metrics = json.loads(f.readline())["metrics"]
-            self.emission = json.loads(f.readline())["emission"]
+            self.data.assign(json.loads(f.readline()))
 
     def save_html(self, filename: str, editable=False):
         with open(filename, "w", encoding="utf-8") as f:
