@@ -1,3 +1,2 @@
 from transparency_service import card, explainers, evaluation, utils, assistant
-from card import ModelCard
-
+from transparency_service.card import ModelCard

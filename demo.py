@@ -1,7 +1,7 @@
 import transparency_service as ts
 import webbrowser
 
-results = ts.evaluation.run(
+"""results = ts.evaluation.run(
     data={
         "boxes": [[[300, 100, 315, 150],[300, 100, 315, 150]]],
         "labels": [[0,1]],
@@ -12,8 +12,6 @@ results = ts.evaluation.run(
 )
 
 print(results)
-
-
 """
 card = ts.card.ModelCard()
 card.title = "Model Card"
@@ -22,4 +20,4 @@ card.model.version = "0.1.0"
 card.considerations.use_case = "text generation"
 
 card.save_html(filename="temp.html", editable=False)
-webbrowser.open("temp.html")"""
+webbrowser.open("temp.html")
