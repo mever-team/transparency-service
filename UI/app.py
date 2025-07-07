@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template, request, jsonify, session
-import transparency_service
+import transparency
 from argparse import Namespace
 import uuid
 

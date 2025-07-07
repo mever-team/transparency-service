@@ -8,8 +8,8 @@ def parse_requirements(filename):
 
 
 setup(
-    name="transparency_service",
-    version="0.2",
+    name="transparency",
+    version="0.3",
     packages=find_packages(),
     install_requires=parse_requirements("requirements.txt"),
     description="The description.",

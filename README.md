@@ -18,7 +18,7 @@ pip install -e package
 Run manually any evaluation pipeline like so:
 
 ```commandline
-python -m demo
+python -m old_tests.demo
 ```
 
 ## :brain: About
@@ -28,7 +28,7 @@ either manually or (semi-)automatically. Here is a manually generated card
 that is saved as HTML and opened in the browser.
 
 ```python
-import transparency_service as ts
+import transparency as ts
 import webbrowser
 
 card = ts.ModelCard()
@@ -81,6 +81,27 @@ card.gist(
     model=ts.assistants.olama,
     dotenv=".env" # assistant configuration
 )
+```
+
+## :hammer_and_wrench: Hosting a local server
+
+Clone this repository and install it in your virtual environment per:
+
+```commandline
+python -m venv .venv
+source .venv/bin/activate
+pip install -e package
+```
+
+Then create a dictionary of assistants and start a flask. Below is
+an example service whose assistant is primarily used for testing:
+
+```python
+from transparency.service import serve, TestAssistant
+
+
+app = serve("/docs", {"tassist": TestAssistant()})
+app.run()
 ```
 
 ## :scroll: License

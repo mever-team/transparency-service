@@ -7,8 +7,8 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 COPY package ./package
-COPY UI ./UI
-COPY wsgi.py .
+# COPY UI ./UI  # TODO: add deployment for the frontend
+COPY endpoint/test_server.py .
 
 RUN pip install --upgrade pip --root-user-action=ignore
 RUN pip install --no-cache-dir -e ./package --root-user-action=ignore
@@ -16,4 +16,4 @@ RUN pip install kagglehub==0.3.12 --root-user-action=ignore
 RUN pip install flask==3.1.1 --root-user-action=ignore
 RUN pip install gunicorn==23.0.0 --root-user-action=ignore
 
-CMD ["gunicorn", "-b", "0.0.0.0:8000", "wsgi:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "test_server:app"]
