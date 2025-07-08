@@ -17,11 +17,11 @@ class ModelCard(
     def __init__(self):
         object.__setattr__(self, "data", DotDict(
             title="Model Card",
-            model=DotDict(name="", overview="", version="", license="", github="", paper=""),
-            considerations=DotDict(use_case="", limitations="", ethical_risks=""),
-            training_set=DotDict(description="", plot=""),
-            eval_set=DotDict(description="", plot=""),
-            analysis=DotDict(description="", plot=""),
+            model=DotDict(name="", overview="", author="", date="", version="", type="", license="", github="", paper="", contact="", more=""),
+            considerations=DotDict(use_case="", oversight="", out_of_scope_use="", limitations="", ethical_risks="", sofware="", hardware="", instructions="", inputs_outputs="", factors="", more=""),
+            training_set=DotDict(datasets="", motivation="", pre_processing="", standards="", update="", more=""),
+            eval_set=DotDict(datasets="", motivation="", pre_processing="", standards="", update="", more=""),
+            analysis=DotDict(analysis="", metrics="", thresholds="", uncertainty="", more=""),
         ))
         VersionControl.__init__(self)
 
