@@ -2,7 +2,7 @@ import os
 import shutil
 from .globals import Globals, globals
 
-import transparency
+import modelcard
 
 
 def copy_all(source_folder, destination_folder):
@@ -29,7 +29,7 @@ def init(id: "str path per session"):
     copy_all(default_templates_path, session_templates_path)
     globals[id] = Globals()
 
-    globals[id].mc = transparency.model_card_generator.ModelCard()
+    globals[id].mc = modelcard.model_card_generator.ModelCard()
     globals[id].mcwithtips = None
     globals[id].mcsimplified = None
     globals[id].mc.load_json("./UI/model_card.jsonl")
@@ -40,7 +40,7 @@ def init(id: "str path per session"):
     # globals.aia = transparency_service.ai_assistant.AI_Assistant(model='gpt-3.5-turbo')
     # globals.aia = transparency_service.ai_assistant.AI_Assistant(model='gpt-4')
     # globals.aia = transparency_service.ai_assistant.AI_Assistant(model='llama3.2:3b')
-    globals[id].aia = transparency.ai_assistant.AI_Assistant(
+    globals[id].aia = modelcard.ai_assistant.AI_Assistant(
         model="llama3.2:latest"
     )
 

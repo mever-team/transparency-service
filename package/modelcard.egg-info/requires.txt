@@ -15,9 +15,7 @@ datasets
 torch
 torchmetrics
 eco2ai
-# ydata-profiling  # not compatible with 3.13
 GPUtil
 kagglehub
 html2text
 markdown2
-rich

@@ -1,4 +1,4 @@
-from transparency.card import ModelCard, mtplot_to_base64
+from modelcard.card import ModelCard, mtplot_to_base64
 import matplotlib.pyplot as plt
 
 filename = "val_results"

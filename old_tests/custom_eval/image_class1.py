@@ -28,7 +28,7 @@ def pipeline(data):
 
 
 # Step 3: Run evaluation
-from transparency import evaluation
+from modelcard import evaluation
 
 metrics = evaluation.run(
     data=data_path, pipeline=pipeline, task="Image Classification", batch_size=32

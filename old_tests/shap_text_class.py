@@ -4,7 +4,7 @@ import transformers
 
 import shap
 
-import transparency
+import modelcard
 
 # load the emotion dataset
 dataset = datasets.load_dataset("emotion", split="train")
@@ -27,6 +27,6 @@ pred = transformers.pipeline(
     return_all_scores=True,
 )
 
-transparency.explainers.shap.text.classification.explainer(
+modelcard.explainers.shap.text.classification.explainer(
     pred, data["text"][:3]
 )

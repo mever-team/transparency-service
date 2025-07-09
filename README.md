@@ -25,13 +25,13 @@ python -m old_tests.demo
 
 We offer an standardized structure for model cards to be filled
 either manually or (semi-)automatically. Here is a manually generated card
-that is saved as HTML and opened in the browser.
+that is saved as HTML and previewed in the browser.
 
 ```python
-import transparency as ts
+import modelcard as mc
 import webbrowser
 
-card = ts.ModelCard()
+card = mc.ModelCard()
 card.title = "Model Card"
 card.model.name = "Llama"
 card.model.version = "0.1.0"
@@ -41,7 +41,7 @@ card.save_html(filename="temp.html", editable=False)
 webbrowser.open("temp.html")
 ```
 
-You can further perform manual numerical assessment
+You can perform manual numerical assessment
 across a wide variety of available tasks holding popular
 evaluation methodologies and measures. 
 If you need customization, you can create your own tasks too. 
@@ -55,7 +55,7 @@ card.evaluate(
         "target": ["labels"]
     },
     pipeline=lambda x:[[x["boxes"][0], x["labels"][0], [0.1,0.9]]], # your model
-    task=ts.evaluation.tasks.vision.object_detection,
+    task=mc.evaluation.tasks.vision.object_detection,
 )
 # or you can run ts.evaluation.evaluate(...) to obtain a dictionary of metric values
 ```
@@ -67,7 +67,7 @@ to fill in qualitative aspects of the model card from a software's repository.
 ```python
 card.assistant(
     repository="myproject/", # your model's git repository or working directory here
-    model=ts.assistants.olama,
+    model=mc.assistants.olama,
     dotenv=".env", # assistant configuration
 )
 ```
@@ -78,7 +78,7 @@ of your model card that is friendlier to laypeople to read and parse through.
 
 ```python
 card.gist(
-    model=ts.assistants.olama,
+    model=mc.assistants.olama,
     dotenv=".env" # assistant configuration
 )
 ```
@@ -97,8 +97,7 @@ Then create a dictionary of assistants and start a flask. Below is
 an example service whose assistant is primarily used for testing:
 
 ```python
-from transparency.service import serve, TestAssistant
-
+from modelcard.service import serve, TestAssistant
 
 app = serve("/docs", {"tassist": TestAssistant()})
 app.run()

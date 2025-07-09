@@ -40,7 +40,7 @@ def pl(data):
     return scores
 
 
-from transparency import evaluation
+from modelcard import evaluation
 
 split_dataset = [data_test.filter(lambda x: x["dataset"] == split) for split in splits]
 for split, split_name in zip(split_dataset, splits):

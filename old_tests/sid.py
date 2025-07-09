@@ -1,4 +1,4 @@
-import transparency
+import modelcard
 import sys
 import os
 
@@ -13,7 +13,7 @@ device = "cuda:0"
 generators = get_generators()
 _, transform, _ = get_transforms()
 
-mc = transparency.model_card_generator.ModelCard()
+mc = modelcard.model_card_generator.ModelCard()
 mc.init_bar_plot(title="rine ACC test", ylabel="ACC (%)")
 mc.init_bar_plot(title="rine AP test", ylabel="AP (%)")
 
@@ -22,7 +22,7 @@ ncls = 1
 # print(f"\n{ncls}-class")
 model = get_our_trained_model(ncls=ncls, device=device)
 
-mc.data = transparency.evaluation.sid.evaluate(
+mc.data = modelcard.evaluation.sid.evaluate(
     model, transform, device=device, tuple_id=0, model_card=mc
 )
 

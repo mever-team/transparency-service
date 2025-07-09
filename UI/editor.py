@@ -1,6 +1,6 @@
 from .globals import globals
 
-import transparency
+import modelcard
 import pandas as pd
 import copy
 import os
@@ -8,11 +8,11 @@ import os
 
 def ai_data_summary(file_path, session_id):
     # Read and create ai summary
-    data_pd = transparency.evaluation.read_data(file_path)
+    data_pd = modelcard.evaluation.read_data(file_path)
     ai_data_summ = (
         globals[session_id].aia.dataset_summary(data_pd).replace("\n", "<br>")
     )
-    data_extracted_info = transparency.utils._extract_data_info(data_pd)
+    data_extracted_info = modelcard.utils._extract_data_info(data_pd)
     return ai_data_summ, data_extracted_info
 
 
@@ -218,7 +218,7 @@ def training_set_editor(args, session_id):
         ]
     elif args.button == "AI Data Summary Train Set":
         file_path = args.file_path
-        transparency.utils._extract_dataset_info.ydata_report(
+        modelcard.utils._extract_dataset_info.ydata_report(
             path=file_path,
             destination=f"./UI/templates/sessions/{session_id}/ydata_train.html",
         )
@@ -269,7 +269,7 @@ def eval_set_editor(args, session_id):
         ]
     elif args.button == "AI Data Summary Eval Set":
         file_path = args.file_path
-        transparency.utils._extract_dataset_info.ydata_report(
+        modelcard.utils._extract_dataset_info.ydata_report(
             path=file_path,
             destination=f"./UI/templates/sessions/{session_id}/ydata_eval.html",
         )
@@ -320,7 +320,7 @@ def quantitative_analysis_editor(args, session_id):
         )
     elif args.button == "Upload Metrics":
         file_path = args.file_path
-        metrics = transparency.evaluation.read_data(file_path)
+        metrics = modelcard.evaluation.read_data(file_path)
         construct_metrics_table_html(metrics, session_id)
         globals[session_id].mc.text["Quantitative Analysis"]["Description"] = (
             globals[session_id].aia.metrics_summary(file_path).replace("\n", "<br>")

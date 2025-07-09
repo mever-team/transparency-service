@@ -31,7 +31,7 @@ def pipeline(data):
 
 
 # Step 5: Run evaluation
-from transparency import evaluation
+from modelcard import evaluation
 
 metrics = evaluation.run(
     data=dataset, pipeline=pipeline, task="Text Classification", batch_size=32

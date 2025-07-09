@@ -1,24 +1,24 @@
-import transparency
+import modelcard
 import os
 
-mc = transparency.model_card_generator.ModelCard()
+mc = modelcard.model_card_generator.ModelCard()
 
 base = os.path.expanduser("~/.transparency_service/data/std")
-dic = transparency.utils.count_data(
+dic = modelcard.utils.count_data(
     [
         f"{base}/Horne2017/Horne2017.csv",
         rf"{base}/fake-or-real-news/fake_or_real_news.csv",
     ]
 )
 
-dic = transparency.utils.count_data(
+dic = modelcard.utils.count_data(
     [
         rf"{base}/gpt-2-output-dataset",  # a folder that contains files _read_data_structure.get_supported_types()
     ]
 )
 
 
-dic = transparency.utils.count_data(
+dic = modelcard.utils.count_data(
     [
         rf"{base}/FakeNewsCorpus/news_cleaned_2018_02_13.csv",
     ],
@@ -27,7 +27,7 @@ dic = transparency.utils.count_data(
 )
 
 base = os.path.expanduser("~/rine/data1/train/")
-transparency.utils.count_data(
+modelcard.utils.count_data(
     [
         f"{base}airplane",
         f"{base}bicycle",

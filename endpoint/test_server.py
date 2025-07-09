@@ -8,7 +8,7 @@
 # The delay below is for how many seconds the test agent will
 # pretend to be thinking, so that invalid requests can be tested.
 
-from transparency.service import serve, TestAssistant
+from modelcard.service import serve, TestAssistant
 
 
 app = serve("/docs", {"tassist": TestAssistant(delay=5)})

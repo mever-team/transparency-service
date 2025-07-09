@@ -1,4 +1,4 @@
-import transparency
+import modelcard
 from transformers import DetrImageProcessor, DetrForObjectDetection
 import torch
 import json
@@ -50,7 +50,7 @@ for i in range(len(imgIds)):
     input("see")
 
 
-metrics = transparency.evaluation.evaluate(
+metrics = modelcard.evaluation.evaluate(
     model=mymodel,
     preprocessor=preprocessor,
     postprocessor=postprocessor,

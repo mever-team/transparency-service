@@ -4,7 +4,7 @@
 import pandas as pd
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
-import transparency
+import modelcard
 
 
 def custom_tokenizer(data):
@@ -38,8 +38,8 @@ class customodel(torch.nn.Module):
 
 device = "cuda"
 model = customodel()
-mc = transparency.model_card_generator.ModelCard()
-transparency.evaluation.std.evaluate(
+mc = modelcard.model_card_generator.ModelCard()
+modelcard.evaluation.std.evaluate(
     model, custom_tokenizer, device=device, model_card=mc
 )
 
