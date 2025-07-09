@@ -2,5 +2,6 @@ __pycache__/
 nppBackup/
 package/transparency_service.egg-info/
 package/transparency.egg-info/
+package/modelcard.egg-info/
 .env
 temp.html
