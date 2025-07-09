@@ -18,33 +18,34 @@ class ModelCardEntry:
         self.__thread = None
 
     def start_completion(self):
-        self.lock.acquire_lock()
+        self.lock.acquire()
         if self.__is_completing:
-            self.lock.release_lock()
+            self.lock.release()
             abort(409, description="The AI assistant is working on the model card")
         self.__is_completing = True
-        self.lock.release_lock()
+        self.lock.release()
 
     def check_completion(self):
-        self.lock.acquire_lock()
+        self.lock.acquire()
         ret = self.__is_completing
-        self.lock.release_lock()
+        self.lock.release()
         return ret
 
     def end_completion(self):
-        self.lock.acquire_lock()
+        self.lock.acquire()
         self.__is_completing = False
-        self.lock.release_lock()
+        self.lock.release()
+        print("really ended completion", self.__is_completing)
 
     def __enter__(self):
-        self.lock.acquire_lock()
+        self.lock.acquire()
         if self.__is_completing:
-            self.lock.release_lock()
+            self.lock.release()
             abort(409, description="The AI assistant is working on the model card")
         return self.card
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.lock.release_lock()
+        self.lock.release()
 
     def __autocomplete(self, url: str, assistant: Assistant):
         assistant.complete(self.card, url)
@@ -151,7 +152,7 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
         status = exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.").autocomplete(json_data, assistant)
         return jsonify(status)
 
-    @app.route('/assistant/<string:assistant_type>/refine/<int:card_id>', methods=['GET'])
+    @app.route('/assistant/<string:assistant_type>/refine/<int:card_id>', methods=['POST'])
     def autorefine_card(card_id: int, assistant_type: str):
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
         status = exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.").autorefine(assistant)

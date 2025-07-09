@@ -5,10 +5,8 @@ from modelcard.card import ModelCard
 class Assistant:
     def __init__(self, description=None):
         self.description = description
-    def complete(self, card: ModelCard, url: str):
-        pass
-    def refine(self, card: ModelCard):
-        pass
+    def complete(self, card: ModelCard, url: str): pass
+    def refine(self, card: ModelCard): pass
 
 class TestAssistant(Assistant):
     def __init__(self, delay: float=0):
@@ -16,10 +14,6 @@ class TestAssistant(Assistant):
         self.delay = delay
 
     def complete(self, card: ModelCard, url: str):
-        print("Submitted test assistant request")
-        time.sleep(self.delay)
-        print("Completed test assistant request")
+        if self.delay: time.sleep(self.delay)
     def refine(self, card: ModelCard):
-        print("Submitted test assistant request")
-        time.sleep(self.delay)
-        print("Completed test assistant request")
+        if self.delay: time.sleep(self.delay)
