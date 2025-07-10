@@ -1,0 +1,32 @@
+import openai
+import os
+from modelcard.agents.agent import Agent
+
+
+class GPT(Agent):
+    tasks = {
+        "summarization": "gptYou are a helpful assistant that summarizes documents.",
+        "completion": "gptYou are a helpful assistant completes json fields of a model card."
+    }
+
+    def __init__(self, model='gpt-3.5-turbo'):
+        # gpt-3.5-turbo gpt-4
+        self._model = model
+        openai._api_key = os.getenv("OPENAI_API_KEY")
+        assert openai.api_key, "Can't find OPENAI_API_KEY in the environment."
+        self.max_tokens = 4000
+        self.temperature = 0.7
+        self.top_p = 1
+
+    def _run(self, content: str, task: str):
+        assert isinstance(content, str), "content must be of type str"
+        assert task in GPT.tasks, "Not supported task: "+task
+        response = openai.chat.completions.create(
+            model=self._model,
+            messages= [{"role": "system", "content": GPT.tasks[task]},
+                       {"role": "user", "content": content}],
+            max_tokens=self.max_tokens,
+            temperature=self.temperature,
+            top_p=self.top_p
+        )
+        return response.choices[0].message.content

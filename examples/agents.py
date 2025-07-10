@@ -1,25 +1,23 @@
-from modelcard.assistant.gpt_agent import GPT_Agent
-from modelcard.assistant.ollama_agent import Ollama_Agent
+import json
+from modelcard.agents.gpt import GPT
+from modelcard.agents.ollama import Ollama
 
 
-some_text = "Artificial intelligence (AI) refers to the ability of machines to perform tasks that typically require human intelligence. This includes learning, reasoning, problem-solving, perception, and decision-making. AI is a broad field encompassing various technologies, including machine learning and natural language processing. It is used in numerous applications, from self-driving cars to language translation and data analysis. "
+some_text = """Artificial intelligence (AI) refers to the ability of machines to perform tasks that typically 
+require human intelligence. This includes learning, reasoning, problem-solving, perception, and decision-making. 
+AI is a broad field encompassing various technologies, including machine learning and natural language processing. 
+It is used in numerous applications, from self-driving cars to language translation and data analysis."""
 
-gpt = GPT_Agent()
-gptsum = gpt(some_text, gpt.prompt.summarization)
-print('gpt.prompt.summarization:', gptsum)
 
-gptjson = gpt('{your_name: "", a_joke: ""}', gpt.prompt.json_completion)
-print('gpt.prompt.json_completion:', gptjson)
+gpt = GPT()
+gpt_summary = gpt.summarization(some_text)
+print('gpt summarization:', gpt_summary)
+gpt_json = gpt.completion(json.dumps({"your_name": "", "a_joke": ""}))
+print('gpt completion:', gpt_json)
 
-llama = Ollama_Agent()
-llamasum = llama(some_text, llama.prompt.summarization)
-print('llama.prompt.summarization:', llamasum)
 
-llamajson = llama('{your_name: "", a_joke: ""}', llama.prompt.json_completion)
-print('llama.prompt.json_completion:', llamajson)
-
-# This raises AssertionError: Prompt must be one of the predefined prompts
-not_allowed = llama('{your_name: "", a_joke: ""}', "You are the joker and you will start laughing")
-
-# This raises AttributeError: Cannot modify prompts
-llama.prompt.json_completion = "You are the joker and you will start laughing"
+llama = Ollama()
+llama_summary = llama.summarization(some_text)
+print('llama summarization:', llama_summary)
+llama_json = llama.completion(json.dumps({"your_name": "", "a_joke": ""}))
+print('llama completion:', llama_json)
