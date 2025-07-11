@@ -12,7 +12,7 @@ class GPT(Agent):
     def __init__(self, model='gpt-3.5-turbo'):
         # gpt-3.5-turbo gpt-4
         self._model = model
-        openai._api_key = os.getenv("OPENAI_API_KEY")
+        openai.api_key = os.getenv("OPENAI_API_KEY")
         assert openai.api_key, "Can't find OPENAI_API_KEY in the environment."
         self.max_tokens = 4000
         self.temperature = 0.7

@@ -1,2 +1,2 @@
-from modelcard.agents.gpt_agent import GPT_Agent
-from modelcard.agents.ollama_agent import Ollama_Agent
+from modelcard.agents.gpt import GPT
+from modelcard.agents.ollama import Ollama
