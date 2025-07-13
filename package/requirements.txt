@@ -21,3 +21,5 @@ kagglehub
 html2text
 markdown2
 rich
+flask
+flasgger

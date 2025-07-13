@@ -11,6 +11,6 @@
 from modelcard.service import serve, TestAssistant
 
 
-app = serve("/docs", {"tassist": TestAssistant(delay=5)})
+app = serve("/apidocs", {"tassist": TestAssistant(delay=5)})
 if __name__ == "__main__":
     app.run()
