@@ -174,24 +174,3 @@ keypoint_detection = Task(
     ),
 )
 
-text_classification = Task(
-    "Text Classification",
-    targets=targets.classes,
-    metrics=[metrics.precision_macro, metrics.precision_micro, metrics.recall_macro, metrics.recall_micro,
-             metrics.f1_macro, metrics.f1_micro, metrics.auc_roc_macro, metrics.auc_roc_macro],  # TODO: acc
-    parameters=params.classification,
-    toinstance=(
-        [torch.Tensor, int, float, list[float], str, dict[str, float]],
-        lambda x: (
-            isinstance(x, (torch.Tensor, int, float, str))
-            or (isinstance(x, list) and all(isinstance(i, float) for i in x))
-            or (
-                isinstance(x, dict)
-                and all(
-                    isinstance(k, str) and isinstance(v, float)
-                    for k, v in x.items()
-                )
-            )
-        ),
-    ),
-)

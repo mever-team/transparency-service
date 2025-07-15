@@ -48,7 +48,6 @@ If you need customization, you can create your own tasks too.
 **This functionality is under construction.**
 
 ```python
-import modelcard as mc
 mc.evaluation.evaluate(
     data={
         "boxes": [[[300, 100, 315, 150],[300, 100, 315, 150]]],

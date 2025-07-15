@@ -1,4 +1,5 @@
 import numpy as np
+import torch
 from modelcard.evaluation import params
 from modelcard.evaluation import metrics
 from modelcard.evaluation.task import Task, targets
@@ -49,4 +50,26 @@ text_to_text_generation = Task(
     metrics=[],  # TODO: blue, meteor, rouge, BERTScore, chrF++"
     parameters=params.unknown,   # TODO: WAS NOT CLEAR
     toinstance=([str], lambda x: isinstance(x, str)),
+)
+
+text_classification = Task(
+    "Text Classification",
+    targets=targets.classes,
+    metrics=[metrics.precision_macro, metrics.precision_micro, metrics.recall_macro, metrics.recall_micro,
+             metrics.f1_macro, metrics.f1_micro, metrics.auc_roc_macro, metrics.auc_roc_macro],  # TODO: acc
+    parameters=params.classification,
+    toinstance=(
+        [torch.Tensor, int, float, list[float], str, dict[str, float]],
+        lambda x: (
+            isinstance(x, (torch.Tensor, int, float, str))
+            or (isinstance(x, list) and all(isinstance(i, float) for i in x))
+            or (
+                isinstance(x, dict)
+                and all(
+                    isinstance(k, str) and isinstance(v, float)
+                    for k, v in x.items()
+                )
+            )
+        ),
+    ),
 )
