@@ -9,7 +9,8 @@ from modelcard.evaluation import loaders
 def unknown(data, preds, target_column, num_classes_model, anns, device):
     raise NotImplemented("Unknown parameters for the task")
 
-def classification(data, preds, target_column, num_classes_model, anns, device):
+def classification(data, preds, target_column, num_classes, anns, device):
+    num_classes_model = num_classes
     target = []
     for batch in data:  # flatten the batch data[target_column]
         target.extend(batch[target_column])
