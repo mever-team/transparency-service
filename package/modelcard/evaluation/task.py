@@ -7,7 +7,7 @@ class Task:
         self.toinstance = toinstance
 
     def assert_output_type(self, out_sample):
-        types, checker = self.toinstance
+        types, checker = self.toinstance  # e.g., types=[str] and checker=lambda x: isinstance(x, str)
         if checker(out_sample): return True
         raise ValueError(f'Expected one of: {", ".join(str(i) for i in types)}, but got {repr(out_sample)}')
 
