@@ -1,17 +1,13 @@
-# Step 1: Load Data Set
 from datasets import load_dataset
-dataset = load_dataset("google-research-datasets/go_emotions", split = 'test')
-
-# Step 2: Load metadata
 from huggingface_hub import dataset_info
+from transformers import pipeline
+import modelcard as mc
+
+dataset = load_dataset("google-research-datasets/go_emotions", split = 'test')
 info = dataset_info("google-research-datasets/go_emotions")
 class_names = info.card_data['dataset_info'][1]['features'][1]['sequence']['class_label']['names']
-
-# Step 3: Load model
-from transformers import pipeline
 classifier = pipeline(task="text-classification", model="SamLowe/roberta-base-go_emotions", top_k=None)
 
-# Step 4: Create pipeline
 def pipeline(data):
     sentences = [text for text in data['text']]
     model_outputs = classifier(sentences)
@@ -21,12 +17,12 @@ def pipeline(data):
         out.append([flat[name] for name in class_names.values()])
     return out
 
-import modelcard as mc
 metrics = mc.evaluation.evaluate(
     data=dataset,
     pipeline=pipeline,
     task=mc.evaluation.tasks.nlp.text_classification,
     batch_size=32)
+
 print(metrics)
 
 

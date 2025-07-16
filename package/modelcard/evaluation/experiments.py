@@ -131,7 +131,7 @@ def evaluate(
         device=device
     )
     ret = {metric.__name__: autocall(metric, **kwargs, device=device) for metric in task.metrics}
-    return {k: v for k,v in ret.items() if v is not None}
+    return {k: float(v) for k,v in ret.items() if v is not None}
 
 
 # run({'label': [1, 0, 1,0,1,0,1]}, [0.2,0.8,0.8,0.1,0.8,0.3,0.6], 'label', 'Image Classification')
