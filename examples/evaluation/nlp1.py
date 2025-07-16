@@ -1,5 +1,6 @@
 from transformers import pipeline, AutoTokenizer
 from datasets import load_dataset
+import modelcard as mc
 
 classifier = pipeline(
     "text-classification",
@@ -10,12 +11,6 @@ classifier = pipeline(
 )
 dataset = load_dataset("lytang/LLM-AggreFact")
 data_test = dataset['test']
-
-
-print("EVERYTHING IS LOADED")
-
-
-import modelcard as mc
 
 def pipeline(data):
     claim = [sample[:256] for sample in data['claim']]

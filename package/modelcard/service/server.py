@@ -82,7 +82,7 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
         "swagger": "2.0",
         "info": {"title": "ModelCard",
             "description": "API docs",
-            "version": "0.0.1"
+            "version": "0.0.2"
         }
     })
     test_data: dict[int, ModelCardEntry | None] = dict()
@@ -394,11 +394,6 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
         target card. The card's contents after setting everything are retrieved.
         ---
         parameters:
-          - name: card_id
-            in: path
-            type: integer
-            required: true
-            description: The card's identifier.
           - name: body
             in: body
             required: false
