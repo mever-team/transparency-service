@@ -5,13 +5,24 @@ from flasgger import Swagger
 from threading import Lock, Thread
 from flask import request, jsonify
 
-def dynamic2dict(data):
+def dynamic2dict(data, mixed: set=None):
+    if mixed:
+        if not isinstance(data, dict): return dynamic2dict(data)
+        if "data" not in data: return dynamic2dict(data)
+        for mix in mixed: assert mix in data, f"No {mix} key dictionary key found"
+        data_segment = dynamic2dict(data["data"])
+        assert isinstance(data_segment, dict), "Data segment could not be parsed into a dictionary"
+        return {mix: data[mix] for mix in mixed}|data_segment
     if isinstance(data, list) and all(isinstance(item, dict) and len(item)==2 and "name" in item and "value" in item for item in data):
-        return {item["name"]: dict2dynamic(item["value"]) for item in data}
+        return {item["name"]: dynamic2dict(item["value"]) for item in data}
     return data
 
-def dict2dynamic(data):
-    if isinstance(data, dict): return [{"name": key, "value": value} for key, value in data.items()]
+def dict2dynamic(data, mixed: set=None):
+    if mixed:
+        assert isinstance(data, dict)
+        for mix in mixed: assert mix in data
+        return {mix: data[mix] for mix in mixed}|{"data": dict2dynamic({k: v for k, v in data.items() if k not in mixed})}
+    if isinstance(data, dict): return [{"name": k, "value": dict2dynamic(v)} for k, v in data.items()]
     return data
 
 def exists(condition, message):
@@ -73,7 +84,7 @@ class ModelCardEntry:
 
     def autorefine(self, assistant: Assistant):
         self.start_completion()
-        self.__thread = Thread(target=self.__autocomplete, args=(assistant,))
+        self.__thread = Thread(target=self.__autorefine, args=(assistant,))
         self.__thread.start()
         return "submitted"
 
@@ -226,7 +237,7 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
                 description: An AI assistant is working on the model card.
         """
         with exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.") as card:
-            return jsonify(dict2dynamic(card.data|{"related": []}))
+            return jsonify(dict2dynamic(card.data|{"related": []}, {"title"}))
 
     @app.route('/card/<int:card_id>/locked', methods=['GET'])
     def get_card_locked_status(card_id):
@@ -488,10 +499,10 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
         """
         json_data = request.get_json()
         with exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.") as card:
-            try: card.data.assign(dynamic2dict(json_data))
+            try: card.data.assign(dynamic2dict(json_data, {"title"}))
             except AssertionError as e: abort(404, "Wrong data: "+str(e))
             except Exception as e: abort(404, "Wrong data: "+str(e))
-            return jsonify(dict2dynamic(card.data))
+            return jsonify(dict2dynamic(card.data, {"title"}))
 
     @app.route('/card', methods=['POST'])
     def create_card():
@@ -521,7 +532,7 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
         json_data = request.get_json()
         card = ModelCardEntry(ModelCard())
         if json_data:
-            try: card.card.data.assign(dynamic2dict(json_data))
+            try: card.card.data.assign(dynamic2dict(json_data, {"title"}))
             except AssertionError as e:
                 print("Assertion error: "+str(e))
                 abort(500, description=str(e))

@@ -7,21 +7,25 @@ app = serve("/docs", {"tassist": TestAssistant(delay=0.1)})  # delay is the numb
 
 client = app.test_client()
 def test_cards():
-    response = client.get('/cards')
+    response = client.post('/cards', json={})
     assert response.status_code==200
     data = json.loads(response.data)
-    assert isinstance(data, list)
-    assert len(data)==0
+    assert "results" in data
+    assert "pages" in data
+    assert len(data)==2
+    assert len(data["results"]) == 0
 
 def test_assistants():
     response = client.get('/assistants')
     assert response.status_code==200
     data = json.loads(response.data)
-    assert isinstance(data, dict)  # dict of name: html description
+    assert isinstance(data, list)
     assert len(data)==1
+    assert "name" in data[0]
+    assert "desc" in data[0]
 
 def test_creation():
-    prev_count = len(json.loads(client.get('/cards').data))
+    prev_count = len(json.loads(client.post('/cards', json={}).data)["results"])
 
     card_id1 = client.post('/card', json={"title": "My Special Model Card", "model": {"overview": "My cool overview."}})
     card_id2 = client.post('/card', json={})
@@ -30,26 +34,53 @@ def test_creation():
     assert isinstance(json.loads(card_id1.data), int)
     assert isinstance(json.loads(card_id2.data), int)
     assert card_id1.data!=card_id2.data
-    assert len(json.loads(client.get('/cards').data))==prev_count+2
+    assert len(json.loads(client.post(f'/cards', json={}).data)["results"])==prev_count+2
 
     card_id1 = json.loads(card_id1.data)
     retrieve = json.loads(client.get(f'/card/{card_id1}').data)
 
     assert retrieve["title"] == "My Special Model Card"
-    assert retrieve["model"]["overview"] == "My cool overview."
+    model = next(item["value"] for item in retrieve["data"] if item["name"]=="model")
+    value = next(item["value"] for item in model if item["name"]=="overview")
+    assert value=="My cool overview."
+
+
+def test_creation_dynamic_format():
+    prev_count = len(json.loads(client.post('/cards', json={}).data)["results"])
+
+    card_id1 = client.post('/card', json={
+        "title": "My Special Model Card",
+        "data": [{"name": "model", "value": [{"name": "overview", "value": "My cool overview."}]}]
+    })
+    card_id2 = client.post('/card', json={})
+    assert card_id1.status_code==200
+    assert card_id2.status_code==200
+    assert isinstance(json.loads(card_id1.data), int)
+    assert isinstance(json.loads(card_id2.data), int)
+    assert card_id1.data!=card_id2.data
+    assert len(json.loads(client.post('/cards', json={}).data)["results"])==prev_count+2
+
+    card_id1 = json.loads(card_id1.data)
+    retrieve = json.loads(client.get(f'/card/{card_id1}').data)
+
+    assert retrieve["title"] == "My Special Model Card"
+    model = next(item["value"] for item in retrieve["data"] if item["name"]=="model")
+    value = next(item["value"] for item in model if item["name"]=="overview")
+    assert value=="My cool overview."
+
 
 
 def test_modify_title():
     card_id = json.loads(client.post('/card', json={"title": "My Special Model Card"}).data)
     assert json.loads(client.get(f'/card/{card_id}/title').data) == "My Special Model Card"
-    assert json.loads(client.post(f'/card/{card_id}/title', json="My updated title").data) == "My updated title"
+    assert json.loads(client.put(f'/card/{card_id}/title', json="My updated title").data) == "My updated title"
     assert json.loads(client.get(f'/card/{card_id}/title').data) == "My updated title"
 
 
 def test_modify_field():
     card_id = json.loads(client.post('/card', json={}).data)
     assert json.loads(client.get(f'/card/{card_id}/model/license').data) == ""
-    assert json.loads(client.post(f'/card/{card_id}/model/license', json="Apache 2.0").data) == "Apache 2.0"
+    assert json.loads(client.put(f'/card/{card_id}/model/license', json="Apache 2.0").data) == "Apache 2.0"
     assert json.loads(client.get(f'/card/{card_id}/model/license').data) == "Apache 2.0"
 
 
