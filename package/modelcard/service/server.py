@@ -3,7 +3,16 @@ from modelcard.service.assistant import Assistant
 from flask import Flask, jsonify, request, abort, redirect
 from flasgger import Swagger
 from threading import Lock, Thread
+from flask import request, jsonify
 
+def dynamic2dict(data):
+    if isinstance(data, list) and all(isinstance(item, dict) and len(item)==2 and "name" in item and "value" in item for item in data):
+        return {item["name"]: dict2dynamic(item["value"]) for item in data}
+    return data
+
+def dict2dynamic(data):
+    if isinstance(data, dict): return [{"name": key, "value": value} for key, value in data.items()]
+    return data
 
 def exists(condition, message):
     # empty strings are allowed
@@ -37,7 +46,6 @@ class ModelCardEntry:
         self.lock.acquire()
         self.__is_completing = False
         self.lock.release()
-        print("really ended completion", self.__is_completing)
 
     def __enter__(self):
         self.lock.acquire()
@@ -91,42 +99,115 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
     def get_index():
         return redirect(redirect_index, code=307)
 
-    @app.route('/cards', methods=['GET'])
+    @app.route('/cards', methods=['POST'])
     def get_cards():
         """
-        Retrieves a list of model cards.
+        Retrieves a list of model cards while filtering for a search query and performing pagination.
+        The results contain both card id, title and descriptions, and the total number of pages
+        for the particular pagination limit. If no query is provided, all cards will be considered.
+        If no page size is provided, or if non-positive, 10 is assumed. If no page is provided,
+        or if it's non-positive, 1 (the first page) is assumed.
         ---
+        tags:
+          - UI
+        parameters:
+          - name: query
+            in: body
+            type: string
+            required: false
+            description: Case-insensitive filter on card titles or contents.
+            example: "my card"
+          - name: page
+            in: body
+            type: integer
+            required: false
+            default: 1
+            description: Page number, starting from 1.
+          - name: page_size
+            in: body
+            type: integer
+            required: false
+            default: 10
+            description: Number of results per page.
         responses:
-            200:
-                description: A list of integer identifiers.
-                schema:
-                    type: array
-                    items:
+          200:
+            description: A paginated list of card summaries.
+            schema:
+              type: object
+              properties:
+                results:
+                  type: array
+                  description: List of card summaries.
+                  items:
+                    type: object
+                    properties:
+                      id:
                         type: integer
+                        description: Card identifier.
+                      name:
+                        type: string
+                        description: Card title.
+                      desc:
+                        type: string
+                        description: Card description. For now, this is a brief note on completion percentage, but will become a summary line in the future.
+                pages:
+                  type: integer
+                  description: Total number of result pages.
         """
-        return jsonify([key for key, value in test_data.items() if value is not None])
+
+        data = request.get_json() or {}
+        query = data.get('query', '').strip().lower()
+        page = int(data.get('page', 1))
+        page_size = int(data.get('page_size', 10))
+        if page < 1: page = 1
+        if page_size < 1: page_size = 10
+        filtered = [
+            {
+                "id": key,
+                "name": value.card.title,
+                "desc": f"Completion {int(value.card.quality() * 100 + 0.5)}%"
+            }
+            for key, value in test_data.items()
+            if value is not None and (not query or query in value.card.title.lower())
+        ]
+        total = len(filtered)
+        num_pages = (total + page_size - 1) // page_size
+        start = (page - 1) * page_size
+        end = min(start + page_size, total)
+        results = filtered[start:end] if start < total else []
+        return jsonify({"results": results, "pages": num_pages})
 
     @app.route('/assistants', methods=['GET'])
     def get_assistants():
         """
-        Retrieves all available AI assistants for the current user and card and their descriptions.
+        Retrieves all available AI assistants for the current user and card, including their names and descriptions.
         ---
+        tags:
+          - UI
         responses:
             200:
-                description: A dictionary mapping assistant names to their descriptions.
+                description: A list of assistants with their names and descriptions.
                 schema:
-                  type: object
-                  additionalProperties:
-                    type: string
-                    description: The description of the assistant.
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: The name of the assistant.
+                      desc:
+                        type: string
+                        description: The description of the assistant.
         """
-        return jsonify({key: value.description for key, value in assistants.items()})
+        return jsonify([{"name": key, "desc": value.description} for key, value in assistants.items()])
 
     @app.route('/card/<int:card_id>', methods=['GET'])
     def get_card(card_id):
         """
         Retrieves the JSON data for a given model card.
         ---
+        tags:
+          - UI
         parameters:
           - name: card_id
             in: path
@@ -138,14 +219,37 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
                 description: The JSON representation of the model card.
                 schema:
                   type: object
-                  description: The model card contents.
+                  description: The model card contents. This includes fields title and a list of related card ids and names.
             404:
                 description: The requested card does not exist or has been deleted.
             409:
                 description: An AI assistant is working on the model card.
         """
         with exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.") as card:
-            return jsonify(card.data)
+            return jsonify(dict2dynamic(card.data|{"related": []}))
+
+    @app.route('/card/<int:card_id>/locked', methods=['GET'])
+    def get_card_locked_status(card_id):
+        """
+        Retrieves a boolean value of whether the card is locked by an AI assistant working on it.
+        If it is locked, post or put methods on the card will create errors.
+        ---
+        parameters:
+          - name: card_id
+            in: path
+            type: integer
+            required: true
+            description: The card's unique identifier.
+        responses:
+            200:
+                description: The title of the model card.
+                schema:
+                  type: string
+            404:
+                description: The requested card does not exist or has been deleted.
+        """
+        card = exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.")
+        return jsonify(card.check_completion)
 
     @app.route('/card/<int:card_id>/title', methods=['GET'])
     def get_card_title(card_id):
@@ -339,6 +443,8 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
         """
         Removes the respective card; it will be considered a missing resource from now on.
         ---
+        tags:
+          - UI
         responses:
             204:
                 description: Successfully removed.
@@ -358,6 +464,8 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
         target card. The card's contents after setting everything are returned. This operation
         is safe in that all fields should be valid in order for any to be set.
         ---
+        tags:
+          - UI
         parameters:
           - name: card_id
             in: path
@@ -367,7 +475,7 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
           - name: body
             in: body
             required: true
-            description: Partial or full model card JSON to update the card with.
+            description: Partial or full model card JSON to update the card with. This can be either in the dynamic format used by this API or in a static format that is exported by the modelcard library.
             schema:
               type: object
         responses:
@@ -380,10 +488,10 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
         """
         json_data = request.get_json()
         with exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.") as card:
-            try: card.data.assign(json_data)
+            try: card.data.assign(dynamic2dict(json_data))
             except AssertionError as e: abort(404, "Wrong data: "+str(e))
             except Exception as e: abort(404, "Wrong data: "+str(e))
-            return jsonify(card.data)
+            return jsonify(dict2dynamic(card.data))
 
     @app.route('/card', methods=['POST'])
     def create_card():
@@ -393,6 +501,8 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
         json representation with potentially some missing fields, and updates everything in the
         target card. The card's contents after setting everything are retrieved.
         ---
+        tags:
+          - UI
         parameters:
           - name: body
             in: body
@@ -411,7 +521,7 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
         json_data = request.get_json()
         card = ModelCardEntry(ModelCard())
         if json_data:
-            try: card.card.data.assign(json_data)
+            try: card.card.data.assign(dynamic2dict(json_data))
             except AssertionError as e:
                 print("Assertion error: "+str(e))
                 abort(500, description=str(e))
@@ -428,6 +538,8 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
         Autocompletes an already created model card given a string pointing to a repository URL or some file contents.
         This calls on an AI assistant to work on the card, blocking editing while the latter runs.
         ---
+        tags:
+          - UI
         parameters:
           - name: card_id
             in: path
@@ -465,6 +577,8 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
         Refines an already created model card so that its contents are easier to parse by laypeople.
         This calls on an AI assistant to work on the card, blocking editing while the latter runs.
         ---
+        tags:
+          - UI
         parameters:
           - name: card_id
             in: path
