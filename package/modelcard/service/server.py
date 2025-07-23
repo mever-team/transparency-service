@@ -242,9 +242,11 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
     @app.route('/card/<int:card_id>/locked', methods=['GET'])
     def get_card_locked_status(card_id):
         """
-        Retrieves a boolean value of whether the card is locked by an AI assistant working on it.
-        If it is locked, post or put methods on the card will create errors.
+        Retrieves a string value explaining why the card is locked, for example by an AI assistant working on it.
+        If the card is locked, post or put methods on the card will create errors.
         ---
+        tags:
+          - UI
         parameters:
           - name: card_id
             in: path
@@ -253,14 +255,14 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
             description: The card's unique identifier.
         responses:
             200:
-                description: The title of the model card.
+                description: The description (e.g., LLM progress stage) of the mechanism currently locking the card.
                 schema:
                   type: string
             404:
-                description: The requested card does not exist or has been deleted.
+                description: The request's card does not exist or has been deleted.
         """
         card = exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.")
-        return jsonify(card.check_completion)
+        return jsonify("An LLM is working on the card" if card.check_completion() else "")
 
     @app.route('/card/<int:card_id>/title', methods=['GET'])
     def get_card_title(card_id):
