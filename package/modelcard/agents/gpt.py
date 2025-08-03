@@ -9,14 +9,14 @@ class GPT(Agent):
         "completion": "gptYou are a helpful assistant completes json fields of a model card."
     }
 
-    def __init__(self, model='gpt-3.5-turbo'):
+    def __init__(self, model='gpt-3.5-turbo', max_tokens=4000, temperature=0.7, top_p=1):
         # gpt-3.5-turbo gpt-4
         self._model = model
         openai.api_key = os.getenv("OPENAI_API_KEY")
         assert openai.api_key, "Can't find OPENAI_API_KEY in the environment."
-        self.max_tokens = 4000
-        self.temperature = 0.7
-        self.top_p = 1
+        self.max_tokens = max_tokens
+        self.temperature = temperature
+        self.top_p = top_p
 
     def _run(self, content: str, task: str):
         assert isinstance(content, str), "content must be of type str"

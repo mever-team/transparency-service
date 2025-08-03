@@ -1,29 +1,13 @@
 from modelcard.card import ModelCard
 from modelcard.service.assistant import Assistant
-from flask import Flask, jsonify, request, abort, redirect
+from flask import Flask, abort, redirect, request, jsonify
 from flasgger import Swagger
 from threading import Lock, Thread
-from flask import request, jsonify
-
-def dynamic2dict(data, mixed: set=None):
-    if mixed:
-        if not isinstance(data, dict): return dynamic2dict(data)
-        if "data" not in data: return dynamic2dict(data)
-        for mix in mixed: assert mix in data, f"No {mix} key dictionary key found"
-        data_segment = dynamic2dict(data["data"])
-        assert isinstance(data_segment, dict), "Data segment could not be parsed into a dictionary"
-        return {mix: data[mix] for mix in mixed}|data_segment
-    if isinstance(data, list) and all(isinstance(item, dict) and len(item)==2 and "name" in item and "value" in item for item in data):
-        return {item["name"]: dynamic2dict(item["value"]) for item in data}
-    return data
-
-def dict2dynamic(data, mixed: set=None):
-    if mixed:
-        assert isinstance(data, dict)
-        for mix in mixed: assert mix in data
-        return {mix: data[mix] for mix in mixed}|{"data": dict2dynamic({k: v for k, v in data.items() if k not in mixed})}
-    if isinstance(data, dict): return [{"name": k, "value": dict2dynamic(v)} for k, v in data.items()]
-    return data
+from modelcard.service import users
+from modelcard.service import converters
+import sqlite3
+import secrets
+import time
 
 def exists(condition, message):
     # empty strings are allowed
@@ -92,16 +76,22 @@ class ModelCardEntry:
         if self.check_completion(): return {"status": "locked", "message": "AI assistant is working on the model card"}
         return {"status": "editable", "message": "You can edit the model card"}
 
-
-
-def serve(redirect_index, assistants: dict[str, Assistant]):
+def serve(
+    redirect_index,
+    assistants: dict[str, Assistant],
+    admin_username: str = "admin",
+    admin_password: str = "admin",
+    token_expiration_secs: int = 60*60
+):
+    token2expiration = {}
+    users.init_user_dbs()
     app = Flask(__name__)
     empty_card = ModelCard()
     swagger = Swagger(app, template = {
         "swagger": "2.0",
         "info": {"title": "ModelCard",
             "description": "API docs",
-            "version": "0.0.2"
+            "version": "0.0.3"
         }
     })
     test_data: dict[int, ModelCardEntry | None] = dict()
@@ -109,6 +99,254 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
     @app.route("/", methods=['GET'])
     def get_index():
         return redirect(redirect_index, code=307)
+
+    @app.route('/users', methods=['GET'])
+    @users.admin_auth_required(token2expiration)
+    def admin_dashboard():
+        """
+        Retrieves all active and pending users.
+        Requires a valid admin bearer token in the Authorization header.
+        ---
+        tags:
+          - Admin
+        parameters:
+          - name: Authorization
+            in: header
+            type: string
+            required: true
+            description: Bearer token for admin authentication (e.g., "Bearer <token>")
+        responses:
+          200:
+            description: Lists of all users and pending registrations.
+            schema:
+              type: object
+              properties:
+                users:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                      email:
+                        type: string
+                pending:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                      email:
+                        type: string
+          401:
+            description: Unauthorized — missing or invalid token.
+          403:
+            description: Token expired or not valid for admin access.
+        """
+        def fetch_all_users(db_path):
+            conn = sqlite3.connect(db_path)
+            cursor = conn.execute("SELECT username, email FROM users")
+            rows = [{"username": u, "email": e} for u, e in cursor.fetchall()]
+            conn.close()
+            return rows
+
+        return jsonify({
+            "users": fetch_all_users("users.db"),
+            "pending": fetch_all_users("pending_users.db")
+        })
+
+    @app.route('/users/<string:username>', methods=['DELETE'])
+    @users.admin_auth_required(token2expiration)
+    def delete_user(username):
+        """
+        Deletes a user or pending user by username.
+        Requires a valid admin bearer token in the Authorization header.
+        ---
+        tags:
+          - Admin
+        parameters:
+          - name: username
+            in: path
+            type: string
+            required: true
+            description: The username to delete.
+          - name: Authorization
+            in: header
+            type: string
+            required: true
+            description: Bearer token for admin authentication (e.g., "Bearer <token>")
+        responses:
+          200:
+            description: Successfully deleted the user.
+            schema:
+              type: object
+              properties:
+                deleted:
+                  type: string
+                  description: The username that was deleted.
+          401:
+            description: Unauthorized — missing or invalid token.
+          403:
+            description: Token expired or not valid for admin access.
+          404:
+            description: User not found.
+        """
+        deleted = False
+        for db in ['users.db', 'pending_users.db']:
+            conn = sqlite3.connect(db)
+            cur = conn.execute("DELETE FROM users WHERE username = ?", (username,))
+            if cur.rowcount: deleted = True
+            conn.commit()
+            conn.close()
+        if not deleted:
+            abort(404, description="User not found")
+        return jsonify({"deleted": username})
+
+    @app.route('/users/<string:username>/accept', methods=['POST'])
+    @users.admin_auth_required(token2expiration)
+    def promote_user(username):
+        """
+        Promotes a pending user to an active user.
+        Requires a valid admin bearer token in the Authorization header.
+        ---
+        tags:
+          - Admin
+        parameters:
+          - name: username
+            in: path
+            type: string
+            required: true
+            description: The username to promote.
+          - name: Authorization
+            in: header
+            type: string
+            required: true
+            description: Bearer token for admin authentication (e.g., "Bearer <token>")
+        responses:
+          200:
+            description: User was successfully promoted.
+            schema:
+              type: object
+              properties:
+                promoted:
+                  type: string
+                  description: The username that was promoted.
+          401:
+            description: Unauthorized — missing or invalid token.
+          403:
+            description: Token expired or not valid for admin access.
+          404:
+            description: Pending user not found.
+        """
+        conn = sqlite3.connect("pending_users.db")
+        cursor = conn.execute("SELECT username, email, password FROM users WHERE username = ?", (username,))
+        row = cursor.fetchone()
+        conn.close()
+        if not row: abort(404, description="Pending user not found")
+        users.insert_user("users.db", row[0], row[1], row[2])
+        conn = sqlite3.connect("pending_users.db")
+        conn.execute("DELETE FROM users WHERE username = ?", (username,))
+        conn.commit()
+        conn.close()
+        return jsonify({"promoted": username})
+
+    @app.route("/register", methods=["POST"])
+    def register_user():
+        """
+        Registers a new user into the pending approval list.
+        Administrator acceptance is required for them to log in.
+        ---
+        tags:
+          - Auth
+        parameters:
+          - name: body
+            in: body
+            required: true
+            description: JSON object with username, email, and password.
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+        responses:
+          201:
+            description: Successfully registered. Pending admin approval.
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  example: "pending approval"
+          400:
+            description: Missing required fields (username, email, or password).
+          409:
+            description: User already exists in active or pending list.
+        """
+        data = request.get_json()
+        username = data.get("username")
+        email = data.get("email")
+        password = data.get("password")
+        if not username or not email or not password: abort(400, description="Missing fields from username, email, or password")
+        if users.find_user('users.db', username) or users.find_user('pending_users.db', username): abort(409, description="User already exists")
+        users.insert_user('pending_users.db', username, email, password)
+        return jsonify({"status": "pending approval"}), 201
+
+    @app.route("/login", methods=["POST"])
+    def login_user():
+        """
+        Logs in a user or the admin and returns an expiring bearer token.
+        ---
+        tags:
+          - Auth
+        parameters:
+          - name: body
+            in: body
+            required: true
+            description: JSON object with username and password.
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+        responses:
+          200:
+            description: Login successful; bearer token issued.
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: Bearer token to be used in Authorization header.
+                admin:
+                  type: boolean
+                  description: Whether the logged-in user is an admin.
+                expires_in:
+                  type: integer
+                  description: Token expiration time in seconds.
+          401:
+            description: Invalid credentials.
+        """
+        data = request.get_json()
+        username = data.get("username")
+        password = data.get("password")
+        if username == admin_username and password == admin_password:
+            token = secrets.token_urlsafe(32)
+            token2expiration[token] = time.time() + token_expiration_secs
+            return jsonify({"token": token, "admin": True, "expires_in": token_expiration_secs})
+        row = users.find_user('users.db', username)
+        if not row: abort(401, description="Invalid credentials")
+        stored_hash = row[2]
+        if not users.verify_password(password, stored_hash): abort(401, description="Invalid credentials")
+        token = secrets.token_urlsafe(32)
+        token2expiration[token] = time.time() + token_expiration_secs
+        return jsonify({"token": token, "admin": False, "expires_in": token_expiration_secs})
 
     @app.route('/cards', methods=['POST'])
     def get_cards():
@@ -165,7 +403,6 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
                   type: integer
                   description: Total number of result pages.
         """
-
         data = request.get_json() or {}
         query = data.get('query', '').strip().lower()
         page = int(data.get('page', 1))
@@ -237,7 +474,7 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
                 description: An AI assistant is working on the model card.
         """
         with exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.") as card:
-            return jsonify(dict2dynamic(card.data|{"related": []}, {"title"}))
+            return jsonify(converters.dict2dynamic(card.data|{"related": []}, {"title"}))
 
     @app.route('/card/<int:card_id>/locked', methods=['GET'])
     def get_card_locked_status(card_id):
@@ -262,7 +499,7 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
                 description: The request's card does not exist or has been deleted.
         """
         card = exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.")
-        return jsonify("An LLM is working on the card" if card.check_completion() else "")
+        return jsonify("An AI assistant is working on the card" if card.check_completion() else "")
 
     @app.route('/card/<int:card_id>/title', methods=['GET'])
     def get_card_title(card_id):
@@ -289,6 +526,7 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
             return jsonify(card.title)
 
     @app.route('/card/<int:card_id>/title', methods=['PUT'])
+    @users.require_auth(token2expiration)
     def set_card_title(card_id):
         """
         Updates the title of the specified model card.
@@ -305,11 +543,20 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
             schema:
               type: string
               example: "New model card title"
+          - name: Authorization
+            in: header
+            type: string
+            required: true
+            description: Bearer token for user authentication (e.g., "Bearer <token>")
         responses:
             200:
                 description: The updated title of the model card.
                 schema:
                   type: string
+            401:
+                description: Unauthorized — missing or invalid token.
+            403:
+                description: Token expired or invalid.
             404:
                 description: The requested card does not exist or has been deleted, or invalid request body.
             409:
@@ -404,9 +651,10 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
             return jsonify(data)
 
     @app.route('/card/<int:card_id>/<string:field_name>/<string:data_name>', methods=['PUT'])
+    @users.require_auth(token2expiration)
     def set_card_field(card_id, field_name, data_name):
         """
-        Sets an value to card.field_name.data_name.
+        Sets a value to card.field_name.data_name.
         ---
         parameters:
           - name: card_id
@@ -430,6 +678,11 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
             description: A string to set as value.
             schema:
               type: string
+          - name: Authorization
+            in: header
+            type: string
+            required: true
+            description: Bearer token for user authentication (e.g., "Bearer <token>")
         responses:
             200:
                 description: A list of integer identifiers.
@@ -437,6 +690,10 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
                     type: array
                     items:
                         type: integer
+            401:
+                description: Unauthorized — missing or invalid token.
+            403:
+                description: Token expired or invalid.
             404:
                 description: Resource does not exist, or invalid body.
             409:
@@ -452,15 +709,26 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
 
 
     @app.route('/card/<int:card_id>', methods=['DELETE'])
+    @users.require_auth(token2expiration)
     def delete_card(card_id):
         """
         Removes the respective card; it will be considered a missing resource from now on.
         ---
         tags:
           - UI
+        parameters:
+          - name: Authorization
+            in: header
+            type: string
+            required: true
+            description: Bearer token for user authentication (e.g., "Bearer <token>")
         responses:
             204:
                 description: Successfully removed.
+            401:
+                description: Unauthorized — missing or invalid token.
+            403:
+                description: Token expired or invalid.
             404:
                 description: Resource does not exist.
         """
@@ -469,6 +737,7 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
             return '', 204
 
     @app.route('/card/<int:card_id>', methods=['PUT'])
+    @users.require_auth(token2expiration)
     def update_card(card_id):
         """
         Updates a model card's contents - enables manual upload.
@@ -491,9 +760,18 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
             description: Partial or full model card JSON to update the card with. This can be either in the dynamic format used by this API or in a static format that is exported by the modelcard library.
             schema:
               type: object
+          - name: Authorization
+            in: header
+            type: string
+            required: true
+            description: Bearer token for user authentication (e.g., "Bearer <token>")
         responses:
             200:
                 description: Successfully set everything and retrieves a json representation of the model card.
+            401:
+                description: Unauthorized — missing or invalid token.
+            403:
+                description: Token expired or invalid.
             404:
                 description: Either the card or at least one of the provided fields do not exist.
             409:
@@ -501,12 +779,13 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
         """
         json_data = request.get_json()
         with exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.") as card:
-            try: card.data.assign(dynamic2dict(json_data, {"title"}))
+            try: card.data.assign(converters.dynamic2dict(json_data, {"title"}))
             except AssertionError as e: abort(404, "Wrong data: "+str(e))
             except Exception as e: abort(404, "Wrong data: "+str(e))
-            return jsonify(dict2dynamic(card.data, {"title"}))
+            return jsonify(converters.dict2dynamic(card.data, {"title"}))
 
     @app.route('/card', methods=['POST'])
+    @users.require_auth(token2expiration)
     def create_card():
         """
         Creates a model card given an optional json representation - the representation is for manual upload.
@@ -522,19 +801,28 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
             required: false
             schema:
               type: object
-              description: Partial or full model card JSON to update the card with.
+              description: Binary encoding of a file loading the card.
+          - name: Authorization
+            in: header
+            type: string
+            required: true
+            description: Bearer token for user authentication (e.g., "Bearer <token>")
         responses:
             200:
                 description: Successfully set everything and retrieves a json representation of the model card.
+            401:
+                description: Unauthorized — missing or invalid token.
+            403:
+                description: Token expired or invalid.
             404:
-                description: Either the card or at least one of the provided fields do not exist.
+                description: One of the provided fields do not exist.
             409:
                 description: An AI assistant is working on the model card.
         """
         json_data = request.get_json()
         card = ModelCardEntry(ModelCard())
         if json_data:
-            try: card.card.data.assign(dynamic2dict(json_data, {"title"}))
+            try: card.card.data.assign(converters.dynamic2dict(json_data, {"title"}))
             except AssertionError as e:
                 print("Assertion error: "+str(e))
                 abort(500, description=str(e))
@@ -546,6 +834,7 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
         return jsonify(card_id)
 
     @app.route('/assistant/<string:assistant_type>/complete/<int:card_id>', methods=['POST'])
+    @users.require_auth(token2expiration)
     def autocomplete_card(card_id: int, assistant_type: str):
         """
         Autocompletes an already created model card given a string pointing to a repository URL or some file contents.
@@ -570,9 +859,18 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
             required: true
             schema:
               type: string
+          - name: Authorization
+            in: header
+            type: string
+            required: true
+            description: Bearer token for user authentication (e.g., "Bearer <token>")
         responses:
             200:
                 description: Successfully submitted task.
+            401:
+                description: Unauthorized — missing or invalid token.
+            403:
+                description: Token expired or invalid.
             404:
                 description: Resource does not exist.
             409:
@@ -585,6 +883,7 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
         return jsonify(status)
 
     @app.route('/assistant/<string:assistant_type>/refine/<int:card_id>', methods=['POST'])
+    @users.require_auth(token2expiration)
     def autorefine_card(card_id: int, assistant_type: str):
         """
         Refines an already created model card so that its contents are easier to parse by laypeople.
@@ -603,9 +902,18 @@ def serve(redirect_index, assistants: dict[str, Assistant]):
             type: string
             required: true
             description: The AI assistant type. Options available from get /assistants.
+          - name: Authorization
+            in: header
+            type: string
+            required: true
+            description: Bearer token for user authentication (e.g., "Bearer <token>")
         responses:
             200:
                 description: Successfully submitted task.
+            401:
+                description: Unauthorized — missing or invalid token.
+            403:
+                description: Token expired or invalid.
             404:
                 description: Resource does not exist.
             409:

@@ -13,7 +13,6 @@ require human intelligence. This includes learning, reasoning, problem-solving, 
 AI is a broad field encompassing various technologies, including machine learning and natural language processing. 
 It is used in numerous applications, from self-driving cars to language translation and data analysis."""
 
-
 llama = Ollama("llama3.2")
 llama_summary = llama.summarization(some_text)
 print('llama summarization:', llama_summary)

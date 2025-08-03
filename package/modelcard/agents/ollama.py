@@ -19,10 +19,7 @@ class Ollama(Agent):
             "messages": [{"role": "user", "content": "Request test"}]
         })
         assert test.status_code == 200, f"Failed to initialize model '{model}'\nResponse: {test.text}"
-        # TODO: use those
         self.max_tokens = 4000
-        self.temperature = 0.7
-        self.top_p = 1
 
     def _run(self, content: str, task: str):
         assert isinstance(content, str), "Content must be of type str"

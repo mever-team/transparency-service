@@ -6,3 +6,6 @@ package/modelcard.egg-info/
 .env
 temp.html
 .idea/
+db/
+tests/db/
+.mc_vers_ctrl
