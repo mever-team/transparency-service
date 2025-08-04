@@ -16,7 +16,7 @@ class ModelCard(
     Plots,
     Repo,
     Metrics,
-    VersionControl,
+    #VersionControl,
 ):
     def __init__(self):
         object.__setattr__(self, "data", DotDict(
@@ -27,7 +27,7 @@ class ModelCard(
             eval_set=DotDict(datasets="", motivation="", pre_processing="", standards="", update="", more=""),
             analysis=DotDict(analysis="", metrics="", thresholds="", uncertainty="", more=""),
         ))
-        VersionControl.__init__(self)
+        #VersionControl.__init__(self)
 
     def __getattr__(self, key):
         if key=="data": return object.__getattribute__(self, key)

@@ -1,5 +1,3 @@
-
-
 def dynamic2dict(data, mixed: set=None):
     if mixed:
         if not isinstance(data, dict): return dynamic2dict(data)

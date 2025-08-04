@@ -5,7 +5,7 @@ from flasgger import Swagger
 from threading import Lock, Thread
 from modelcard.service import users
 from modelcard.service import converters
-import sqlite3
+from modelcard.service.logger import Logger
 import secrets
 import time
 
@@ -16,12 +16,16 @@ def exists(condition, message):
     return condition
 
 class ModelCardEntry:
-    def __init__(self, card: ModelCard):
+    def __init__(self, card: ModelCard, creator: str):
         self.card = card
+        self.creator = creator
         self.preview = card.to_html_card()
         self.lock = Lock()
         self.__is_completing = False
         self.__thread = None
+
+    def commit_card(self):
+        pass
 
     def start_completion(self):
         self.lock.acquire()
@@ -81,10 +85,14 @@ def serve(
     assistants: dict[str, Assistant],
     admin_username: str = "admin",
     admin_password: str = "admin",
-    token_expiration_secs: int = 60*60
+    token_expiration_secs: int = 60*60,
+    root:str|None = "db", # None or "" initializes a non-persistent database for testing
+    logfile:str|None = None # None or "" uses the console for logging
 ):
-    token2expiration = {}
-    users.init_user_dbs()
+    logger = Logger()
+    token2expiration = dict()
+    token2user = dict()
+    conn = users.UserDB(logger=logger, root=root)
     app = Flask(__name__)
     empty_card = ModelCard()
     swagger = Swagger(app, template = {
@@ -101,8 +109,8 @@ def serve(
         return redirect(redirect_index, code=307)
 
     @app.route('/users', methods=['GET'])
-    @users.admin_auth_required(token2expiration)
-    def admin_dashboard():
+    @users.require_admin(token2expiration)
+    def admin_dashboard(token: str):
         """
         Retrieves all active and pending users.
         Requires a valid admin bearer token in the Authorization header.
@@ -144,21 +152,20 @@ def serve(
           403:
             description: Token expired or not valid for admin access.
         """
-        def fetch_all_users(db_path):
-            conn = sqlite3.connect(db_path)
-            cursor = conn.execute("SELECT username, email FROM users")
+        def fetch_all_users(table_name: str):
+            cursor = conn.conn.cursor()
+            cursor.execute(f"SELECT username, email FROM {table_name}")
             rows = [{"username": u, "email": e} for u, e in cursor.fetchall()]
-            conn.close()
             return rows
 
         return jsonify({
-            "users": fetch_all_users("users.db"),
-            "pending": fetch_all_users("pending_users.db")
+            "users": fetch_all_users("users"),
+            "pending": fetch_all_users("pending_users")
         })
 
     @app.route('/users/<string:username>', methods=['DELETE'])
-    @users.admin_auth_required(token2expiration)
-    def delete_user(username):
+    @users.require_admin(token2expiration)
+    def delete_user(username, token: str):
         """
         Deletes a user or pending user by username.
         Requires a valid admin bearer token in the Authorization header.
@@ -193,19 +200,16 @@ def serve(
             description: User not found.
         """
         deleted = False
-        for db in ['users.db', 'pending_users.db']:
-            conn = sqlite3.connect(db)
-            cur = conn.execute("DELETE FROM users WHERE username = ?", (username,))
+        for table_name in ['users', 'pending_users']:
+            cur = conn.conn.execute(f"DELETE FROM {table_name} WHERE username = ?", (username,))
             if cur.rowcount: deleted = True
-            conn.commit()
-            conn.close()
-        if not deleted:
-            abort(404, description="User not found")
+            conn.conn.commit()
+        if not deleted: abort(404, description="User not found")
         return jsonify({"deleted": username})
 
     @app.route('/users/<string:username>/accept', methods=['POST'])
-    @users.admin_auth_required(token2expiration)
-    def promote_user(username):
+    @users.require_admin(token2expiration)
+    def promote_user(username, token: str):
         """
         Promotes a pending user to an active user.
         Requires a valid admin bearer token in the Authorization header.
@@ -239,16 +243,13 @@ def serve(
           404:
             description: Pending user not found.
         """
-        conn = sqlite3.connect("pending_users.db")
-        cursor = conn.execute("SELECT username, email, password FROM users WHERE username = ?", (username,))
+        cursor = conn.conn.cursor()
+        cursor.execute("SELECT username, email, password FROM pending_users WHERE username = ?",(username,))
         row = cursor.fetchone()
-        conn.close()
         if not row: abort(404, description="Pending user not found")
-        users.insert_user("users.db", row[0], row[1], row[2])
-        conn = sqlite3.connect("pending_users.db")
-        conn.execute("DELETE FROM users WHERE username = ?", (username,))
-        conn.commit()
-        conn.close()
+        cursor.execute("INSERT INTO users (username, email, password) VALUES (?, ?, ?)",(row[0], row[1], users.hash_password(row[2])))
+        cursor.execute("DELETE FROM pending_users WHERE username = ?",(username,))
+        conn.conn.commit()
         return jsonify({"promoted": username})
 
     @app.route("/register", methods=["POST"])
@@ -292,8 +293,8 @@ def serve(
         email = data.get("email")
         password = data.get("password")
         if not username or not email or not password: abort(400, description="Missing fields from username, email, or password")
-        if users.find_user('users.db', username) or users.find_user('pending_users.db', username): abort(409, description="User already exists")
-        users.insert_user('pending_users.db', username, email, password)
+        if conn.find_user('users', username) or conn.find_user('pending_users', username): abort(409, description="User already exists")
+        conn.insert_user('pending_users', username, email, password)
         return jsonify({"status": "pending approval"}), 201
 
     @app.route("/login", methods=["POST"])
@@ -339,20 +340,24 @@ def serve(
         if username == admin_username and password == admin_password:
             token = secrets.token_urlsafe(32)
             token2expiration[token] = time.time() + token_expiration_secs
+            token2user[token] = username
+            logger.warn("logged in as administrator", user=username)
             return jsonify({"token": token, "admin": True, "expires_in": token_expiration_secs})
-        row = users.find_user('users.db', username)
+        row = conn.find_user('users', username)
         if not row: abort(401, description="Invalid credentials")
         stored_hash = row[2]
         if not users.verify_password(password, stored_hash): abort(401, description="Invalid credentials")
         token = secrets.token_urlsafe(32)
         token2expiration[token] = time.time() + token_expiration_secs
+        token2user[token] = username
+        logger.info("logged in", user=username)
         return jsonify({"token": token, "admin": False, "expires_in": token_expiration_secs})
 
     @app.route('/cards', methods=['POST'])
     def get_cards():
         """
-        Retrieves a list of model cards while filtering for a search query and performing pagination.
-        The results contain both card id, title and descriptions, and the total number of pages
+        Retrieves a list of model cards from the database while filtering for a search query and performing pagination.
+        The results contain both card id, title, and descriptions, and the total number of pages
         for the particular pagination limit. If no query is provided, all cards will be considered.
         If no page size is provided, or if non-positive, 10 is assumed. If no page is provided,
         or if it's non-positive, 1 (the first page) is assumed.
@@ -364,7 +369,7 @@ def serve(
             in: body
             type: string
             required: false
-            description: Case-insensitive filter on card titles or contents.
+            description: Case-insensitive filter on card titles.
             example: "my card"
           - name: page
             in: body
@@ -396,37 +401,35 @@ def serve(
                       name:
                         type: string
                         description: Card title.
+                      creator:
+                        type: string
+                        description: The creator's username.
                       desc:
                         type: string
-                        description: Card description. For now, this is a brief note on completion percentage, but will become a summary line in the future.
+                        description: Card description (e.g., completion percentage).
                 pages:
                   type: integer
                   description: Total number of result pages.
         """
         data = request.get_json() or {}
         query = data.get('query', '').strip().lower()
-        page = int(data.get('page', 1))
-        page_size = int(data.get('page_size', 10))
-        if page < 1: page = 1
-        if page_size < 1: page_size = 10
-        filtered = [
-            {
-                "id": key,
-                "name": value.card.title,
-                "desc": f"Completion {int(value.card.quality() * 100 + 0.5)}%"
-            }
-            for key, value in test_data.items()
-            if value is not None and (not query or query in value.card.title.lower())
-        ]
-        total = len(filtered)
+        page = max(int(data.get('page', 1)), 1)
+        page_size = max(int(data.get('page_size', 10)), 1)
+        cursor = conn.conn.cursor()
+        if query: cursor.execute("SELECT COUNT(*) FROM cards WHERE LOWER(title) LIKE ?", (f"%{query}%",))
+        else: cursor.execute("SELECT COUNT(*) FROM cards")
+        total = cursor.fetchone()[0]
         num_pages = (total + page_size - 1) // page_size
-        start = (page - 1) * page_size
-        end = min(start + page_size, total)
-        results = filtered[start:end] if start < total else []
+        offset = (page - 1) * page_size
+        if query: cursor.execute("SELECT id, title, user, desc FROM cards WHERE LOWER(title) LIKE ? ORDER BY id LIMIT ? OFFSET ?", (f"%{query}%", page_size, offset))
+        else: cursor.execute("SELECT id, title, user, desc FROM cards ORDER BY id LIMIT ? OFFSET ?", (page_size, offset))
+        rows = cursor.fetchall()
+        results = [{"id": row[0], "name": row[1], "creator": row[2], "desc": row[3]} for row in rows]
         return jsonify({"results": results, "pages": num_pages})
 
     @app.route('/assistants', methods=['GET'])
-    def get_assistants():
+    @users.require_auth(token2expiration)
+    def get_assistants(token: str):
         """
         Retrieves all available AI assistants for the current user and card, including their names and descriptions.
         ---
@@ -477,7 +480,8 @@ def serve(
             return jsonify(converters.dict2dynamic(card.data|{"related": []}, {"title"}))
 
     @app.route('/card/<int:card_id>/locked', methods=['GET'])
-    def get_card_locked_status(card_id):
+    @users.require_auth(token2expiration)
+    def get_card_locked_status(card_id, token: str):
         """
         Retrieves a string value explaining why the card is locked, for example by an AI assistant working on it.
         If the card is locked, post or put methods on the card will create errors.
@@ -490,11 +494,20 @@ def serve(
             type: integer
             required: true
             description: The card's unique identifier.
+          - name: Authorization
+            in: header
+            type: string
+            required: true
+            description: Bearer token for user authentication (e.g., "Bearer <token>")
         responses:
             200:
                 description: The description (e.g., LLM progress stage) of the mechanism currently locking the card.
                 schema:
                   type: string
+            401:
+                description: Unauthorized — missing or invalid token.
+            403:
+                description: Token expired or invalid.
             404:
                 description: The request's card does not exist or has been deleted.
         """
@@ -527,7 +540,7 @@ def serve(
 
     @app.route('/card/<int:card_id>/title', methods=['PUT'])
     @users.require_auth(token2expiration)
-    def set_card_title(card_id):
+    def set_card_title(card_id, token: str):
         """
         Updates the title of the specified model card.
         ---
@@ -652,7 +665,7 @@ def serve(
 
     @app.route('/card/<int:card_id>/<string:field_name>/<string:data_name>', methods=['PUT'])
     @users.require_auth(token2expiration)
-    def set_card_field(card_id, field_name, data_name):
+    def set_card_field(card_id, field_name, data_name, token: str):
         """
         Sets a value to card.field_name.data_name.
         ---
@@ -710,7 +723,7 @@ def serve(
 
     @app.route('/card/<int:card_id>', methods=['DELETE'])
     @users.require_auth(token2expiration)
-    def delete_card(card_id):
+    def delete_card(card_id, token: str):
         """
         Removes the respective card; it will be considered a missing resource from now on.
         ---
@@ -734,11 +747,12 @@ def serve(
         """
         with exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.") as _:
             test_data[card_id] = None
+            logger.info("deleted a card", user=token2user.get(token, None))
             return '', 204
 
     @app.route('/card/<int:card_id>', methods=['PUT'])
     @users.require_auth(token2expiration)
-    def update_card(card_id):
+    def update_card(card_id, token: str):
         """
         Updates a model card's contents - enables manual upload.
         The provided json data should be (parts of) a model card's
@@ -782,11 +796,12 @@ def serve(
             try: card.data.assign(converters.dynamic2dict(json_data, {"title"}))
             except AssertionError as e: abort(404, "Wrong data: "+str(e))
             except Exception as e: abort(404, "Wrong data: "+str(e))
+            logger.info("updated a card", user=token2user.get(token, None))
             return jsonify(converters.dict2dynamic(card.data, {"title"}))
 
     @app.route('/card', methods=['POST'])
     @users.require_auth(token2expiration)
-    def create_card():
+    def create_card(token: str):
         """
         Creates a model card given an optional json representation - the representation is for manual upload.
         The provided json data should be either an empty dict or (parts of) a model card's
@@ -808,7 +823,7 @@ def serve(
             required: true
             description: Bearer token for user authentication (e.g., "Bearer <token>")
         responses:
-            200:
+            201:
                 description: Successfully set everything and retrieves a json representation of the model card.
             401:
                 description: Unauthorized — missing or invalid token.
@@ -820,7 +835,7 @@ def serve(
                 description: An AI assistant is working on the model card.
         """
         json_data = request.get_json()
-        card = ModelCardEntry(ModelCard())
+        card = ModelCardEntry(ModelCard(), token2user.get(token, ""))
         if json_data:
             try: card.card.data.assign(converters.dynamic2dict(json_data, {"title"}))
             except AssertionError as e:
@@ -831,11 +846,12 @@ def serve(
                 abort(500, description=str(e))
         card_id = len(test_data)
         test_data[card_id] = card
-        return jsonify(card_id)
+        logger.info("created a card", user=token2user.get(token, None))
+        return jsonify(card_id), 201
 
     @app.route('/assistant/<string:assistant_type>/complete/<int:card_id>', methods=['POST'])
     @users.require_auth(token2expiration)
-    def autocomplete_card(card_id: int, assistant_type: str):
+    def autocomplete_card(card_id: int, assistant_type: str, token: str):
         """
         Autocompletes an already created model card given a string pointing to a repository URL or some file contents.
         This calls on an AI assistant to work on the card, blocking editing while the latter runs.
@@ -880,11 +896,12 @@ def serve(
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
         exists(isinstance(json_data, str), "Autocomplete requires a url string as POST data")
         status = exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.").autocomplete(json_data, assistant)
+        logger.info("requested an autocompletion from "+assistant_type, user=token2user.get(token, None))
         return jsonify(status)
 
     @app.route('/assistant/<string:assistant_type>/refine/<int:card_id>', methods=['POST'])
     @users.require_auth(token2expiration)
-    def autorefine_card(card_id: int, assistant_type: str):
+    def autorefine_card(card_id: int, assistant_type: str, token: str):
         """
         Refines an already created model card so that its contents are easier to parse by laypeople.
         This calls on an AI assistant to work on the card, blocking editing while the latter runs.
@@ -921,6 +938,7 @@ def serve(
         """
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
         status = exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.").autorefine(assistant)
+        logger.info("requested a card refinement from "+assistant_type, user=token2user.get(token, None))
         return jsonify(status)
 
     @app.route('/docs', methods=['GET'])
@@ -936,4 +954,5 @@ def serve(
             })
         return jsonify(routes)
 
+    logger.ok("Server is ready.")
     return app

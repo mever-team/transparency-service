@@ -30,3 +30,21 @@ class DotDict(dict):
         self.validate_assign(other)
         self._assign(other)
         return self
+
+    def flatten(self):
+        flattened = dict()
+        for k, v in self.items():
+            if isinstance(v, DotDict):
+                for k2, v2 in v.flatten().items(): flattened[f"{k}__{k2}"] = v2
+            else: flattened[k] = v
+        return flattened
+
+    def assign_flattened(self, all_items: dict, prefix=""):
+        assert not isinstance(all_items, DotDict)
+        for k in list(self.keys()):
+            query = f"{prefix}__{k}"
+            v = self[k]
+            if isinstance(v, DotDict):
+                v.assign_flattened(all_items, query)
+            elif query in all_items: self[k] = all_items[query]
+        return self
