@@ -3,7 +3,7 @@ from modelcard.service.assistant import TestAssistant
 import json
 import time
 
-app = serve(
+app, gc = serve(
     redirect_index="/docs",
     assistants={"tassist": TestAssistant(delay=0.1)}, # delay is the number of seconds in which no more updates are available
     root=None # non-persistent in-memory database
@@ -23,7 +23,7 @@ def test_cards():
     assert len(data["results"]) == 0
 
 def test_assistants():
-    response = client.get('/assistants')
+    response = client.get('/assistants', headers={"Authorization": f"Bearer {admin}"})
     assert response.status_code==200
     data = json.loads(response.data)
     assert isinstance(data, list)
@@ -77,14 +77,14 @@ def test_creation_dynamic_format():
 def test_modify_title():
     card_id = json.loads(client.post('/card', json={"title": "My Special Model Card"}).data)
     assert json.loads(client.get(f'/card/{card_id}/title').data) == "My Special Model Card"
-    assert json.loads(client.put(f'/card/{card_id}/title', json="My updated title").data) == "My updated title"
+    assert json.loads(client.put(f'/card/{card_id}/title', headers={"Authorization": f"Bearer {admin}"}, json="My updated title").data) == "My updated title"
     assert json.loads(client.get(f'/card/{card_id}/title').data) == "My updated title"
 
 
 def test_modify_field():
     card_id = json.loads(client.post('/card', json={}).data)
     assert json.loads(client.get(f'/card/{card_id}/model/license').data) == ""
-    assert json.loads(client.put(f'/card/{card_id}/model/license', json="Apache 2.0").data) == "Apache 2.0"
+    assert json.loads(client.put(f'/card/{card_id}/model/license', headers={"Authorization": f"Bearer {admin}"}, json="Apache 2.0").data) == "Apache 2.0"
     assert json.loads(client.get(f'/card/{card_id}/model/license').data) == "Apache 2.0"
 
 
@@ -92,14 +92,13 @@ def test_request():
     card_id = json.loads(client.post('/card', json={}).data)
     # tassist is the assistant' name
     time.sleep(1)
-    assert client.post(f'/assistant/tassist/complete/{card_id}', json="my_url").status_code == 200
-    assert client.post(f'/assistant/tassist/complete/{card_id}', json="my_url").status_code != 200
-    assert client.post(f'/assistant/tassist/refine/{card_id}', json={}).status_code != 200
-    assert client.post(f'/card/{card_id}/model/license', json="Apache 2.0").status_code != 200
+    assert client.post(f'/assistant/tassist/complete/{card_id}', headers={"Authorization": f"Bearer {admin}"}, json="my_url").status_code == 200
+    assert client.post(f'/assistant/tassist/complete/{card_id}', headers={"Authorization": f"Bearer {admin}"}, json="my_url").status_code != 200
+    assert client.post(f'/assistant/tassist/refine/{card_id}', headers={"Authorization": f"Bearer {admin}"}, json={}).status_code != 200
+    assert client.post(f'/card/{card_id}/model/license', headers={"Authorization": f"Bearer {admin}"}, json="Apache 2.0").status_code != 200
     time.sleep(2)
-    assert client.post(f'/assistant/tassist/refine/{card_id}', json={}).status_code == 200
-    assert client.post(f'/assistant/tassist/complete/{card_id}', json="my_url").status_code != 200
-    assert client.post(f'/assistant/tassist/refine/{card_id}', json={}).status_code != 200
-    assert client.post(f'/card/{card_id}/model/license', json="Apache 2.0").status_code != 200
+    assert client.post(f'/assistant/tassist/refine/{card_id}', headers={"Authorization": f"Bearer {admin}"}, json={}).status_code == 200
+    assert client.post(f'/assistant/tassist/complete/{card_id}', headers={"Authorization": f"Bearer {admin}"}, json="my_url").status_code != 200
+    assert client.post(f'/assistant/tassist/refine/{card_id}', headers={"Authorization": f"Bearer {admin}"}, json={}).status_code != 200
+    assert client.post(f'/card/{card_id}/model/license', headers={"Authorization": f"Bearer {admin}"}, json="Apache 2.0").status_code != 200
     time.sleep(2)
-

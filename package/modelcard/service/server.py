@@ -8,6 +8,8 @@ from modelcard.service import converters
 from modelcard.service.logger import Logger
 import secrets
 import time
+from threading import Thread
+
 
 def exists(condition, message):
     # empty strings are allowed
@@ -16,16 +18,34 @@ def exists(condition, message):
     return condition
 
 class ModelCardEntry:
-    def __init__(self, card: ModelCard, creator: str):
+    def __init__(self, card: ModelCard, creator: str, conn):
         self.card = card
         self.creator = creator
         self.preview = card.to_html_card()
         self.lock = Lock()
         self.__is_completing = False
         self.__thread = None
+        self.conn = conn
+        self.card_id = None
+        self.last_accessed = time.time()
+
+    def touch(self):
+        self.last_accessed = time.time()
 
     def commit_card(self):
-        pass
+        flattened = self.card.data.flatten()
+        assert flattened, "Cannot commit an empty model card."
+        assert self.card_id is not None, "Internal error: card_id has not been set for a cached card"
+        columns = list(flattened.keys())
+        values = [flattened[key] for key in columns]
+        query = f'''
+            UPDATE cards
+            SET {", ".join(f'"{col}" = ?' for col in columns)}
+            WHERE id = ?
+        '''
+        cursor = self.conn.cursor()
+        cursor.execute(query, values + [self.card_id])
+        self.conn.commit()
 
     def start_completion(self):
         self.lock.acquire()
@@ -89,6 +109,7 @@ def serve(
     root:str|None = "db", # None or "" initializes a non-persistent database for testing
     logfile:str|None = None # None or "" uses the console for logging
 ):
+    card_cache_lock = Lock()
     logger = Logger()
     token2expiration = dict()
     token2user = dict()
@@ -102,7 +123,38 @@ def serve(
             "version": "0.0.3"
         }
     })
-    test_data: dict[int, ModelCardEntry | None] = dict()
+    card_cache: dict[int, ModelCardEntry | None] = dict()
+    def find_card(card_id: int):
+        assert isinstance(card_id, int), "Card identifier must be an integer"
+        with card_cache_lock:
+            card = card_cache.get(card_id, None)
+            card.touch()
+            if card is None:
+                # load the card from the database
+                cursor = conn.conn.cursor()
+                cursor.execute("SELECT * FROM cards WHERE id = ?", (card_id,))
+                row = cursor.fetchone()
+                if row:
+                    col_names = [desc[0] for desc in cursor.description]
+                    flattened = dict(zip(col_names, row))
+                    card_creator = flattened.pop("user", "")
+                    flattened.pop("id", None)
+                    model_card = ModelCard()
+                    model_card.data.assign_flattened(flattened)
+                    card = ModelCardEntry(model_card, card_creator, conn)
+                    card.card_id = card_id
+                    card_cache[card_id] = card
+        return card
+
+    @app.errorhandler(500)
+    def internal_error(e):
+        logger.error(str(e))
+        return jsonify(error="Internal server error"), 500
+
+    @app.errorhandler(Exception)
+    def handle_unexpected_exception(e):
+        logger.error(str(e))
+        return jsonify(error="Unexpected server error"), 500
 
     @app.route("/", methods=['GET'])
     def get_index():
@@ -476,7 +528,7 @@ def serve(
             409:
                 description: An AI assistant is working on the model card.
         """
-        with exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.") as card:
+        with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
             return jsonify(converters.dict2dynamic(card.data|{"related": []}, {"title"}))
 
     @app.route('/card/<int:card_id>/locked', methods=['GET'])
@@ -511,7 +563,7 @@ def serve(
             404:
                 description: The request's card does not exist or has been deleted.
         """
-        card = exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.")
+        card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
         return jsonify("An AI assistant is working on the card" if card.check_completion() else "")
 
     @app.route('/card/<int:card_id>/title', methods=['GET'])
@@ -535,7 +587,7 @@ def serve(
             409:
                 description: An AI assistant is working on the model card.
         """
-        with exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.") as card:
+        with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
             return jsonify(card.title)
 
     @app.route('/card/<int:card_id>/title', methods=['PUT'])
@@ -575,7 +627,7 @@ def serve(
             409:
                 description: An AI assistant is working on the model card.
         """
-        with exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.") as card:
+        with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
             json_data = request.get_json()
             exists(isinstance(json_data, str), "Can only send string data to update model card titles.")
             card.data['title'] = json_data
@@ -658,7 +710,7 @@ def serve(
             409:
                 description: An AI assistant is working on the model card.
         """
-        with exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.") as card:
+        with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
             field = exists(card.data.get(field_name, None), "Invalid field name. Candidates: " + ','.join(card.data.keys()))
             data = exists(field.get(data_name, None), f"Invalid data name {data_name}. Candidates: " + ','.join(field.keys()))
             return jsonify(data)
@@ -712,7 +764,7 @@ def serve(
             409:
                 description: An AI assistant is working on the model card.
         """
-        with exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.") as card:
+        with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
             field = exists(card.data.get(field_name, None), "Invalid field name. Candidates: " + ','.join(card.data.keys()))
             data = exists(field.get(data_name, None), f"Invalid data name {data_name}. Candidates: " + ','.join(field.keys()))
             json_data = request.get_json()
@@ -745,8 +797,11 @@ def serve(
             404:
                 description: Resource does not exist.
         """
-        with exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.") as _:
-            test_data[card_id] = None
+        with exists(find_card(card_id), "Model card does not exist or has been deleted.") as _:
+            cursor = conn.conn.cursor()
+            cursor.execute("DELETE FROM cards WHERE id = ?", (card_id,))
+            conn.conn.commit()
+            with card_cache_lock: del card_cache[card_id]
             logger.info("deleted a card", user=token2user.get(token, None))
             return '', 204
 
@@ -792,7 +847,7 @@ def serve(
                 description: An AI assistant is working on the model card.
         """
         json_data = request.get_json()
-        with exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.") as card:
+        with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
             try: card.data.assign(converters.dynamic2dict(json_data, {"title"}))
             except AssertionError as e: abort(404, "Wrong data: "+str(e))
             except Exception as e: abort(404, "Wrong data: "+str(e))
@@ -835,7 +890,7 @@ def serve(
                 description: An AI assistant is working on the model card.
         """
         json_data = request.get_json()
-        card = ModelCardEntry(ModelCard(), token2user.get(token, ""))
+        card = ModelCardEntry(ModelCard(), token2user.get(token, ""), conn)
         if json_data:
             try: card.card.data.assign(converters.dynamic2dict(json_data, {"title"}))
             except AssertionError as e:
@@ -844,9 +899,18 @@ def serve(
             except Exception as e:
                 print("Exception: "+str(e))
                 abort(500, description=str(e))
-        card_id = len(test_data)
-        test_data[card_id] = card
-        logger.info("created a card", user=token2user.get(token, None))
+        flattened = card.card.data.flatten()
+        columns = list(flattened.keys())
+        creator = token2user.get(token, "")
+        cursor = conn.conn.cursor()
+        cursor.execute(f'''INSERT INTO cards (user, desc, {','.join(columns)}) VALUES (?,?, {",".join(["?"] * len(columns))})''',
+                       [creator, ""] + [flattened[key] for key in columns])
+        conn.conn.commit()
+        card_id = cursor.lastrowid
+        card.card_id = card_id
+        with card_cache_lock:
+            card_cache[card_id] = card
+        logger.info("created a card", user=creator)
         return jsonify(card_id), 201
 
     @app.route('/assistant/<string:assistant_type>/complete/<int:card_id>', methods=['POST'])
@@ -895,7 +959,7 @@ def serve(
         json_data = request.get_json()
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
         exists(isinstance(json_data, str), "Autocomplete requires a url string as POST data")
-        status = exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.").autocomplete(json_data, assistant)
+        status = exists(find_card(card_id), "Model card does not exist or has been deleted.").autocomplete(json_data, assistant)
         logger.info("requested an autocompletion from "+assistant_type, user=token2user.get(token, None))
         return jsonify(status)
 
@@ -937,7 +1001,7 @@ def serve(
                 description: An AI assistant is working on the model card.
         """
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
-        status = exists(test_data.get(card_id, None), "Model card does not exist or has been deleted.").autorefine(assistant)
+        status = exists(find_card(card_id), "Model card does not exist or has been deleted.").autorefine(assistant)
         logger.info("requested a card refinement from "+assistant_type, user=token2user.get(token, None))
         return jsonify(status)
 
@@ -954,5 +1018,23 @@ def serve(
             })
         return jsonify(routes)
 
+    def gc():
+        while True:
+            now = time.time()
+            one_hour = 3600
+            to_delete = []
+            with card_cache_lock:
+                for card_id, entry in list(card_cache.items()):
+                    if entry is None:
+                        to_delete.append(card_id)
+                        continue
+                    entry.lock.acquire()
+                    try:
+                        if not entry.check_completion() and now - entry.last_accessed > one_hour:
+                            to_delete.append(card_id)
+                    finally: entry.lock.release()
+                for card_id in to_delete: card_cache.pop(card_id, None)
+            time.sleep(600)  # run every 10 minutes
+
     logger.ok("Server is ready.")
-    return app
+    return app, gc

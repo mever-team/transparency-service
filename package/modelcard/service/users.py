@@ -52,7 +52,7 @@ class UserDB:
         )'''
         conn.execute(create_cards_table)
 
-        # migrate database if needed
+        # automatic migration if needed
         expected_columns = ['id', 'user', 'desc'] + col_names
         cursor = conn.execute("PRAGMA table_info(cards)")
         existing_columns = [row[1] for row in cursor.fetchall()]
