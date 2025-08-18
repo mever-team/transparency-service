@@ -200,9 +200,9 @@ def serve(
                       email:
                         type: string
           401:
-            description: Unauthorized — missing or invalid token.
+            description: Unauthorized — missing token or invalid token format.
           403:
-            description: Token expired or not valid for admin access.
+            description: Unauthorized — token expired or not valid.
         """
         def fetch_all_users(table_name: str):
             cursor = conn.conn.cursor()
@@ -557,9 +557,9 @@ def serve(
                 schema:
                   type: string
             401:
-                description: Unauthorized — missing or invalid token.
+                description: Unauthorized — missing token or invalid token format.
             403:
-                description: Token expired or invalid.
+                description: Unauthorized — token expired or not valid.
             404:
                 description: The request's card does not exist or has been deleted.
         """
@@ -619,9 +619,9 @@ def serve(
                 schema:
                   type: string
             401:
-                description: Unauthorized — missing or invalid token.
+                description: Unauthorized — missing token or invalid token format.
             403:
-                description: Token expired or invalid.
+                description: Unauthorized — token expired or not valid.
             404:
                 description: The requested card does not exist or has been deleted, or invalid request body.
             409:
@@ -756,9 +756,9 @@ def serve(
                     items:
                         type: integer
             401:
-                description: Unauthorized — missing or invalid token.
+                description: Unauthorized — missing token or invalid token format.
             403:
-                description: Token expired or invalid.
+                description: Unauthorized — token expired or not valid.
             404:
                 description: Resource does not exist, or invalid body.
             409:
@@ -791,9 +791,9 @@ def serve(
             204:
                 description: Successfully removed.
             401:
-                description: Unauthorized — missing or invalid token.
+                description: Unauthorized — missing token or invalid token format.
             403:
-                description: Token expired or invalid.
+                description: Unauthorized — token expired or not valid.
             404:
                 description: Resource does not exist.
         """
@@ -838,9 +838,9 @@ def serve(
             200:
                 description: Successfully set everything and retrieves a json representation of the model card.
             401:
-                description: Unauthorized — missing or invalid token.
+                description: Unauthorized — missing token or invalid token format.
             403:
-                description: Token expired or invalid.
+                description: Unauthorized — token expired or not valid.
             404:
                 description: Either the card or at least one of the provided fields do not exist.
             409:
@@ -881,9 +881,9 @@ def serve(
             201:
                 description: Successfully set everything and retrieves a json representation of the model card.
             401:
-                description: Unauthorized — missing or invalid token.
+                description: Unauthorized — missing token or invalid token format.
             403:
-                description: Token expired or invalid.
+                description: Unauthorized — token expired or not valid.
             404:
                 description: One of the provided fields do not exist.
             409:
@@ -948,9 +948,9 @@ def serve(
             200:
                 description: Successfully submitted task.
             401:
-                description: Unauthorized — missing or invalid token.
+                description: Unauthorized — missing token or invalid token format.
             403:
-                description: Token expired or invalid.
+                description: Unauthorized — token expired or not valid.
             404:
                 description: Resource does not exist.
             409:
@@ -992,9 +992,9 @@ def serve(
             200:
                 description: Successfully submitted task.
             401:
-                description: Unauthorized — missing or invalid token.
+                description: Unauthorized — missing token or invalid token format.
             403:
-                description: Token expired or invalid.
+                description: Unauthorized — token expired or not valid.
             404:
                 description: Resource does not exist.
             409:
