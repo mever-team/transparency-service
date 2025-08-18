@@ -5,8 +5,8 @@ from modelcard.agents.agent import Agent
 
 class Ollama(Agent):
     tasks = {
-        "summarization": "ollamaYou are a helpful assistant that summarizes documents.",
-        "completion": "ollamaYou are a helpful assistant completes json fields of a model card."
+        "summarization": "You are a helpful assistant that summarizes documents.",
+        "completion": "You are a helpful assistant completes json fields of a model card."
     }
 
     def __init__(self, model: str='llama3.2:3b', base_url: str="http://localhost:11434"):
@@ -27,7 +27,6 @@ class Ollama(Agent):
         response = requests.post(self._url, json={
             "model": self._model,
             "stream": False,
-            "messages": [{"role": "system", "content": Ollama.tasks[task]},
-                         {"role": "user", "content": content}]
+            "messages": [{"role": "system", "content": Ollama.tasks[task]}, {"role": "user", "content": content}]
         })
         return json.loads(response.text)["message"]["content"]

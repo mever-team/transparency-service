@@ -116,8 +116,8 @@ def require_auth(token2expiration: dict):
         def wrapper(*args, **kwargs):
             auth = request.headers.get("Authorization", "")
             if not auth.startswith("Bearer "): abort(401, description="Missing token")
-            parts = auth.split()
-            if len(parts) != 2: abort(401, description="Invalid token format")
+            parts = auth.strip().split()
+            if len(parts) != 2 or parts[0] != "Bearer": abort(401, description="Invalid token format")
             token = parts[1]
             expiry = token2expiration.get(token)
             if not expiry or time.time() > expiry: abort(403, description="Token expired or invalid - please log in")
@@ -130,11 +130,9 @@ def require_admin(token2expiration: dict):
         @wraps(f)
         def wrapper(*args, **kwargs):
             auth = request.headers.get("Authorization", "")
-            if not auth or not isinstance(auth, str):
-                return Response("Missing Authorization header", 401)
+            if not auth or not isinstance(auth, str): abort(401, description="Invalid token format")
             parts = auth.strip().split()
-            if len(parts) != 2 or parts[0] != "Bearer":
-                return Response("Invalid Authorization format", 401)
+            if len(parts) != 2 or parts[0] != "Bearer": abort(403, description="Token expired or invalid - please log in")
             token = parts[1]
             expiry = token2expiration.get(token)
             if not expiry or time.time() > expiry: abort(403, description="Token expired or invalid - please log in")
