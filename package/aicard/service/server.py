@@ -44,9 +44,9 @@ class ModelCardEntry:
             SET {", ".join(f'"{col}" = ?' for col in columns)}
             WHERE id = ?
         '''
-        cursor = self.conn.cursor()
+        cursor = self.conn.conn.cursor()
         cursor.execute(query, values + [self.card_id])
-        self.conn.commit()
+        self.conn.conn.commit()
 
     def start_completion(self):
         self.lock.acquire()
@@ -132,7 +132,7 @@ def serve(
         "swagger": "2.0",
         "info": {"title": "ModelCard",
             "description": "API docs",
-            "version": "0.0.3"
+            "version": "0.0.4"
         }
     })
     card_cache: dict[int, ModelCardEntry | None] = dict()
@@ -909,8 +909,11 @@ def serve(
                 description: An AI assistant is working on the model card.
         """
         json_data = request.get_json()
-        with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
-            try: card.data.assign(converters.dynamic2dict(json_data, {"title"}))
+        card_entry = find_card(card_id)
+        with exists(card_entry, "Model card does not exist or has been deleted.") as card:
+            try:
+                card.data.assign(converters.dynamic2dict(json_data, {"title"}))
+                card_entry.commit_card()
             except AssertionError as e: abort(404, "Wrong data: "+str(e))
             except Exception as e: abort(404, "Wrong data: "+str(e))
             logger.info("updated a card", user=token2user.get(token, None))

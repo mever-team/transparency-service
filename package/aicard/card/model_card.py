@@ -58,13 +58,13 @@ class ModelCard(
         return object.__setattr__(self, key, value)
 
     def commit(self):
-        # from aicard.service import converters
+        from aicard.service import converters
         assert self.connector, "The current model card does not have any connector to commit to (either it was not obtained from a connection or it was detached)."
         if json.dumps(self.connector.prototype.data) == json.dumps(self.data):
             self.connector.client.logger.info(f"Nothing to commit")
             return
-        print(json.dumps(self.data))
-        self.connector.client.put(f"/card/{self.connector.id}", json=self.data)
+        result = self.connector.client.put(f"/card/{self.connector.id}", json=converters.dict2dynamic(self.data))
+        assert result.status_code == 200, "Failed to commit"
         self.connector.prototype.data.assign(self.data)
         self.connector.client.logger.info(f"Committed card")
 

@@ -25,8 +25,6 @@ class Client():
         response = requests.post(self.url+"/cards", json={"query": query, "page_size": top, "creator": self.username if owned_only else ""})
         if response.status_code != 200: self.logger.fatal(f"Card creation failed: {response.status_code} {response.text}")
         results = response.json()["results"]
-        for result in results:
-            print(result)
         return results
 
     def create(self, data=None):

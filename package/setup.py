@@ -19,7 +19,7 @@ def parse_requirements(filename):
 
 setup(
     name="aicard",
-    version="0.3.2",
+    version="0.3.3",
     packages=find_packages(),
     install_requires=parse_requirements("requirements.txt"),
     description="Compute and organize model cards locally or online.",
