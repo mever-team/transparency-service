@@ -10,7 +10,9 @@ measures or calling AI assistants.
 
 ## ⚡ Quickstart
 
-Clone this repository and install it in your virtual environment per:
+INstall *aicard* in a virtual environment like below.
+If you are a developer working on this repository, clone it and install it locally
+per `pip install -e package` instead. 
 
 ```commandline
 python -m venv .venv
@@ -18,8 +20,11 @@ source .venv/bin/activate
 pip install aicard
 ```
 
-If you are a developer working on this repository, clone it and install it locally
-per `pip install -e package` instead. Create your first model card like below.
+Create your first model card like below. You can also visit our public service
+or self-host a copy of your own to maintain a database of cards and modify
+fields through a UI. The *aicard* library makes that hosting possible, allows
+programmatic management of cards, and **passes data to the service from your 
+local environment**. Those data comprise mainly quantitative evaluation.
 
 ```python
 # demo.py
@@ -54,22 +59,74 @@ use case           text generation
 
 ## 🧠 Assistants
 
-Perform manual numerical assessment
-across a wide variety of available tasks holding popular
-evaluation methodologies and measures. 
-If you need customization, you can create your own tasks too. 
+There are broadly two types of assistants for model evaluation: evaluation ones that can 
+quantitatively evaluate your models based on popular measures, and LLM-based ones that fill or 
+enrich qualitative fields of your cards. The last type can also run through services too.
+
+Perform manual numerical assessment across a wide variety of available tasks holding popular
+evaluation methodologies and measures. If you need customization, you can create your own tasks too. 
 
 ```python
-aic.evaluation.evaluate(
-    data={
-        "boxes": [[[300, 100, 315, 150],[300, 100, 315, 150]]],
-        "labels": [[0,1]],
-        "target": ["labels"]
-    },
-    pipeline=lambda x:[[x["boxes"][0], x["labels"][0], [0.1,0.9]]], # your model
-    task=aic.evaluation.tasks.vision.object_detection,
+# experiment.py
+from datasets import load_dataset
+from huggingface_hub import dataset_info
+from transformers import pipeline
+import aicard as aic
+
+dataset = load_dataset("google-research-datasets/go_emotions", split = 'test')
+info = dataset_info("google-research-datasets/go_emotions")
+class_names = info.card_data['dataset_info'][1]['features'][1]['sequence']['class_label']['names']
+classifier = pipeline(task="text-classification", model="SamLowe/roberta-base-go_emotions", top_k=None)
+
+def pipeline(data):
+    sentences = [text for text in data['text']]
+    model_outputs = classifier(sentences)
+    out = []
+    for sample in model_outputs:
+        flat = {d['label']: d['score'] for d in sample}
+        out.append([flat[name] for name in class_names.values()])
+    return out
+
+metrics = aic.evaluation.evaluate(
+    data=dataset,
+    pipeline=pipeline,
+    task=aic.evaluation.tasks.nlp.text_classification,
+    batch_size=32,
+    as_card=True
 )
-# or you can run ts.evaluation.evaluate(...) to obtain a dictionary of metric values
+
+print(metrics)
+```
+
+```commandline
+> python experiment.py
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                         Text Classification Results                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+completion        🧩⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️                                         
+
+                                    analysis                                    
+analysis           Evaluation was conducted at 2025-08-19 for text              
+classification with 32 batch size. A pipeline function runs the model.          
+metrics            The following metrics were computed at 2025-08-19:           
+- precision_macro: 0.575                                                        
+- precision_micro: 0.685                                                        
+- recall_macro: 0.396                                                           
+- recall_micro: 0.511                                                           
+- f1_macro: 0.450                                                               
+- f1_micro: 0.586                                                               
+- auc_roc_macro: 0.929   
+```
+
+The default `as_card=True` creates a model card that is partially filled with analysis data
+automatically obtained from the evaluation process.  Otherwise, computed metrics are returned 
+as a dictionary of `(name, value)` pairs. The default case's card 
+can be merged into an existing card. Merge commands accept an argument to 
+signify whether non-empty fields of the base card should be replaced or (if not) have the
+new card's contents be appended.
+
+```python
+card.merge(metrics, replace=True)
 ```
 
 You have the option to collaborate with LLM assistants too!
