@@ -1,10 +1,10 @@
-import modelcard
+import aicard
 import pandas as pd
 import os
 
 base = os.path.expanduser("~/.transparency_service/data/std")
-modelcard.utils.get_data(rf"{base}/tweepfake/validation.csv", delimiter=";")
-modelcard.utils.get_data(
+aicard.utils.get_data(rf"{base}/tweepfake/validation.csv", delimiter=";")
+aicard.utils.get_data(
     rf"{base}/liar/test.tsv",
     names=[
         "id",
@@ -31,7 +31,7 @@ modelcard.utils.get_data(
 # transparency_service.utils.get_data(r"E:\data\test.feather")
 # transparency_service.utils.get_data(r"E:\data\test.pickle")
 # transparency_service.utils.get_data(r"E:\data\test.html")
-modelcard.utils.get_data(rf"{base}/gpt-2-output-dataset")
+aicard.utils.get_data(rf"{base}/gpt-2-output-dataset")
 # paths_dic,_ = transparency_service.utils.get_data(r"E:\data\Horne2017\Horne2017_FakeNewsData\Public Data\Buzzfeed Political News Dataset")
 # for k in paths_dic.keys():
 #     print(f"{k}: {len(paths_dic[k])}")

@@ -1,10 +1,10 @@
 import json
-from modelcard.card.traits.plots import Plots
-from modelcard.card.traits.repo import Repo
-from modelcard.card.traits.metrics import Metrics
-from modelcard.card.traits.version_control import VersionControl
-from modelcard.card.traits.html import HTMLRenderer
-from modelcard.card.dot_dict import DotDict
+from aicard.card.traits.plots import Plots
+from aicard.card.traits.repo import Repo
+from aicard.card.traits.metrics import Metrics
+from aicard.card.traits.version_control import VersionControl
+from aicard.card.traits.html import HTMLRenderer
+from aicard.card.dot_dict import DotDict
 import html2text
 import markdown2
 import rich

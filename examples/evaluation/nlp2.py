@@ -1,7 +1,7 @@
 from datasets import load_dataset
 from huggingface_hub import dataset_info
 from transformers import pipeline
-import modelcard as mc
+import aicard as aic
 
 dataset = load_dataset("google-research-datasets/go_emotions", split = 'test')
 info = dataset_info("google-research-datasets/go_emotions")
@@ -17,10 +17,10 @@ def pipeline(data):
         out.append([flat[name] for name in class_names.values()])
     return out
 
-metrics = mc.evaluation.evaluate(
+metrics = aic.evaluation.evaluate(
     data=dataset,
     pipeline=pipeline,
-    task=mc.evaluation.tasks.nlp.text_classification,
+    task=aic.evaluation.tasks.nlp.text_classification,
     batch_size=32)
 
 print(metrics)

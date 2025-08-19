@@ -1,7 +1,7 @@
 import re
 from importlib.resources import read_text as read
 from jinja2 import Environment, BaseLoader
-from modelcard.card.dot_dict import DotDict
+from aicard.card.dot_dict import DotDict
 
 
 class HTMLRenderer:
@@ -10,7 +10,7 @@ class HTMLRenderer:
         self.tabs = []
         self.model_details = ""
         self.title = ""
-        package = "modelcard.card.traits.html_template"
+        package = "aicard.card.traits.html_template"
         template = (
             read(package, "template.html")
             .replace(

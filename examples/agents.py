@@ -1,6 +1,6 @@
 import json
-from modelcard.agents.gpt import GPT
-from modelcard.agents.ollama import Ollama
+from aicard.agents.gpt import GPT
+from aicard.agents.ollama import Ollama
 
 # linux ollama installation
 # - curl -fsSL https://ollama.com/install.sh | sh

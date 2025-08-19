@@ -1,6 +1,6 @@
 import openai
 import os
-from modelcard.agents.agent import Agent
+from aicard.agents.agent import Agent
 
 
 class GPT(Agent):

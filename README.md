@@ -1,68 +1,80 @@
-# Transparency-service
+# AI Card
 
 This SDK contains a collection of methods to create, manage, 
-and edit AI model cards. It can handle text, lists of data, and plots 
-which can be used to populate parts of the cards. We also provide methods 
-to automatically populate fields.
+and edit AI model cards. Cards can be stored either locally or in
+an online service (that can also be self-hosted). We finally provide
+methods to automatically populate fields.
 
-## :zap: Quickstart
+*Alpha version - Current apis and functionalities are unstable.*
+
+## ⚡ Quickstart
 
 Clone this repository and install it in your virtual environment per:
 
 ```commandline
 python -m venv .venv
 source .venv/bin/activate
-pip install -e package
+pip install aicard
 ```
 
-Run manually any evaluation pipeline like so:
-
-```commandline
-python -m old_tests.demo
-```
-
-## :brain: About
-
-We offer an standardized structure for model cards to be filled
-either manually or (semi-)automatically. Here is a manually generated card
-that is saved as HTML and previewed in the browser.
+If you are a developer working on this repository, clone it and install it locally
+per `pip install -e package` instead. Create your first model card like below.
 
 ```python
-import modelcard as mc
-import webbrowser
+# demo.py
+import aicard as aic
 
-card = mc.ModelCard()
+card = aic.ModelCard()
 card.title = "Model Card"
 card.model.name = "Llama"
-card.model.version = "0.1.0"
+card.model.overview = "This is a model overview. Freely add <b>html</b> or *markdown*."
+card.model.version = "3.2"
 card.considerations.use_case = "text generation"
 
-card.save_html(filename="temp.html", editable=False)
-webbrowser.open("temp.html")
+print(card)
 ```
 
-You can perform manual numerical assessment
+```commandline
+> python demo.py
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                                  Model Card                                  ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+completion        🧩🧩⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️                                        
+
+                                     model                                      
+name               Llama                                                        
+overview           This is a model overview. Freely add html or markdown.       
+version            3.2                                                       
+
+                                 considerations                                 
+use case           text generation   
+```
+
+
+## 🧠 Assistants
+
+Perform manual numerical assessment
 across a wide variety of available tasks holding popular
 evaluation methodologies and measures. 
 If you need customization, you can create your own tasks too. 
-**This functionality is under construction.**
 
 ```python
-mc.evaluation.evaluate(
+aic.evaluation.evaluate(
     data={
         "boxes": [[[300, 100, 315, 150],[300, 100, 315, 150]]],
         "labels": [[0,1]],
         "target": ["labels"]
     },
     pipeline=lambda x:[[x["boxes"][0], x["labels"][0], [0.1,0.9]]], # your model
-    task=mc.evaluation.tasks.vision.object_detection,
+    task=aic.evaluation.tasks.vision.object_detection,
 )
 # or you can run ts.evaluation.evaluate(...) to obtain a dictionary of metric values
 ```
 
-Finally, you have the option to collaborate with LLM assistants
-to fill in qualitative aspects of the model card from a software's repository. 
-**This functionality is under construction.**
+You have the option to collaborate with LLM assistants too!
+These let you fill in qualitative aspects of the model card from a software's repository.
+In the simplest case, the assistants will be owned by you, but
+you can collaborate with the online service too.
 
 ```python
 card.assistant(
@@ -78,31 +90,34 @@ of your model card that is friendlier to laypeople to read and parse through.
 
 ```python
 card.gist(
-    model=mc.assistants.olama,
+    model=aic.assistants.olama,
     dotenv=".env" # assistant configuration
 )
 ```
 
-## :hammer_and_wrench: Hosting a local server
-
-Clone this repository and install it in your virtual environment per:
+## 🛠️ Hosting a local server
 
 ```commandline
 python -m venv .venv
 source .venv/bin/activate
-pip install -e package
+pip install aicard
 ```
 
-Then create a dictionary of assistants and start a flask. Below is
+If you are a developer working on this repository, clone it and install it locally
+per `pip install -e package` instead.
+
+Then create a dictionary of assistants and start a flask. This will set up
+all required steps. If you want console instead of persistent logging, skip
+the `log_file` argument. Below is
 an example service whose assistant is primarily used for testing:
 
 ```python
-from modelcard.service import serve, TestAssistant
+from aicard.service import serve, TestAssistant
 
-app = serve("/docs", {"tassist": TestAssistant()})
+app = serve("/docs", {"tassist": TestAssistant()}, log_file="log.txt")
 app.run()
 ```
 
-## :scroll: License
+## 📜 License
 
 TBD

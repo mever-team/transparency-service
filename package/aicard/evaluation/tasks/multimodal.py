@@ -1,6 +1,6 @@
-from modelcard.evaluation import params
-from modelcard.evaluation import metrics
-from modelcard.evaluation.task import Task, targets
+from aicard.evaluation import params
+from aicard.evaluation import metrics
+from aicard.evaluation.task import Task, targets
 
 audio_text_to_text = Task(
     "Audio-Text to Text",

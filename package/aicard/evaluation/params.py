@@ -4,7 +4,7 @@ import validators
 import requests
 from PIL import Image
 from io import BytesIO
-from modelcard.evaluation import loaders
+from aicard.evaluation import loaders
 
 def unknown(data, preds, target_column, num_classes_model, anns, device):
     raise NotImplemented("Unknown parameters for the task")

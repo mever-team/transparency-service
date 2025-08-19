@@ -34,7 +34,7 @@ def pipeline(data):
 
 
 # Step 4: Run evaluation
-from modelcard import evaluation
+from aicard import evaluation
 
 metrics = evaluation.run(
     data=data_test, pipeline=pipeline, task="Text Classification", batch_size=4

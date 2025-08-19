@@ -1,7 +1,7 @@
-import modelcard
+import aicard
 
-mc = modelcard.model_card_generator.ModelCard()
-ai = modelcard.ai_assistant.AI_Assistant(model_card=mc)  # llama default
+mc = aicard.model_card_generator.ModelCard()
+ai = aicard.ai_assistant.AI_Assistant(model_card=mc)  # llama default
 # ai = transparency_service.ai_assistant.AI_Assistant(model = 'gpt', model_card=mc)
 
 

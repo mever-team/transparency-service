@@ -1,5 +1,5 @@
-from modelcard.service.server import serve
-from modelcard.service.assistant import TestAssistant
+from aicard.service.server import serve
+from aicard.service.assistant import TestAssistant
 import json
 import time
 
@@ -7,7 +7,7 @@ app, gc = serve(
     redirect_index="/docs",
     assistants={"tassist": TestAssistant(delay=0.1)}, # delay is the number of seconds in which no more updates are available
     root=None, # non-persistent in-memory database
-    log_file="tests/logs.txt"
+    log_file="tests/log.txt"
 )
 
 client = app.test_client()

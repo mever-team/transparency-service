@@ -10,7 +10,7 @@ import sklearn
 import numpy as np
 from PIL import Image
 import pandas as pd
-from modelcard.card import ModelCard
+from aicard.card import ModelCard
 import kagglehub
 import shutil
 from typing import List, Any

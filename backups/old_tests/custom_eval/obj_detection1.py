@@ -50,7 +50,7 @@ def pipeline(data):
 
 
 # Step 4: Run evaluation
-from modelcard import evaluation
+from aicard import evaluation
 
 metrics = evaluation.run(
     data=img, pipeline=pipeline, anns=anns, task="Object Detection", batch_size=4

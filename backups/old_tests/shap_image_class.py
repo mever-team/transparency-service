@@ -4,7 +4,7 @@ from tensorflow.keras.applications.resnet50 import ResNet50, preprocess_input
 
 import shap
 
-import modelcard
+import aicard
 
 # load pre-trained model and data
 model = ResNet50(weights="imagenet")
@@ -24,6 +24,6 @@ def f(x):
     return model(tmp)
 
 
-modelcard.explainers.shap.image.classification.explainer(
+aicard.explainers.shap.image.classification.explainer(
     f, X[1:3], output_names=class_names
 )

@@ -1,11 +1,11 @@
-from modelcard.card import ModelCard
-from modelcard.service.assistant import Assistant
+from aicard.card import ModelCard
+from aicard.service.assistant import Assistant
 from flask import Flask, abort, redirect, request, jsonify
 from flasgger import Swagger
 from threading import Lock, Thread
-from modelcard.service import users
-from modelcard.service import converters
-from modelcard.service.logger import Logger
+from aicard.service import users
+from aicard.service import converters
+from aicard.service.logger import Logger
 import secrets
 import time
 from threading import Thread
@@ -827,7 +827,7 @@ def serve(
           - name: body
             in: body
             required: true
-            description: Partial or full model card JSON to update the card with. This can be either in the dynamic format used by this API or in a static format that is exported by the modelcard library.
+            description: Partial or full model card JSON to update the card with. This can be either in the dynamic format used by this API or in a static format that is exported by the aicard library.
             schema:
               type: object
           - name: Authorization

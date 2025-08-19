@@ -5,7 +5,7 @@ dataset = load_dataset("lytang/LLM-AggreFact")
 data_test = dataset["test"]
 
 # Step 2: Call AI-Assistant
-from modelcard.agents import AI_Assistant
+from aicard.agents import AI_Assistant
 
 aia = AI_Assistant(model="gpt-3.5-turbo")
 aia.dataset_summary(data_test)
@@ -27,7 +27,7 @@ from datasets import load_dataset
 dataset = load_dataset("google-research-datasets/go_emotions", split="test")
 
 # Step 2: Call AI-Assistant
-from modelcard.agents import AI_Assistant
+from aicard.agents import AI_Assistant
 
 aia = AI_Assistant(model="gpt-3.5-turbo")
 aia.dataset_summary(dataset)

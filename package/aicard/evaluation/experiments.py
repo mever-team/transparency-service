@@ -1,9 +1,9 @@
 import torch
 import datasets
 import inspect
-from modelcard.evaluation.task import Task
-from modelcard.evaluation import tasks
-from modelcard.evaluation import loaders
+from aicard.evaluation.task import Task
+from aicard.evaluation import tasks
+from aicard.evaluation import loaders
 
 def handle_object_special_case(data, task: Task):
     t2t = task.targets

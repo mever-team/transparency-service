@@ -1,6 +1,6 @@
 from transformers import pipeline, AutoTokenizer
 from datasets import load_dataset
-import modelcard as mc
+import aicard as aic
 
 classifier = pipeline(
     "text-classification",
@@ -22,10 +22,10 @@ def pipeline(data):
     simple_scores = [score_dict['score'] for score_for_both_labels in full_scores for score_dict in score_for_both_labels if score_dict['label'] == 'consistent']
     return simple_scores
 
-metrics = mc.evaluation.evaluate(
+metrics = aic.evaluation.evaluate(
     data=data_test,
     pipeline=pipeline,
-    task=mc.evaluation.tasks.nlp.text_classification,
+    task=aic.evaluation.tasks.nlp.text_classification,
     batch_size=4)
 print(metrics)
 

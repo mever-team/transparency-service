@@ -1,6 +1,6 @@
 import requests
 import json
-from modelcard.agents.agent import Agent
+from aicard.agents.agent import Agent
 
 
 class Ollama(Agent):

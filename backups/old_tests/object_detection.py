@@ -1,4 +1,4 @@
-import modelcard
+import aicard
 from transformers import DetrImageProcessor, DetrForObjectDetection
 import torch
 import json
@@ -50,7 +50,7 @@ for i in range(len(imgIds)):
     input("see")
 
 
-metrics = modelcard.evaluation.evaluate(
+metrics = aicard.evaluation.evaluate(
     model=mymodel,
     preprocessor=preprocessor,
     postprocessor=postprocessor,

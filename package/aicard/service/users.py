@@ -6,7 +6,7 @@ import time
 import os
 import atexit
 import sys
-from modelcard.card import ModelCard
+from aicard.card import ModelCard
 
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
@@ -92,7 +92,7 @@ class UserDB:
         if not self.find_user("users", admin_name):
             self.insert_user("users", admin_name, admin_email, admin_password)
             logger.info("First time run detected.")
-            logger.ok(f"Created database and administrator user with default credentials.\n * name: {admin_name}\n * password: {'*'*len(admin_password)}")
+            logger.ok(f"Created database and administrator user with default credentials.\n * name: {admin_name}\n * password: {admin_password}")
             logger.warn("REMEMBER TO CHANGE THE DEFAULT ADMINISTRATOR PASSWORD")
         else: logger.ok("Database loaded.")
 

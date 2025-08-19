@@ -1,8 +1,8 @@
 # This example shows how to create a bar plot and put it in the Model Card
-import modelcard
+import aicard
 import numpy as np
 
-mc = modelcard.model_card_generator.ModelCard()
+mc = aicard.model_card_generator.ModelCard()
 
 # Generate fake data
 y_true_all = [

@@ -1,5 +1,5 @@
 import time
-from modelcard.card import ModelCard
+from aicard.card import ModelCard
 
 
 class Assistant:
