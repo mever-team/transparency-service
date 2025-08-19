@@ -39,3 +39,7 @@ class Logger:
     def error(self, message: str, user: str | None = None):
         if user: message = user + " - " + message
         self._log("ERROR", message, self.ANSI_RED)
+
+    def fatal(self, message: str, user: str | None = None):
+        self.error(message, user)
+        raise Exception(message)

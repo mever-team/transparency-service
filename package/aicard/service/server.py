@@ -895,10 +895,10 @@ def serve(
         if json_data:
             try: card.card.data.assign(converters.dynamic2dict(json_data, {"title"}))
             except AssertionError as e:
-                print("Assertion error: "+str(e))
+                logger.warn("Assertion error: "+str(e))
                 abort(500, description=str(e))
             except Exception as e:
-                print("Exception: "+str(e))
+                logger.warn("Exception: "+str(e))
                 abort(500, description=str(e))
         flattened = card.card.data.flatten()
         columns = list(flattened.keys())

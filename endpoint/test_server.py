@@ -12,6 +12,7 @@ from aicard.service import serve, TestAssistant
 from threading import Thread
 
 app, gc = serve("/apidocs", {"tassist": TestAssistant(delay=5)})
+
 if __name__ == "__main__":
     Thread(target=gc, daemon=True).start()
-    app.run()
+    app.run(threaded=False)  # TODO: temporary measure for development

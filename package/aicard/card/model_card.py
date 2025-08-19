@@ -18,7 +18,7 @@ class ModelCard(
     Metrics,
     #VersionControl,
 ):
-    def __init__(self):
+    def __init__(self, connector=None):
         object.__setattr__(self, "data", DotDict(
             title="Model Card",
             model=DotDict(name="", overview="", author="", date="", version="", type="", license="", github="", paper="", contact="", more=""),
@@ -27,17 +27,39 @@ class ModelCard(
             eval_set=DotDict(datasets="", motivation="", pre_processing="", standards="", update="", more=""),
             analysis=DotDict(analysis="", metrics="", thresholds="", uncertainty="", more=""),
         ))
+        self.connector = connector
         #VersionControl.__init__(self)
 
+    def __enter__(self):
+        assert self.connector, "You need a model card connector to use it as a context"
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.commit()
+        return False
+
+    def __del__(self):
+        if self.connector:
+            assert json.dumps(self.connector.prototype.data) == json.dumps(self.data), \
+                "There are uncommited changes to a model card with a connector. Do one of these:\n * Commit the changes\n * Detach the connector\n * Use the card as a context to auto-commit"
+
+    def detach(self):
+        self.connector = None
+        return self
+
     def __getattr__(self, key):
-        if key=="data": return object.__getattribute__(self, key)
+        if key in ["data", "connector"]: return object.__getattribute__(self, key)
         if key in self.data: return self.data[key]
         raise AttributeError
 
     def __setattr__(self, key, value):
-        if key=="data": return object.__setattr__(self, key, value)
+        if key in ["data", "connector"]: return object.__setattr__(self, key, value)
         if key in self.data: self.data[key] = value
         return object.__setattr__(self, key, value)
+
+    def commit(self):
+        assert self.connector, "The current model card does not have any connector to commit to (either it was not obtained from a connection or it was detached)."
+        self.connector.prototype.data.assign(self.data)
 
     def quality(self) -> float:
         nom = 0
@@ -79,8 +101,7 @@ class ModelCard(
         ret = ""
         card = self.to_markdown_card()
         for key, dotdict in card.data.items():
-            if not isinstance(dotdict, DotDict):
-                ret += f"# {dotdict}\n"
+            if not isinstance(dotdict, DotDict): ret += f"# {dotdict}\n"
         quality = self.quality()
         ret += "*completion*".ljust(20)+ "🧩"*int(quality*20)+"⚠️"*(20-int(quality*20))
         ret += "\n"
@@ -88,10 +109,8 @@ class ModelCard(
             if isinstance(dotdict, DotDict):
                 segment = ""
                 for field, value in dotdict.items():
-                    if value.strip():
-                        segment += f"{("*"+field.replace("_", " ")+"*").ljust(20)} {value.strip()}\n\n"
-                if segment:
-                    ret += f"\n## {key.replace("_", " ")}\n"+segment
+                    if value.strip(): segment += f"{("*"+field.replace("_", " ")+"*").ljust(20)} {value.strip()}\n\n"
+                if segment: ret += f"\n## {key.replace("_", " ")}\n"+segment
         return ret
 
     def __str__(self):

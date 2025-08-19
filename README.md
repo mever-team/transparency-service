@@ -3,7 +3,8 @@
 This SDK contains a collection of methods to create, manage, 
 and edit AI model cards. Cards can be stored either locally or in
 an online service (that can also be self-hosted). We finally provide
-methods to automatically populate fields.
+methods to populate fields by analyzing datasets by computing well-known 
+measures or calling AI assistants.
 
 *Alpha version - Current apis and functionalities are unstable.*
 
@@ -73,43 +74,96 @@ aic.evaluation.evaluate(
 
 You have the option to collaborate with LLM assistants too!
 These let you fill in qualitative aspects of the model card from a software's repository.
-In the simplest case, the assistants will be owned by you, but
-you can collaborate with the online service too.
+In the simplest case, the assistants will be owned by you. Buf, if you want
+persistent storage of your cards, you can collaborate with the public or self-hosted service too 
+(see below). The assistant will create a copy of the model card with changes applied.
 
 ```python
-card.assistant(
+card = card.assistant(
     repository="myproject/", # your model's git repository or working directory here
     model=mc.assistants.olama,
-    dotenv=".env", # assistant configuration
+    dotenv=".env", # assistant configuration file
 )
 ```
 
-The AI assistant can even go a step further and help create a simplified version 
+The AI assistant can also create a simplified version 
 of your model card that is friendlier to laypeople to read and parse through.
-**This functionality is under construction.**
 
 ```python
-card.gist(
+card = card.gist(
     model=aic.assistants.olama,
-    dotenv=".env" # assistant configuration
+    dotenv=".env" # assistant configuration file
 )
 ```
 
-## 🛠️ Hosting a local server
+## 📡 Connecting to a server
 
-```commandline
-python -m venv .venv
-source .venv/bin/activate
-pip install aicard
+You can link to a public or self-hosted server for persistent card storage.
+Here we will link to the public server, with can be found at `URL` (to be decided).
+To work with a server you need to log in first and create a card.
+
+```python
+# the credentials bellow are the default for self-hosted servers
+conn = aic.connect("URL").login(username="admin", password="admin")  
+card = conn.create()  # no argument for a brand new card
 ```
 
-If you are a developer working on this repository, clone it and install it locally
-per `pip install -e package` instead.
+Alternatively, connect with a dotenv file holding those fields:
 
-Then create a dictionary of assistants and start a flask. This will set up
-all required steps. If you want console instead of persistent logging, skip
-the `log_file` argument. Below is
-an example service whose assistant is primarily used for testing:
+```python
+# the credentials bellow are the default for self-hosted servers
+conn = aic.connect("URL").login(dotenv=".env")  
+card = conn.create()
+```
+
+You can also search for cards. Cards that you do not own do not come
+with any connection attached, and therefore cannot be used as contexts.
+To simplify usage, the default argument value `owned_only=True` retrieves
+only the cards owned by you.
+
+```python
+for card in conn.search("Model Card", owned_only=True, top=10):
+    print(card.title)  # treat it as a normal card
+```
+
+Submit local card modifications to the server by calling `card.commit()`. 
+The card keeps track of the connection. If you fail to do this throughout your program, 
+you will eventually get an assertion error. Call `card.detach()` 
+to safely detach a card from a connection without commiting 
+pending changes (this disables further commits). The best practice is to use the card
+as a context when making changes that require a commit, like below:
+
+```python
+conn = aic.connect("http://127.0.0.1:5000", username="admin", password="admin")
+with conn.create(card) as card:
+    card.title = "Updated model card name"
+```
+
+Connections can also substitute `aic` as the environment of assistants. 
+For safety, you will get an error if you try to call
+a connection gist or metric computation without commiting the card first,
+as the server operate in its own copy. 
+
+```python
+card = card.gist(
+    model=aic.assistants.olama,
+    dotenv=conn  # use the connection as assistant configuration
+)
+```
+
+Server load may delay the above snippet, as it blocks until notified by the sever. 
+Finally, the server may not support the assistant, for example if it is a custom one.
+
+## 🛠️ Self-hosting a server
+
+If you have *aicard* installed, you can immediately self-host a server.
+To do so, create a dictionary of assistants and start a flask service. 
+This will set up everything the first time, including a database. 
+If you do not plan to expose the server externally, you can login with
+the default administrator credentials, like above.
+If you want console instead of persistent logging, skip 
+the `log_file` argument. 
+Below is an example service whose assistant is primarily used for testing:
 
 ```python
 from aicard.service import serve, TestAssistant
