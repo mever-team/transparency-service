@@ -17,7 +17,7 @@ def verify_password(password: str, hashed: str) -> bool:
 class UserDB:
     def __init__(self, logger, root:str="db", admin_name:str="admin", admin_password:str="admin", admin_email:str=""):
         if not root:
-            print("Initializing non-persistent testing database")
+            logger.info("Initializing non-persistent testing database")
             conn = sqlite3.connect(":memory:", check_same_thread=True)
         else:
             os.makedirs(root, exist_ok=True)
@@ -92,8 +92,8 @@ class UserDB:
         if not self.find_user("users", admin_name):
             self.insert_user("users", admin_name, admin_email, admin_password)
             logger.info("First time run detected.")
-            logger.ok(f"Created database and administrator user with default credentials.\n * name: {admin_name}\n * password: {admin_password}")
-            logger.warn("CHANGE THE ADMINISTRATOR PASSWORD")
+            logger.ok(f"Created database and administrator user with default credentials.\n * name: {admin_name}\n * password: {'*'*len(admin_password)}")
+            logger.warn("REMEMBER TO CHANGE THE DEFAULT ADMINISTRATOR PASSWORD")
         else: logger.ok("Database loaded.")
 
     def find_user(self, table: str, username: str):

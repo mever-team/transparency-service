@@ -6,12 +6,32 @@ import time
 app, gc = serve(
     redirect_index="/docs",
     assistants={"tassist": TestAssistant(delay=0.1)}, # delay is the number of seconds in which no more updates are available
-    root=None # non-persistent in-memory database
+    root=None, # non-persistent in-memory database
+    log_file="tests/logs.txt"
 )
 
 client = app.test_client()
 admin = client.post('/login', json={"username": "admin","password": "admin"})
 admin = json.loads(admin.data)["token"]
+
+def test_user_management():
+    user_id = client.post('/register', json={})
+    assert user_id.status_code==400
+    user_id = client.post('/register', json={"username": "test","password": "", "email": "test"})
+    assert user_id.status_code==400
+    user_id = client.post('/register', json={"username": "","password": "test", "email": "test"})
+    assert user_id.status_code==400
+    user_id = client.post('/register', json={"username": "test","password": "test", "email": ""})
+    assert user_id.status_code==400
+    user_id = client.post('/register', json={"username": "test","password": "test", "email": "test"})
+    assert client.post('/users/test/accept', headers={"Authorization": f"Bearer {admin}"}, json={}).status_code==200
+    user_id = client.post('/login', json={"username": "test","password": "test"})
+    assert user_id.status_code==200
+    auth = json.loads(user_id.data)["token"]
+    assert client.delete('/users/test', headers={"Authorization": f"Bearer {auth}"}, json={}).status_code==200
+    user_id = client.post('/login', json={"username": "test","password": "test"})
+    assert user_id.status_code!=200
+
 
 def test_cards():
     response = client.post('/cards', json={})

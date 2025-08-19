@@ -9,3 +9,4 @@ temp.html
 db/
 tests/db/
 .mc_vers_ctrl
+tests/logs.txt

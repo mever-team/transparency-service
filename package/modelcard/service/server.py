@@ -107,10 +107,10 @@ def serve(
     admin_password: str = "admin",
     token_expiration_secs: int = 60*60,
     root:str|None = "db", # None or "" initializes a non-persistent database for testing
-    logfile:str|None = None # None or "" uses the console for logging
+    log_file:str|None = None # None or "" uses the console for logging
 ):
     card_cache_lock = Lock()
-    logger = Logger()
+    logger = Logger(log_file)
     token2expiration = dict()
     token2user = dict()
     conn = users.UserDB(logger=logger, root=root)
@@ -257,6 +257,7 @@ def serve(
             if cur.rowcount: deleted = True
             conn.conn.commit()
         if not deleted: abort(404, description="User not found")
+        logger.warn(username+" - deleted")
         return jsonify({"deleted": username})
 
     @app.route('/users/<string:username>/accept', methods=['POST'])
@@ -299,7 +300,7 @@ def serve(
         cursor.execute("SELECT username, email, password FROM pending_users WHERE username = ?",(username,))
         row = cursor.fetchone()
         if not row: abort(404, description="Pending user not found")
-        cursor.execute("INSERT INTO users (username, email, password) VALUES (?, ?, ?)",(row[0], row[1], users.hash_password(row[2])))
+        cursor.execute("INSERT INTO users (username, email, password) VALUES (?, ?, ?)",(row[0], row[1], row[2]))
         cursor.execute("DELETE FROM pending_users WHERE username = ?",(username,))
         conn.conn.commit()
         return jsonify({"promoted": username})
@@ -344,8 +345,8 @@ def serve(
         username = data.get("username")
         email = data.get("email")
         password = data.get("password")
-        if not username or not email or not password: abort(400, description="Missing fields from username, email, or password")
-        if conn.find_user('users', username) or conn.find_user('pending_users', username): abort(409, description="User already exists")
+        if not username or not email or not password: return "Missing fields among username, email, or password", 400# abort(400, description="Missing fields among username, email, or password")
+        if conn.find_user('users', username) or conn.find_user('pending_users', username): return "User already exists", 409 #abort(409, description="User already exists")
         conn.insert_user('pending_users', username, email, password)
         return jsonify({"status": "pending approval"}), 201
 
@@ -387,8 +388,8 @@ def serve(
             description: Invalid credentials.
         """
         data = request.get_json()
-        username = data.get("username")
-        password = data.get("password")
+        username = data.get("username", "")
+        password = data.get("password", "")
         if username == admin_username and password == admin_password:
             token = secrets.token_urlsafe(32)
             token2expiration[token] = time.time() + token_expiration_secs
