@@ -24,3 +24,4 @@ rich
 flask
 flasgger
 bcrypt
+python-dotenv

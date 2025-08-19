@@ -17,7 +17,6 @@ def parse_requirements(filename):
         reqs = [line.strip() for line in f if line.strip() and not line.startswith("#")]
     return reqs
 
-
 setup(
     name="aicard",
     version="0.3.2",

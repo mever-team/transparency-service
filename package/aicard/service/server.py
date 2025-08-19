@@ -9,6 +9,7 @@ from aicard.service.logger import Logger
 import secrets
 import time
 from threading import Thread
+from dotenv import dotenv_values
 
 
 def exists(condition, message):
@@ -101,14 +102,25 @@ class ModelCardEntry:
         return {"status": "editable", "message": "You can edit the model card"}
 
 def serve(
-    redirect_index,
     assistants: dict[str, Assistant],
-    admin_username: str = "admin",
-    admin_password: str = "admin",
+    redirect_index: str|None = None,
+    admin_username: str|None = None,
+    admin_password: str|None = None,
+    env: str|None = None,
     token_expiration_secs: int = 60*60,
     root:str|None = "db", # None or "" initializes a non-persistent database for testing
     log_file:str|None = None # None or "" uses the console for logging
 ):
+    if env: config = dotenv_values(env)
+    else: config = dict()
+    if not admin_username: admin_username = config.get("USER")
+    if not admin_password: admin_password = config.get("PASS")
+    if not redirect_index: redirect_index = config.get("INDEX")
+    if not log_file: log_file = config.get("LOG", log_file)
+    assert admin_username, f"Admin username not found in {env} USER or arguments"
+    assert admin_password, f"Admin password not found in {env} PASS or arguments"
+    assert redirect_index, f"Index route to redirect not found in {env} INDEX or arguments"
+
     card_cache_lock = Lock()
     logger = Logger(log_file)
     token2expiration = dict()

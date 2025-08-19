@@ -168,9 +168,14 @@ card = conn.create()  # no argument for a brand new card
 Alternatively, connect with a dotenv file holding those fields:
 
 ```python
-# the credentials bellow are the default for self-hosted servers
-conn = aic.connect("URL").login(dotenv=".env")  
+conn = aic.connect("URL").login(env=".env")  
 card = conn.create()
+```
+
+```bash
+# .env
+USER=admin
+PASS=admin
 ```
 
 You can also search for cards. Cards that you do not own do not come
@@ -219,14 +224,24 @@ This will set up everything the first time, including a database.
 If you do not plan to expose the server externally, you can login with
 the default administrator credentials, like above.
 If you want console instead of persistent logging, skip 
-the `log_file` argument. 
+the `log_file` argument. Do note that, if an `.env` file is provided, then 
+there will be an attempt to retrieve missing keyword arguments from there.
 Below is an example service whose assistant is primarily used for testing:
 
 ```python
 from aicard.service import serve, TestAssistant
 
-app = serve("/docs", {"tassist": TestAssistant()}, log_file="log.txt")
+app = serve({"tassist": TestAssistant()}, env=".env")
 app.run()
+```
+
+
+```bash
+# .env
+INDEX=/apidocs # redirect_index
+USER=admin  # admin_username 
+PASS=admin  # admin_password
+LOG=log.txt # log_file
 ```
 
 ## 📜 License
