@@ -424,6 +424,12 @@ def serve(
             required: false
             description: Case-insensitive filter on card titles.
             example: "my card"
+          - name: creator
+            in: body
+            type: string
+            required: false
+            description: Case-sensitive filter on card creator names.
+            example: "admin"
           - name: page
             in: body
             type: integer
@@ -469,13 +475,56 @@ def serve(
         page = max(int(data.get('page', 1)), 1)
         page_size = max(int(data.get('page_size', 10)), 1)
         cursor = conn.conn.cursor()
+        owner = data.get("creator", "").strip().lower()
         if query: cursor.execute("SELECT COUNT(*) FROM cards WHERE LOWER(title) LIKE ?", (f"%{query}%",))
         else: cursor.execute("SELECT COUNT(*) FROM cards")
         total = cursor.fetchone()[0]
         num_pages = (total + page_size - 1) // page_size
         offset = (page - 1) * page_size
-        if query: cursor.execute("SELECT id, title, user, desc FROM cards WHERE LOWER(title) LIKE ? ORDER BY id LIMIT ? OFFSET ?", (f"%{query}%", page_size, offset))
-        else: cursor.execute("SELECT id, title, user, desc FROM cards ORDER BY id LIMIT ? OFFSET ?", (page_size, offset))
+        if query and owner:
+            cursor.execute(
+                """
+                SELECT id, title, user, desc
+                FROM cards
+                WHERE LOWER(title) LIKE ?
+                  AND user = ?
+                ORDER BY id
+                LIMIT ? OFFSET ?
+                """,
+                (f"%{query.lower()}%", owner, page_size, offset)
+            )
+        elif query:
+            cursor.execute(
+                """
+                SELECT id, title, user, desc
+                FROM cards
+                WHERE LOWER(title) LIKE ?
+                ORDER BY id
+                LIMIT ? OFFSET ?
+                """,
+                (f"%{query.lower()}%", page_size, offset)
+            )
+        elif owner:
+            cursor.execute(
+                """
+                SELECT id, title, user, desc
+                FROM cards
+                WHERE user = ?
+                ORDER BY id
+                LIMIT ? OFFSET ?
+                """,
+                (owner, page_size, offset)
+            )
+        else:
+            cursor.execute(
+                """
+                SELECT id, title, user, desc
+                FROM cards
+                ORDER BY id
+                LIMIT ? OFFSET ?
+                """,
+                (page_size, offset)
+            )
         rows = cursor.fetchall()
         results = [{"id": row[0], "name": row[1], "creator": row[2], "desc": row[3]} for row in rows]
         return jsonify({"results": results, "pages": num_pages})

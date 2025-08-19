@@ -8,7 +8,7 @@ from pathlib import Path
 # - deploy : twine upload dist/*
 # https://kynan.github.io/blog/2020/05/23/how-to-upload-your-package-to-the-python-package-index-pypi-test-server
 
-this_dir = Path(__file__).parent
+this_dir = Path(__file__).parent.parent
 long_description = (this_dir / "README.md").read_text(encoding="utf-8")
 
 
@@ -20,7 +20,7 @@ def parse_requirements(filename):
 
 setup(
     name="aicard",
-    version="0.3",
+    version="0.3.2",
     packages=find_packages(),
     install_requires=parse_requirements("requirements.txt"),
     description="Compute and organize model cards locally or online.",

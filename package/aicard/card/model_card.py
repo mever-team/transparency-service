@@ -22,7 +22,7 @@ class ModelCard(
         object.__setattr__(self, "data", DotDict(
             title="Model Card",
             model=DotDict(name="", overview="", author="", date="", version="", type="", license="", github="", paper="", contact="", more=""),
-            considerations=DotDict(use_case="", oversight="", out_of_scope_use="", limitations="", ethical_risks="", sofware="", hardware="", instructions="", inputs_outputs="", factors="", more=""),
+            considerations=DotDict(use_case="", oversight="", out_of_scope_use="", limitations="", ethical_risks="", software="", hardware="", instructions="", inputs_outputs="", factors="", more=""),
             training_set=DotDict(datasets="", motivation="", pre_processing="", standards="", update="", more=""),
             eval_set=DotDict(datasets="", motivation="", pre_processing="", standards="", update="", more=""),
             analysis=DotDict(analysis="", metrics="", thresholds="", uncertainty="", more=""),
@@ -41,7 +41,7 @@ class ModelCard(
     def __del__(self):
         if self.connector:
             assert json.dumps(self.connector.prototype.data) == json.dumps(self.data), \
-                "There are uncommited changes to a model card with a connector. Do one of these:\n * Commit the changes\n * Detach the connector\n * Use the card as a context to auto-commit"
+                "There are uncommitted changes to a model card with a connector. Do one of these:\n * Commit the changes\n * Detach the connector\n * Use the card as a context to auto-commit"
 
     def detach(self):
         self.connector = None
@@ -58,8 +58,18 @@ class ModelCard(
         return object.__setattr__(self, key, value)
 
     def commit(self):
+        # from aicard.service import converters
         assert self.connector, "The current model card does not have any connector to commit to (either it was not obtained from a connection or it was detached)."
+        if json.dumps(self.connector.prototype.data) == json.dumps(self.data):
+            self.connector.client.logger.info(f"Nothing to commit")
+            return
+        print(json.dumps(self.data))
+        self.connector.client.put(f"/card/{self.connector.id}", json=self.data)
         self.connector.prototype.data.assign(self.data)
+        self.connector.client.logger.info(f"Committed card")
+
+    def assign(self, other: "ModelCard"):
+        self.data.assign(other.data)
 
     def quality(self) -> float:
         nom = 0

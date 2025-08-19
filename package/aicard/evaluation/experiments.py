@@ -4,6 +4,10 @@ import inspect
 from aicard.evaluation.task import Task
 from aicard.evaluation import tasks
 from aicard.evaluation import loaders
+from aicard.card.model_card import ModelCard
+from datetime import datetime
+
+
 
 def handle_object_special_case(data, task: Task):
     t2t = task.targets
@@ -104,7 +108,8 @@ def evaluate(
     num_classes:int|None=None,  # in case the preds have more classes than target
     batch_size:int=1,
     anns: list[list[dict]]|list[dict]|None=None,
-):
+    as_card=True
+) -> dict[str,float]|ModelCard:
     if anns is None:
         anns = [None]
     if loaders.is_path(data):
@@ -131,7 +136,69 @@ def evaluate(
         device=device
     )
     ret = {metric.__name__: autocall(metric, **kwargs, device=device) for metric in task.metrics}
-    return {k: float(v) for k,v in ret.items() if v is not None}
+    ret = {k: float(v) for k,v in ret.items() if v is not None}
+    if not as_card: return ret
+
+    card = ModelCard()
+    card.title = f"{task.name} Results"
+    card.analysis.analysis = f"Evaluation was conducted at {datetime.now().date().isoformat()} for {task.name.lower()} with {batch_size} batch size. A {pipeline.__name__.replace('_', ' ')} function runs the model."
+    card.analysis.metrics = (
+            f"The following metrics were computed at {datetime.now().date().isoformat()}:<br>"
+            + "".join([f"- {k}: {v:.3f}<br>" for k, v in ret.items()])
+    )
+    card.analysis.thresholds = f"No thresholds have been applied on metric values computed at {datetime.now().date().isoformat()}."
+    card.considerations.inputs_outputs = f"Prediction targets are selected among the following columns, if found in the dataset: {', '.join(task.targets)}"
+
+    # SOFTWARE
+    import sys, subprocess, html
+    result = subprocess.run(
+        [sys.executable, "-m", "pip", "freeze"],
+        capture_output=True, text=True
+    ).stdout
+    py_result = subprocess.run(
+        [sys.executable, "--version"],
+        capture_output=True, text=True
+    ).stdout or subprocess.run(  # some versions print to stderr
+        [sys.executable, "--version"],
+        capture_output=True, text=True
+    ).stderr
+    python_version_html = html.escape(py_result.strip())
+    pip_freeze_html = "<br>".join(html.escape(line) for line in result.strip().splitlines())
+    card.considerations.software = "The following "+python_version_html+" libraries were in the model running environment. Some of these may be unrelated or used only for evaluation.<br>"+pip_freeze_html+"<br>"
+
+    # HARDWARE
+    import platform, subprocess, html, os, psutil
+    cpu_info = platform.processor() or platform.machine()
+    ram_bytes = psutil.virtual_memory().total
+    ram_gb = round(ram_bytes / (1024 ** 3), 2)
+    cuda_version = "Not found"
+    try:
+        result = subprocess.run(["nvidia-smi"], capture_output=True, text=True)
+        if result.returncode == 0:
+            for line in result.stdout.splitlines():
+                if "CUDA Version" in line:
+                    cuda_version = line.strip()
+                    break
+    except FileNotFoundError:
+        pass
+    if cuda_version == "Not found":
+        try:
+            result = subprocess.run(["nvcc", "--version"], capture_output=True, text=True)
+            if result.returncode == 0:
+                for line in result.stdout.splitlines():
+                    if "release" in line:
+                        cuda_version = line.strip()
+                        break
+        except FileNotFoundError:
+            pass
+    system_info_html = "<br>".join([
+        f"- CPU: {html.escape(cpu_info)}",
+        f"- RAM: {ram_gb} GB",
+        f"- CUDA: {html.escape(cuda_version)}"
+    ])
+    card.considerations.software = "The following hardware suffices for model running and evaluation:<br>"+system_info_html+"<br>"
+
+    return card
 
 
 # run({'label': [1, 0, 1,0,1,0,1]}, [0.2,0.8,0.8,0.1,0.8,0.3,0.6], 'label', 'Image Classification')

@@ -11,12 +11,21 @@ class CardConnector():
         self.prototype.data.assign(prototype.data)
 
 class Client():
-    def __init__(self, url, token, logger:Logger|str|None=None):
+    def __init__(self, username, url, token, logger: Logger|str|None=None):
+        self.username = username
         self.url = url
         self.token = token
         self.logger = Logger() if logger is None else Logger(logger) if isinstance(logger, str) else logger
         self.session = requests.Session()
         self.session.headers.update({"Authorization": f"Bearer {token}"})
+
+    def search(self, query: str="Model Card", owned_only: bool=True, top: int=10):
+        response = requests.post(self.url+"/cards", json={"query": query, "page_size": top, "creator": self.username if owned_only else ""})
+        if response.status_code != 200: self.logger.fatal(f"Card creation failed: {response.status_code} {response.text}")
+        results = response.json()["results"]
+        for result in results:
+            print(result)
+        return results
 
     def create(self, data=None):
         if data is None: data = ModelCard()
@@ -47,6 +56,6 @@ def connect(url, username, password, logger:Logger|str|None=None):
     response = requests.post(login_url, json={"username": username, "password": password})
     logger = Logger() if logger is None else Logger(logger) if isinstance(logger, str) else logger
     if response.status_code != 200: logger.fatal(f"Login failed: {response.status_code} {response.text}")
-    client = Client(url=url.rstrip("/"), token=response.json()["token"], logger=logger)
+    client = Client(username=username, url=url.rstrip("/"), token=response.json()["token"], logger=logger)
     client.logger.info(f"Connected to server\n * User: {username}\n * Server: {client.url}")
     return client
