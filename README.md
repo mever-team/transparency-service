@@ -103,7 +103,16 @@ print(metrics)
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                         Text Classification Results                          ┃
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-completion        🧩⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️                                         
+completion        🧩🧩🧩⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️                                       
+
+                                 considerations                                 
+software           The following hardware suffices for model running and        
+evaluation:                                                                     
+- CPU: x86_64                                                                   
+- RAM: 31.05 GB                                                                 
+- CUDA: | NVIDIA-SMI 570.169 Driver Version: 570.169 CUDA Version: 12.8 |       
+inputs outputs     Prediction targets are selected among the following columns, 
+if found in the dataset: label, class_name, ground_truth, emotion               
 
                                     analysis                                    
 analysis           Evaluation was conducted at 2025-08-19 for text              
@@ -115,7 +124,9 @@ metrics            The following metrics were computed at 2025-08-19:
 - recall_micro: 0.511                                                           
 - f1_macro: 0.450                                                               
 - f1_micro: 0.586                                                               
-- auc_roc_macro: 0.929   
+- auc_roc_macro: 0.929                                                          
+thresholds         No thresholds have been applied on metric values computed at 
+2025-08-19.       
 ```
 
 The default `as_card=True` creates a model card that is partially filled with analysis data

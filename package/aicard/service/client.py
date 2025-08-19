@@ -62,9 +62,9 @@ def connect(url:str|None=None,
     if not username: username = config.get("USER")
     if not password: password = config.get("PASS")
     if not logger: logger = config.get("LOG", logger)
-    assert url, f"url not found in {env} URL or arguments"
-    assert username, f"username not found in {env} USER or arguments"
-    assert password, f"password not found in {env} PASS or arguments"
+    assert url, f"Server url not found in {env} URL or arguments"
+    assert username, f"User username not found in {env} USER or arguments"
+    assert password, f"User password not found in {env} PASS or arguments"
 
     login_url = url.rstrip("/") + "/login"
     response = requests.post(login_url, json={"username": username, "password": password})
