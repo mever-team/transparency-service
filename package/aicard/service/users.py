@@ -18,10 +18,10 @@ class UserDB:
     def __init__(self, logger, root:str="db", admin_name:str="admin", admin_password:str="admin", admin_email:str=""):
         if not root:
             logger.info("Initializing non-persistent testing database")
-            conn = sqlite3.connect(":memory:", check_same_thread=True)
+            conn = sqlite3.connect(":memory:", check_same_thread=False)
         else:
             os.makedirs(root, exist_ok=True)
-            conn = sqlite3.connect(os.path.join(root, "auth.db"), check_same_thread=True)
+            conn = sqlite3.connect(os.path.join(root, "auth.db"), check_same_thread=False)
         conn.execute("PRAGMA foreign_keys = ON")
         conn.execute("PRAGMA journal_mode=WAL;")
 
