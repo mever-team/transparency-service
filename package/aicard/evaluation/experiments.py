@@ -141,7 +141,8 @@ def evaluate(
 
     card = ModelCard()
     card.title = f"{task.name} Results"
-    card.analysis.analysis = f"Evaluation was conducted at {datetime.now().date().isoformat()} for {task.name.lower()} with {batch_size} batch size. A {pipeline.__name__.replace('_', ' ')} function runs the model."
+    pipeline_name = pipeline.__name__ if hasattr(pipeline, "__name__") else pipeline.__class__.__name__
+    card.analysis.analysis = f"Evaluation was conducted at {datetime.now().date().isoformat()} for {task.name.lower()} with {batch_size} batch size. A {pipeline_name.replace('_', ' ')} function runs the model."
     card.analysis.metrics = (
             f"The following metrics were computed at {datetime.now().date().isoformat()}:<br>"
             + "".join([f"- {k}: {v:.3f}<br>" for k, v in ret.items()])

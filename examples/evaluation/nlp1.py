@@ -22,11 +22,13 @@ def pipeline(data):
     simple_scores = [score_dict['score'] for score_for_both_labels in full_scores for score_dict in score_for_both_labels if score_dict['label'] == 'consistent']
     return simple_scores
 
+
 metrics = aic.evaluation.evaluate(
     data=data_test,
     pipeline=pipeline,
     task=aic.evaluation.tasks.nlp.text_classification,
     batch_size=4)
+
 print(metrics)
 
 

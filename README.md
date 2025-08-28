@@ -10,7 +10,7 @@ measures or calling AI assistants.
 
 ## ⚡ Quickstart
 
-INstall *aicard* in a virtual environment like below.
+Install *aicard* in a virtual environment like below.
 If you are a developer working on this repository, clone it and install it locally
 per `pip install -e package` instead. 
 
@@ -59,12 +59,13 @@ use case           text generation
 
 ## 🧠 Assistants
 
-There are broadly two types of assistants for model evaluation: evaluation ones that can 
-quantitatively evaluate your models based on popular measures, and LLM-based ones that fill or 
-enrich qualitative fields of your cards. The last type can also run through services too.
+There are broadly two types of assistants for model evaluation: quantitative ones that 
+evaluate your models based on popular measures, and LLM-based ones that fill in
+qualitative information. The last type can also run through services too.
 
-Perform manual numerical assessment across a wide variety of available tasks holding popular
-evaluation methodologies and measures. If you need customization, you can create your own tasks too. 
+For the first type, perform manual numerical assessment across a wide variety of available 
+tasks holding popular evaluation methodologies and measures like below. 
+If you need customization, you can create your own tasks. Contributions are welcome too!
 
 ```python
 # experiment.py
@@ -130,14 +131,20 @@ thresholds         No thresholds have been applied on metric values computed at
 ```
 
 The default `as_card=True` creates a model card that is partially filled with analysis data
-automatically obtained from the evaluation process.  Otherwise, computed metrics are returned 
-as a dictionary of `(name, value)` pairs. The default case's card 
-can be merged into an existing card. Merge commands accept an argument to 
-signify whether non-empty fields of the base card should be replaced or (if not) have the
-new card's contents be appended.
+automatically obtained from the evaluation process. Otherwise, computed metrics are returned 
+as a dictionary of `(name, value)` pairs for manual usage. The default evaluation card,
+however, can be merged into another. Merge commands accept an argument to 
+signify a merge string message. If that is `None`, then merged values overwrite previous ones:
 
 ```python
-card.merge(metrics, replace=True)
+myinfo = aic.ModelCard()
+myinfo.title = "These are my experiments"
+myinfo.considerations.use_case = "This tests model card creation"
+myinfo.considerations.oversight = "MeVer team"
+
+metrics.merge(myinfo, message=None)
+
+print(metrics)
 ```
 
 You have the option to collaborate with LLM assistants too!
@@ -234,18 +241,19 @@ To do so, create a dictionary of assistants and start a flask service.
 This will set up everything the first time, including a database. 
 If you do not plan to expose the server externally, you can login with
 the default administrator credentials, like above.
-If you want console instead of persistent logging, skip 
-the `log_file` argument. Do note that, if an `.env` file is provided, then 
-there will be an attempt to retrieve missing keyword arguments from there.
+If you want console instead of persistent logging, skip any logger setup. 
+Do note that, if an `.env` file is provided, then 
+there will be an attempt to retrieve missing arguments from there.
 Below is an example service whose assistant is primarily used for testing:
 
 ```python
 from aicard.service import serve, TestAssistant
+from threading import Thread
 
-app = serve({"tassist": TestAssistant()}, env=".env")
-app.run()
+app, gc = serve({"tassist": TestAssistant(delay=5)}, env=".env")
+Thread(target=gc, daemon=True).start()  # needed for long uptimes
+app.run(threaded=False)  # current version requires single-threaded run
 ```
-
 
 ```bash
 # .env
@@ -254,6 +262,13 @@ USER=admin  # admin_username
 PASS=admin  # admin_password
 LOG=log.txt # log_file
 ```
+
+**Garbage collection (gc)** is a callback function that periodically cleans
+up resources that are *estimated* as to no longer be in use. This includes 
+cleanup of the card access cache and expired tokens. Creating a thread for running 
+the `gc` function is required for servers with long uptimes to avoid memory bloat.
+However, you can skip spawning a thread for this if host a shorter-time server 
+for managing only your own experiments.
 
 ## 📜 License
 

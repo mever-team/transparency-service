@@ -106,7 +106,7 @@ def serve(
     redirect_index: str|None = None,
     admin_username: str|None = None,
     admin_password: str|None = None,
-    env: str|None = None,
+    env: str|None = None, # retrieve missing arguments from a .env file. That can have fields USER PASS INDEX LOG (the last is the log_file)
     token_expiration_secs: int = 60*60,
     root:str|None = "db", # None or "" initializes a non-persistent database for testing
     log_file:str|None = None # None or "" uses the console for logging

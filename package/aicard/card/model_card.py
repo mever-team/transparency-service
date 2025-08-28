@@ -1,8 +1,4 @@
 import json
-from aicard.card.traits.plots import Plots
-from aicard.card.traits.repo import Repo
-from aicard.card.traits.metrics import Metrics
-from aicard.card.traits.version_control import VersionControl
 from aicard.card.traits.html import HTMLRenderer
 from aicard.card.dot_dict import DotDict
 import html2text
@@ -12,17 +8,13 @@ from rich.markdown import Markdown
 import io
 
 
-class ModelCard(
-    Plots,
-    Repo,
-    Metrics,
-    #VersionControl,
-):
+class ModelCard:
     def __init__(self, connector=None):
         object.__setattr__(self, "data", DotDict(
             title="Model Card",
             model=DotDict(name="", overview="", author="", date="", version="", type="", license="", github="", paper="", contact="", more=""),
-            considerations=DotDict(use_case="", oversight="", out_of_scope_use="", limitations="", ethical_risks="", software="", hardware="", instructions="", inputs_outputs="", factors="", more=""),
+            considerations=DotDict(use_case="", oversight="", out_of_scope_use="", limitations="", ethical_risks="", software="", hardware="",
+                                   instructions="", inputs_outputs="", factors="", more=""),
             training_set=DotDict(datasets="", motivation="", pre_processing="", standards="", update="", more=""),
             eval_set=DotDict(datasets="", motivation="", pre_processing="", standards="", update="", more=""),
             analysis=DotDict(analysis="", metrics="", thresholds="", uncertainty="", more=""),
@@ -56,6 +48,11 @@ class ModelCard(
         if key in ["data", "connector"]: return object.__setattr__(self, key, value)
         if key in self.data: self.data[key] = value
         return object.__setattr__(self, key, value)
+
+    def merge(self, data, message:str|None=None):
+        if isinstance(data, ModelCard): data = data.data
+        assert isinstance(data, dict), "Can only merge with another model card or dct"
+        self.data.append(data, message=message)
 
     def commit(self):
         from aicard.service import converters

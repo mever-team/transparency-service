@@ -31,6 +31,23 @@ class DotDict(dict):
         self._assign(other)
         return self
 
+    def _append(self, other: dict, message:str):
+        for k in self:
+            if k in other:
+                if isinstance(self[k], DotDict): self[k]._append(other[k], message)
+                elif message is None:
+                    if other.get(k): self[k] = other[k]
+                else:
+                    existing = str(self.get(k, ""))
+                    if not existing.endswith("\n"): existing += "\n"
+                    if existing: existing += "\n"
+                    self[k] = existing+message+str(other[k])
+
+    def append(self, other: dict, message: str):
+        self.validate_assign(other)
+        self._append(other, message)
+        return self
+
     def flatten(self):
         flattened = dict()
         for k, v in self.items():
