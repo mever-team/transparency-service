@@ -7,6 +7,8 @@ app, gc = serve(
     redirect_index="/docs",
     assistants={"tassist": TestAssistant(delay=0.1)}, # delay is the number of seconds in which no more updates are available
     root=None, # non-persistent in-memory database
+    admin_username="admin",
+    admin_password="admin",
     log_file="tests/log.txt"
 )
 
