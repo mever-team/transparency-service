@@ -1,5 +1,9 @@
 # AI Card
 
+![CI](https://github.com/mever-team/transparency-service/actions/workflows/ci.yml/badge.svg?branch=dev)
+![Coverage](https://github.com/mever-team/transparency-service/raw/dev/coverage.svg)
+
+
 This SDK contains a collection of methods to create, manage, 
 and edit AI model cards. Cards can be stored either locally or in
 an online service (that can also be self-hosted). We finally provide
