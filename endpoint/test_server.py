@@ -8,7 +8,8 @@
 # The delay below is for how many seconds the test agent will
 # pretend to be thinking, so that invalid requests can be tested.
 
-from aicard.service import serve, TestAssistant
+from aicard.service import serve
+from aicard.service.assistants import TestAssistant
 from threading import Thread
 
 app, gc = serve({"tassist": TestAssistant(delay=5)}, env="endpoint/.env")

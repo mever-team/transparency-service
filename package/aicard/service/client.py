@@ -1,5 +1,4 @@
 import requests
-import json
 from aicard.service.logger import Logger
 from aicard.card.model_card import ModelCard
 from dotenv import dotenv_values

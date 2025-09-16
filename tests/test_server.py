@@ -1,5 +1,5 @@
 from aicard.service.server import serve
-from aicard.service.assistant import TestAssistant
+from aicard.service.assistants import TestAssistant
 import json
 import time
 
@@ -45,7 +45,8 @@ def test_cards():
     assert len(data["results"]) == 0
 
 def test_assistants():
-    response = client.get('/assistants', headers={"Authorization": f"Bearer {admin}"})
+    response = client.get('/assistants/', headers={"Authorization": f"Bearer {admin}"})
+    print(response)
     assert response.status_code==200
     data = json.loads(response.data)
     assert isinstance(data, list)

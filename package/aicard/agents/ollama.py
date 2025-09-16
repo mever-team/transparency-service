@@ -6,7 +6,7 @@ from aicard.agents.agent import Agent
 class Ollama(Agent):
     tasks = {
         "summarization": "You are a helpful assistant that summarizes documents.",
-        "completion": "You are a helpful assistant completes json fields of a model card."
+        "completion": "You are a helpful assistant that completes json fields of a model card."
     }
 
     def __init__(self, model: str='llama3.2:3b', base_url: str="http://localhost:11434"):

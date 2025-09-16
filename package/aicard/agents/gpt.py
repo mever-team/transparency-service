@@ -6,7 +6,7 @@ from aicard.agents.agent import Agent
 class GPT(Agent):
     tasks = {
         "summarization": "You are a helpful assistant that summarizes documents.",
-        "completion": "You are a helpful assistant completes json fields of a model card."
+        "completion": "You are a helpful assistant that completes json fields of a model card."
     }
 
     def __init__(self, model='gpt-3.5-turbo', max_tokens=4000, temperature=0.7, top_p=1):

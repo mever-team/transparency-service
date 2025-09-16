@@ -1,11 +1,11 @@
 import json
-from aicard.card.traits.html import HTMLRenderer
-from aicard.card.dot_dict import DotDict
 import html2text
 import markdown2
 import rich
-from rich.markdown import Markdown
 import io
+from aicard.card.traits.html import HTMLRenderer
+from aicard.card.dot_dict import DotDict
+from rich.markdown import Markdown
 
 
 class ModelCard:
@@ -48,6 +48,25 @@ class ModelCard:
         if key in ["data", "connector"]: return object.__setattr__(self, key, value)
         if key in self.data: self.data[key] = value
         return object.__setattr__(self, key, value)
+
+    def is_stable(self):
+        return (not self.connector) or json.dumps(self.connector.prototype.data) == json.dumps(self.data)
+
+    def gist(self, assistant):
+        assert self.is_stable(), "Cannot obtain a gist while there are uncommited changes"
+        if not self.connector:
+            card = ModelCard()
+            card.data.assign(self.data)
+            assistant.refine(card)
+        else:
+            card = self.connector.create(self)
+            assistant.refine(card)
+        return card
+
+    def complete(self, assistant, url: str):
+        assert self.is_stable(), "Cannot obtain a gist while there are uncommited changes"
+        assistant.complete(self, url)
+        return self
 
     def merge(self, data, message:str|None=None):
         if isinstance(data, ModelCard): data = data.data

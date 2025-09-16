@@ -1,5 +1,5 @@
 from aicard.card import ModelCard
-from aicard.service.assistant import Assistant
+from aicard.service.assistants import Assistant
 from flask import Flask, abort, redirect, request, jsonify
 from flasgger import Swagger
 from threading import Lock, Thread
@@ -10,6 +10,7 @@ import secrets
 import time
 from threading import Thread
 from dotenv import dotenv_values
+from werkzeug.exceptions import HTTPException
 
 
 def exists(condition, message):
@@ -161,11 +162,19 @@ def serve(
     @app.errorhandler(500)
     def internal_error(e):
         logger.error(str(e))
+        if isinstance(e, HTTPException):
+            response = jsonify(error=e.description or str(e))
+            response.status_code = e.code or 500
+            return response
         return jsonify(error="Internal server error"), 500
 
     @app.errorhandler(Exception)
     def handle_unexpected_exception(e):
         logger.error(str(e))
+        if isinstance(e, HTTPException):
+            response = jsonify(error=e.description or str(e))
+            response.status_code = e.code or 500
+            return response
         return jsonify(error="Unexpected server error"), 500
 
     @app.route("/", methods=['GET'])

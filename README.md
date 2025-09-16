@@ -158,28 +158,28 @@ persistent storage of your cards, you can collaborate with the public or self-ho
 (see below). The assistant will create a copy of the model card with changes applied.
 
 ```python
-card = card.assistant(
-    repository="myproject/", # your model's git repository or working directory here
-    model=mc.assistants.olama,
-    dotenv=".env", # assistant configuration file
-)
+aic.service.assist(aic.agents.Ollama()).complete("myproject/README.md")
+card = card.complete(
+    repository="myproject/README.md", # a readme file here
+    assistant=aic.service.assist(aic.agents.Ollama())
+) # modifies and returns the card
 ```
 
-The AI assistant can also create a simplified version 
-of your model card that is friendlier to laypeople to read and parse through.
+You can also use the server's assistants by referencing them by name. In either case, 
+in addition to completing the model card, you can also create a copy of it with fields 
+summarized by the assistant.
 
 ```python
-card = card.gist(
-    model=aic.assistants.olama,
-    dotenv=".env" # assistant configuration file
-)
+card = card.gist(assistant=conn.assist("ollama")) # NOT IMPLEMENTED YET
 ```
 
 ## 📡 Connecting to a server
 
 You can link to a public or self-hosted server for persistent card storage.
-Here we will link to the public server, with can be found at `URL` (to be decided).
-To work with a server you need to log in first and create a card.
+Here we will link to the public server, with can be found at *URL* (you need 
+to register as a user first). To work with a server you need to log in with
+your credentials. Create a card from the server connection like below. You
+can pass on a card to `create` to use as a prototype.
 
 ```python
 # the credentials bellow are the default for self-hosted servers
@@ -200,9 +200,9 @@ USER=admin
 PASS=admin
 ```
 
-You can also search for cards. Cards that you do not own do not come
-with any connection attached, and therefore cannot be used as contexts.
-To simplify usage, the default argument value `owned_only=True` retrieves
+You can also search for cards in the server. Cards that you do not own do not 
+come with any connection attached, and therefore cannot be used as contexts 
+below. To simplify usage, the default argument value `owned_only=True` retrieves
 only the cards owned by you.
 
 ```python
@@ -211,11 +211,11 @@ for card in conn.search("Model Card", owned_only=True, top=10):
 ```
 
 Submit local card modifications to the server by calling `card.commit()`. 
-The card keeps track of the connection. If you fail to do this throughout your program, 
-you will eventually get an assertion error. Call `card.detach()` 
+The card keeps track of the connection. If you fail to do this throughout 
+your program, you will eventually get an assertion error. Call `card.detach()` 
 to safely detach a card from a connection without commiting 
-pending changes (this disables further commits). The best practice is to use the card
-as a context when making changes that require a commit, like below:
+pending changes (this disables further commits). The best practice is to use 
+the card as a context when making changes that require a commit, like below:
 
 ```python
 conn = aic.connect("http://127.0.0.1:5000", username="admin", password="admin")
@@ -223,16 +223,13 @@ with conn.create(card) as card:
     card.title = "Updated model card name"
 ```
 
-Connections can also substitute `aic` as the environment of assistants. 
-For safety, you will get an error if you try to call
-a connection gist or metric computation without commiting the card first,
-as the server operate in its own copy. 
+Connections can also substitute `aic` as the module of assistants. 
+For safety, you will get an error if you try to call a connection gist 
+without commiting the card first, as the server operates in its own copy 
+that needs to be updated first.
 
 ```python
-card = card.gist(
-    model=aic.assistants.olama,
-    dotenv=conn  # use the connection as assistant configuration
-)
+card = card.gist(model=conn.assistants["olama"])
 ```
 
 Server load may delay the above snippet, as it blocks until notified by the sever. 
