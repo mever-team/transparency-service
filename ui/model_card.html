@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>AI-CODE</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Transparency service for AI-model cards">
+    <meta name="robots" content="index, follow"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="author" content="laaposto">
+
+    <link rel="shortcut icon" href="imgs/favicon.ico"/>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/foundation.css"/>
+    <link rel="stylesheet" href="css/normalize.css"/>
+    <link rel="stylesheet" href="css/card/main.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Nunito|Roboto+Slab" rel="stylesheet">
+
+</head>
+<body>
+<main>
+    <section class="header_section">
+        <div class="row bigWidth">
+            <div class="small-12 medium-12 large-12 columns">
+                <div class="header_wrapper">
+                    <h2><a href="index.html">AI-CODE</a></h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Delete Success Overlay -->
+    <div id="delete-confirm-screen" class="delete-confirm-screen">
+        <div class="delete-confirm-content">
+            <h2>Delete Model Card </h2>
+            <p>This will delete the card and <strong>cannot be undone</strong>. Are you sure?</p>
+            <div class="buttons">
+                <button id="cancel-delete-btn">Cancel</button>
+                <button id="confirm-delete-btn">Delete</button>
+            </div>
+        </div>
+    </div>
+    <!-- Delete Success Overlay -->
+    <div id="delete-success-screen" class="delete-success-screen">
+        <div class="delete-success-content">
+            <h2>Card Deleted Successfully</h2>
+            <p>The model card has been removed.</p>
+            <button id="close-success-btn"><a style="text-decoration: none;color: white;" href="index.html">Home</a>
+            </button>
+        </div>
+    </div>
+    <section class="page-title">
+        <div class="row bigWidth">
+            <h1 id="model-title" class="model-title">Loading...</h1>
+        </div>
+    </section>
+
+    <section class="buttons">
+        <div class="row bigWidth">
+            <div class="cards-container" id="cards-container">
+                <p style="font-size: 15px; font-weight: 700; color: #1f1f1f;display: inline-block">Assistants: </p>
+            </div>
+            <div class="example_button" id="saveJson" style="background-color: #0081C6"> Save</div>
+            <div class="example_button" id="deleteCard" style="background-color: #E63946"> Delete</div>
+        </div>
+    </section>
+    <section class="search_section">
+        <div class="naccs">
+            <div class="row bigWidth">
+                <div style="float: left">
+                    <div class="menu">
+                        <div class="active"><span class="light"></span><span>Model</span></div>
+                        <div><span class="light"></span><span>Considerations</span></div>
+                        <div><span class="light"></span><span>Training Set</span></div>
+                        <div><span class="light"></span><span>Eval Set</span></div>
+                        <div><span class="light"></span><span>Analysis</span></div>
+                        <div><span class="light"></span><span>Related</span></div>
+                    </div>
+                </div>
+                <div style="margin-left: 240px">
+                    <ul class="nacc"></ul>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<section class="footer_section">
+    <div class="row bigWidth">
+        <div class="small-12 medium-4 large-4 columns">
+            <h3 class="footer_title">AI-CODE</h3>
+            Empowering Media Professionals against Disinformation
+        </div>
+        <div class="small-12 medium-4 large-4 columns">
+            <h3 class="footer_title">About</h3>
+            This project has received funding from the European Union’s Horizon Europe research and innovation programme
+            under grant agreement No. 101135437
+        </div>
+        <div class="small-12 medium-4 large-4 columns">
+            <h3 class="footer_title" style="border: none">&nbsp;</h3>
+
+            <img style="width: 250px;float: right;" src="img/logo_FoundedbyEU.png">
+        </div>
+    </div>
+</section>
+
+<!-- JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="js/card/bearer.js"></script>
+<script src="js/card/card.js"></script>
+</body>
+</html>
