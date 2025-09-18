@@ -1,4 +1,6 @@
 import json
+from typing import Union
+
 import html2text
 import markdown2
 import rich
@@ -68,7 +70,7 @@ class ModelCard:
         assistant.complete(self, url)
         return self
 
-    def merge(self, data, message:str|None=None):
+    def merge(self, data: Union["ModelCard",dict], message: str|None=None):
         if isinstance(data, ModelCard): data = data.data
         assert isinstance(data, dict), "Can only merge with another model card or dct"
         self.data.append(data, message=message)

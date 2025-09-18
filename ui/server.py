@@ -3,6 +3,7 @@
 # > python -m endpoint.test_server
 # examples in tests/server.py (also contains full structure of a model card)
 #
+# .venv serves index.html at http://127.0.0.1:5000
 # server specs in http://127.0.0.1:5000/apidocs
 # refer to the implementation in package/service/server.py
 # The delay below is for how many seconds the test agent will
@@ -12,7 +13,7 @@ from aicard.service import serve
 from aicard.service.assistants import TestAssistant
 from threading import Thread
 
-app, gc = serve({"tassist": TestAssistant(delay=5)}, env="endpoint/.env", redirect_index="index.html")
+app, gc = serve({"tassist": TestAssistant(delay=5)}, env="ui/.env")
 
 if __name__ == "__main__":
     Thread(target=gc, daemon=True).start()
