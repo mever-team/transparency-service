@@ -7,8 +7,8 @@
 This SDK contains a collection of methods to create, manage, 
 and edit AI model cards. Cards can be stored either locally or in
 an online service (that can also be self-hosted). We finally provide
-methods to populate fields by analyzing datasets by computing well-known 
-measures or calling AI assistants.
+methods to populate fields by analyzing datasets, automating popular
+types of algorithmic assessment, or calling AI assistants.
 
 *Alpha version - Current apis and functionalities are unstable.*
 
@@ -158,7 +158,6 @@ persistent storage of your cards, you can collaborate with the public or self-ho
 (see below). The assistant will create a copy of the model card with changes applied.
 
 ```python
-aic.service.assist(aic.agents.Ollama()).complete("myproject/README.md")
 card = card.complete(
     repository="myproject/README.md", # a readme file here
     assistant=aic.service.assist(aic.agents.Ollama())

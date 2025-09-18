@@ -141,7 +141,6 @@ def serve(
         assert isinstance(card_id, int), "Card identifier must be an integer"
         with card_cache_lock:
             card = card_cache.get(card_id, None)
-            card.touch()
             if card is None:
                 # load the card from the database
                 cursor = conn.conn.cursor()
@@ -157,6 +156,8 @@ def serve(
                     card = ModelCardEntry(model_card, card_creator, conn)
                     card.card_id = card_id
                     card_cache[card_id] = card
+            else:
+                card.touch()
         return card
 
     @app.errorhandler(500)
