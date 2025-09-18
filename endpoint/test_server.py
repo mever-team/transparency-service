@@ -12,7 +12,7 @@ from aicard.service import serve
 from aicard.service.assistants import TestAssistant
 from threading import Thread
 
-app, gc = serve({"tassist": TestAssistant(delay=5)}, env="endpoint/.env")
+app, gc = serve({"tassist": TestAssistant(delay=5)}, env="endpoint/.env", redirect_index="index.html")
 
 if __name__ == "__main__":
     Thread(target=gc, daemon=True).start()

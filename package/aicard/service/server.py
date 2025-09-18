@@ -1,6 +1,8 @@
+import os.path
+
 from aicard.card import ModelCard
 from aicard.service.assistants import Assistant
-from flask import Flask, abort, redirect, request, jsonify
+from flask import Flask, abort, redirect, request, jsonify, send_from_directory
 from flasgger import Swagger
 from threading import Lock, Thread
 from aicard.service import users
@@ -45,9 +47,9 @@ class ModelCardEntry:
             SET {", ".join(f'"{col}" = ?' for col in columns)}
             WHERE id = ?
         '''
-        cursor = self.conn.conn.cursor()
-        cursor.execute(query, values + [self.card_id])
-        self.conn.conn.commit()
+        with self.conn.conn:
+            cursor = self.conn.conn.cursor()
+            cursor.execute(query, values + [self.card_id])
 
     def start_completion(self):
         self.lock.acquire()
@@ -110,8 +112,10 @@ def serve(
     env: str|None = None, # retrieve missing arguments from a .env file. That can have fields USER PASS INDEX LOG (the last is the log_file)
     token_expiration_secs: int = 60*60,
     root:str|None = "db", # None or "" initializes a non-persistent database for testing
-    log_file:str|None = None # None or "" uses the console for logging
+    log_file:str|None = None, # None or "" uses the console for logging
+    static:str = "ui"
 ):
+    static = os.path.abspath(static)
     if env: config = dotenv_values(env)
     else: config = dict()
     if not admin_username: admin_username = config.get("USER")
@@ -123,6 +127,7 @@ def serve(
     assert redirect_index, f"Index route to redirect not found in {env} INDEX or arguments"
 
     card_cache_lock = Lock()
+    card_cache: dict[int, ModelCardEntry | None] = dict()
     logger = Logger(log_file)
     token2expiration = dict()
     token2user = dict()
@@ -136,7 +141,6 @@ def serve(
             "version": "0.0.4"
         }
     })
-    card_cache: dict[int, ModelCardEntry | None] = dict()
     def find_card(card_id: int):
         assert isinstance(card_id, int), "Card identifier must be an integer"
         with card_cache_lock:
@@ -159,6 +163,13 @@ def serve(
             else:
                 card.touch()
         return card
+
+    @app.route("/<path:path>")
+    def static_proxy(path):
+        return send_from_directory(static, path)
+
+    if __name__ == "__main__":
+        app.run(debug=True)
 
     @app.errorhandler(500)
     def internal_error(e):

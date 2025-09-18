@@ -59,7 +59,7 @@ class DotDict(dict):
     def assign_flattened(self, all_items: dict, prefix=""):
         assert not isinstance(all_items, DotDict)
         for k in list(self.keys()):
-            query = f"{prefix}__{k}"
+            query = f"{prefix}__{k}" if prefix else k
             v = self[k]
             if isinstance(v, DotDict):
                 v.assign_flattened(all_items, query)
