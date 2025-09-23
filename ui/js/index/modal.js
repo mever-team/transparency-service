@@ -8,7 +8,7 @@ var Modal = (function() {
     var closers = $qsa('.modal__close'); // an element used to close the modal
     var w = window;
     var isOpen = false;
-    var contentDelay = 400; // duration after you click the button and wait for the content to show
+    var contentDelay = 0; // duration after you click the button and wait for the content to show
     var len = trigger.length;
 
     // make it easier for yourself by not having to type as much to select an element
@@ -94,9 +94,6 @@ var Modal = (function() {
     };
 
     var open = function(m, div) {
-        $(".input-effect input").val("");
-        $(".input-effect input").removeClass("has-content");
-        $('#new_card_but').attr("disabled", true)
         if (!isOpen) {
             // select the content inside the modal
             var content = m.querySelector('.modal__content');
