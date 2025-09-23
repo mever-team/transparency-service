@@ -48,7 +48,8 @@ $(document).ready(function () {
         dataType: "json",
         success: function (jsonData) {
             cardJson = jsonData;
-            $("#model-title").text("Model Card: " + jsonData.title);
+            //$("#model-title").text("Model Card: " + jsonData.title);
+            $("#model-title").text(jsonData.title);
             const $ul = $(".nacc");
             $ul.empty();
 
@@ -119,22 +120,22 @@ $(document).ready(function () {
                     container.appendChild(card);
                 });
 
-                response.forEach(item => {
-
-                    const htmlString = item.desc;
-                    const tempDiv = document.createElement("div");
-                    tempDiv.innerHTML = htmlString;
-
-                    const title = tempDiv.querySelector("h1")?.outerHTML || "";
-                    tempDiv.querySelector("h1")?.remove();
-                    const description = tempDiv.innerText.trim();
-
-
-                    const card = document.createElement("button");
-                    card.className = "card-button";
-                    card.innerHTML = `<div class="desc">` + title + `</div><div class="tooltip">` + description + `</div>`;//<h3>${item.name}</h3>
-                    container.appendChild(card);
-                });
+//                response.forEach(item => {
+//
+//                    const htmlString = item.desc;
+//                    const tempDiv = document.createElement("div");
+//                    tempDiv.innerHTML = htmlString;
+//
+//                    const title = tempDiv.querySelector("h1")?.outerHTML || "";
+//                    tempDiv.querySelector("h1")?.remove();
+//                    const description = tempDiv.innerText.trim();
+//
+//
+//                    const card = document.createElement("button");
+//                    card.className = "card-button";
+//                    card.innerHTML = `<div class="desc">` + title + `</div><div class="tooltip">` + description + `</div>`;//<h3>${item.name}</h3>
+//                    container.appendChild(card);
+//                });
                 $('#cards-container').append('<br><p style="margin:12px 0 0px 0px; font-size: 15px; font-weight: 700; color: #1f1f1f;display: inline-block">Actions: </p><p style="display: inline-block;margin:0 5px"><span id="refine">Refine</span> | <span id="autocomplete">Autocomplete: </span> <input type="text" class="text-input" placeholder="Enter URL..." id="card-url" /></p>')
 
             },
@@ -238,10 +239,10 @@ $(document).ready(function () {
                 "Authorization": "Bearer " + token
             },
             success: function (response) {
-                alert("OK")
+                alert(response)
             },
             error: function (xhr, status, error) {
-                alert("ERROR REFINE"); //TODO
+                alert(error); //TODO
             }
         });
     });
@@ -258,10 +259,10 @@ $(document).ready(function () {
             },
             data: JSON.stringify($('#card-url').val()),
             success: function (response) {
-                alert("OK")
+                alert(response)
             },
             error: function (xhr, status, error) {
-                alert("ERROR AUTCCOMPLETE"); //TODO
+                alert(error); //TODO
             }
         });
     });

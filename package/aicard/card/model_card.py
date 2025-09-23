@@ -21,7 +21,7 @@ class ModelCard:
             eval_set=DotDict(datasets="", motivation="", pre_processing="", standards="", update="", more=""),
             analysis=DotDict(analysis="", metrics="", thresholds="", uncertainty="", more=""),
         ))
-        self.connector = connector
+        self.connector = connector # used by the client - the server does something else and model cards stored there should never set this field
         #VersionControl.__init__(self)
 
     def __enter__(self):

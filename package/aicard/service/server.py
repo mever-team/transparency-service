@@ -36,7 +36,7 @@ class ModelCardEntry:
     def touch(self):
         self.last_accessed = time.time()
 
-    def commit_card(self):
+    def commit_card(self, on_thread: bool = False):
         flattened = self.card.data.flatten()
         assert flattened, "Cannot commit an empty model card."
         assert self.card_id is not None, "Internal error: card_id has not been set for a cached card"
@@ -47,9 +47,20 @@ class ModelCardEntry:
             SET {", ".join(f'"{col}" = ?' for col in columns)}
             WHERE id = ?
         '''
-        with self.conn.conn:
-            cursor = self.conn.conn.cursor()
-            cursor.execute(query, values + [self.card_id])
+        if on_thread:
+            assert self.conn.db_path, "Database is stored on memory and cannot follow the independent thread connection model (this may be fine in testing)"
+            import sqlite3
+            # Open a short-lived connection just for this update
+            # adjust db_path to wherever your database file lives.
+            # It's fine to do this because on_thread=True is
+            # reserved for agents where some ms of system operations
+            # at worst are nothing in comparison.
+            with sqlite3.connect(self.conn.db_path) as tmp_conn:
+                tmp_conn.execute(query, values + [self.card_id])
+        else:
+            with self.conn.conn:
+                cursor = self.conn.conn.cursor()
+                cursor.execute(query, values + [self.card_id])
 
     def start_completion(self):
         self.lock.acquire()
@@ -80,25 +91,35 @@ class ModelCardEntry:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.lock.release()
 
-    def __autocomplete(self, url: str, assistant: Assistant):
-        assistant.complete(self.card, url)
+    def __autocomplete(self, url: str, assistant: Assistant, logger: Logger):
+        try:
+            assistant.complete(self.card, url)
+            self.commit_card(on_thread=True) # on_thread=True because we are on a heavyweight path either way
+            logger.info(f"ended card {self.card_id} completion")
+        except Exception as e:
+            logger.error(f"aborted card{self.card_id} completion with error {e}")
         self.end_completion()
 
-    def __autorefine(self, assistant: Assistant):
-        assistant.refine(self.card)
+    def __autorefine(self, assistant: Assistant, logger: Logger):
+        try:
+            assistant.refine(self.card)
+            self.commit_card(on_thread=True) # on_thread=True because we are on a heavyweight path either way
+            logger.info(f"ended card {self.card_id} refinement")
+        except Exception as e:
+            logger.error(f"aborted card{self.card_id} refinement with error {e}")
         self.end_completion()
 
-    def autocomplete(self, url: str, assistant: Assistant):
+    def autocomplete(self, url: str, assistant: Assistant, logger: Logger):
         self.start_completion()
-        self.__thread = Thread(target=self.__autocomplete, args=(url,assistant))
+        self.__thread = Thread(target=self.__autocomplete, args=(url,assistant,logger))
         self.__thread.start()
-        return "submitted"
+        return "Autocompletion request was submitted successfully. Please wait while the assistant runs."
 
-    def autorefine(self, assistant: Assistant):
+    def autorefine(self, assistant: Assistant, logger: Logger):
         self.start_completion()
-        self.__thread = Thread(target=self.__autorefine, args=(assistant,))
+        self.__thread = Thread(target=self.__autorefine, args=(assistant,logger))
         self.__thread.start()
-        return "submitted"
+        return "Refinement request was submitted successfully. Please wait while the assistant runs."
 
     def get_status(self):
         if self.check_completion(): return {"status": "locked", "message": "AI assistant is working on the model card"}
@@ -1045,8 +1066,8 @@ def serve(
         json_data = request.get_json()
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
         exists(isinstance(json_data, str), "Autocomplete requires a url string as POST data")
-        status = exists(find_card(card_id), "Model card does not exist or has been deleted.").autocomplete(json_data, assistant)
-        logger.info("requested an autocompletion from "+assistant_type, user=token2user.get(token, None))
+        status = exists(find_card(card_id), "Model card does not exist or has been deleted.").autocomplete(json_data, assistant, logger)
+        logger.info(f"requested card {card_id} autocompletion from {assistant_type}", user=token2user.get(token, None))
         return jsonify(status)
 
     @app.route('/assistant/<string:assistant_type>/refine/<int:card_id>', methods=['POST'])
@@ -1087,8 +1108,8 @@ def serve(
                 description: An AI assistant is working on the model card.
         """
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
-        status = exists(find_card(card_id), "Model card does not exist or has been deleted.").autorefine(assistant)
-        logger.info("requested a card refinement from "+assistant_type, user=token2user.get(token, None))
+        status = exists(find_card(card_id), "Model card does not exist or has been deleted.").autorefine(assistant, logger)
+        logger.info(f"requested card {card_id} refinement from {assistant_type}", user=token2user.get(token, None))
         return jsonify(status)
 
     @app.route('/docs', methods=['GET'])

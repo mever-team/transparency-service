@@ -18,6 +18,7 @@ class TestAssistant(Assistant):
     def complete(self, card: ModelCard, url: str):
         if self.delay: time.sleep(self.delay)
     def refine(self, card: ModelCard):
+        card.data.title = "Refined card"
         if self.delay: time.sleep(self.delay)
 
 class Prompter(Assistant):
