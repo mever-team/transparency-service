@@ -95,18 +95,18 @@ class ModelCardEntry:
         try:
             assistant.complete(self.card, url)
             self.commit_card(on_thread=True) # on_thread=True because we are on a heavyweight path either way
-            logger.info(f"ended card {self.card_id} completion")
+            logger.info(f"ended card {self.card_id} completion", user=assistant.alias)
         except Exception as e:
-            logger.error(f"aborted card{self.card_id} completion with error {e}")
+            logger.error(f"aborted card{self.card_id} completion with error {e}", user=assistant.alias)
         self.end_completion()
 
     def __autorefine(self, assistant: Assistant, logger: Logger):
         try:
             assistant.refine(self.card)
             self.commit_card(on_thread=True) # on_thread=True because we are on a heavyweight path either way
-            logger.info(f"ended card {self.card_id} refinement")
+            logger.info(f"ended card {self.card_id} refinement", user=assistant.alias)
         except Exception as e:
-            logger.error(f"aborted card{self.card_id} refinement with error {e}")
+            logger.error(f"aborted card{self.card_id} refinement with error {e}", user=assistant.alias)
         self.end_completion()
 
     def autocomplete(self, url: str, assistant: Assistant, logger: Logger):
