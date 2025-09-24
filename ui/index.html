@@ -3,7 +3,7 @@
 <head>
     <title>Model Cards</title>
     <meta charset="utf-8">
-    <meta name="description" content="Transparency service for AI-model cards">
+    <meta name="description" content="Transparency services for AI models">
     <meta name="robots" content="index, follow"/>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -24,7 +24,7 @@
         <div class="small-12 medium-12 large-12 columns">
             <div class="header_wrapper">
                 <h2>AI-CODE</h2>
-                <p class="modal__trigger"data-modal="#modal_help">Help</p>
+                <p class="modal__trigger" data-modal="#modal_help">Help</p>
             </div>
 
         </div>
@@ -35,16 +35,16 @@
         <div class="row">
             <div class="small-12 medium-12 large-12 columns">
                 <div class="search">
-                    <h1>Transparency service for AI-model cards</h1>
+                    <h1>Transparency services for AI models</h1>
 
-                    <p class="search_main_p">Reporting on the Capabilities, Limits, Risks, and Repercussions of Different AI Models </p>
+<!--                    <p class="search_main_p">Reporting on the Capabilities, Limits, Risks, and Repercussions of Different AI Models </p>-->
 
                     <div class="main_search_wrapper">
                         <div class="main_search">
                             <div class="search_button">
                                 Search
                             </div>
-                        <span class="search_input"><input placeholder="Search for Model Cards..." type="text"
+                        <span class="search_input"><input placeholder="Search for model cards..." type="text"
                                                           id="topic"></span>
 
                         </div>
@@ -52,7 +52,7 @@
                     <p class="search_sub_p"><span>TBA</span> Models Cards</p>
                     <p class="crossed">OR</p>
                     <div class="search_button large modal__trigger" data-modal="#modal">
-                        CREATE
+                        CREATE NEW CARD
                     </div>
 
                 </div>
@@ -100,13 +100,56 @@
 </div>
 <div id="modal_help" class="modal modal__bg" >
     <div class="modal__dialog" style="width: 85%;height: 85%;">
-        <div class="modal__content" style="height: 100%">
-            Info Image+ Text by Manios
+        <div class="modal__content" style="height: 100%;">
+            <div class="modal-cards">
+
+              <div class="modal-card">
+                <h2>🏷️ Transparency services for AI models – What's this?</h2>
+                <p>
+                  This platform hosts several services that help report the capabilities, limits, risks, and repercussionsof different AI models.
+                  It allows model creators or third-party scientists to share descriptions of models in atransparent repository that can be indexed and disseminated.
+                  The descriptions are provided as model cards, which require registration to create.
+                  However, anyone can search for and access these cards using the search bar — simply type model names or keywords from the evaluation methodology.
+                </p>
+              </div>
+
+              <div class="modal-card">
+                <h2>👥 For the general public</h2>
+                <p>
+                  The general public is free to browse through available model cards and use them as reference material to understand the
+                  strengths and weaknesses of AI models used in specific services or sectors.
+                  The platform also provides AI assistants to help card creators refine descriptions so that they are easily understood.
+                </p>
+              </div>
+
+              <div class="modal-card">
+                <h2>🧑‍💻 For model creators</h2>
+                <p>
+                    Model creators are assisted by agents that help autocomplete, refine, and simplify model descriptions.
+                    Autocompletion leverages existing documentation (like PDFs or README files). Use
+                    the <a href="https://pypi.org/project/aicard/">AICard Python library</a> to programmatically
+                    manage cards via your credentials.
+                    This library can be added in model training and validation pipelines to
+                    automate the description of resources, datasets, and experiments, and compute
+                    a comprehensive suite of evaluation metrics.
+                  This website can also be <b>hosted locally</b> by following the instructions in the same
+                  <a href="https://pypi.org/project/aicard/">AICard library page</a>.
+                </p>
+              </div>
+
+<!--              <div class="modal-card image-card">-->
+<!--                <h2>🖼️ Visual overview</h2>-->
+<!--                <img src="img/aicode.drawio.png" alt="Transparency services" style="max-width:100%; height:auto; display:block; margin:auto;">-->
+<!--              </div>-->
+
+            </div>
+
+                <button id="dontShowAgain">OK – don't show this</button>
+
             <!-- modal close button -->
             <div href="" class="modal__close demo-close">
                 <svg class="w-4 h-4" viewBox="0 0 24 24"> <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/><path d="M0 0h12v12h-12z" fill="none"/></svg>
             </div>
-            <button id="dontShowAgain">Don't show again</button>
         </div>
     </div>
 </div>
