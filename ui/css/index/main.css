@@ -40,7 +40,7 @@ html, body {
     margin: 0;
     color: white;
     position: relative;
-    top: -5px;
+    top: -2px;
     cursor: pointer;
     float: right;
 }
@@ -291,13 +291,15 @@ html, body {
     opacity: 1;
     transition: opacity 0.1s ease-out, transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
-
+.modal__content a{
+    color: #64DB96
+}
 .demo-close {
     position: absolute;
     top: 0;
     right: 0;
     margin: 1.2rem;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
@@ -310,9 +312,11 @@ html, body {
     padding: 5px;
 }
 
+/*
 .demo-close:hover {
     background: rgba(0, 0, 0, 0.6);
 }
+*/
 
 
 :focus {
@@ -342,7 +346,9 @@ html, body {
 .modal-card h2 {
   margin-top: 0;
 }
-
+.modal-card p{
+    text-align: justify;
+}
 .modal-action-card {
   text-align: center;
 }
@@ -353,13 +359,14 @@ html, body {
   font-size: 1rem;
   border: none;
   border-radius: 5px;
-  background: #0078d4;
-  color: #fff;
+  background: #64DB96;
   cursor: pointer;
+    color: #1F1F1F;
+    margin-left: 18px;
 }
 
 #dontShowAgain:hover {
-  background: #005fa3;
+  background: #AEECC8;
 }
 
 .effect-19 {
@@ -516,4 +523,7 @@ html, body {
     box-sizing: border-box
 
 }
+
+
+
 
