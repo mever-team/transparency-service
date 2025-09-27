@@ -14,6 +14,7 @@ html, body {
 .example_button[disabled] {
     opacity: 0.4;
     cursor: not-allowed;
+    pointer-events: none;
 }
 
 .header_section {
@@ -53,8 +54,6 @@ html, body {
 .search_wrapper {
     position: relative;
     width: 100%;
-    display: flex;
-    align-items: center;
 }
 
 .search {
@@ -102,8 +101,7 @@ html, body {
     line-height: 28px;
     border: 0;
     background: #fff;
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
+    border-radius: 6px;
     -webkit-box-shadow: 0 14px 24px rgba(50, 48, 58, .25);
     box-shadow: 0 14px 24px rgba(50, 48, 58, .25);
     outline: 0;
@@ -175,37 +173,6 @@ html, body {
     content: '';
     height: 2px;
     background-color: #1F1F1F;
-}
-
-.autocomplete-suggestions {
-    background: #fff;
-    display: block;
-    box-sizing: border-box;
-    margin-top: 10px;
-    border-radius: 3px;
-    -webkit-box-shadow: 0 8px 12px rgba(50, 48, 58, .25);
-    box-shadow: 0 8px 12px rgba(50, 48, 58, .25);
-    overflow: hidden;
-}
-
-.autocomplete-suggestion, .autocomplete-no-suggestion {
-    border-bottom: 1px solid #f4f5f7;
-    padding: 10px 30px 2px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: normal;
-}
-
-.autocomplete-suggestion strong {
-    font-weight: bold;
-    color: #0081C6;
-}
-
-.autocomplete-suggestion:hover {
-    background: #f4f5f7;
 }
 
 .modal {
@@ -471,6 +438,24 @@ html, body {
     -ms-transition: all 0.4s ease 0s;
     -o-transition: all 0.4s ease 0s;
     transition: all 0.4s ease 0s;
+}
+#resultsTable {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#resultsTable thead,
+#resultsTable tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed; /* keeps columns aligned */
+}
+
+
+#resultsTable tbody {
+    display: block;
+    max-height: 280px;       /* fixed height */
+    overflow-y: auto;    /* scrollable */
 }
 
 

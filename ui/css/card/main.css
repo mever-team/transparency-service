@@ -89,16 +89,49 @@
     left: 15px;
     background-color: #252525;
     border-radius: 100%;
-    transition: 1s all cubic-bezier(0.075, 0.82, 0.165, 1);
+    /*transition: 150ms all cubic-bezier(0.075, 0.82, 0.165, 1);*/
 }
 
 .naccs .menu div.active span.light {
-    background-color: #252525;
-    left: 0;
-    height: 100%;
-    width: 3px;
-    top: 0;
+    background-color: #252525 !important;
+    left: 0 !important;
+    height: 100% !important;
+    width: 3px !important;
+    top: 0 !important;
+    border-radius: 0 !important;
+    margin-right: 0 !important;
+    border-left: 0 !important;
+    position: absolute !important;
+}
+.naccs .menu div span.light.arrow{
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-right: -12px;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 10px solid #252525;
+   /* transition: 200ms all*/
+    cubic-bezier(0.075, 0.82, 0.165, 1);
+    position: relative;
+    top: 2px;
+    left: -24px;
     border-radius: 0;
+    background-color: transparent;
+}
+.naccs .menu div span.light.square{
+    display: inline-block;
+    width: 10px;
+    height: 5px;
+    margin-right: -12px;
+    background-color: #252525;
+    /*transition: 200ms all*/
+    cubic-bezier(0.075, 0.82, 0.165, 1);
+    position: relative;
+    top: -2px;
+    border-radius: 0;
+    left: -24px;
+
 }
 
 .naccs .menu div.active {
@@ -127,7 +160,7 @@ ul.nacc > li {
 }
 
 ul.nacc > li.active {
-    transition-delay: 0.3s;
+    /*transition-delay: 0.3s;*/
     z-index: 2;
     opacity: 1;
     display: block;
@@ -250,7 +283,7 @@ ul.nacc .field-value li {
     font-size: 15px;
     padding: 15px 15px;
     border-radius: 4px;
-    width: 90px;
+    width: 91px;
     display: inline-block;
     margin: 13px 5px 0;
 }
@@ -258,10 +291,33 @@ ul.nacc .field-value li {
 .example_button:last-child {
     margin-right: 0;
 }
+#saveJson {
+    display: inline-block;
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+}
 
+.btn-text {
+    display: inline;
+}
+
+.btn-confirmation {
+    display: none;
+    color: #fff;
+    font-weight: bold;
+}
 section.buttons {
     text-align: right;
     margin-top: 20px
+}
+.example_button:disabled,
+.example_button[disabled] {
+    opacity: 1;
+    pointer-events: none;
 }
 
 
