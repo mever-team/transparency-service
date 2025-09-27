@@ -27,7 +27,7 @@ class ModelCardEntry:
         self.creator = creator
         self.preview = card.to_html_card()
         self.lock = Lock()
-        self.__is_completing = False
+        self._is_completing = False
         self.__thread = None
         self.conn = conn
         self.card_id = None
@@ -64,26 +64,24 @@ class ModelCardEntry:
 
     def start_completion(self):
         self.lock.acquire()
-        if self.__is_completing:
+        if self._is_completing:
             self.lock.release()
             abort(409, description="An AI assistant is working on the model card")
-        self.__is_completing = True
+        self._is_completing = True
         self.lock.release()
 
     def check_completion(self):
-        self.lock.acquire()
-        ret = self.__is_completing
-        self.lock.release()
+        with self.lock:
+            ret = self._is_completing
         return ret
 
     def end_completion(self):
-        self.lock.acquire()
-        self.__is_completing = False
-        self.lock.release()
+        with self.lock:
+            self._is_completing = False
 
     def __enter__(self):
         self.lock.acquire()
-        if self.__is_completing:
+        if self._is_completing:
             self.lock.release()
             abort(409, description="An AI assistant is working on the model card")
         return self.card
@@ -1135,11 +1133,9 @@ def serve(
                     if entry is None:
                         to_delete.append(card_id)
                         continue
-                    entry.lock.acquire()
-                    try:
-                        if not entry.check_completion() and now - entry.last_accessed > one_hour:
+                    with entry.lock:
+                        if not entry._is_completing and now - entry.last_accessed > one_hour:
                             to_delete.append(card_id)
-                    finally: entry.lock.release()
                 for card_id in to_delete: card_cache.pop(card_id, None)
             time.sleep(600)  # run every 10 minutes
 
