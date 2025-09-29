@@ -73,7 +73,6 @@
     vertical-align: middle;
     font-weight: 700;
     transition: 1s all cubic-bezier(0.075, 0.82, 0.165, 1);
-    opacity: 0.7;
 }
 
 .naccs .menu div:hover {
@@ -279,13 +278,13 @@ ul.nacc .field-value li {
     cursor: pointer;
     text-align: center;
     font-weight: 700;
-    color: whitesmoke;
     font-size: 15px;
     padding: 15px 15px;
     border-radius: 4px;
     width: 91px;
     display: inline-block;
     margin: 13px 5px 0;
+    color: #1F1F1F;
 }
 
 .example_button:last-child {
@@ -313,7 +312,6 @@ ul.nacc .field-value li {
 
 #saveJson {
     display: inline-block;
-    color: white;
     font-weight: bold;
     border-radius: 6px;
     cursor: pointer;
@@ -440,25 +438,27 @@ section.buttons {
 
 .card-button {
     position: relative; /* anchor for tooltip */
-    border: 2px solid #64DB96;
+    border: 2px solid transparent;
     border-radius: 10px;
     padding: 7px 10px;
     background: #fff;
-    text-align: left;
     cursor: pointer;
-    width: 130px;
+    min-width: 130px;
     margin-right: 10px;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
 .card-button.selected {
-    background: #d0f4df; /* light blue background */
+    background: #7DE1A7 !important; /* light blue background */
 }
 
 .card-button:hover {
     transform: translateY(-1px);
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
     z-index: 22222222222222;
+    background: #D4F5E2;
 }
 
 /* truncated text */
@@ -467,6 +467,11 @@ section.buttons {
     font-size: 17px;
     margin: 0;
 }
+.assistants_wrapper{
+    display: inline-block;
+    width: calc(100% - 135px);
+}
+
 
 /* Tooltip (hidden by default) */
 .tooltip {
@@ -590,6 +595,7 @@ main {
     /* adjust based on your grid */
 }
 
+
 /* Optional: Ensure right column doesn't overlap */
 @media screen and (max-width: 768px) {
     .menu.fixed {
@@ -597,3 +603,109 @@ main {
         width: 100%;
     }
 }
+
+
+
+.modal {
+    will-change: visibility, opacity;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 1000;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.modal--active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal--align-top {
+    align-items: flex-start;
+}
+
+.modal__bg {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.modal__dialog {
+    width: 610px;
+    padding: 1.2rem;
+}
+
+.modal__content {
+    will-change: transform, opacity;
+    position: relative;
+    background: #252525;
+    color: #dcdcdc;
+    background-clip: padding-box;
+    box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+    padding: 60px 2.4rem 2.4rem 20px;
+}
+
+.modal__content--active {
+    opacity: 1;
+}
+
+.modal__close {
+    z-index: 1100;
+    cursor: pointer;
+}
+
+.modal__trigger {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.modal__trigger--active {
+    z-index: 10;
+}
+
+#modal__temp {
+    /*will-change: transform, opacity;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #252525;
+    color: #dcdcdc;
+    transform: none;
+    opacity: 1;
+    transition: opacity 0.1s ease-out, transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);*/
+}
+.modal__content a{
+    color: #64DB96
+}
+.demo-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 1.2rem;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.demo-close svg {
+    width: 24px;
+    fill: #1F1F1F;
+    pointer-events: none;
+    vertical-align: top;
+    padding: 5px;
+}
+

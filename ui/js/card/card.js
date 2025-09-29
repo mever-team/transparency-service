@@ -103,30 +103,30 @@ $(document).ready(function () {
                 "Authorization": "Bearer " + token
             },
             success: function (response) {
-                const container = document.getElementById("cards-container");
-                response.forEach((item, index) => {
 
-                    const htmlString = item.desc;
-                    const tempDiv = document.createElement("div");
-                    tempDiv.innerHTML = htmlString;
+                $(".assistants_wrapper").each(function () {
+                    const $container = $(this);
 
-                    const title = tempDiv.querySelector("h1")?.outerHTML || "";
-                    tempDiv.querySelector("h1")?.remove();
-                    const description = tempDiv.innerText.trim();
+                    $.each(response, function (index, item) {
+                        const $tempDiv = $("<div>").html(item.desc);
 
+                        const title = $tempDiv.find("h1").prop("outerHTML") || "";
+                        $tempDiv.find("h1").remove();
+                        const description = $.trim($tempDiv.text());
+                        $('#selected_autocomplete_assistant,#selected_refined_assistant').text($("<div>").html(title).text())
 
-                    const card = document.createElement("button");
-                    card.id = item.name;
-                    card.className = "card-button";
-                    if (index === 0) {
-                        card.classList.add("selected");
-                    }
-                    card.innerHTML = `<div class="desc">` + title + `</div><div class="tooltip">` + description + `</div>`;//<h3>${item.name}</h3>
-                    container.appendChild(card);
+                        const $card = $("<button>", {
+                            id: item.name,
+                            class: "card-button" + (index === 0 ? " selected" : ""),
+                            html: `<div class="desc">${title}</div><div class="tooltip">${description}</div>`
+                        });
+
+                        $container.append($card);
+                    });
                 });
 
-                $('#cards-container').append('<br><p style="margin:12px 0 0px 0px; font-size: 15px; font-weight: 700; color: #1f1f1f;display: inline-block">Actions: </p><p style="display: inline-block;margin:0 5px"><span id="refine">Refine</span> | <span id="autocomplete">Autocomplete: </span> <input type="text" class="text-input" placeholder="Enter URL..." id="card-url" /></p>')
-
+               /* $('#cards-container').append('<br><p style="margin:12px 0 0px 0px; font-size: 15px; font-weight: 700; color: #1f1f1f;display: inline-block">Actions: </p><p style="display: inline-block;margin:0 5px"><span id="refine">Refine</span> | <span id="autocomplete">Autocomplete: </span> <input type="text" class="text-input" placeholder="Enter URL..." id="card-url" /></p>')
+*/
             },
             error: function (e) {
                 alert("ERROR GETTING ASSISTANTS")
@@ -243,10 +243,11 @@ $(document).ready(function () {
         // Otherwise, unselect all and select this one
         $(".card-button").removeClass("selected");
         $(this).addClass("selected");
+        $('#selected_refined_assistant,#selected_autocomplete_assistant').text($(this).find('h1').text());
     });
 
     $(document).on("click", "#refine", function () {
-        let assistant = $(".card-button.selected").attr("id");
+        let assistant = $(this).prev('.assistants_wrapper').find(".card-button.selected").attr("id");
 
         $.ajax({
             url: "http://127.0.0.1:5000/assistant/" + assistant + '/refine/' + id,
