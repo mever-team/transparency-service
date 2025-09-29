@@ -8,8 +8,9 @@ import re
 class WordNet(Assistant):
     def __init__(self):
         super().__init__(
+            alias="📚 WordNet",
             description=(
-                "<h1>Test assistant</h1>"
+                "<h1>📚 WordNet</h1>"
                 "Highlights scientific terms from WordNet domain tags "
                 "and adds tooltips with their definitions."
             )

@@ -58,12 +58,11 @@
     <section class="buttons">
         <div class="row bigWidth">
             <div class="cards-container" id="cards-container">
-
                 <div class="example_button modal__trigger" data-modal="#modal_refine" style="background-color: #64DB96;width: 120px">
-                    <span class="btn-text">Refine</span>
+                    <span class="btn-text">⚙️&nbsp;Refine</span>
                 </div>
                 <div class="example_button modal__trigger" data-modal="#modal_autocomplete" style="background-color: #64DB96;width: 120px">
-                    <span class="btn-text">Autocomplete</span>
+                    <span class="btn-text">⚙️&nbsp;Autofill</span>
                 </div>
             </div>
             <div class="example_button" id="saveJson" style="background-color: #0081C6;">
@@ -115,10 +114,10 @@
 <div id="modal_refine" class="modal modal__bg">
     <div class="modal__dialog">
         <div class="modal__content">
-            <p style="font-size: 16px; font-weight: 700; color: white;display: inline-block;margin-right: 10px;vertical-align: top;">Select Assistant: </p>
+            <p style="font-size: 16px; font-weight: 700; color: white;display: inline-block;margin-right: 10px;vertical-align: top;">Select assistant: </p>
             <div class="assistants_wrapper"></div>
             <div class="example_button" id="refine" style="width: 100%">
-                <span class="btn-text">Refine using <span id="selected_refined_assistant"></span></span>
+                <span class="btn-text">Submit refinement task</span>
             </div>
 
             <!-- modal close button -->
@@ -135,10 +134,10 @@
 <div id="modal_autocomplete" class="modal modal__bg">
     <div class="modal__dialog">
         <div class="modal__content">
-            <p style="font-size: 16px; font-weight: 700; color: white;display: inline-block;margin-right: 10px;vertical-align: top;">Assistants: </p>
+            <p style="font-size: 16px; font-weight: 700; color: white;display: inline-block;margin-right: 10px;vertical-align: top;">Select assistant: </p>
             <div class="assistants_wrapper"></div>
             <div class="example_button" style="width: 100%">
-                <span class="btn-text">Autocomplete using <span id="selected_autocomplete_assistant"></span></span>
+                <span class="btn-text">Submit autofill task</span>
             </div>
             <!-- modal close button -->
             <div href="" class="modal__close demo-close">
