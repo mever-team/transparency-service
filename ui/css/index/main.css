@@ -110,6 +110,9 @@ html, body {
 
 .main_search {
     margin-top: 60px;
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .search_sub_p {
@@ -448,6 +451,11 @@ html, body {
     transition: opacity 1s;
 }
 
+.main_search_wrapper_results {
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+ }
 
 .main_search_wrapper {
     -webkit-transition: all 0.4s ease 0s;
