@@ -152,7 +152,7 @@ function autocomplete_populate() {/*
                                 <tr style="border-bottom: 1px solid #e8ecec">
                                     <td>${highlightedName} - <span style="font-size: 13px">${item.desc || "No Description"}</span></td>
                                  
-                                    <td style="width: 160px">    <a style="width: 160px;text-decoration:none" href="model_card.html?id=${item.id}"><div class="example_button" > View </div></a></td>
+                                    <td style="width: 160px">    <a style="width: 160px;text-decoration:none" href="model_card.html?id=${item.id}"><div class="search_results_button" > 🔎 Open </div></a></td>
                                 </tr>
                             `);
                         });
