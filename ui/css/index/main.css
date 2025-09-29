@@ -151,6 +151,37 @@ html, body {
     margin-bottom: 25px;
 }
 
+.search_results_button {
+    background-color: #64DB96;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+    outline: 1px solid #252525;
+    text-align: center;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: normal;
+    text-transform: uppercase;
+    padding: 14px 20px;
+    display: block;
+    color: #252525;
+    text-decoration: none;
+    font-size: 17px;
+    font-family: 'Hero_font', sans-serif;
+    float: right;
+}
+
+.search_results_button.large {
+    float: none;
+    max-width: 340px;
+    margin: 0 auto;
+    border-radius: 20px;
+    margin-bottom: 25px;
+}
+
 .search_input {
     display: block;
     overflow: hidden;
@@ -284,10 +315,13 @@ html, body {
 }
 
 .modal-card {
-  background: #151515;
+  /*background: #151515;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);*/
+  margin-top: 0px;
   padding: 1.5rem;
+  padding-top: 0rem;
+  line-height: 1.2;
   font-size: 1.2em; /* fixed typo: use font-size, not text-size */
   color: #fff;      /* optional: light text to contrast dark background */
 }
@@ -296,7 +330,7 @@ html, body {
   margin-top: 0;
 }
 .modal-card p{
-    text-align: justify;
+    text-align: justify-left;
 }
 .modal-action-card {
   text-align: center;
@@ -306,6 +340,7 @@ html, body {
 #dontShowAgain {
   padding: 0.6rem 1.2rem;
   font-size: 1rem;
+  width: 98%;
   border: none;
   border-radius: 5px;
   background: #64DB96;
@@ -429,6 +464,8 @@ html, body {
 #resultsTable thead,
 #resultsTable tbody tr {
     display: table;
+    margin-bottom: 2px;
+    margin-top: 2px;
     width: 100%;
     table-layout: fixed; /* keeps columns aligned */
     border-left: 2px solid transparent;
@@ -437,10 +474,18 @@ html, body {
     border-left: 2px solid #155E34;
 }
 
+@media (max-width: 600px) {
+  #service-title {
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+  }
+}
 
 #resultsTable tbody {
+    background: #fff;
+    outline: 2px solid #252525;
     display: block;
-    max-height: 280px;       /* fixed height */
+    max-height: 310px;       /* fixed height */
     overflow-y: auto;    /* scrollable */
 }
 

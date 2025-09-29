@@ -10,11 +10,10 @@
 # pretend to be thinking, so that invalid requests can be tested.
 
 from aicard.service import serve
-from aicard.service.assistants import TestAssistant, Prompter
-from aicard.agents import Ollama
+from aicard.service.assistants import WordNet
 from threading import Thread
 
-app, gc = serve({"tassist": TestAssistant(delay=1), "tassist2": TestAssistant(delay=1)}, env="ui/.env")
+app, gc = serve({"tassist": WordNet(), "tassist2": WordNet()}, env="ui/.env")
 
 if __name__ == "__main__":
     Thread(target=gc, daemon=True).start()

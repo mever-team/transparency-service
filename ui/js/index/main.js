@@ -6,8 +6,12 @@ $(function () {
         $('.modal__trigger[data-modal="#modal_help"]').click();
     }
 
-    // Don't show again button
-    $('#dontShowAgain').on('click', function () {
+    // Don't show again button (moved that to the modal close)
+//    $('#dontShowAgain').on('click', function () {
+//        localStorage.setItem('modalDismissed', 'true');
+//        $('.demo-close').click();
+//    });
+    $('demo-close').on('click', function () {
         localStorage.setItem('modalDismissed', 'true');
         $('.demo-close').click();
     });
@@ -130,9 +134,9 @@ function autocomplete_populate() {/*
                     $tbody.empty();
 
                     if ($("#topic").val().trim() !== "") {
-                        $('#search_results_wrapper').text("Search Results")
+                        $('#search_results_wrapper').text("Search results")
                     } else {
-                        $('#search_results_wrapper').text("Top Results")
+                        $('#search_results_wrapper').text("Most popular")
                     }
                     $('#search_results').text(results.length)
                     if (results.length > 0) {
@@ -148,7 +152,7 @@ function autocomplete_populate() {/*
                                 <tr style="border-bottom: 1px solid #e8ecec">
                                     <td>${highlightedName} - <span style="font-size: 13px">${item.desc || "No Description"}</span></td>
                                  
-                                    <td style="width: 160px">    <a style="width: 160px;text-decoration:none" href="model_card.html?id=${item.id}"><div class="example_button" > View </div></a></td>
+                                    <td style="width: 160px">    <a style="width: 160px;text-decoration:none" href="model_card.html?id=${item.id}"><div class="search_results_button" > 🔎 Open </div></a></td>
                                 </tr>
                             `);
                         });

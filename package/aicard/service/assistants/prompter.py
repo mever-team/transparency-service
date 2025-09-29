@@ -1,24 +1,7 @@
-import time
+from .assistant import Assistant
 from aicard.card import ModelCard
 from aicard.agents import Agent
 
-
-class Assistant:
-    def __init__(self, alias=None, description=None):
-        self.description = description
-        self.alias = alias if alias else self.__class__.__name__
-    def complete(self, card: ModelCard, url: str): pass
-    def refine(self, card: ModelCard): pass
-
-class TestAssistant(Assistant):
-    def __init__(self, delay: float=0):
-        super().__init__(description="<h1>Test assistant</h1>This AI assistant is primarily used for testing. For now, it does nothing, but some simple ad-hoc functionality for autocompleting and refining model cards may be added.")
-        self.delay = delay
-    def complete(self, card: ModelCard, url: str):
-        if self.delay: time.sleep(self.delay)
-    def refine(self, card: ModelCard):
-        card.data.title = "Refined card"
-        if self.delay: time.sleep(self.delay)
 
 class Prompter(Assistant):
     def __init__(self, agent: Agent):
