@@ -78,12 +78,12 @@ var Modal = (function() {
 
 
         // translate button to center of screen
-        trig.style.transform = 'translate(' + transX + 'px, ' + transY + 'px)';
+       /* trig.style.transform = 'translate(' + transX + 'px, ' + transY + 'px)';
         trig.style.webkitTransform = 'translate(' + transX + 'px, ' + transY + 'px)';
         // expand temporary div to the same size as the modal
         div.style.transform = 'scale(' + scaleX + ',' + scaleY + ')';
         div.style.webkitTransform = 'scale(' + scaleX + ',' + scaleY + ')';
-
+*/
 
         window.setTimeout(function() {
             window.requestAnimationFrame(function() {
@@ -153,8 +153,8 @@ var Modal = (function() {
             }
 
             // when the temporary div is opacity:1 again, we want to remove it from the dom
-            div.addEventListener('transitionend', removeDiv, false);
-
+          /*  div.addEventListener('transitionend', removeDiv, false);
+*/$('#modal__temp').remove();
             isOpen = false;
 
         }
