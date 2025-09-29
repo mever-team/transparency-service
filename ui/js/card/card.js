@@ -20,10 +20,10 @@ $(document).on("click", ".naccs .menu div", function () {
         $(this).addClass("active");
         $(".naccs ul").find("li:eq(" + numberIndex + ")").addClass("active");
 
-        var listItemHeight = $(".naccs ul")
-            .find("li:eq(" + numberIndex + ")")
-            .innerHeight();
-        $(".naccs ul").height(listItemHeight + "px");
+        /* var listItemHeight = $(".naccs ul")
+             .find("li:eq(" + numberIndex + ")")
+             .innerHeight();
+         $(".naccs ul").height(listItemHeight + "px");*/
     }
 });
 
@@ -61,6 +61,7 @@ $(document).ready(function () {
                 $section.append($("<h2>").text(sectionTitle));
 
                 if (section.value.length > 0) {
+
                     section.value.forEach(field => {
                         let $field = $("<div>").addClass("field");
                         $field.append($("<span>").addClass("field-name").text(field.name.replace(/_/g, " ") + ":"));
@@ -70,9 +71,13 @@ $(document).ready(function () {
                             .addClass("field-value editable")
                             .attr("contenteditable", "true")
                             .html(field.value || "");
-
+                        if ((field.value.trim() !== "") && (field.value.trim() !== "<br>")){
+                            $('.menu').find('div').eq(index).find('.light').removeClass('square');
+                            $('.menu').find('div').eq(index).find('.light').addClass('arrow');
+                        }
                         $field.append($fieldValue);
                         $section.append($field);
+
                     });
                 } else {
                     $section.append($("<p>").text("No data provided."));
@@ -120,22 +125,6 @@ $(document).ready(function () {
                     container.appendChild(card);
                 });
 
-//                response.forEach(item => {
-//
-//                    const htmlString = item.desc;
-//                    const tempDiv = document.createElement("div");
-//                    tempDiv.innerHTML = htmlString;
-//
-//                    const title = tempDiv.querySelector("h1")?.outerHTML || "";
-//                    tempDiv.querySelector("h1")?.remove();
-//                    const description = tempDiv.innerText.trim();
-//
-//
-//                    const card = document.createElement("button");
-//                    card.className = "card-button";
-//                    card.innerHTML = `<div class="desc">` + title + `</div><div class="tooltip">` + description + `</div>`;//<h3>${item.name}</h3>
-//                    container.appendChild(card);
-//                });
                 $('#cards-container').append('<br><p style="margin:12px 0 0px 0px; font-size: 15px; font-weight: 700; color: #1f1f1f;display: inline-block">Actions: </p><p style="display: inline-block;margin:0 5px"><span id="refine">Refine</span> | <span id="autocomplete">Autocomplete: </span> <input type="text" class="text-input" placeholder="Enter URL..." id="card-url" /></p>')
 
             },
@@ -162,6 +151,7 @@ $(document).ready(function () {
     });
 
     $("#saveJson").click(function () {
+        $('#saveJson').attr("disabled", true)
         $.ajax({
             url: "http://127.0.0.1:5000/card/" + id,
             method: "PUT",
@@ -172,7 +162,35 @@ $(document).ready(function () {
                 "Authorization": "Bearer " + token
             },
             success: function (response) {
-                //
+                $('.menu').find('div').find('.light').removeClass('arrow');
+                $('.menu').find('div').find('.light').addClass('square');
+
+                ["model", "considerations", "training_set", "eval_set", "analysis"].forEach((sectionName,index) => {
+                    let section = cardJson.data.filter(section => section.name !== "related").find(s => s.name === sectionName);
+                    let hasValue = false;
+
+                    if (section && section.value) {
+                        for (let field of section.value) {
+                            if ((field.value.trim() !== "") && (field.value.trim() !== "<br>")){
+                                hasValue = true;
+                                $('.menu').find('div').eq(index).find('.light').removeClass('square');
+                                $('.menu').find('div').eq(index).find('.light').addClass('arrow');
+                                break; // stop at first non-empty
+                            }
+                        }
+                    }
+                });
+
+                $("#saveJson").find('.btn-text').hide();
+                $("#saveJson").find('.btn-confirmation').fadeIn();
+
+                // Restore after 2s
+                setTimeout(function () {
+                    $("#saveJson").find('.btn-confirmation').fadeOut(function () {
+                        $("#saveJson").find('.btn-text').fadeIn();
+                        $('#saveJson').attr("disabled", false)
+                    });
+                }, 1500);
             },
             error: function (xhr, status, error) {
                 alert("ERROR EDIT"); //TODO
