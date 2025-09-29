@@ -123,6 +123,7 @@ var Modal = (function() {
     var close = function(event) {
         //$('#new_card_but').show();
         //event.preventDefault();
+        console.log(event);
         event.stopImmediatePropagation();
 
         var target = event.target;
@@ -173,8 +174,16 @@ var Modal = (function() {
     var bindActions = function() {
         for (var i = 0; i < len; i++) {
             trigger[i].addEventListener('click', getId, false);
-            closers[i].addEventListener('click', close, false);
-            modalsbg[i].addEventListener('click', close, false);
+            closers[i].addEventListener('click', close, false);/*
+            modalsbg[i].addEventListener('click', close, false);*/
+
+            modalsbg[i].addEventListener("click", function (e) {
+                /*console.log(e.target);*/
+                if (e.target === this) { // only background itself
+                    $('.modal__close ').click();
+                }
+            }, false);
+
         }
     };
 
