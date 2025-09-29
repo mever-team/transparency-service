@@ -49,10 +49,10 @@
 
                         </div>
                     </div>
-                    <p class="search_sub_p"><span>TBA</span> Models Cards</p>
+<!--                    <p class="search_sub_p"><span>TBA</span> model descriptions</p>-->
 
 
-                    <p style="margin: 25px 0 0;font-weight: bold;"><span id="search_results_wrapper">Top results</span> (<span id="search_results"></span>)</p>
+                    <p style="margin: 25px 0 0;font-weight: bold;"><span id="search_results_wrapper">Most popular</span> (<span id="search_results">0</span> of <span id="search_sub_p">TBA</span>)</p>
                     <table id="resultsTable" border="0" cellpadding="5" cellspacing="0"
                            style="margin-top:10px; width:100%;display:none;background: white">
 
@@ -108,49 +108,38 @@
 </div>
 <div id="modal_help" class="modal modal__bg">
     <div class="modal__dialog" style="width: 85%;">
-        <div class="modal__content"
-        ">
+        <div class="modal__content">
         <div class="modal-cards">
-
             <div class="modal-card">
-                <h2>Transparency services for AI models – What's this?</h2>
+                <h2>🤔 What's this?</h2>
                 <p>
-                    This platform hosts several services that help report the capabilities, limits, risks, and
-                    repercussionsof different AI models.
-                    It allows model creators or third-party scientists to share descriptions of models in atransparent
-                    repository that can be indexed and disseminated.
-                    The descriptions are provided as model cards, which require registration to create.
-                    However, anyone can search for and access these cards using the search bar — simply type model names
-                    or keywords from the evaluation methodology.
+                    We help report capabilities, limits, risks, and
+                    repercussions of AI in a transparent
+                    repository.
                 </p>
             </div>
 
             <div class="modal-card">
-                <h2>For the general public</h2>
+                <h2>🔎 Public transparency</h2>
                 <p>
-                    The general public is free to browse through available model cards and use them as reference
-                    material to understand the
-                    strengths and weaknesses of AI models used in specific services or sectors.
-                    The platform also provides AI assistants to help card creators refine descriptions so that they are
-                    easily understood.
+                    Anyone can search for and access AI model descriptions — type model names
+                    or keywords.
                 </p>
             </div>
 
             <div class="modal-card">
-                <h2>For model creators</h2>
+                <h2>✍️⚙️ Services for scientists</h2>
                 <p>
-                    Model creators are assisted by agents that help autocomplete, refine, and simplify model
-                    descriptions.
-                    Autocompletion leverages existing documentation (like PDFs or README files). Use
-                    the <a href="https://pypi.org/project/aicard/">AICard Python library</a> to programmatically
-                    manage cards via your credentials.
-                    This library can be added in model training and validation pipelines to
-                    automate the description of resources, datasets, and experiments, and compute
-                    a comprehensive suite of evaluation metrics.
-                    This website can also be <b>hosted locally</b> by following the instructions in the same
-                    <a href="https://pypi.org/project/aicard/">AICard library page</a>.
+                    Register to share descriptions of models by you or others. LLM agents help
+                    refine or simplify text, or fill info from documentation
+                    (PDFs or READMEs, etc).
+                    <br><br>
+                    The <a href="https://pypi.org/project/aicard/">AICard</a> Python library can compute and
+                    programmatically submit model evaluations.
+                    It can also <b>host this website locally</b>.
                 </p>
             </div>
+
 
             <!--              <div class="modal-card image-card">-->
             <!--                <h2>🖼️ Visual overview</h2>-->
@@ -159,7 +148,7 @@
 
         </div>
 
-        <button id="dontShowAgain">OK – don't show this</button>
+<!--        <button id="dontShowAgain">OK – don't show this</button>-->
 
         <!-- modal close button -->
         <div href="" class="modal__close demo-close">

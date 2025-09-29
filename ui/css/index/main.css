@@ -284,10 +284,13 @@ html, body {
 }
 
 .modal-card {
-  background: #151515;
+  /*background: #151515;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);*/
+  margin-top: 0px;
   padding: 1.5rem;
+  padding-top: 0rem;
+  line-height: 1.2;
   font-size: 1.2em; /* fixed typo: use font-size, not text-size */
   color: #fff;      /* optional: light text to contrast dark background */
 }
@@ -296,7 +299,7 @@ html, body {
   margin-top: 0;
 }
 .modal-card p{
-    text-align: justify;
+    text-align: justify-left;
 }
 .modal-action-card {
   text-align: center;
@@ -306,6 +309,7 @@ html, body {
 #dontShowAgain {
   padding: 0.6rem 1.2rem;
   font-size: 1rem;
+  width: 98%;
   border: none;
   border-radius: 5px;
   background: #64DB96;
