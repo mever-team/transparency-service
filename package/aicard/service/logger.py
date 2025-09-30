@@ -14,7 +14,7 @@ class Logger:
         self.log_file = log_file
         if log_file:
             os.makedirs(os.path.dirname(log_file), exist_ok=True)
-            self.file = open(log_file, 'a', buffering=1)  # line-buffered
+            self.file = open(log_file, 'a', buffering=1, encoding="utf-8")  # line-buffered
             atexit.register(self.file.close)
         else: self.file = None
 
@@ -22,10 +22,10 @@ class Logger:
     def _log(self, tag, message, color=None):
         ts = self._timestamp()
         formatted = f"[{ts}] [{tag}] {message}"
-        if self.file: self.file.write(formatted + '\n')
-        else:
-            if color: formatted = f"{color}{tag}{self.ANSI_RESET} {message}"
-            print(formatted.encode("ascii", errors="ignore").decode())
+        if self.file:
+            self.file.write(formatted + '\n')
+        if color: formatted = f"{color}{tag}{self.ANSI_RESET} {message}"
+        print(formatted.encode("ascii", errors="ignore").decode())
 
     def info(self, message:str, user:str|None=None):
         if user: message = user+" - "+message

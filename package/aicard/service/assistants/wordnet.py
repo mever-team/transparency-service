@@ -10,6 +10,15 @@ from aicard.service.logger import Logger
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 
+def get_synonyms(heading):
+    synonyms = set()
+    for heading_part in heading.replace("_", " ").strip().split(" "):
+        if not heading_part: continue
+        synsets = wn.synsets(heading_part)
+        synonyms |= {lemma.name().lower() for syn in synsets for lemma in syn.lemmas()}
+        synonyms.add(heading_part)
+    return synonyms
+
 class WordNet(Assistant):
     _loader_thread: threading.Thread | None = None
     _loader_lock = threading.Lock()
@@ -25,6 +34,7 @@ class WordNet(Assistant):
             )
         )
         self.scientific_defs = None
+        self.field_synonyms = dict()
         self.external_get_timeout_sec = external_get_timeout_sec
 
 
@@ -36,6 +46,7 @@ class WordNet(Assistant):
         def _load():
             try:
                 logger.warn("loading datasets\n * will proceed asynchronously\n * may take a while the first time\n * agent tasks will wait on this", user="📚 WordNet")
+                nltk.download('stopwords', quiet=True)
                 nltk.download("wordnet", quiet=True)
                 nltk.download("omw-1.4", quiet=True)
                 sci_lexnames = {
@@ -56,9 +67,18 @@ class WordNet(Assistant):
                 for k, v in scientific_defs.items():
                     total += sys.getsizeof(k)
                     total += sys.getsizeof(v)
+
+                field_synonyms = dict()
+                for cat, values in ModelCard().data.items():
+                    if not isinstance(values, dict): continue
+                    for field, value in values.items():
+                        if not isinstance(value, str): continue
+                        field_synonyms[field] = get_synonyms(field+" "+cat)
+
                 logger.ok(f"loaded {len(scientific_defs)} terms in {int(total/1024)} kb", user="📚 WordNet")
                 with WordNet._loader_lock:
                     self.scientific_defs = scientific_defs
+                    self.field_synonyms = field_synonyms
             except Exception as e:
                 logger.error(f"failed to start: {e}", user="📚 WordNet")
                 self.scientific_defs = dict()
@@ -69,7 +89,9 @@ class WordNet(Assistant):
     def _wait_until_ready(self):
         with WordNet._loader_lock:
             if self.scientific_defs is None or len(self.scientific_defs)==0:
-                raise Exception(self.alias+" failed to start or has not yet finished setting up")
+                raise Exception("WordNet failed to start")
+            if self.scientific_defs is None:
+                raise Exception("WordNet is still starting")
 
     def _refine_field(self, value):
         toks = re.findall(r"[A-Za-z0-9_]+|[<>.,()\"']|\s+", value)
@@ -114,11 +136,28 @@ class WordNet(Assistant):
                 if sibling.name and re.match("^h[1-6]$", sibling.name):
                     break
                 content.append(sibling.get_text(" ", strip=True))
-            sections.append((header.get_text(strip=True), " ".join(content).strip()))
-
+            sections.append((header
+                                .get_text(strip=True)
+                                .encode("ascii", errors="ignore")
+                                .decode(),
+                             " ".join(content).strip()))
         card.model.name = title
-        print("Title:", title)
-        print("Sections:", [sec[0] for sec in sections])
+        not_used_fields = list()
+        for heading, content in sections:
+            synonyms = get_synonyms(heading)
+            best_score = 0
+            best_path = []
+            for cat, values in card.data.items():
+                if not isinstance(values, dict): continue
+                for field, value in values.items():
+                    if not isinstance(value, str): continue
+                    score = len(synonyms & self.field_synonyms[field])
+                    if score>best_score:
+                        best_score = score
+                        best_path = (cat, field)
+            if best_path: card.data[best_path[0]][best_path[1]] = content
+            else: not_used_fields.append(synonyms)
+        print(not_used_fields)
 
 
     def refine(self, card: ModelCard, logger: Logger):
