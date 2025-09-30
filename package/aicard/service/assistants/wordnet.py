@@ -6,6 +6,7 @@ from aicard.card import ModelCard
 from nltk.corpus import wordnet as wn
 import nltk
 import sys
+import re
 from aicard.service.logger import Logger
 
 class WordNet(Assistant):
@@ -39,11 +40,14 @@ class WordNet(Assistant):
                     "noun.substance", "noun.attribute",
                 }
                 scientific_defs = {}
+                from nltk.corpus import stopwords
+                stop_words = set(stopwords.words("english"))
                 for syn in wn.all_synsets():
                     if syn.lexname() in sci_lexnames:
                         gloss = syn.definition()
                         for lemma in syn.lemmas():
                             word = lemma.name().replace("_", " ").lower()
+                            if word in stop_words: continue
                             scientific_defs.setdefault(str(word), str(gloss))
                 total = sys.getsizeof(scientific_defs)  # base dict structure
                 for k, v in scientific_defs.items():
@@ -60,14 +64,33 @@ class WordNet(Assistant):
         WordNet._loader_thread.start()
 
     def _wait_until_ready(self):
-        for _ in range(2): # wait for 2 & 5 = 1 sec at most
-            with WordNet._loader_lock:
-                if self.scientific_defs is not None: return
-            time.sleep(0.5)
         with WordNet._loader_lock:
             if self.scientific_defs is None or len(self.scientific_defs)==0:
-                raise Exception("Wordnet failed to start")
+                raise Exception("Wordnet assistant failed to start (or starting right now)")
 
+    def _refine_field(self, value):
+        tokens = re.findall(r"[A-Za-z0-9_]+|[<>.,()\"']|\s+", value)
+        stack = []
+        for tok in tokens:
+            if tok == "<": stack.append(tok)
+            elif tok == ">":
+                if not stack or stack[-1] != "<": raise Exception("Imbalanced html brackets <>")
+                stack.pop()
+        if stack: raise Exception("Imbalanced html brackets <>")
+        new_tokens = []
+        inside_tag = False
+        for tok in tokens:
+            if tok == "<":
+                inside_tag = True
+                new_tokens.append(tok)
+            elif tok == ">":
+                inside_tag = False
+                new_tokens.append(tok)
+            elif not inside_tag and tok in self.scientific_defs:
+                new_tokens.append(f"<abbr title='{self.scientific_defs[tok]}'>{tok}</abbr>")
+            else:
+                new_tokens.append(tok)
+        return "".join(new_tokens)
 
     def complete(self, card: ModelCard, url: str, logger: Logger):
         self._wait_until_ready()
@@ -80,8 +103,6 @@ class WordNet(Assistant):
             for field, value in vals.items():
                 if not isinstance(value, str):
                     continue
-                for def_name, def_value in self.scientific_defs.items():
-                    value = value.replace(def_name, f"{def_name} ({def_value})")
-                vals[field] = value
+                vals[field] = self._refine_field(value)
         print(card.to_markdown())
         card.assign(card.to_html_card())
