@@ -116,7 +116,8 @@ $(document).ready(function () {
                         const title = $tempDiv.find("h1").prop("outerHTML") || "";
                         $tempDiv.find("h1").remove();
                         const description = $.trim($tempDiv.text());
-                        $('#selected_autocomplete_assistant,#selected_refined_assistant').text($("<div>").html(title).text())
+
+                        if (index===0){$('#selected_autofilled_assistant,#selected_refined_assistant').text($("<div>").html(title).text())}
 
                         const $card = $("<button>", {
                             id: item.name,
@@ -251,15 +252,23 @@ $(document).ready(function () {
     }
 
     $(document).on("click", ".card-button", function () {
+
+
         // If it's already selected AND it's the only selected, do nothing
         if ($(this).hasClass("selected") && $(".card-button.selected").length === 1) {
             return; // prevent unselecting the last one
         }
 
         // Otherwise, unselect all and select this one
-        $(".card-button").removeClass("selected");
+        $(this).parent().find(".card-button").removeClass("selected");
         $(this).addClass("selected");
-        $('#selected_refined_assistant,#selected_autocomplete_assistant').text($(this).find('h1').text());
+        if (($(this).parents('#modal_autocomplete').length)){
+            $('#selected_autofilled_assistant').text($(this).find('h1').text());
+        }
+        else{
+            $('#selected_refined_assistant').text($(this).find('h1').text());
+        }
+
     });
 
     $(document).on("click", "#refine", function () {
@@ -285,27 +294,60 @@ $(document).ready(function () {
         });
     });
     $(document).on("click", "#autocomplete", function () {
-        let assistant = $(".card-button.selected").attr("id");
-
-        $.ajax({
-            url: "http://127.0.0.1:5000/assistant/" + assistant + '/complete/' + id,
-            method: "POST",
-            contentType: "application/json",
-            dataType: "json",
-            headers: {
-                "Authorization": "Bearer " + token
-            },
-            data: JSON.stringify($('#card-url').val()),
-            success: function (response) {
-                alert(response)
-            },
-            error: function (xhr, status, error) {
-                try {
-                    const resp = JSON.parse(xhr.responseText);
-                    alert(resp.error || error);
-                } catch (e) { alert("Unnkown autocomplete error");}
-            }
-        });
+        let assistant = $(this).siblings('.assistants_wrapper').find(".card-button.selected").attr("id");
+        if($('#card-url').is(":visible")){
+            $.ajax({
+                url: "http://127.0.0.1:5000/assistant/" + assistant + '/complete/' + id,
+                method: "POST",
+                contentType: "application/json",
+                dataType: "json",
+                headers: {
+                    "Authorization": "Bearer " + token
+                },
+                data: JSON.stringify($('#card-url').val()),
+                success: function (response) {
+                    alert(response)
+                },
+                error: function (xhr, status, error) {
+                    try {
+                        const resp = JSON.parse(xhr.responseText);
+                        alert(resp.error || error);
+                    } catch (e) { alert("Unknown autocomplete error");}
+                }
+            });
+        }else{
+            let formData = new FormData();
+            formData.append("file", uploaded_file); // "file" is the field name your backend expects
+            $.ajax({
+                url: "http://127.0.0.1:5000/assistant/" + assistant + '/complete/' + id,
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + token
+                },
+                data: formData,
+                processData: false, // don't let jQuery process the data
+                contentType: false, // don't set content-type header, let browser set it (multipart/form-data)
+                success: function (response) {
+                   alert(response)
+                },
+                error: function (xhr, status, error) {
+                    try {
+                        const resp = JSON.parse(xhr.responseText);
+                        alert(resp.error || error);
+                    } catch (e) { alert("Unknown card creation error");}
+                }
+            });
+        }
     });
+
+    $('#pdf_text').click(function () {
+        $('#pdf_text,#card-url,#card-url-p').slideUp();
+        $('.upload-container,#url_text').slideDown();
+    })
+
+    $('#url_text').click(function () {
+        $('#pdf_text,#card-url,#card-url-p').slideDown();
+        $('.upload-container,#url_text').slideUp();
+    })
 
 });

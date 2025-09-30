@@ -117,7 +117,7 @@
             <p style="font-size: 16px; font-weight: 700; color: white;display: inline-block;margin-right: 10px;vertical-align: top;">Select assistant: </p>
             <div class="assistants_wrapper"></div>
             <div class="example_button" id="refine" style="width: 100%">
-                <span class="btn-text">Submit refinement task</span>
+                <span class="btn-text">Submit refinement task (<span id="selected_refined_assistant"></span>)</span>
             </div>
 
             <!-- modal close button -->
@@ -136,8 +136,24 @@
         <div class="modal__content">
             <p style="font-size: 16px; font-weight: 700; color: white;display: inline-block;margin-right: 10px;vertical-align: top;">Select assistant: </p>
             <div class="assistants_wrapper"></div>
-            <div class="example_button" style="width: 100%">
-                <span class="btn-text">Submit autofill task</span>
+            <p id="card-url-p" style="font-size: 16px; font-weight: 700; color: white;display: inline-block;margin-right: 26px">Card Url: </p>
+            <input type="text" class="text-input" placeholder="Enter URL..." id="card-url"/>
+            <p id="pdf_text">Having a PDF?</p>
+            <div class="upload-container">
+                <div class="file-drop-area" id="dropArea">
+                    <span class="fake-btn">Choose file</span>
+                    <span class="file-msg">or drag &amp; drop here</span>
+                    <input class="file-input" type="file" multiple="" accept=".jpg,.jpeg,.png,.pdf">
+                </div>
+                <ul class="file-list" id="fileList"></ul>
+                <div class="total-size" id="totalSize">Total size: 0 KB</div>
+                <div class="progress-bar-file">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+            <p id="url_text">Having a URL?</p>
+            <div class="example_button" id="autocomplete" style="width: 100%">
+                <span class="btn-text">Submit autofill task (<span id="selected_autofilled_assistant"></span>)</span>
             </div>
             <!-- modal close button -->
             <div href="" class="modal__close demo-close">
@@ -152,6 +168,7 @@
 </div>
 <!-- JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="js/card/file_upload.js"></script>
 <script src="js/index/modal.js"></script>
 <script src="js/card/bearer.js"></script>
 <script src="js/card/card.js"></script>
