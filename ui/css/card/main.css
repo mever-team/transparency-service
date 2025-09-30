@@ -536,21 +536,18 @@ section.buttons {
 
 /* base input */
 .text-input {
-    flex: 1;
-    min-width: 180px;
-    padding: 3px 12px;
+    padding: 8px 7px;
     font-size: 15px;
     line-height: 6px;
-    color: #000;                  /* black text as requested */
-    background: #fafafa;
-    border: 1px solid #ddd;
+    color: #000;
+    background: #fff;
+    border: 1px solid transparent;
     border-radius: 8px;
-    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s;
     outline: none;
     box-sizing: border-box;
-    border-color: #0081C6;        /* theme blue */
     box-shadow: 0 4px 12px rgba(0,129,198,0.12);
-    background: #ffffff;
+    display: inline-block;
+    width: calc(100% - 94px);
 }
 
 /* focus state */
@@ -707,5 +704,16 @@ main {
     pointer-events: none;
     vertical-align: top;
     padding: 5px;
+}
+
+#pdf_text {
+    color: white;
+    text-align: right;
+    margin: 7px 0 0;
+    font-size: 14px;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: bold;
+    font-style: italic;
 }
 
