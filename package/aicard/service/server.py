@@ -60,7 +60,10 @@ class ModelCardEntry:
         assert flattened, "Cannot commit an empty model card."
         assert self.card_id is not None, "Internal error: card_id has not been set for a cached card"
         quality = self.card.quality()
-        desc = create_progress_bar(quality)+" vetted"
+        summary = self.card.summary()
+        desc = create_progress_bar(quality)+" info"
+        if summary:
+            desc += " for "+summary
 
         columns = list(flattened.keys())
         values = [flattened[key] for key in columns]+[desc]
@@ -114,7 +117,7 @@ class ModelCardEntry:
 
     def __autocomplete(self, url: str, assistant: Assistant, logger: Logger):
         try:
-            assistant.complete(self.card, url)
+            assistant.complete(self.card, url, logger)
             self.commit_card(on_thread=True) # on_thread=True because we are on a heavyweight path either way
             logger.info(f"ended card {self.card_id} completion", user=assistant.alias)
         except Exception as e:
@@ -123,7 +126,7 @@ class ModelCardEntry:
 
     def __autorefine(self, assistant: Assistant, logger: Logger):
         try:
-            assistant.refine(self.card)
+            assistant.refine(self.card, logger)
             self.commit_card(on_thread=True) # on_thread=True because we are on a heavyweight path either way
             logger.info(f"ended card {self.card_id} refinement", user=assistant.alias)
         except Exception as e:
@@ -167,12 +170,20 @@ def serve(
     assert admin_username, f"Admin username not found in {env} USER or arguments"
     assert admin_password, f"Admin password not found in {env} PASS or arguments"
     assert redirect_index, f"Index route to redirect not found in {env} INDEX or arguments"
+    import logging
+
+    # disable flask logging
+    log = logging.getLogger("werkzeug")
+    log.setLevel(logging.ERROR)
+    log.disabled = True
 
     card_cache_lock = Lock()
     card_cache: dict[int, ModelCardEntry | None] = dict()
     logger = Logger(log_file)
     token2expiration = dict()
     token2user = dict()
+    for assistant in assistants.values():
+        assistant.start(logger)
     conn = users.UserDB(logger=logger, root=root)
     app = Flask(__name__)
     empty_card = ModelCard()
@@ -183,6 +194,7 @@ def serve(
             "version": "0.0.4"
         }
     })
+
     def find_card(card_id: int):
         assert isinstance(card_id, int), "Card identifier must be an integer"
         with card_cache_lock:
@@ -210,9 +222,6 @@ def serve(
     def static_proxy(path):
         return send_from_directory(static, path)
 
-    if __name__ == "__main__":
-        app.run(debug=True)
-
     @app.errorhandler(500)
     def internal_error(e):
         logger.error(str(e))
@@ -220,7 +229,7 @@ def serve(
             response = jsonify(error=e.description or str(e))
             response.status_code = e.code or 500
             return response
-        return jsonify(error="Internal server error"), 500
+        return jsonify(error="Internal server error\nThis is not shown here for data protection, but the administrator will be notified with specifics, which may include user name and model card contents."), 500
 
     @app.errorhandler(Exception)
     def handle_unexpected_exception(e):
@@ -229,7 +238,7 @@ def serve(
             response = jsonify(error=e.description or str(e))
             response.status_code = e.code or 500
             return response
-        return jsonify(error="Unexpected server error"), 500
+        return jsonify(error="Unexpected server error\nThis is not shown here for data protection, but the administrator will be notified with specifics, which may include user name and model card contents."), 500
 
     @app.route("/", methods=['GET'])
     def get_index():
@@ -1162,5 +1171,5 @@ def serve(
                 for card_id in to_delete: card_cache.pop(card_id, None)
             time.sleep(600)  # run every 10 minutes
 
-    logger.ok("Server is ready.")
+    logger.ok("Server is ready: http://127.0.0.1:5000")
     return app, gc

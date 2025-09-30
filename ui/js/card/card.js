@@ -87,8 +87,11 @@ $(document).ready(function () {
                 $ul.append($li);
             });
         },
-        error: function () {
-            alert("ERROR GETTING CARD")
+        error: function (xhr, status, error) {
+            try {
+                const resp = JSON.parse(xhr.responseText);
+                alert(resp.error || error);
+            } catch (e) { alert("Unknown card submission error");}
         }
     })
 
@@ -128,12 +131,18 @@ $(document).ready(function () {
                /* $('#cards-container').append('<br><p style="margin:12px 0 0px 0px; font-size: 15px; font-weight: 700; color: #1f1f1f;display: inline-block">Actions: </p><p style="display: inline-block;margin:0 5px"><span id="refine">Refine</span> | <span id="autocomplete">Autocomplete: </span> <input type="text" class="text-input" placeholder="Enter URL..." id="card-url" /></p>')
 */
             },
-            error: function (e) {
-                alert("ERROR GETTING ASSISTANTS")
+            error: function (xhr, status, error) {
+                try {
+                    const resp = JSON.parse(xhr.responseText);
+                    alert(resp.error || error);
+                } catch (e) { alert("Unknown card retrieval error");}
             }
         })
-    }).fail(function () {
-        alert("ERROR LOGIN");
+    }).fail(function (xhr, status, error) {
+        try {
+            const resp = JSON.parse(xhr.responseText);
+            alert(resp.error || error);
+        } catch (e) { alert("Unknown login error");}
     });
 
     $(".nacc").on("input", ".editable", function () {
@@ -193,7 +202,10 @@ $(document).ready(function () {
                 }, 1500);
             },
             error: function (xhr, status, error) {
-                alert("ERROR EDIT"); //TODO
+                try {
+                    const resp = JSON.parse(xhr.responseText);
+                    alert(resp.error || error);
+                } catch (e) { alert(error || xhr.responseText);}
             }
         });
     });
@@ -216,7 +228,11 @@ $(document).ready(function () {
                 // optionally remove the card from DOM
             },
             error: function (xhr, status, error) {
-                alert("Error deleting card");
+                //alert("Error deleting card");
+                try {
+                    const resp = JSON.parse(xhr.responseText);
+                    alert(resp.error || error);
+                } catch (e) { alert("Unknown error at deleting card");}
             }
         });
     };
@@ -261,7 +277,10 @@ $(document).ready(function () {
                 alert(response)
             },
             error: function (xhr, status, error) {
-                alert(error); //TODO
+                try {
+                    const resp = JSON.parse(xhr.responseText);
+                    alert(resp.error || error);
+                } catch (e) { alert("Unknown refinement error");}
             }
         });
     });
@@ -281,7 +300,10 @@ $(document).ready(function () {
                 alert(response)
             },
             error: function (xhr, status, error) {
-                alert(error); //TODO
+                try {
+                    const resp = JSON.parse(xhr.responseText);
+                    alert(resp.error || error);
+                } catch (e) { alert("Unnkown autocomplete error");}
             }
         });
     });

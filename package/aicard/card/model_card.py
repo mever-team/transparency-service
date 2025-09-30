@@ -9,6 +9,15 @@ from aicard.card.traits.html import HTMLRenderer
 from aicard.card.dot_dict import DotDict
 from rich.markdown import Markdown
 
+def truncate(text, size):
+    if size<3:
+        return ""
+    text = str(text)
+    size = int(size)
+    if len(text)<=size:
+        return text
+    return text[:(size-3)]+"..."
+
 
 class ModelCard:
     def __init__(self, connector=None):
@@ -88,6 +97,14 @@ class ModelCard:
 
     def assign(self, other: "ModelCard"):
         self.data.assign(other.data)
+
+    def summary(self):
+        summary = ""
+        if self.data.model.name:
+            summary += " "+truncate(self.data.model.name, 10)
+        if self.data.model.version:
+            summary += " "+truncate(self.data.model.version, 10)
+        return summary[1:] if summary else ""
 
     def quality(self) -> float:
         nom = 0
