@@ -1,6 +1,8 @@
 import os
 import datetime
 import atexit
+import sys
+
 
 class Logger:
     ANSI_RESET = "\033[0m"
@@ -15,6 +17,7 @@ class Logger:
             self.file = open(log_file, 'a', buffering=1)  # line-buffered
             atexit.register(self.file.close)
         else: self.file = None
+
     def _timestamp(self):  return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     def _log(self, tag, message, color=None):
         ts = self._timestamp()
@@ -22,7 +25,7 @@ class Logger:
         if self.file: self.file.write(formatted + '\n')
         else:
             if color: formatted = f"{color}{tag}{self.ANSI_RESET} {message}"
-            print(formatted)
+            print(formatted.encode("ascii", errors="ignore").decode())
 
     def info(self, message:str, user:str|None=None):
         if user: message = user+" - "+message

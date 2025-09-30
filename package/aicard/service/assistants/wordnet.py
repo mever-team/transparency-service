@@ -1,20 +1,21 @@
 import threading
-import time
-
-from .assistant import Assistant
-from aicard.card import ModelCard
-from nltk.corpus import wordnet as wn
 import nltk
 import sys
 import re
+import requests
+from .assistant import Assistant
+from aicard.card import ModelCard
+from nltk.corpus import wordnet as wn
 from aicard.service.logger import Logger
+from urllib.parse import urlparse
+from bs4 import BeautifulSoup
 
 class WordNet(Assistant):
     _loader_thread: threading.Thread | None = None
     _loader_lock = threading.Lock()
     _started = False
 
-    def __init__(self):
+    def __init__(self, external_get_timeout_sec=1):
         super().__init__(
             alias="📚 WordNet",
             description=(
@@ -24,6 +25,8 @@ class WordNet(Assistant):
             )
         )
         self.scientific_defs = None
+        self.external_get_timeout_sec = external_get_timeout_sec
+
 
     def start(self, logger: Logger):
         with WordNet._loader_lock:
@@ -39,9 +42,9 @@ class WordNet(Assistant):
                     "noun.cognition", "noun.artifact", "noun.process",
                     "noun.substance", "noun.attribute",
                 }
-                scientific_defs = {}
                 from nltk.corpus import stopwords
                 stop_words = set(stopwords.words("english"))
+                scientific_defs = {}
                 for syn in wn.all_synsets():
                     if syn.lexname() in sci_lexnames:
                         gloss = syn.definition()
@@ -66,34 +69,57 @@ class WordNet(Assistant):
     def _wait_until_ready(self):
         with WordNet._loader_lock:
             if self.scientific_defs is None or len(self.scientific_defs)==0:
-                raise Exception("Wordnet assistant failed to start (or starting right now)")
+                raise Exception(self.alias+" failed to start or has not yet finished setting up")
 
     def _refine_field(self, value):
-        tokens = re.findall(r"[A-Za-z0-9_]+|[<>.,()\"']|\s+", value)
-        stack = []
-        for tok in tokens:
-            if tok == "<": stack.append(tok)
-            elif tok == ">":
-                if not stack or stack[-1] != "<": raise Exception("Imbalanced html brackets <>")
-                stack.pop()
-        if stack: raise Exception("Imbalanced html brackets <>")
-        new_tokens = []
-        inside_tag = False
-        for tok in tokens:
-            if tok == "<":
-                inside_tag = True
-                new_tokens.append(tok)
-            elif tok == ">":
-                inside_tag = False
-                new_tokens.append(tok)
-            elif not inside_tag and tok in self.scientific_defs:
-                new_tokens.append(f"<abbr title='{self.scientific_defs[tok]}'>{tok}</abbr>")
+        toks = re.findall(r"[A-Za-z0-9_]+|[<>.,()\"']|\s+", value)
+        bal = 0
+        for t in toks:
+            if t == "<": bal += 1
+            elif t == ">":bal -= 1
+            if bal < 0: raise Exception("Imbalanced <>")
+        if bal: raise Exception("Imbalanced <>")
+        out, i, inside = [], 0, False
+        in_abbr = False
+        while i < len(toks):
+            t = toks[i]
+            if t == "<": inside = True; out.append(t)
+            elif t == ">": inside = False; out.append(t)
+            elif inside and t=="abbr": out.append(t); in_abbr = not in_abbr
+            elif inside or in_abbr or len(t)<=1 or t.isspace(): out.append(t)
             else:
-                new_tokens.append(tok)
-        return "".join(new_tokens)
+                bi = f"{t} {toks[i+2]}" if i+2<len(toks) and len(toks[i+2])>1 and toks[i+1].isspace() else None
+                if bi and bi in self.scientific_defs:
+                    out.append(f"<abbr title='{self.scientific_defs[bi]}'>{bi}</abbr>");
+                    i += 2
+                elif t in self.scientific_defs: out.append(f"<abbr title='{self.scientific_defs[t]}'>{t}</abbr>")
+                else: out.append(t)
+            i += 1
+        return "".join(out)
 
     def complete(self, card: ModelCard, url: str, logger: Logger):
         self._wait_until_ready()
+        logger.info("Submitted: " + str(url), user=self.alias)
+        parsed = urlparse(url)
+        if not parsed.scheme in ("http", "https") or not parsed.netloc: raise Exception("Invalid url format")
+        response = requests.get(url, timeout=self.external_get_timeout_sec)
+
+        soup = BeautifulSoup(response.text, "html.parser")
+        first_header = soup.find(re.compile("^h[1-6]$"))
+        title = first_header.get_text(strip=True) if first_header else None
+        sections = []
+        for header in soup.find_all(re.compile("^h[1-6]$")):
+            content = []
+            for sibling in header.find_next_siblings():
+                if sibling.name and re.match("^h[1-6]$", sibling.name):
+                    break
+                content.append(sibling.get_text(" ", strip=True))
+            sections.append((header.get_text(strip=True), " ".join(content).strip()))
+
+        card.model.name = title
+        print("Title:", title)
+        print("Sections:", [sec[0] for sec in sections])
+
 
     def refine(self, card: ModelCard, logger: Logger):
         self._wait_until_ready()
@@ -104,5 +130,4 @@ class WordNet(Assistant):
                 if not isinstance(value, str):
                     continue
                 vals[field] = self._refine_field(value)
-        print(card.to_markdown())
         card.assign(card.to_html_card())
