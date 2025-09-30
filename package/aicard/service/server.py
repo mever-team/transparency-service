@@ -14,6 +14,25 @@ from threading import Thread
 from dotenv import dotenv_values
 from werkzeug.exceptions import HTTPException
 
+def create_progress_bar(quality: float) -> str:
+    percent = max(0.0, min(1.0, quality)) * 100
+    return f"""
+    <div style="
+        display:inline-block;
+        width:60px;
+        height:8px;
+        background:#ddd;
+        border-radius:4px;
+        overflow:hidden;
+        vertical-align:middle;">
+        <div style="
+            width:{percent:.1f}%;
+            height:100%;
+            background:#3a3;
+            transition:width 0.3s;">
+        </div>
+    </div>
+    """.strip()
 
 def exists(condition, message):
     # empty strings are allowed
@@ -40,8 +59,12 @@ class ModelCardEntry:
         flattened = self.card.data.flatten()
         assert flattened, "Cannot commit an empty model card."
         assert self.card_id is not None, "Internal error: card_id has not been set for a cached card"
+        quality = self.card.quality()
+        desc = create_progress_bar(quality)+" vetted"
+
         columns = list(flattened.keys())
-        values = [flattened[key] for key in columns]
+        values = [flattened[key] for key in columns]+[desc]
+        columns += ["desc"]  # do this after values uses columns, because its a db, not card field
         query = f'''
             UPDATE cards
             SET {", ".join(f'"{col}" = ?' for col in columns)}

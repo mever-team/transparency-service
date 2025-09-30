@@ -5,7 +5,9 @@ from aicard.agents import Agent
 
 class Prompter(Assistant):
     def __init__(self, agent: Agent):
-        super().__init__(alias=agent.__class__.__name__ , description="<h1>Prompting assistant</h1>Simplifications are applied only on fields with at least one line break. Any markdown is converted to html.")
+        super().__init__(
+            alias="🤖 "+agent.__class__.__name__,
+            description="<h1>🤖 "+agent.__class__.__name__+"</h1>Simplifications are applied only on fields with at least one line break. Any markdown is converted to html.")
         self.agent = agent
     def complete(self, card: ModelCard, url: str):
         pass
