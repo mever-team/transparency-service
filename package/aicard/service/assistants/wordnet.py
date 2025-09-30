@@ -10,12 +10,16 @@ from aicard.service.logger import Logger
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 
-def get_synonyms(heading):
+def get_synonyms(heading, stopwords):
     synonyms = set()
-    for heading_part in heading.replace("_", " ").strip().split(" "):
+    for heading_part in heading.lower().replace("_", " ").strip().split(" "):
         if not heading_part: continue
+        if heading_part in stopwords: continue
         synsets = wn.synsets(heading_part)
-        synonyms |= {lemma.name().lower() for syn in synsets for lemma in syn.lemmas()}
+        synonyms |= {part for syn in synsets for lemma in syn.lemmas() for part in lemma.name().lower().replace("_"," ").split(" ")}
+        synonyms |= {part for syn in synsets for lemma in syn.hypernyms() for part in lemma.name().lower().replace("_"," ").split(" ")}
+        synonyms |= {part for syn in synsets for lemma in syn.hyponyms() for part in lemma.name().lower().replace("_"," ").split(" ")}
+        synonyms |= {part for syn in synsets for lemma in syn.similar_tos() for part in lemma.name().lower().replace("_"," ").split(" ")}
         synonyms.add(heading_part)
     return synonyms
 
@@ -24,7 +28,9 @@ class WordNet(Assistant):
     _loader_lock = threading.Lock()
     _started = False
 
-    def __init__(self, external_get_timeout_sec=1):
+    def __init__(self,
+                 external_get_timeout_sec: float=1,
+                 max_chars_for_semantic_synonyms: int=1000):
         super().__init__(
             alias="📚 WordNet",
             description=(
@@ -36,6 +42,7 @@ class WordNet(Assistant):
         self.scientific_defs = None
         self.field_synonyms = dict()
         self.external_get_timeout_sec = external_get_timeout_sec
+        self.max_chars_for_semantic_synonyms = max_chars_for_semantic_synonyms
 
 
     def start(self, logger: Logger):
@@ -73,12 +80,14 @@ class WordNet(Assistant):
                     if not isinstance(values, dict): continue
                     for field, value in values.items():
                         if not isinstance(value, str): continue
-                        field_synonyms[field] = get_synonyms(field+" "+cat)
+                        field_synonyms[field] = get_synonyms(field, stop_words)
+                        field_synonyms[cat] = get_synonyms(cat, stop_words)
 
-                logger.ok(f"loaded {len(scientific_defs)} terms in {int(total/1024)} kb", user="📚 WordNet")
+                logger.ok(f"loaded {len(scientific_defs)} terms in {int(total/1024)} kΒ", user="📚 WordNet")
                 with WordNet._loader_lock:
                     self.scientific_defs = scientific_defs
                     self.field_synonyms = field_synonyms
+                    self.stop_words = stop_words
             except Exception as e:
                 logger.error(f"failed to start: {e}", user="📚 WordNet")
                 self.scientific_defs = dict()
@@ -88,8 +97,8 @@ class WordNet(Assistant):
 
     def _wait_until_ready(self):
         with WordNet._loader_lock:
-            if self.scientific_defs is None or len(self.scientific_defs)==0:
-                raise Exception("WordNet failed to start")
+            if len(self.scientific_defs)==0:
+                raise Exception("WordNet failed to start - please contact the server's administrator")
             if self.scientific_defs is None:
                 raise Exception("WordNet is still starting")
 
@@ -141,23 +150,40 @@ class WordNet(Assistant):
                                 .encode("ascii", errors="ignore")
                                 .decode(),
                              " ".join(content).strip()))
-        card.model.name = title
         not_used_fields = list()
+        has_been_replaced = dict()
         for heading, content in sections:
-            synonyms = get_synonyms(heading)
-            best_score = 0
+            if not content.strip(): continue
+            synonyms = get_synonyms(heading, self.stop_words)
+            secondary_synonyms = get_synonyms(heading, self.stop_words)
+            for value in re.sub(r"[^A-Za-z]", " ", content[:min(self.max_chars_for_semantic_synonyms, len(content))]).split(" "):
+                secondary_synonyms |= get_synonyms(value, self.stop_words)
+            best_score = 1
             best_path = []
             for cat, values in card.data.items():
                 if not isinstance(values, dict): continue
                 for field, value in values.items():
                     if not isinstance(value, str): continue
-                    score = len(synonyms & self.field_synonyms[field])
-                    if score>best_score:
+                    #if cat+"__"+field in has_been_replaced: continue
+                    score = (len(synonyms & self.field_synonyms[field])
+                             + len(synonyms & self.field_synonyms[cat])*0.5
+                             + len(secondary_synonyms & self.field_synonyms[field])*0.2
+                             + len(secondary_synonyms & self.field_synonyms[cat])*0.2
+                             )
+                    if score > best_score:
                         best_score = score
                         best_path = (cat, field)
-            if best_path: card.data[best_path[0]][best_path[1]] = content
-            else: not_used_fields.append(synonyms)
-        print(not_used_fields)
+            if best_path:
+                prev_content = has_been_replaced.get(best_path[0]+"__"+best_path[1], "")
+                if prev_content: content = prev_content +  "\n<br><br>\n" + content
+                has_been_replaced[best_path[0] + "__" + best_path[1]] = content
+                card.data[best_path[0]][best_path[1]] = content
+            else: not_used_fields.append(heading)
+
+        # fix name field, because it's kind of important
+        card.model.overview = card.model.name + "<br>" + card.model.overview
+        card.model.name = title
+        logger.warn("the following headings could not be matched to a model card based on synonyms" + ", ".join(not_used_fields), user=self.alias)
 
 
     def refine(self, card: ModelCard, logger: Logger):

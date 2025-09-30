@@ -663,7 +663,7 @@ def serve(
                 description: An AI assistant is working on the model card.
         """
         with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
-            return jsonify(converters.dict2dynamic(card.data|{"related": []}, {"title"}))
+            return jsonify(converters.dict2dynamic(card.data, {"title"}))
 
     @app.route('/card/<int:card_id>/locked', methods=['GET'])
     @users.require_auth(token2expiration)
