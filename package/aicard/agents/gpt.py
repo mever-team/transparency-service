@@ -5,7 +5,7 @@ from aicard.agents.agent import Agent
 
 class GPT(Agent):
     tasks = {
-        "summarization": "You are a helpful assistant that summarizes documents.",
+        "simplification": "You are a helpful assistant that summarizes documents.",
         "completion": "You are a helpful assistant that completes json fields of a model card."
     }
 

@@ -35,8 +35,7 @@ class WordNet(Assistant):
             alias="📚 WordNet",
             description=(
                 "<h1>📚 WordNet</h1>"
-                "Highlights scientific terms from WordNet domain tags "
-                "and adds tooltips with their definitions."
+                "Dictionary-based semantics. Runs fastly."
             )
         )
         self.scientific_defs = None
@@ -144,7 +143,8 @@ class WordNet(Assistant):
             for sibling in header.find_next_siblings():
                 if sibling.name and re.match("^h[1-6]$", sibling.name):
                     break
-                content.append(sibling.get_text(" ", strip=True))
+                #content.append(sibling.get_text(" ", strip=True))
+                content.append(str(sibling))
             sections.append((header
                                 .get_text(strip=True)
                                 .encode("ascii", errors="ignore")
@@ -183,7 +183,8 @@ class WordNet(Assistant):
         # fix name field, because it's kind of important
         card.model.overview = card.model.name + "<br>" + card.model.overview
         card.model.name = title
-        logger.warn("the following headings could not be matched to a model card based on synonyms" + ", ".join(not_used_fields), user=self.alias)
+        if not_used_fields:
+            logger.warn("the following headings could not be matched to a model card based on synonyms" + ", ".join(not_used_fields), user=self.alias)
 
 
     def refine(self, card: ModelCard, logger: Logger):

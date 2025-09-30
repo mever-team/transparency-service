@@ -14,7 +14,7 @@ from aicard.service.assistants import WordNet, Prompter
 from aicard.agents import Ollama
 from threading import Thread
 
-app, gc = serve({"ollama": Prompter(Ollama()), "tassist": WordNet()}, env="ui/.env")
+app, gc = serve({"wordnet": WordNet(), "ollama": Prompter(Ollama())}, env="ui/.env")
 
 if __name__ == "__main__":
     Thread(target=gc, daemon=True).start()

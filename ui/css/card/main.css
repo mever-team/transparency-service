@@ -709,8 +709,8 @@ main {
 
 #pdf_text,#url_text {
     color: white;
-    text-align: right;
-    margin: 7px 0 0;
+    text-align: left;
+    margin: 7px 0 7px;
     font-size: 14px;
     text-decoration: underline;
     cursor: pointer;
@@ -807,3 +807,70 @@ main {
     width: 0%;
     transition: width 0.5s ease;
 }
+
+
+
+
+
+
+summary h2 {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 1.2em;
+  display: inline;
+}
+
+summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.6em 1em;
+  font-weight: 500;
+  border-radius: 6px;
+  position: relative;
+  margin: 20px 0;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  border: 1px solid #ddd;
+  background: #fafafa;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+summary:hover {
+  background: #f0f0f0;
+  border-color: #ccc;
+}
+
+summary::marker,
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary::after {
+  content: "›";
+  position: absolute;
+  right: 1em;
+  transition: transform 0.8s ease;
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #555;
+}
+
+details[open] summary::after {
+  transform: rotate(90deg);
+}
+
+/* Wrap your content in a .content div */
+details .card-details-content {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.8s ease, opacity 0.8s ease;
+}
+
+details[open] .card-details-content {
+  max-height: 1000px; /* just needs to be larger than content height */
+  opacity: 1;
+}
+

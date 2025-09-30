@@ -32,8 +32,8 @@
     <!-- Delete Success Overlay -->
     <div id="delete-confirm-screen" class="delete-confirm-screen">
         <div class="delete-confirm-content">
-            <h2>Delete Model Card </h2>
-            <p>This will delete the card and <strong>cannot be undone</strong>. Are you sure?</p>
+            <h2>Delete?</h2>
+            <p>This will delete the model card and <strong>cannot be undone</strong>. Are you sure?</p>
             <div class="buttons">
                 <button id="cancel-delete-btn">Cancel</button>
                 <button id="confirm-delete-btn">Delete</button>
@@ -43,8 +43,8 @@
     <!-- Delete Success Overlay -->
     <div id="delete-success-screen" class="delete-success-screen">
         <div class="delete-success-content">
-            <h2>Card Deleted Successfully</h2>
-            <p>The model card has been removed.</p>
+            <h2>Card deleted</h2>
+            <p>The model card has been successfully removed.</p>
             <button id="close-success-btn"><a style="text-decoration: none;color: white;" href="index.html">Home</a>
             </button>
         </div>
@@ -136,9 +136,10 @@
         <div class="modal__content">
             <p style="font-size: 16px; font-weight: 700; color: white;display: inline-block;margin-right: 10px;vertical-align: top;">Select assistant: </p>
             <div class="assistants_wrapper"></div>
-            <p id="card-url-p" style="font-size: 16px; font-weight: 700; color: white;display: inline-block;margin-right: 26px">Card Url: </p>
+<!--            <p id="card-url-p" style="font-size: 16px; font-weight: 700; color: white;display: inline-block;margin-right: 26px">Card Url: </p>-->
+            <p id="pdf_text">Paste a URL. Do you have a PDF or Markdown file instead?</p>
+            <p id="url_text">Upload a PDF or Markdown file. Do you have a URL instead?</p>
             <input type="text" class="text-input" placeholder="Enter URL..." id="card-url"/>
-            <p id="pdf_text">Having a PDF?</p>
             <div class="upload-container">
                 <div class="file-drop-area" id="dropArea">
                     <span class="fake-btn">Choose file</span>
@@ -151,7 +152,6 @@
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
             </div>
-            <p id="url_text">Having a URL?</p>
             <div class="example_button" id="autocomplete" style="width: 100%">
                 <span class="btn-text">Submit autofill task (<span id="selected_autofilled_assistant"></span>)</span>
             </div>
