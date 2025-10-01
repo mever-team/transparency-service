@@ -76,9 +76,8 @@ html, body {
     color: #1F1F1F;
 }
 
-
 .search_wrapper::before {
-    background: url(../../img/aicode_bg.jpg) no-repeat;
+    background: url(../../img/aicode_bg_surface.jpg) no-repeat;
     z-index: 1;
     background-size: cover;
     background-position-x: center;
@@ -487,7 +486,7 @@ html, body {
 }
 
 #service-title {
-    color: #1F1F1F;
+    color: #155E34;
 }
 
 @media (max-width: 600px) {

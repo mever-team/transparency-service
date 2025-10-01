@@ -134,7 +134,7 @@ function autocomplete_populate() {/*
                     $tbody.empty();
 
                     if ($("#topic").val().trim() !== "") {
-                        $('#search_results_wrapper').text("Showing")
+                        $('#search_results_wrapper').text("Search results")
                     } else {
                         $('#search_results_wrapper').text("Most popular")
                     }

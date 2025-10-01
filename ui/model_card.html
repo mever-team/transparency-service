@@ -24,8 +24,21 @@
     <section class="header_section">
         <div class="row bigWidth">
             <div class="small-12 medium-12 large-12 columns">
-                <div class="header_wrapper">
-                    <h2><a href="index.html">AI-CODE</a></h2>
+                <div class="header_wrapper" style="display:inline;float:left">
+                    <h2><a href="index.html">AI-CODE</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="model-title" class="model-title">Loading...</span></h2>
+                </div>
+                <div style="display:inline;float:right;margin-top:7px">
+                        <div class="example_button" id="saveJson" style="background-color: #64DB96;width: 100px">
+                        <span class="btn-text">Save</span>
+                        <span class="btn-confirmation">✔&nbsp;Saved</span>
+                    </div>
+                    <div class="example_button modal__trigger" data-modal="#modal_refine" style="width: 100px">
+                        <span class="btn-text">⚙️&nbsp;Refine</span>
+                    </div>
+                    <div class="example_button modal__trigger" data-modal="#modal_autocomplete" style="width: 100px">
+                        <span class="btn-text">⚙️&nbsp;Autofill</span>
+                    </div>
+                    <div class="example_button" id="deleteCard" style="background-color: #F44336;width: 100px">🗑️ Delete</div>
                 </div>
             </div>
         </div>
@@ -53,28 +66,8 @@
             </button>
         </div>
     </div>
-    <section class="page-title">
-        <div class="row bigWidth">
-            <h1 id="model-title" class="model-title">Loading...</h1>
-        </div>
-    </section>
 
     <section class="buttons">
-        <div class="row bigWidth">
-            <div class="cards-container" id="cards-container">
-                <div class="example_button modal__trigger" data-modal="#modal_refine" style="background-color: #64DB96;width: 120px">
-                    <span class="btn-text">⚙️&nbsp;Refine</span>
-                </div>
-                <div class="example_button modal__trigger" data-modal="#modal_autocomplete" style="background-color: #64DB96;width: 120px">
-                    <span class="btn-text">⚙️&nbsp;Autofill</span>
-                </div>
-            </div>
-            <div class="example_button" id="saveJson" style="background-color: #0081C6;">
-                <span class="btn-text">Save</span>
-                <span class="btn-confirmation">✔&nbsp;Saved</span>
-            </div>
-            <div class="example_button" id="deleteCard" style="background-color: #F44336"> Delete</div>
-        </div>
     </section>
     <section class="search_section">
         <div class="naccs">
@@ -86,7 +79,6 @@
                         <div><span class="light square"></span><span>Training Set</span></div>
                         <div><span class="light square"></span><span>Eval Set</span></div>
                         <div><span class="light square"></span><span>Analysis</span></div>
-                        <div><span class="light square"></span><span>Related</span></div>
                     </div>
                 </div>
                 <div style="margin-left: 240px">
@@ -118,7 +110,7 @@
 <div id="modal_refine" class="modal modal__bg">
     <div class="modal__dialog">
         <div class="modal__content">
-            <p style="font-size: 16px; font-weight: 700; color: white;display: inline-block;margin-right: 10px;vertical-align: top;">Select assistant: </p>
+            <p style="font-size: 16px; font-weight: 700;display: inline-block;margin-right: 10px;vertical-align: top;">Select assistant: </p>
             <div class="assistants_wrapper"></div>
             <div class="example_button" id="refine" style="width: 100%">
                 <span class="btn-text">Submit refinement task (<span id="selected_refined_assistant"></span>)</span>
