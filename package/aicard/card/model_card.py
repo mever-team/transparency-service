@@ -167,6 +167,9 @@ class ModelCard:
     def to_html(self):
         return HTMLRenderer(self.to_html_card().data, editable=False).render()
 
+    def json_dumps(self):
+        return json.dumps(self.data)
+
     def save_json(self, filename: str):
         with open(filename, "w") as f:
             f.write(json.dumps(self.data))

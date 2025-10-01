@@ -4,6 +4,7 @@ from aicard.card import ModelCard
 from aicard.agents import Agent
 from urllib.parse import urlparse
 import requests
+import json
 import markdown2
 from bs4 import BeautifulSoup
 
@@ -24,14 +25,36 @@ class Prompter(Assistant):
         if not parsed.scheme in ("http", "https") or not parsed.netloc: raise Exception("Invalid url format")
         response = requests.get(url, timeout=self.external_get_timeout_sec)
         text = response.text
-        # TODO:
+
+        last_output = card.json_dumps()
+        prompt = f"{last_output}\n\n{text}"
+        completion = self.agent.completion(prompt)
+
+        start = completion.find("{")
+        brace_count = 0
+        for i, ch in enumerate(completion[start:], start=start):
+            if ch == "{":
+                brace_count += 1
+            elif ch == "}":
+                brace_count -= 1
+                if brace_count == 0:
+                    striped_json = json.loads(completion[start:i + 1])
+
+        for category, values in card.data.items():
+            if category not in striped_json: continue
+            if not isinstance(values, dict): continue
+            for field, value in values.items():
+                if field not in striped_json[category]: continue
+                if not isinstance(value, str): continue
+                values[field] = striped_json[category][field]
 
     def refine(self, card: ModelCard, logger: Logger):
+        print(f'def refine(self, card: ModelCard, logger: Logger):{self.agent.__class__.__name__}')
         for category, values in card.data.items():
             if not isinstance(values, dict): continue
             for field, value in values.items():
                 if not isinstance(value, str): continue
-                if len(value.split('\n'))<2: continue
+                if len(value.split(' '))<2: continue
                 if ("<summary><h2>Simplified</h2></summary>" in value or
                     "<summary><h2>Original</h2></summary>" in value): continue
                 summarization = self.agent.summarization(value)
