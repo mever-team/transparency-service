@@ -3,7 +3,6 @@
     src: url('../../fonts/Hero.otf');
 }
 
-
 html, body {
     height: 100%;
     margin: 0;
@@ -100,7 +99,7 @@ html, body {
     font-size: 20px;
     line-height: 28px;
     border: 0;
-    background: #fff;
+    background: #EEEEEE;
     border-radius: 6px;
     -webkit-box-shadow: 0 14px 24px rgba(50, 48, 58, .25);
     box-shadow: 0 14px 24px rgba(50, 48, 58, .25);
@@ -144,6 +143,7 @@ html, body {
     font-size: 17px;
     font-family: 'Hero_font', sans-serif;
     float: right;
+    color: #EEEEEE;
 }
 
 .search_button.large {
@@ -155,22 +155,18 @@ html, body {
 }
 
 .search_results_button {
-    background-color: #64DB96;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     border: none;
     cursor: pointer;
-    border-radius: 6px;
-    outline: 1px solid #252525;
-    text-align: center;
+    border-radius: 12px;
+    text-align: left;
     font-weight: 700;
     line-height: 1.1;
     letter-spacing: normal;
-    text-transform: uppercase;
     padding: 14px 20px;
     display: block;
-    color: #252525;
     text-decoration: none;
     font-size: 17px;
     font-family: 'Hero_font', sans-serif;
@@ -188,6 +184,7 @@ html, body {
 .search_input {
     display: block;
     overflow: hidden;
+    background: #EEEEEE;
 }
 
 
@@ -231,7 +228,7 @@ html, body {
     will-change: transform, opacity;
     position: relative;
     padding: 2.4rem;
-    background: #252525;
+    background: #1F1F1F;
     color: #dcdcdc;
     background-clip: padding-box;
     box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
@@ -255,6 +252,10 @@ html, body {
     -ms-user-select: none;
     user-select: none;
     transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+#whats-this {
+    color: #EEEEEE;
 }
 
 .modal__trigger--active {
@@ -325,8 +326,8 @@ html, body {
   padding: 1.5rem;
   padding-top: 0rem;
   line-height: 1.2;
-  font-size: 1.2em; /* fixed typo: use font-size, not text-size */
-  color: #fff;      /* optional: light text to contrast dark background */
+  font-size: 1.2em;
+  color: #EEEEEE;
 }
 
 .modal-card h2 {
@@ -455,6 +456,7 @@ html, body {
     max-width: 1024px;
     margin-left: auto;
     margin-right: auto;
+    color: #1F1F1F;
  }
 
 .main_search_wrapper {
@@ -465,6 +467,8 @@ html, body {
     transition: all 0.4s ease 0s;
 }
 #resultsTable {
+    margin-top:10px;
+    display:none;
     border-collapse: collapse;
     width: 100%;
 }
@@ -475,8 +479,15 @@ html, body {
     margin-bottom: 2px;
     margin-top: 2px;
     width: 100%;
-    table-layout: fixed; /* keeps columns aligned */
-    border-left: 2px solid transparent;
+    table-layout: fixed;
+    border: 0px;
+}
+#resultsTable td {
+    padding-left: 8px;
+}
+
+#service-title {
+    color: #1F1F1F;
 }
 
 @media (max-width: 600px) {
@@ -487,8 +498,6 @@ html, body {
 }
 
 #resultsTable tbody {
-    background: #fff;
-    outline: 2px solid #252525;
     display: block;
     max-height: 310px;       /* fixed height */
     overflow-y: auto;    /* scrollable */
@@ -527,8 +536,6 @@ html, body {
     vertical-align: middle;
 }
 
-
-
 .header_section {
     flex: 0 0 auto;
 }
@@ -542,7 +549,6 @@ html, body {
     min-height: 400px;
     display: flex;
     box-sizing: border-box
-
 }
 
 

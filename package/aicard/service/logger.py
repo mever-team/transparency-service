@@ -1,7 +1,6 @@
 import os
 import datetime
 import atexit
-import sys
 
 
 class Logger:

@@ -134,7 +134,7 @@ function autocomplete_populate() {/*
                     $tbody.empty();
 
                     if ($("#topic").val().trim() !== "") {
-                        $('#search_results_wrapper').text("Search results")
+                        $('#search_results_wrapper').text("Showing")
                     } else {
                         $('#search_results_wrapper').text("Most popular")
                     }
@@ -149,10 +149,9 @@ function autocomplete_populate() {/*
                             );
 
                             $tbody.append(`
-                                <tr style="border-bottom: 1px solid #e8ecec">
-                                    <td><span style="width: 300px; display: block;">${highlightedName}</span> <span style="font-size: 13px">${item.desc+" by "+item.creator || "No Description"}</span></td>
-                                 
-                                    <td style="width: 160px">    <a style="width: 160px;text-decoration:none" href="model_card.html?id=${item.id}"><div class="search_results_button" > 🔎 Open </div></a></td>
+                                <tr style="background: #1F1F1F;" class="search_results_button">
+                                    <td><a style="width: 160px;text-decoration:none" href="model_card.html?id=${item.id}"><span style="width: 300px; display: block; color: #EEEEEE;">${highlightedName}</span> <span style="font-size: 13px; color: #79CFDC;">${item.desc+" - by "+item.creator || "No Description"}</span></td>
+
                                 </tr>
                             `);
                         });

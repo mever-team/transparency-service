@@ -46,7 +46,9 @@ class ModelCardEntry:
         self.creator = creator
         self.preview = card.to_html_card()
         self.lock = Lock()
-        self._is_completing = False
+        self._is_completing: bool = False
+        self._completion_status: list[str]|None = None
+        self._completion_start = 0
         self.__thread = None
         self.conn = conn
         self.card_id = None
@@ -92,18 +94,24 @@ class ModelCardEntry:
         self.lock.acquire()
         if self._is_completing:
             self.lock.release()
-            abort(409, description="An AI assistant is working on the model card")
+            abort(409, description="An AI assistant is already working on the model card")
         self._is_completing = True
+        self._completion_status = ["An AI assistant is working on the model card"]
+        self._completion_start = time.time()
         self.lock.release()
 
     def check_completion(self):
+        ret = "An AI assistant is working on the model card"  # failsafe is to complain
         with self.lock:
-            ret = self._is_completing
+            if not self._is_completing: ret = ""
+            else: ret = "<br>".join(self._completion_status)+" ("+str(int(time.time() - self._completion_start))+" sec)"
         return ret
 
     def end_completion(self):
         with self.lock:
             self._is_completing = False
+            self._completion_status = None
+            self._completion_start = time.time()
 
     def __enter__(self):
         self.lock.acquire()
@@ -117,7 +125,7 @@ class ModelCardEntry:
 
     def __autocomplete(self, url: str, assistant: Assistant, logger: Logger):
         try:
-            assistant.complete(self.card, url, logger)
+            assistant.complete(self.card, url, logger, self._completion_status)
             self.commit_card(on_thread=True) # on_thread=True because we are on a heavyweight path either way
             logger.info(f"ended card {self.card_id} completion", user=assistant.alias)
         except Exception as e:
@@ -126,7 +134,7 @@ class ModelCardEntry:
 
     def __autorefine(self, assistant: Assistant, logger: Logger):
         try:
-            assistant.refine(self.card, logger)
+            assistant.refine(self.card, logger, self._completion_status)
             self.commit_card(on_thread=True) # on_thread=True because we are on a heavyweight path either way
             logger.info(f"ended card {self.card_id} refinement", user=assistant.alias)
         except Exception as e:
@@ -688,7 +696,7 @@ def serve(
                 description: The request's card does not exist or has been deleted.
         """
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
-        return jsonify("An AI assistant is working on the card" if card.check_completion() else "")
+        return jsonify(card.check_completion())
 
     @app.route('/card/<int:card_id>/title', methods=['GET'])
     def get_card_title(card_id):

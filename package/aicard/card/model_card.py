@@ -100,10 +100,10 @@ class ModelCard:
 
     def summary(self):
         summary = ""
-        if self.data.model.name:
-            summary += " "+truncate(self.data.model.name, 10)
+        #if self.data.model.name:
+        #    summary += " "+truncate(self.data.model.name.split(" ")[0].split("\n")[0], 50)
         if self.data.model.version:
-            summary += " "+truncate(self.data.model.version, 10)
+            summary += " version "+truncate(self.data.model.version.split(" ")[0].split("\n")[0], 50)
         return summary[1:] if summary else ""
 
     def quality(self) -> float:

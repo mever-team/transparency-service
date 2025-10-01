@@ -127,7 +127,7 @@ class WordNet(Assistant):
             i += 1
         return "".join(out)
 
-    def complete(self, card: ModelCard, url: str, logger: Logger):
+    def complete(self, card: ModelCard, url: str, logger: Logger, user_messages: list[str]):
         self._wait_until_ready()
         logger.info("Submitted: " + str(url), user=self.alias)
         parsed = urlparse(url)
@@ -186,7 +186,7 @@ class WordNet(Assistant):
             logger.warn("the following headings could not be matched to a model card based on synonyms" + ", ".join(not_used_fields), user=self.alias)
 
 
-    def refine(self, card: ModelCard, logger: Logger):
+    def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]):
         self._wait_until_ready()
         for cat, vals in card.data.items():
             if not isinstance(vals, dict): continue

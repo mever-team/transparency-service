@@ -416,12 +416,12 @@ section.buttons {
 }
 
 #confirm-delete-btn {
-    background: #E63946;
+    background: #F44336;
     color: white;
 }
 
 #confirm-delete-btn:hover {
-    background: #c72d39;
+    background: #F87f76;
 }
 
 #close-success-btn {
