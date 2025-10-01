@@ -41,60 +41,99 @@ $(document).ready(function () {
         }
     });
 
-    $.ajax({
-        url: "http://127.0.0.1:5000/card/" + id,
-        method: "GET",
-        contentType: "application/json",
-        dataType: "json",
-        success: function (jsonData) {
-            cardJson = jsonData;
-            //$("#model-title").text("Model Card: " + jsonData.title);
-            $("#model-title").text(jsonData.title);
-            const $ul = $(".nacc");
-            $ul.empty();
+    let interval = setInterval(function () {
+        checkLocked(interval, true);
+    }, 500);
 
-            jsonData.data.forEach((section, index) => {
-                let sectionTitle = section.name.replace(/_/g, " ").toUpperCase();
-
-                let $li = $("<li>").toggleClass("active", index === 0);
-                let $section = $("<section>");
-                $section.append($("<h2>").text(sectionTitle));
-
-                if (section.value.length > 0) {
-
-                    section.value.forEach(field => {
-                        let $field = $("<div>").addClass("field");
-                        $field.append($("<span>").addClass("field-name").text(field.name.replace(/_/g, " ") + ":"));
-
-                        // Editable field value
-                        let $fieldValue = $("<span>")
-                            .addClass("field-value editable")
-                            .attr("contenteditable", "true")
-                            .html(field.value || "");
-                        if ((field.value.trim() !== "") && (field.value.trim() !== "<br>")){
-                            $('.menu').find('div').eq(index).find('.light').removeClass('square');
-                            $('.menu').find('div').eq(index).find('.light').addClass('arrow');
-                        }
-                        $field.append($fieldValue);
-                        $section.append($field);
-
-                    });
+    function checkLocked(interval) {
+        $.ajax({
+            url: "http://127.0.0.1:5000/card/" + id + "/locked",
+            method: "GET",
+            contentType: "application/json",
+            dataType: "json",
+            success: function (jsonData) {
+                if (jsonData !== "") {
+                    document.getElementById('card-locked').style.display = 'flex';
+                    $('#lock-msg').html(jsonData);
+                    $('body').addClass('no-overflow');
                 } else {
-                    $section.append($("<p>").text("No data provided."));
+                    $('body').removeClass('no-overflow');
+                    document.getElementById('card-locked').style.display = 'none';
+                    if (interval) {
+                        clearInterval(interval);
+                    }
+
+                    $.ajax({
+                        url: "http://127.0.0.1:5000/card/" + id,
+                        method: "GET",
+                        contentType: "application/json",
+                        dataType: "json",
+                        success: function (jsonData) {
+                            cardJson = jsonData;
+                            //$("#model-title").text("Model Card: " + jsonData.title);
+                            $("#model-title").text(jsonData.title);
+                            const $ul = $(".nacc");
+                            $ul.empty();
+
+                            jsonData.data.forEach((section, index) => {
+                                let sectionTitle = section.name.replace(/_/g, " ").toUpperCase();
+
+                                let $li = $("<li>").toggleClass("active", index === 0);
+                                let $section = $("<section>");
+                                $section.append($("<h2>").text(sectionTitle));
+
+                                if (section.value.length > 0) {
+
+                                    section.value.forEach(field => {
+                                        let $field = $("<div>").addClass("field");
+                                        $field.append($("<span>").addClass("field-name").text(field.name.replace(/_/g, " ") + ":"));
+
+                                        // Editable field value
+                                        let $fieldValue = $("<span>")
+                                            .addClass("field-value editable")
+                                            .attr("contenteditable", "true")
+                                            .html(field.value || "");
+                                        if ((field.value.trim() !== "") && (field.value.trim() !== "<br>")) {
+                                            $('.menu').find('div').eq(index).find('.light').removeClass('square');
+                                            $('.menu').find('div').eq(index).find('.light').addClass('arrow');
+                                        }
+                                        $field.append($fieldValue);
+                                        $section.append($field);
+
+                                    });
+                                } else {
+                                    $section.append($("<p>").text("No data provided."));
+                                }
+
+                                $li.append($("<div>").append($section));
+                                $ul.append($li);
+                                $('.menu').find('div').removeClass('active');
+                                $('.menu div:first-child').addClass('active');
+
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            try {
+                                const resp = JSON.parse(xhr.responseText);
+                                //alert(resp.error || error); An AI assistant is working on the card
+                            } catch (e) {
+                                alert("Unknown card submission error");
+                            }
+                        }
+                    })
+
                 }
-
-                $li.append($("<div>").append($section));
-                $ul.append($li);
-            });
-        },
-        error: function (xhr, status, error) {
-            try {
-                const resp = JSON.parse(xhr.responseText);
-                alert(resp.error || error);
-            } catch (e) { alert("Unknown card submission error");}
-        }
-    })
-
+            },
+            error: function (xhr, status, error) {
+                try {
+                    const resp = JSON.parse(xhr.responseText);
+                    alert(resp.error || error);
+                } catch (e) {
+                    alert("Unknown card lock error");
+                }
+            }
+        });
+    }
 
     $.when(getToken()).done(function (loginResponse) {
         token = loginResponse.token;
@@ -117,7 +156,9 @@ $(document).ready(function () {
                         $tempDiv.find("h1").remove();
                         const description = $.trim($tempDiv.text());
 
-                        if (index===0){$('#selected_autofilled_assistant,#selected_refined_assistant').text($("<div>").html(title).text())}
+                        if (index === 0) {
+                            $('#selected_autofilled_assistant,#selected_refined_assistant').text($("<div>").html(title).text())
+                        }
 
                         const $card = $("<button>", {
                             id: item.name,
@@ -129,21 +170,25 @@ $(document).ready(function () {
                     });
                 });
 
-               /* $('#cards-container').append('<br><p style="margin:12px 0 0px 0px; font-size: 15px; font-weight: 700; color: #1f1f1f;display: inline-block">Actions: </p><p style="display: inline-block;margin:0 5px"><span id="refine">Refine</span> | <span id="autocomplete">Autocomplete: </span> <input type="text" class="text-input" placeholder="Enter URL..." id="card-url" /></p>')
-*/
+                /* $('#cards-container').append('<br><p style="margin:12px 0 0px 0px; font-size: 15px; font-weight: 700; color: #1f1f1f;display: inline-block">Actions: </p><p style="display: inline-block;margin:0 5px"><span id="refine">Refine</span> | <span id="autocomplete">Autocomplete: </span> <input type="text" class="text-input" placeholder="Enter URL..." id="card-url" /></p>')
+ */
             },
             error: function (xhr, status, error) {
                 try {
                     const resp = JSON.parse(xhr.responseText);
                     alert(resp.error || error);
-                } catch (e) { alert("Unknown card retrieval error");}
+                } catch (e) {
+                    alert("Unknown card retrieval error");
+                }
             }
         })
     }).fail(function (xhr, status, error) {
         try {
             const resp = JSON.parse(xhr.responseText);
             alert(resp.error || error);
-        } catch (e) { alert("Unknown login error");}
+        } catch (e) {
+            alert("Unknown login error");
+        }
     });
 
     $(".nacc").on("input", ".editable", function () {
@@ -175,13 +220,13 @@ $(document).ready(function () {
                 $('.menu').find('div').find('.light').removeClass('arrow');
                 $('.menu').find('div').find('.light').addClass('square');
 
-                ["model", "considerations", "training_set", "eval_set", "analysis"].forEach((sectionName,index) => {
+                ["model", "considerations", "training_set", "eval_set", "analysis"].forEach((sectionName, index) => {
                     let section = cardJson.data.filter(section => section.name !== "related").find(s => s.name === sectionName);
                     let hasValue = false;
 
                     if (section && section.value) {
                         for (let field of section.value) {
-                            if ((field.value.trim() !== "") && (field.value.trim() !== "<br>")){
+                            if ((field.value.trim() !== "") && (field.value.trim() !== "<br>")) {
                                 hasValue = true;
                                 $('.menu').find('div').eq(index).find('.light').removeClass('square');
                                 $('.menu').find('div').eq(index).find('.light').addClass('arrow');
@@ -206,7 +251,9 @@ $(document).ready(function () {
                 try {
                     const resp = JSON.parse(xhr.responseText);
                     alert(resp.error || error);
-                } catch (e) { alert(error || xhr.responseText);}
+                } catch (e) {
+                    alert(error || xhr.responseText);
+                }
             }
         });
     });
@@ -233,7 +280,9 @@ $(document).ready(function () {
                 try {
                     const resp = JSON.parse(xhr.responseText);
                     alert(resp.error || error);
-                } catch (e) { alert("Unknown error at deleting card");}
+                } catch (e) {
+                    alert("Unknown error at deleting card");
+                }
             }
         });
     };
@@ -262,10 +311,9 @@ $(document).ready(function () {
         // Otherwise, unselect all and select this one
         $(this).parent().find(".card-button").removeClass("selected");
         $(this).addClass("selected");
-        if (($(this).parents('#modal_autocomplete').length)){
+        if (($(this).parents('#modal_autocomplete').length)) {
             $('#selected_autofilled_assistant').text($(this).find('h1').text());
-        }
-        else{
+        } else {
             $('#selected_refined_assistant').text($(this).find('h1').text());
         }
 
@@ -283,19 +331,24 @@ $(document).ready(function () {
                 "Authorization": "Bearer " + token
             },
             success: function (response) {
-                alert(response)
+                $('.modal__close ').click();
+                interval = setInterval(function () {
+                    checkLocked(interval);
+                }, 500);
             },
             error: function (xhr, status, error) {
                 try {
                     const resp = JSON.parse(xhr.responseText);
                     alert(resp.error || error);
-                } catch (e) { alert("Unknown refinement error");}
+                } catch (e) {
+                    alert("Unknown refinement error");
+                }
             }
         });
     });
     $(document).on("click", "#autocomplete", function () {
         let assistant = $(this).siblings('.assistants_wrapper').find(".card-button.selected").attr("id");
-        if($('#card-url').is(":visible")){
+        if ($('#card-url').is(":visible")) {
             $.ajax({
                 url: "http://127.0.0.1:5000/assistant/" + assistant + '/complete/' + id,
                 method: "POST",
@@ -306,16 +359,21 @@ $(document).ready(function () {
                 },
                 data: JSON.stringify($('#card-url').val()),
                 success: function (response) {
-                    alert(response)
+                    $('.modal__close ').click();
+                    interval = setInterval(function () {
+                        checkLocked(interval);
+                    }, 500);
                 },
                 error: function (xhr, status, error) {
                     try {
                         const resp = JSON.parse(xhr.responseText);
                         alert(resp.error || error);
-                    } catch (e) { alert("Unknown autocomplete error");}
+                    } catch (e) {
+                        alert("Unknown autocomplete error");
+                    }
                 }
             });
-        }else{
+        } else {
             let formData = new FormData();
             formData.append("file", uploaded_file); // "file" is the field name your backend expects
             $.ajax({
@@ -328,13 +386,15 @@ $(document).ready(function () {
                 processData: false, // don't let jQuery process the data
                 contentType: false, // don't set content-type header, let browser set it (multipart/form-data)
                 success: function (response) {
-                   alert(response)
+                    alert(response)
                 },
                 error: function (xhr, status, error) {
                     try {
                         const resp = JSON.parse(xhr.responseText);
                         alert(resp.error || error);
-                    } catch (e) { alert("Unknown card creation error");}
+                    } catch (e) {
+                        alert("Unknown card creation error");
+                    }
                 }
             });
         }

@@ -341,7 +341,7 @@ section.buttons {
 
 /* Shared overlay styles */
 .delete-confirm-screen,
-.delete-success-screen {
+.delete-success-screen,.card-lock {
     display: none; /* hidden by default */
     position: fixed;
     top: 0;
@@ -356,7 +356,7 @@ section.buttons {
 
 /* Modal content */
 .delete-confirm-content,
-.delete-success-content {
+.delete-success-content,.card-lock-content {
     background: #fff;
     border-radius: 12px;
     padding: 2rem 3rem;
@@ -364,6 +364,10 @@ section.buttons {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
     max-width: 400px;
     width: 90%;
+}
+.card-lock-content{
+    min-height: 200px;
+    max-width: 500px;
 }
 
 /* Titles */
@@ -873,4 +877,15 @@ details[open] .card-details-content {
   max-height: 1000px; /* just needs to be larger than content height */
   opacity: 1;
 }
-
+.no-overflow{
+    overflow:hidden;
+}
+#cover{
+    width: 100%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 111111111111;
+    display: none;
+}

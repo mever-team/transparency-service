@@ -1,5 +1,4 @@
-
-var Modal = (function() {
+var Modal = (function () {
 
     var trigger = $qsa('.modal__trigger'); // what you click to activate the modal
     var modals = $qsa('.modal'); // the entire modal (takes up entire window)
@@ -16,7 +15,7 @@ var Modal = (function() {
         return document.querySelectorAll(el);
     }
 
-    var getId = function(event) {
+    var getId = function (event) {
 
         event.preventDefault();
         var self = this;
@@ -31,7 +30,7 @@ var Modal = (function() {
         makeDiv(self, modal);
     };
 
-    var makeDiv = function(self, modal) {
+    var makeDiv = function (self, modal) {
 
         var fakediv = document.getElementById('modal__temp');
 
@@ -48,7 +47,7 @@ var Modal = (function() {
         }
     };
 
-    var moveTrig = function(trig, modal, div) {
+    var moveTrig = function (trig, modal, div) {
         var trigProps = trig.getBoundingClientRect();
         var m = modal;
         var mProps = m.querySelector('.modal__content').getBoundingClientRect();
@@ -78,22 +77,22 @@ var Modal = (function() {
 
 
         // translate button to center of screen
-       /* trig.style.transform = 'translate(' + transX + 'px, ' + transY + 'px)';
-        trig.style.webkitTransform = 'translate(' + transX + 'px, ' + transY + 'px)';
-        // expand temporary div to the same size as the modal
-        div.style.transform = 'scale(' + scaleX + ',' + scaleY + ')';
-        div.style.webkitTransform = 'scale(' + scaleX + ',' + scaleY + ')';
-*/
+        /* trig.style.transform = 'translate(' + transX + 'px, ' + transY + 'px)';
+         trig.style.webkitTransform = 'translate(' + transX + 'px, ' + transY + 'px)';
+         // expand temporary div to the same size as the modal
+         div.style.transform = 'scale(' + scaleX + ',' + scaleY + ')';
+         div.style.webkitTransform = 'scale(' + scaleX + ',' + scaleY + ')';
+ */
 
-        window.setTimeout(function() {
-            window.requestAnimationFrame(function() {
+        window.setTimeout(function () {
+            window.requestAnimationFrame(function () {
                 open(m, div);
             });
         }, contentDelay);
 
     };
 
-    var open = function(m, div) {
+    var open = function (m, div) {
         if (!isOpen) {
             // select the content inside the modal
             var content = m.querySelector('.modal__content');
@@ -120,10 +119,10 @@ var Modal = (function() {
         }
     };
 
-    var close = function(event) {
+    var close = function (event) {
         //$('#new_card_but').show();
         //event.preventDefault();
-        console.log(event);
+        /*console.log(event);*/
         event.stopImmediatePropagation();
 
         var target = event.target;
@@ -137,9 +136,10 @@ var Modal = (function() {
         if (isOpen && target.classList.contains('modal__bg') || target.classList.contains('modal__close')) {
 
             // make the hidden div visible again and remove the transforms so it scales back to its original size
-            div.style.opacity = '1';
-            div.removeAttribute('style');
-
+            if (div) {
+                div.style.opacity = '1';
+                div.removeAttribute('style');
+            }
             /**
              * iterate through the modals and modal contents and triggers to remove their active classes.
              * remove the inline css from the trigger to move it back into its original position.
@@ -154,15 +154,15 @@ var Modal = (function() {
             }
 
             // when the temporary div is opacity:1 again, we want to remove it from the dom
-          /*  div.addEventListener('transitionend', removeDiv, false);
-*/$('#modal__temp').remove();
+            /*  div.addEventListener('transitionend', removeDiv, false);*/
+            $('#modal__temp').remove();
             isOpen = false;
 
         }
 
         function removeDiv() {
-            setTimeout(function() {
-                window.requestAnimationFrame(function() {
+            setTimeout(function () {
+                window.requestAnimationFrame(function () {
                     // remove the temp div from the dom with a slight delay so the animation looks good
                     div.remove();
                 });
@@ -171,7 +171,7 @@ var Modal = (function() {
 
     };
 
-    var bindActions = function() {
+    var bindActions = function () {
         for (var i = 0; i < len; i++) {
             trigger[i].addEventListener('click', getId, false);
             closers[i].addEventListener('click', close, false);/*
@@ -187,7 +187,7 @@ var Modal = (function() {
         }
     };
 
-    var init = function() {
+    var init = function () {
         bindActions();
     };
 
