@@ -22,6 +22,8 @@ class Prompter(Assistant):
         parsed = urlparse(url)
         if not parsed.scheme in ("http", "https") or not parsed.netloc: raise Exception("Invalid url format")
         response = requests.get(url, timeout=self.external_get_timeout_sec)
+        text = response.text
+        # TODO:
 
     def refine(self, card: ModelCard, logger: Logger):
         for category, values in card.data.items():

@@ -141,8 +141,7 @@ class WordNet(Assistant):
         for header in soup.find_all(re.compile("^h[1-6]$")):
             content = []
             for sibling in header.find_next_siblings():
-                if sibling.name and re.match("^h[1-6]$", sibling.name):
-                    break
+                if sibling.name and re.match("^h[1-6]$", sibling.name): break
                 #content.append(sibling.get_text(" ", strip=True))
                 content.append(str(sibling))
             sections.append((header
@@ -190,10 +189,8 @@ class WordNet(Assistant):
     def refine(self, card: ModelCard, logger: Logger):
         self._wait_until_ready()
         for cat, vals in card.data.items():
-            if not isinstance(vals, dict):
-                continue
+            if not isinstance(vals, dict): continue
             for field, value in vals.items():
-                if not isinstance(value, str):
-                    continue
+                if not isinstance(value, str): continue
                 vals[field] = self._refine_field(value)
         card.assign(card.to_html_card())
