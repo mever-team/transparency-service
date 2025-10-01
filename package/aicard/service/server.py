@@ -666,8 +666,7 @@ def serve(
             return jsonify(converters.dict2dynamic(card.data, {"title"}))
 
     @app.route('/card/<int:card_id>/locked', methods=['GET'])
-    @users.require_auth(token2expiration)
-    def get_card_locked_status(card_id, token: str):
+    def get_card_locked_status(card_id):
         """
         Retrieves a string value explaining why the card is locked, for example by an AI assistant working on it.
         If the card is locked, post or put methods on the card will create errors.
@@ -680,20 +679,11 @@ def serve(
             type: integer
             required: true
             description: The card's unique identifier.
-          - name: Authorization
-            in: header
-            type: string
-            required: true
-            description: Bearer token for user authentication (e.g., "Bearer <token>")
         responses:
             200:
-                description: The description (e.g., LLM progress stage) of the mechanism currently locking the card.
+                description: The description (e.g., LLM progress stage) of the mechanism currently locking the card. An empty string if the card can be freely viewed or edited.
                 schema:
                   type: string
-            401:
-                description: Unauthorized — missing token or invalid token format.
-            403:
-                description: Unauthorized — token expired or not valid.
             404:
                 description: The request's card does not exist or has been deleted.
         """

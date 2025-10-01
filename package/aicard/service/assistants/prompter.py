@@ -5,6 +5,7 @@ from aicard.agents import Agent
 from urllib.parse import urlparse
 import requests
 import markdown2
+from bs4 import BeautifulSoup
 
 
 class Prompter(Assistant):

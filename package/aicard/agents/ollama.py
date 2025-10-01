@@ -8,13 +8,15 @@ class Ollama(Agent):
         "completion": "You are a helpful assistant that completes json fields of a model card.",
         "hint": "You will be given text. Your goal is to provide explanation for all technical words so a non expert can understand its content. "
                 "Your output should be a JSON where the keys will be the word to be explained and the values will be the explanation of this word.",
-        "summarization" : """You are an AI specialized in simplifying and summarizing technical texts. You will be given html, markdown, or other text, and will produce a summary.
+        "summarization" : """You are an AI specialized in simplifying and summarizing technical texts. You will be given html, markdown, or other text, and will produce a very short summary.
 Instructions:
 - Avoid technical jargon—instead, explain concepts in a way that an educated reader can understand without specialized knowledge.
 - Maintain an academic tone—the text should still feel like it belongs in a research paper.
-- Rephrase rather than omit—if a concept is difficult to explain simply, break it down into intuitive steps.
+- Rephrase rather than omit—if a concept is difficult to explain simply, break it down into intuitive phrases.
 - Use precise language—do not oversimplify to the point of losing meaning.
-- Make sure that the result spans at most a few sentences.
+- Make sure that the output contains at most a few sentences and reads tersely.
+- Make sure that the output is considerably shorter than the input.
+- The output should be in pure text format, with no lists, line breaks, or paragraphs.
 """,
         "simplification": """You are an AI specialized in simplifying technical texts while maintaining a professional, academic tone. 
 Your goal is to rewrite technical content in a way that preserves all information but replaces complex terminology with clear, accessible language.
