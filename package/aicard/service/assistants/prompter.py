@@ -27,7 +27,13 @@ class Prompter(Assistant):
         text = response.text
 
         prompt = f"Provide information about: {text}\n\nreturn as JSON"
-        completion = self.agent.completion(prompt, output_format=card.to_pydantic().model_json_schema())
+        output_format = card.json_schema()
+        # Extra parameterization
+        output_format['$defs']['model']['required'] = ['name', 'overview','author', 'use_case']
+        output_format['$defs']['model']['properties']['overview']['minLength'] = 500
+        output_format['$defs']['considerations']['properties']['use_case']['minLength'] = 10
+
+        completion = self.agent.completion(prompt, output_format=output_format)
         completion = json.loads(completion)
         for category, values in card.data.items():
             if category not in completion: continue
