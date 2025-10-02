@@ -5,7 +5,7 @@ from aicard.agents.agent import Agent
 
 class Ollama(Agent):
     tasks = {
-        "completion": """You are a helpful assistant that completes json fields.""",
+        "completion": """You are a helpful assistant that completes json fields. return as JSON.""",
         "hint": "You will be given text. Your goal is to provide explanation for all technical words so a non expert can understand its content. "
                 "Your output should be a JSON where the keys will be the word to be explained and the values will be the explanation of this word.",
         "summarization" : """You are an AI specialized in simplifying and summarizing technical texts. You will be given html, markdown, or other text, and will produce a very short summary.

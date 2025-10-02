@@ -26,3 +26,4 @@ flasgger
 bcrypt
 python-dotenv
 nltk
+pydantic

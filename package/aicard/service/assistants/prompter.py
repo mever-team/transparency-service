@@ -26,10 +26,9 @@ class Prompter(Assistant):
         response = requests.get(url, timeout=self.external_get_timeout_sec)
         text = response.text
 
-        prompt = f"Provide information about: {text}"
+        prompt = f"Provide information about: {text}\n\nreturn as JSON"
         completion = self.agent.completion(prompt, output_format=card.to_pydantic().model_json_schema())
         completion = json.loads(completion)
-        print(completion)
         for category, values in card.data.items():
             if category not in completion: continue
             if not isinstance(values, dict): continue
