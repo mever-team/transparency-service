@@ -57,7 +57,7 @@ class Prompter(Assistant):
             for field, value in values.items():
                 if not isinstance(value, str): continue
                 if len(value.split(' '))<2: continue
-                count_categories += 1
+                count_categories += 2
         progress = 0
         for category, values in card.data.items():
             if not isinstance(values, dict): continue
@@ -67,20 +67,26 @@ class Prompter(Assistant):
                 if ("<summary><h2>Simplified</h2></summary>" in value or
                     "<summary><h2>Original</h2></summary>" in value): continue
 
-                progress_html = (
-                    f"<progress value='{int(progress / count_categories * 100)}' max='100' "
-                    f"style='width: 300px; height: 20px; "
-                    f"accent-color: #79CFDC; border: 2px solid #1F1F1F;'></progress>"
-                )
-                user_messages[-1] = (
-                    f"<h2>{self.alias} refinement</h2>"
-                    f"{progress_html}<br>"
-                    f"<b>Working on {category} {field}</b>"
-                )
-                progress += 1
+                def update_progress(progress):
+                    progress_html = (
+                        f"<progress value='{int(progress / count_categories * 100)}' max='100' "
+                        f"style='width: 300px; height: 20px; "
+                        f"accent-color: #79CFDC; border: 2px solid #1F1F1F;'></progress>"
+                    )
+                    user_messages[-1] = (
+                        f"<h2>{self.alias} refinement</h2>"
+                        f"{progress_html}<br>"
+                        f"<b>Working on {category} {field.replace('_', ' ')}</b>"
+                    )
 
+                update_progress(progress)
+                progress += 1
                 summarization = self.agent.summarization(value)
+
+                update_progress(progress)
+                progress += 1
                 simplification = self.agent.simplification(value)
+
                 summarization = markdown2.markdown(summarization, extras=["markdown-in-html", "code-friendly"])
                 simplification = markdown2.markdown(simplification, extras=["markdown-in-html", "code-friendly"])
                 values[field] = (

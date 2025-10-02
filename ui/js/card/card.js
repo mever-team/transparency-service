@@ -86,7 +86,7 @@ $(document).ready(function () {
 
                                     section.value.forEach(field => {
                                         let $field = $("<div>").addClass("field");
-                                        $field.append($("<span>").addClass("field-name").text(field.name.replace(/_/g, " ") + ":"));
+                                        $field.append($("<span>").addClass("field-name").text(field.name.replace(/_/g, " ") /*+ ":"*/));
 
                                         // Editable field value
                                         let $fieldValue = $("<span>")
