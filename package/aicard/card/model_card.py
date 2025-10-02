@@ -9,6 +9,8 @@ from aicard.card.traits.html import HTMLRenderer
 from aicard.card.dot_dict import DotDict
 from rich.markdown import Markdown
 
+from pydantic import BaseModel, create_model
+
 def truncate(text, size):
     if size<3:
         return ""
@@ -157,6 +159,21 @@ class ModelCard:
                     if value.strip(): segment += f"{("*"+field.replace("_", " ")+"*").ljust(20)} {value.strip()}\n\n"
                 if segment: ret += f"\n## {key.replace("_", " ")}\n"+segment
         return ret
+
+    def to_pydantic(self) -> type[BaseModel]:
+        fields = {}
+        sub_models = {}
+
+        for key, value in self.data.items():
+            if isinstance(value, dict):
+                sub_model = create_model(f"card_{key}", **{k: (str, v) for k, v in value.items()})
+                sub_models[key] = sub_model
+                fields[key] = (sub_model, ...)
+            else:
+                fields[key] = (str, value)
+
+        pydantic_model = create_model('card', **fields)
+        return pydantic_model
 
     def __str__(self):
         buffer = io.StringIO()

@@ -26,27 +26,17 @@ class Prompter(Assistant):
         response = requests.get(url, timeout=self.external_get_timeout_sec)
         text = response.text
 
-        last_output = card.json_dumps()
-        prompt = f"{last_output}\n\n{text}"
-        completion = self.agent.completion(prompt)
-
-        start = completion.find("{")
-        brace_count = 0
-        for i, ch in enumerate(completion[start:], start=start):
-            if ch == "{":
-                brace_count += 1
-            elif ch == "}":
-                brace_count -= 1
-                if brace_count == 0:
-                    striped_json = json.loads(completion[start:i + 1])
-
+        prompt = f"Provide information about: {text}"
+        completion = self.agent.completion(prompt, output_format=card.to_pydantic().model_json_schema())
+        completion = json.loads(completion)
+        print(completion)
         for category, values in card.data.items():
-            if category not in striped_json: continue
+            if category not in completion: continue
             if not isinstance(values, dict): continue
             for field, value in values.items():
-                if field not in striped_json[category]: continue
+                if field not in completion[category]: continue
                 if not isinstance(value, str): continue
-                values[field] = striped_json[category][field]
+                values[field] = completion[category][field]
 
     def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]):
         user_messages.clear()

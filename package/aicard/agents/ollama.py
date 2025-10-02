@@ -5,28 +5,7 @@ from aicard.agents.agent import Agent
 
 class Ollama(Agent):
     tasks = {
-        "completion": """You will be given a JSON object, followed by some text. The JSON object may already have some fields filled in. Your task is to read the provided text and improve or complete the JSON based on the information in the text. The JSON object is a Model Card for an AI Model.
-                            1. Read the JSON and the accompanying text carefully.
-                            2. If the JSON is missing information, fill it in based on the context provided by the text.
-                            3. If the JSON contains incorrect or outdated information, update it to match the details from the text.
-                            4. If the text contains new or additional data that can be added to the JSON, include it in the relevant fields.
-                            5. Your response should be a JSON object that incorporates all necessary improvements or additions based on the given text.
-                            6. IMPORTANT: **Do not add any new fields to the JSON.** If the text provides additional data that should be included in the JSON, place it in existing fields.
-                            
-                            Example input:
-                            {
-                              "field1": "value1",
-                              "field2": "value2",
-                              "field3": "value3"
-                            }
-                            Text: "Here is the new information for field2 and field4."
-                            
-                            Expected output:
-                            {
-                              "field1": "value1",
-                              "field2": "new value for field2",
-                              "field3": "value3"
-                            }""",
+        "completion": """You are a helpful assistant that completes json fields.""",
         "hint": "You will be given text. Your goal is to provide explanation for all technical words so a non expert can understand its content. "
                 "Your output should be a JSON where the keys will be the word to be explained and the values will be the explanation of this word.",
         "summarization" : """You are an AI specialized in simplifying and summarizing technical texts. You will be given html, markdown, or other text, and will produce a very short summary.
@@ -62,14 +41,17 @@ Instructions:
         assert test.status_code == 200, f"Failed to initialize model '{model}'\nResponse: {test.text}"
         self.max_tokens = 4000
 
-    def _run(self, content: str, task: str):
+    def _run(self, content: str, task: str, output_format: str | None):
         assert isinstance(content, str), "Content must be of type str"
         assert task in Ollama.tasks, "Not supported task: "+task
-        response = requests.post(self._url, json={
+        payload = {
             "model": self._model,
             "stream": False,
             "messages": [{"role": "system", "content": Ollama.tasks[task]}, {"role": "user", "content": content}]
-        })
+        }
+        if output_format:
+            payload["format"] = output_format
+        response = requests.post(self._url, json=payload)
         response = json.loads(response.text)["message"]["content"]
         if response.startswith("Here"):
             idx_colon = response.find(':')
