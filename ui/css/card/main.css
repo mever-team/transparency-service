@@ -208,7 +208,7 @@ ul.nacc li h2 {
 /* Field rows */
 ul.nacc .field {
     display: grid;
-    grid-template-columns: 100px 1fr;
+    grid-template-columns: 110px 1fr;
     gap: 1rem;
     align-items: start;
     padding: 0.8rem 0;
@@ -225,6 +225,7 @@ ul.nacc .field-name {
     color: #1f1f1f;
     text-transform: capitalize;
     padding-top: 4px;
+    word-break: break-word;
 }
 
 /* Editable values */
@@ -951,4 +952,40 @@ details[open] .card-details-content {
 @keyframes spin {
     0%   { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+.info-tooltip {
+    display: inline-block;
+    margin-left: 6px;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    border-radius: 50%;
+    background-color: #A2A2A2;
+    color: #1f1f1f;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    position: relative;
+}
+
+.info-tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%; /* show above */
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+}
+
+.info-tooltip:hover::after {
+    opacity: 1;
 }

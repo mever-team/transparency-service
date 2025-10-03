@@ -84,7 +84,7 @@ $(document).ready(function () {
 
                                 if (section.value.length > 0) {
 
-                                    section.value.forEach(field => {
+                                    /*section.value.forEach(field => {
                                         let $field = $("<div>").addClass("field");
                                         $field.append($("<span>").addClass("field-name").text(field.name.replace(/_/g, " ") + ":"));
 
@@ -100,6 +100,37 @@ $(document).ready(function () {
                                         $field.append($fieldValue);
                                         $section.append($field);
 
+                                    });*/
+                                    section.value.forEach(field => {
+                                        let $field = $("<div>").addClass("field");
+
+                                        // Create field-name span
+                                        let $fieldName = $("<span>")
+                                            .addClass("field-name")
+                                            .text(field.name.replace(/_/g, " ") + ":");
+
+                                        // Add info-tooltip span (you can make tooltip text dynamic if needed)
+                                        let $info = $("<span>")
+                                            .addClass("info-tooltip")
+                                            .attr("data-tooltip", "TBA by field.description")
+                                            .text("?");
+
+                                        // Append tooltip inside field-name
+                                        $fieldName.append($info);
+
+                                        // Editable field value
+                                        let $fieldValue = $("<span>")
+                                            .addClass("field-value editable")
+                                            .attr("contenteditable", "true")
+                                            .html(field.value || "");
+console.log(field);
+                                        if ((field.value.trim() !== "") && (field.value.trim() !== "<br>")) {
+                                            $('.menu').find('div').eq(index).find('.light').removeClass('square');
+                                            $('.menu').find('div').eq(index).find('.light').addClass('arrow');
+                                        }
+
+                                        $field.append($fieldName).append($fieldValue);
+                                        $section.append($field);
                                     });
                                 } else {
                                     $section.append($("<p>").text("No data provided."));
@@ -199,8 +230,11 @@ $(document).ready(function () {
     });
 
     $(".nacc").on("input", ".editable", function () {
-        const fieldName = $(this).siblings(".field-name").text().replace(":", "").toLowerCase().replace(/ /g, "_");
+       /* const fieldName = $(this).siblings(".field-name").text().replace(":", "").toLowerCase().replace(/ /g, "_");
         const sectionName = $(this).closest("section").find("h2").text().toLowerCase().replace(/ /g, "_");
+*/
+        const fieldName = $(this).siblings(".field-name").contents().filter((_, el) => el.nodeType === 3).text().replace(":", "").toLowerCase().replace(/ /g, "_");
+        const sectionName = $(this).closest("section").find("h2").contents().filter((_, el) => el.nodeType === 3).text().toLowerCase().replace(/ /g, "_");
 
         // Find section + field in jsonData and update value
         let section = cardJson.data.find(s => s.name === sectionName);
