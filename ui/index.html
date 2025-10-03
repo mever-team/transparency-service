@@ -19,11 +19,12 @@
 
 </head>
 <body>
+
 <section class="header_section">
     <div class="row bigWidth">
         <div class="small-12 medium-12 large-12 columns">
             <div class="header_wrapper">
-                <h2>AI-CODE</h2>
+                <h2><img src="img/logo.png" width="110"></h2>
                 <p id="whats-this" class="modal__trigger" data-modal="#modal_help">What's this ?</p>
             </div>
 
@@ -53,6 +54,13 @@
 
                     <br><br><br>
                     <div class="main_search_wrapper_results">
+                        <div class="loading-overlay" id="loading">
+                            <div class="spinner"></div>
+                            <p>Loading...</p>
+                        </div>
+
+
+
                     <p style="margin: 25px 0 0;font-weight: bold;"><span id="search_results_wrapper">Most popular</span>
                         (<span id="search_results">0</span> of <span id="search_sub_p">TBA</span>)</p>
                     <table id="resultsTable" border="0" cellpadding="5" cellspacing="0">

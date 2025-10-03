@@ -54,7 +54,7 @@ $(document).ready(function () {
             success: function (jsonData) {
                 if (jsonData !== "") {
                     document.getElementById('card-locked').style.display = 'flex';
-                    $('#lock-msg').html(jsonData);
+                    $('#lock-msg-text').html(jsonData);
                     $('body').addClass('no-overflow');
                 } else {
                     $('body').removeClass('no-overflow');
@@ -74,7 +74,7 @@ $(document).ready(function () {
                             $("#model-title").text(jsonData.title);
                             const $ul = $(".nacc");
                             $ul.empty();
-
+                            $('#loading').hide();
                             jsonData.data.forEach((section, index) => {
                                 let sectionTitle = section.name.replace(/_/g, " ").toUpperCase();
 
@@ -127,7 +127,14 @@ $(document).ready(function () {
             error: function (xhr, status, error) {
                 try {
                     const resp = JSON.parse(xhr.responseText);
-                    alert(resp.error || error);
+
+                    if (interval) {
+                        clearInterval(interval);
+                    }
+                    $('#model-title').remove();
+                    $('#loading').hide();
+                    $('.nacc').append('<l1 class="empty_card">⚠️'+(resp.error || error)+'</l1>')
+                    $('.example_button').css('pointer-events','none');
                 } catch (e) {
                     alert("Unknown card lock error");
                 }

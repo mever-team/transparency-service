@@ -37,7 +37,7 @@
     color: white;
     display: inline-block;
     font-size: 30px;
-    margin: 0 30px 0 15px;
+    margin: 0;
 }
 
 .header_wrapper a {
@@ -230,7 +230,7 @@ ul.nacc .field-name {
 /* Editable values */
 ul.nacc .field-value[contenteditable="true"] {
     display: block;
-    border: 1px solid #ddd;
+    border: 1px solid #7C7C7C;
     border-radius: 6px;
     padding: 6px 10px;
     min-height: 32px;
@@ -285,6 +285,9 @@ ul.nacc .field-value li {
     text-align: center;
     margin: 0;
     display:inline;
+}
+.model-title{
+    margin-left: 130px;
 }
 
 .example_button {
@@ -373,13 +376,14 @@ section.buttons {
 /* Modal content */
 .delete-confirm-content,
 .delete-success-content,.card-lock-content {
-    background: #eeeeee;
+    background: #1f1f1f;
     border-radius: 12px;
     padding: 2rem 3rem;
     text-align: center;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
     max-width: 400px;
     width: 90%;
+    color: white;
 }
 .card-lock-content{
     min-height: 200px;
@@ -388,19 +392,18 @@ section.buttons {
 
 /* Titles */
 .delete-confirm-content h2 {
-    color: #E63946;
+    color: #F44336;
     margin-bottom: 1rem;
 }
 
 .delete-success-content h2 {
-    color: #E63946;
+    color: #F44336;
     margin-bottom: 1rem;
 }
 
 /* Paragraphs */
 .delete-confirm-content p,
 .delete-success-content p {
-    color: #333;
     margin-bottom: 1.5rem;
 }
 
@@ -419,34 +422,34 @@ section.buttons {
     font-weight: 600;
     border: none;
     transition: background 0.3s;
+    width: 115px;
 }
 
 /* Specific colors */
 #cancel-delete-btn {
-    background: #ccc;
-    color: #000;
-}
-
-#cancel-delete-btn:hover {
-    background: #aaa;
+    background: #eee;
+    color: #1F1F1F;
 }
 
 #confirm-delete-btn {
     background: #F44336;
-    color: white;
+    color: #1F1F1F;
 }
 
-#confirm-delete-btn:hover {
-    background: #F87f76;
-}
 
-#close-success-btn {
-    background: #0081C6;
-    color: #000;
-}
-
-#close-success-btn:hover {
-    background: #006ba1;
+#close-success-btn,.home_url {
+    position: relative;
+    background: #79CFDC;
+    cursor: pointer;
+    text-align: center;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 12px 0px;
+    border-radius: 4px;
+    width: 91px;
+    display: inline-block;
+    margin: 13px 0px 0;
+    border: none;
 }
 
 .cards-container {
@@ -651,7 +654,7 @@ main {
 }
 
 .modal__bg {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
 }
 
 .modal__dialog {
@@ -903,4 +906,49 @@ details[open] .card-details-content {
     background-color: rgba(0, 0, 0, 0.6);
     z-index: 111111111111;
     display: none;
+}
+.empty_card{
+    background: #FDE7CC;
+    color: #815726;
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 17px;
+    display: flex;
+    align-items: center;
+    opacity: 1;
+    transform: none;
+    height: 50px;
+    font-weight: bold;
+}
+
+.loading-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    font-family: sans-serif;
+    color: #1F1F1F;
+}
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #64DB96;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px;
+    margin-top: 9px;
+}
+#loading p {
+    margin-left: 20px;
+    font-weight: bold;
+    font-size: 22px;
+}
+@keyframes spin {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

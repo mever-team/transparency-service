@@ -111,6 +111,9 @@ function autocomplete_populate() {/*
     const delay = 400; // ms delay after typing stops
 
     $("#topic").on("keyup", function () {
+        const $tbody = $("#resultsTable tbody");
+        $tbody.empty();
+        $('#loading').show();
         clearTimeout(typingTimer);
         const query = $(this).val().trim();
 
@@ -120,6 +123,7 @@ function autocomplete_populate() {/*
         }*/
 
         typingTimer = setTimeout(function () {
+
             $.ajax({
                 url: "http://127.0.0.1:5000/cards",
                 method: "POST",
@@ -129,9 +133,9 @@ function autocomplete_populate() {/*
                     query: query
                 }),
                 success: function (response) {
+                    $('#loading').hide();
                     const results = response.results || [];
-                    const $tbody = $("#resultsTable tbody");
-                    $tbody.empty();
+
 
                     if ($("#topic").val().trim() !== "") {
                         $('#search_results_wrapper').text("Search results")
@@ -145,7 +149,7 @@ function autocomplete_populate() {/*
 
                             let highlightedName = item.name.replace(
                                 new RegExp("(" + query + ")", "ig"),
-                                "<strong>$1</strong>"
+                                "<strong style='color:#79CFDC'>$1</strong>"
                             );
 
                             $tbody.append(`
@@ -158,7 +162,7 @@ function autocomplete_populate() {/*
                         $("#resultsTable").show();
                     } else {
                         $tbody.append(`
-                            <tr><td colspan="3" style="text-align:center; color:#888;">No matching results</td></tr>
+                            <tr><td colspan="3" style="text-align: center; color: #1f1f1f; font-weight: bold; font-size: 22px;">No matching results</td></tr>
                         `);
                         $("#resultsTable").show();
                     }

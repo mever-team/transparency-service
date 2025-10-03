@@ -23,13 +23,13 @@
 <main>
     <section class="header_section">
         <div class="row bigWidth">
-            <div class="small-12 medium-12 large-12 columns">
+            <div class="small-12 medium-12 large-12 columns" style="padding: 0">
                 <div class="header_wrapper" style="display:inline;float:left">
-                    <h2><a href="index.html">AI-CODE</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="model-title" class="model-title">Loading...</span></h2>
+                    <h2><a href="index.html"><img src="img/logo.png" width="110"></a><span id="model-title" class="model-title">Loading...</span></h2>
                 </div>
                 <div style="display:inline;float:right;margin-top:7px">
                         <div class="example_button" id="saveJson" style="background-color: #64DB96;width: 100px">
-                        <span class="btn-text">Save</span>
+                        <span class="btn-text">💾 Save</span>
                         <span class="btn-confirmation">✔&nbsp;Saved</span>
                     </div>
                     <div class="example_button modal__trigger" data-modal="#modal_refine" style="width: 100px">
@@ -44,7 +44,10 @@
         </div>
     </section>
     <div id="card-locked" class="card-lock">
-        <div class="card-lock-content" id="lock-msg"></div>
+        <div class="card-lock-content" id="lock-msg">
+            <div id="lock-msg-text"></div>
+            <button class="home_url"><a style="text-decoration: none;color: #1F1F1F;" href="index.html">Home</a></button>
+        </div>
     </div>
     <!-- Delete Success Overlay -->
     <div id="delete-confirm-screen" class="delete-confirm-screen">
@@ -52,8 +55,8 @@
             <h2>Delete?</h2>
             <p>This will delete the model card and <strong>cannot be undone</strong>. Are you sure?</p>
             <div class="buttons">
-                <button id="cancel-delete-btn">Cancel</button>
-                <button id="confirm-delete-btn">Delete</button>
+                <button id="cancel-delete-btn">✖ Cancel</button>
+                <button id="confirm-delete-btn">🗑️ Delete</button>
             </div>
         </div>
     </div>
@@ -62,7 +65,7 @@
         <div class="delete-success-content">
             <h2>Card deleted</h2>
             <p>The model card has been successfully removed.</p>
-            <button id="close-success-btn"><a style="text-decoration: none;color: white;" href="index.html">Home</a>
+            <button id="close-success-btn"><a style="text-decoration: none;color: #1F1F1F;" href="index.html">Home</a>
             </button>
         </div>
     </div>
@@ -81,7 +84,11 @@
                         <div><span class="light square"></span><span>Analysis</span></div>
                     </div>
                 </div>
-                <div style="margin-left: 240px">
+                <div style="margin-left: 240px;position:relative;min-height: 400px">
+                    <div class="loading-overlay" id="loading">
+                        <div class="spinner"></div>
+                        <p>Loading...</p>
+                    </div>
                     <ul class="nacc"></ul>
                 </div>
             </div>
