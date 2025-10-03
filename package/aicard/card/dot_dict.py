@@ -51,7 +51,7 @@ class DotDict(dict):
             if k in other:
                 if isinstance(self[k], DotDict): self[k]._append(other[k], message)
                 elif message is None:
-                    if other.get(k): self[k] = other[k]
+                    if other.get(k): self[k].set(other[k])
                 else:
                     existing = str(self.get(k, ""))
                     if not existing.endswith("\n"): existing += "\n"

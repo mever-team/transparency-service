@@ -102,26 +102,27 @@ $(document).ready(function () {
 
                                     });*/
                                     section.value.forEach(field => {
-                                        let $field = $("<div>").addClass("field");
+                                         let $field = $("<div>").addClass("field");
 
                                         // Create field-name span
-                                        let $fieldName = $("<span>").addClass("field-name");
+                                        let $fieldName = $("<span>")
+                                            .addClass("field-name")
+                                            .text(field.name.replace(/_/g, " "));
 
-                                        // Info tooltip
+                                        // Add info-tooltip span (you can make tooltip text dynamic if needed)
                                         let $info = $("<span>")
                                             .addClass("info-tooltip")
                                             .attr("data-tooltip", field.description)
                                             .text("?");
 
-                                        // Add tooltip first, then name text
-                                        $fieldName.append($info).append(document.createTextNode(" " + field.name.replace(/_/g, " ")));
+                                        // Append tooltip inside field-name
+                                        $fieldName.append($info);
 
                                         // Editable field value
                                         let $fieldValue = $("<span>")
                                             .addClass("field-value editable")
                                             .attr("contenteditable", "true")
                                             .html(field.value || "");
-console.log(field);
                                         if ((field.value.trim() !== "") && (field.value.trim() !== "<br>")) {
                                             $('.menu').find('div').eq(index).find('.light').removeClass('square');
                                             $('.menu').find('div').eq(index).find('.light').addClass('arrow');
@@ -251,7 +252,7 @@ console.log(field);
             method: "PUT",
             contentType: "application/json",
             dataType: "json",
-            data: JSON.stringify(cardJson.data.filter(section => section.name !== "related")),
+            data: JSON.stringify(cardJson.data.filter(section => section.name !== "related")),  // TODO: we no have related, but we may have history inthe future
             headers: {
                 "Authorization": "Bearer " + token
             },

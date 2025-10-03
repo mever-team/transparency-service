@@ -1,4 +1,5 @@
 import os.path
+import traceback
 
 from aicard.card import ModelCard
 from aicard.service.assistants import Assistant
@@ -129,6 +130,8 @@ class ModelCardEntry:
             self.commit_card(on_thread=True) # on_thread=True because we are on a heavyweight path either way
             logger.info(f"ended card {self.card_id} completion", user=assistant.alias)
         except Exception as e:
+            import traceback
+            traceback.print_exc()
             logger.error(f"aborted card{self.card_id} completion with error {e}", user=assistant.alias)
         self.end_completion()
 
@@ -138,6 +141,8 @@ class ModelCardEntry:
             self.commit_card(on_thread=True) # on_thread=True because we are on a heavyweight path either way
             logger.info(f"ended card {self.card_id} refinement", user=assistant.alias)
         except Exception as e:
+            import traceback
+            traceback.print_exc()
             logger.error(f"aborted card{self.card_id} refinement with error {e}", user=assistant.alias)
         self.end_completion()
 
@@ -764,7 +769,7 @@ def serve(
         with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
             json_data = request.get_json()
             exists(isinstance(json_data, str), "Can only send string data to update model card titles.")
-            card.data['title'] = json_data
+            card.data['title'].set(json_data)
             return jsonify(card.data['title'])
 
     @app.route('/card/fields', methods=['GET'])
@@ -903,8 +908,8 @@ def serve(
             data = exists(field.get(data_name, None), f"Invalid data name {data_name}. Candidates: " + ','.join(field.keys()))
             json_data = request.get_json()
             exists(isinstance(json_data, str), "Can only send string data to update model card fields.")
-            field[data_name] = json_data
-            return jsonify(field[data_name])  # do not return json_data directly, as setting the value may format it
+            data.set(json_data)
+            return jsonify(data.get())  # do not return json_data directly, as setting the value may format it
 
 
     @app.route('/card/<int:card_id>', methods=['DELETE'])
@@ -986,6 +991,7 @@ def serve(
             try:
                 assignable = converters.dynamic2dict(json_data, {"title"})
                 card.data.assign(assignable)
+                card.data.validate_integrity()
                 card_entry.commit_card()
             except AssertionError as e: abort(404, "Wrong data: "+str(e))
             except Exception as e: abort(404, "Wrong data: "+str(e))

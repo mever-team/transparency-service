@@ -8,6 +8,8 @@ import json
 import markdown2
 import time
 
+from ...card.fields import LongText
+
 
 class Prompter(Assistant):
     def __init__(self,
@@ -41,8 +43,7 @@ class Prompter(Assistant):
             if not isinstance(values, dict): continue
             for field, value in values.items():
                 if field not in completion[category]: continue
-                if not isinstance(value, str): continue
-                values[field] = completion[category][field]
+                value.set(completion[category][field])
 
     def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]):
         user_messages.clear()
@@ -51,17 +52,18 @@ class Prompter(Assistant):
         for category, values in card.data.items():
             if not isinstance(values, dict): continue
             for field, value in values.items():
-                if not isinstance(value, str): continue
-                if len(value.split(' '))<2: continue
+                if not isinstance(value, LongText): continue
+                if len(value.get().split(' '))<2: continue
                 count_categories += 2
         progress = 0
         for category, values in card.data.items():
             if not isinstance(values, dict): continue
             for field, value in values.items():
-                if not isinstance(value, str): continue
-                if len(value.split(' '))<2: continue
-                if ("<summary><h2>Simplified</h2></summary>" in value or
-                    "<summary><h2>Original</h2></summary>" in value): continue
+                if not isinstance(value, LongText): continue
+                value_text = value.get()
+                if len(value_text.split(' '))<2: continue
+                if ("<summary><h2>Simplified</h2></summary>" in value_text or
+                    "<summary><h2>Original</h2></summary>" in value_text): continue
 
                 def update_progress(progress):
                     progress_html = (
@@ -77,18 +79,18 @@ class Prompter(Assistant):
 
                 update_progress(progress)
                 progress += 1
-                summarization = self.agent.summarization(value)
+                summarization = self.agent.summarization(value_text)
 
                 update_progress(progress)
                 progress += 1
-                simplification = self.agent.simplification(value)
+                simplification = self.agent.simplification(value_text)
 
                 summarization = markdown2.markdown(summarization, extras=["markdown-in-html", "code-friendly"])
                 simplification = markdown2.markdown(simplification, extras=["markdown-in-html", "code-friendly"])
-                values[field] = (
+                value.set(
                     f"{summarization}\n\n"
                     f"<details>\n<summary><h2>Simplified</h2></summary>\n\n<div class=\"card-details-content\">\n{simplification}\n</div>\n</details>\n\n"
-                    f"<details>\n<summary><h2>Original</h2></summary>\n\n<div class=\"card-details-content\">\n{value}\n</div>\n</details>"
+                    f"<details>\n<summary><h2>Original</h2></summary>\n\n<div class=\"card-details-content\">\n{value_text}\n</div>\n</details>"
                 )
         #card.assign(card.to_html_card()) # this creates some errors - under investigation
 

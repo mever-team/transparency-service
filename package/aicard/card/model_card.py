@@ -51,7 +51,7 @@ class ModelCard:
                 hardware=LongText("What are hardware requirements for training the model (e.g. CPU or GPU)?"),
                 inference=LongText("What are hardware requirements for deploying the model (e.g. CPU or GPU)? What do users need to take into account regarding hardware regarding deployment and inference?"),
                 more=LongText()),
-            training=DotDict(
+            training_set=DotDict(
                 datasets=LongText("What dataset(s) were used tot train the model? If possible, please add a link to details on the respective datasets used, for example a datasheet."),
                 motivation=LongText(),
                 preprocessing=LongText("How was the data pre-processed for evaluation (e.g., tokenization of sentences, cropping of images, any filtering such as dropping images without faces)? Please provide a short description. You can also add a GitHub link to the respective pre-processing scripts. "),
@@ -81,7 +81,7 @@ o Did you put in place a process to continuously measure and assess risks?<br>
 o Did you inform end-users and subjects of existing or potential risks?<br>
 • Did you identify the possible threats to the AI system (design faults, technical faults, environmental threats) and the possible consequences?"""),
                 security=LongText("Is the AI system certified for cybersecurity (e.g. the certification scheme created by the Cybersecurity Act in Europe)19 or is it compliant with specific security standards? Did you red-team/pentest the system?"),
-                caveates=LongText("This section should list additional concerns that were not covered in the previous sections. For example, did the results suggest any further testing? Were there any relevant groups that were not represented in the evaluation dataset? Are there additional recommendations for model use? What are the ideal characteristics of an evaluation dataset for this model?")
+                caveats=LongText("This section should list additional concerns that were not covered in the previous sections. For example, did the results suggest any further testing? Were there any relevant groups that were not represented in the evaluation dataset? Are there additional recommendations for model use? What are the ideal characteristics of an evaluation dataset for this model?")
             ),
         ))
         self.connector = connector # used by the client - the server does something else and model cards stored there should never set this field
@@ -106,12 +106,14 @@ o Did you inform end-users and subjects of existing or potential risks?<br>
 
     def __getattr__(self, key):
         if key in ["data", "connector"]: return object.__getattribute__(self, key)
-        if key in self.data: return self.data[key]
+        if key in self.data:
+            ret = self.data[key]
+            return ret.get() if isinstance(ret, Field) else ret
         raise AttributeError
 
     def __setattr__(self, key, value):
         if key in ["data", "connector"]: return object.__setattr__(self, key, value)
-        if key in self.data: self.data[key] = value
+        if key in self.data: self.data[key].set(value)
         return object.__setattr__(self, key, value)
 
     def is_stable(self):
@@ -179,8 +181,9 @@ o Did you inform end-users and subjects of existing or potential risks?<br>
         for key, dotdict in self.data.items():
             if isinstance(dotdict, DotDict):
                 for field, value in dotdict.items():
+                    if isinstance(value, Field): value = value.get()
                     assert isinstance(value, str)
-                    card.data[key][field] = html2text.html2text(value)
+                    card.data[key][field].set(html2text.html2text(value))
         return card
 
     def to_html_card(self):
@@ -195,7 +198,7 @@ o Did you inform end-users and subjects of existing or potential risks?<br>
                     # the following line is a trick so that simple strings remain simple strings without <p>
                     value = markdown2.markdown(value, extras=["markdown-in-html", "code-friendly"])
                     if value.startswith("<p>") and value.count("</p>")==1: value = value.strip()[3:-4]
-                    card.data[key][field] = value
+                    card.data[key][field].set(value)
         return card
 
     def to_markdown(self):
@@ -210,24 +213,21 @@ o Did you inform end-users and subjects of existing or potential risks?<br>
             if isinstance(dotdict, DotDict):
                 segment = ""
                 for field, value in dotdict.items():
-                    if value.strip(): segment += f"{("*"+field.replace("_", " ")+"*").ljust(20)} {value.strip()}\n\n"
+                    if value.get().strip(): segment += f"{("*"+field.replace("_", " ")+"*").ljust(20)} {value.get().strip()}\n\n"
                 if segment: ret += f"\n## {key.replace("_", " ")}\n"+segment
         return ret
 
     def to_pydantic(self) -> type[BaseModel]:
         fields = {}
         sub_models = {}
-
         for key, value in self.data.items():
             if isinstance(value, dict):
-                sub_model = create_model(key, **{k: (str, v) for k, v in value.items()})
+                sub_model = create_model(key, **{k: (str, v.get()) for k, v in value.items()})
                 sub_models[key] = sub_model
                 fields[key] = (sub_model, ...)
             else:
                 fields[key] = (str, value)
-
         pydantic_model = create_model('card', **fields)
-
         return pydantic_model
 
     def json_schema(self):

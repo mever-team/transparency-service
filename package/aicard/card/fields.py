@@ -38,7 +38,7 @@ class Options(Field):
     def set(self, value):
         if isinstance(value, Field): value = value.get()
         if not value: value = self.__options[0]
-        if value not in self.__options: raise Exception(f"Value {value} is not one among available options: {','.join(self.__options)}")
+        if value not in self.__options: value = self.__options[0]#raise Exception(f"Value {value} is not one among available options: {','.join(self.__options)}")
         self.__contents = value
     def get(self):
         return self.__contents

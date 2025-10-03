@@ -9,6 +9,8 @@ from nltk.corpus import wordnet as wn
 from aicard.service.logger import Logger
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
+from ...card.fields import Field,LongText
+
 
 def get_synonyms(heading, stopwords):
     synonyms = set()
@@ -27,6 +29,7 @@ class WordNet(Assistant):
     _loader_thread: threading.Thread | None = None
     _loader_lock = threading.Lock()
     _started = False
+    stop_words = set()
 
     def __init__(self,
                  external_get_timeout_sec: float=1,
@@ -77,16 +80,19 @@ class WordNet(Assistant):
                 field_synonyms = dict()
                 for cat, values in ModelCard().data.items():
                     if not isinstance(values, dict): continue
+                    field_synonyms[cat] = get_synonyms(cat, stop_words)
                     for field, value in values.items():
-                        if not isinstance(value, str): continue
-                        field_synonyms[field] = get_synonyms(field, stop_words)
-                        field_synonyms[cat] = get_synonyms(cat, stop_words)
+                        field_synonyms[field] = get_synonyms(field+" "+value.description, stop_words)
 
-                logger.ok(f"loaded {len(scientific_defs)} terms in {int(total/1024)} kΒ", user="📚 WordNet")
+                logger.ok(f"loading complete" 
+                        f"\n * {len(scientific_defs)} terms"
+                        f"\n * {int(total/1024)} kΒ"
+                        f"\n * {len(stop_words)} stopwords"
+                        f"\n * {len(field_synonyms)} card field synonym lists", user="📚 WordNet")
                 with WordNet._loader_lock:
                     self.scientific_defs = scientific_defs
                     self.field_synonyms = field_synonyms
-                    self.stop_words = stop_words
+                    WordNet.stop_words = stop_words
             except Exception as e:
                 logger.error(f"failed to start: {e}", user="📚 WordNet")
                 self.scientific_defs = dict()
@@ -153,16 +159,16 @@ class WordNet(Assistant):
         has_been_replaced = dict()
         for heading, content in sections:
             if not content.strip(): continue
-            synonyms = get_synonyms(heading, self.stop_words)
-            secondary_synonyms = get_synonyms(heading, self.stop_words)
+            synonyms = get_synonyms(heading, WordNet.stop_words)
+            secondary_synonyms = get_synonyms(heading, WordNet.stop_words)
             for value in re.sub(r"[^A-Za-z]", " ", content[:min(self.max_chars_for_semantic_synonyms, len(content))]).split(" "):
-                secondary_synonyms |= get_synonyms(value, self.stop_words)
+                secondary_synonyms |= get_synonyms(value, WordNet.stop_words)
             best_score = 1
             best_path = []
             for cat, values in card.data.items():
                 if not isinstance(values, dict): continue
                 for field, value in values.items():
-                    if not isinstance(value, str): continue
+                    if not isinstance(value, LongText): continue
                     #if cat+"__"+field in has_been_replaced: continue
                     score = (len(synonyms & self.field_synonyms[field])
                              + len(synonyms & self.field_synonyms[cat])*0.5
@@ -176,12 +182,10 @@ class WordNet(Assistant):
                 prev_content = has_been_replaced.get(best_path[0]+"__"+best_path[1], "")
                 if prev_content: content = prev_content +  "\n<br><br>\n" + content
                 has_been_replaced[best_path[0] + "__" + best_path[1]] = content
-                card.data[best_path[0]][best_path[1]] = content
+                card.data[best_path[0]][best_path[1]].set(content)
+                print(best_path[0], best_path[1], "set")
             else: not_used_fields.append(heading)
 
-        # fix name field, because it's kind of important
-        card.model.overview = card.model.name + "<br>" + card.model.overview
-        card.model.name = title
         if not_used_fields:
             logger.warn("the following headings could not be matched to a model card based on synonyms" + ", ".join(not_used_fields), user=self.alias)
 
@@ -191,6 +195,6 @@ class WordNet(Assistant):
         for cat, vals in card.data.items():
             if not isinstance(vals, dict): continue
             for field, value in vals.items():
-                if not isinstance(value, str): continue
-                vals[field] = self._refine_field(value)
+                assert isinstance(value, Field)
+                vals[field].set(self._refine_field(value.get()))
         card.assign(card.to_html_card())
