@@ -219,14 +219,27 @@ o Did you inform end-users and subjects of existing or potential risks?<br>
 
         for key, value in self.data.items():
             if isinstance(value, dict):
-                sub_model = create_model(f"card_{key}", **{k: (str, v) for k, v in value.items()})
+                sub_model = create_model(key, **{k: (str, v) for k, v in value.items()})
                 sub_models[key] = sub_model
                 fields[key] = (sub_model, ...)
             else:
                 fields[key] = (str, value)
 
         pydantic_model = create_model('card', **fields)
+
         return pydantic_model
+
+    def json_schema(self):
+        schema = self.to_pydantic().model_json_schema()
+        schema['$defs']['model']['properties']['name']['description'] = "name of the model"
+        schema['$defs']['considerations']['properties']['oversight']['enum'] = ["self-learning/autonomous", "human-in-the-loop", "human-on-the-loop", "human-in-command"]
+        schema['$defs']['considerations']['properties']['instructions']['description'] = "Put any instruction here that describes how to use the model."
+        schema['$defs']['eval_set']['properties']['standards']['enum'] = ["ISO", "IEEE"]
+        schema['$defs']['eval_set']['properties']['update']['description'] = "Did you put in place measures to ensure that the evaluation data used to is up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"
+        schema['$defs']['training_set']['properties']['standards']['enum'] = ["ISO", "IEEE"]
+        schema['$defs']['training_set']['properties']['update']['description'] = "Did you put in place measures to ensure that the evaluation data used to is up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"
+        schema['$defs']['analysis']['properties']['analysis']['description'] = "Put any results here and analyze them."
+        return schema
 
     def __str__(self):
         buffer = io.StringIO()

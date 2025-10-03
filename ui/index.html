@@ -19,11 +19,12 @@
 
 </head>
 <body>
+
 <section class="header_section">
     <div class="row bigWidth">
         <div class="small-12 medium-12 large-12 columns">
             <div class="header_wrapper">
-                <h2>AI-CODE</h2>
+                <h2><img src="img/logo.png" width="110"></h2>
                 <p id="whats-this" class="modal__trigger" data-modal="#modal_help">What's this ?</p>
             </div>
 
@@ -41,7 +42,7 @@
 
                     <div class="main_search_wrapper">
                         <div class="main_search">
-                            <div class="search_button modal__trigger"  data-modal="#modal">
+                            <div class="search_button"  id="new_card">
                                 ✍️ new
                             </div>
                         <span class="search_input"><input placeholder="Search for model name or text..." type="text"
@@ -53,6 +54,13 @@
 
                     <br><br><br>
                     <div class="main_search_wrapper_results">
+                        <div class="loading-overlay" id="loading">
+                            <div class="spinner"></div>
+                            <p>Loading...</p>
+                        </div>
+
+
+
                     <p style="margin: 25px 0 0;font-weight: bold;"><span id="search_results_wrapper">Most popular</span>
                         (<span id="search_results">0</span> of <span id="search_sub_p">TBA</span>)</p>
                     <table id="resultsTable" border="0" cellpadding="5" cellspacing="0">
@@ -85,28 +93,7 @@
         </div>
     </div>
 </section>
-<div id="modal" class="modal modal__bg">
-    <div class="modal__dialog">
-        <div class="modal__content">
-            <div class="input-effect">
-                <input class="effect-19" type="text" placeholder="" id="model_name_input">
-                <label for="model_name_input">Model Card Name</label>
-                <span class="focus-border"><i></i></span>
-            </div>
-            <div class="example_button" style="width: 50%;margin: 20px auto 0;" id="new_card_but" disabled>
-                SUBMIT
-            </div>
-            <!-- modal close button -->
-            <div href="" class="modal__close demo-close">
-                <svg class="w-4 h-4" viewBox="0 0 24 24">
-                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                    <path d="M0 0h12v12h-12z" fill="none"/>
-                </svg>
-            </div>
 
-        </div>
-    </div>
-</div>
 <div id="modal_help" class="modal modal__bg">
     <div class="modal__dialog" style="width: 85%;">
         <div class="modal__content">

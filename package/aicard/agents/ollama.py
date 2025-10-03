@@ -5,7 +5,7 @@ from aicard.agents.agent import Agent
 
 class Ollama(Agent):
     tasks = {
-        "completion": """You are a helpful assistant that completes json fields.""",
+        "completion": """You are a helpful assistant that completes json fields. return as JSON.""",
         "hint": "You will be given text. Your goal is to provide explanation for all technical words so a non expert can understand its content. "
                 "Your output should be a JSON where the keys will be the word to be explained and the values will be the explanation of this word.",
         "summarization" : """You are an AI specialized in simplifying and summarizing technical texts. You will be given html, markdown, or other text, and will produce a very short summary.
@@ -41,7 +41,7 @@ Instructions:
         assert test.status_code == 200, f"Failed to initialize model '{model}'\nResponse: {test.text}"
         self.max_tokens = 4000
 
-    def _run(self, content: str, task: str, output_format: str | None):
+    def _run(self, content: str, task: str, params: dict | None):
         assert isinstance(content, str), "Content must be of type str"
         assert task in Ollama.tasks, "Not supported task: "+task
         payload = {
@@ -49,8 +49,8 @@ Instructions:
             "stream": False,
             "messages": [{"role": "system", "content": Ollama.tasks[task]}, {"role": "user", "content": content}]
         }
-        if output_format:
-            payload["format"] = output_format
+        if params:
+            payload.update(params)
         response = requests.post(self._url, json=payload)
         response = json.loads(response.text)["message"]["content"]
         if response.startswith("Here"):
