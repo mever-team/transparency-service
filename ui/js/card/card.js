@@ -328,83 +328,164 @@ $(document).ready(function () {
 
     $(document).on("click", "#refine", function () {
         let assistant = $(this).prev('.assistants_wrapper').find(".card-button.selected").attr("id");
-
+        $('.modal__close ').click();
         $.ajax({
-            url: "http://127.0.0.1:5000/assistant/" + assistant + '/refine/' + id,
-            method: "POST",
+            url: "http://127.0.0.1:5000/card/" + id,
+            method: "PUT",
             contentType: "application/json",
             dataType: "json",
+            data: JSON.stringify(cardJson.data.filter(section => section.name !== "related")),
             headers: {
                 "Authorization": "Bearer " + token
             },
             success: function (response) {
-                $('.modal__close ').click();
-                interval = setInterval(function () {
-                    checkLocked(interval);
-                }, 500);
+                $('.menu').find('div').find('.light').removeClass('arrow');
+                $('.menu').find('div').find('.light').addClass('square');
+
+                ["model", "considerations", "training_set", "eval_set", "analysis"].forEach((sectionName, index) => {
+                    let section = cardJson.data.filter(section => section.name !== "related").find(s => s.name === sectionName);
+                    let hasValue = false;
+
+                    if (section && section.value) {
+                        for (let field of section.value) {
+                            if ((field.value.trim() !== "") && (field.value.trim() !== "<br>")) {
+                                hasValue = true;
+                                $('.menu').find('div').eq(index).find('.light').removeClass('square');
+                                $('.menu').find('div').eq(index).find('.light').addClass('arrow');
+                                break; // stop at first non-empty
+                            }
+                        }
+                    }
+                });
+
+                $.ajax({
+                    url: "http://127.0.0.1:5000/assistant/" + assistant + '/refine/' + id,
+                    method: "POST",
+                    contentType: "application/json",
+                    dataType: "json",
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    },
+                    success: function (response) {
+
+                        interval = setInterval(function () {
+                            checkLocked(interval);
+                        }, 500);
+                    },
+                    error: function (xhr, status, error) {
+                        try {
+                            const resp = JSON.parse(xhr.responseText);
+                            alert(resp.error || error);
+                        } catch (e) {
+                            alert("Unknown refinement error");
+                        }
+                    }
+                });
             },
             error: function (xhr, status, error) {
                 try {
                     const resp = JSON.parse(xhr.responseText);
                     alert(resp.error || error);
                 } catch (e) {
-                    alert("Unknown refinement error");
+                    alert(error || xhr.responseText);
                 }
             }
         });
     });
+
     $(document).on("click", "#autocomplete", function () {
         let assistant = $(this).siblings('.assistants_wrapper').find(".card-button.selected").attr("id");
-        if ($('#card-url').is(":visible")) {
-            $.ajax({
-                url: "http://127.0.0.1:5000/assistant/" + assistant + '/complete/' + id,
-                method: "POST",
-                contentType: "application/json",
-                dataType: "json",
-                headers: {
-                    "Authorization": "Bearer " + token
-                },
-                data: JSON.stringify($('#card-url').val()),
-                success: function (response) {
-                    $('.modal__close ').click();
-                    interval = setInterval(function () {
-                        checkLocked(interval);
-                    }, 500);
-                },
-                error: function (xhr, status, error) {
-                    try {
-                        const resp = JSON.parse(xhr.responseText);
-                        alert(resp.error || error);
-                    } catch (e) {
-                        alert("Unknown autocomplete error");
+
+        $('#saveJson').attr("disabled", true)
+        $.ajax({
+            url: "http://127.0.0.1:5000/card/" + id,
+            method: "PUT",
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify(cardJson.data.filter(section => section.name !== "related")),
+            headers: {
+                "Authorization": "Bearer " + token
+            },
+            success: function (response) {
+                $('.menu').find('div').find('.light').removeClass('arrow');
+                $('.menu').find('div').find('.light').addClass('square');
+
+                ["model", "considerations", "training_set", "eval_set", "analysis"].forEach((sectionName, index) => {
+                    let section = cardJson.data.filter(section => section.name !== "related").find(s => s.name === sectionName);
+                    let hasValue = false;
+
+                    if (section && section.value) {
+                        for (let field of section.value) {
+                            if ((field.value.trim() !== "") && (field.value.trim() !== "<br>")) {
+                                hasValue = true;
+                                $('.menu').find('div').eq(index).find('.light').removeClass('square');
+                                $('.menu').find('div').eq(index).find('.light').addClass('arrow');
+                                break; // stop at first non-empty
+                            }
+                        }
                     }
+                });
+
+                if ($('#card-url').is(":visible")) {
+                    $.ajax({
+                        url: "http://127.0.0.1:5000/assistant/" + assistant + '/complete/' + id,
+                        method: "POST",
+                        contentType: "application/json",
+                        dataType: "json",
+                        headers: {
+                            "Authorization": "Bearer " + token
+                        },
+                        data: JSON.stringify($('#card-url').val()),
+                        success: function (response) {
+                            $('.modal__close ').click();
+                            interval = setInterval(function () {
+                                checkLocked(interval);
+                            }, 500);
+                        },
+                        error: function (xhr, status, error) {
+                            try {
+                                const resp = JSON.parse(xhr.responseText);
+                                alert(resp.error || error);
+                            } catch (e) {
+                                alert("Unknown autocomplete error");
+                            }
+                        }
+                    });
+                } else {
+                    let formData = new FormData();
+                    formData.append("file", uploaded_file); // "file" is the field name your backend expects
+                    $.ajax({
+                        url: "http://127.0.0.1:5000/assistant/" + assistant + '/complete/' + id,
+                        method: "POST",
+                        headers: {
+                            "Authorization": "Bearer " + token
+                        },
+                        data: formData,
+                        processData: false, // don't let jQuery process the data
+                        contentType: false, // don't set content-type header, let browser set it (multipart/form-data)
+                        success: function (response) {
+                            alert(response)
+                        },
+                        error: function (xhr, status, error) {
+                            try {
+                                const resp = JSON.parse(xhr.responseText);
+                                alert(resp.error || error);
+                            } catch (e) {
+                                alert("Unknown card creation error");
+                            }
+                        }
+                    });
                 }
-            });
-        } else {
-            let formData = new FormData();
-            formData.append("file", uploaded_file); // "file" is the field name your backend expects
-            $.ajax({
-                url: "http://127.0.0.1:5000/assistant/" + assistant + '/complete/' + id,
-                method: "POST",
-                headers: {
-                    "Authorization": "Bearer " + token
-                },
-                data: formData,
-                processData: false, // don't let jQuery process the data
-                contentType: false, // don't set content-type header, let browser set it (multipart/form-data)
-                success: function (response) {
-                    alert(response)
-                },
-                error: function (xhr, status, error) {
-                    try {
-                        const resp = JSON.parse(xhr.responseText);
-                        alert(resp.error || error);
-                    } catch (e) {
-                        alert("Unknown card creation error");
-                    }
+            },
+            error: function (xhr, status, error) {
+                try {
+                    const resp = JSON.parse(xhr.responseText);
+                    alert(resp.error || error);
+                } catch (e) {
+                    alert(error || xhr.responseText);
                 }
-            });
-        }
+            }
+        });
     });
 
     $('#pdf_text').click(function () {
