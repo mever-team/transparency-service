@@ -33,7 +33,8 @@ class Prompter(Assistant):
         output_format['$defs']['model']['properties']['overview']['minLength'] = 500
         output_format['$defs']['considerations']['properties']['use_case']['minLength'] = 10
 
-        completion = self.agent.completion(prompt, output_format=output_format)
+        params = {"format": output_format, "temperature": 0}
+        completion = self.agent.completion(prompt, params=params)
         completion = json.loads(completion)
         for category, values in card.data.items():
             if category not in completion: continue
