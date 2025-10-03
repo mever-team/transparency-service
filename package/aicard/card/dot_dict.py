@@ -1,14 +1,22 @@
+from .fields import Field
+
+
 class DotDict(dict):
     def __init__(self, **kwargs):
         super().__init__({k: v for k,v in kwargs.items()})
 
     def __getattr__(self, attr):
-        try: return self[attr]
+        try:
+            ret = self[attr]
+            return ret.get() if isinstance(ret, Field) else ret
         except KeyError: raise AttributeError
 
     def __setattr__(self, attr, value):
         assert attr in self, f"Can only set an existing attribute among: {', '.join(self.keys())}"
-        self[attr] = value
+        if isinstance(self[attr], Field):
+            self[attr].set(value)
+        else:
+            self[attr] = value
 
     def __delattr__(self, attr):
         try: del self[attr]

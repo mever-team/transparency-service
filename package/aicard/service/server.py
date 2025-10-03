@@ -241,6 +241,8 @@ def serve(
 
     @app.errorhandler(Exception)
     def handle_unexpected_exception(e):
+        import traceback
+        traceback.print_exc()
         logger.error(str(e))
         if isinstance(e, HTTPException):
             response = jsonify(error=e.description or str(e))
