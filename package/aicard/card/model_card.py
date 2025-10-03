@@ -7,10 +7,10 @@ import rich
 import io
 from aicard.card.traits.html import HTMLRenderer
 from aicard.card.dot_dict import DotDict
-from aicard.card.fields import ShortText, LongText, Options
+from aicard.card.fields import ShortText, LongText, Options, Field
 from rich.markdown import Markdown
-
 from pydantic import BaseModel, create_model
+
 
 def truncate(text, size):
     if size<3:
@@ -25,9 +25,9 @@ def truncate(text, size):
 class ModelCard:
     def __init__(self, connector=None):
         object.__setattr__(self, "data", DotDict(
-            title="Model Card",
+            title=ShortText(),
             model=DotDict(
-                name=LongText("What is the name of the model?"),
+                name=ShortText("What is the name of the model?"),
                 overview=LongText(),
                 author=LongText("What person or organization developed the model? This can be used by all stakeholders to infer details pertaining to model development and potential conflicts of interest"),
                 date=LongText("When was the model developed? This is useful for all stakeholders to become further informed on what techniques and data sources were likely to be available during model development."),
@@ -41,10 +41,9 @@ class ModelCard:
             considerations=DotDict(
                 use_case=LongText("This section details whether the model was developed with general or specific tasks in mind (e.g., plant recognition worldwide or in the Pacific Northwest). The use cases may be as broadly or narrowly defined as the developers intend. For example, if the model was built simply to label images, then this task should be indicated as the primary intended use case."),
                 oversight=Options(["unknown","self-learning", "autonomous or human-in-the-loop", "human-on-the-loop", "human-in-command"]),
-                primary_users=LongText("For example, was the model developed for hobbyists, or enterprise solutions? This helps users gain insight into how robust the model may be to different kinds of inputs."),
+                users=LongText("For example, was the model developed for hobbyists, or enterprise solutions? This helps users gain insight into how robust the model may be to different kinds of inputs."),
                 out_of_scope_use=LongText("Here, the model card should highlight technology that the model might easily be confused with, or related contexts that users could try to apply the model to. This section may provide an opportunity to recommend a related or similar model that was designed to better meet that particular need, where possible. This section is inspired by warning labels on food and toys, and similar disclaimers presented in electronic datasheets. Examples include “not for use on text examples shorter than 100 tokens” or “for use on black-and-white images only; please consider our research group’s full-colour-image classifier for colour images.” Examples include “not for use on text examples shorter than 100 words."),
                 limitations=LongText(),
-                ethical_risks=LongText(),
                 software=LongText("What are software requirements and dependencies? If possible, please add a link to an open source repository like GitHub with details on dependencies, the environment and documentation."),
                 instructions=LongText("Provide any other information which helps users use the model. Ideally, add a code snippet illustrating a typical use-case. You can also add a link to a GitHub repository with usage instructions. This is inspired by model cards such as this: https://huggingface.co/microsoft/beit-base-patch16-224-pt22k-ft22k"),
                 inputs_outputs=LongText("Provide a short description of the model's inputs and outputs"),
@@ -55,14 +54,14 @@ class ModelCard:
             training=DotDict(
                 datasets=LongText("What dataset(s) were used tot train the model? If possible, please add a link to details on the respective datasets used, for example a datasheet."),
                 motivation=LongText(),
-                pre_processing=LongText("How was the data pre-processed for evaluation (e.g., tokenization of sentences, cropping of images, any filtering such as dropping images without faces)? Please provide a short description. You can also add a GitHub link to the respective pre-processing scripts. "),
+                preprocessing=LongText("How was the data pre-processed for evaluation (e.g., tokenization of sentences, cropping of images, any filtering such as dropping images without faces)? Please provide a short description. You can also add a GitHub link to the respective pre-processing scripts. "),
                 standards=Options(["unknown", "none", "ISO","IEEE"]),
                 update=Options(["unknown", "no", "yes"], "Did you put in place measures to ensure that the data (including training data) used to develop the AI system is up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),
                 more=LongText()),
             eval_set=DotDict(
                 datasets=LongText("What dataset(s) were used to evaluate the model? If possible, please add a link to details on the respective datasets used, for example a datasheet."),
                 motivation=LongText(),
-                pre_processing=LongText("How was the data pre-processed for evaluation (e.g., tokenization of sentences, cropping of images, any filtering such as dropping images without faces)? Please provide a short description. You can also add a GitHub link to the respective pre-processing scripts. "),
+                preprocessing=LongText("How was the data pre-processed for evaluation (e.g., tokenization of sentences, cropping of images, any filtering such as dropping images without faces)? Please provide a short description. You can also add a GitHub link to the respective pre-processing scripts. "),
                 standards=Options(["unknown", "none", "ISO","IEEE"]),
                 update=Options(["unknown", "no", "yes"], "Did you put in place measures to ensure that the data (including training data) used to develop the AI system is up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),
                 more=LongText()
@@ -72,17 +71,17 @@ class ModelCard:
                 metrics=LongText(),
                 thresholds=LongText("If decision thresholds are used, what are they, and why were those decision thresholds chosen? When the model card is presented in a digital format, a threshold slider should ideally be available to view performance parameters across various decision thresholds."),
                 uncertainty=LongText("How are the measurements and estimations of these metrics calculated? For example, this may include standard deviation, variance, confidence intervals, or KL divergence. Details of how these values are approximated should also be included (e.g., average of 5 runs, 10-fold cross-validation)."),
-                quantiative_fairness=LongText("How did the model perform with respect to each factor (see question 15)? Quantitative analyses should be disaggregated, that is, broken down by the chosen factors. Quantitative analyses should provide the results of evaluating the model according to the chosen metrics, providing confidence interval values when possible. Parity on the different metrics across disaggregated population subgroups corresponds to how fairness is often defined. For an example, see figure 2. in https://arxiv.org/pdf/1810.03993.pdf"),
+                fairness=LongText("How did the model perform with respect to each factor (see question 15)? Quantitative analyses should be disaggregated, that is, broken down by the chosen factors. Quantitative analyses should provide the results of evaluating the model according to the chosen metrics, providing confidence interval values when possible. Parity on the different metrics across disaggregated population subgroups corresponds to how fairness is often defined. For an example, see figure 2. in https://arxiv.org/pdf/1810.03993.pdf"),
             ),
             safety=DotDict(
-                ethical_considerations=LongText("Example topics for ethical consideration: Does the training data contain sensitive information? What risks and harms could arise during the use of the model? Which mitigation measures are recommended? Are there particularly problematic use-cases? Did the model go through an ethical assessment procedure?"),
-                qualitative_fairness=LongText("Which definition of fairness have you applied in any phase of setting up the AU system? Did you ensure a quantitative analysis or metrics to measure and test the applied definition of fairness?"),
-                risk_measures=LongText("""• Did you define risks, risk metrics and risk levels of the AI system in each specific use case?<br>
+                ethics=LongText("Example topics for ethical consideration: Does the training data contain sensitive information? What risks and harms could arise during the use of the model? Which mitigation measures are recommended? Are there particularly problematic use-cases? Did the model go through an ethical assessment procedure?"),
+                fairness=LongText("Which definition of fairness have you applied in any phase of setting up the AU system? Did you ensure a quantitative analysis or metrics to measure and test the applied definition of fairness?"),
+                risks=LongText("""• Did you define risks, risk metrics and risk levels of the AI system in each specific use case?<br>
 o Did you put in place a process to continuously measure and assess risks?<br>
 o Did you inform end-users and subjects of existing or potential risks?<br>
 • Did you identify the possible threats to the AI system (design faults, technical faults, environmental threats) and the possible consequences?"""),
-                cybersecurity=LongText("Is the AI system certified for cybersecurity (e.g. the certification scheme created by the Cybersecurity Act in Europe)19 or is it compliant with specific security standards? Did you red-team/pentest the system?"),
-                caveates_and_recommendations=LongText("This section should list additional concerns that were not covered in the previous sections. For example, did the results suggest any further testing? Were there any relevant groups that were not represented in the evaluation dataset? Are there additional recommendations for model use? What are the ideal characteristics of an evaluation dataset for this model?")
+                security=LongText("Is the AI system certified for cybersecurity (e.g. the certification scheme created by the Cybersecurity Act in Europe)19 or is it compliant with specific security standards? Did you red-team/pentest the system?"),
+                caveates=LongText("This section should list additional concerns that were not covered in the previous sections. For example, did the results suggest any further testing? Were there any relevant groups that were not represented in the evaluation dataset? Are there additional recommendations for model use? What are the ideal characteristics of an evaluation dataset for this model?")
             ),
         ))
         self.connector = connector # used by the client - the server does something else and model cards stored there should never set this field
@@ -168,7 +167,7 @@ o Did you inform end-users and subjects of existing or potential risks?<br>
             if isinstance(dotdict, DotDict):
                 for field, value in dotdict.items():
                     denom += 1
-                    if value.strip(): nom += 1
+                    if value: nom += 1
             else:
                 denom += 1
                 if dotdict: nom += 1
@@ -190,7 +189,9 @@ o Did you inform end-users and subjects of existing or potential risks?<br>
         for key, dotdict in self.data.items():
             if isinstance(dotdict, DotDict):
                 for field, value in dotdict.items():
-                    assert isinstance(value, str)
+                    if isinstance(value, Field): value = value.get()
+                    if not value: value = ""
+                    assert isinstance(value, str), f"Field {key} {field} stores type {type(value)} and not a string"
                     # the following line is a trick so that simple strings remain simple strings without <p>
                     value = markdown2.markdown(value, extras=["markdown-in-html", "code-friendly"])
                     if value.startswith("<p>") and value.count("</p>")==1: value = value.strip()[3:-4]

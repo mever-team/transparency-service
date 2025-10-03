@@ -86,7 +86,7 @@ $(document).ready(function () {
 
                                     /*section.value.forEach(field => {
                                         let $field = $("<div>").addClass("field");
-                                        $field.append($("<span>").addClass("field-name").text(field.name.replace(/_/g, " ") /*+ ":"*/));
+                                        $field.append($("<span>").addClass("field-name").text(field.name.replace(/_/g, " ")));
 
                                         // Editable field value
                                         let $fieldValue = $("<span>")
@@ -105,18 +105,16 @@ $(document).ready(function () {
                                         let $field = $("<div>").addClass("field");
 
                                         // Create field-name span
-                                        let $fieldName = $("<span>")
-                                            .addClass("field-name")
-                                            .text(field.name.replace(/_/g, " ") + ":");
+                                        let $fieldName = $("<span>").addClass("field-name");
 
-                                        // Add info-tooltip span (you can make tooltip text dynamic if needed)
+                                        // Info tooltip
                                         let $info = $("<span>")
                                             .addClass("info-tooltip")
-                                            .attr("data-tooltip", "TBA by field.description")
+                                            .attr("data-tooltip", field.description)
                                             .text("?");
 
-                                        // Append tooltip inside field-name
-                                        $fieldName.append($info);
+                                        // Add tooltip first, then name text
+                                        $fieldName.append($info).append(document.createTextNode(" " + field.name.replace(/_/g, " ")));
 
                                         // Editable field value
                                         let $fieldValue = $("<span>")
@@ -261,7 +259,7 @@ console.log(field);
                 $('.menu').find('div').find('.light').removeClass('arrow');
                 $('.menu').find('div').find('.light').addClass('square');
 
-                ["model", "considerations", "training_set", "eval_set", "analysis"].forEach((sectionName, index) => {
+                ["model", "considerations", "training_set", "eval_set", "analysis", "safety"].forEach((sectionName, index) => {
                     let section = cardJson.data.filter(section => section.name !== "related").find(s => s.name === sectionName);
                     let hasValue = false;
 
@@ -376,7 +374,7 @@ console.log(field);
                 $('.menu').find('div').find('.light').removeClass('arrow');
                 $('.menu').find('div').find('.light').addClass('square');
 
-                ["model", "considerations", "training_set", "eval_set", "analysis"].forEach((sectionName, index) => {
+                ["model", "considerations", "training_set", "eval_set", "analysis", "safety"].forEach((sectionName, index) => {
                     let section = cardJson.data.filter(section => section.name !== "related").find(s => s.name === sectionName);
                     let hasValue = false;
 
@@ -444,7 +442,7 @@ console.log(field);
                 $('.menu').find('div').find('.light').removeClass('arrow');
                 $('.menu').find('div').find('.light').addClass('square');
 
-                ["model", "considerations", "training_set", "eval_set", "analysis"].forEach((sectionName, index) => {
+                ["model", "considerations", "training_set", "eval_set", "analysis", "safety"].forEach((sectionName, index) => {
                     let section = cardJson.data.filter(section => section.name !== "related").find(s => s.name === sectionName);
                     let hasValue = false;
 

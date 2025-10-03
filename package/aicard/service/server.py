@@ -984,7 +984,8 @@ def serve(
         card_entry = find_card(card_id)
         with exists(card_entry, "Model card does not exist or has been deleted.") as card:
             try:
-                card.data.assign(converters.dynamic2dict(json_data, {"title"}))
+                assignable = converters.dynamic2dict(json_data, {"title"})
+                card.data.assign(assignable)
                 card_entry.commit_card()
             except AssertionError as e: abort(404, "Wrong data: "+str(e))
             except Exception as e: abort(404, "Wrong data: "+str(e))
