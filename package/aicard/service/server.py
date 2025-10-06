@@ -72,8 +72,8 @@ class ModelCardEntry:
             desc += " for "+summary
 
         columns = list(flattened.keys())
-        values = [flattened[key] for key in columns]+[desc]
-        columns += ["desc"]  # do this after values uses columns, because its a db, not card field
+        values = [flattened[key] for key in columns]+[desc, self.card.title]
+        columns += ["desc", "title"]  # do this after values uses columns, because its a db, not card field
         query = f'''
             UPDATE cards
             SET {", ".join(f'"{col}" = ?' for col in columns)}
@@ -579,7 +579,7 @@ def serve(
         data = request.get_json() or {}
         query = data.get('query', '').strip().lower()
         page = max(int(data.get('page', 1)), 1)
-        page_size = max(int(data.get('page_size', 10)), 1)
+        page_size = max(int(data.get('page_size', 5)), 1)
         cursor = conn.conn.cursor()
         owner = data.get("creator", "").strip().lower()
         if query: cursor.execute("SELECT COUNT(*) FROM cards WHERE LOWER(title) LIKE ?", (f"%{query}%",))
@@ -633,7 +633,7 @@ def serve(
             )
         rows = cursor.fetchall()
         results = [{"id": row[0], "name": row[1], "creator": row[2], "desc": row[3]} for row in rows]
-        return jsonify({"results": results, "pages": num_pages})
+        return jsonify({"results": results, "pages": num_pages, "total": total})
 
     @app.route('/assistants', methods=['GET'])
     @users.require_auth(token2expiration)

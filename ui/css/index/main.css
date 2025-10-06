@@ -254,6 +254,7 @@ html, body {
 }
 
 #whats-this {
+    margin-top:5px;
     color: #EEEEEE;
 }
 
@@ -402,7 +403,7 @@ html, body {
 }
 
 #service-title {
-    color: #155E34;
+    color: #EEEEEE;
 }
 
 @media (max-width: 600px) {
