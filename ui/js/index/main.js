@@ -50,8 +50,7 @@ function autocomplete_populate() {
             return;
         }*/
 
-        typingTimer = setTimeout(function () {
-
+        function refresh_search() {
             $.ajax({
                 url: "http://127.0.0.1:5000/cards",
                 method: "POST",
@@ -99,6 +98,12 @@ function autocomplete_populate() {
                     console.error("Error fetching results");
                 }
             });
+        }
+
+        refresh_search();
+
+        typingTimer = setTimeout(function () {
+            refresh_search();
         }, delay);
     });
 

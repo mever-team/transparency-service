@@ -43,7 +43,7 @@ $(document).ready(function () {
 
     let interval = setInterval(function () {
         checkLocked(interval, true);
-    }, 500);
+    }, 1); // do first run immediately
 
     function checkLocked(interval) {
         $.ajax({

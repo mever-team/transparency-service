@@ -24,6 +24,9 @@ class Prompter(Assistant):
 
     def complete(self, card: ModelCard, url: str, logger: Logger, user_messages: list[str]):
         logger.info("Submitted: " + str(url), user=self.alias)
+        user_messages.clear()
+        user_messages.append(f"<h2>{self.alias} autofill</h2>")
+
         parsed = urlparse(url)
         if not parsed.scheme in ("http", "https") or not parsed.netloc: raise Exception("Invalid url format")
         response = requests.get(url, timeout=self.external_get_timeout_sec)
