@@ -2,105 +2,71 @@ $(function () {
     $('#loading').show();
     autocomplete_populate();
     $("#topic").trigger("keyup");
-    if (localStorage.getItem('modalDismissed') !== 'true') {
+    if (localStorage.getItem('modalDismissed') !== 'true')
         $('.modal__trigger[data-modal="#modal_help"]').click();
-    }
-    $('demo-close').on('click', function () {
+    $('demo-close').on('click', () => {
         localStorage.setItem('modalDismissed', 'true');
         $('.demo-close').click();
     });
-    $('#new_card').click(function () {
+    $('#new_card').click(() => {
         $.ajax({
             url: "http://127.0.0.1:5000/card",
             method: "POST",
             contentType: "application/json",
-            headers: {
-                "Authorization": "Bearer " + token
-            },
-            dataType: "json",
-            data: JSON.stringify({ "title": "" }),
-            success: function (response) {
-                window.location.href = 'model_card.html?id=' + response;
-            },
-            error: function () {
-                alert("ERROR NEW CARD");
-            }
+            headers: { "Authorization": "Bearer " + token },
+            data: JSON.stringify({ title: "" }),
+            success: r => window.location.href = 'model_card.html?id=' + r,
+            error: () => alert("ERROR NEW CARD")
         });
     });
 });
 
-
 function autocomplete_populate() {
-    let lastUpdateTime = 0;
-    const delay = 150; // milliseconds
-    let firstLoad = true;
+    let lastUpdate = 0, pending = null, first = true, delay = 150;
+    const $topic = $("#topic"), $tbody = $("#resultsTable tbody");
 
-    $("#topic").on("keyup", function () {
-        const $tbody = $("#resultsTable tbody");
-        const query = $(this).val().trim();
-        const now = Date.now();
-
-        // Only update if enough time has passed since the last request
-        if (now - lastUpdateTime < delay && !firstLoad) {
-            return; // Skip this keyup event
-        }
-
-        lastUpdateTime = now; // Record when this update started
-
-        // Show loading only for the first autocomplete
-        if (firstLoad) $('#loading').show();
-
+    function request() {
+        const q = $topic.val().trim();
+        if (first) $('#loading').show();
         $.ajax({
             url: "http://127.0.0.1:5000/cards",
             method: "POST",
             contentType: "application/json",
-            dataType: "json",
-            data: JSON.stringify({ query: query }),
-            success: function (response) {
+            data: JSON.stringify({ query: q }),
+            success: r => {
                 $('#loading').hide();
-                const results = response.results || [];
-
-                if ($("#topic").val().trim() !== "") {
-                    $('#search_results_wrapper').text("Search results");
-                } else {
-                    $('#search_results_wrapper').text("Most popular");
-                }
-
-                $('#search_results').text(results.length+" of "+(response.total||0));
+                const results = r.results || [];
+                $('#search_results_wrapper').text(q ? "Search results" : "Most popular");
+                $('#search_results').text(results.length + " of " + (r.total || 0));
                 $tbody.empty();
-                if (results.length > 0) {
-                    results.forEach(item => {
-                        const highlightedName = item.name.replace(
-                            new RegExp("(" + query + ")", "ig"),
-                            "<strong style='color:#79CFDC'>$1</strong>"
-                        );
-
+                if (results.length)
+                    results.forEach(it => {
+                        const name = it.name.replace(new RegExp("(" + q + ")", "ig"), "<strong style='color:#79CFDC'>$1</strong>");
                         $tbody.append(`
-                            <tr style="background: #1F1F1F;" class="search_results_button">
-                                <td>
-                                    <a style="width: 160px; text-decoration:none" href="model_card.html?id=${item.id}">
-                                        <span style="width: 300px; display: block; color: #EEEEEE;">${highlightedName}</span>
-                                        <span style="font-size: 13px; color: #79CFDC;">${item.desc + " - by " + item.creator || "No Description"}</span>
-                                    </a>
-                                </td>
-                            </tr>
-                        `);
+                            <tr style="background:#1F1F1F" class="search_results_button">
+                                <td><a style="width:160px;text-decoration:none" href="model_card.html?id=${it.id}">
+                                    <span style="width:300px;display:block;color:#EEE">${name}</span>
+                                    <span style="font-size:13px;color:#79CFDC">${it.desc + " --by " + it.creator || "No Description"}</span>
+                                </a></td>
+                            </tr>`);
                     });
-                    $("#resultsTable").show();
-                } else {
-                    $tbody.append(`
-                        <tr><td colspan="3" style="text-align: center; color: #1f1f1f; font-weight: bold; font-size: 22px;">No matching results</td></tr>
-                    `);
-                    $("#resultsTable").show();
-                }
-
-                firstLoad = false; // only first time shows loading
+                else
+                    $tbody.append(`<tr><td colspan="3" style="text-align:center;color:#1f1f1f;font-weight:bold;font-size:22px;">No matching results</td></tr>`);
+                $("#resultsTable").show();
+                first = false;
             },
-            error: function () {
-                $('#loading').hide();
-                console.error("Error fetching results");
-                firstLoad = false;
-            }
+            error: () => { $('#loading').hide(); first = false; console.error("Error fetching results"); }
         });
+    }
+
+    $topic.on("keyup", () => {
+        const now = Date.now();
+        if (now - lastUpdate < delay && !first) {
+            clearTimeout(pending);
+            pending = setTimeout(request, delay);
+            return;
+        }
+        lastUpdate = now;
+        request();
     });
 }

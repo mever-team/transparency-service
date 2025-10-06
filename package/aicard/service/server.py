@@ -578,22 +578,40 @@ def serve(
         """
         data = request.get_json() or {}
         query = data.get('query', '').strip().lower()
+        parts = query.split()
+
         page = max(int(data.get('page', 1)), 1)
         page_size = max(int(data.get('page_size', 5)), 1)
-        cursor = conn.conn.cursor()
         owner = data.get("creator", "").strip().lower()
-        if query: cursor.execute("SELECT COUNT(*) FROM cards WHERE LOWER(title) LIKE ?", (f"%{query}%",))
-        else: cursor.execute("SELECT COUNT(*) FROM cards")
+        owner = [owner] if owner else []
+
+        # apply filters
+        i = 0
+        new_parts = []
+        while i<len(parts):
+            filter = parts[i]
+            if filter=="--by" and i<len(parts)-1:
+                i += 1
+                owner.append(parts[i])
+            else:
+                new_parts.append(filter)
+            i += 1
+        placeholders = ','.join(['?'] * len(owner))
+        owner = " ".join(owner)
+        query = " ".join(new_parts)
+
+        cursor = conn.conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM cards")
         total = cursor.fetchone()[0]
         num_pages = (total + page_size - 1) // page_size
         offset = (page - 1) * page_size
         if query and owner:
             cursor.execute(
-                """
+                f"""
                 SELECT id, title, user, desc
                 FROM cards
                 WHERE LOWER(title) LIKE ?
-                  AND user = ?
+                  AND LOWER(user) IN ({placeholders})
                 ORDER BY id
                 LIMIT ? OFFSET ?
                 """,
@@ -612,10 +630,10 @@ def serve(
             )
         elif owner:
             cursor.execute(
-                """
+                f"""
                 SELECT id, title, user, desc
                 FROM cards
-                WHERE user = ?
+                WHERE LOWER(user) IN ({placeholders})
                 ORDER BY id
                 LIMIT ? OFFSET ?
                 """,
