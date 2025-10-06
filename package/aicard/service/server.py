@@ -2,6 +2,7 @@ import os.path
 import traceback
 
 from aicard.card import ModelCard
+from aicard.card.model_card import truncate
 from aicard.service.assistants import Assistant
 from flask import Flask, abort, redirect, request, jsonify, send_from_directory
 from flasgger import Swagger
@@ -64,6 +65,8 @@ class ModelCardEntry:
         assert self.card_id is not None, "Internal error: card_id has not been set for a cached card"
         quality = self.card.quality()
         summary = self.card.summary()
+        if self.card.model.name:
+            self.card.title = truncate(self.card.model.name, 30)
         desc = create_progress_bar(quality)+" info"
         if summary:
             desc += " for "+summary
@@ -233,7 +236,11 @@ def serve(
 
     @app.route("/<path:path>")
     def static_proxy(path):
-        return send_from_directory(static, path)
+        try:
+            return send_from_directory(static, path)
+        except Exception:
+            logger.info("Path does not exist (likely an external resource): "+path)
+            return ""
 
     @app.errorhandler(500)
     def internal_error(e):

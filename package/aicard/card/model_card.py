@@ -13,6 +13,7 @@ from pydantic import BaseModel, create_model
 
 
 def truncate(text, size):
+    text = text.strip().split(" ")[0].split("\n")[0].split("/")[0].strip()
     if size<3:
         return ""
     text = str(text)
@@ -159,7 +160,7 @@ o Did you inform end-users and subjects of existing or potential risks?<br>
         #if self.data.model.name:
         #    summary += " "+truncate(self.data.model.name.split(" ")[0].split("\n")[0], 50)
         if self.data.model.version:
-            summary += " version "+truncate(self.data.model.version.split(" ")[0].split("\n")[0], 50)
+            summary += " version "+truncate(self.data.model.version, 50)
         return summary[1:] if summary else ""
 
     def quality(self) -> float:
