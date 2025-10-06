@@ -6,7 +6,8 @@ from urllib.parse import urlparse
 import requests
 import json
 import markdown2
-import time
+from bs4 import BeautifulSoup
+
 
 from ...card.fields import LongText
 
@@ -27,6 +28,9 @@ class Prompter(Assistant):
         if not parsed.scheme in ("http", "https") or not parsed.netloc: raise Exception("Invalid url format")
         response = requests.get(url, timeout=self.external_get_timeout_sec)
         text = response.text
+
+        soup = BeautifulSoup(text, "html.parser")
+        text = soup.get_text(strip=True)
 
         prompt = f"Provide information about: {text}\n\nreturn as JSON"
         output_format = card.json_schema()
