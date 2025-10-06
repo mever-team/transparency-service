@@ -1,3 +1,5 @@
+from math import trunc
+
 from .assistant import Assistant
 from ..logger import Logger
 from aicard.card import ModelCard
@@ -7,6 +9,7 @@ import requests
 import json
 import markdown2
 from bs4 import BeautifulSoup
+import time
 
 
 from ...card.fields import LongText
@@ -35,22 +38,32 @@ class Prompter(Assistant):
         soup = BeautifulSoup(text, "html.parser")
         text = soup.get_text(strip=True)
 
-        prompt = f"Provide information about: {text}\n\nreturn as JSON"
         output_format = card.json_schema()
         # Extra parameterization
         output_format['$defs']['model']['required'] = ['name', 'overview','author', 'use_case']
         output_format['$defs']['model']['properties']['overview']['minLength'] = 500
         output_format['$defs']['considerations']['properties']['use_case']['minLength'] = 10
 
-        params = {"format": output_format, "temperature": 0}
-        completion = self.agent.completion(prompt, params=params)
-        completion = json.loads(completion)
         for category, values in card.data.items():
-            if category not in completion: continue
             if not isinstance(values, dict): continue
+            prompt = f"Provide information about: {text}\n\nreturn as JSON"
+            params = {"format": output_format['$defs'][category]}
+            completion = self.agent.completion(prompt, params=params)
+            # Ollama bug workaround: https://github.com/ollama/ollama/issues/1910
+            time.sleep(1)
+            # Ollama bug workaround: invalid json
+            while True:
+                try:
+                    completion = json.loads(completion)
+                    break
+                except (json.JSONDecodeError, TypeError):
+                    logger.warn("agent.completion produced an invalid json. Requesting completion again")
+                    completion = self.agent.completion(prompt, params=params)
+                    # Ollama bug workaround: https://github.com/ollama/ollama/issues/1910
+                    time.sleep(1)
             for field, value in values.items():
-                if field not in completion[category]: continue
-                value.set(completion[category][field])
+                if field not in completion: continue
+                value.set(completion[field])
 
     def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]):
         user_messages.clear()
