@@ -36,7 +36,7 @@
 
 .header_wrapper h2 {
     position: relative;
-    color: white;
+    color: #EEEEEE;
     display: inline-block;
     font-size: 30px;
     margin: 0;
@@ -44,7 +44,7 @@
 
 .header_wrapper a {
     text-decoration: none;
-    color: white;
+    color: #EEEEEE;
 }
 
 .footer_section {
@@ -399,12 +399,13 @@ section.buttons {
 .delete-success-content,.card-lock-content {
     background: #1f1f1f;
     border-radius: 12px;
-    padding: 2rem 3rem;
+    padding: 1rem 3rem;
+    padding-bottom:2rem;
     text-align: center;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
     max-width: 400px;
     width: 90%;
-    color: white;
+    color: #EEEEEE;
 }
 .card-lock-content{
     min-height: 200px;
@@ -482,32 +483,29 @@ section.buttons {
 
 .card-button {
     position: relative; /* anchor for tooltip */
-    border: 2px solid transparent;
     border-radius: 10px;
     padding: 7px 10px;
     background: #1F1F1F;
-    border: #434343;
-    cursor: pointer;
-    min-width: 130px;
-    margin-right: 10px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
+    min-width: 200px;
     margin-bottom: 10px;
-    color:#EEEEEE;
+    margin-left:5px;
+    margin-right:5px;
     text-align: center;
+    color:#EEEEEE;
 }
 
-.card-button.selected {
-    background: #7DE1A7 !important; /* light blue background */
-    color: #1F1F1F;
+button {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
+    border: 1px solid #434343!important;
+    cursor: pointer;
 }
 
-.card-button:hover {
+/*button:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease;
+    box-shadow: 0 6px 14px rgba(1, 1, 1, 0.15);
     z-index: 22222222222222;
-    background: #D4F5E2;
-    color: #1F1F1F;
-}
+}*/
 
 /* truncated text */
 
@@ -517,7 +515,7 @@ section.buttons {
 }
 .assistants_wrapper{
     display: inline-block;
-    width: calc(100% - 135px);
+    width: 100%;
 }
 
 
@@ -596,7 +594,7 @@ section.buttons {
     box-sizing: border-box;
     box-shadow: 0 4px 12px rgba(0,129,198,0.12);
     display: inline-block;
-    width: calc(100% - 94px);
+    width: 100%;
 }
 
 /* focus state */
@@ -683,19 +681,19 @@ main {
 
 .modal__dialog {
     width: 610px;
-    padding: 1.2rem;
 }
 
 .modal__content {
     will-change: transform, opacity;
     position: relative;
     background: #1f1f1f;
-    color: #dcdcdc;
+    color: #eeeeee;
     background-clip: padding-box;
     box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
     opacity: 0;
     transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
     padding: 60px 2.4rem 2.4rem 20px;
+    align-items: center;
 }
 
 .modal__content--active {
@@ -754,7 +752,7 @@ main {
 }
 
 #pdf_text,#url_text {
-    color: white;
+    color: #EEEEEE;
     text-align: left;
     margin: 7px 0 7px;
     font-size: 14px;
@@ -768,18 +766,18 @@ main {
 }
 
 .upload-container {
-    color: white;
-    padding: 30px;
+    color: #EEEEEE;
+    padding: 0px;
     text-align: center;
-    border: 1px solid #ccc;
+    border: 0px solid #434343;
     display: none;
 }
 
 .file-drop-area {
     position: relative;
-    border: 2px dashed #ccc;
+    border: 2px dashed #434343;
     border-radius: 8px;
-    padding: 20px;
+    height:80px;
     transition: 0.3s;
     cursor: pointer;
 }

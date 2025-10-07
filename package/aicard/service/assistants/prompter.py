@@ -49,22 +49,40 @@ class Prompter(Assistant):
             if 'more' in values['properties']:
                 values['properties'].pop('more')
 
+        count_categories = 0
         for category, values in card.data.items():
             if not isinstance(values, dict): continue
+            count_categories += 1
+
+        progress = 0
+        for category, values in card.data.items():
+            if not isinstance(values, dict): continue
+
+            progress_html = (
+                f"<progress value='{int(progress / count_categories * 100)}' max='100' "
+                f"style='width: 300px; height: 20px; "
+                f"accent-color: #79CFDC; border: 2px solid #1F1F1F;'></progress>"
+            )
+            user_messages[-1] = (
+                f"<h2>{self.alias} autofill</h2>"
+                f"{progress_html}<br>"
+                f"<b>Working on {category.replace('_', ' ')}</b>"
+            )
+            progress += 1
+
             prompt = f"Output in plain text, no braces, no quotes, no JSON. Provide information about: {text}"
             category_format = output_formats[category]
             params = {"format": category_format}
 
             # Ollama bug workaround: invalid json
             while True:
-                completion = self.agent.completion(prompt, params=params)
+                completion = self.agent.completion(prompt, **params)
                 # Ollama bug workaround: https://github.com/ollama/ollama/issues/1910
                 time.sleep(1)
                 try:
                     completion = json.loads(completion)
                     break
-                except (json.JSONDecodeError, TypeError):
-                    logger.warn("agent.completion produced an invalid json. Requesting completion again")
+                except (json.JSONDecodeError, TypeError): logger.warn("agent.completion produced an invalid json. Requesting completion again")
             for field, value in values.items():
                 if field not in completion: continue
                 value.set(
@@ -106,7 +124,7 @@ class Prompter(Assistant):
                     user_messages[-1] = (
                         f"<h2>{self.alias} refinement</h2>"
                         f"{progress_html}<br>"
-                        f"<b>Working on {category} {field.replace('_', ' ')}</b>"
+                        f"<b>Working on {category.replace('_', ' ')} {field.replace('_', ' ')}</b>"
                     )
 
                 update_progress(progress)

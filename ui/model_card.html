@@ -28,17 +28,17 @@
                     <h2><a href="index.html"><img src="img/logo.png" width="110"></a><span id="model-title" class="model-title"></span></h2>
                 </div>
                 <div style="display:inline;float:right;margin-top:7px">
-                    <div class="example_button" id="saveJson" style="background-color: #64DB96;width: 100px;display:none">
+                    <div class="example_button" id="saveJson" style="background-color: #64DB96;width: 80px;display:none">
                         <span class="btn-text">💾&nbsp;Save</span>
                         <span class="btn-confirmation">✔&nbsp;Saved</span>
                     </div>
-                    <div class="example_button modal__trigger" data-modal="#modal_refine" style="width: 100px">
-                        <span class="btn-text">⚙️&nbsp;Refine</span>
+                    <div class="example_button" id="modal_autocomplete" style="width: 80px; background-color:#1F1F1F;border: solid 1px #434343;color:#EEEEEE">
+                        <span class="btn-text">📂&nbsp;Import</span>
                     </div>
-                    <div class="example_button modal__trigger" data-modal="#modal_autocomplete" style="width: 100px">
-                        <span class="btn-text">⚙️&nbsp;Autofill</span>
+                    <div class="example_button" id="modal_refine" style="width: 80px; background-color:#1F1F1F;border: solid 1px #434343;color:#EEEEEE">
+                        <span class="btn-text">💠&nbsp;Refine</span>
                     </div>
-                    <div class="example_button" id="deleteCard" style="background-color: #F44336;width: 100px">🗑️ Delete</div>
+                    <div class="example_button" id="deleteCard" style="width: 80px; background-color:#1F1F1F;border: solid 1px #434343;color:#F44336">🗑️ Delete</div>
                 </div>
             </div>
         </div>
@@ -51,11 +51,13 @@
     </div>
     <div id="empty_card_screen" class="delete-confirm-screen">
         <div class="delete-confirm-content">
-            <h2>Empty Card</h2>
-            <p>How do you want to fill the card?</p>
+            <h2 style="color:#64DB96;">New model!</h2>
+            <p>Import information from a website or file?</p>
+                <ul style="text-align:left;"><li>An AI assistant will help.</li><li>You can always call assistants later.</li><li>You can edit the result.</li></ul>
+            <br>
             <div class="buttons">
-                <button style="background-color: #79CFDC" id="manual-fill-card">✏️ Manual</button>
-                <button style="background-color: #F9AB49" id="assistant-fill-card">⚙️ Assistant</button>
+                <button style="background-color: #64DB96" id="assistant-fill-card">📂 Import</button>
+                <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343" id="manual-fill-card">✏️ Skip</button>
             </div>
         </div>
     </div>
@@ -63,10 +65,10 @@
     <div id="delete-confirm-screen" class="delete-confirm-screen">
         <div class="delete-confirm-content">
             <h2>Delete?</h2>
-            <p>This will delete the model card and <strong>cannot be undone</strong>. Are you sure?</p>
+            <p>This <strong>cannot be undone</strong>. Are you sure?</p>
             <div class="buttons">
-                <button id="cancel-delete-btn">✖ Cancel</button>
                 <button id="confirm-delete-btn">🗑️ Delete</button>
+                <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343" id="cancel-delete-btn">✖ Cancel</button>
             </div>
         </div>
     </div>
@@ -89,8 +91,8 @@
                     <div class="menu">
                         <div class="active"><span class="light square"></span><span>Model</span></div>
                         <div><span class="light square"></span><span>Consider</span></div>
-                        <div><span class="light square"></span><span>Training Set</span></div>
-                        <div><span class="light square"></span><span>Eval Sset</span></div>
+                        <div><span class="light square"></span><span>Training set</span></div>
+                        <div><span class="light square"></span><span>Eval set</span></div>
                         <div><span class="light square"></span><span>Analysis</span></div>
                         <div><span class="light square"></span><span>Safety</span></div>
                     </div>
@@ -125,58 +127,49 @@
     </div>
 </section>
 
-<div id="modal_refine" class="modal modal__bg">
-    <div class="modal__dialog">
-        <div class="modal__content">
-            <p style="font-size: 16px; font-weight: 700;display: inline-block;margin-right: 10px;vertical-align: top;">Select who will help make the description more accessible: </p>
-            <div class="assistants_wrapper"></div>
-            <div class="example_button" id="refine" style="width: 100%">
-                <span class="btn-text">Submit task to <span id="selected_refined_assistant"></span></span>
-            </div>
 
-            <!-- modal close button -->
-            <div href="" class="modal__close demo-close">
-                <svg class="w-4 h-4" viewBox="0 0 24 24">
-                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                    <path d="M0 0h12v12h-12z" fill="none"/>
-                </svg>
-            </div>
-
-        </div>
+<div id="modal-refine-screen" class="delete-confirm-screen">
+    <div class="delete-confirm-content">
+        <h2 style="color:#64DB96;">Refine</h2>
+        <p>Select the refinement assistant.</p>
+        <div class="assistants_wrapper"></div>
+        <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:200px" id="cancel-refine-btn">✖ Cancel</button>
     </div>
 </div>
-<div id="modal_autocomplete" class="modal modal__bg">
-    <div class="modal__dialog">
-        <div class="modal__content">
-            <p style="font-size: 16px; font-weight: 700; color: white;display: inline-block;margin-right: 10px;vertical-align: top;">Select who will fill the description: </p>
-            <div class="assistants_wrapper"></div>
-<!--            <p id="card-url-p" style="font-size: 16px; font-weight: 700; color: white;display: inline-block;margin-right: 26px">Card Url: </p>-->
-            <p id="pdf_text">Paste a URL. Do you have a PDF or Markdown file instead?</p>
-            <p id="url_text">Upload a PDF or Markdown file. Do you have a URL instead?</p>
-            <input type="text" class="text-input" placeholder="Enter URL..." id="card-url"/>
-            <div class="upload-container">
-                <div class="file-drop-area" id="dropArea">
-                    <span class="fake-btn">Choose file</span>
-                    <span class="file-msg">or drag &amp; drop here</span>
-                    <input class="file-input" type="file" multiple="" accept=".jpg,.jpeg,.png,.pdf">
-                </div>
-                <ul class="file-list" id="fileList"></ul>
-                <div class="total-size" id="totalSize">Total size: 0 KB</div>
-                <div class="progress-bar-file">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-            </div>
-            <div class="example_button" id="autocomplete" style="width: 100%">
-                <span class="btn-text">Submit task to <span id="selected_autofilled_assistant"></span></span>
-            </div>
-            <!-- modal close button -->
-            <div href="" class="modal__close demo-close">
-                <svg class="w-4 h-4" viewBox="0 0 24 24">
-                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                    <path d="M0 0h12v12h-12z" fill="none"/>
-                </svg>
-            </div>
 
+<div id="modal-autocomplete-screen" class="delete-confirm-screen">
+    <div class="delete-confirm-content">
+        <h2 style="color:#64DB96;">Import</h2>
+<!--            <p id="card-url-p" style="font-size: 16px; font-weight: 700; color: white;display: inline-block;margin-right: 26px">Card Url: </p>-->
+        <p id="pdf_text">Paste a URL. Do you have a file instead?</p>
+        <p id="url_text">Upload a file. Do you have a URL instead?</p>
+        <input type="text" class="text-input" placeholder="Enter URL..." id="card-url"/>
+        <div class="upload-container">
+            <div class="file-drop-area" id="dropArea">
+                <br><br>
+                <span class="fake-btn">Choose file</span>
+                <span class="file-msg">or drag &amp; drop here</span>
+                <input class="file-input" type="file" multiple="" accept=".jpg,.jpeg,.png,.pdf">
+            </div>
+            <ul class="file-list" id="fileList"></ul>
+            <div class="total-size" id="totalSize">Total size: 0 KB</div>
+            <div class="progress-bar-file">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+        <br><br>
+        <p>Select the import assistant.</p>
+        <div class="assistants_wrapper"></div>
+        <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:200px" id="cancel-autocomplete-btn">✖ Cancel</button>
+<!--            <div class="example_button" id="autocomplete" style="width: 100%;background-color:#1F1F1F;color:#EEEEEE;border:solid 1px #434343">-->
+<!--                <span class="btn-text">Submit task to  <span id="selected_autofilled_assistant"></span>!</span>-->
+<!--            </div>-->
+        <!-- modal close button -->
+        <div href="" class="modal__close demo-close">
+            <svg class="w-4 h-4" viewBox="0 0 24 24">
+                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                <path d="M0 0h12v12h-12z" fill="none"/>
+            </svg>
         </div>
     </div>
 </div>

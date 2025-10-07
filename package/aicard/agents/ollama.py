@@ -43,7 +43,7 @@ Instructions:
         })
         assert test.status_code == 200, f"Failed to initialize model '{model}'\nResponse: {test.text}"
 
-    def _run(self, content: str, task: str, params: dict | None):
+    def _run(self, content: str, task: str, **params):
         assert isinstance(content, str), "Content must be of type str"
         assert task in Ollama.tasks, "Not supported task: "+task
         payload = {

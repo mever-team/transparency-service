@@ -1,11 +1,6 @@
 var cardJson;
 var empty_card_flag=true;
 
-// Show delete confirmation
-function showDeleteConfirm() {
-    document.getElementById('delete-confirm-screen').style.display = 'flex';
-}
-
 // Close confirmation modal
 document.getElementById('cancel-delete-btn').onclick = function () {
     document.getElementById('delete-confirm-screen').style.display = 'none';
@@ -13,9 +8,15 @@ document.getElementById('cancel-delete-btn').onclick = function () {
 document.getElementById('manual-fill-card').onclick = function () {
     document.getElementById('empty_card_screen').style.display = 'none';
 };
+document.getElementById('cancel-autocomplete-btn').onclick = function () {
+    document.getElementById('modal-autocomplete-screen').style.display = 'none';
+};
+document.getElementById('cancel-refine-btn').onclick = function () {
+    document.getElementById('modal-refine-screen').style.display = 'none';
+};
 document.getElementById('assistant-fill-card').onclick = function () {
     document.getElementById('empty_card_screen').style.display = 'none';
-    $('div[data-modal="#modal_autocomplete"]').click();
+    document.getElementById('modal-autocomplete-screen').style.display = 'flex';
 };
 
 $(document).on("click", ".naccs .menu div", function () {
@@ -216,13 +217,13 @@ $(document).ready(function () {
                         $tempDiv.find("h1").remove();
                         const description = $.trim($tempDiv.text());
 
-                        if (index === 0) {
-                            $('#selected_autofilled_assistant,#selected_refined_assistant').text($("<div>").html(title).text())
-                        }
+//                        if (index === 0) {
+//                            $('#selected_autofilled_assistant,#selected_refined_assistant').text($("<div>").html(title).text())
+//                        }
 
                         const $card = $("<button>", {
                             id: item.name,
-                            class: "card-button" + (index === 0 ? " selected" : ""),
+                            class: "card-button",
                             html: `<div class="desc">${title}</div><div class="tooltip">${description}</div>`
                         });
 
@@ -331,8 +332,17 @@ $(document).ready(function () {
         });
     });
 
+
+    $("#modal_autocomplete").click(function () {
+        document.getElementById('modal-autocomplete-screen').style.display = 'flex';
+    });
+
+    $("#modal_refine").click(function () {
+        document.getElementById('modal-refine-screen').style.display = 'flex';
+    });
+
     $("#deleteCard").click(function () {
-        showDeleteConfirm();
+        document.getElementById('delete-confirm-screen').style.display = 'flex';
     });
     document.getElementById('confirm-delete-btn').onclick = function () {
         document.getElementById('delete-confirm-screen').style.display = 'none';
@@ -374,137 +384,49 @@ $(document).ready(function () {
     }
 
     $(document).on("click", ".card-button", function () {
+        if (($(this).parents('#modal_refinement').length)) {
+            let assistant = $(this).attr("id");
+            document.getElementById('modal-refine-screen').style.display = 'none';
+            $("#saveJson").fadeOut();
+            $.ajax({
+                url: "http://127.0.0.1:5000/card/" + id,
+                method: "PUT",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify(cardJson.data.filter(section => section.name !== "related")),
+                headers: {
+                    "Authorization": "Bearer " + token
+                },
+                success: function (response) {
+                    $('.menu').find('div').find('.light').removeClass('arrow');
+                    $('.menu').find('div').find('.light').addClass('square');
 
+                    ["model", "considerations", "training_set", "eval_set", "analysis", "safety"].forEach((sectionName, index) => {
+                        let section = cardJson.data.filter(section => section.name !== "related").find(s => s.name === sectionName);
+                        let hasValue = false;
 
-        // If it's already selected AND it's the only selected, do nothing
-        if ($(this).hasClass("selected") && $(".card-button.selected").length === 1) {
-            return; // prevent unselecting the last one
-        }
-
-        // Otherwise, unselect all and select this one
-        $(this).parent().find(".card-button").removeClass("selected");
-        $(this).addClass("selected");
-        if (($(this).parents('#modal_autocomplete').length)) {
-            $('#selected_autofilled_assistant').text($(this).find('h1').text());
-        } else {
-            $('#selected_refined_assistant').text($(this).find('h1').text());
-        }
-
-    });
-
-    $(document).on("click", "#refine", function () {
-        let assistant = $(this).prev('.assistants_wrapper').find(".card-button.selected").attr("id");
-        $('.modal__close ').click();
-        $.ajax({
-            url: "http://127.0.0.1:5000/card/" + id,
-            method: "PUT",
-            contentType: "application/json",
-            dataType: "json",
-            data: JSON.stringify(cardJson.data.filter(section => section.name !== "related")),
-            headers: {
-                "Authorization": "Bearer " + token
-            },
-            success: function (response) {
-                $('.menu').find('div').find('.light').removeClass('arrow');
-                $('.menu').find('div').find('.light').addClass('square');
-
-                ["model", "considerations", "training_set", "eval_set", "analysis", "safety"].forEach((sectionName, index) => {
-                    let section = cardJson.data.filter(section => section.name !== "related").find(s => s.name === sectionName);
-                    let hasValue = false;
-
-                    if (section && section.value) {
-                        for (let field of section.value) {
-                            if ((field.value.trim() !== "") && (field.value.trim() !== "<br>") && (field.value.trim() !== "unknown")) {
-                                hasValue = true;
-                                $('.menu').find('div').eq(index).find('.light').removeClass('square');
-                                $('.menu').find('div').eq(index).find('.light').addClass('arrow');
-                                break; // stop at first non-empty
+                        if (section && section.value) {
+                            for (let field of section.value) {
+                                if ((field.value.trim() !== "") && (field.value.trim() !== "<br>") && (field.value.trim() !== "unknown")) {
+                                    hasValue = true;
+                                    $('.menu').find('div').eq(index).find('.light').removeClass('square');
+                                    $('.menu').find('div').eq(index).find('.light').addClass('arrow');
+                                    break; // stop at first non-empty
+                                }
                             }
                         }
-                    }
-                });
+                    });
 
-                $.ajax({
-                    url: "http://127.0.0.1:5000/assistant/" + assistant + '/refine/' + id,
-                    method: "POST",
-                    contentType: "application/json",
-                    dataType: "json",
-                    headers: {
-                        "Authorization": "Bearer " + token
-                    },
-                    success: function (response) {
-
-                        interval = setInterval(function () {
-                            checkLocked(interval);
-                        }, 500);
-                    },
-                    error: function (xhr, status, error) {
-                        try {
-                            const resp = JSON.parse(xhr.responseText);
-                            alert(resp.error || error);
-                        } catch (e) {
-                            alert("Unknown refinement error");
-                        }
-                    }
-                });
-            },
-            error: function (xhr, status, error) {
-                try {
-                    const resp = JSON.parse(xhr.responseText);
-                    alert(resp.error || error);
-                } catch (e) {
-                    alert(error || xhr.responseText);
-                }
-            }
-        });
-    });
-
-    $(document).on("click", "#autocomplete", function () {
-        let assistant = $(this).siblings('.assistants_wrapper').find(".card-button.selected").attr("id");
-
-        //$('#saveJson').attr("disabled", true);
-        $("#saveJson").fadeOut();
-        $.ajax({
-            url: "http://127.0.0.1:5000/card/" + id,
-            method: "PUT",
-            contentType: "application/json",
-            dataType: "json",
-            data: JSON.stringify(cardJson.data.filter(section => section.name !== "related")),
-            headers: {
-                "Authorization": "Bearer " + token
-            },
-            success: function (response) {
-                $('.menu').find('div').find('.light').removeClass('arrow');
-                $('.menu').find('div').find('.light').addClass('square');
-
-                ["model", "considerations", "training_set", "eval_set", "analysis", "safety"].forEach((sectionName, index) => {
-                    let section = cardJson.data.filter(section => section.name !== "related").find(s => s.name === sectionName);
-                    let hasValue = false;
-
-                    if (section && section.value) {
-                        for (let field of section.value) {
-                            if ((field.value.trim() !== "") && (field.value.trim() !== "<br>") && (field.value.trim() !== "unknown")) {
-                                hasValue = true;
-                                $('.menu').find('div').eq(index).find('.light').removeClass('square');
-                                $('.menu').find('div').eq(index).find('.light').addClass('arrow');
-                                break; // stop at first non-empty
-                            }
-                        }
-                    }
-                });
-
-                if ($('#card-url').is(":visible")) {
                     $.ajax({
-                        url: "http://127.0.0.1:5000/assistant/" + assistant + '/complete/' + id,
+                        url: "http://127.0.0.1:5000/assistant/" + assistant + '/refine/' + id,
                         method: "POST",
                         contentType: "application/json",
                         dataType: "json",
                         headers: {
                             "Authorization": "Bearer " + token
                         },
-                        data: JSON.stringify($('#card-url').val()),
                         success: function (response) {
-                            $('.modal__close ').click();
+
                             interval = setInterval(function () {
                                 checkLocked(interval);
                             }, 500);
@@ -514,45 +436,122 @@ $(document).ready(function () {
                                 const resp = JSON.parse(xhr.responseText);
                                 alert(resp.error || error);
                             } catch (e) {
-                                alert("Unknown autocomplete error");
+                                alert("Unknown refinement error");
                             }
                         }
                     });
-                } else {
-                    let formData = new FormData();
-                    formData.append("file", uploaded_file); // "file" is the field name your backend expects
-                    $.ajax({
-                        url: "http://127.0.0.1:5000/assistant/" + assistant + '/complete/' + id,
-                        method: "POST",
-                        headers: {
-                            "Authorization": "Bearer " + token
-                        },
-                        data: formData,
-                        processData: false, // don't let jQuery process the data
-                        contentType: false, // don't set content-type header, let browser set it (multipart/form-data)
-                        success: function (response) {
-                            alert(response)
-                        },
-                        error: function (xhr, status, error) {
-                            try {
-                                const resp = JSON.parse(xhr.responseText);
-                                alert(resp.error || error);
-                            } catch (e) {
-                                alert("Unknown card creation error");
+                },
+                error: function (xhr, status, error) {
+                    try {
+                        const resp = JSON.parse(xhr.responseText);
+                        alert(resp.error || error);
+                    } catch (e) {
+                        alert(error || xhr.responseText);
+                    }
+                }
+            });
+
+
+        } else {
+            let assistant = $(this).attr("id");
+            $("#saveJson").find('.btn-confirmation').fadeOut();
+
+            $.ajax({
+                url: "http://127.0.0.1:5000/card/" + id,
+                method: "PUT",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify(cardJson.data.filter(section => section.name !== "related")),
+                headers: {
+                    "Authorization": "Bearer " + token
+                },
+                success: function (response) {
+                    $('.menu').find('div').find('.light').removeClass('arrow');
+                    $('.menu').find('div').find('.light').addClass('square');
+
+                    ["model", "considerations", "training_set", "eval_set", "analysis", "safety"].forEach((sectionName, index) => {
+                        let section = cardJson.data.filter(section => section.name !== "related").find(s => s.name === sectionName);
+                        let hasValue = false;
+
+                        if (section && section.value) {
+                            for (let field of section.value) {
+                                if ((field.value.trim() !== "") && (field.value.trim() !== "<br>") && (field.value.trim() !== "unknown")) {
+                                    hasValue = true;
+                                    $('.menu').find('div').eq(index).find('.light').removeClass('square');
+                                    $('.menu').find('div').eq(index).find('.light').addClass('arrow');
+                                    break; // stop at first non-empty
+                                }
                             }
                         }
                     });
+
+                    if ($('#card-url').is(":visible")) {
+                        $.ajax({
+                            url: "http://127.0.0.1:5000/assistant/" + assistant + '/complete/' + id,
+                            method: "POST",
+                            contentType: "application/json",
+                            dataType: "json",
+                            headers: {
+                                "Authorization": "Bearer " + token
+                            },
+                            data: JSON.stringify($('#card-url').val()),
+                            success: function (response) {
+                                document.getElementById('modal-autocomplete-screen').style.display = 'none';
+                                interval = setInterval(function () {
+                                    checkLocked(interval);
+                                }, 1);
+                            },
+                            error: function (xhr, status, error) {
+                                document.getElementById('modal-autocomplete-screen').style.display = 'none';
+                                try {
+                                    const resp = JSON.parse(xhr.responseText);
+                                    alert(resp.error || error);
+                                } catch (e) {
+                                    alert("Unknown autocomplete error");
+                                }
+                            }
+                        });
+                    } else {
+                        let formData = new FormData();
+                        formData.append("file", uploaded_file); // "file" is the field name your backend expects
+                        $.ajax({
+                            url: "http://127.0.0.1:5000/assistant/" + assistant + '/complete/' + id,
+                            method: "POST",
+                            headers: {
+                                "Authorization": "Bearer " + token
+                            },
+                            data: formData,
+                            processData: false, // don't let jQuery process the data
+                            contentType: false, // don't set content-type header, let browser set it (multipart/form-data)
+                            success: function (response) {
+                                document.getElementById('modal-autocomplete-screen').style.display = 'none';
+                                alert(response)
+                            },
+                            error: function (xhr, status, error) {
+                                document.getElementById('modal-autocomplete-screen').style.display = 'none';
+                                try {
+                                    const resp = JSON.parse(xhr.responseText);
+                                    alert(resp.error || error);
+                                } catch (e) {
+                                    alert("Unknown card creation error");
+                                }
+                            }
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    document.getElementById('modal-autocomplete-screen').style.display = 'none';
+                    try {
+                        const resp = JSON.parse(xhr.responseText);
+                        alert(resp.error || error);
+                    } catch (e) {
+                        alert(error || xhr.responseText);
+                    }
                 }
-            },
-            error: function (xhr, status, error) {
-                try {
-                    const resp = JSON.parse(xhr.responseText);
-                    alert(resp.error || error);
-                } catch (e) {
-                    alert(error || xhr.responseText);
-                }
-            }
-        });
+            });
+
+
+        }
     });
 
     $('#pdf_text').click(function () {
