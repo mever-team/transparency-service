@@ -18,8 +18,8 @@ class Prompter(Assistant):
                  agent: Agent,
                  external_get_timeout_sec=1):
         super().__init__(
-            alias="🤖 "+agent.__class__.__name__,
-            description="<h1>🤖 "+agent.__class__.__name__+"</h1>Powered by the namesake LLM.")
+            alias=agent.name(),
+            description="<h1>"+agent.name()+"</h1>Slow thinker. Powered by the namesake LLM.")
         self.agent = agent
         self.external_get_timeout_sec = external_get_timeout_sec
 
