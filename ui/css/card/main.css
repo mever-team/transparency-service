@@ -275,7 +275,23 @@ ul.nacc .field-value ul {
 ul.nacc .field-value li {
     margin-bottom: 0.3rem;
 }
+.field-value.dropdown {
+    width: 100%;
+    padding: 6px 10px;
+    font-size: 14px;
+    border: 1px solid #7C7C7C;
+    border-radius: 6px;
+    background-color: #EEEEEE;
+    cursor: pointer;
+}
 
+.field-value.dropdown:focus {
+    outline: none;
+    background: #FAFAFA;
+}
+.field-value.dropdown:hover{
+    background: #FAFAFA;
+}
 .page-title {
     background: #f5f7fa;
     border-bottom: 1px solid #EEEEEE;
@@ -291,7 +307,7 @@ ul.nacc .field-value li {
     display:inline;
 }
 .model-title{
-    margin-left: 130px;
+    margin-left: 80px;
 }
 
 .example_button {
@@ -469,17 +485,20 @@ section.buttons {
     border: 2px solid transparent;
     border-radius: 10px;
     padding: 7px 10px;
-    background: #eeeeee;
+    background: #1F1F1F;
+    border: #434343;
     cursor: pointer;
     min-width: 130px;
     margin-right: 10px;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
     margin-bottom: 10px;
+    color:#EEEEEE;
     text-align: center;
 }
 
 .card-button.selected {
     background: #7DE1A7 !important; /* light blue background */
+    color: #1F1F1F;
 }
 
 .card-button:hover {
@@ -487,6 +506,7 @@ section.buttons {
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
     z-index: 22222222222222;
     background: #D4F5E2;
+    color: #1F1F1F;
 }
 
 /* truncated text */
@@ -592,7 +612,6 @@ section.buttons {
 
 .menu {
     margin: 20px 0;
-
 }
 
 body {
@@ -610,7 +629,7 @@ main {
     position: relative; /* default */
     top: 0;
     transition: top 0.3s;
-    width: 200px;
+    width: 160px;
 }
 
 .menu.fixed {
@@ -991,6 +1010,7 @@ details[open] .card-details-content {
     text-align: left;
     z-index: 999;
     pointer-events: none;
+    text-transform: none;
 }
 
 .info-tooltip:hover::after {

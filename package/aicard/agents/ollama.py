@@ -29,6 +29,8 @@ Instructions:
 - Use precise language—do not oversimplify to the point of losing meaning. 
 - Keep the same content length as the original."""
     }
+    def name(self):
+        return "🦙 "+self.__class__.__name__
 
     def __init__(self, model: str='mistral:latest', base_url: str="http://localhost:11434"):
         self._base_url = base_url

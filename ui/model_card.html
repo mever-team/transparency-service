@@ -25,7 +25,7 @@
         <div class="row bigWidth">
             <div class="small-12 medium-12 large-12 columns" style="padding: 0">
                 <div class="header_wrapper" style="display:inline;float:left">
-                    <h2><a href="index.html"><img src="img/logo.png" width="110"></a><span id="model-title" class="model-title">Loading...</span></h2>
+                    <h2><a href="index.html"><img src="img/logo.png" width="110"></a><span id="model-title" class="model-title"></span></h2>
                 </div>
                 <div style="display:inline;float:right;margin-top:7px">
                     <div class="example_button" id="saveJson" style="background-color: #64DB96;width: 100px;display:none">
@@ -78,14 +78,14 @@
                 <div style="float: left">
                     <div class="menu">
                         <div class="active"><span class="light square"></span><span>Model</span></div>
-                        <div><span class="light square"></span><span>Considerations</span></div>
+                        <div><span class="light square"></span><span>Consider</span></div>
                         <div><span class="light square"></span><span>Training Set</span></div>
-                        <div><span class="light square"></span><span>Eval Set</span></div>
+                        <div><span class="light square"></span><span>Eval Sset</span></div>
                         <div><span class="light square"></span><span>Analysis</span></div>
                         <div><span class="light square"></span><span>Safety</span></div>
                     </div>
                 </div>
-                <div style="margin-left: 240px;position:relative;min-height: 400px">
+                <div style="margin-left: 190px;position:relative;min-height: 400px">
                     <div class="loading-overlay" id="loading">
                         <div class="spinner"></div>
                         <p>Loading...</p>
@@ -118,10 +118,10 @@
 <div id="modal_refine" class="modal modal__bg">
     <div class="modal__dialog">
         <div class="modal__content">
-            <p style="font-size: 16px; font-weight: 700;display: inline-block;margin-right: 10px;vertical-align: top;">Select assistant: </p>
+            <p style="font-size: 16px; font-weight: 700;display: inline-block;margin-right: 10px;vertical-align: top;">Select who will help make the description more accessible: </p>
             <div class="assistants_wrapper"></div>
             <div class="example_button" id="refine" style="width: 100%">
-                <span class="btn-text">Submit refinement task (<span id="selected_refined_assistant"></span>)</span>
+                <span class="btn-text">Submit task to <span id="selected_refined_assistant"></span></span>
             </div>
 
             <!-- modal close button -->
@@ -138,7 +138,7 @@
 <div id="modal_autocomplete" class="modal modal__bg">
     <div class="modal__dialog">
         <div class="modal__content">
-            <p style="font-size: 16px; font-weight: 700; color: white;display: inline-block;margin-right: 10px;vertical-align: top;">Select assistant: </p>
+            <p style="font-size: 16px; font-weight: 700; color: white;display: inline-block;margin-right: 10px;vertical-align: top;">Select who will fill the description: </p>
             <div class="assistants_wrapper"></div>
 <!--            <p id="card-url-p" style="font-size: 16px; font-weight: 700; color: white;display: inline-block;margin-right: 26px">Card Url: </p>-->
             <p id="pdf_text">Paste a URL. Do you have a PDF or Markdown file instead?</p>
@@ -157,7 +157,7 @@
                 </div>
             </div>
             <div class="example_button" id="autocomplete" style="width: 100%">
-                <span class="btn-text">Submit autofill task (<span id="selected_autofilled_assistant"></span>)</span>
+                <span class="btn-text">Submit task to <span id="selected_autofilled_assistant"></span></span>
             </div>
             <!-- modal close button -->
             <div href="" class="modal__close demo-close">

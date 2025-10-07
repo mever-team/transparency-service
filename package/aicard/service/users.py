@@ -87,6 +87,42 @@ class UserDB:
                 conn.execute('DROP TABLE cards_new')
                 conn.commit()
             else: logger.info("There are no leftover columns to be removed")
+            conn.execute("DROP TABLE IF EXISTS cards_fts")
+            logger.info("Rebuilding inverse search index")
+
+        # create inverse index table
+        fts_cols = ['desc'] + col_names  # desc + all dynamic ModelCard fields
+        fts_col_defs = ",\n    ".join([f'"{col}"' for col in fts_cols])
+        create_fts = f"""
+        CREATE VIRTUAL TABLE IF NOT EXISTS cards_fts USING fts5(
+            {fts_col_defs},
+            content='cards',
+            content_rowid='id',
+            tokenize='trigram'
+        );
+        """
+        conn.execute(create_fts)
+
+
+        # automatic synchronization triggers (avoids book-keeping from our end)
+        conn.executescript(f"""
+        CREATE TRIGGER IF NOT EXISTS cards_ai AFTER INSERT ON cards BEGIN
+          INSERT INTO cards_fts(rowid, {', '.join(fts_cols)})
+          VALUES (new.id, {', '.join(['new.' + c for c in fts_cols])});
+        END;
+
+        CREATE TRIGGER IF NOT EXISTS cards_ad AFTER DELETE ON cards BEGIN
+          INSERT INTO cards_fts(cards_fts, rowid, {', '.join(fts_cols)})
+          VALUES('delete', old.id, {', '.join(['old.' + c for c in fts_cols])});
+        END;
+
+        CREATE TRIGGER IF NOT EXISTS cards_au AFTER UPDATE ON cards BEGIN
+          INSERT INTO cards_fts(cards_fts, rowid, {', '.join(fts_cols)})
+          VALUES('delete', old.id, {', '.join(['old.' + c for c in fts_cols])});
+          INSERT INTO cards_fts(rowid, {', '.join(fts_cols)})
+          VALUES (new.id, {', '.join(['new.' + c for c in fts_cols])});
+        END;
+        """)
 
         conn.commit()
         atexit.register(conn.close)

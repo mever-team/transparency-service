@@ -19,8 +19,8 @@ class Prompter(Assistant):
                  agent: Agent,
                  external_get_timeout_sec=1):
         super().__init__(
-            alias="🤖 "+agent.__class__.__name__,
-            description="<h1>🤖 "+agent.__class__.__name__+"</h1>Powered by the namesake LLM.")
+            alias=agent.name(),
+            description="<h1>"+agent.name()+"</h1>Slow thinker. Powered by the namesake LLM.")
         self.agent = agent
         self.external_get_timeout_sec = external_get_timeout_sec
 
@@ -72,6 +72,10 @@ class Prompter(Assistant):
                     f"{value.get()}"
                 )
         if not card.model.home: card.model.home = url
+        user_messages[-1] = (
+            f"<h2>{self.alias} refinement</h2>"
+            f"Saving..."
+        )
 
     def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]):
         user_messages.clear()
@@ -120,6 +124,10 @@ class Prompter(Assistant):
                     f"<details>\n<summary><h2>Simplified</h2></summary>\n\n<div class=\"card-details-content\">\n{simplification}\n</div>\n</details>\n\n"
                     f"<details>\n<summary><h2>Original</h2></summary>\n\n<div class=\"card-details-content\">\n{value_text}\n</div>\n</details>"
                 )
+        user_messages[-1] = (
+            f"<h2>{self.alias} refinement</h2>"
+            f"Saving..."
+        )
         #card.assign(card.to_html_card()) # this creates some errors - under investigation
 
 def assist(agent):
