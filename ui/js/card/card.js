@@ -123,7 +123,7 @@ $(document).ready(function () {
                                             .addClass("field-value editable")
                                             .attr("contenteditable", "true")
                                             .html(field.value || "");
-                                        if ((field.value.trim() !== "") && (field.value.trim() !== "<br>")) {
+                                        if ((field.value.trim() !== "") && (field.value.trim() !== "<br>") && (field.value.trim() !== "unknown")) {
                                             $('.menu').find('div').eq(index).find('.light').removeClass('square');
                                             $('.menu').find('div').eq(index).find('.light').addClass('arrow');
                                         }
@@ -269,7 +269,7 @@ $(document).ready(function () {
 
                     if (section && section.value) {
                         for (let field of section.value) {
-                            if ((field.value.trim() !== "") && (field.value.trim() !== "<br>")) {
+                            if ((field.value.trim() !== "") && (field.value.trim() !== "<br>")&& (field.value.trim() !== "unknown")) {
                                 hasValue = true;
                                 $('.menu').find('div').eq(index).find('.light').removeClass('square');
                                 $('.menu').find('div').eq(index).find('.light').addClass('arrow');
@@ -385,7 +385,7 @@ $(document).ready(function () {
 
                     if (section && section.value) {
                         for (let field of section.value) {
-                            if ((field.value.trim() !== "") && (field.value.trim() !== "<br>")) {
+                            if ((field.value.trim() !== "") && (field.value.trim() !== "<br>")&& (field.value.trim() !== "unknown")) {
                                 hasValue = true;
                                 $('.menu').find('div').eq(index).find('.light').removeClass('square');
                                 $('.menu').find('div').eq(index).find('.light').addClass('arrow');
