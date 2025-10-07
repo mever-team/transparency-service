@@ -30,11 +30,11 @@ class ModelCard:
             title=ShortText(),
             model=DotDict(
                 name=ShortText("What is the name of the model?"),
-                overview=LongText(),
-                author=LongText("What person or organization developed the model? This can be used by all stakeholders to infer details pertaining to model development and potential conflicts of interest"),
-                date=LongText("When was the model developed? This is useful for all stakeholders to become further informed on what techniques and data sources were likely to be available during model development."),
-                version=ShortText("Which version of the model is it, and how does it differ from previous versions? This is useful for all stakeholders to track whether the model is the latest version, associate known bugs to the correct model versions, and aid in model comparisons."),
-                type=LongText("What type of model is it? This includes basic model architecture details, such as whether it is a Naive Bayes classifier, a Convolutional Neural Network, etc. This is likely to be particularly relevant for software and model developers, as well as individuals knowledgeable about machine learning, to highlight what kinds of assumptions are encoded in the system."),
+                overview=LongText("An overview of the model. The reader should have a good idea of what the model is, the purpose, novelty, capabilities, and caveats after reading this."),
+                author=LongText("What person or organization developed the model?"),
+                date=ShortText("When was the model developed?"),
+                version=ShortText("Which version of the model is it? e.g. v1.0"),
+                type=Options(["unknown", "Linear Regression", "Logistic Regression", "Decision Tree", "Random Forest", "Gradient Boosting", "Naive Bayes", "K-Nearest Neighbors", "Support Vector Machine", "Convolutional Neural Network", "Recurrent Neural Network", "Transformer", "Autoencoder", "Generative Adversarial Network", "Graph Neural Network", "Multilayer Perceptron", "Reinforcement Learning Agent", "Clustering Model", "Dimensionality Reduction Model", "Ensemble Model", "Other"],"What type of model is it? This includes basic model architecture details, such as whether it is a Naive Bayes classifier, a Convolutional Neural Network, etc. This is likely to be particularly relevant for software and model developers, as well as individuals knowledgeable about machine learning, to highlight what kinds of assumptions are encoded in the system."),
                 license=LongText("Under which licence is the model published? If necessary, add any other information related to intellectual property (IP)."),
                 home=LongText("Where can resources for more information be found?"),
                 contact=LongText("E.g., what is an email address that people may write to for further information?"),
@@ -49,31 +49,31 @@ class ModelCard:
                 software=LongText("What are software requirements and dependencies? If possible, please add a link to an open source repository like GitHub with details on dependencies, the environment and documentation."),
                 instructions=LongText("Provide any other information which helps users use the model. Ideally, add a code snippet illustrating a typical use-case. You can also add a link to a GitHub repository with usage instructions. This is inspired by model cards such as this: https://huggingface.co/microsoft/beit-base-patch16-224-pt22k-ft22k"),
                 inputs_outputs=LongText("Provide a short description of the model's inputs and outputs"),
-                factors=LongText(),
+                factors=LongText("What are foreseeable salient factors for which model performance may vary, and how were these determined? "),
                 hardware=LongText("What are hardware requirements for training the model (e.g. CPU or GPU)?"),
                 inference=LongText("What are hardware requirements for deploying the model (e.g. CPU or GPU)? What do users need to take into account regarding hardware regarding deployment and inference?"),
                 more=LongText()),
             training_set=DotDict(
                 datasets=LongText("What dataset(s) were used tot train the model? If possible, please add a link to details on the respective datasets used, for example a datasheet."),
-                motivation=LongText(),
+                motivation=LongText("Why were these datasets chosen?"),
                 preprocessing=LongText("How was the data pre-processed for evaluation (e.g., tokenization of sentences, cropping of images, any filtering such as dropping images without faces)? Please provide a short description. You can also add a GitHub link to the respective pre-processing scripts. "),
                 standards=Options(["unknown", "none", "ISO","IEEE"]),
                 update=Options(["unknown", "no", "yes"], "Did you put in place measures to ensure that the data (including training data) used to develop the AI system is up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),
                 more=LongText()),
             eval_set=DotDict(
                 datasets=LongText("What dataset(s) were used to evaluate the model? If possible, please add a link to details on the respective datasets used, for example a datasheet."),
-                motivation=LongText(),
+                motivation=LongText("Why were these datasets chosen?"),
                 preprocessing=LongText("How was the data pre-processed for evaluation (e.g., tokenization of sentences, cropping of images, any filtering such as dropping images without faces)? Please provide a short description. You can also add a GitHub link to the respective pre-processing scripts. "),
                 standards=Options(["unknown", "none", "ISO","IEEE"]),
                 update=Options(["unknown", "no", "yes"], "Did you put in place measures to ensure that the data (including training data) used to develop the AI system is up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),
                 more=LongText()
             ),
             analysis=DotDict(
-                analysis=LongText(),
-                metrics=LongText(),
+                analysis=LongText("Analysis of the evaluation results."),
+                metrics=LongText("Include any performance metrics here."),
                 thresholds=LongText("If decision thresholds are used, what are they, and why were those decision thresholds chosen? When the model card is presented in a digital format, a threshold slider should ideally be available to view performance parameters across various decision thresholds."),
                 uncertainty=LongText("How are the measurements and estimations of these metrics calculated? For example, this may include standard deviation, variance, confidence intervals, or KL divergence. Details of how these values are approximated should also be included (e.g., average of 5 runs, 10-fold cross-validation)."),
-                fairness=LongText("How did the model perform with respect to each factor (see question 15)? Quantitative analyses should be disaggregated, that is, broken down by the chosen factors. Quantitative analyses should provide the results of evaluating the model according to the chosen metrics, providing confidence interval values when possible. Parity on the different metrics across disaggregated population subgroups corresponds to how fairness is often defined. For an example, see figure 2. in https://arxiv.org/pdf/1810.03993.pdf"),
+                fairness=LongText("How did the model perform with respect to each factor. Quantitative analyses should be disaggregated, that is, broken down by the chosen factors. Quantitative analyses should provide the results of evaluating the model according to the chosen metrics, providing confidence interval values when possible. Parity on the different metrics across disaggregated population subgroups corresponds to how fairness is often defined. For an example, see figure 2. in https://arxiv.org/pdf/1810.03993.pdf"),
             ),
             safety=DotDict(
                 ethics=LongText("Example topics for ethical consideration: Does the training data contain sensitive information? What risks and harms could arise during the use of the model? Which mitigation measures are recommended? Are there particularly problematic use-cases? Did the model go through an ethical assessment procedure?"),
@@ -238,6 +238,23 @@ o Did you inform end-users and subjects of existing or potential risks?<br>
     def json_schema(self):
         schema = self.to_pydantic().model_json_schema()
         return schema
+
+    def to_pydantic_per_category(self) -> dict[str, BaseModel]:
+        models = {}
+        for category, values in self.data.items():
+            if not isinstance(values, dict): continue
+            model_fields = {}
+            for field, value in values.items():
+                field_args = {'default': value.get(),'description': value.description}
+                if isinstance(field, Options): field_args['enum'] = value.options()
+                model_fields[field] = (str, pydantic_Field(**field_args))
+            model = create_model(category, **model_fields)()
+            models[category] = model
+        return models
+
+    def json_schema_per_category(self):
+        schemas = {category: model.model_json_schema() for category, model in self.to_pydantic_per_category().items()}
+        return schemas
 
     def __str__(self):
         buffer = io.StringIO()

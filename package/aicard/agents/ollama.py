@@ -5,7 +5,8 @@ from aicard.agents.agent import Agent
 
 class Ollama(Agent):
     tasks = {
-        "completion": """You are a helpful assistant that completes json fields. return as JSON.""",
+        "completion": """You are a helpful assistant that provide information about an AI model based on a given text. 
+        Output in plain text, no braces, no quotes, no JSON.""",# return as JSON.""",
         "hint": "You will be given text. Your goal is to provide explanation for all technical words so a non expert can understand its content. "
                 "Your output should be a JSON where the keys will be the word to be explained and the values will be the explanation of this word.",
         "summarization" : """You are an AI specialized in simplifying and summarizing technical texts. You will be given html, markdown, or other text, and will produce a very short summary.
@@ -29,7 +30,7 @@ Instructions:
 - Keep the same content length as the original."""
     }
 
-    def __init__(self, model: str='llama3.2:latest', base_url: str="http://localhost:11434"):
+    def __init__(self, model: str='mistral:latest', base_url: str="http://localhost:11434"):
         self._base_url = base_url
         self._url = f"{base_url}/api/chat"
         self._model = model

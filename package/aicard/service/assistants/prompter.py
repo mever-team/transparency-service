@@ -8,6 +8,7 @@ import json
 import markdown2
 from bs4 import BeautifulSoup
 import time
+import datetime
 
 
 from ...card.fields import LongText
@@ -38,16 +39,21 @@ class Prompter(Assistant):
         for tag in soup.find_all(src=True): tag["src"] = urljoin(url, tag["src"])
         text = soup.get_text(strip=True)
 
-        output_format = card.json_schema()
+        output_formats = card.json_schema_per_category()
         # Extra parameterization
-        output_format['$defs']['model']['required'] = ['name', 'overview','author', 'use_case']
-        output_format['$defs']['model']['properties']['overview']['minLength'] = 500
-        output_format['$defs']['considerations']['properties']['use_case']['minLength'] = 10
+        output_formats['model']['required'] = ['name', 'overview','author', 'use_case']
+        output_formats['considerations']['required'] = ['use_case']
+        output_formats['model']['properties']['overview']['minLength'] = 500
+        output_formats['considerations']['properties']['use_case']['minLength'] = 10
+        for category, values in output_formats.items():
+            if 'more' in values['properties']:
+                values['properties'].pop('more')
 
         for category, values in card.data.items():
             if not isinstance(values, dict): continue
-            prompt = f"Provide information about: {text}\n\nreturn as JSON"
-            params = {"format": output_format['$defs'][category]}
+            prompt = f"Output in plain text, no braces, no quotes, no JSON. Provide information about: {text}"
+            category_format = output_formats[category]
+            params = {"format": category_format}
 
             # Ollama bug workaround: invalid json
             while True:
@@ -61,7 +67,10 @@ class Prompter(Assistant):
                     logger.warn("agent.completion produced an invalid json. Requesting completion again")
             for field, value in values.items():
                 if field not in completion: continue
-                value.set(completion[field])
+                value.set(
+                    f"<details>\n<summary><h2>{datetime.datetime.now().strftime("%Y %B %d, %I:%M%p")}</h2></summary>\n\n<div class=\"card-details-content\">\n{completion[field]}\n</div>\n</details>\n\n"
+                    f"{value.get()}"
+                )
         if not card.model.home: card.model.home = url
 
     def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]):
