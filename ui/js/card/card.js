@@ -1,4 +1,5 @@
 var cardJson;
+var empty_card_flag=true;
 
 // Show delete confirmation
 function showDeleteConfirm() {
@@ -8,6 +9,13 @@ function showDeleteConfirm() {
 // Close confirmation modal
 document.getElementById('cancel-delete-btn').onclick = function () {
     document.getElementById('delete-confirm-screen').style.display = 'none';
+};
+document.getElementById('manual-fill-card').onclick = function () {
+    document.getElementById('empty_card_screen').style.display = 'none';
+};
+document.getElementById('assistant-fill-card').onclick = function () {
+    document.getElementById('empty_card_screen').style.display = 'none';
+    $('div[data-modal="#modal_autocomplete"]').click();
 };
 
 $(document).on("click", ".naccs .menu div", function () {
@@ -40,8 +48,8 @@ $(document).ready(function () {
     });
 
     let interval = setInterval(function () {
-        checkLocked(interval, true);
-    }, 1); // do first run immediately
+        checkLocked(interval);
+    }, 100); // do first run immediately
 
     function checkLocked(interval) {
         $.ajax({
@@ -152,6 +160,10 @@ $(document).ready(function () {
                                 $('.menu div:first-child').addClass('active');
 
                             });
+                            if (!($('.light.arrow').length > 0)&& empty_card_flag) {
+                                document.getElementById('empty_card_screen').style.display = 'flex';
+                                empty_card_flag=false
+                            }
                         },
                         error: function (xhr, status, error) {
                             try {
@@ -471,7 +483,7 @@ $(document).ready(function () {
 
                     if (section && section.value) {
                         for (let field of section.value) {
-                            if ((field.value.trim() !== "") && (field.value.trim() !== "<br>")) {
+                            if ((field.value.trim() !== "") && (field.value.trim() !== "<br>") && (field.value.trim() !== "unknown")) {
                                 hasValue = true;
                                 $('.menu').find('div').eq(index).find('.light').removeClass('square');
                                 $('.menu').find('div').eq(index).find('.light').addClass('arrow');
