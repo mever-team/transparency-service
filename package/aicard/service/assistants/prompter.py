@@ -63,6 +63,10 @@ class Prompter(Assistant):
                 if field not in completion: continue
                 value.set(completion[field])
         if not card.model.home: card.model.home = url
+        user_messages[-1] = (
+            f"<h2>{self.alias} refinement</h2>"
+            f"Saving..."
+        )
 
     def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]):
         user_messages.clear()
@@ -111,6 +115,10 @@ class Prompter(Assistant):
                     f"<details>\n<summary><h2>Simplified</h2></summary>\n\n<div class=\"card-details-content\">\n{simplification}\n</div>\n</details>\n\n"
                     f"<details>\n<summary><h2>Original</h2></summary>\n\n<div class=\"card-details-content\">\n{value_text}\n</div>\n</details>"
                 )
+        user_messages[-1] = (
+            f"<h2>{self.alias} refinement</h2>"
+            f"Saving..."
+        )
         #card.assign(card.to_html_card()) # this creates some errors - under investigation
 
 def assist(agent):

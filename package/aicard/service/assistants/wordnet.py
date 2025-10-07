@@ -134,6 +134,10 @@ class WordNet(Assistant):
         return "".join(out)
 
     def complete(self, card: ModelCard, url: str, logger: Logger, user_messages: list[str]):
+        user_messages[-1] = (
+            f"<h2>{self.alias} autofill</h2>"
+            f"Matching by dictionary definitios"
+        )
         self._wait_until_ready()
         logger.info("Submitted: " + str(url), user=self.alias)
         parsed = urlparse(url)
@@ -197,9 +201,17 @@ class WordNet(Assistant):
                         + ", ".join(not_used_fields), user=self.alias)
         if not card.model.name: card.model.name = title
         if not card.model.home: card.model.home = url
+        user_messages[-1] = (
+            f"<h2>{self.alias} autofill</h2>"
+            f"Saving..."
+        )
 
 
     def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]):
+        user_messages[-1] = (
+            f"<h2>{self.alias} refinement</h2>"
+            f"Searching dictionary for word definitions"
+        )
         self._wait_until_ready()
         for cat, vals in card.data.items():
             if not isinstance(vals, dict): continue
@@ -207,3 +219,7 @@ class WordNet(Assistant):
                 assert isinstance(value, Field)
                 vals[field].set(self._refine_field(value.get()))
         card.assign(card.to_html_card())
+        user_messages[-1] = (
+            f"<h2>{self.alias} autofil</h2>"
+            f"Matching by dictionary definitios"
+        )
