@@ -605,6 +605,13 @@ def serve(
         owner = data.get("creator", "").strip().lower()
         owner = [owner] if owner else []
 
+        import re
+        def sanitize_for_fts(s: str) -> str:
+            s = s.strip().lower()
+            s = re.sub(r'[^a-z0-9\s]', ' ', s)
+            s = re.sub(r'\s+', ' ', s)
+            return s
+
         # apply filters
         i = 0
         new_parts = []
@@ -634,8 +641,7 @@ def serve(
         total = cursor.fetchone()[0]
         num_pages = (total + page_size - 1) // page_size
         offset = (page - 1) * page_size
-        if len(query)>=3 and owner:
-            # FTS5 BM25-ranked search restricted to specific users
+        if len(query) >= 3 and owner:
             placeholders = ",".join(["?"] * len(owner))
             cursor.execute(
                 f"""
@@ -649,14 +655,27 @@ def serve(
                 JOIN cards ON cards_fts.rowid = cards.id
                 WHERE cards_fts MATCH ?
                   AND LOWER(cards.user) IN ({placeholders})
-                  AND bm25(cards_fts) < 10
+                  AND bm25(cards_fts) < 50
+
+                UNION ALL
+
+                SELECT
+                    cards.id,
+                    cards.title,
+                    cards.user,
+                    cards.desc,
+                    9999 AS rank   -- fallback rank for LIKE matches
+                FROM cards
+                WHERE LOWER(cards.title) LIKE ?
+                  AND LOWER(cards.user) IN ({placeholders})
+
                 ORDER BY rank ASC
                 LIMIT ? OFFSET ?
                 """,
-                (query, *owner, page_size, offset)
+                (sanitize_for_fts(query), *owner, f"%{query.lower()}%", *owner, page_size, offset)
             )
-        elif len(query)>=3:
-            # FTS5 BM25-ranked search across all cards
+
+        elif len(query) >= 3:
             cursor.execute(
                 """
                 SELECT
@@ -669,11 +688,24 @@ def serve(
                 JOIN cards ON cards_fts.rowid = cards.id
                 WHERE cards_fts MATCH ?
                   AND bm25(cards_fts) < 10
+
+                UNION ALL
+
+                SELECT
+                    cards.id,
+                    cards.title,
+                    cards.user,
+                    cards.desc,
+                    9999 AS rank
+                FROM cards
+                WHERE LOWER(cards.title) LIKE ?
+
                 ORDER BY rank ASC
                 LIMIT ? OFFSET ?
                 """,
-                (query, page_size, offset)
+                (sanitize_for_fts(query), f"%{query.lower()}%", page_size, offset)
             )
+
         elif query and owner:
             cursor.execute(
                 f"""
