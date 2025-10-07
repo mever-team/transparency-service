@@ -239,6 +239,8 @@ $(document).ready(function () {
         let section = cardJson.data.find(s => s.name === sectionName);
         if (section) {
             let field = section.value.find(f => f.name === fieldName);
+            $("#saveJson").fadeIn();
+//            $("#saveJson").prop("disabled", false);
             if (field) {
                 field.value = $(this).html();
             }
@@ -246,7 +248,8 @@ $(document).ready(function () {
     });
 
     $("#saveJson").click(function () {
-        $('#saveJson').attr("disabled", true)
+        //$('#saveJson').attr("disabled", true);
+        $("#saveJson").fadeOut();
         $.ajax({
             url: "http://127.0.0.1:5000/card/" + id,
             method: "PUT",
@@ -283,7 +286,8 @@ $(document).ready(function () {
                 setTimeout(function () {
                     $("#saveJson").find('.btn-confirmation').fadeOut(function () {
                         $("#saveJson").find('.btn-text').fadeIn();
-                        $('#saveJson').attr("disabled", false)
+                        $("#saveJson").fadeOut();
+                        //$('#saveJson').attr("disabled", false)
                     });
                 }, 1500);
             },
@@ -429,7 +433,8 @@ $(document).ready(function () {
     $(document).on("click", "#autocomplete", function () {
         let assistant = $(this).siblings('.assistants_wrapper').find(".card-button.selected").attr("id");
 
-        $('#saveJson').attr("disabled", true)
+        //$('#saveJson').attr("disabled", true);
+        $("#saveJson").fadeOut();
         $.ajax({
             url: "http://127.0.0.1:5000/card/" + id,
             method: "PUT",

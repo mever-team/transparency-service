@@ -7,7 +7,7 @@ from .assistant import Assistant
 from aicard.card import ModelCard
 from nltk.corpus import wordnet as wn
 from aicard.service.logger import Logger
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urljoin
 from bs4 import BeautifulSoup
 from ...card.fields import Field,LongText
 
@@ -141,8 +141,14 @@ class WordNet(Assistant):
         response = requests.get(url, timeout=self.external_get_timeout_sec)
 
         soup = BeautifulSoup(response.text, "html.parser")
+        for tag in soup.find_all(href=True): tag["href"] = urljoin(url, tag["href"])
+        for tag in soup.find_all(src=True): tag["src"] = urljoin(url, tag["src"])
         first_header = soup.find(re.compile("^h[1-6]$"))
-        title = first_header.get_text(strip=True) if first_header else None
+        if first_header:
+            header_copy = first_header.__copy__()
+            #for btn in header_copy.find_all(["button", "input"]): btn.decompose()  # but keep <a>
+            title = header_copy.get_text(separator=" ", strip=True)
+        else:  title = ""
         sections = []
         for header in soup.find_all(re.compile("^h[1-6]$")):
             content = []
@@ -187,7 +193,10 @@ class WordNet(Assistant):
             else: not_used_fields.append(heading)
 
         if not_used_fields:
-            logger.warn("the following headings could not be matched to a model card based on synonyms" + ", ".join(not_used_fields), user=self.alias)
+            logger.warn("the following headings could not be matched to a model card based on synonyms"
+                        + ", ".join(not_used_fields), user=self.alias)
+        if not card.model.name: card.model.name = title
+        if not card.model.home: card.model.home = url
 
 
     def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]):

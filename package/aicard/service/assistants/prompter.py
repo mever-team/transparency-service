@@ -1,10 +1,8 @@
-from math import trunc
-
 from .assistant import Assistant
 from ..logger import Logger
 from aicard.card import ModelCard
 from aicard.agents import Agent
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urljoin
 import requests
 import json
 import markdown2
@@ -36,6 +34,8 @@ class Prompter(Assistant):
         text = response.text
 
         soup = BeautifulSoup(text, "html.parser")
+        for tag in soup.find_all(href=True): tag["href"] = urljoin(url, tag["href"])
+        for tag in soup.find_all(src=True): tag["src"] = urljoin(url, tag["src"])
         text = soup.get_text(strip=True)
 
         output_format = card.json_schema()
@@ -64,6 +64,7 @@ class Prompter(Assistant):
             for field, value in values.items():
                 if field not in completion: continue
                 value.set(completion[field])
+        if not card.model.home: card.model.home = url
 
     def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]):
         user_messages.clear()

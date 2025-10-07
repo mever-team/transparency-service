@@ -13,7 +13,7 @@ from pydantic import BaseModel, create_model
 
 
 def truncate(text, size):
-    text = text.strip().split(" ")[0].split("\n")[0].split("/")[0].strip()
+    text = text.strip().split(" ")[0].split("\n")[0].split("/")[-1].strip()
     if size<3:
         return ""
     text = str(text)
