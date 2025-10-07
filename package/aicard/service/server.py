@@ -613,6 +613,15 @@ def serve(
             if filter=="--by" and i<len(parts)-1:
                 i += 1
                 owner.append(parts[i])
+            # if filter=="--top" and i<len(parts)-1:
+            #     i += 1
+            #     try:
+            #         page_size = int(parts[i])
+            #     except: pass
+            #     if page_size<=1: page_size = 1
+            #     if page_size>=50: page_size = 50
+            if filter == "--more":
+                page_size = 20
             else:
                 new_parts.append(filter)
             i += 1
@@ -625,7 +634,47 @@ def serve(
         total = cursor.fetchone()[0]
         num_pages = (total + page_size - 1) // page_size
         offset = (page - 1) * page_size
-        if query and owner:
+        if len(query)>=3 and owner:
+            # FTS5 BM25-ranked search restricted to specific users
+            placeholders = ",".join(["?"] * len(owner))
+            cursor.execute(
+                f"""
+                SELECT
+                    cards.id,
+                    cards.title,
+                    cards.user,
+                    cards.desc,
+                    bm25(cards_fts) AS rank
+                FROM cards_fts
+                JOIN cards ON cards_fts.rowid = cards.id
+                WHERE cards_fts MATCH ?
+                  AND LOWER(cards.user) IN ({placeholders})
+                  AND bm25(cards_fts) < 10
+                ORDER BY rank ASC
+                LIMIT ? OFFSET ?
+                """,
+                (query, *owner, page_size, offset)
+            )
+        elif len(query)>=3:
+            # FTS5 BM25-ranked search across all cards
+            cursor.execute(
+                """
+                SELECT
+                    cards.id,
+                    cards.title,
+                    cards.user,
+                    cards.desc,
+                    bm25(cards_fts) AS rank
+                FROM cards_fts
+                JOIN cards ON cards_fts.rowid = cards.id
+                WHERE cards_fts MATCH ?
+                  AND bm25(cards_fts) < 10
+                ORDER BY rank ASC
+                LIMIT ? OFFSET ?
+                """,
+                (query, page_size, offset)
+            )
+        elif query and owner:
             cursor.execute(
                 f"""
                 SELECT id, title, user, desc
