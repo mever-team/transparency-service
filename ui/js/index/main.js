@@ -36,8 +36,8 @@ function autocomplete_populate() {
             success: r => {
                 $('#loading').hide();
                 const results = r.results || [];
-                $('#search_results_wrapper').text(q ? "Showing results for" : "Showing most popular");
-                $('#search_results').text(results.length + " in total " + (r.total || 0));
+                $('#search_results_wrapper').text(q ? "Found" : "Most popular");
+                $('#search_results').text(results.length + " of " + (r.total || 0));
                 $tbody.empty();
                 if (results.length)
                     results.forEach(it => {
@@ -46,7 +46,7 @@ function autocomplete_populate() {
                             <tr class="search_results_button">
                                 <td><a style="width:160px;text-decoration:none" href="model_card.html?id=${it.id}">
                                     <span style="width:300px;display:block;color:#EEE">${name}</span>
-                                    <span style="font-size:13px;color:#79CFDC">${it.desc + " --by " + it.creator || "No Description"}</span>
+                                    <span style="font-size:13px;color:#79CFDC">${it.desc + " by " + it.creator || "No Description"}</span>
                                 </a></td>
                             </tr>`);
                     });

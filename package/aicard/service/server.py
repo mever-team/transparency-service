@@ -16,24 +16,44 @@ from threading import Thread
 from dotenv import dotenv_values
 from werkzeug.exceptions import HTTPException
 
+# def create_progress_bar(quality: float) -> str:
+#     percent = max(0.0, min(1.0, quality)) * 100
+#     return f"""
+#     <div style="
+#         display:inline-block;
+#         width:60px;
+#         height:8px;
+#         background:#ddd;
+#         border-radius:4px;
+#         overflow:hidden;
+#         vertical-align:middle;">
+#         <div style="
+#             width:{percent:.1f}%;
+#             height:100%;
+#             background:#3a3;
+#             transition:width 0.3s;">
+#         </div>
+#     </div>
+#     """.strip()
+
+
 def create_progress_bar(quality: float) -> str:
-    percent = max(0.0, min(1.0, quality)) * 100
+    quality = max(0.0, min(1.0, quality))
+    stars = ""
+    total_stars = 5
+    rating = quality * total_stars
+
+    for i in range(total_stars):
+        if rating >= i + 1:
+            stars += "★"  # full star
+        elif rating > i:
+            stars += "⯪"  # half star (can use "☆" or "⭑" if preferred)
+        else:
+            stars += "☆"  # empty star
     return f"""
-    <div style="
-        display:inline-block;
-        width:60px;
-        height:8px;
-        background:#ddd;
-        border-radius:4px;
-        overflow:hidden;
-        vertical-align:middle;">
-        <div style="
-            width:{percent:.1f}%;
-            height:100%;
-            background:#3a3;
-            transition:width 0.3s;">
-        </div>
-    </div>
+    <span style="color:gold; font-size:14px; letter-spacing:1px;">
+        {stars}
+    </span>
     """.strip()
 
 def exists(condition, message):
@@ -67,7 +87,7 @@ class ModelCardEntry:
         summary = self.card.summary()
         if self.card.model.name:
             self.card.title = truncate(self.card.model.name, 30)
-        desc = create_progress_bar(quality)+" info"
+        desc = create_progress_bar(quality)
         if summary:
             desc += " for "+summary
 
