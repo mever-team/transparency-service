@@ -102,7 +102,7 @@ $(document).ready(function () {
 
                                     });*/
                                     section.value.forEach(field => {
-                                         let $field = $("<div>").addClass("field");
+                                        let $field = $("<div>").addClass("field");
 
                                         // Create field-name span
                                         let $fieldName = $("<span>")
@@ -117,12 +117,25 @@ $(document).ready(function () {
 
                                         // Append tooltip inside field-name
                                         $fieldName.append($info);
+                                        let $fieldValue;
+                                        if (field.type.startsWith("list:")) {
+                                            $fieldValue = $("<select>")
+                                                .addClass("field-value dropdown editable");
 
+                                            const options = field.type.replace("list:", "").split(",");
+                                            options.forEach(opt => {
+                                                const $option = $("<option>").val(opt).text(opt);
+                                                if (field.value === opt) $option.prop("selected", true);
+                                                $fieldValue.append($option);
+                                            });
+                                        } else {
+                                            $fieldValue = $("<span>")
+                                                .addClass("field-value editable")
+                                                .attr("contenteditable", "true")
+                                                .html(field.value || "");
+                                        }
                                         // Editable field value
-                                        let $fieldValue = $("<span>")
-                                            .addClass("field-value editable")
-                                            .attr("contenteditable", "true")
-                                            .html(field.value || "");
+
                                         if ((field.value.trim() !== "") && (field.value.trim() !== "<br>") && (field.value.trim() !== "unknown")) {
                                             $('.menu').find('div').eq(index).find('.light').removeClass('square');
                                             $('.menu').find('div').eq(index).find('.light').addClass('arrow');
@@ -163,8 +176,8 @@ $(document).ready(function () {
                     }
                     $('#model-title').remove();
                     $('#loading').hide();
-                    $('.nacc').append('<l1 class="empty_card">⚠️'+(resp.error || error)+'</l1>')
-                    $('.example_button').css('pointer-events','none');
+                    $('.nacc').append('<l1 class="empty_card">⚠️' + (resp.error || error) + '</l1>')
+                    $('.example_button').css('pointer-events', 'none');
                 } catch (e) {
                     alert("Unknown card lock error");
                 }
@@ -229,9 +242,9 @@ $(document).ready(function () {
     });
 
     $(".nacc").on("input", ".editable", function () {
-       /* const fieldName = $(this).siblings(".field-name").text().replace(":", "").toLowerCase().replace(/ /g, "_");
-        const sectionName = $(this).closest("section").find("h2").text().toLowerCase().replace(/ /g, "_");
-*/
+        /* const fieldName = $(this).siblings(".field-name").text().replace(":", "").toLowerCase().replace(/ /g, "_");
+         const sectionName = $(this).closest("section").find("h2").text().toLowerCase().replace(/ /g, "_");
+ */
         const fieldName = $(this).siblings(".field-name").contents().filter((_, el) => el.nodeType === 3).text().replace(":", "").toLowerCase().replace(/ /g, "_");
         const sectionName = $(this).closest("section").find("h2").contents().filter((_, el) => el.nodeType === 3).text().toLowerCase().replace(/ /g, "_");
 
@@ -242,7 +255,13 @@ $(document).ready(function () {
             $("#saveJson").fadeIn();
 //            $("#saveJson").prop("disabled", false);
             if (field) {
-                field.value = $(this).html();
+                if(field.type.startsWith("list:")){
+                    field.value = $(this).find(":selected").val();
+                }
+                else{
+                    field.value = $(this).html();
+                }
+
             }
         }
     });
@@ -269,7 +288,7 @@ $(document).ready(function () {
 
                     if (section && section.value) {
                         for (let field of section.value) {
-                            if ((field.value.trim() !== "") && (field.value.trim() !== "<br>")&& (field.value.trim() !== "unknown")) {
+                            if ((field.value.trim() !== "") && (field.value.trim() !== "<br>") && (field.value.trim() !== "unknown")) {
                                 hasValue = true;
                                 $('.menu').find('div').eq(index).find('.light').removeClass('square');
                                 $('.menu').find('div').eq(index).find('.light').addClass('arrow');
@@ -385,7 +404,7 @@ $(document).ready(function () {
 
                     if (section && section.value) {
                         for (let field of section.value) {
-                            if ((field.value.trim() !== "") && (field.value.trim() !== "<br>")&& (field.value.trim() !== "unknown")) {
+                            if ((field.value.trim() !== "") && (field.value.trim() !== "<br>") && (field.value.trim() !== "unknown")) {
                                 hasValue = true;
                                 $('.menu').find('div').eq(index).find('.light').removeClass('square');
                                 $('.menu').find('div').eq(index).find('.light').addClass('arrow');

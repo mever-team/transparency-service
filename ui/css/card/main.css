@@ -275,7 +275,23 @@ ul.nacc .field-value ul {
 ul.nacc .field-value li {
     margin-bottom: 0.3rem;
 }
+.field-value.dropdown {
+    width: 100%;
+    padding: 6px 10px;
+    font-size: 14px;
+    border: 1px solid #7C7C7C;
+    border-radius: 6px;
+    background-color: #EEEEEE;
+    cursor: pointer;
+}
 
+.field-value.dropdown:focus {
+    outline: none;
+    background: #FAFAFA;
+}
+.field-value.dropdown:hover{
+    background: #FAFAFA;
+}
 .page-title {
     background: #f5f7fa;
     border-bottom: 1px solid #EEEEEE;
@@ -991,6 +1007,7 @@ details[open] .card-details-content {
     text-align: left;
     z-index: 999;
     pointer-events: none;
+    text-transform: none;
 }
 
 .info-tooltip:hover::after {
