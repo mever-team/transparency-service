@@ -10,6 +10,7 @@ from aicard.card.dot_dict import DotDict
 from aicard.card.fields import ShortText, LongText, Options, Field
 from rich.markdown import Markdown
 from pydantic import BaseModel, create_model
+from pydantic import Field as pydantic_Field
 
 
 def truncate(text, size):
@@ -221,26 +222,21 @@ o Did you inform end-users and subjects of existing or potential risks?<br>
     def to_pydantic(self) -> type[BaseModel]:
         fields = {}
         sub_models = {}
-        for key, value in self.data.items():
-            if isinstance(value, dict):
-                sub_model = create_model(key, **{k: (str, v.get()) for k, v in value.items()})
-                sub_models[key] = sub_model
-                fields[key] = (sub_model, ...)
-            else:
-                fields[key] = (str, value)
+        for category, values in self.data.items():
+            if not isinstance(values, dict): continue
+            sub_model_fields = {}
+            for field, value in values.items():
+                field_args = {'default': value.get(),'description': value.description}
+                if isinstance(field, Options): field_args['enum'] = value.options()
+                sub_model_fields[field] = (str, pydantic_Field(**field_args))
+            sub_model = create_model(category, **sub_model_fields)
+            sub_models[category] = sub_model
+            fields[category] = (sub_model, ...)
         pydantic_model = create_model('card', **fields)
         return pydantic_model
 
     def json_schema(self):
         schema = self.to_pydantic().model_json_schema()
-        schema['$defs']['model']['properties']['name']['description'] = "name of the model"
-        schema['$defs']['considerations']['properties']['oversight']['enum'] = ["self-learning/autonomous", "human-in-the-loop", "human-on-the-loop", "human-in-command"]
-        schema['$defs']['considerations']['properties']['instructions']['description'] = "Put any instruction here that describes how to use the model."
-        schema['$defs']['eval_set']['properties']['standards']['enum'] = ["ISO", "IEEE"]
-        schema['$defs']['eval_set']['properties']['update']['description'] = "Did you put in place measures to ensure that the evaluation data used to is up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"
-        schema['$defs']['training_set']['properties']['standards']['enum'] = ["ISO", "IEEE"]
-        schema['$defs']['training_set']['properties']['update']['description'] = "Did you put in place measures to ensure that the evaluation data used to is up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"
-        schema['$defs']['analysis']['properties']['analysis']['description'] = "Put any results here and analyze them."
         return schema
 
     def __str__(self):

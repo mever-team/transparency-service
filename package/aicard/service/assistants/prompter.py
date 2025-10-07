@@ -48,19 +48,17 @@ class Prompter(Assistant):
             if not isinstance(values, dict): continue
             prompt = f"Provide information about: {text}\n\nreturn as JSON"
             params = {"format": output_format['$defs'][category]}
-            completion = self.agent.completion(prompt, params=params)
-            # Ollama bug workaround: https://github.com/ollama/ollama/issues/1910
-            time.sleep(1)
+
             # Ollama bug workaround: invalid json
             while True:
+                completion = self.agent.completion(prompt, params=params)
+                # Ollama bug workaround: https://github.com/ollama/ollama/issues/1910
+                time.sleep(1)
                 try:
                     completion = json.loads(completion)
                     break
                 except (json.JSONDecodeError, TypeError):
                     logger.warn("agent.completion produced an invalid json. Requesting completion again")
-                    completion = self.agent.completion(prompt, params=params)
-                    # Ollama bug workaround: https://github.com/ollama/ollama/issues/1910
-                    time.sleep(1)
             for field, value in values.items():
                 if field not in completion: continue
                 value.set(completion[field])
