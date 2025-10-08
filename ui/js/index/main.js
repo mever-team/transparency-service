@@ -19,6 +19,31 @@ $(function () {
             error: () => alert("ERROR NEW CARD")
         });
     });
+
+    $(document).on('click', '.dropdown-btn', function(e) {
+        e.stopPropagation();
+        $(this).parent().toggleClass('show');
+    });
+
+    $(document).on('click', function() {
+        $('.dropdown-filter').removeClass('show');
+    });
+
+    $(document).on('click', '.dropdown-content a', function (e) {
+        e.preventDefault();
+        const text = $(this).text().trim().toLowerCase();
+        const tag = `--${text}`;
+        const $input = $('#topic');
+        const currentVal = $input.val();
+
+        // Only add tag if not already present
+        if (!currentVal.includes(tag)) {
+            $input.val(currentVal + (currentVal ? ' ' : '') + tag + ' ');
+        }
+
+        $input.focus();
+    })
+
 });
 
 function autocomplete_populate() {
