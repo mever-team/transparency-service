@@ -214,8 +214,9 @@ o Did you inform end-users and subjects of existing or potential risks?<br>
             if isinstance(dotdict, DotDict):
                 segment = ""
                 for field, value in dotdict.items():
-                    if value.get().strip(): segment += f"{("*"+field.replace("_", " ")+"*").ljust(20)} {value.get().strip()}\n\n"
-                if segment: ret += f"\n## {key.replace("_", " ")}\n"+segment
+                    if value.get().strip(): segment += f"{('*' + field.replace('_', ' ') + '*').ljust(20)} {value.get().strip()}\n\n"
+
+                if segment: ret += f"\n## {key.replace('_', ' ')}\n"+segment
         return ret
 
     def to_pydantic(self) -> type[BaseModel]:

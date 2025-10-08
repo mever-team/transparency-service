@@ -30,10 +30,10 @@ services:
       - ollama
     ports:
       - "8000:8000"
-    env_file:
-      - .env
+#    env_file:
+#      - .env
     volumes:
-      - ./UI:/app/UI
+      - ./ui:/app/ui
     networks:
       - ollama_net
     environment:

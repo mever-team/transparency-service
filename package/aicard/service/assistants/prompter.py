@@ -106,7 +106,7 @@ class Prompter(Assistant):
                 if not completion[field]: continue
                 if value.get():
                     value.set(
-                        f"<details>\n<summary><h2>Update on {datetime.datetime.now().strftime("%Y %B %d, %I:%M%p")}</h2></summary>\n\n<div class=\"card-details-content\">\n{completion[field]}\n</div>\n</details>\n\n"
+                        f"<details>\n<summary><h2>Update on {datetime.datetime.now().strftime('%Y %B %d, %I:%M%p')}</h2></summary>\n\n<div class=\"card-details-content\">\n{completion[field]}\n</div>\n</details>\n\n"
                         f"{value.get()}"
                     )
                 else: value.set(completion[field])

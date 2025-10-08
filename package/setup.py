@@ -9,7 +9,7 @@ from pathlib import Path
 # https://kynan.github.io/blog/2020/05/23/how-to-upload-your-package-to-the-python-package-index-pypi-test-server
 
 this_dir = Path(__file__).parent.parent
-long_description = (this_dir / "README.md").read_text(encoding="utf-8")
+# long_description = (this_dir / "README.md").read_text(encoding="utf-8")
 
 
 def parse_requirements(filename):
@@ -34,6 +34,6 @@ setup(
         "Development Status :: 3 - Alpha",
     ],
     python_requires=">=3.11",
-    long_description=long_description,
+    # long_description=long_description,
     long_description_content_type="text/markdown",
 )
