@@ -32,7 +32,7 @@ $(function () {
     $(document).on('click', '.dropdown-content a', function (e) {
         e.preventDefault();
         const text = $(this).text().trim().toLowerCase();
-        const tag = `--${text}`;
+        const tag = `${text}`;
         const $input = $('#topic');
         const currentVal = $input.val();
 
@@ -95,3 +95,48 @@ function autocomplete_populate() {
         request();
     });
 }
+
+
+document.getElementById('login-confirm-btn').onclick = function () {
+    let json = {
+        "password": document.getElementById('username').value,
+        "username": document.getElementById('password').value
+    }
+    $.ajax({
+        url: "http://127.0.0.1:5000/login",
+        method: "POST",
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify(json),
+        success: function (response) {
+            token = response.token;
+            updateUsername();
+            document.getElementById('login-confirm-screen').style.display = 'none';
+        },
+        error: function (xhr, status, error) {
+            token = "";
+            updateUsername();
+            try {
+                $('#login-error').text("Failed to login: "+xhr.responseJSON.error);
+            } catch (e) {
+                $('#login-error').text(xhr||"Server is offline");
+            }
+        }
+    });
+};
+
+document.getElementById('login-btn').onclick = function () {
+    document.getElementById('login-error').text = "";
+    document.getElementById('login-confirm-screen').style.display = 'flex';
+};
+document.getElementById('logout-btn').onclick = function () {
+    token = "";
+    updateUsername();
+};
+document.getElementById('cancel-login-btn').onclick = function () {
+    document.getElementById('login-error').text = "";
+    document.getElementById('login-confirm-screen').style.display = 'none';
+};
+
+
+// update anything based on login

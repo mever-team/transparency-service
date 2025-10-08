@@ -86,10 +86,13 @@ class Prompter(Assistant):
                 except (json.JSONDecodeError, TypeError): logger.warn("agent.completion produced an invalid json. Requesting completion again")
             for field, value in values.items():
                 if field not in completion: continue
-                value.set(
-                    f"<details>\n<summary><h2>{datetime.datetime.now().strftime("%Y %B %d, %I:%M%p")}</h2></summary>\n\n<div class=\"card-details-content\">\n{completion[field]}\n</div>\n</details>\n\n"
-                    f"{value.get()}"
-                )
+                if not completion[field]: continue
+                if value.get():
+                    value.set(
+                        f"<details>\n<summary><h2>Update on {datetime.datetime.now().strftime("%Y %B %d, %I:%M%p")}</h2></summary>\n\n<div class=\"card-details-content\">\n{completion[field]}\n</div>\n</details>\n\n"
+                        f"{value.get()}"
+                    )
+                else: value.set(completion[field])
         if not card.model.home: card.model.home = url
         user_messages[-1] = (
             f"<h2>{self.alias} refinement</h2>"

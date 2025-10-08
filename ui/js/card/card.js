@@ -114,20 +114,20 @@ $(document).ready(function () {
                                         // Create field-name span
                                         let $fieldName = $("<span>")
                                             .addClass("field-name")
-                                            .text(field.name.replace(/_/g, " "));
+                                            .text(" "+field.name.replace(/_/g, " "));
 
                                         // Add info-tooltip span (you can make tooltip text dynamic if needed)
-                                        let $info = $("<span>")
+                                        let $fieldInfo = $("<span>")
                                             .addClass("info-tooltip")
                                             .attr("data-tooltip", field.description)
                                             .text("?");
 
+                                        $fieldInfo = $("<span>").append($fieldInfo).append($fieldName);
+
                                         // Append tooltip inside field-name
-                                        $fieldName.append($info);
                                         let $fieldValue;
-                                        if (field.type.startsWith("list:")) {
-                                            $fieldValue = $("<select>")
-                                                .addClass("field-value dropdown editable");
+                                        if (field.type.startsWith("list:") && token) {
+                                            $fieldValue = $("<select>").addClass("field-value dropdown");
 
                                             const options = field.type.replace("list:", "").split(",");
                                             options.forEach(opt => {
@@ -137,10 +137,13 @@ $(document).ready(function () {
                                             });
                                         } else {
                                             $fieldValue = $("<span>")
-                                                .addClass("field-value editable")
-                                                .attr("contenteditable", "true")
+                                                .addClass("field-value")
                                                 .html(field.value || "");
+                                            if(token)
+                                                $fieldValue.attr("contenteditable", "true");
                                         }
+                                        if(token)
+                                            $fieldValue.addClass("editable");
                                         // Editable field value
 
                                         if ((field.value.trim() !== "") && (field.value.trim() !== "<br>") && (field.value.trim() !== "unknown")) {
@@ -148,7 +151,7 @@ $(document).ready(function () {
                                             $('.menu').find('div').eq(index).find('.light').addClass('arrow');
                                         }
 
-                                        $field.append($fieldName).append($fieldValue);
+                                        $field.append($fieldInfo).append($fieldValue);
                                         $section.append($field);
                                     });
                                 } else {
@@ -196,9 +199,7 @@ $(document).ready(function () {
         });
     }
 
-    $.when(getToken()).done(function (loginResponse) {
-        token = loginResponse.token;
-
+    if(token)
         $.ajax({
             url: "http://127.0.0.1:5000/assistants",
             method: "GET",
@@ -217,9 +218,9 @@ $(document).ready(function () {
                         $tempDiv.find("h1").remove();
                         const description = $.trim($tempDiv.text());
 
-//                        if (index === 0) {
-//                            $('#selected_autofilled_assistant,#selected_refined_assistant').text($("<div>").html(title).text())
-//                        }
+    //                        if (index === 0) {
+    //                            $('#selected_autofilled_assistant,#selected_refined_assistant').text($("<div>").html(title).text())
+    //                        }
 
                         const $card = $("<button>", {
                             id: item.name,
@@ -232,7 +233,7 @@ $(document).ready(function () {
                 });
 
                 /* $('#cards-container').append('<br><p style="margin:12px 0 0px 0px; font-size: 15px; font-weight: 700; color: #1f1f1f;display: inline-block">Actions: </p><p style="display: inline-block;margin:0 5px"><span id="refine">Refine</span> | <span id="autocomplete">Autocomplete: </span> <input type="text" class="text-input" placeholder="Enter URL..." id="card-url" /></p>')
- */
+    */
             },
             error: function (xhr, status, error) {
                 try {
@@ -242,15 +243,7 @@ $(document).ready(function () {
                     alert("Unknown card retrieval error");
                 }
             }
-        })
-    }).fail(function (xhr, status, error) {
-        try {
-            const resp = JSON.parse(xhr.responseText);
-            alert(resp.error || error);
-        } catch (e) {
-            alert("Unknown login error");
-        }
-    });
+        });
 
     $(".nacc").on("input", ".editable", function () {
         /* const fieldName = $(this).siblings(".field-name").text().replace(":", "").toLowerCase().replace(/ /g, "_");
@@ -276,6 +269,9 @@ $(document).ready(function () {
             }
         }
     });
+
+    if(token)
+        $("#edit-options").show();
 
     $("#saveJson").click(function () {
         //$('#saveJson').attr("disabled", true);

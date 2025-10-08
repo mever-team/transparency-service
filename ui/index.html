@@ -25,7 +25,10 @@
         <div class="small-12 medium-12 large-12 columns">
             <div class="header_wrapper">
                 <h2><img src="img/logo.png" width="110"></h2>
-                <p id="whats-this" class="modal__trigger" data-modal="#modal_help">What's this ?</p>
+                <p id="whats-this" class="modal__trigger" data-modal="#modal_help">What's this?</p>
+                <p id="login-btn" style="display: none">🔐 Login</p>
+                <p id="logout-btn" style="display: none; color: #F44336">Logout</p>
+                <span id="login-name" style="color:#EEEEEE;float:right;margin-top:12px;margin-right:15px"></span>
             </div>
 
         </div>
@@ -45,30 +48,22 @@
                             <div class="dropdown-filter">
                                 <button class="dropdown-btn">Add filter ⏷</button>
                                 <div class="dropdown-content">
-                                    <a href="#">More</a>
-                                    <a href="#">By admin</a>
+                                    <a href="#">--more</a>
+                                    <a href="#">--by admin</a>
                                 </div>
+                                <span style="font-weight: bold;color:#7C7C7C;margin-left:7px;"><span id="search_results_wrapper"></span> <span id="search_results"></span></span>
                             </div>
-                            <div class="search_button"  id="new_card">
-                                ✍️ new
-                            </div>
-
-                        <span class="search_input"><input placeholder="Search for model name or text..." type="text"
-                                                          id="topic"></span>
-
+                            <div class="search_button"  id="new_card">✍️ new</div>
+                            <span class="search_input"><input placeholder="Search for model name or text..." type="text" id="topic"></span>
                         </div>
                     </div>
 
                     <div class="main_search_wrapper_results">
-                    <p style="margin: 25px 0 0;font-weight: bold;color:#7C7C7C;margin-left:7px;"><span id="search_results_wrapper"></span> <span id="search_results"></span></p>
                     <br><br>
                         <div class="loading-overlay" id="loading">
                             <div class="spinner"></div>
                             <p>Loading...</p>
                         </div>
-
-
-
                     <table id="resultsTable" border="0" cellpadding="5" cellspacing="0">
                     <tbody></tbody>
                     </table>
@@ -99,6 +94,24 @@
         </div>
     </div>
 </section>
+
+<!-- Delete Success Overlay -->
+<div id="login-confirm-screen" class="login-confirm-screen">
+    <div class="login-confirm-content">
+        <h2 style="color:#64DB96;margin-bottom:20px">Login</h2>
+        <p>Grants access to additional services:</p>
+        <ul style="text-align:left;margin-bottom:40px"><li>Create and edit model descriptions.</li><li>Aid by assistants.</li><li>Python integration.</li></ul>
+        <p id="login-error" style="color:#F44336"></p>
+        <label for="username">Username</label><br />
+        <input type="text" id="username" name="username" /><br><br>
+        <label for="password">Password</label><br />
+        <input type="password" id="password" name="password" /><br><br><br><br>
+        <div class="buttons">
+            <button id="login-confirm-btn" style="background-color: #64DB96; color: #1F1F1F;border:0px!important;width:120px">🔐 Login</button>
+            <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:120px" id="cancel-login-btn">✖ Cancel</button>
+        </div>
+    </div>
+</div>
 
 <div id="modal_help" class="modal modal__bg">
     <div class="modal__dialog" style="width: 85%;">

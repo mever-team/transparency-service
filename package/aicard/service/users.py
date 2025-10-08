@@ -72,7 +72,7 @@ class UserDB:
                 print("To proceed with removing leftover columns, type 'migrate' and press Enter. Otherwise delete the database file")
                 user_input = input(">> ").strip().lower()
                 if user_input != "migrate":
-                    logger.error("Migration cancelled. Please review the ModelCard schema schema.")
+                    logger.error("Migration cancelled. Please review the ModelCard schema.")
                     sys.exit(1)
                 # SQLite doesn't support DROP COLUMN directly. So we recreate the table:
                 temp_cols = [col for col in existing_columns if col not in redundant]

@@ -257,9 +257,55 @@ html, body {
     transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-#whats-this {
-    margin-top:5px;
+.login-confirm-screen,
+.login-success-screen,.card-lock {
+    display: none; /* hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+#login-btn,#whats-this,#login-confirm-btn,#cancel-login-btn,#logout-btn {
     color: #EEEEEE;
+    border: solid 1px #434343;
+    padding:5px 10px;
+    margin-left:10px;
+    margin-right:10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
+    border: 1px solid #434343!important;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+#login-confirm-btn,#cancel-login-btn {
+    padding: 15px 15px;
+    font-size: 1.2em;
+}
+
+/* Modal content */
+.login-confirm-content {
+    background: #1f1f1f;
+    border-radius: 12px;
+    padding: 1rem 3rem;
+    padding-bottom:2rem;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    max-width: 400px;
+    width: 90%;
+    color: #EEEEEE;
+}
+
+.login-confirm-content input {
+    width: 90%;
+    border-radius:5px;
+    padding:5px;
+    margin-top:5px;
 }
 
 .modal__trigger--active {

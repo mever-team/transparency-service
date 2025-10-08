@@ -751,7 +751,12 @@ def serve(
                 (page_size, offset)
             )
         rows = cursor.fetchall()
-        results = [{"id": row[0], "name": row[1], "creator": row[2], "desc": row[3]} for row in rows]
+        added_ids = set()
+        results = []
+        for row in rows:
+            if row[0] in added_ids: continue
+            added_ids.add(row[0])
+            results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3]})
         return jsonify({"results": results, "pages": num_pages, "total": total})
 
     @app.route('/assistants', methods=['GET'])

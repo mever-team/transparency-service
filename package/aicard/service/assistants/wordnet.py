@@ -9,7 +9,7 @@ from nltk.corpus import wordnet as wn
 from aicard.service.logger import Logger
 from urllib.parse import urlparse, urljoin
 from bs4 import BeautifulSoup
-from ...card.fields import Field,LongText
+from ...card.fields import Field, LongText, Options
 
 
 def get_synonyms(heading, stopwords):
@@ -82,7 +82,11 @@ class WordNet(Assistant):
                     if not isinstance(values, dict): continue
                     field_synonyms[cat] = get_synonyms(cat, stop_words)
                     for field, value in values.items():
+                        if isinstance(value, Options):
+                            for option in value.options():
+                                field_synonyms[option] = set(option.lower().split())#get_synonyms(option.lower(), stop_words)
                         field_synonyms[field] = get_synonyms(field+" "+value.description, stop_words)
+
 
                 logger.ok(f"loading complete" 
                         f"\n * {len(scientific_defs)} terms"
@@ -148,11 +152,7 @@ class WordNet(Assistant):
         for tag in soup.find_all(href=True): tag["href"] = urljoin(url, tag["href"])
         for tag in soup.find_all(src=True): tag["src"] = urljoin(url, tag["src"])
         first_header = soup.find(re.compile("^h[1-6]$"))
-        if first_header:
-            header_copy = first_header.__copy__()
-            #for btn in header_copy.find_all(["button", "input"]): btn.decompose()  # but keep <a>
-            title = header_copy.get_text(separator=" ", strip=True)
-        else:  title = ""
+        title = first_header.get_text(separator=" ", strip=True) if first_header else ""
         sections = []
         for header in soup.find_all(re.compile("^h[1-6]$")):
             content = []
@@ -167,6 +167,7 @@ class WordNet(Assistant):
                              " ".join(content).strip()))
         not_used_fields = list()
         has_been_replaced = dict()
+        best_option_matches = dict()
         for heading, content in sections:
             if not content.strip(): continue
             synonyms = get_synonyms(heading, WordNet.stop_words)
@@ -178,6 +179,19 @@ class WordNet(Assistant):
             for cat, values in card.data.items():
                 if not isinstance(values, dict): continue
                 for field, value in values.items():
+                    if isinstance(value, Options):
+                        field_score = (len(synonyms & self.field_synonyms[field])
+                                 + len(synonyms & self.field_synonyms[cat])*0.5
+                                 + len(secondary_synonyms & self.field_synonyms[field])*0.2
+                                 + len(secondary_synonyms & self.field_synonyms[cat])*0.2
+                                 )
+                        for option in value.options():
+                            normalized_option = cat+"__"+field+"__"+option
+                            score = field_score + len(synonyms & self.field_synonyms[option])
+                            if score>=field_score+len(self.field_synonyms[option])/2+1 and score > best_option_matches.get(normalized_option, 0):
+                                best_option_matches[normalized_option] = score
+                                value.set(option)
+                        continue
                     if not isinstance(value, LongText): continue
                     #if cat+"__"+field in has_been_replaced: continue
                     score = (len(synonyms & self.field_synonyms[field])
@@ -197,7 +211,7 @@ class WordNet(Assistant):
             else: not_used_fields.append(heading)
 
         if not_used_fields:
-            logger.warn("the following headings could not be matched to a model card based on synonyms"
+            logger.warn("the following headings could be fully added to the description based on synonyms"
                         + ", ".join(not_used_fields), user=self.alias)
         if not card.model.name: card.model.name = title
         if not card.model.home: card.model.home = url
