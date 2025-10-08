@@ -16,4 +16,4 @@ RUN pip install kagglehub==0.3.12 --root-user-action=ignore
 RUN pip install flask==3.1.1 --root-user-action=ignore
 RUN pip install gunicorn==23.0.0 --root-user-action=ignore
 
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "ui.full_server:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "ui.full_server:app"]
