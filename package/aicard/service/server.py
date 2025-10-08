@@ -476,6 +476,58 @@ def serve(
         conn.insert_user('pending_users', username, email, password)
         return jsonify({"status": "pending approval"}), 201
 
+    @app.route("/ping", methods=["GET"])
+    def ping():
+        """
+        Checks if the bearer token is valid.
+        If valid, echoes it back and refreshes its expiration.
+        Otherwise returns an empty string.
+        ---
+        tags:
+          - Auth
+        parameters:
+          - name: Authorization
+            in: header
+            type: string
+            required: true
+            description: Bearer token to check validity.
+        responses:
+          200:
+            description: Token is valid; echoed back with renewed expiration.
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                expires_in:
+                  type: integer
+          200:
+            description: Empty string if invalid or expired.
+        """
+        auth = request.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            return ""
+
+        parts = auth.strip().split()
+        if len(parts) != 2 or parts[0] != "Bearer":
+            return ""
+
+        token = parts[1]
+        expiry = token2expiration.get(token)
+        if not expiry or time.time() > expiry:
+            # Clean up expired entries
+            token2expiration.pop(token, None)
+            token2user.pop(token, None)
+            return ""
+
+        # Valid token: refresh expiration
+        token2expiration[token] = time.time() + token_expiration_secs
+        return jsonify({
+            "token": token,
+            "expires_in": token_expiration_secs
+        })
+
+
     @app.route("/login", methods=["POST"])
     def login_user():
         """

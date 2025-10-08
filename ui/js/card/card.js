@@ -164,10 +164,12 @@ $(document).ready(function () {
                                 $('.menu div:first-child').addClass('active');
 
                             });
-                            if (!($('.light.arrow').length > 0)&& empty_card_flag) {
+                            if (!($('.light.arrow').length > 0)&& empty_card_flag && token) {
                                 document.getElementById('empty_card_screen').style.display = 'flex';
-                                empty_card_flag=false
+                                empty_card_flag=false;
                             }
+                            else
+                                empty_card_flag=false;
                         },
                         error: function (xhr, status, error) {
                             try {
