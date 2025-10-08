@@ -49,6 +49,7 @@ class Options(Field):
     def __html__(self):
         return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "list:"+",".join(self.__options)}
 
+# Ollama pattern issue: https://github.com/ollama/ollama/issues/10591
 class Pattern(Field):
     def __init__(self, regex: str, description: str=""):
         self.__pattern = regex

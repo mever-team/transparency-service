@@ -39,13 +39,27 @@ class Prompter(Assistant):
         for tag in soup.find_all(src=True): tag["src"] = urljoin(url, tag["src"])
         text = soup.get_text(strip=True)
 
+
         output_formats = card.json_schema_per_category()
         # Extra parameterization
-        output_formats['model']['required'] = ['name', 'overview','author', 'use_case']
-        output_formats['considerations']['required'] = ['use_case']
-        output_formats['performance']['required'] = ['analysis']
+
         output_formats['model']['properties']['overview']['minLength'] = 500
-        output_formats['considerations']['properties']['use_case']['minLength'] = 10
+        
+        output_formats['training_set']['properties']['training_set_purpose'] = output_formats['training_set']['properties'].pop('motivation')
+        output_formats['eval_set']['properties']['eval_set_purpose'] = output_formats['eval_set']['properties'].pop('motivation')
+        output_formats['performance']['properties']['performance_insights'] = output_formats['performance']['properties'].pop('analysis')
+        output_formats['performance']['properties']['eval_test_metrics'] = output_formats['performance']['properties'].pop('metrics')
+        
+        output_formats['training_set']['properties']['training_set_purpose']['title'] = 'training_set_purpose'
+        output_formats['eval_set']['properties']['eval_set_purpose']['title'] = 'eval_set_purpose'
+        output_formats['performance']['properties']['performance_insights']['title'] = 'performance_insights'
+        output_formats['performance']['properties']['eval_test_metrics']['title'] = 'eval_test_metrics'
+
+        output_formats['performance']['properties']['performance_insights']['minLength'] = 200
+        
+        output_formats['model']['required'] = ['name', 'overview','author']
+        output_formats['considerations']['required'] = ['use_case']
+        output_formats['performance']['required'] = ['performance_insights']
         for category, values in output_formats.items():
             if 'more' in values['properties']:
                 values['properties'].pop('more')
@@ -84,6 +98,9 @@ class Prompter(Assistant):
                     completion = json.loads(completion)
                     break
                 except (json.JSONDecodeError, TypeError): logger.warn("agent.completion produced an invalid json. Requesting completion again")
+            if 'eval_set_purpose' in completion: completion['motivation'] = completion.pop('eval_set_purpose')
+            if 'performance_insights' in completion: completion['analysis'] = completion.pop('performance_insights')
+            if 'eval_test_metrics' in completion: completion['metrics'] = completion.pop('eval_test_metrics')
             for field, value in values.items():
                 if field not in completion: continue
                 value.set(
