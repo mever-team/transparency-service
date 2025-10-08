@@ -43,6 +43,7 @@ class Prompter(Assistant):
         # Extra parameterization
         output_formats['model']['required'] = ['name', 'overview','author', 'use_case']
         output_formats['considerations']['required'] = ['use_case']
+        output_formats['performance']['required'] = ['analysis']
         output_formats['model']['properties']['overview']['minLength'] = 500
         output_formats['considerations']['properties']['use_case']['minLength'] = 10
         for category, values in output_formats.items():

@@ -48,3 +48,20 @@ class Options(Field):
         return self.__contents != self.__contents[0]
     def __html__(self):
         return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "list:"+",".join(self.__options)}
+
+class Pattern(Field):
+    def __init__(self, regex: str, description: str=""):
+        self.__pattern = regex
+        self.__contents = ''
+        self.description = description
+    def set(self, value):
+        if isinstance(value, Field): value = value.get()
+        self.__contents = value
+    def pattern(self):
+        return self.__pattern
+    def get(self):
+        return self.__contents
+    def __bool__(self):
+        return bool(self.__contents)
+    def __html__(self):
+        return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "long text"}

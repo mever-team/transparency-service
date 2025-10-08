@@ -293,7 +293,7 @@ $(document).ready(function () {
                 $('.menu').find('div').find('.light').removeClass('arrow');
                 $('.menu').find('div').find('.light').addClass('square');
 
-                ["model", "considerations", "training_set", "eval_set", "analysis", "safety"].forEach((sectionName, index) => {
+                ["model", "considerations", "training_set", "eval_set", "performance", "safety"].forEach((sectionName, index) => {
                     let section = cardJson.data.filter(section => section.name !== "related").find(s => s.name === sectionName);
                     let hasValue = false;
 
@@ -401,7 +401,7 @@ $(document).ready(function () {
                     $('.menu').find('div').find('.light').removeClass('arrow');
                     $('.menu').find('div').find('.light').addClass('square');
 
-                    ["model", "considerations", "training_set", "eval_set", "analysis", "safety"].forEach((sectionName, index) => {
+                    ["model", "considerations", "training_set", "eval_set", "performance", "safety"].forEach((sectionName, index) => {
                         let section = cardJson.data.filter(section => section.name !== "related").find(s => s.name === sectionName);
                         let hasValue = false;
 
@@ -469,7 +469,7 @@ $(document).ready(function () {
                     $('.menu').find('div').find('.light').removeClass('arrow');
                     $('.menu').find('div').find('.light').addClass('square');
 
-                    ["model", "considerations", "training_set", "eval_set", "analysis", "safety"].forEach((sectionName, index) => {
+                    ["model", "considerations", "training_set", "eval_set", "performance", "safety"].forEach((sectionName, index) => {
                         let section = cardJson.data.filter(section => section.name !== "related").find(s => s.name === sectionName);
                         let hasValue = false;
 

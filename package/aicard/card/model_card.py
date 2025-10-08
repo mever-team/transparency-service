@@ -7,7 +7,7 @@ import rich
 import io
 from aicard.card.traits.html import HTMLRenderer
 from aicard.card.dot_dict import DotDict
-from aicard.card.fields import ShortText, LongText, Options, Field
+from aicard.card.fields import ShortText, LongText, Options, Field, Pattern
 from rich.markdown import Markdown
 from pydantic import BaseModel, create_model
 from pydantic import Field as pydantic_Field
@@ -42,7 +42,7 @@ class ModelCard:
                 more=LongText()),
             considerations=DotDict(
                 use_case=LongText("This section details whether the model was developed with general or specific tasks in mind (e.g., plant recognition worldwide or in the Pacific Northwest). The use cases may be as broadly or narrowly defined as the developers intend. For example, if the model was built simply to label images, then this task should be indicated as the primary intended use case."),
-                oversight=Options(["unknown","self-learning", "autonomous or human-in-the-loop", "human-on-the-loop", "human-in-command"]),
+                oversight=Options(["unknown","self-learning/autonomous", "human-in-the-loop", "human-on-the-loop", "human-in-command"]),
                 users=LongText("For example, was the model developed for hobbyists, or enterprise solutions? This helps users gain insight into how robust the model may be to different kinds of inputs."),
                 out_of_scope_use=LongText("Here, the model card should highlight technology that the model might easily be confused with, or related contexts that users could try to apply the model to. This section may provide an opportunity to recommend a related or similar model that was designed to better meet that particular need, where possible. This section is inspired by warning labels on food and toys, and similar disclaimers presented in electronic datasheets. Examples include “not for use on text examples shorter than 100 tokens” or “for use on black-and-white images only; please consider our research group’s full-colour-image classifier for colour images.” Examples include “not for use on text examples shorter than 100 words."),
                 limitations=LongText(),
@@ -68,9 +68,9 @@ class ModelCard:
                 update=Options(["unknown", "no", "yes"], "Did you put in place measures to ensure that the data (including training data) used to develop the AI system is up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),
                 more=LongText()
             ),
-            analysis=DotDict(
-                analysis=LongText("Analysis of the evaluation results."),
-                metrics=LongText("Include any performance metrics here."),
+            performance=DotDict(
+                analysis=LongText("Analyse and explain performance results of your model."),
+                metrics=LongText("Include any performance metrics here e.g. accuracy, precision, Recall, ROC-AUC, F1-score."),
                 thresholds=LongText("If decision thresholds are used, what are they, and why were those decision thresholds chosen? When the model card is presented in a digital format, a threshold slider should ideally be available to view performance parameters across various decision thresholds."),
                 uncertainty=LongText("How are the measurements and estimations of these metrics calculated? For example, this may include standard deviation, variance, confidence intervals, or KL divergence. Details of how these values are approximated should also be included (e.g., average of 5 runs, 10-fold cross-validation)."),
                 fairness=LongText("How did the model perform with respect to each factor. Quantitative analyses should be disaggregated, that is, broken down by the chosen factors. Quantitative analyses should provide the results of evaluating the model according to the chosen metrics, providing confidence interval values when possible. Parity on the different metrics across disaggregated population subgroups corresponds to how fairness is often defined. For an example, see figure 2. in https://arxiv.org/pdf/1810.03993.pdf"),
@@ -227,7 +227,8 @@ o Did you inform end-users and subjects of existing or potential risks?<br>
             sub_model_fields = {}
             for field, value in values.items():
                 field_args = {'default': value.get(),'description': value.description}
-                if isinstance(field, Options): field_args['enum'] = value.options()
+                if isinstance(value, Options): field_args['enum'] = value.options()
+                if isinstance(value, Pattern): field_args['pattern'] = value.pattern()
                 sub_model_fields[field] = (str, pydantic_Field(**field_args))
             sub_model = create_model(category, **sub_model_fields)
             sub_models[category] = sub_model
@@ -246,7 +247,8 @@ o Did you inform end-users and subjects of existing or potential risks?<br>
             model_fields = {}
             for field, value in values.items():
                 field_args = {'default': value.get(),'description': value.description}
-                if isinstance(field, Options): field_args['enum'] = value.options()
+                if isinstance(value, Options): field_args['enum'] = value.options()
+                if isinstance(value, Pattern): field_args['pattern'] = value.pattern()
                 model_fields[field] = (str, pydantic_Field(**field_args))
             model = create_model(category, **model_fields)()
             models[category] = model
