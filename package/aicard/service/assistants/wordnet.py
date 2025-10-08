@@ -135,8 +135,8 @@ class WordNet(Assistant):
 
     def complete(self, card: ModelCard, url: str, logger: Logger, user_messages: list[str]):
         user_messages[-1] = (
-            f"<h2>{self.alias} autofill</h2>"
-            f"Matching by dictionary definitios"
+            f"<h2>{self.alias} import</h2>"
+            f"Matching by dictionary definitions."
         )
         self._wait_until_ready()
         logger.info("Submitted: " + str(url), user=self.alias)
@@ -202,7 +202,7 @@ class WordNet(Assistant):
         if not card.model.name: card.model.name = title
         if not card.model.home: card.model.home = url
         user_messages[-1] = (
-            f"<h2>{self.alias} autofill</h2>"
+            f"<h2>{self.alias} import</h2>"
             f"Saving..."
         )
 

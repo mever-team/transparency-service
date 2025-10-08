@@ -27,7 +27,7 @@ class Prompter(Assistant):
     def complete(self, card: ModelCard, url: str, logger: Logger, user_messages: list[str]):
         logger.info("Submitted: " + str(url), user=self.alias)
         user_messages.clear()
-        user_messages.append(f"<h2>{self.alias} autofill</h2>")
+        user_messages.append(f"<h2>{self.alias} import</h2>")
 
         parsed = urlparse(url)
         if not parsed.scheme in ("http", "https") or not parsed.netloc: raise Exception("Invalid url format")
@@ -64,7 +64,7 @@ class Prompter(Assistant):
                 f"accent-color: #79CFDC; border: 2px solid #1F1F1F;'></progress>"
             )
             user_messages[-1] = (
-                f"<h2>{self.alias} autofill</h2>"
+                f"<h2>{self.alias} import</h2>"
                 f"{progress_html}<br>"
                 f"<b>Working on {category.replace('_', ' ')}</b>"
             )

@@ -620,14 +620,14 @@ def serve(
             if filter=="--by" and i<len(parts)-1:
                 i += 1
                 owner.append(parts[i])
-            # if filter=="--top" and i<len(parts)-1:
+            # elif filter=="--top" and i<len(parts)-1:
             #     i += 1
             #     try:
             #         page_size = int(parts[i])
             #     except: pass
             #     if page_size<=1: page_size = 1
             #     if page_size>=50: page_size = 50
-            if filter == "--more":
+            elif filter == "--more":
                 page_size = 20
             else:
                 new_parts.append(filter)
