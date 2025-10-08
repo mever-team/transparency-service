@@ -50,8 +50,7 @@ class ModelCard:
                 instructions=LongText("Provide any other information which helps users use the model. Ideally, add a code snippet illustrating a typical use-case. You can also add a link to a GitHub repository with usage instructions. This is inspired by model cards such as this: https://huggingface.co/microsoft/beit-base-patch16-224-pt22k-ft22k"),
                 inputs_outputs=LongText("Provide a short description of the model's inputs and outputs"),
                 factors=LongText("What are foreseeable salient factors for which model performance may vary, and how were these determined? "),
-                hardware=LongText("What are hardware requirements for training the model (e.g. CPU or GPU)?"),
-                inference=LongText("What are hardware requirements for deploying the model (e.g. CPU or GPU)? What do users need to take into account regarding hardware regarding deployment and inference?"),
+                hardware=LongText("What are hardware requirements for training and inference (e.g. CPU or GPU)? What do users need to take into account regarding hardware regarding deployment?"),
                 more=LongText()),
             training_set=DotDict(
                 datasets=LongText("What dataset(s) were used tot train the model? If possible, please add a link to details on the respective datasets used, for example a datasheet."),
