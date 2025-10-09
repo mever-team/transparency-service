@@ -10,7 +10,7 @@ $(function () {
     });
     $('#new_card').click(() => {
         $.ajax({
-            url: "http://127.0.0.1:5000/card",
+            url: api_url+"/card",
             method: "POST",
             contentType: "application/json",
             headers: { "Authorization": "Bearer " + token },
@@ -54,7 +54,7 @@ function autocomplete_populate() {
         const q = $topic.val().trim();
         if (first) $('#loading').show();
         $.ajax({
-            url: "http://127.0.0.1:5000/cards",
+            url: api_url+"/cards",
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({ query: q }),
@@ -103,7 +103,7 @@ document.getElementById('login-confirm-btn').onclick = function () {
         "username": document.getElementById('password').value
     }
     $.ajax({
-        url: "http://127.0.0.1:5000/login",
+        url: api_url+"/login",
         method: "POST",
         contentType: "application/json",
         dataType: "json",
