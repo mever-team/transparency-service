@@ -122,7 +122,7 @@ $(document).ready(function () {
                                             .attr("data-tooltip", field.description)
                                             .text("?");
 
-                                        $fieldInfo = $("<span>").append($fieldInfo).append($fieldName);
+                                        $fieldInfo = $("<span>").addClass("field-info").append($fieldInfo).append($fieldName);
 
                                         // Append tooltip inside field-name
                                         let $fieldValue;
@@ -251,7 +251,7 @@ $(document).ready(function () {
         /* const fieldName = $(this).siblings(".field-name").text().replace(":", "").toLowerCase().replace(/ /g, "_");
          const sectionName = $(this).closest("section").find("h2").text().toLowerCase().replace(/ /g, "_");
  */
-        const fieldName = $(this).siblings(".field-name").contents().filter((_, el) => el.nodeType === 3).text().replace(":", "").toLowerCase().replace(/ /g, "_");
+        const fieldName = $(this).siblings(".field-info").contents()[1].outerText.replace(":", "").trim().toLowerCase().replace(/ /g, "_");
         const sectionName = $(this).closest("section").find("h2").contents().filter((_, el) => el.nodeType === 3).text().toLowerCase().replace(/ /g, "_");
 
         // Find section + field in jsonData and update value
