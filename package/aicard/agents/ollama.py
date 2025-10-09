@@ -63,3 +63,9 @@ Instructions:
             if indices:
                 response = response[min(indices) + 1:].strip()
         return response
+
+class Qwen(Ollama):
+    def name(self):
+        return "Qwen"
+    def __init__(self):
+        super().__init__(model="qwen2.5:1.5b")

@@ -11,10 +11,10 @@
 
 from aicard.service import serve
 from aicard.service.assistants import WordNet, Prompter
-from aicard.agents import Ollama
+from aicard.agents import Ollama, Qwen
 from threading import Thread
 
-app, gc = serve({"wordnet": WordNet(), "ollama": Prompter(Ollama())}, env="ui/.env")
+app, gc = serve({"wordnet": WordNet(), "ollama": Prompter(Ollama()), "qwen": Prompter(Qwen())}, env="ui/.env")
 
 if __name__ == "__main__":
     Thread(target=gc, daemon=True).start()
