@@ -4,9 +4,9 @@ $(function () {
     $("#topic").trigger("keyup");
     if (localStorage.getItem('modalDismissed') !== 'true')
         $('.modal__trigger[data-modal="#modal_help"]').click();
-    $('demo-close').on('click', () => {
+
+    $('body').on('click', '.demo-close', function () {
         localStorage.setItem('modalDismissed', 'true');
-        $('.demo-close').click();
     });
     $('#new_card').click(() => {
         $.ajax({
