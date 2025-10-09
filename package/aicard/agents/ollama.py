@@ -41,7 +41,7 @@ Instructions:
             model: str='mistral:latest',
             base_url: str=os.getenv("OLLAMA_BASE_URL","http://localhost:11434"),
             name=None,
-            description="Powered by Ollama."
+            description="Powered by Ollama.",
         ):
         if name is None:
             name = "🦙 "+model.split(":")[0]
@@ -53,7 +53,7 @@ Instructions:
         test = requests.post(self._url, json={
             "model": model,
             "stream": False,
-            "messages": [{"role": "user", "content": "Request test"}]
+            "messages": [{"role": "user", "content": "Request test"}],
         })
         assert test.status_code == 200, f"Failed to initialize model '{model}'\nResponse: {test.text}"
 

@@ -102,7 +102,7 @@ class Prompter(Assistant):
                     break
                 except (json.JSONDecodeError, TypeError):
                     completion = dict()
-                    logger.warn(f"invalid json - retrying {retry}/{max(self.max_retries,1)}", user=self.alias)
+                    logger.warn(f"invalid json - retrying {retry+1}/{max(self.max_retries,1)}", user=self.alias)
             if not completion: continue
             if 'eval_set_purpose' in completion: completion['motivation'] = completion.pop('eval_set_purpose')
             if 'performance_insights' in completion: completion['analysis'] = completion.pop('performance_insights')
