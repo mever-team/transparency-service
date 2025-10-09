@@ -33,11 +33,12 @@ services:
 #    env_file:
 #      - .env
     volumes:
-      - ./ui:/app/ui
+      - ./db:/app/db
     networks:
       - ollama_net
     environment:
       OLLAMA_BASE_URL: http://ollama:11434
+      PYTHONUNBUFFERED: 1
     restart: unless-stopped
 
 volumes:
