@@ -54,7 +54,7 @@ $(document).ready(function () {
 
     function checkLocked(interval) {
         $.ajax({
-            url: api_url+"/card/" + id + "/locked",
+            url: "/card/" + id + "/locked",
             method: "GET",
             contentType: "application/json",
             dataType: "json",
@@ -71,7 +71,7 @@ $(document).ready(function () {
                     }
 
                     $.ajax({
-                        url: api_url+"/card/" + id,
+                        url: "/card/" + id,
                         method: "GET",
                         contentType: "application/json",
                         dataType: "json",
@@ -203,7 +203,7 @@ $(document).ready(function () {
 
     if(token)
         $.ajax({
-            url: api_url+"/assistants",
+            url: "/assistants",
             method: "GET",
             headers: {
                 "Authorization": "Bearer " + token
@@ -279,7 +279,7 @@ $(document).ready(function () {
         //$('#saveJson').attr("disabled", true);
         $("#saveJson").fadeOut();
         $.ajax({
-            url: api_url+"/card/" + id,
+            url: "/card/" + id,
             method: "PUT",
             contentType: "application/json",
             dataType: "json",
@@ -347,7 +347,7 @@ $(document).ready(function () {
 
         // Call AJAX DELETE
         $.ajax({
-            url: api_url+"/card/" + id, // replace id
+            url: "/card/" + id, // replace id
             method: "DELETE",
             headers: {
                 "Authorization": "Bearer " + token
@@ -387,7 +387,7 @@ $(document).ready(function () {
             document.getElementById('modal-refine-screen').style.display = 'none';
             $("#saveJson").fadeOut();
             $.ajax({
-                url: api_url+"/card/" + id,
+                url: "/card/" + id,
                 method: "PUT",
                 contentType: "application/json",
                 dataType: "json",
@@ -416,7 +416,7 @@ $(document).ready(function () {
                     });
 
                     $.ajax({
-                        url: api_url+"/assistant/" + assistant + '/refine/' + id,
+                        url: "/assistant/" + assistant + '/refine/' + id,
                         method: "POST",
                         contentType: "application/json",
                         dataType: "json",
@@ -455,7 +455,7 @@ $(document).ready(function () {
             $("#saveJson").find('.btn-confirmation').fadeOut();
 
             $.ajax({
-                url: api_url+"/card/" + id,
+                url: "/card/" + id,
                 method: "PUT",
                 contentType: "application/json",
                 dataType: "json",
@@ -485,7 +485,7 @@ $(document).ready(function () {
 
                     if ($('#card-url').is(":visible")) {
                         $.ajax({
-                            url: api_url+"/assistant/" + assistant + '/complete/' + id,
+                            url: "/assistant/" + assistant + '/complete/' + id,
                             method: "POST",
                             contentType: "application/json",
                             dataType: "json",
@@ -513,7 +513,7 @@ $(document).ready(function () {
                         let formData = new FormData();
                         formData.append("file", uploaded_file); // "file" is the field name your backend expects
                         $.ajax({
-                            url: api_url+"/assistant/" + assistant + '/complete/' + id,
+                            url: "/assistant/" + assistant + '/complete/' + id,
                             method: "POST",
                             headers: {
                                 "Authorization": "Bearer " + token
