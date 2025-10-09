@@ -15,6 +15,7 @@ import time
 from threading import Thread
 from dotenv import dotenv_values
 from werkzeug.exceptions import HTTPException
+import re
 
 # def create_progress_bar(quality: float) -> str:
 #     percent = max(0.0, min(1.0, quality)) * 100
@@ -85,8 +86,11 @@ class ModelCardEntry:
         assert self.card_id is not None, "Internal error: card_id has not been set for a cached card"
         quality = self.card.quality()
         summary = self.card.summary()
+
+        def strip_html_tags(text: str) -> str:
+            return re.sub(r'<[^>]*>', '', text)
         if self.card.model.name:
-            self.card.title = truncate(self.card.model.name, 30)
+            self.card.title = truncate(strip_html_tags(self.card.model.name), 30)
         desc = create_progress_bar(quality)
         if summary:
             desc += " for "+summary
