@@ -382,7 +382,7 @@ $(document).ready(function () {
     }
 
     $(document).on("click", ".card-button", function () {
-        if (($(this).parents('#modal_refinement').length)) {
+        if (($(this).parents('#modal-refine-screen').length)) {
             let assistant = $(this).attr("id");
             document.getElementById('modal-refine-screen').style.display = 'none';
             $("#saveJson").fadeOut();
