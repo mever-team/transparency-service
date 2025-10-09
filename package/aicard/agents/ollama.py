@@ -31,9 +31,22 @@ Instructions:
 - Keep the same content length as the original."""
     }
     def name(self):
-        return "🦙 "+self.__class__.__name__
+        return self._name
 
-    def __init__(self, model: str='mistral:latest', base_url: str=os.getenv("OLLAMA_BASE_URL","http://localhost:11434")):
+    def description(self):
+        return self._description
+
+    def __init__(
+            self,
+            model: str='mistral:latest',
+            base_url: str=os.getenv("OLLAMA_BASE_URL","http://localhost:11434"),
+            name=None,
+            description="Powered by Ollama."
+        ):
+        if name is None:
+            name = "🦙 "+model.split(":")[0]
+        self._description = description
+        self._name = name
         self._base_url = base_url
         self._url = f"{base_url}/api/chat"
         self._model = model

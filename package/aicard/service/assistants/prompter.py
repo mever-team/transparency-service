@@ -17,12 +17,14 @@ from ...card.fields import LongText
 class Prompter(Assistant):
     def __init__(self,
                  agent: Agent,
-                 external_get_timeout_sec=1):
+                 external_get_timeout_sec=1,
+                 max_retries=3):
         super().__init__(
             alias=agent.name(),
-            description="<h1>"+agent.name()+"</h1>Slow thinker. Powered by the namesake LLM.")
+            description="<h1>"+agent.name()+"</h1>Slow thinker. "+agent.description())
         self.agent = agent
         self.external_get_timeout_sec = external_get_timeout_sec
+        self.max_retries = max_retries
 
     def complete(self, card: ModelCard, url: str, logger: Logger, user_messages: list[str]):
         logger.info("Submitted: " + str(url), user=self.alias)
@@ -90,26 +92,32 @@ class Prompter(Assistant):
             params = {"format": category_format}
 
             # Ollama bug workaround: invalid json
-            while True:
+            completion = dict()
+            for retry in range(max(1,self.max_retries)):
                 completion = self.agent.completion(prompt, **params)
                 # Ollama bug workaround: https://github.com/ollama/ollama/issues/1910
                 time.sleep(1)
                 try:
                     completion = json.loads(completion)
                     break
-                except (json.JSONDecodeError, TypeError): logger.warn("agent.completion produced an invalid json. Requesting completion again")
+                except (json.JSONDecodeError, TypeError):
+                    completion = dict()
+                    logger.warn(f"invalid json - retrying {retry}/{max(self.max_retries,1)}", user=self.alias)
+            if not completion: continue
             if 'eval_set_purpose' in completion: completion['motivation'] = completion.pop('eval_set_purpose')
             if 'performance_insights' in completion: completion['analysis'] = completion.pop('performance_insights')
             if 'eval_test_metrics' in completion: completion['metrics'] = completion.pop('eval_test_metrics')
             for field, value in values.items():
                 if field not in completion: continue
-                if not completion[field]: continue
+                new_value = completion[field]
+                if not new_value: continue
+                new_value = markdown2.markdown(new_value, extras=["markdown-in-html", "code-friendly"])
                 if value.get():
                     value.set(
-                        f"<details>\n<summary><h2>Update on {datetime.datetime.now().strftime('%Y %B %d, %I:%M%p')}</h2></summary>\n\n<div class=\"card-details-content\">\n{completion[field]}\n</div>\n</details>\n\n"
+                        f"<details>\n<summary><h2>Update on {datetime.datetime.now().strftime('%Y %B %d, %I:%M%p')}</h2></summary>\n\n<div class=\"card-details-content\">\n{new_value}\n</div>\n</details>\n\n"
                         f"{value.get()}"
                     )
-                else: value.set(completion[field])
+                else: value.set(new_value)
         if not card.model.home: card.model.home = url
         user_messages[-1] = (
             f"<h2>{self.alias} refinement</h2>"

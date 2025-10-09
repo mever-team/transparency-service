@@ -1,6 +1,8 @@
 class Agent:
     def name(self):
         return "🤖 "+self.__class__.__name__
+    def description(self):
+        return "Powered by the namesake LLM."
     def _run(self, content: str, task: str, **params): raise NotImplementedError("This is an abstract agent class")
     def summarization(self, content: str, **params): return self._run(content, task="summarization", **params)
     def simplification(self, content: str, **params): return self._run(content, task="simplification", **params)
