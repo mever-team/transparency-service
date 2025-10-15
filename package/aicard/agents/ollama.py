@@ -28,7 +28,8 @@ Instructions:
 - Maintain an academic tone—the text should still feel like it belongs in a research paper.
 - Rephrase rather than omit—if a concept is difficult to explain simply, break it down into intuitive steps.
 - Use precise language—do not oversimplify to the point of losing meaning. 
-- Keep the same content length as the original."""
+- Keep the same content length as the original.""",
+        "vision": "Provide explanation about the image."
     }
     def name(self):
         return self._name
@@ -39,6 +40,7 @@ Instructions:
     def __init__(
             self,
             model: str='mistral:latest',
+            vision_model: str='gemma3:4b',
             base_url: str=os.getenv("OLLAMA_BASE_URL","http://localhost:11434"),
             name=None,
             description="Powered by Ollama.",
@@ -50,6 +52,7 @@ Instructions:
         self._base_url = base_url
         self._url = f"{base_url}/api/chat"
         self._model = model
+        self._vision_model = vision_model
         test = requests.post(self._url, json={
             "model": model,
             "stream": False,
@@ -60,11 +63,19 @@ Instructions:
     def _run(self, content: str, task: str, **params):
         assert isinstance(content, str), "Content must be of type str"
         assert task in Ollama.tasks, "Not supported task: "+task
-        payload = {
-            "model": self._model,
-            "stream": False,
-            "messages": [{"role": "system", "content": Ollama.tasks[task]}, {"role": "user", "content": content}]
-        }
+        if task == "vision":
+            # TODO: convert content to base64
+            payload = {
+                "model": self._vision_model,
+                "stream": False,
+                "messages": [{"role": "user", "content": Ollama.tasks[task], "images": [content]}]
+            }
+        else:
+            payload = {
+                "model": self._model,
+                "stream": False,
+                "messages": [{"role": "system", "content": Ollama.tasks[task]}, {"role": "user", "content": content}]
+            }
         if params:
             payload.update(params)
         response = requests.post(self._url, json=payload)
@@ -76,3 +87,4 @@ Instructions:
             if indices:
                 response = response[min(indices) + 1:].strip()
         return response
+

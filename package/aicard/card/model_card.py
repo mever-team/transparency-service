@@ -45,7 +45,6 @@ class ModelCard:
                 oversight=Options(["unknown","self-learning/autonomous", "human-in-the-loop", "human-on-the-loop", "human-in-command"]),
                 users=LongText("For example, was the model developed for hobbyists, or enterprise solutions? This helps users gain insight into how robust the model may be to different kinds of inputs."),
                 out_of_scope_use=LongText("Here, the model card should highlight technology that the model might easily be confused with, or related contexts that users could try to apply the model to. This section may provide an opportunity to recommend a related or similar model that was designed to better meet that particular need, where possible. This section is inspired by warning labels on food and toys, and similar disclaimers presented in electronic datasheets. Examples include “not for use on text examples shorter than 100 tokens” or “for use on black-and-white images only; please consider our research group’s full-colour-image classifier for colour images.” Examples include “not for use on text examples shorter than 100 words."),
-                limitations=LongText(),
                 software=LongText("What are software requirements and dependencies? If possible, please add a link to an open source repository like GitHub with details on dependencies, the environment and documentation."),
                 instructions=LongText("Provide any other information which helps users use the model. Ideally, add a code snippet illustrating a typical use-case. You can also add a link to a GitHub repository with usage instructions. This is inspired by model cards such as this: https://huggingface.co/microsoft/beit-base-patch16-224-pt22k-ft22k"),
                 inputs_outputs=LongText("Provide a short description of the model's inputs and outputs"),
@@ -281,3 +280,6 @@ o Did you inform end-users and subjects of existing or potential risks?<br>
     def save_html(self, filename: str):
         with open(filename, "w", encoding="utf-8") as f:
             f.write(self.to_html())
+
+
+
