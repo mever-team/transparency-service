@@ -2,6 +2,7 @@ import requests
 import os
 import json
 from aicard.agents.agent import Agent
+from aicard.utils.to_base64 import to_base64
 
 
 class Ollama(Agent):
@@ -64,7 +65,7 @@ Instructions:
         assert isinstance(content, str), "Content must be of type str"
         assert task in Ollama.tasks, "Not supported task: "+task
         if task == "vision":
-            # TODO: convert content to base64
+            content = to_base64(content)
             payload = {
                 "model": self._vision_model,
                 "stream": False,
