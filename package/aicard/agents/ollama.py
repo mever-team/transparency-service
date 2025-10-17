@@ -65,7 +65,9 @@ Instructions:
         assert isinstance(content, str), "Content must be of type str"
         assert task in Ollama.tasks, "Not supported task: "+task
         if task == "vision":
-            content = to_base64(content)
+            content, status = to_base64(content)
+            if status != 200:
+                return  content
             payload = {
                 "model": self._vision_model,
                 "stream": False,
