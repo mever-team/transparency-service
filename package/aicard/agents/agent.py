@@ -8,3 +8,4 @@ class Agent:
     def simplification(self, content: str, **params): return self._run(content, task="simplification", **params)
     def completion(self, content: str, **params): return self._run(content, task="completion", **params)
     def hint(self, content: str, **params): return self._run(content, task="hint", **params)
+    def vision(self, content: str, **params): return self._run(content, task="vision", **params)
