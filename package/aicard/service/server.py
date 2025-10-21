@@ -260,10 +260,29 @@ def serve(
 
     @app.route("/<path:path>")
     def static_proxy(path):
+        safe_path = os.path.abspath(os.path.join(static, path)).lower()
+        if not safe_path.startswith(static):
+            logger.warn(f"WE ARE UNDER ATTACK!\n * Directory escape attempt blocked: {safe_path!r}\n"
+                        "* Compared to the static ")
+            abort(403)
+        if (not safe_path.endswith(".html") and not safe_path.endswith(".css")
+                and not safe_path.endswith(".js") and not safe_path.endswith(".png") and not safe_path.endswith(".svg")
+                and not safe_path.endswith(".jpg")
+        ):
+            logger.warn(f"WE ARE UNDER ATTACK!\n * non-web file access blocked: {safe_path!r}")
+            abort(403)
+        if ".env" in safe_path:
+            logger.warn(f"WE ARE UNDER ATTACK!\n * .env file access blocked\n"
+                        " * THIS MESSAGE REVEALS THAT  TWO MORE LAYERS OF PROTECTION WERE BYPASSED)")
+            abort(403)
+        if "env" in safe_path:
+            logger.warn(f"WE ARE UNDER ATTACK!\n * file access blocked because it contains `env` in its name\n"
+                        " * THIS MESSAGE REVEALS THAT THREE MORE LAYERS OF PROTECTION WERE BYPASSED)")
+            abort(403)
         try:
             return send_from_directory(static, path)
         except Exception:
-            logger.info("Path does not exist (likely an external resource): "+path)
+            logger.info(f"Path does not exist (likely an external resource): {path!r}")
             return ""
 
     @app.errorhandler(500)

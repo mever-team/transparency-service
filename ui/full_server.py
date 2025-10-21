@@ -16,7 +16,7 @@ from threading import Thread
 
 app, gc = serve({"wordnet": WordNet(),
                  # "qwen_fast": Prompter(Ollama("qwen:0.5b", name="🦋 Qwen-small", description="Less accurate but fast LLM.")),
-                 "qwen": Prompter(Ollama("qwen2.5:1.5b", name="🦋 Qwen")),
+                 #"qwen": Prompter(Ollama("qwen2.5:1.5b", name="🦋 Qwen")),
                  "llama": Prompter(Ollama("llama3.2:latest", name="🦙 Llama")),
                  # "ollama": Prompter(Ollama("mistral:latest", name="🌬️ Mistral"))
                  },

@@ -38,7 +38,7 @@ class WordNet(Assistant):
             alias="📚 WordNet",
             description=(
                 "<h1>📚 WordNet</h1>"
-                "Fast and reliant copy-paster. Moves text segments based on a dictionary."
+                "Fast and reliant copy-paster. Moves text segments based on a dictionary of semantically similar terms."
             )
         )
         self.scientific_defs = None
