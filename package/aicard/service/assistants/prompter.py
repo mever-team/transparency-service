@@ -45,13 +45,11 @@ class Prompter(Assistant):
         soup = BeautifulSoup(text, "html.parser")
         for tag in soup.find_all(href=True): tag["href"] = urljoin(url, tag["href"])
         for tag in soup.find_all(src=True): tag["src"] = urljoin(url, tag["src"])
-        # for tag in soup.find_all(href=True): tag["href"] = self.agent.vision(urljoin(url, tag["href"]))
-        # for tag in soup.find_all(src=True): tag["src"] = self.agent.vision(urljoin(url, tag["src"]))
+        # for tag in soup.find_all('img'): tag.replace_with(self.agent.vision(tag['src']))
 
         text = soup.get_text(strip=True)
 
         self._complete(text, "import", card, logger, user_messages)
-
         if not card.model.home: card.model.home = url
         user_messages[-1] = (
             f"<h2>{self.alias} import</h2>"
@@ -114,17 +112,26 @@ class Prompter(Assistant):
     def _complete(self, text: str, task: str, card: ModelCard, logger: Logger, user_messages: list[str]):
 
         output_formats = card.json_schema_per_category()
+        # Extra parameterization
 
         output_formats['model']['properties']['overview']['minLength'] = 500
-        output_formats['training_set']['properties']['training_set_purpose'] = output_formats['training_set']['properties'].pop('motivation')
-        output_formats['eval_set']['properties']['eval_set_purpose'] = output_formats['eval_set']['properties'].pop('motivation')
-        output_formats['performance']['properties']['performance_insights'] = output_formats['performance']['properties'].pop('analysis')
-        output_formats['performance']['properties']['eval_test_metrics'] = output_formats['performance']['properties'].pop('metrics')
+
+        output_formats['training_set']['properties']['training_set_purpose'] = output_formats['training_set'][
+            'properties'].pop('motivation')
+        output_formats['eval_set']['properties']['eval_set_purpose'] = output_formats['eval_set']['properties'].pop(
+            'motivation')
+        output_formats['performance']['properties']['performance_insights'] = output_formats['performance'][
+            'properties'].pop('analysis')
+        output_formats['performance']['properties']['eval_test_metrics'] = output_formats['performance'][
+            'properties'].pop('metrics')
+
         output_formats['training_set']['properties']['training_set_purpose']['title'] = 'training_set_purpose'
         output_formats['eval_set']['properties']['eval_set_purpose']['title'] = 'eval_set_purpose'
         output_formats['performance']['properties']['performance_insights']['title'] = 'performance_insights'
         output_formats['performance']['properties']['eval_test_metrics']['title'] = 'eval_test_metrics'
+
         output_formats['performance']['properties']['performance_insights']['minLength'] = 200
+
         output_formats['model']['required'] = ['name', 'overview', 'author']
         output_formats['considerations']['required'] = ['use_case']
         output_formats['performance']['required'] = ['performance_insights']
@@ -147,7 +154,7 @@ class Prompter(Assistant):
                 f"accent-color: #79CFDC; border: 2px solid #1F1F1F;'></progress>"
             )
             user_messages[-1] = (
-                f"<h2>{self.alias} {task}</h2>"
+                f"<h2>{self.alias} import</h2>"
                 f"{progress_html}<br>"
                 f"<b>Working on {category.replace('_', ' ')}</b>"
             )
