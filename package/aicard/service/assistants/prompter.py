@@ -39,11 +39,9 @@ class Prompter(Assistant):
         soup = BeautifulSoup(text, "html.parser")
         for tag in soup.find_all(href=True): tag["href"] = urljoin(url, tag["href"])
         for tag in soup.find_all(src=True): tag["src"] = urljoin(url, tag["src"])
-        # for tag in soup.find_all(href=True): tag["href"] = self.agent.vision(urljoin(url, tag["href"]))
-        # for tag in soup.find_all(src=True): tag["src"] = self.agent.vision(urljoin(url, tag["src"]))
+        # for tag in soup.find_all('img'): tag.replace_with(self.agent.vision(tag['src']))
 
         text = soup.get_text(strip=True)
-
 
         output_formats = card.json_schema_per_category()
         # Extra parameterization
