@@ -161,7 +161,6 @@ html, body {
     appearance: none;
     border: none;
     cursor: pointer;
-    border-radius: 12px;
     text-align: left;
     font-weight: 700;
     letter-spacing: normal;
@@ -445,7 +444,6 @@ html, body {
 }
 #resultsTable td {
     padding: 0px;
-
 }
 
 #resultsTable td a {
@@ -453,8 +451,7 @@ html, body {
 }
 
 #resultsTable td a:hover {
-    background-color: #2a2a2a;
-    border-radius: 12px;
+    background: linear-gradient(to top, #2a2a2a 10%, #1F1F1F 40%);
 }
 
 #service-title {
