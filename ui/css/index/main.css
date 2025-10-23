@@ -155,7 +155,7 @@ html, body {
     margin-bottom: 25px;
 }
 
-.search_results_button {
+.search_results_button a {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -172,8 +172,6 @@ html, body {
     border-bottom: solid 1px #434343;
     font-family: 'Hero_font', sans-serif;
     float: right;
-    margin-bottom: 12px;
-    margin-top: 12px;
 }
 
 .search_results_button.large {
@@ -446,7 +444,17 @@ html, body {
     table-layout: fixed;
 }
 #resultsTable td {
-    padding-left: 8px;
+    padding: 0px;
+
+}
+
+#resultsTable td a {
+    padding: 20px 20px;
+}
+
+#resultsTable td a:hover {
+    background-color: #2a2a2a;
+    border-radius: 12px;
 }
 
 #service-title {

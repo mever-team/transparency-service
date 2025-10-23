@@ -69,7 +69,7 @@ function autocomplete_populate() {
                         const name = it.name.replace(new RegExp("(" + q + ")", "ig"), "<strong style='color:#79CFDC'>$1</strong>");
                         $tbody.append(`
                             <tr class="search_results_button">
-                                <td><a style="width:160px;text-decoration:none" href="model_card.html?id=${it.id}">
+                                <td><a style="display:block;width:100%;height:100%;text-decoration:none" href="model_card.html?id=${it.id}">
                                     <span style="width:300px;display:block;color:#EEE">${name}</span>
                                     <span style="font-size:13px;color:#79CFDC">${it.desc + " by " + it.creator || "No Description"}</span>
                                 </a></td>
