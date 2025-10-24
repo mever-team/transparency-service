@@ -342,6 +342,11 @@ $(document).ready(function () {
     $("#deleteCard").click(function () {
         document.getElementById('delete-confirm-screen').style.display = 'flex';
     });
+    $(".delete-confirm-screen").click(function (e) {
+        if ($(e.target).is(this)) {
+            $(this).hide();
+        }
+    });
     document.getElementById('confirm-delete-btn').onclick = function () {
         document.getElementById('delete-confirm-screen').style.display = 'none';
 

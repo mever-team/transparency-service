@@ -15,9 +15,9 @@ from aicard.agents import Ollama
 from threading import Thread
 
 app, gc = serve({"wordnet": WordNet(),
-                 # "qwen_fast": Prompter(Ollama("qwen:0.5b", name="🦋 Qwen-small", description="Less accurate but fast LLM.")),
-                 "qwen": Prompter(Ollama("qwen2.5:1.5b", name="🦋 Qwen")),
-                 "llama": Prompter(Ollama("llama3.2:latest", name="🦙 Llama")),
+                 # "qwen_fast": Prompter(Ollama("qwen:0.5b", name="🦋 Qwen-small"")),
+                 "qwen": Prompter(Ollama("qwen2.5:1.5b", name="🦋 Qwen"), description="Less accurate but fast LLM."),
+                 "llama": Prompter(Ollama("llama3.2:latest", name="🦙 Llama"), description="Better results but slow LLM."),
                  # "ollama": Prompter(Ollama("mistral:latest", name="🌬️ Mistral"))
                  },
                 env="ui/.env")

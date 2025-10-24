@@ -175,7 +175,7 @@ var Modal = (function () {
         for (var i = 0; i < len; i++) {
             trigger[i].addEventListener('click', getId, false);
             closers[i].addEventListener('click', close, false);
-            /*modalsbg[i].addEventListener('click', close, false);*/
+            modalsbg[i].addEventListener('click', close, false);
 
             /*modalsbg[i].addEventListener("click", function (e) {
                 console.log(e.target);

@@ -986,6 +986,18 @@ details[open] .card-details-content {
     font-size: 12px;
     font-weight: bold;
     position: relative;
+    cursor: default;
+}
+
+.info-tooltip-modal {
+    width: auto;
+    height: auto;
+    border-radius: 10%;
+    padding: 1%;
+    margin-bottom: 16px;
+    color: white;
+    background-color: #1f1f1f;
+    border: 1px solid white;
 }
 
 .info-tooltip::after {
@@ -998,7 +1010,7 @@ details[open] .card-details-content {
     color: #fff;
     padding: 8px 10px;
     border-radius: 6px;
-    white-space: normal;        /* allow wrapping */
+    white-space: pre-line;        /* allow wrapping */
     word-wrap: break-word;
     width: max-content;         /* fit to text width */
     max-width: 500px;           /* but cap at 500px */
