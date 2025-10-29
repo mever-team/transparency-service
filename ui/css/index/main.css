@@ -478,7 +478,7 @@ html, body {
 
 #resultsTable tbody {
     display: block;
-    max-height: 400px;       /* fixed height */
+    max-height: 500px;       /* fixed height */
     overflow-y: auto;    /* scrollable */
 }
 
