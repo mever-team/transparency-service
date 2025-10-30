@@ -3,19 +3,20 @@ import os.path
 from aicard.card import ModelCard
 from aicard.card.model_card import truncate
 from aicard.service.assistants import Assistant
-from flask import Flask, abort, redirect, request, jsonify, send_from_directory, Response
-from flasgger import Swagger
-from threading import Lock, Thread
 from aicard.service import users
 from aicard.service import converters
 from aicard.service.logger import Logger
-import secrets
-import time
-from threading import Thread
+from flask import Flask, abort, redirect, request, jsonify, send_from_directory, Response
+from flasgger import Swagger
+from threading import Lock, Thread
 from dotenv import dotenv_values
 from werkzeug.exceptions import HTTPException
+from weasyprint import HTML
+from io import BytesIO
 import re
 import json
+import time
+import secrets
 
 
 # def create_progress_bar(quality: float) -> str:
@@ -1378,21 +1379,30 @@ def serve(
             404:
                 description: Model card does not exist or has been deleted.
         """
-        with exists(find_card(card_id), "Model card does not exist or has been deleted.") as mc:
-            card = mc
-        if fformat == "json":
-            content = json.dumps(converters.dict2dynamic(card.data, {"title"})).encode('utf-8')
-            filename = f"card_{card_id}.json"
-        elif fformat == "markdown":
-            content = card.to_markdown().encode('utf-8')
-            filename = f"card_{card_id}.md"
-
-        else:
-            abort(400, description="Invalid format. Must be 'json' or 'markdown'.")
+        with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
+            if fformat == "json":
+                content = json.dumps(converters.dict2dynamic(card.data, {"title"})).encode('utf-8')
+                filename = f"{card.title}.json"
+                mimetype = "text/html"
+            elif fformat == "markdown":
+                content = card.to_markdown().encode('utf-8')
+                filename = f"{card.title}.md"
+                mimetype = "text/html"
+            elif fformat == "pdf":
+                html_content = card.to_html()
+                pdf_io = BytesIO()
+                HTML(string=html_content).write_pdf(pdf_io)
+                pdf_io.seek(0)
+                content = pdf_io.read()
+                filename = f"card_{card_id}.pdf"
+                mimetype = "application/pdf"
+                filename = f"{card.title}.pdf"
+            else:
+                abort(400, description="Invalid format. Must be 'json', 'markdown', or 'pdf.")
 
         return Response(
             content,
-            mimetype="text/html",
+            mimetype=mimetype,
             headers={"Content-Disposition": f"attachment; filename={filename}"}
         )
 

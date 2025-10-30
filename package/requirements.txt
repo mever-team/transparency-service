@@ -10,3 +10,5 @@ bcrypt
 rich
 requests
 python-dotenv
+pdfminer-six
+weasyprint

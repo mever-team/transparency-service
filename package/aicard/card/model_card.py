@@ -204,18 +204,63 @@ o Did you inform end-users and subjects of existing or potential risks?<br>
         ret = ""
         card = self.to_markdown_card()
         for key, dotdict in card.data.items():
-            if not isinstance(dotdict, DotDict): ret += f"# {dotdict.get()}\n"
+            if not isinstance(dotdict, DotDict):
+                ret += f"# {dotdict.get()}\n"
+
+        # Compute 5-star rating
         quality = self.quality()
-        ret += "*completion*".ljust(20)+ "🧩"*int(quality*20)+"⚠️"*(20-int(quality*20))
+        stars = int(round(quality * 5))
+        ret += "*completion*".ljust(20) + "⭐" * stars + "☆" * (5 - stars)
         ret += "\n"
+
+        # Add fields
         for key, dotdict in card.data.items():
             if isinstance(dotdict, DotDict):
                 segment = ""
                 for field, value in dotdict.items():
-                    if value.get().strip(): segment += f"{('*' + field.replace('_', ' ') + '*').ljust(20)} {value.get().strip()}\n\n"
+                    val = value.get().strip()
+                    if val and val != "unknown":
+                        segment += f"{('*' + field.replace('_', ' ') + '*').ljust(20)} {val}\n\n"
 
-                if segment: ret += f"\n## {key.replace('_', ' ')}\n"+segment
+                if segment:
+                    ret += f"\n## {key.replace('_', ' ')}\n" + segment
         return ret
+
+    def to_html(self):
+        ret = ""
+        card = self.to_html_card()
+        for key, dotdict in card.data.items():
+            if not isinstance(dotdict, DotDict):
+                ret += f"<h1>{dotdict.get()}</h1>\n"
+
+        # Compute 5-star rating
+        quality = self.quality()
+        stars = int(round(quality * 5))
+        filled_star = "⭐"
+        empty_star = "☆"
+        star_html = filled_star * stars + empty_star * (5 - stars)
+
+        ret += (
+                f"<div>"
+                f"<b>completion</b>".ljust(20)
+                + star_html +
+                "</div>\n"
+        )
+
+        for key, dotdict in card.data.items():
+            if isinstance(dotdict, DotDict):
+                segment = ""
+                for field, value in dotdict.items():
+                    val = value.get().strip()
+                    if val and str(val) != "unknown":
+                        field_label = field.replace("_", " ")
+                        segment += f"<p><b>{field_label}</b>: {val}</p>\n"
+
+                if segment:
+                    section_title = key.replace("_", " ")
+                    ret += f"<h2>{section_title}</h2>\n<div>{segment}</div>\n"
+
+        return f"<div class='card'>{ret}</div>"
 
     def to_pydantic(self) -> type[BaseModel]:
         fields = {}
