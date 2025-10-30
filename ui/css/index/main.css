@@ -155,13 +155,12 @@ html, body {
     margin-bottom: 25px;
 }
 
-.search_results_button {
+.search_results_button a {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     border: none;
     cursor: pointer;
-    border-radius: 12px;
     text-align: left;
     font-weight: 700;
     letter-spacing: normal;
@@ -172,8 +171,6 @@ html, body {
     border-bottom: solid 1px #434343;
     font-family: 'Hero_font', sans-serif;
     float: right;
-    margin-bottom: 12px;
-    margin-top: 12px;
 }
 
 .search_results_button.large {
@@ -373,20 +370,29 @@ html, body {
   padding: 1.5rem;
   padding-top: 0rem;
   line-height: 1.2;
-  font-size: 1.2em;
+  font-size: 1.0em;
   color: #EEEEEE;
+  margin-bottom: 30px
 }
 
 .modal-card h2 {
-  margin-top: 0;
+  margin: 0 0 8px 0;;
 }
 .modal-card p{
     text-align: justify-left;
+    margin: 0;
 }
+
+.modal-card img {
+    float: left;
+    width: 150px;
+    flex-shrink: 0;
+    margin: 0 16px 16px 0;
+}
+
 .modal-action-card {
   text-align: center;
 }
-
 
 #dontShowAgain {
   padding: 0.6rem 1.2rem;
@@ -446,7 +452,15 @@ html, body {
     table-layout: fixed;
 }
 #resultsTable td {
-    padding-left: 8px;
+    padding: 0px;
+}
+
+#resultsTable td a {
+    padding: 20px 20px;
+}
+
+#resultsTable td a:hover {
+    background: linear-gradient(to top, #2a2a2a 10%, #1F1F1F 40%);
 }
 
 #service-title {
@@ -464,7 +478,7 @@ html, body {
 
 #resultsTable tbody {
     display: block;
-    max-height: 400px;       /* fixed height */
+    max-height: 500px;       /* fixed height */
     overflow-y: auto;    /* scrollable */
 }
 

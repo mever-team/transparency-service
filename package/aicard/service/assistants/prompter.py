@@ -19,13 +19,15 @@ class Prompter(Assistant):
                  agent: Agent,
                  external_get_timeout_sec:int=1,
                  max_retries:int=3,
-                 deep:bool=False):
+                 deep:bool=False,
+                 description:str = None):
+        if not description:
+            self.description = "<h1>"+agent.name()+("</h1>Slow but deep thinker, especially for refinement. "if not deep else "</h1>Thinks for a little bit. ")+agent.description()
+        else:
+            self.description = "<h1>" + agent.name() + "</h1>" + description + ' ' + agent.description()
         super().__init__(
             alias=agent.name()+("-deep" if deep else ""),
-            description="<h1>"+agent.name()+(
-                "</h1>SLow but deep thinker, especially for refinement. "
-                if not deep else "</h1>Thinks for a little bit. "
-            )+agent.description()
+            description=self.description
         )
         self.agent = agent
         self.external_get_timeout_sec = external_get_timeout_sec

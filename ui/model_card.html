@@ -27,6 +27,18 @@
                 <div class="header_wrapper" style="display:inline;float:left">
                     <h2><a href="index.html"><img src="img/logo.png" width="110"></a><span id="model-title" class="model-title"></span></h2>
                 </div>
+
+                <div style="float:right;margin-top:7px;margin-left:4px;position:relative;">
+                    <div class="example_button" id="downloadCard"
+                         style="float:left;background-color:#1F1F1F;border: solid 1px #434343;color:#EEEEEE;width:auto;padding-left:4px;padding-right:4px;">
+                        <span class="btn-text">⬇️&nbsp;Download</span>
+                    </div>
+                    <div id="downloadDropdown" class="download-dropdown-menu" style="display:none;">
+                        <div class="download-dropdown-item" data-format="json">{ }&nbsp;JSON</div>
+                        <div class="download-dropdown-item" data-format="markdown">#&nbsp;Markdown</div>
+                    </div>
+                </div>
+
                 <div style="display:none;float:right;margin-top:7px" id="edit-options">
                     <div class="example_button" id="saveJson" style="background-color: #64DB96;width: 80px;display:none">
                         <span class="btn-text">💾&nbsp;Save</span>
@@ -46,7 +58,7 @@
     <div id="card-locked" class="card-lock">
         <div class="card-lock-content" id="lock-msg">
             <div id="lock-msg-text"></div>
-            <button class="home_url"><a style="text-decoration: none;color: #1F1F1F;" href="index.html">Home</a></button>
+            <a style="text-decoration: none;color: #1F1F1F;" href="index.html"><button class="home_url">Home</button></a>
         </div>
     </div>
     <div id="empty_card_screen" class="delete-confirm-screen">
@@ -77,8 +89,7 @@
         <div class="delete-success-content">
             <h2>Card deleted</h2>
             <p>The model card has been successfully removed.</p>
-            <button id="close-success-btn"><a style="text-decoration: none;color: #1F1F1F;" href="index.html">Home</a>
-            </button>
+            <a style="text-decoration: none;color: #1F1F1F;" href="index.html"><button id="close-success-btn">Home</button></a>
         </div>
     </div>
 
@@ -115,7 +126,7 @@
             Empowering Media Professionals against Disinformation
         </div>
         <div class="small-12 medium-4 large-4 columns">
-            <h3 class="footer_title">About</h3>
+            <h3 class="footer_title">Acknowledgement</h3>
             This project has received funding from the European Union’s Horizon Europe research and innovation programme
             under grant agreement No. 101135437
         </div>
@@ -132,17 +143,29 @@
     <div class="delete-confirm-content modal_refinement">
         <h2 style="color:#64DB96;">Refine</h2>
         <p>Select the refinement assistant.</p>
+        <p>The assistant will create a small summary and a simplified version of each field of your model card. This is useful for non-expert readers.</p>
+        <span class="info-tooltip info-tooltip-modal" data-tooltip=
+            "The prompts for the summary and the simplification respectively are:
+
+
+            - You are an AI specialized in simplifying and summarizing technical texts. You will be given html, markdown, or other text, and will produce a very short summary.
+
+            - You are an AI specialized in simplifying technical texts while maintaining a professional, academic tone. Your goal is to rewrite technical content in a way that preserves all information but replaces complex terminology with clear, accessible language."
+        >More info</span>
+        <br>
         <div class="assistants_wrapper"></div>
         <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:200px" id="cancel-refine-btn">✖ Cancel</button>
     </div>
 </div>
 
 <div id="modal-autocomplete-screen" class="delete-confirm-screen">
+    <div class="modal"></div>
+    <div class="modal__bg"></div>
     <div class="delete-confirm-content">
         <h2 style="color:#64DB96;">Import</h2>
 <!--            <p id="card-url-p" style="font-size: 16px; font-weight: 700; color: white;display: inline-block;margin-right: 26px">Card Url: </p>-->
-        <p id="pdf_text">Paste a URL. Do you have a file instead?</p>
-        <p id="url_text">Upload a file. Do you have a URL instead?</p>
+        <p style="text-align: center;" id="pdf_text">Paste a URL. Do you have a file instead?</p>
+        <p style="text-align: center;" id="url_text">Upload a file. Do you have a URL instead?</p>
         <input type="text" class="text-input" placeholder="Enter URL..." id="card-url"/>
         <div class="upload-container">
             <div class="file-drop-area" id="dropArea">
@@ -158,10 +181,18 @@
             </div>
         </div>
         <br><br>
-        <p style="text-align:left;margin-bottom:0px">Select an import assistant. That will try to fill all missing information based on a document or web page. Examples:
+        <p>Select an import assistant. That will try to fill all missing information based on a document or web page. Examples:
         </p>
         <ul style="text-align:left;"><li>a repository link from <a style="color:#79CFDC" href="https://github.com/">GitHub</a></li>
         <li>a model page from <a style="color:#79CFDC" href="https://huggingface.co/">HuggingFace</a></li></ul>
+        <span class="info-tooltip info-tooltip-modal" data-tooltip=
+                "The assistant will fill your card with the bellow steps:
+
+
+                1) Retrieve all text from the domain you provide
+
+                2) Fill your card based on the text using the prompt: You are a helpful assistant that provide information about an AI model based on a given text."
+        >More info</span>
         <br>
         <div class="assistants_wrapper"></div>
         <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:200px" id="cancel-autocomplete-btn">✖ Cancel</button>

@@ -1,10 +1,9 @@
 import os.path
-import traceback
 
 from aicard.card import ModelCard
 from aicard.card.model_card import truncate
 from aicard.service.assistants import Assistant
-from flask import Flask, abort, redirect, request, jsonify, send_from_directory
+from flask import Flask, abort, redirect, request, jsonify, send_from_directory, Response
 from flasgger import Swagger
 from threading import Lock, Thread
 from aicard.service import users
@@ -16,6 +15,8 @@ from threading import Thread
 from dotenv import dotenv_values
 from werkzeug.exceptions import HTTPException
 import re
+import json
+
 
 # def create_progress_bar(quality: float) -> str:
 #     percent = max(0.0, min(1.0, quality)) * 100
@@ -1350,6 +1351,50 @@ def serve(
         status = exists(find_card(card_id), "Model card does not exist or has been deleted.").autorefine(assistant, logger)
         logger.info(f"requested card {card_id} refinement from {assistant_type}", user=token2user.get(token, None))
         return jsonify(status)
+
+    @app.route("/card/<int:card_id>/download/<string:fformat>", methods=["GET"])
+    def download_card(card_id, fformat):
+        """
+        Download a model card.
+        ---
+        tags:
+          - UI
+        parameters:
+          - name: card_id
+            in: path
+            type: integer
+            required: true
+            description: The card's identifier.
+          - name: fformat
+            in: path
+            type: string
+            required: true
+            description: The download format. Must be 'json' or 'markdown'.
+        responses:
+            200:
+                description: Successfully downloaded the model card.
+            400:
+                description: Invalid format. Must be 'json' or 'markdown'.
+            404:
+                description: Model card does not exist or has been deleted.
+        """
+        with exists(find_card(card_id), "Model card does not exist or has been deleted.") as mc:
+            card = mc
+        if fformat == "json":
+            content = json.dumps(converters.dict2dynamic(card.data, {"title"})).encode('utf-8')
+            filename = f"card_{card_id}.json"
+        elif fformat == "markdown":
+            content = card.to_markdown().encode('utf-8')
+            filename = f"card_{card_id}.md"
+
+        else:
+            abort(400, description="Invalid format. Must be 'json' or 'markdown'.")
+
+        return Response(
+            content,
+            mimetype="text/html",
+            headers={"Content-Disposition": f"attachment; filename={filename}"}
+        )
 
     @app.route('/docs', methods=['GET'])
     def docs():

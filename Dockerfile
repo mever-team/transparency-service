@@ -12,8 +12,6 @@ COPY ui ./ui
 
 RUN pip install --upgrade pip --root-user-action=ignore
 RUN pip install --no-cache-dir -e ./package --root-user-action=ignore
-RUN pip install kagglehub==0.3.12 --root-user-action=ignore
-RUN pip install flask==3.1.1 --root-user-action=ignore
 RUN pip install gunicorn==23.0.0 --root-user-action=ignore
 
 CMD ["gunicorn", "-b", "0.0.0.0:8000", "--workers", "1", "--threads", "1", "--capture-output", "--log-level", "error", "--access-logfile", "-", "--error-logfile", "-", "ui.full_server:app"]

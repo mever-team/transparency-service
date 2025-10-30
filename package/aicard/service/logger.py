@@ -23,7 +23,7 @@ class Logger:
         formatted = f"[{ts}] [{tag}] {message}"
         if self.file:
             self.file.write(formatted + '\n')
-        if color: formatted = f"{color}{tag}{self.ANSI_RESET} {message}"
+        if color: formatted = f"[{ts}] [{color}{tag}{self.ANSI_RESET}] {message}"
         print(formatted.encode("ascii", errors="ignore").decode())
 
     def info(self, message:str, user:str|None=None):

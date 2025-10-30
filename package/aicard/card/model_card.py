@@ -5,7 +5,6 @@ import html2text
 import markdown2
 import rich
 import io
-from aicard.card.traits.html import HTMLRenderer
 from aicard.card.dot_dict import DotDict
 from aicard.card.fields import ShortText, LongText, Options, Field, Pattern
 from rich.markdown import Markdown
@@ -205,7 +204,7 @@ o Did you inform end-users and subjects of existing or potential risks?<br>
         ret = ""
         card = self.to_markdown_card()
         for key, dotdict in card.data.items():
-            if not isinstance(dotdict, DotDict): ret += f"# {dotdict}\n"
+            if not isinstance(dotdict, DotDict): ret += f"# {dotdict.get()}\n"
         quality = self.quality()
         ret += "*completion*".ljust(20)+ "🧩"*int(quality*20)+"⚠️"*(20-int(quality*20))
         ret += "\n"
@@ -262,9 +261,6 @@ o Did you inform end-users and subjects of existing or potential risks?<br>
         console = rich.console.Console(file=buffer, force_terminal=True, color_system="truecolor")
         console.print(Markdown(self.to_markdown()))
         return buffer.getvalue().replace("\n\n", "\n")
-
-    def to_html(self):
-        return HTMLRenderer(self.to_html_card().data, editable=False).render()
 
     def json_dumps(self):
         return json.dumps(self.data)
