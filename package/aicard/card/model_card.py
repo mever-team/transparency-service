@@ -204,7 +204,7 @@ o Did you inform end-users and subjects of existing or potential risks?<br>
         ret = ""
         card = self.to_markdown_card()
         for key, dotdict in card.data.items():
-            if not isinstance(dotdict, DotDict): ret += f"# {dotdict}\n"
+            if not isinstance(dotdict, DotDict): ret += f"# {dotdict.get()}\n"
         quality = self.quality()
         ret += "*completion*".ljust(20)+ "🧩"*int(quality*20)+"⚠️"*(20-int(quality*20))
         ret += "\n"

@@ -348,6 +348,26 @@ ul.nacc .field-value li {
     margin-right: 0;
 }
 
+.download-dropdown-menu {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color:#1F1F1F;
+    border: 1px solid #434343;
+    border-radius: 4px;
+    min-width: 120px;
+    z-index: 100;
+}
+
+.download-dropdown-item {
+    color: #EEEEEE;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.download-dropdown-item:hover {
+    background-color: #3B3B3B;
+}
 
 #saveJson {
     display: inline-block;

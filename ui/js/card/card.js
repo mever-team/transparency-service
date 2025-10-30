@@ -330,6 +330,49 @@ $(document).ready(function () {
         });
     });
 
+    const downloadBtn = document.getElementById("downloadCard");
+    const downloadMenu = document.getElementById("downloadDropdown");
+
+    downloadBtn.addEventListener("click", function() {
+        const isOpen = downloadMenu.style.display === "block";
+        downloadMenu.style.display = isOpen ? "none" : "block";
+
+        if (!isOpen) {
+            const closeMenu = (event) => {
+                if (!downloadBtn.contains(event.target) && !downloadMenu.contains(event.target)) {
+                    downloadMenu.style.display = "none";
+                    document.removeEventListener("click", closeMenu);
+                }
+            };
+            document.addEventListener("click", closeMenu);
+        }
+    });
+
+    downloadMenu.addEventListener("click", e => {
+        downloadMenu.style.display = "none";
+
+        const item = e.target.closest(".download-dropdown-item");
+
+        const format = item.getAttribute("data-format");
+        const url = "/card/" + id + "/download/" + format
+
+        $.ajax({
+            url: url,
+            method: "GET",
+            success: function (response) {
+                window.location = url
+            },
+            error: function (xhr, status, error) {
+                try {
+                    const resp = JSON.parse(xhr.responseText);
+                    alert(resp.error || error);
+                } catch (e) {
+                    alert("Unknown error downloading card");
+                }
+            }
+        });
+    });
+
 
     $("#modal_autocomplete").click(function () {
         document.getElementById('modal-autocomplete-screen').style.display = 'flex';
