@@ -12,3 +12,6 @@ requests
 python-dotenv
 pdfminer-six
 weasyprint
+openai-clip
+torch
+torchvision
