@@ -10,18 +10,31 @@
 # pretend to be thinking, so that invalid requests can be tested.
 
 from aicard.service import serve
-from aicard.service.assistants import WordNet, Prompter
 from aicard.agents import Ollama
+from aicard.service.assistants import WordNet, Prompter
+from aicard.service.assistants.image_classifier import ImageClassifier
 from threading import Thread
 
+image_classifier = ImageClassifier()
 app, gc = serve({"wordnet": WordNet(),
-                 # "qwen_fast": Prompter(Ollama("qwen:0.5b", name="🦋 Qwen-small"")),
-                 "qwen": Prompter(Ollama("qwen2.5:1.5b", name="🦋 Qwen"), description="Less accurate but fast LLM."),
-                 "llama": Prompter(Ollama("llama3.2:latest", name="🦙 Llama"), description="Better results but slow LLM."),
-                 # "ollama": Prompter(Ollama("mistral:latest", name="🌬️ Mistral"))
-                 },
-                env="ui/.env")
+        # "qwen_fast": Prompter(Ollama("qwen:0.5b", name="🦋 Qwen-small"")),
+        "qwen": Prompter(
+        Ollama(
+            "qwen2.5:1.5b", name="🦋 Qwen"),
+            description="Less accurate but fast LLM.",
+            image_classifier=image_classifier
+        ),
+        "llama": Prompter(
+            Ollama(
+                "llama3.2:latest", name="🦙 Llama"),
+                description="Better results but slow LLM.",
+                image_classifier=image_classifier
+        ),
+        # "ollama": Prompter(Ollama("mistral:latest", name="🌬️ Mistral"))
+    },
+    env="ui/.env"
+)
 
 if __name__ == "__main__":
     Thread(target=gc, daemon=True).start()
-    app.run(threaded=False)  # TODO: temporary measure for development
+    app.run(threaded=False)  # TODO: temporary measure

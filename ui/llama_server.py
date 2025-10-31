@@ -18,9 +18,9 @@ app, gc = serve({
         "wordnet": WordNet(),
         "llama": Prompter(Ollama("llama3.2:latest", name="🦙 Llama"), description="Better results but slow LLM."),
     },
-     env="ui/.env"
+    env="ui/.env"
 )
 
 if __name__ == "__main__":
     Thread(target=gc, daemon=True).start()
-    app.run(threaded=False)  # TODO: temporary measure for development
+    app.run(threaded=False)  # TODO: temporary measure

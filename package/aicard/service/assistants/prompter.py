@@ -10,13 +10,14 @@ from bs4 import BeautifulSoup
 import time
 import datetime
 
-
+from .image_classifier import ImageClassifier
 from ...card.fields import LongText
 
 
 class Prompter(Assistant):
     def __init__(self,
                  agent: Agent,
+                 image_classifier: ImageClassifier|None=None,
                  external_get_timeout_sec:int=1,
                  max_retries:int=3,
                  deep:bool=False,
@@ -33,6 +34,7 @@ class Prompter(Assistant):
         self.external_get_timeout_sec = external_get_timeout_sec
         self.max_retries = max_retries
         self.deep = deep
+        self.image_classifier = image_classifier
 
     def complete(self, card: ModelCard, url: str, logger: Logger, user_messages: list[str]):
         logger.info("Submitted: " + str(url), user=self.alias)
