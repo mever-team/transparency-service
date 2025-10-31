@@ -59,6 +59,37 @@ class Prompter(Assistant):
         )
 
     def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]):
+        if not self.deep:
+            # Merge all existing LongText content into one text block
+            merged_texts = []
+            for category, values in card.data.items():
+                if not isinstance(values, dict):
+                    continue
+                for field, value in values.items():
+                    text_val = value.get().strip()
+                    if text_val:
+                        merged_texts.append(f"{category}.{field}: {text_val}\n")
+            if not merged_texts:
+                logger.warn("No long text fields found for refinement", user=self.alias)
+                return
+            merged_input = "\n\n".join(merged_texts)
+            user_messages.clear()
+            user_messages.append(f"<h2>{self.alias} refinement</h2>Running global completion...")
+            self._complete(merged_input, "refinement", card, logger, user_messages)
+            for category, values in card.data.items():
+                if not isinstance(values, dict): continue
+                for field, value in values.items():
+                    if not isinstance(value, LongText): continue
+                    new_value = value.get()
+                    if not new_value:  continue
+                    merged_html = (
+                        f"<details>\n<summary><h2>Refined on {datetime.datetime.now().strftime('%Y %B %d, %I:%M%p')}</h2></summary>\n\n"
+                        f"<div class=\"card-details-content\">\n{new_value}\n</div>\n</details>\n\n"
+                        f"{value.get()}"
+                    )
+                    value.set(merged_html)
+            return
+
         user_messages.clear()
         user_messages.append(f"<h2>{self.alias} refinement</h2>")
         count_categories = 0
