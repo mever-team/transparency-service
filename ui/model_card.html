@@ -26,6 +26,7 @@
             <div class="small-12 medium-12 large-12 columns" style="padding: 0">
                 <div class="header_wrapper" style="display:inline;float:left">
                     <h2><a href="index.html"><img src="img/logo.png" width="110"></a><span id="model-title" class="model-title"></span></h2>
+                    <span id="model-description" style="color:#79CFDC"></span>
                 </div>
 
                 <div style="float:right;margin-top:7px;margin-left:4px;position:relative;">
@@ -41,6 +42,19 @@
                 </div>
 
                 <div style="display:none;float:right;margin-top:7px" id="edit-options">
+
+
+                    <div style="float:right;margin-left:4px;position:relative;">
+                        <div class="example_button" id="assistCard"
+                             style="float:left;background-color:#1F1F1F;border: solid 1px #434343;color:#EEEEEE;width:auto;padding-left:4px;padding-right:4px;">
+                            <span class="btn-text">🤖&nbsp;Assistant ▾</span>
+                        </div>
+                        <div id="assistDropdown" class="download-dropdown-menu" style="display:none;">
+                            <div class="download-dropdown-item modal_autocomplete" data-format="pdf">📂&nbsp;Import</div>
+                            <div class="download-dropdown-item modal_refine" data-format="json">💠&nbsp;Refine</div>
+                        </div>
+                    </div>
+
                     <div class="example_button" id="saveJson" style="background-color: #64DB96;width: 80px;display:none">
                         <span class="btn-text">💾&nbsp;Save</span>
                         <span class="btn-confirmation">✔&nbsp;Saved</span>
@@ -51,12 +65,12 @@
                     <div class="example_button" id="cardClone" style="width: 80px; background-color:#1F1F1F;border: solid 1px #434343;color:#EEEEEE">
                         <span class="btn-text">🗐 &nbsp;Clone</span>
                     </div>
-                    <div class="example_button" id="modal_autocomplete" style="width: 80px; background-color:#1F1F1F;border: solid 1px #434343;color:#EEEEEE">
-                        <span class="btn-text">📂&nbsp;Import</span>
-                    </div>
-                    <div class="example_button" id="modal_refine" style="width: 80px; background-color:#1F1F1F;border: solid 1px #434343;color:#EEEEEE">
-                        <span class="btn-text">💠&nbsp;Refine</span>
-                    </div>
+<!--                    <div class="example_button" id="modal_autocomplete" style="width: 80px; background-color:#1F1F1F;border: solid 1px #434343;color:#EEEEEE">-->
+<!--                        <span class="btn-text">📂&nbsp;Import</span>-->
+<!--                    </div>-->
+<!--                    <div class="example_button" id="modal_refine" style="width: 80px; background-color:#1F1F1F;border: solid 1px #434343;color:#EEEEEE">-->
+<!--                        <span class="btn-text">💠&nbsp;Refine</span>-->
+<!--                    </div>-->
                     <div class="example_button" id="deleteCard" style="width: 80px; background-color:#1F1F1F;border: solid 1px #434343;color:#F44336">🗑️ Delete</div>
                 </div>
             </div>
@@ -150,7 +164,7 @@
     <div class="delete-confirm-content modal_refinement">
         <h2 style="color:#64DB96;">Refine</h2>
         <p>Select the refinement assistant.</p>
-        <p>The assistant will create a small summary and a simplified version of each field of your model card. This is useful for non-expert readers.</p>
+        <p>This will OVERWRITE fields with a simplification useful to non-experts.</p>
 <!--        <span class="info-tooltip info-tooltip-modal" data-tooltip=-->
 <!--            "The prompts for the summary and the simplification respectively are:-->
 

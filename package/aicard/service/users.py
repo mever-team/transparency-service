@@ -53,11 +53,19 @@ class UserDB:
             FOREIGN KEY(user) REFERENCES users(username) ON DELETE CASCADE
         )'''
         conn.execute(create_cards_table)
+        conn.execute('''CREATE TABLE IF NOT EXISTS card_children (
+            parent_id INTEGER NOT NULL,
+            child_id INTEGER NOT NULL,
+            FOREIGN KEY(parent_id) REFERENCES cards(id) ON DELETE CASCADE,
+            FOREIGN KEY(child_id) REFERENCES cards(id) ON DELETE CASCADE,
+            PRIMARY KEY(parent_id, child_id)
+        )''')
 
         # automatic migration if needed
         expected_columns = ['id', 'user', 'desc'] + col_names
         cursor = conn.execute("PRAGMA table_info(cards)")
         existing_columns = [row[1] for row in cursor.fetchall()]
+
         missing = [col for col in expected_columns if col not in existing_columns]
         redundant = [col for col in existing_columns if col not in expected_columns]
 
@@ -102,7 +110,6 @@ class UserDB:
         );
         """
         conn.execute(create_fts)
-
 
         # automatic synchronization triggers (avoids book-keeping from our end)
         conn.executescript(f"""

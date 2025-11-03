@@ -1,16 +1,15 @@
 import json
-from typing import Union
-
 import html2text
 import markdown2
 import rich
 import io
-from aicard.card.dot_dict import DotDict
-from aicard.card.fields import ShortText, LongText, Options, Field, Pattern
+
+from typing import Union
 from rich.markdown import Markdown
 from pydantic import BaseModel, create_model
 from pydantic import Field as pydantic_Field
-
+from aicard.card.dot_dict import DotDict
+from aicard.card.fields import ShortText, LongText, Options, Field, Pattern
 
 def truncate(text, size):
     text = text.strip().split(" ")[0].split("\n")[0].split("/")[-1].strip()
@@ -21,7 +20,6 @@ def truncate(text, size):
     if len(text)<=size:
         return text
     return text[:(size-3)]+"..."
-
 
 class ModelCard:
     def __init__(self, connector=None):

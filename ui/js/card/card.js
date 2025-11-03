@@ -79,6 +79,7 @@ $(document).ready(function () {
                             cardJson = jsonData;
                             //$("#model-title").text("Model Card: " + jsonData.title);
                             $("#model-title").text(jsonData.title);
+                            $("#model-description").html(jsonData.description);
                             const $ul = $(".nacc");
                             $ul.empty();
                             $('#loading').hide();
@@ -307,6 +308,9 @@ $(document).ready(function () {
                     }
                 });
 
+                $("#model-title").text(response.title);
+                $("#model-description").html(response.description);
+
                 $("#saveJson").find('.btn-text').hide();
                 $("#saveJson").find('.btn-confirmation').fadeIn();
 
@@ -365,17 +369,45 @@ $(document).ready(function () {
             error: function (xhr, status, error) {
                 try {
                     const resp = JSON.parse(xhr.responseText);
-                    alert(resp.error || error);
+                    //alert(resp.error || error);
                 } catch (e) {
-                    alert("Unknown error downloading card");
+                    //alert("Unknown error downloading card");
                 }
             }
         });
     });
 
+
+    const assistBtn = document.getElementById("assistCard");
+    const assistMenu = document.getElementById("assistDropdown");
+    assistBtn.addEventListener("click", function() {
+        const isOpen = assistMenu.style.display === "block";
+        assistMenu.style.display = isOpen ? "none" : "block";
+        if (!isOpen) {
+            const closeMenu = (event) => {
+                if (!assistBtn.contains(event.target) && !assistMenu.contains(event.target)) {
+                    assistMenu.style.display = "none";
+                    document.removeEventListener("click", closeMenu);
+                }
+            };
+            document.addEventListener("click", closeMenu);
+        }
+    });
+    assistMenu.addEventListener("click", function(e) {
+        const item = e.target.closest(".download-dropdown-item, .modal_autocomplete, .modal_refine");
+        if (!item) return;
+        assistMenu.style.display = "none";
+        if (item.classList.contains("modal_autocomplete")) {
+            document.getElementById('modal-autocomplete-screen').style.display = 'flex';
+        }
+        else if (item.classList.contains("modal_refine")) {
+            document.getElementById('modal-refine-screen').style.display = 'flex';
+        }
+    });
+
     $("#cardClone").click(function () {
         if (!token) {
-            alert("You must be logged in to clone a card.");
+            //alert("You must be logged in to clone a card.");
             return;
         }
         $("#cardClone").prop("disabled", true).text("Cloning...");
@@ -391,9 +423,9 @@ $(document).ready(function () {
                 $("#cardClone").prop("disabled", false).text("Clone");
                 try {
                     const resp = JSON.parse(xhr.responseText);
-                    alert(resp.error || "Error cloning card");
+                    //alert(resp.error || "Error cloning card");
                 } catch (e) {
-                    alert("Unknown error cloning card");
+                    //alert("Unknown error cloning card");
                 }
             }
         });

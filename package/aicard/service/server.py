@@ -13,10 +13,12 @@ from dotenv import dotenv_values
 from werkzeug.exceptions import HTTPException
 from weasyprint import HTML
 from io import BytesIO
+
 import re
 import json
 import time
 import secrets
+import datetime
 
 
 # def create_progress_bar(quality: float) -> str:
@@ -86,16 +88,17 @@ class ModelCardEntry:
         flattened = self.card.data.flatten()
         assert flattened, "Cannot commit an empty model card."
         assert self.card_id is not None, "Internal error: card_id has not been set for a cached card"
-        quality = self.card.quality()
-        summary = self.card.summary()
 
         def strip_html_tags(text: str) -> str:
             return re.sub(r'<[^>]*>', '', text)
         if self.card.model.name:
             self.card.title = truncate(strip_html_tags(self.card.model.name), 30)
+        quality = self.card.quality()
+        summary = self.card.summary()
         desc = create_progress_bar(quality)
         if summary:
             desc += " for "+summary
+        desc += f" [saved: {datetime.datetime.now().strftime("%Y-%m-%d %H:%M")}]"
 
         columns = list(flattened.keys())
         values = [flattened[key] for key in columns]+[desc, self.card.title]
@@ -940,7 +943,8 @@ def serve(
                 description: An AI assistant is working on the model card.
         """
         with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
-            return jsonify(converters.dict2dynamic(card.data, {"title"}))
+            desc = "completion "+create_progress_bar(card.quality())
+            return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": desc})
 
     @app.route('/card/<int:card_id>/locked', methods=['GET'])
     def get_card_locked_status(card_id):
@@ -1257,8 +1261,9 @@ def serve(
                 card_entry.commit_card()
             except AssertionError as e: abort(404, "Wrong data: "+str(e))
             except Exception as e: abort(404, "Wrong data: "+str(e))
+            desc = "completion " + create_progress_bar(card.quality())
             logger.info("updated a card", user=token2user.get(token, None))
-            return jsonify(converters.dict2dynamic(card.data, {"title"}))
+            return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": desc})
 
     @app.route('/card', methods=['POST'])
     @users.require_auth(token2expiration)

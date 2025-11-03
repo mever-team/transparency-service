@@ -13,10 +13,8 @@ class DotDict(dict):
 
     def __setattr__(self, attr, value):
         assert attr in self, f"Can only set an existing attribute among: {', '.join(self.keys())}"
-        if isinstance(self[attr], Field):
-            self[attr].set(value)
-        else:
-            self[attr] = value
+        if isinstance(self[attr], Field): self[attr].set(value)
+        else: self[attr] = value
 
     def __delattr__(self, attr):
         try: del self[attr]
