@@ -53,6 +53,16 @@ class Prompter(Assistant):
         text = soup.get_text(strip=True)
 
         self._complete(text, "import", card, logger, user_messages)
+        progress_html = (
+            f"<progress value='{100}' max='100' "
+            f"style='width: 300px; height: 20px; "
+            f"accent-color: #79CFDC; border: 2px solid #1F1F1F;'></progress>"
+        )
+        user_messages[-1] = (
+            f"<h2>{self.alias} import</h2>"
+            f"{progress_html}<br>"
+            f"<b>Importing Images</b>"
+        )
         images = []
         img_tags = soup.find_all('img')
         for tag in img_tags:
