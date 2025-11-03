@@ -1,3 +1,5 @@
+from aicard.agents.extensions.embeddings import img_classifier
+
 class Agent:
     def name(self):
         return "🤖 "+self.__class__.__name__
@@ -9,3 +11,4 @@ class Agent:
     def completion(self, content: str, **params): return self._run(content, task="completion", **params)
     def hint(self, content: str, **params): return self._run(content, task="hint", **params)
     def vision(self, content: str, **params): return self._run(content, task="vision", **params)
+    embeddings = img_classifier

@@ -96,7 +96,7 @@ class WordNet(Assistant):
                         if isinstance(value, Options):
                             for option in value.options():
                                 field_synonyms[option] = set(option.lower().split())#get_synonyms(option.lower(), stop_words)
-                        field_synonyms[field] = get_synonyms(field+" "+value.description.split(".")[0].split("?")[0], stop_words)
+                        field_synonyms[field] = get_synonyms(field+" "+value.description.split("?")[0], stop_words)
 
 
                 logger.ok(f"loading complete" 
@@ -209,6 +209,7 @@ class WordNet(Assistant):
         has_been_replaced = dict()
         best_option_matches = dict()
         existing = set(cat+"__"+field for cat, values in card.data.items()
+                       if isinstance(values, dict)
                        for field, value in values.items() if value.get() and value.get().lower()!="unknown")
         for heading, content in sections:
             content = content.strip()
@@ -238,7 +239,7 @@ class WordNet(Assistant):
                                 best_option_matches[normalized_option] = score
                                 value.set(option)
                         continue
-                    #if not isinstance(value, LongText): continue
+                    if not isinstance(value, LongText) and len(content)>120: continue
                     #if cat+"__"+field in has_been_replaced: continue
                     score = (len(synonyms & self.field_synonyms[field])
                              + len(synonyms & self.field_synonyms[cat])*0.5

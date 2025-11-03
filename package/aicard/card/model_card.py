@@ -321,4 +321,3 @@ o Did you inform end-users and subjects of existing or potential risks?
     def save_html(self, filename: str):
         with open(filename, "w", encoding="utf-8") as f:
             f.write(self.to_html())
-

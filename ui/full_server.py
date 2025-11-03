@@ -20,13 +20,13 @@ app, gc = serve({"wordnet": WordNet(),
         "qwen": Prompter(
         Ollama(
             "qwen2.5:1.5b", name="🦋 Qwen"),
-            description="Less accurate but fast LLM.",
+            description="Less accurate but fast agent.",
             image_classifier=image_classifier
         ),
         "llama": Prompter(
             Ollama(
                 "llama3.2:latest", name="🦙 Llama"),
-                description="Better results but slow LLM.",
+                description="Better results but slow agent.",
                 image_classifier=image_classifier
         ),
         # "ollama": Prompter(Ollama("mistral:latest", name="🌬️ Mistral"))
