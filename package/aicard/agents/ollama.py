@@ -2,7 +2,7 @@ import requests
 import os
 import json
 from aicard.agents.agent import Agent
-from aicard.utils.to_base64 import to_base64
+from aicard.utils.image_converters import to_base64
 
 
 class Ollama(Agent):
