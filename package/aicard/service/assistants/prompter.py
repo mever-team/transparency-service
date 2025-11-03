@@ -84,12 +84,12 @@ class Prompter(Assistant):
                     if not isinstance(value, LongText): continue
                     new_value = value.get()
                     if not new_value:  continue
-                    merged_html = (
-                        f"<details>\n<summary><h2>Refined on {datetime.datetime.now().strftime('%Y %B %d, %I:%M%p')}</h2></summary>\n\n"
-                        f"<div class=\"card-details-content\">\n{new_value}\n</div>\n</details>\n\n"
-                        f"{value.get()}"
-                    )
-                    value.set(merged_html)
+                    # merged_html = (
+                    #     f"<details>\n<summary><h2>Refined on {datetime.datetime.now().strftime('%Y %B %d, %I:%M%p')}</h2></summary>\n\n"
+                    #     f"<div class=\"card-details-content\">\n{new_value}\n</div>\n</details>\n\n"
+                    #     f"{value.get()}"
+                    # )
+                    value.set(new_value)
             return
 
         user_messages.clear()
@@ -221,11 +221,17 @@ class Prompter(Assistant):
                 new_value = completion[field]
                 if not new_value: continue
                 new_value = markdown2.markdown(new_value, extras=["markdown-in-html", "code-friendly"])
-                if value.get():
-                    value.set(
-                        f"<details>\n<summary><h2>Update on {datetime.datetime.now().strftime('%Y %B %d, %I:%M%p')}</h2></summary>\n\n<div class=\"card-details-content\">\n{new_value}\n</div>\n</details>\n\n"
-                        f"{value.get()}"
-                    )
+                if new_value=="None":
+                    new_value = ""
+                prev_value = value.get()
+                if prev_value and prev_value!=new_value:
+                    pass
+                    # value.set(
+                    #     new_value
+                    #     +f"\n<details>\n<summary><b>Previous</b><br>before {task.lower()} on {datetime.datetime.now().strftime('%Y %B %d, %I:%M%p')}</summary>"
+                    #     "\n\n<div class=\"card-details-content\">\n"
+                    #     f"{prev_value}\n</div>\n</details>\n\n"
+                    # )
                 else:
                     value.set(new_value)
 

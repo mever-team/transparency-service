@@ -35,8 +35,8 @@
                     </div>
                     <div id="downloadDropdown" class="download-dropdown-menu" style="display:none;">
                         <div class="download-dropdown-item" data-format="pdf">📄&nbsp;PDF</div>
-                        <div class="download-dropdown-item" data-format="json">JSON</div>
-                        <div class="download-dropdown-item" data-format="markdown">Markdown</div>
+                        <div class="download-dropdown-item" data-format="json">{}&nbsp;JSON</div>
+                        <div class="download-dropdown-item" data-format="markdown">#&nbsp;Markdown</div>
                     </div>
                 </div>
 
@@ -145,14 +145,14 @@
         <h2 style="color:#64DB96;">Refine</h2>
         <p>Select the refinement assistant.</p>
         <p>The assistant will create a small summary and a simplified version of each field of your model card. This is useful for non-expert readers.</p>
-        <span class="info-tooltip info-tooltip-modal" data-tooltip=
-            "The prompts for the summary and the simplification respectively are:
+<!--        <span class="info-tooltip info-tooltip-modal" data-tooltip=-->
+<!--            "The prompts for the summary and the simplification respectively are:-->
 
 
-            - You are an AI specialized in simplifying and summarizing technical texts. You will be given html, markdown, or other text, and will produce a very short summary.
+<!--            - You are an AI specialized in simplifying and summarizing technical texts. You will be given html, markdown, or other text, and will produce a very short summary.-->
 
-            - You are an AI specialized in simplifying technical texts while maintaining a professional, academic tone. Your goal is to rewrite technical content in a way that preserves all information but replaces complex terminology with clear, accessible language."
-        >More info</span>
+<!--            - You are an AI specialized in simplifying technical texts while maintaining a professional, academic tone. Your goal is to rewrite technical content in a way that preserves all information but replaces complex terminology with clear, accessible language."-->
+<!--        >More info</span>-->
         <br>
         <div class="assistants_wrapper"></div>
         <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:200px" id="cancel-refine-btn">✖ Cancel</button>
@@ -184,16 +184,16 @@
         <br><br>
         <p>Select an import assistant. That will try to fill all missing information based on a document or web page. Examples:
         </p>
-        <ul style="text-align:left;"><li>a repository link from <a style="color:#79CFDC" href="https://github.com/">GitHub</a></li>
-        <li>a model page from <a style="color:#79CFDC" href="https://huggingface.co/">HuggingFace</a></li></ul>
-        <span class="info-tooltip info-tooltip-modal" data-tooltip=
-                "The assistant will fill your card with the bellow steps:
+        <ul style="text-align:left;"><li>a repository link from <a style="color:#79CFDC" href="https://github.com/" target="_blank">GitHub</a></li>
+        <li>a model page from <a style="color:#79CFDC" href="https://huggingface.co/" target="_blank">HuggingFace</a></li></ul>
+<!--        <span class="info-tooltip info-tooltip-modal" data-tooltip=-->
+<!--                "The assistant will fill your card with the bellow steps:-->
 
 
-                1) Retrieve all text from the domain you provide
+<!--                1) Retrieve all text from the domain you provide-->
 
-                2) Fill your card based on the text using the prompt: You are a helpful assistant that provide information about an AI model based on a given text."
-        >More info</span>
+<!--                2) Fill your card based on the text using the prompt: You are a helpful assistant that provide information about an AI model based on a given text."-->
+<!--        >More info</span>-->
         <br>
         <div class="assistants_wrapper"></div>
         <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:200px" id="cancel-autocomplete-btn">✖ Cancel</button>

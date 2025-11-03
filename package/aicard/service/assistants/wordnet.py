@@ -64,6 +64,17 @@ class WordNet(Assistant):
                 }
                 from nltk.corpus import stopwords
                 stop_words = set(stopwords.words("english"))
+                stop_words.add("b")
+                stop_words.add("div")
+                stop_words.add("a")
+                stop_words.add("href")
+                stop_words.add("i")
+                stop_words.add("span")
+                stop_words.add("p")
+                stop_words.add("br")
+                stop_words.add("ul")
+                stop_words.add("li")
+                stop_words.add("abbr")
                 scientific_defs = {}
                 for syn in wn.all_synsets():
                     if syn.lexname() in sci_lexnames:
@@ -85,12 +96,12 @@ class WordNet(Assistant):
                         if isinstance(value, Options):
                             for option in value.options():
                                 field_synonyms[option] = set(option.lower().split())#get_synonyms(option.lower(), stop_words)
-                        field_synonyms[field] = get_synonyms(field+" "+value.description, stop_words)
+                        field_synonyms[field] = get_synonyms(field+" "+value.description.split(".")[0].split("?")[0], stop_words)
 
 
                 logger.ok(f"loading complete" 
                         f"\n * {len(scientific_defs)} terms"
-                        f"\n * {int(total/1024)} kΒ"
+                        f"\n * {int(total/1024)} kB"
                         f"\n * {len(stop_words)} stopwords"
                         f"\n * {len(field_synonyms)} card field synonym lists", user="📚 WordNet")
                 with WordNet._loader_lock:
@@ -153,33 +164,68 @@ class WordNet(Assistant):
         for tag in soup.find_all(src=True): tag["src"] = urljoin(url, tag["src"])
         first_header = soup.find(re.compile("^h[1-6]$"))
         title = first_header.get_text(separator=" ", strip=True) if first_header else ""
+        # sections = []
+        # for header in soup.find_all(re.compile("^h[1-6]$")):
+        #     content = []
+        #     for sibling in header.find_next_siblings():
+        #         if sibling.name and re.match("^h[1-6]$", sibling.name):
+        #             break
+        #         content.append(str(sibling))
+        #     sections.append(content)
         sections = []
-        for header in soup.find_all(re.compile("^h[1-6]$")):
-            content = []
-            for sibling in header.find_next_siblings():
-                if sibling.name and re.match("^h[1-6]$", sibling.name): break
-                #content.append(sibling.get_text(" ", strip=True))
-                content.append(str(sibling))
-            sections.append((header
-                                .get_text(strip=True)
-                                .encode("ascii", errors="ignore")
-                                .decode(),
-                             " ".join(content).strip()))
+        last_header = ""
+        for tag in soup.find_all(["h1", "h2", "h3", "h4", "h5", "h6", "table", "img", "pre"]):
+            if tag.name.startswith("h"):
+                # Store latest header text
+                last_header = tag.get_text(strip=True)
+            else:
+                # Preserve previous header + image
+                context = last_header if last_header else ""
+                full_info = (context + "\n" + str(tag)) if context else str(tag)
+                sections.append((full_info, str(tag)))
+
+        for tag in soup.find_all(["table", "img", "pre"]):
+            tag.decompose()  # remove from document
+        for a in soup.find_all("a", href=True):
+            href = a["href"].strip()
+            text = a.get_text(strip=True)
+            # Combine text and URL
+            if text:
+                replacement = f"[{text}]({href})"
+            else:
+                replacement = href
+            a.replace_with(replacement)
+        for para in [p.strip() for p in soup.get_text(separator="\n").strip().split("\n\n") if p.strip()]:
+            para = re.sub(r'\[([^\]]+)\]\((https?://[^\)]+)\)', r'<a href="\2" target="_blank">\1</a>', para) #
+            para = re.sub(r'\[([^\]]+)\]\((mailto?://[^\)]+)\)', r'<a href="\2" target="_blank">\1</a>', para) # markdown link to link
+            para = para.replace(" ,", ",").replace(" .", ".")
+            if len(para)>20 and para.endswith("."):
+                sections.append((para, para))
+            elif para.startswith("https://"):
+                para = f'<a href={para} target="_blank">{para}</a>'
+                sections.append((para, para))
+
         not_used_fields = list()
         has_been_replaced = dict()
         best_option_matches = dict()
+        existing = set(cat+"__"+field for cat, values in card.data.items()
+                       for field, value in values.items() if value.get() and value.get().lower()!="unknown")
         for heading, content in sections:
-            if not content.strip(): continue
+            content = content.strip()
+            if not content.strip():
+                continue
+            if not content: continue
             synonyms = get_synonyms(heading, WordNet.stop_words)
             secondary_synonyms = get_synonyms(heading, WordNet.stop_words)
             for value in re.sub(r"[^A-Za-z]", " ", content[:min(self.max_chars_for_semantic_synonyms, len(content))]).split(" "):
                 secondary_synonyms |= get_synonyms(value, WordNet.stop_words)
-            best_score = 1
+            best_score = 0
             best_path = []
             for cat, values in card.data.items():
                 if not isinstance(values, dict): continue
                 for field, value in values.items():
                     if isinstance(value, Options):
+                        if cat+"__"+field in existing: continue
                         field_score = (len(synonyms & self.field_synonyms[field])
                                  + len(synonyms & self.field_synonyms[cat])*0.5
                                  + len(secondary_synonyms & self.field_synonyms[field])*0.2
@@ -192,34 +238,30 @@ class WordNet(Assistant):
                                 best_option_matches[normalized_option] = score
                                 value.set(option)
                         continue
-                    if not isinstance(value, LongText): continue
+                    #if not isinstance(value, LongText): continue
                     #if cat+"__"+field in has_been_replaced: continue
                     score = (len(synonyms & self.field_synonyms[field])
                              + len(synonyms & self.field_synonyms[cat])*0.5
                              + len(secondary_synonyms & self.field_synonyms[field])*0.2
                              + len(secondary_synonyms & self.field_synonyms[cat])*0.2
-                             )
+                             ) / (len(self.field_synonyms[cat])+len(self.field_synonyms[field])+1)
                     if score > best_score:
                         best_score = score
                         best_path = (cat, field)
-            if best_path:
+            if best_path and best_path[0]+"__"+best_path[1] not in existing:
                 prev_content = has_been_replaced.get(best_path[0]+"__"+best_path[1], "")
-                if prev_content: content = prev_content +  "\n<br><br>\n" + content
+                if prev_content and (not prev_content.endswith(".") or not content.endswith(".")): prev_content = prev_content+"<br>"
+                if prev_content: content = prev_content +  " " + content
                 has_been_replaced[best_path[0] + "__" + best_path[1]] = content
                 card.data[best_path[0]][best_path[1]].set(content)
-                print(best_path[0], best_path[1], "set")
             else: not_used_fields.append(heading)
 
-        if not_used_fields:
-            logger.warn("the following headings could be fully added to the description based on synonyms"
-                        + ", ".join(not_used_fields), user=self.alias)
         if not card.model.name: card.model.name = title
         if not card.model.home: card.model.home = url
         user_messages[-1] = (
             f"<h2>{self.alias} import</h2>"
             f"Saving..."
         )
-
 
     def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]):
         user_messages[-1] = (

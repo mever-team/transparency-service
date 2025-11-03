@@ -37,7 +37,7 @@ class ModelCard:
                 license=LongText("Under which licence is the model published? If necessary, add any other information related to intellectual property (IP)."),
                 home=LongText("Where can resources for more information be found?"),
                 contact=LongText("E.g., what is an email address that people may write to for further information?"),
-                citation=LongText("How should the model be cited?"),
+                citation=LongText("How should the model be cited? This may include @article or @inproceedings bibtex formats."),
                 more=LongText()),
             considerations=DotDict(
                 use_case=LongText("This section details whether the model was developed with general or specific tasks in mind (e.g., plant recognition worldwide or in the Pacific Northwest). The use cases may be as broadly or narrowly defined as the developers intend. For example, if the model was built simply to label images, then this task should be indicated as the primary intended use case."),
@@ -67,17 +67,17 @@ class ModelCard:
             ),
             performance=DotDict(
                 analysis=LongText("Analyse and explain performance results of your model."),
-                metrics=LongText("Include any performance metrics here e.g. accuracy, precision, Recall, ROC-AUC, F1-score."),
-                thresholds=LongText("If decision thresholds are used, what are they, and why were those decision thresholds chosen? When the model card is presented in a digital format, a threshold slider should ideally be available to view performance parameters across various decision thresholds."),
+                metrics=LongText("Include benchmark results for any performance metrics here e.g. accuracy, precision, Recall, ROC-AUC, F1-score."),
+                thresholds=LongText("If decision thresholds are used, what are they, and why were those parameters chosen? When the model card is presented in a digital format, a threshold slider should ideally be available to view performance parameters across various decision thresholds."),
                 uncertainty=LongText("How are the measurements and estimations of these metrics calculated? For example, this may include standard deviation, variance, confidence intervals, or KL divergence. Details of how these values are approximated should also be included (e.g., average of 5 runs, 10-fold cross-validation)."),
                 fairness=LongText("How did the model perform with respect to each factor. Quantitative analyses should be disaggregated, that is, broken down by the chosen factors. Quantitative analyses should provide the results of evaluating the model according to the chosen metrics, providing confidence interval values when possible. Parity on the different metrics across disaggregated population subgroups corresponds to how fairness is often defined. For an example, see figure 2. in https://arxiv.org/pdf/1810.03993.pdf"),
             ),
             safety=DotDict(
                 ethics=LongText("Example topics for ethical consideration: Does the training data contain sensitive information? What risks and harms could arise during the use of the model? Which mitigation measures are recommended? Are there particularly problematic use-cases? Did the model go through an ethical assessment procedure?"),
                 fairness=LongText("Which definition of fairness have you applied in any phase of setting up the AU system? Did you ensure a quantitative analysis or metrics to measure and test the applied definition of fairness?"),
-                risks=LongText("""• Did you define risks, risk metrics and risk levels of the AI system in each specific use case?<br>
-o Did you put in place a process to continuously measure and assess risks?<br>
-o Did you inform end-users and subjects of existing or potential risks?<br>
+                risks=LongText("""• Did you define risks, risk metrics and risk levels of the AI system in each specific use case?
+o Did you put in place a process to continuously measure and assess risks?
+o Did you inform end-users and subjects of existing or potential risks?
 • Did you identify the possible threats to the AI system (design faults, technical faults, environmental threats) and the possible consequences?"""),
                 security=LongText("Is the AI system certified for cybersecurity (e.g. the certification scheme created by the Cybersecurity Act in Europe)19 or is it compliant with specific security standards? Did you red-team/pentest the system?"),
                 caveats=LongText("This section should list additional concerns that were not covered in the previous sections. For example, did the results suggest any further testing? Were there any relevant groups that were not represented in the evaluation dataset? Are there additional recommendations for model use? What are the ideal characteristics of an evaluation dataset for this model?")
