@@ -38,7 +38,7 @@ class WordNet(Assistant):
             alias="📚 WordNet",
             description=(
                 "<h1>📚 WordNet</h1>"
-                "Fast and reliant copy-paster. Moves text segments based on a dictionary of semantically similar terms."
+                "Fast copy-paster. Imports text by using a semantic dictionary to organize paragraphs by meaning, and refines text by adding explanatory tooltips."
             )
         )
         self.scientific_defs = None
@@ -237,7 +237,7 @@ class WordNet(Assistant):
                                 best_option_matches[normalized_option] = score
                                 value.set(option)
                         continue
-                    if not isinstance(value, LongText) and len(content)>120: continue
+                    if not isinstance(value, LongText) and (len(content)>120 or ' ' in content.strip()): continue
                     #if cat+"__"+field in has_been_replaced: continue
                     score = (len(synonyms & self.field_synonyms[field])
                              + len(synonyms & self.field_synonyms[cat])*0.5

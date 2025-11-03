@@ -176,7 +176,7 @@ $(document).ready(function () {
                                 const resp = JSON.parse(xhr.responseText);
                                 //alert(resp.error || error); An AI assistant is working on the card
                             } catch (e) {
-                                alert("Unknown card submission error");
+                                //alert("Unknown card submission error");
                             }
                         }
                     })
@@ -195,7 +195,7 @@ $(document).ready(function () {
                     $('.nacc').append('<l1 class="empty_card">⚠️' + (resp.error || error) + '</l1>')
                     $('.example_button').css('pointer-events', 'none');
                 } catch (e) {
-                    alert("Unknown card lock error");
+                    //alert("Unknown card lock error");
                 }
             }
         });
@@ -240,9 +240,9 @@ $(document).ready(function () {
             error: function (xhr, status, error) {
                 try {
                     const resp = JSON.parse(xhr.responseText);
-                    alert(resp.error || error);
+                    //alert(resp.error || error);
                 } catch (e) {
-                    alert("Unknown card retrieval error");
+                    //alert("Unknown card retrieval error");
                 }
             }
         });
@@ -322,9 +322,9 @@ $(document).ready(function () {
             error: function (xhr, status, error) {
                 try {
                     const resp = JSON.parse(xhr.responseText);
-                    alert(resp.error || error);
+                    //alert(resp.error || error);
                 } catch (e) {
-                    alert(error || xhr.responseText);
+                    //alert(error || xhr.responseText);
                 }
             }
         });
@@ -433,9 +433,9 @@ $(document).ready(function () {
                 //alert("Error deleting card");
                 try {
                     const resp = JSON.parse(xhr.responseText);
-                    alert(resp.error || error);
+                    //alert(resp.error || error);
                 } catch (e) {
-                    alert("Unknown error at deleting card");
+                    //alert("Unknown error at deleting card");
                 }
             }
         });
@@ -505,9 +505,9 @@ $(document).ready(function () {
                         error: function (xhr, status, error) {
                             try {
                                 const resp = JSON.parse(xhr.responseText);
-                                alert(resp.error || error);
+                                //alert(resp.error || error);
                             } catch (e) {
-                                alert("Unknown refinement error");
+                                //alert("Unknown refinement error");
                             }
                         }
                     });
@@ -515,9 +515,9 @@ $(document).ready(function () {
                 error: function (xhr, status, error) {
                     try {
                         const resp = JSON.parse(xhr.responseText);
-                        alert(resp.error || error);
+                        //alert(resp.error || error);
                     } catch (e) {
-                        alert(error || xhr.responseText);
+                        //alert(error || xhr.responseText);
                     }
                 }
             });
@@ -576,9 +576,9 @@ $(document).ready(function () {
                                 document.getElementById('modal-autocomplete-screen').style.display = 'none';
                                 try {
                                     const resp = JSON.parse(xhr.responseText);
-                                    alert(resp.error || error);
+                                    //alert(resp.error || error);
                                 } catch (e) {
-                                    alert("Unknown autocomplete error");
+                                    //alert("Unknown autocomplete error");
                                 }
                             }
                         });
@@ -596,15 +596,15 @@ $(document).ready(function () {
                             contentType: false, // don't set content-type header, let browser set it (multipart/form-data)
                             success: function (response) {
                                 document.getElementById('modal-autocomplete-screen').style.display = 'none';
-                                alert(response)
+                                //alert(response)
                             },
                             error: function (xhr, status, error) {
                                 document.getElementById('modal-autocomplete-screen').style.display = 'none';
                                 try {
                                     const resp = JSON.parse(xhr.responseText);
-                                    alert(resp.error || error);
+                                    //alert(resp.error || error);
                                 } catch (e) {
-                                    alert("Unknown card creation error");
+                                    //alert("Unknown card creation error");
                                 }
                             }
                         });
@@ -614,9 +614,9 @@ $(document).ready(function () {
                     document.getElementById('modal-autocomplete-screen').style.display = 'none';
                     try {
                         const resp = JSON.parse(xhr.responseText);
-                        alert(resp.error || error);
+                        //alert(resp.error || error);
                     } catch (e) {
-                        alert(error || xhr.responseText);
+                        //alert(error || xhr.responseText);
                     }
                 }
             });

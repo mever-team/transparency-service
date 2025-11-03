@@ -3,12 +3,11 @@ from ..logger import Logger
 from aicard.card import ModelCard
 from aicard.agents import Agent
 from urllib.parse import urlparse, urljoin
+from bs4 import BeautifulSoup
 import requests
 import json
 import markdown2
-from bs4 import BeautifulSoup
 import time
-import datetime
 
 from ...agents.extensions.embeddings import ImageClassifier
 from ...card.fields import LongText
@@ -61,21 +60,22 @@ class Prompter(Assistant):
         user_messages[-1] = (
             f"<h2>{self.alias} import</h2>"
             f"{progress_html}<br>"
-            f"<b>Importing Images</b>"
+            f"<b>Importing images</b>"
         )
-        images = []
-        img_tags = soup.find_all('img')
-        for tag in img_tags:
-            images.append(tag["src"])
-            tag['style'] = 'max-height:600px; display:block; margin:0 auto;'
-        results = self.image_classifier.classify_images(images)
-        for i, (label, score) in enumerate(results):
-            if label is None:
-                continue
-            (cat, field), = label.items()
-            if cat not in card.data:
-                continue
-            card.data[cat][field].set(card.data[cat][field].get()+"<br><br>"+str(img_tags[i]))
+        if self.image_classifier:
+            images = []
+            img_tags = soup.find_all('img')
+            for tag in img_tags:
+                images.append(tag["src"])
+                tag['style'] = 'max-height:600px; display:block; margin:0 auto;'
+            results = self.image_classifier.classify_images(images)
+            for i, (label, score) in enumerate(results):
+                if label is None:
+                    continue
+                (cat, field), = label.items()
+                if cat not in card.data:
+                    continue
+                card.data[cat][field].set(card.data[cat][field].get()+"<br><br>"+str(img_tags[i]))
 
         if not card.model.home: card.model.home = url
         user_messages[-1] = (
@@ -100,19 +100,21 @@ class Prompter(Assistant):
             merged_input = "\n\n".join(merged_texts)
             user_messages.clear()
             user_messages.append(f"<h2>{self.alias} refinement</h2>Running global completion...")
-            self._complete(merged_input, "refinement", card, logger, user_messages)
-            for category, values in card.data.items():
-                if not isinstance(values, dict): continue
-                for field, value in values.items():
-                    if not isinstance(value, LongText): continue
-                    new_value = value.get()
-                    if not new_value:  continue
-                    # merged_html = (
-                    #     f"<details>\n<summary><h2>Refined on {datetime.datetime.now().strftime('%Y %B %d, %I:%M%p')}</h2></summary>\n\n"
-                    #     f"<div class=\"card-details-content\">\n{new_value}\n</div>\n</details>\n\n"
-                    #     f"{value.get()}"
-                    # )
-                    value.set(new_value)
+            new_card = ModelCard()
+            self._complete(merged_input, "refinement", new_card, logger, user_messages)
+            card.assign(new_card)
+            # for category, values in card.data.items():
+            #     if not isinstance(values, dict): continue
+            #     for field, value in values.items():
+            #         if not isinstance(value, LongText): continue
+            #         new_value = value.get()
+            #         if not new_value: continue
+            #         # merged_html = (
+            #         #     f"<details>\n<summary><h2>Refined on {datetime.datetime.now().strftime('%Y %B %d, %I:%M%p')}</h2></summary>\n\n"
+            #         #     f"<div class=\"card-details-content\">\n{new_value}\n</div>\n</details>\n\n"
+            #         #     f"{value.get()}"
+            #         # )
+            #         value.set(new_value)
             return
 
         user_messages.clear()

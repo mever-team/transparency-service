@@ -875,7 +875,6 @@ def serve(
                 logger.warn("Exception: " + str(e))
                 abort(500, description=str(e))
         flattened = card.card.data.flatten()
-        card.card.data.title += " (cloned)"
         columns = list(flattened.keys())
         creator = token2user.get(token, "")
         cursor = conn.conn.cursor()
@@ -885,9 +884,10 @@ def serve(
         conn.conn.commit()
         card_id = cursor.lastrowid
         card.card_id = card_id
+        card.commit_card()
         with card_cache_lock:
             card_cache[card_id] = card
-        logger.info("created a card", user=creator)
+        logger.info("cloned a card", user=creator)
         return jsonify(card_id), 201
 
     @app.route('/assistants', methods=['GET'])

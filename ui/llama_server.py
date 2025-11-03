@@ -13,11 +13,15 @@ from aicard.service import serve
 from aicard.service.assistants import WordNet, Prompter
 from aicard.agents import Ollama
 from threading import Thread
+from aicard.agents.extensions.embeddings import ImageClassifier
 
+image_classifier = ImageClassifier()
 app, gc = serve({
         "wordnet": WordNet(),
         #"qwen_fast": Prompter(Ollama("qwen:0.5b", name="🦋 Qwen-small")),
-        "llama": Prompter(Ollama("llama3.2:latest", name="🦙 Llama"), description="Better results but slow."),
+        "llama": Prompter(Ollama("llama3.2:latest", name="🦙 Llama"),
+                          image_classifier=image_classifier,
+                          description="Better results but slow."),
     },
     env="ui/.env"
 )
