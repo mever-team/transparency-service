@@ -557,6 +557,7 @@ button {
     line-height: 1.5;
     color: #1f1f1f;
     animation: fadeIn 0.25s ease;
+    pointer-events: none;
 }
 
 /* Tooltip arrow */

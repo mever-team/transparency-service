@@ -55,9 +55,13 @@ class Prompter(Assistant):
         # img_tags = soup.find_all('img')
         # for tag in img_tags:
         #     images.append(tag["src"])
-        # result = self.agent.embeddings.classify_images(images)
-        # for i, (label, score) in enumerate(result):
+        # results = self.agent.embeddings.classify_images(images)
+        # for i, (label, score) in enumerate(results):
+        #     if label is None:
+        #         continue
         #     (cat, field), = label.items()
+        #     if cat not in card.data:
+        #         continue
         #     card.data[cat][field].set(card.data[cat][field].get()+"<br>"+str(img_tags[i]))
 
         if not card.model.home: card.model.home = url

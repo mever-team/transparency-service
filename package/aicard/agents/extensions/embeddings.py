@@ -17,6 +17,14 @@ class ImageClassifier:
 
     def _build_embeddings(self):
         embeddings = {
+            "logo":
+                {
+                    "logo": "The logo of company or model."
+                },
+            "symbol":
+                {
+                    "symbol": "A symbol."
+                },
             "model":
                 {
                     "overview": "An overview of the model. The reader should have a good idea of what the model is, the purpose, novelty, capabilities, and caveats after reading this.",
@@ -59,10 +67,14 @@ class ImageClassifier:
 
     def classify_images(self, content):
         images = []
+        are_classified = []
         for img in content:
             img_bytes, status_code = to_bytes(img)
             if status_code == 200:
                 images.append(self.preprocess(Image.open(BytesIO(img_bytes))))
+                are_classified.append(True)
+            else:
+                are_classified.append(False)
         images_tensor = torch.stack(images).to(self.device)
 
         with torch.no_grad():
@@ -74,7 +86,23 @@ class ImageClassifier:
             best_idxs = similarity.argmax(dim=1)
             best_labels = [self.labels[idx] for idx in best_idxs]
             best_scores = similarity[range(len(images)), best_idxs]
+            best_scores.tolist()
 
-        return list(zip(best_labels, best_scores.tolist()))
+            print(best_labels)
+            print(best_scores)
+
+            labels_out = []
+            scores_out = []
+            i = 0
+            for is_classified in are_classified:
+                if is_classified:
+                    labels_out += [best_labels[i]]
+                    scores_out += [best_scores[i]]
+                    i += 1
+                else:
+                    labels_out.append(None)
+                    scores_out.append(None)
+
+        return list(zip(labels_out, scores_out))
 
 img_classifier=ImageClassifier()
