@@ -88,9 +88,6 @@ class ImageClassifier:
             best_scores = similarity[range(len(images)), best_idxs]
             best_scores.tolist()
 
-            print(best_labels)
-            print(best_scores)
-
             labels_out = []
             scores_out = []
             i = 0

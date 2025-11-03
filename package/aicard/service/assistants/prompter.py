@@ -51,18 +51,19 @@ class Prompter(Assistant):
         text = soup.get_text(strip=True)
 
         self._complete(text, "import", card, logger, user_messages)
-        # images = []
-        # img_tags = soup.find_all('img')
-        # for tag in img_tags:
-        #     images.append(tag["src"])
-        # results = self.agent.embeddings.classify_images(images)
-        # for i, (label, score) in enumerate(results):
-        #     if label is None:
-        #         continue
-        #     (cat, field), = label.items()
-        #     if cat not in card.data:
-        #         continue
-        #     card.data[cat][field].set(card.data[cat][field].get()+"<br>"+str(img_tags[i]))
+        images = []
+        img_tags = soup.find_all('img')
+        for tag in img_tags:
+            images.append(tag["src"])
+            tag['style'] = 'max-height:600px; display:block; margin:0 auto;'
+        results = self.agent.embeddings.classify_images(images)
+        for i, (label, score) in enumerate(results):
+            if label is None:
+                continue
+            (cat, field), = label.items()
+            if cat not in card.data:
+                continue
+            card.data[cat][field].set(card.data[cat][field].get()+"<br><br>"+str(img_tags[i]))
 
         if not card.model.home: card.model.home = url
         user_messages[-1] = (
