@@ -49,8 +49,7 @@ class WordNet(Assistant):
 
     def start(self, logger: Logger):
         with WordNet._loader_lock:
-            if WordNet._started:
-                return
+            if WordNet._started: return
             WordNet._started = True
         def _load():
             try:
@@ -97,7 +96,6 @@ class WordNet(Assistant):
                             for option in value.options():
                                 field_synonyms[option] = set(option.lower().split())#get_synonyms(option.lower(), stop_words)
                         field_synonyms[field] = get_synonyms(field+" "+value.description.split("?")[0], stop_words)
-
 
                 logger.ok(f"loading complete" 
                         f"\n * {len(scientific_defs)} terms"
@@ -277,6 +275,6 @@ class WordNet(Assistant):
                 vals[field].set(self._refine_field(value.get()))
         card.assign(card.to_html_card())
         user_messages[-1] = (
-            f"<h2>{self.alias} autofil</h2>"
-            f"Matching by dictionary definitios"
+            f"<h2>{self.alias} refinement</h2>"
+            f"Matching by dictionary definitions"
         )

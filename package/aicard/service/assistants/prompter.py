@@ -39,7 +39,7 @@ class Prompter(Assistant):
     def complete(self, card: ModelCard, url: str, logger: Logger, user_messages: list[str]):
         logger.info("Submitted: " + str(url), user=self.alias)
         user_messages.clear()
-        user_messages.append(f"<h2>{self.alias} import</h2>")
+        user_messages.append(f"<h2>{self.alias} import</h2>Retrieving data")
 
         parsed = urlparse(url)
         if not parsed.scheme in ("http", "https") or not parsed.netloc: raise Exception("Invalid url format")

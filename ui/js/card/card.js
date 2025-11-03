@@ -373,6 +373,31 @@ $(document).ready(function () {
         });
     });
 
+    $("#cardClone").click(function () {
+        if (!token) {
+            alert("You must be logged in to clone a card.");
+            return;
+        }
+        $("#cardClone").prop("disabled", true).text("Cloning...");
+        $.ajax({
+            url: "/card/" + id + "/clone",
+            method: "POST",
+            contentType: "application/json",
+            headers: { "Authorization": "Bearer " + token },
+            success: function (newId) {
+                window.location.href = "model_card.html?id=" + newId;
+            },
+            error: function (xhr, status, error) {
+                $("#cardClone").prop("disabled", false).text("Clone");
+                try {
+                    const resp = JSON.parse(xhr.responseText);
+                    alert(resp.error || "Error cloning card");
+                } catch (e) {
+                    alert("Unknown error cloning card");
+                }
+            }
+        });
+    });
 
     $("#modal_autocomplete").click(function () {
         document.getElementById('modal-autocomplete-screen').style.display = 'flex';

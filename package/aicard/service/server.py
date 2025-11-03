@@ -832,6 +832,64 @@ def serve(
             results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3]})
         return jsonify({"results": results, "pages": num_pages, "total": total})
 
+    @app.route('/card/<int:card_id>/clone', methods=['POST'])
+    @users.require_auth(token2expiration)
+    def clone_card(card_id, token: str):
+        """
+        Clones an existing model card into a new one owned by the current user.
+        The new card will have the same content but a new ID and creator.
+        ---
+        tags:
+          - UI
+        parameters:
+          - name: card_id
+            in: path
+            type: integer
+            required: true
+            description: The ID of the card to clone.
+          - name: Authorization
+            in: header
+            type: string
+            required: true
+            description: Bearer token for user authentication (e.g., "Bearer <token>")
+        responses:
+            201:
+                description: Successfully cloned the card; returns the new card ID.
+            401:
+                description: Unauthorized — missing token or invalid token format.
+            403:
+                description: Unauthorized — token expired or not valid.
+            404:
+                description: The card does not exist or has been deleted.
+            409:
+                description: The card is currently locked or being processed by an AI assistant.
+        """
+        card = ModelCardEntry(ModelCard(), token2user.get(token, ""), conn)
+        with exists(find_card(card_id), "Model card does not exist or has been deleted.") as src_card:
+            try:
+                card.card.data.assign(src_card.data)
+            except AssertionError as e:
+                logger.warn("Assertion error: " + str(e))
+                abort(500, description=str(e))
+            except Exception as e:
+                logger.warn("Exception: " + str(e))
+                abort(500, description=str(e))
+        flattened = card.card.data.flatten()
+        card.card.data.title += " (cloned)"
+        columns = list(flattened.keys())
+        creator = token2user.get(token, "")
+        cursor = conn.conn.cursor()
+        cursor.execute(
+            f'''INSERT INTO cards (user, desc, {','.join(columns)}) VALUES (?,?, {",".join(["?"] * len(columns))})''',
+            [creator, ""] + [flattened[key] for key in columns])
+        conn.conn.commit()
+        card_id = cursor.lastrowid
+        card.card_id = card_id
+        with card_cache_lock:
+            card_cache[card_id] = card
+        logger.info("created a card", user=creator)
+        return jsonify(card_id), 201
+
     @app.route('/assistants', methods=['GET'])
     @users.require_auth(token2expiration)
     def get_assistants(token: str):
@@ -1389,7 +1447,32 @@ def serve(
                 filename = f"{card.title}.md"
                 mimetype = "text/html"
             elif fformat == "pdf":
-                html_content = card.to_html()
+                html_content = card.to_html()+ """
+                    <style>
+                    body {
+                        margin: 1cm;
+                        font-size: 12px;
+                        word-wrap: break-word;
+                    }
+                    img {
+                        max-width: 100%;
+                        height: auto;
+                    }
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        table-layout: fixed;
+                        font-size: 11px;
+                    }
+                    th, td {
+                        word-wrap: break-word;
+                        overflow-wrap: break-word;
+                        text-overflow: ellipsis;
+                        padding: 4px;
+                        border: 1px solid #ccc;
+                    }
+                    </style>
+                    """
                 pdf_io = BytesIO()
                 HTML(string=html_content).write_pdf(pdf_io)
                 pdf_io.seek(0)
