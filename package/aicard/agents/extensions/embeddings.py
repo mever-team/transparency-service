@@ -1,11 +1,8 @@
-import clip
-import torch
-from PIL import Image
-from aicard.utils.image_converters import to_bytes
-from io import BytesIO
 
 class ImageClassifier:
     def __init__(self, device="cpu"):
+        import clip
+
         self.device = device
         self.model, self.preprocess = clip.load("ViT-B/32", device=self.device)
         self.labels = None
@@ -16,23 +13,18 @@ class ImageClassifier:
 
 
     def _build_embeddings(self):
+        import clip
+        import torch
+
         embeddings = {
-            "logo":
-                {
-                    "logo": "The logo of company or model."
-                },
-            "symbol":
-                {
-                    "symbol": "A symbol."
-                },
+            "A person":{"A person": "A person"},
+            "A smiling person":{"A smiling person": "A smiling person"},
+            "logo":{"logo": "The logo of company or model."},
+            "symbol":{"symbol": "A symbol."},
             "model":
                 {
                     "overview": "An overview of the model. The reader should have a good idea of what the model is, the purpose, novelty, capabilities, and caveats after reading this.",
                 },
-            "considerations": {
-                "instructions": "Provide any other information which helps users use the model. Ideally, add a code snippet illustrating a typical use-case. You can also add a link to a GitHub repository with usage instructions.",
-                "inputs_outputs": "Provide a short description of the model's inputs and outputs",
-            },
             "training_set": {
                 "datasets": "What dataset(s) were used to train the model? If possible, please add a link to details on the respective datasets used, for example a datasheet.",
             },
@@ -40,9 +32,8 @@ class ImageClassifier:
                 "datasets": "What dataset(s) were used to evaluate the model? If possible, please add a link to details on the respective datasets used, for example a datasheet.",
             },
             "performance": {
-                "analysis": "Analyse and explain performance results of your model.",
+                "analysis": "Analysis graphs.",
                 "metrics": "Include any performance metrics here e.g. accuracy, precision, Recall, ROC-AUC, F1-score.",
-                "fairness": "How did the model perform with respect to each factor. Quantitative analyses should be disaggregated, that is, broken down by the chosen factors. Quantitative analyses should provide the results of evaluating the model according to the chosen metrics, providing confidence interval values when possible. Parity on the different metrics across disaggregated population subgroups corresponds to how fairness is often defined.",
             },
         }
         with torch.no_grad():
@@ -66,6 +57,11 @@ class ImageClassifier:
         self.is_ready = True
 
     def classify_images(self, content):
+        from PIL import Image
+        import torch
+        from aicard.utils.image_converters import to_bytes
+        from io import BytesIO
+
         images = []
         are_classified = []
         for img in content:
@@ -102,4 +98,3 @@ class ImageClassifier:
 
         return list(zip(labels_out, scores_out))
 
-img_classifier=ImageClassifier()
