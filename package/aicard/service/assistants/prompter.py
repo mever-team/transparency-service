@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 import time
 import datetime
 
-from .image_classifier import ImageClassifier
+from ...agents.extensions.embeddings import ImageClassifier
 from ...card.fields import LongText
 
 
@@ -68,7 +68,7 @@ class Prompter(Assistant):
         for tag in img_tags:
             images.append(tag["src"])
             tag['style'] = 'max-height:600px; display:block; margin:0 auto;'
-        results = self.agent.embeddings.classify_images(images)
+        results = self.image_classifier.classify_images(images)
         for i, (label, score) in enumerate(results):
             if label is None:
                 continue

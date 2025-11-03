@@ -12,7 +12,7 @@
 from aicard.service import serve
 from aicard.agents import Ollama
 from aicard.service.assistants import WordNet, Prompter
-from aicard.service.assistants.image_classifier import ImageClassifier
+from aicard.agents.extensions.embeddings import ImageClassifier
 from threading import Thread
 
 image_classifier = ImageClassifier()

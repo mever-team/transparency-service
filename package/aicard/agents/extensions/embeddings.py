@@ -1,11 +1,8 @@
-import clip
-import torch
-from PIL import Image
-from aicard.utils.image_converters import to_bytes
-from io import BytesIO
 
 class ImageClassifier:
     def __init__(self, device="cpu"):
+        import clip
+
         self.device = device
         self.model, self.preprocess = clip.load("ViT-B/32", device=self.device)
         self.labels = None
@@ -16,6 +13,9 @@ class ImageClassifier:
 
 
     def _build_embeddings(self):
+        import clip
+        import torch
+
         embeddings = {
             "logo":
                 {
@@ -66,6 +66,11 @@ class ImageClassifier:
         self.is_ready = True
 
     def classify_images(self, content):
+        from PIL import Image
+        import torch
+        from aicard.utils.image_converters import to_bytes
+        from io import BytesIO
+
         images = []
         are_classified = []
         for img in content:
@@ -102,4 +107,3 @@ class ImageClassifier:
 
         return list(zip(labels_out, scores_out))
 
-img_classifier=ImageClassifier()
