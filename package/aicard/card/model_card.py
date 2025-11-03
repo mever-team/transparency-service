@@ -38,7 +38,7 @@ class ModelCard:
                 home=LongText("Where can resources for more information be found?"),
                 contact=LongText("E.g., what is an email address that people may write to for further information?"),
                 citation=LongText("How should the model be cited? This may include @article or @inproceedings bibtex formats."),
-                more=LongText()),
+                more=LongText("Additional model information not found above.")),
             considerations=DotDict(
                 use_case=LongText("This section details whether the model was developed with general or specific tasks in mind (e.g., plant recognition worldwide or in the Pacific Northwest). The use cases may be as broadly or narrowly defined as the developers intend. For example, if the model was built simply to label images, then this task should be indicated as the primary intended use case."),
                 oversight=Options(["unknown","self-learning/autonomous", "human-in-the-loop", "human-on-the-loop", "human-in-command"]),
@@ -49,21 +49,21 @@ class ModelCard:
                 inputs_outputs=LongText("Provide a short description of the model's inputs and outputs"),
                 factors=LongText("What are foreseeable salient factors for which model performance may vary, and how were these determined? "),
                 hardware=LongText("What are hardware requirements for training and inference (e.g. CPU or GPU)? What do users need to take into account regarding hardware regarding deployment?"),
-                more=LongText()),
+                more=LongText("Additional considerations not found above.")),
             training_set=DotDict(
                 datasets=LongText("What dataset(s) were used tot train the model? If possible, please add a link to details on the respective datasets used, for example a datasheet."),
                 motivation=LongText("Why were these datasets chosen?"),
                 preprocessing=LongText("How was the data pre-processed for evaluation (e.g., tokenization of sentences, cropping of images, any filtering such as dropping images without faces)? Please provide a short description. You can also add a GitHub link to the respective pre-processing scripts. "),
                 standards=Options(["unknown", "none", "ISO","IEEE"]),
                 update=Options(["unknown", "no", "yes"], "Did you put in place measures to ensure that the data (including training data) used to develop the AI system is up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),
-                more=LongText()),
+                more=LongText("Additional training set information not found above.")),
             eval_set=DotDict(
                 datasets=LongText("What dataset(s) were used to evaluate the model? If possible, please add a link to details on the respective datasets used, for example a datasheet."),
                 motivation=LongText("Why were these datasets chosen?"),
                 preprocessing=LongText("How was the data pre-processed for evaluation (e.g., tokenization of sentences, cropping of images, any filtering such as dropping images without faces)? Please provide a short description. You can also add a GitHub link to the respective pre-processing scripts. "),
                 standards=Options(["unknown", "none", "ISO","IEEE"]),
                 update=Options(["unknown", "no", "yes"], "Did you put in place measures to ensure that the data (including training data) used to develop the AI system is up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),
-                more=LongText()
+                more=LongText("Additional test set information not found above.")
             ),
             performance=DotDict(
                 analysis=LongText("Analyse and explain performance results of your model."),
