@@ -98,7 +98,7 @@ class ModelCardEntry:
         desc = create_progress_bar(quality)
         if summary:
             desc += " for "+summary
-        desc += f" [saved: {datetime.datetime.now().strftime("%Y-%m-%d %H:%M")}]"
+        desc += f" [saved: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}]"
 
         columns = list(flattened.keys())
         values = [flattened[key] for key in columns]+[desc, self.card.title]
