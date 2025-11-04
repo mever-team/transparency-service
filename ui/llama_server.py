@@ -18,7 +18,7 @@ from aicard.agents.extensions.embeddings import ImageClassifier
 image_classifier = ImageClassifier()
 app, gc = serve({
         "wordnet": WordNet(),
-        #"qwen_fast": Prompter(Ollama("qwen:0.5b", name="🦋 Qwen-small")),
+        "qwen_fast": Prompter(Ollama("qwen:0.5b", name="🦋 Qwen-small")),
         "llama": Prompter(Ollama("llama3.2:latest", name="🦙 Llama"),
                           image_classifier=image_classifier,
                           description="Better results but slow."),

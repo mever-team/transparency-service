@@ -252,7 +252,7 @@ class Prompter(Assistant):
                     f"accent-color: #79CFDC; border: 2px solid #1F1F1F;'></progress>"
                 )
                 user_messages[-1] = (
-                    f"<h2>{self.alias} import</h2>"
+                    f"<h2>{self.alias} {task}</h2>"
                     f"{progress_html}<br>"
                     f"<b>Working on {category.replace('_', ' ')}</b>"
                 )
@@ -265,16 +265,18 @@ class Prompter(Assistant):
                 # Ollama bug workaround: invalid json
                 completion = dict()
                 for retry in range(max(1, self.max_retries)):
-                    completion = self.agent.completion(prompt, **params)
-                    # Ollama bug workaround: https://github.com/ollama/ollama/issues/1910
-                    time.sleep(1)
                     try:
+                        completion = self.agent.completion(prompt, **params)
+                        # Ollama bug workaround: https://github.com/ollama/ollama/issues/1910
+                        time.sleep(1)
                         completion = json.loads(completion)
                         break
                     except (json.JSONDecodeError, TypeError):
                         if retry + 1 == max(1, self.max_retries): completion = dict()
-                        logger.warn(f"invalid json on try {retry + 1}/{max(self.max_retries, 1)} - retrying",
-                                    user=self.alias)
+                        logger.warn(f"invalid json on try {retry + 1}/{max(self.max_retries, 1)} - retrying", user=self.alias)
+                    except Exception as e:
+                        logger.warn(f"{str(e)} - skipping segment", user=self.alias)
+                        break
                 if not completion: continue
                 if 'eval_set_purpose' in completion: completion['motivation'] = completion.pop('eval_set_purpose')
                 if 'performance_insights' in completion: completion['analysis'] = completion.pop('performance_insights')

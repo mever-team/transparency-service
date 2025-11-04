@@ -711,6 +711,7 @@ def serve(
         placeholders = ','.join(['?'] * len(owner))
         owner = " ".join(owner)
         query = " ".join(new_parts)
+        query = query.strip()
 
         cursor = conn.conn.cursor()
         cursor.execute("SELECT COUNT(*) FROM cards")

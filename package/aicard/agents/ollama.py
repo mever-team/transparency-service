@@ -45,6 +45,7 @@ Instructions:
             base_url: str=os.getenv("OLLAMA_BASE_URL","http://localhost:11434"),
             name=None,
             description="Powered by Ollama.",
+            timeout_secs=240
         ):
         if name is None:
             name = "🦙 "+model.split(":")[0]
@@ -54,6 +55,7 @@ Instructions:
         self._url = f"{base_url}/api/chat"
         self._model = model
         self._vision_model = vision_model
+        self.timeout_secs = timeout_secs
         test = requests.post(self._url, json={
             "model": model,
             "stream": False,
@@ -81,7 +83,7 @@ Instructions:
             }
         if params:
             payload.update(params)
-        response = requests.post(self._url, json=payload)
+        response = requests.post(self._url, json=payload, timeout=self.timeout_secs)
         response = json.loads(response.text)["message"]["content"]
         if response.startswith("Here"):
             idx_colon = response.find(':')
