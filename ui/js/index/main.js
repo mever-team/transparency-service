@@ -1,5 +1,7 @@
 $(function () {
     $('#loading').show();
+    const lastSearch = localStorage.getItem("last_search_term") || "";
+    $("#topic").val(lastSearch);
     autocomplete_populate();
     $("#topic").trigger("keyup");
     if (localStorage.getItem('modalDismissed') !== 'true')
@@ -78,6 +80,7 @@ function autocomplete_populate() {
                 else
                     $tbody.append(`<tr><td colspan="3" style="text-align:center;color:#EEEEEE;font-weight:bold;font-size:22px;">No matching results</td></tr>`);
                 $("#resultsTable").show();
+                localStorage.setItem("last_search_term", $("#topic").val());
                 first = false;
             },
             error: () => { $('#loading').hide(); first = false; console.error("Error fetching results"); }
