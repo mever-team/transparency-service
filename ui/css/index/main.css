@@ -268,16 +268,20 @@ html, body {
     align-items: center;
 }
 
-#login-btn,#whats-this,#login-confirm-btn,#cancel-login-btn,#logout-btn {
+#login-btn,#whats-this,#login-confirm-btn,#cancel-login-btn,#logout-btn,#new_card {
     color: #EEEEEE;
     border: solid 1px #434343;
     padding:5px 10px;
-    margin-left:10px;
+    margin-left:0px;
     margin-right:10px;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
     border: 1px solid #434343!important;
     cursor: pointer;
     border-radius: 10px;
+}
+
+#new_card {
+    color: #64DB96;
 }
 
 #login-confirm-btn,#cancel-login-btn {
