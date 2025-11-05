@@ -27,11 +27,6 @@ app, gc = serve({"wordnet": WordNet(),
                 "llama3.2:latest", name="🦙 Llama"),
                 description="Better results but slow agent.",
                 image_classifier=image_classifier),
-         "Schematron": Prompter(
-                     Ollama(
-                         "Inference/Schematron:3b", name="🪄 Schematron"),
-                     description="Better results but slow agent.",
-                     image_classifier=image_classifier),
         # "ollama": Prompter(Ollama("mistral:latest", name="🌬️ Mistral"))
     },
     env="ui/.env"
