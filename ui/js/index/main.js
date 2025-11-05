@@ -138,5 +138,21 @@ document.getElementById('cancel-login-btn').onclick = function () {
     document.getElementById('login-confirm-screen').style.display = 'none';
 };
 
+document.addEventListener("DOMContentLoaded", () => {
+    const username = document.getElementById("username");
+    const password = document.getElementById("password");
+    const loginBtn = document.getElementById("login-confirm-btn");
+
+    function submitOnEnter(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            loginBtn.click();
+        }
+    }
+
+    username.addEventListener("keydown", submitOnEnter);
+    password.addEventListener("keydown", submitOnEnter);
+});
+
 
 // update anything based on login
