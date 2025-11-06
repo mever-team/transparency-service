@@ -237,6 +237,13 @@ class Prompter(Assistant):
                     if retry + 1 == max(1, self.max_retries): completion = dict()
                     logger.warn(f"invalid json on try {retry + 1}/{max(self.max_retries, 1)} - retrying", user=self.alias)
                 except Exception as e:
+                    try: self.agent.abort()
+                    except Exception as e:
+                        logger.warn(str(e), user=self.alias)
+                        break
+                    #if retry + 1 != max(1, self.max_retries):
+                    #     logger.warn(f"{str(e)} on try {retry + 1}/{max(self.max_retries, 1)} - retrying", user=self.alias)
+                    #     continue
                     logger.warn(f"{str(e)} - skipping segment", user=self.alias)
                     break
             if not completion: continue
