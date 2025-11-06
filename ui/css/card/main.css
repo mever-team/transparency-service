@@ -3,6 +3,12 @@
     src: url('../../fonts/Hero.otf');
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap');
+
+body {
+  font-family: Hero_font, "Noto Emoji", sans-serif;
+}
+
 .search_section::before {
 
     /*background: url(../../img/aicode_bg_surface.jpg) no-repeat;

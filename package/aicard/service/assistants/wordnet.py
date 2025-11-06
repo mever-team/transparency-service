@@ -38,7 +38,7 @@ class WordNet(Assistant):
             alias="📚 WordNet",
             description=(
                 "<h1>📚 WordNet</h1>"
-                "Fast copy-paster. Imports text by using a semantic dictionary to organize paragraphs by meaning, and refines text by adding explanatory tooltips."
+                "Fast and deterministic copy-paster. Imports text by using a semantic dictionary to organize paragraphs by meaning, and refines text by adding explanatory tooltips."
             )
         )
         self.scientific_defs = None
