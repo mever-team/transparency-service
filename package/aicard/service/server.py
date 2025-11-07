@@ -11,7 +11,6 @@ from flasgger import Swagger
 from threading import Lock, Thread
 from dotenv import dotenv_values
 from werkzeug.exceptions import HTTPException
-from weasyprint import HTML
 from io import BytesIO
 
 import re
@@ -1479,6 +1478,8 @@ def serve(
                     }
                     </style>
                     """
+                from weasyprint import HTML
+
                 pdf_io = BytesIO()
                 HTML(string=html_content).write_pdf(pdf_io)
                 pdf_io.seek(0)

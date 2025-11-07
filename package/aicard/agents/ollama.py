@@ -45,7 +45,7 @@ Instructions:
             base_url: str=os.getenv("OLLAMA_BASE_URL","http://localhost:11434"),
             name=None,
             description="Powered by Ollama.",
-            timeout_secs=240
+            timeout_secs=40
         ):
         if name is None:
             name = "🦙 "+model.split(":")[0]
@@ -62,6 +62,15 @@ Instructions:
             "messages": [{"role": "user", "content": "Request test"}],
         })
         assert test.status_code == 200, f"Failed to initialize model '{model}'\nResponse: {test.text}"
+
+    def abort(self):
+        """
+        Abort the running Ollama model process.
+        This function kills the process associated with the loaded model.
+        It supports Linux, macOS, and Windows.
+        """
+        try: os.system(f'ollama stop {self._model}')
+        except Exception as e: raise Exception(f"Failed to abort model {self._model}: {e}")
 
     def _run(self, content: str, task: str, **params):
         assert isinstance(content, str), "Content must be of type str"
