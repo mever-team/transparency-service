@@ -71,8 +71,10 @@ class ImageClassifier:
                 are_classified.append(True)
             else:
                 are_classified.append(False)
-        images_tensor = torch.stack(images).to(self.device)
+        if not images:
+            return [(None, None)]
 
+        images_tensor = torch.stack(images).to(self.device)
         with torch.no_grad():
             image_embeddings = self.model.encode_image(images_tensor)
             image_embeddings /= image_embeddings.norm(dim=-1, keepdim=True)
