@@ -80,6 +80,56 @@ $(document).ready(function () {
                             //$("#model-title").text("Model Card: " + jsonData.title);
                             $("#model-title").text(jsonData.title);
                             $("#model-description").html(jsonData.description);
+
+                            const historyContainer = document.getElementById("history-dropdown");
+                            historyContainer.innerHTML = ""; // clear previous content
+
+                            if (jsonData.related && Object.keys(jsonData.related).length > 0) {
+                                const wrapper = document.createElement("div");
+                                wrapper.className = "related-wrapper";
+
+                                // find smallest key (string order)
+                                const sortedKeys = Object.keys(jsonData.related).sort();
+                                const smallestKey = sortedKeys[0];
+                                const smallestText = jsonData.related[smallestKey] || smallestKey;
+
+                                const button = document.createElement("div");
+                                button.className = "related_button";
+                                button.textContent = `${smallestText} ▾`; // ✅ show first related entry before the arrow
+
+                                const dropdown = document.createElement("div");
+                                dropdown.className = "download-dropdown-menu related-dropdown";
+                                dropdown.style.display = "none";
+
+                                Object.entries(jsonData.related).forEach(([key, rel]) => {
+                                    const item = document.createElement("div");
+                                    item.className = "download-dropdown-item";
+                                    item.textContent = rel || key;
+                                    item.addEventListener("click", () => {
+                                        window.location.href = `model_card.html?id=${key}`;
+                                    });
+                                    dropdown.appendChild(item);
+                                });
+
+                                button.addEventListener("click", () => {
+                                    const open = dropdown.style.display === "block";
+                                    dropdown.style.display = open ? "none" : "block";
+
+                                    if (!open) {
+                                        const closeMenu = (e) => {
+                                            if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+                                                dropdown.style.display = "none";
+                                                document.removeEventListener("click", closeMenu);
+                                            }
+                                        };
+                                        document.addEventListener("click", closeMenu);
+                                    }
+                                });
+
+                                wrapper.append(button, dropdown);
+                                historyContainer.appendChild(wrapper);
+                            }
+
                             const $ul = $(".nacc");
                             $ul.empty();
                             $('#loading').hide();
@@ -310,6 +360,55 @@ $(document).ready(function () {
 
                 $("#model-title").text(response.title);
                 $("#model-description").html(response.description);
+//
+//                // TODO: enable once it does not crash new card creation
+//                const history<Container = document.getElementById("history-dropdown");
+//                historyContainer.innerHTML = ""; // clear previous content>
+//                if (jsonData.related && Object.keys(jsonData.related).length > 0) {
+//                    const wrapper = document.createElement("div");
+//                    wrapper.className = "related-wrapper";
+//
+//                    // find smallest key (string order)
+//                    const sortedKeys = Object.keys(jsonData.related).sort();
+//                    const smallestKey = sortedKeys[0];
+//                    const smallestText = jsonData.related[smallestKey] || smallestKey;
+//
+//                    const button = document.createElement("div");
+//                    button.className = "related_button";
+//                    button.textContent = `${smallestText} ▾`; // ✅ show first related entry before the arrow
+//
+//                    const dropdown = document.createElement("div");
+//                    dropdown.className = "download-dropdown-menu related-dropdown";
+//                    dropdown.style.display = "none";
+//
+//                    Object.entries(jsonData.related).forEach(([key, rel]) => {
+//                        const item = document.createElement("div");
+//                        item.className = "download-dropdown-item";
+//                        item.textContent = rel || key;
+//                        item.addEventListener("click", () => {
+//                            window.location.href = `model_card.html?id=${key}`;
+//                        });
+//                        dropdown.appendChild(item);
+//                    });
+//
+//                    button.addEventListener("click", () => {
+//                        const open = dropdown.style.display === "block";
+//                        dropdown.style.display = open ? "none" : "block";
+//
+//                        if (!open) {
+//                            const closeMenu = (e) => {
+//                                if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+//                                    dropdown.style.display = "none";
+//                                    document.removeEventListener("click", closeMenu);
+//                                }
+//                            };
+//                            document.addEventListener("click", closeMenu);
+//                        }
+//                    });
+//
+//                    wrapper.append(button, dropdown);
+//                    historyContainer.appendChild(wrapper);
+//                }
 
                 $("#saveJson").find('.btn-text').hide();
                 $("#saveJson").find('.btn-confirmation').fadeIn();

@@ -53,9 +53,18 @@ class UserDB:
             FOREIGN KEY(user) REFERENCES users(username) ON DELETE CASCADE
         )'''
         conn.execute(create_cards_table)
+
+        # maintenance - TODO: REMOVE THIS SNIPPET IN FUTURE SERVER VERSIONS
+        cursor = conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='card_children'")
+        exists = cursor.fetchone() is not None
+        if exists and not conn.execute("SELECT COUNT(*) FROM card_children").fetchone()[0]:
+            conn.execute("DROP TABLE card_children")
+
+        # create card children table
         conn.execute('''CREATE TABLE IF NOT EXISTS card_children (
             parent_id INTEGER NOT NULL,
             child_id INTEGER NOT NULL,
+            message TEXT DEFAULT '',
             FOREIGN KEY(parent_id) REFERENCES cards(id) ON DELETE CASCADE,
             FOREIGN KEY(child_id) REFERENCES cards(id) ON DELETE CASCADE,
             PRIMARY KEY(parent_id, child_id)
@@ -154,6 +163,36 @@ class UserDB:
             (username, email, hash_password(password))
         )
         if commit: self.conn.commit()
+
+    def create_card_relation(self, parent_id: int, child_id: int, message: str):
+        cursor = self.conn.execute(
+            "SELECT 1 FROM card_children WHERE parent_id = ? AND child_id = ?",
+            (parent_id, child_id)
+        )
+        exists = cursor.fetchone() is not None
+        if exists:
+            self.conn.execute(
+                "UPDATE card_children SET message = ? WHERE parent_id = ? AND child_id = ?",
+                (message, parent_id, child_id)
+            )
+        else:
+            self.conn.execute(
+                "INSERT INTO card_children (parent_id, child_id, message) VALUES (?, ?, ?)",
+                (parent_id, child_id, message)
+            )
+        self.conn.commit()
+
+    def load_card_relations(self, parent_id: int) -> dict[int, str]:
+        """
+        Load all child relations for a given parent card.
+        Returns a dict mapping child_id -> message.
+        """
+        cursor = self.conn.execute(
+            "SELECT child_id, message FROM card_children WHERE parent_id = ?",
+            (parent_id,)
+        )
+        return {row[0]: row[1] for row in cursor.fetchall()}
+
 
 def require_auth(token2expiration: dict):
     def decorator(f):

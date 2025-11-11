@@ -19,46 +19,16 @@ import time
 import secrets
 import datetime
 
-
-# def create_progress_bar(quality: float) -> str:
-#     percent = max(0.0, min(1.0, quality)) * 100
-#     return f"""
-#     <div style="
-#         display:inline-block;
-#         width:60px;
-#         height:8px;
-#         background:#ddd;
-#         border-radius:4px;
-#         overflow:hidden;
-#         vertical-align:middle;">
-#         <div style="
-#             width:{percent:.1f}%;
-#             height:100%;
-#             background:#3a3;
-#             transition:width 0.3s;">
-#         </div>
-#     </div>
-#     """.strip()
-
-
 def create_progress_bar(quality: float) -> str:
     quality = max(0.0, min(1.0, quality))
     stars = ""
     total_stars = 5
     rating = quality * total_stars
-
     for i in range(total_stars):
-        if rating >= i + 1:
-            stars += "★"  # full star
-        elif rating > i:
-            stars += "⯪"  # half star (can use "☆" or "⭑" if preferred)
-        else:
-            stars += "☆"  # empty star
-    return f"""
-    <span style="color:gold; font-size:14px; letter-spacing:1px;">
-        {stars}
-    </span>
-    """.strip()
+        if rating >= i + 1: stars += "★"
+        elif rating > i: stars += "⯪"
+        else: stars += "☆"
+    return f"""<span style="color:gold; font-size:14px; letter-spacing:1px;">{stars}</span>"""
 
 def exists(condition, message):
     # empty strings are allowed
@@ -71,6 +41,7 @@ class ModelCardEntry:
         self.card = card
         self.creator = creator
         self.preview = card.to_html_card()
+        self.related = dict()
         self.lock = Lock()
         self._is_completing: bool = False
         self._completion_status: list[str]|None = None
@@ -83,7 +54,7 @@ class ModelCardEntry:
     def touch(self):
         self.last_accessed = time.time()
 
-    def commit_card(self, on_thread: bool = False):
+    def commit_card(self, on_thread: bool = False, edit_message: str|None = "Edited card"):
         flattened = self.card.data.flatten()
         assert flattened, "Cannot commit an empty model card."
         assert self.card_id is not None, "Internal error: card_id has not been set for a cached card"
@@ -96,8 +67,12 @@ class ModelCardEntry:
         summary = self.card.summary()
         desc = create_progress_bar(quality)
         if summary:
-            desc += " for "+summary
-        desc += f" [saved: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}]"
+            desc += " for version "+summary
+
+        if edit_message:
+            edit_message = f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}] {edit_message} " + summary
+            desc += f" [{datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}]"
+            self.related[self.card_id] = edit_message
 
         columns = list(flattened.keys())
         values = [flattened[key] for key in columns]+[desc, self.card.title]
@@ -116,8 +91,28 @@ class ModelCardEntry:
             # reserved for agents where some ms of system operations
             # at worst are nothing in comparison.
             with sqlite3.connect(self.conn.db_path) as tmp_conn:
+                if edit_message:
+                    cursor = tmp_conn.execute(
+                        "SELECT 1 FROM card_children WHERE parent_id = ? AND child_id = ?",
+                        (self.card_id, self.card_id)
+                    )
+                    exists = cursor.fetchone() is not None
+                    if exists:
+                        tmp_conn.execute(
+                            "UPDATE card_children SET message = ? WHERE parent_id = ? AND child_id = ?",
+                            (edit_message, self.card_id, self.card_id)
+                        )
+                    else:
+                        tmp_conn.execute(
+                            "INSERT INTO card_children (parent_id, child_id, message) VALUES (?, ?, ?)",
+                            (self.card_id, self.card_id, edit_message)
+                        )
+                    tmp_conn.commit()
                 tmp_conn.execute(query, values + [self.card_id])
+                tmp_conn.commit()
         else:
+            if edit_message:
+                self.conn.create_card_relation(parent_id=self.card_id, child_id=self.card_id, message=edit_message)
             with self.conn.conn:
                 cursor = self.conn.conn.cursor()
                 cursor.execute(query, values + [self.card_id])
@@ -158,18 +153,18 @@ class ModelCardEntry:
     def __autocomplete(self, url: str, assistant: Assistant, logger: Logger):
         try:
             assistant.complete(self.card, url, logger, self._completion_status)
-            self.commit_card(on_thread=True) # on_thread=True because we are on a heavyweight path either way
-            logger.info(f"ended card {self.card_id} completion", user=assistant.alias)
+            self.commit_card(on_thread=True, edit_message=assistant.alias+" import") # on_thread=True because we are on a heavyweight path either way
+            logger.info(f"ended card {self.card_id} import", user=assistant.alias)
         except Exception as e:
             import traceback
             traceback.print_exc()
-            logger.error(f"aborted card{self.card_id} completion with error {e}", user=assistant.alias)
+            logger.error(f"aborted card{self.card_id} import with error {e}", user=assistant.alias)
         self.end_completion()
 
     def __autorefine(self, assistant: Assistant, logger: Logger):
         try:
             assistant.refine(self.card, logger, self._completion_status)
-            self.commit_card(on_thread=True) # on_thread=True because we are on a heavyweight path either way
+            self.commit_card(on_thread=True, edit_message=assistant.alias+" refinement") # on_thread=True because we are on a heavyweight path either way
             logger.info(f"ended card {self.card_id} refinement", user=assistant.alias)
         except Exception as e:
             import traceback
@@ -257,6 +252,7 @@ def serve(
                     model_card.data.assign_flattened(flattened)
                     card = ModelCardEntry(model_card, card_creator, conn)
                     card.card_id = card_id
+                    card.related = conn.load_card_relations(card_id)
                     card_cache[card_id] = card
             else:
                 card.touch()
@@ -867,10 +863,13 @@ def serve(
             409:
                 description: The card is currently locked or being processed by an AI assistant.
         """
+        parent_id = card_id
         card = ModelCardEntry(ModelCard(), token2user.get(token, ""), conn)
-        with exists(find_card(card_id), "Model card does not exist or has been deleted.") as src_card:
+        parent_card = find_card(card_id)
+        with exists(parent_card, "Model card does not exist or has been deleted.") as src_card:
             try:
                 card.card.data.assign(src_card.data)
+                related = {k: v for k, v in parent_card.related.items()}
             except AssertionError as e:
                 logger.warn("Assertion error: " + str(e))
                 abort(500, description=str(e))
@@ -887,7 +886,23 @@ def serve(
         conn.conn.commit()
         card_id = cursor.lastrowid
         card.card_id = card_id
-        card.commit_card()
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+
+        with exists(parent_card, "Model card does not exist or has been deleted.") as _:
+            if parent_id in parent_card.related:
+                message = f"{parent_card.related[parent_id]} has been cloned here - go to original"
+                message_parent = f"{parent_card.related[parent_id]} cloned - go to clone"
+            else:
+                message = f"[{timestamp}] Created by cloning - go to original"
+                message_parent = f"[{timestamp}] Cloned - go to clone"
+            parent_card.related[card_id] = message_parent
+
+        card.related = related
+        card.related[parent_id] = message
+        conn.create_card_relation(parent_id=parent_id, child_id=card_id, message=message)
+        conn.create_card_relation(parent_id=card_id, child_id=parent_id, message=message_parent)
+        parent_card.commit_card(edit_message=None)
+        card.commit_card(edit_message="Just created by cloning")
         with card_cache_lock:
             card_cache[card_id] = card
         logger.info("cloned a card", user=creator)
@@ -942,9 +957,12 @@ def serve(
             409:
                 description: An AI assistant is working on the model card.
         """
-        with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
+        found = find_card(card_id)
+        with exists(found, "Model card does not exist or has been deleted.") as card:
             desc = "completion "+create_progress_bar(card.quality())
-            return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": desc})
+            # for rel in found.related.values():
+            #     desc += "<br>" + str(rel)
+            return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": desc, "related": found.related})
 
     @app.route('/card/<int:card_id>/locked', methods=['GET'])
     def get_card_locked_status(card_id):
@@ -1263,7 +1281,7 @@ def serve(
             except Exception as e: abort(404, "Wrong data: "+str(e))
             desc = "completion " + create_progress_bar(card.quality())
             logger.info("updated a card", user=token2user.get(token, None))
-            return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": desc})
+            return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": desc, "related": card_entry.related})
 
     @app.route('/card', methods=['POST'])
     @users.require_auth(token2expiration)
