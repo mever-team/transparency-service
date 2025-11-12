@@ -1,8 +1,7 @@
 import numpy as np
-import torch
-from aicard.evaluation import params
-from aicard.evaluation import metrics
-from aicard.evaluation.task import Task, targets
+from evaluation import params
+from evaluation import metrics
+from evaluation.task import Task, targets
 
 question_answering = Task(
     "Question Answering",
@@ -59,9 +58,9 @@ text_classification = Task(
              metrics.f1_macro, metrics.f1_micro, metrics.auc_roc_macro, metrics.auc_roc_macro],  # TODO: acc
     parameters=params.classification,
     toinstance=(
-        [torch.Tensor, int, float, list[float], str, dict[str, float]],
+        [np.ndarray, int, float, list[float], str, dict[str, float]],
         lambda x: (
-            isinstance(x, (torch.Tensor, int, float, str))
+            isinstance(x, (np.ndarray, int, float, str))
             or (isinstance(x, list) and all(isinstance(i, float) for i in x))
             or (
                 isinstance(x, dict)

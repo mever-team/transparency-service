@@ -1,10 +1,10 @@
-import torch
+import numpy as np
 import warnings
 import validators
 import requests
 from PIL import Image
 from io import BytesIO
-from aicard.evaluation import loaders
+from evaluation import loaders
 
 def unknown(data, preds, target_column, num_classes_model, anns, device):
     raise NotImplemented("Unknown parameters for the task")
@@ -36,8 +36,8 @@ def classification(data, preds, target_column, num_classes, anns, device):
     else:
         raise AssertionError("Could not detect classification data format")
     return {
-        "preds": torch.tensor(preds).to(device),
-        "target": torch.tensor(target).to(device),
+        "preds": np.array(preds),#.to(device),
+        "target": np.array(target),#.to(device),
         "task": class_task,
         "num_classes": num_classes
     }
@@ -98,9 +98,9 @@ def object_detection(data, preds, target_column, num_classes, anns, device):
         for pred in preds:
             boxes, cat_ids, scores = pred
             preds_ready.append({
-                "boxes": torch.tensor(boxes).to(device),
-                "labels": torch.tensor(cat_ids).to(device),
-                "scores": torch.tensor(scores).to(device),
+                "boxes": np.array(boxes),#.to(device),
+                "labels": np.array(cat_ids),#.to(device),
+                "scores": np.array(scores),#.to(device),
             })
     else:
         preds_ready = preds
@@ -115,8 +115,8 @@ def object_detection(data, preds, target_column, num_classes, anns, device):
             for boxes_target, cat_ids_target in zip(batch[bbox_column], batch[label_column]):
                 if (boxes_target is not None) and (cat_ids_target is not None):  # prevent reading None values that the convertion to datasets creates
                     target_ready.append({
-                        "boxes": torch.tensor(boxes_target).to(device),
-                        "labels": torch.tensor(cat_ids_target).to(device),
+                        "boxes": np.array(boxes_target),#.to(device),
+                        "labels": np.array(cat_ids_target),#.to(device),
                     })
     else:
         # obj, bbox, label = target
@@ -129,8 +129,8 @@ def object_detection(data, preds, target_column, num_classes, anns, device):
                         cat_ids_target is not None
                     ):  # prevent reading None values that the convertion to datasets creates
                         target_ready.append({
-                            "boxes": torch.tensor(boxes_target).to(device),
-                            "labels": torch.tensor(cat_ids_target).to(device),
+                            "boxes": np.array(boxes_target),#.to(device),
+                            "labels": np.array(cat_ids_target)#.to(device),
                         })
         else:  # elif isinstance(data[obj], list)
             for batch in anns_source:
@@ -139,8 +139,8 @@ def object_detection(data, preds, target_column, num_classes, anns, device):
                         object[label_column] is not None
                     ):  # prevent reading None values that the convertion to datasets creates
                         target_ready.append({
-                            "boxes": torch.tensor(object[bbox_column]).to(device),
-                            "labels": torch.tensor(object[label_column]).to(device),
+                            "boxes": np.array(object[bbox_column]),#.to(device),
+                            "labels": np.array(object[label_column]),#.to(device),
                         })
     # TODO: (manios) I have literally no idea of what this file is supposed to do
     return {

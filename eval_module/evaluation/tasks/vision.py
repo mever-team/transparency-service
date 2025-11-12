@@ -1,9 +1,8 @@
 import numpy as np
-import torch
 from typing import Tuple
-from aicard.evaluation import params
-from aicard.evaluation import metrics
-from aicard.evaluation.task import Task, targets
+from evaluation import params
+from evaluation import metrics
+from evaluation.task import Task, targets
 
 depth_estimation = Task(
     "Depth Estimation",
@@ -27,7 +26,7 @@ object_detection = Task(
     metrics=[metrics.precision_macro, metrics.precision_micro, metrics.f1_macro, metrics.f1_micro], # TODO: metrics.map, metrics.IoU
     parameters=params.object_detection,
     toinstance=(
-            [dict[str, torch.Tensor], Tuple[list[list[int]], list[int], list[float]], list[int], list[float]],
+            [dict[str, np.ndarray], Tuple[list[list[int]], list[int], list[float]], list[int], list[float]],
             lambda x: (
                 isinstance(x, list)
                 and len(x) == 3
@@ -47,11 +46,11 @@ object_detection = Task(
                 isinstance(x, dict)
                 and len(x)==3
                 and "scores" in x
-                and isinstance(x["scores"], torch.Tensor)
+                and isinstance(x["scores"], np.ndarray)
                 and "labels" in x
-                and isinstance(x["labels"], torch.Tensor)
+                and isinstance(x["labels"], np.ndarray)
                 and "boxes" in x
-                and isinstance(x["boxes"], torch.Tensor)
+                and isinstance(x["boxes"], np.ndarray)
             ),
         ),
 )
@@ -63,9 +62,9 @@ image_classification = Task(
              metrics.f1_macro, metrics.f1_micro, metrics.auc_roc_macro, metrics.auc_roc_macro],  # TODO: acc
     parameters=params.classification,
     toinstance=(
-            [torch.Tensor, int, float, list[float], str, dict[str, float]],
+            [np.ndarray, int, float, list[float], str, dict[str, float]],
             lambda x: (
-                isinstance(x, (torch.Tensor, int, float, str))
+                isinstance(x, (np.ndarray, int, float, str))
                 or (isinstance(x, list) and all(isinstance(i, float) for i in x))
                 or (
                     isinstance(x, dict)
@@ -117,9 +116,9 @@ video_classification = Task(
              metrics.f1_macro, metrics.f1_micro, metrics.auc_roc_macro, metrics.auc_roc_macro],  # TODO: acc
     parameters=params.classification,
     toinstance=(
-        [torch.Tensor, int, float, list[float], str, dict[str, float]],
+        [np.ndarray, int, float, list[float], str, dict[str, float]],
         lambda x: (
-            isinstance(x, (torch.Tensor, int, float, str))
+            isinstance(x, (np.ndarray, int, float, str))
             or (isinstance(x, list) and all(isinstance(i, float) for i in x))
             or (
                 isinstance(x, dict)
