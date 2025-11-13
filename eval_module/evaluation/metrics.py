@@ -20,11 +20,15 @@ def to_labels(arr):
     arr = np.array(arr)
 
     if arr.ndim == 1:
-        # 1D probabilities for binary classification
-        return (arr > 0.5).astype(int)
+        if np.all(arr == np.floor(arr)): # if all integers
+            return arr
+        elif np.all((arr >= 0) & (arr <= 1)): # between 0 and 1 binary classification
+            return (arr > 0.5).astype(int)
+        else:
+            raise Exception('Something went wrong')
     if arr.ndim == 2:
         if arr.shape[1] == 1:
-            # 2D single-probability
+            # between 0 and 1 binary classification
             return (arr[:, 0] > 0.5).astype(int)
         else:
             # multiclass or 2-class probability array
@@ -40,7 +44,10 @@ def top1_acc_micro(preds, target, task, num_classes, device): return accuracy_sc
 def top1_acc_macro(preds, target, task, num_classes, device):return accuracy_score(target, preds)
 def top1_acc_weighted(preds, target, task, num_classes, device):return accuracy_score(target, preds)
 def precision_micro(preds, target, task, num_classes, device):return precision_score(to_labels(target), to_labels(preds), average="micro", zero_division=0)
-def precision_macro(preds, target, task, num_classes, device):return precision_score(to_labels(target), to_labels(preds), average="macro", zero_division=0)
+def precision_macro(preds, target, task, num_classes, device):
+    print('preds', to_labels(preds))
+    print('target', to_labels(target))
+    return precision_score(to_labels(target), to_labels(preds), average="macro", zero_division=0)
 def precision_weighted(preds, target, task, num_classes, device):return precision_score(target, preds, average="weighted", zero_division=0)
 def recall_micro(preds, target, task, num_classes, device):return recall_score(to_labels(target), to_labels(preds), average="micro", zero_division=0)
 def recall_macro(preds, target, task, num_classes, device):return recall_score(to_labels(target), to_labels(preds), average="macro", zero_division=0)
