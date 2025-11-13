@@ -1,9 +1,14 @@
-import datasets
-import inspect
-from evaluation.task import Task
-from evaluation import tasks
-from evaluation import loaders
 from datetime import datetime
+import time
+import inspect
+
+import evaluation
+from evaluation.task import Task
+from evaluation import loaders, tasks
+from evaluation.utils import human_readable_time, get_hardware_info, get_callable_source
+
+import datasets
+
 
 
 
@@ -106,8 +111,7 @@ def evaluate(
     num_classes:int|None=None,  # in case the preds have more classes than target
     batch_size:int=1,
     anns: list[list[dict]]|list[dict]|None=None,
-    device="cpu"
-) -> dict[str,float]:
+) -> dict:
     if anns is None:
         anns = [None]
     if loaders.is_path(data):
@@ -118,77 +122,42 @@ def evaluate(
     anns = anns.batch(batch_size)
 
     out_sample = pipeline(data[0])
-    task.assert_output_type(out_sample[0])
     target_column = check_validity_of_target(anns[0] if len(anns.features) else data[0], task, target_column)
+    task.assert_output_type(out_sample[0])
 
     preds = []
+    start = time.time()
     for batch in data:
         preds.extend(pipeline(batch))
+    pipe_execution_time = time.time() - start
     kwargs = task.parameters(
         data=data,
         preds=preds,
         target_column=target_column,
         num_classes=num_classes,
-        anns=anns,
-        device=device
+        anns=anns
     )
-    ret = {metric.__name__: autocall(metric, **kwargs, device=device) for metric in task.metrics}
+    start = time.time()
+    ret = {metric.__name__: autocall(metric, **kwargs) for metric in task.metrics}
+    metrics_execution_time = time.time() - start
     ret = {k: float(v) for k,v in ret.items() if v is not None}
 
-    return ret
 
+    out = {
+        'task':task.name ,
+        'metrics': ret,
+        'datetime': datetime.now().strftime('%Y-%b-%d %H:%M'),
+        'pipeline': get_callable_source(pipeline),
+        'batch_size': batch_size,
+        'execution_time': f'inference: {human_readable_time(pipe_execution_time)}, metrics: {human_readable_time(metrics_execution_time)}',
+        'package version': evaluation.__version__,
+        'hardware': get_hardware_info()
+        }
 
-    #
-    # pipeline_name = pipeline.__name__ if hasattr(pipeline, "__name__") else pipeline.__class__.__name__
-    #
-    # # SOFTWARE
-    # import sys, subprocess, html
-    # result = subprocess.run(
-    #     [sys.executable, "-m", "pip", "freeze"],
-    #     capture_output=True, text=True
-    # ).stdout
-    # py_result = subprocess.run(
-    #     [sys.executable, "--version"],
-    #     capture_output=True, text=True
-    # ).stdout or subprocess.run(  # some versions print to stderr
-    #     [sys.executable, "--version"],
-    #     capture_output=True, text=True
-    # ).stderr
-    # python_version_html = html.escape(py_result.strip())
-    # pip_freeze_html = "<br>".join(html.escape(line) for line in result.strip().splitlines())
-    #
-    # # HARDWARE
-    # import platform, subprocess, html, os, psutil
-    # cpu_info = platform.processor() or platform.machine()
-    # ram_bytes = psutil.virtual_memory().total
-    # ram_gb = round(ram_bytes / (1024 ** 3), 2)
-    # cuda_version = "Not found"
-    # try:
-    #     result = subprocess.run(["nvidia-smi"], capture_output=True, text=True)
-    #     if result.returncode == 0:
-    #         for line in result.stdout.splitlines():
-    #             if "CUDA Version" in line:
-    #                 cuda_version = line.strip()
-    #                 break
-    # except FileNotFoundError:
-    #     pass
-    # if cuda_version == "Not found":
-    #     try:
-    #         result = subprocess.run(["nvcc", "--version"], capture_output=True, text=True)
-    #         if result.returncode == 0:
-    #             for line in result.stdout.splitlines():
-    #                 if "release" in line:
-    #                     cuda_version = line.strip()
-    #                     break
-    #     except FileNotFoundError:
-    #         pass
-    # system_info_html = "<br>".join([
-    #     f"- CPU: {html.escape(cpu_info)}",
-    #     f"- RAM: {ram_gb} GB",
-    #     f"- CUDA: {html.escape(cuda_version)}"
-    # ])
-    #
-    # return card
+    if 'num_classes' in kwargs:out['num_classes'] = kwargs['num_classes']
+
+    return out
+
 
 
 # run({'label': [1, 0, 1,0,1,0,1]}, [0.2,0.8,0.8,0.1,0.8,0.3,0.6], 'label', 'Image Classification')

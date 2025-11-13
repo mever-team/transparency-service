@@ -23,8 +23,9 @@ def pipeline(data):
 
     return [probs]
 
+
 metrics = evaluation.evaluate(
-    data=dataset,
+    data=dataset.select(range(100)),
     pipeline=pipeline,
     task=evaluation.tasks.vision.image_classification,
     batch_size=1)

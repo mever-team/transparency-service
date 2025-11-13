@@ -1,8 +1,9 @@
+from evaluation import __version__
 from setuptools import setup, find_packages
 
 setup(
     name="evaluation",
-    version="0.1.0",
+    version=__version__,
     packages=find_packages(),
     install_requires=[],
 )

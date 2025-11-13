@@ -24,7 +24,7 @@ def pipeline(data):
 
 
 metrics = evaluation.evaluate(
-    data=data_test,
+    data=data_test.select(range(200)),
     pipeline=pipeline,
     task=evaluation.tasks.nlp.text_classification,
     batch_size=4)

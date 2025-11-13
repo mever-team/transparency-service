@@ -6,10 +6,10 @@ from PIL import Image
 from io import BytesIO
 from evaluation import loaders
 
-def unknown(data, preds, target_column, num_classes_model, anns, device):
+def unknown(data, preds, target_column, num_classes_model, anns):
     raise NotImplemented("Unknown parameters for the task")
 
-def classification(data, preds, target_column, num_classes, anns, device):
+def classification(data, preds, target_column, num_classes, anns):
     num_classes_model = num_classes
     target = []
     for batch in data:  # flatten the batch data[target_column]
@@ -42,7 +42,7 @@ def classification(data, preds, target_column, num_classes, anns, device):
         "num_classes": num_classes
     }
 
-def object_detection(data, preds, target_column, num_classes, anns, device):
+def object_detection(data, preds, target_column, num_classes, anns):
     anns_source = data if len(anns.features) == 0 else anns
     if len(target_column) == 2:
         bbox_column, label_column = target_column
@@ -104,9 +104,9 @@ def object_detection(data, preds, target_column, num_classes, anns, device):
             })
     else:
         preds_ready = preds
-        for pred_ready in preds_ready:
-            for key in pred_ready:
-                pred_ready[key] = pred_ready[key].to(device)
+        # for pred_ready in preds_ready:
+        #     for key in pred_ready:
+        #         pred_ready[key] = pred_ready[key].to(device)
     target_ready = []
     if len(target_column) == 2:
         # bbox, label = target
@@ -150,5 +150,5 @@ def object_detection(data, preds, target_column, num_classes, anns, device):
         "num_classes": num_classes
     }
 
-def image_segmentation(data, preds, target_column, num_classes_model, anns, device=None):
+def image_segmentation(data, preds, target_column, num_classes_model, anns):
     return {"iou_type": "segm"}
