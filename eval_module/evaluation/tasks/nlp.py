@@ -1,5 +1,5 @@
 import numpy as np
-from evaluation import params
+from evaluation.tasks import params
 from evaluation import metrics
 from evaluation.tasks import Task
 

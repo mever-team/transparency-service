@@ -1,6 +1,6 @@
 import numpy as np
 from typing import Tuple
-from evaluation import params
+from evaluation.tasks import params
 from evaluation import metrics
 from evaluation.tasks import Task
 
@@ -16,7 +16,7 @@ image_segmentation = Task(
     "Image Segmentation",
     targets=Task.targets.segmentation, # special value
     metrics=[metrics.IoU,metrics.dice_macro, metrics.dice_micro], # TODO: pixel acc, metrics.map
-    parameters=params.image_segmentation,
+    parameters=params.unknown,
     toinstance=([np.ndarray], lambda x: isinstance(x, np.ndarray)),
 )
 
@@ -84,7 +84,7 @@ text_to_image = Task(
     "Text to Image",
     targets=Task.targets.image,
     metrics=[metrics.ssim], # TODO: Inception Score (IS), Fréchet Inception Distance (fid), CLIPScore
-    parameters=params.image_segmentation,  # TODO: WAS NOT CLEAR - I PUT ONE AT RANDOM (Manios)
+    parameters=params.unknown,  # TODO: WAS NOT CLEAR - I PUT ONE AT RANDOM (Manios)
     toinstance= ([np.ndarray], lambda x: isinstance(x, np.ndarray)),
 )
 
@@ -100,7 +100,7 @@ image_to_image = Task(
     "Image to Image",
     targets=Task.targets.image,
     metrics=[metrics.ssim, metrics.psnr],  # TODO: lpips (Perceptual Loss)
-    parameters=params.image_segmentation,  # TODO: WAS NOT CLEAR - I PUT ONE AT RANDOM (Manios)
+    parameters=params.unknown,  # TODO: WAS NOT CLEAR - I PUT ONE AT RANDOM (Manios)
     toinstance=([np.ndarray], lambda x: isinstance(x, np.ndarray))
 )
 
