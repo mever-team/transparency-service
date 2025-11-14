@@ -2,11 +2,11 @@ import numpy as np
 from typing import Tuple
 from evaluation import params
 from evaluation import metrics
-from evaluation.task import Task, targets
+from evaluation.tasks import Task
 
 depth_estimation = Task(
     "Depth Estimation",
-    targets=targets.depth,
+    targets=Task.targets.depth,
     metrics=[metrics.mae, metrics.rmse, metrics.ssim, metrics],  # TODO: sirmse (Scale-Invariant rmse)
     parameters=params.classification,                            # TODO: WAS NOT CLEAR
     toinstance=([np.ndarray], lambda x: isinstance(x, np.ndarray)),
@@ -14,7 +14,7 @@ depth_estimation = Task(
 
 image_segmentation = Task(
     "Image Segmentation",
-    targets=targets.segmentation, # special value
+    targets=Task.targets.segmentation, # special value
     metrics=[metrics.IoU,metrics.dice_macro, metrics.dice_micro], # TODO: pixel acc, metrics.map
     parameters=params.image_segmentation,
     toinstance=([np.ndarray], lambda x: isinstance(x, np.ndarray)),
@@ -22,7 +22,7 @@ image_segmentation = Task(
 
 object_detection = Task(
     "Object Detection",
-    targets=targets.objdetect, # special value
+    targets=Task.targets.objdetect, # special value
     metrics=[metrics.precision_macro, metrics.precision_micro, metrics.f1_macro, metrics.f1_micro], # TODO: metrics.map, metrics.IoU
     parameters=params.object_detection,
     toinstance=(
@@ -57,7 +57,7 @@ object_detection = Task(
 
 image_classification = Task(
     "Image Classification",
-    targets=targets.classes,
+    targets=Task.targets.classes,
     metrics=[metrics.precision_macro, metrics.precision_micro,
              metrics.recall_macro, metrics.recall_micro,
              metrics.top1_acc_micro, metrics.top1_acc_macro, metrics.top1_acc_weighted,
@@ -82,7 +82,7 @@ image_classification = Task(
 
 text_to_image = Task(
     "Text to Image",
-    targets=targets.image,
+    targets=Task.targets.image,
     metrics=[metrics.ssim], # TODO: Inception Score (IS), Fréchet Inception Distance (fid), CLIPScore
     parameters=params.image_segmentation,  # TODO: WAS NOT CLEAR - I PUT ONE AT RANDOM (Manios)
     toinstance= ([np.ndarray], lambda x: isinstance(x, np.ndarray)),
@@ -90,7 +90,7 @@ text_to_image = Task(
 
 image_to_text = Task(
     "Image to Text",
-    targets=targets.text,
+    targets=Task.targets.text,
     metrics=[],  # TODO: blue, rouge, meteor, CIDEr, spice
     parameters=params.classification,  # TODO: WAS NOT CLEAR
     toinstance=([str], lambda x: isinstance(x, str)),
@@ -98,7 +98,7 @@ image_to_text = Task(
 
 image_to_image = Task(
     "Image to Image",
-    targets=targets.image,
+    targets=Task.targets.image,
     metrics=[metrics.ssim, metrics.psnr],  # TODO: lpips (Perceptual Loss)
     parameters=params.image_segmentation,  # TODO: WAS NOT CLEAR - I PUT ONE AT RANDOM (Manios)
     toinstance=([np.ndarray], lambda x: isinstance(x, np.ndarray))
@@ -106,7 +106,7 @@ image_to_image = Task(
 
 image_to_video = Task(
     "Image to Video",
-    targets=targets.video,
+    targets=Task.targets.video,
     metrics=[metrics.ssim, metrics.psnr],  # TODO: FVD (Fréchet Video Distance)
     parameters=params.unknown,             # TODO: WAS NOT CLEAR AT ALL
     toinstance=(list[np.ndarray],lambda x: isinstance(x, list) and all(isinstance(t, np.ndarray) for t in x),),
@@ -114,7 +114,7 @@ image_to_video = Task(
 
 video_classification = Task(
     "Video Classification",
-    targets=targets.classes,
+    targets=Task.targets.classes,
     metrics=[metrics.precision_macro, metrics.precision_micro, metrics.recall_macro, metrics.recall_micro,
              metrics.f1_macro, metrics.f1_micro, metrics.auc_roc_macro, metrics.auc_roc_macro],  # TODO: acc
     parameters=params.classification,
@@ -136,7 +136,7 @@ video_classification = Task(
 
 text_to_video = Task(
     "Text to Video",
-    targets=targets.video,
+    targets=Task.targets.video,
     metrics=[metrics.ssim],     # TODO: FVD, IS, Fid
     parameters=params.unknown,  # TODO: WAS NOT CLEAR
     toinstance=(list[np.ndarray],lambda x: isinstance(x, list) and all(isinstance(t, np.ndarray) for t in x),),
@@ -144,7 +144,7 @@ text_to_video = Task(
 
 mask_generation = Task(
     "Text to Video",
-    targets=targets.mask,
+    targets=Task.targets.mask,
     metrics=[metrics.IoU, metrics.dice_macro, metrics.dice_micro], # TODO: Pixel Accuracy
     parameters=params.unknown,  # TODO: WAS NOT CLEAR
     toinstance=([np.ndarray], lambda x: isinstance(x, np.ndarray)),
@@ -152,7 +152,7 @@ mask_generation = Task(
 
 image_feature_extraction = Task(
     "Image Feature Extraction",
-    targets=targets.imgfeatextr,
+    targets=Task.targets.imgfeatextr,
     metrics=[], # TODO: Cosine Similarity,Euclidean Distance,lpips
     parameters=params.unknown,  # TODO: WAS NOT CLEAR
     toinstance=([np.ndarray], lambda x: isinstance(x, np.ndarray)),
@@ -160,7 +160,7 @@ image_feature_extraction = Task(
 
 keypoint_detection = Task(
     "Keypoint Detection",
-    targets=targets.keypoint,
+    targets=Task.targets.keypoint,
     metrics=[metrics.rmse],     # TODO: Percentage of Correct Keypoints (PCK), Normalized Mean Error (NME), Mean Squared Error (MSE)
     parameters=params.unknown,  # TODO: WAS NOT CLEAR
     toinstance=(

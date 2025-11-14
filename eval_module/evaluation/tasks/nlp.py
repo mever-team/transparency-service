@@ -1,11 +1,11 @@
 import numpy as np
 from evaluation import params
 from evaluation import metrics
-from evaluation.task import Task, targets
+from evaluation.tasks import Task
 
 question_answering = Task(
     "Question Answering",
-    targets=targets.text,
+    targets=Task.targets.text,
     metrics=[metrics.f1_macro, metrics.f1_micro],  # TODO: Exact Match (EM)
     parameters=params.unknown,  # TODO: WAS NOT CLEAR
     toinstance=([str], lambda x: isinstance(x, str)),
@@ -13,7 +13,7 @@ question_answering = Task(
 
 translation = Task(
     "Translation",
-    targets=targets.text,
+    targets=Task.targets.text,
     metrics=[],  # TODO: blue, meteor, rouge, chrF++
     parameters=params.unknown,   # TODO: WAS NOT CLEAR
     toinstance=([str], lambda x: isinstance(x, str)),
@@ -21,7 +21,7 @@ translation = Task(
 
 summarization = Task(
     "Summarization",
-    targets=targets.text,
+    targets=Task.targets.text,
     metrics=[],  # TODO: blue, meteor, rouge, BERTScore
     parameters=params.unknown,   # TODO: WAS NOT CLEAR
     toinstance=([str], lambda x: isinstance(x, str)),
@@ -29,7 +29,7 @@ summarization = Task(
 
 feature_extraction = Task(
     "Translation",
-    targets=targets.featextr,
+    targets=Task.targets.featextr,
     metrics=[],  # TODO: Cosine Similarity,Euclidean Distance,Pearson Correlation
     parameters=params.unknown,   # TODO: WAS NOT CLEAR
     toinstance=([np.ndarray], lambda x: isinstance(x, np.ndarray)),
@@ -37,7 +37,7 @@ feature_extraction = Task(
 
 text_generation = Task(
     "Text Generation",
-    targets=targets.text,
+    targets=Task.targets.text,
     metrics=[],  # TODO: blue, meteor, rouge, BERTScore, Perplexity
     parameters=params.unknown,   # TODO: WAS NOT CLEAR
     toinstance=([str], lambda x: isinstance(x, str)),
@@ -45,7 +45,7 @@ text_generation = Task(
 
 text_to_text_generation = Task(
     "Text to Text Generation",
-    targets=targets.text,
+    targets=Task.targets.text,
     metrics=[],  # TODO: blue, meteor, rouge, BERTScore, chrF++"
     parameters=params.unknown,   # TODO: WAS NOT CLEAR
     toinstance=([str], lambda x: isinstance(x, str)),
@@ -53,7 +53,7 @@ text_to_text_generation = Task(
 
 text_classification = Task(
     "Text Classification",
-    targets=targets.classes,
+    targets=Task.targets.classes,
     metrics=[metrics.precision_macro, metrics.precision_micro,
              metrics.recall_macro, metrics.recall_micro,
              metrics.top1_acc_micro, metrics.top1_acc_macro, metrics.top1_acc_weighted,

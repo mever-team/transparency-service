@@ -12,12 +12,10 @@ class TextClassifier:
     def __call__(self, data):
         sentences = [text for text in data['text']]
         model_outputs = self.classifier(sentences)
-
         out = []
         for sample in model_outputs:
             flat = {d['label']: d['score'] for d in sample}
             out.append([flat[name] for name in self.class_names.values()])
-
         return out
 
 metrics = evaluation.evaluate(

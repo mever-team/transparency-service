@@ -4,7 +4,7 @@ import validators
 import requests
 from PIL import Image
 from io import BytesIO
-from evaluation import loaders
+from evaluation import utils
 
 def unknown(data, preds, target_column, num_classes_model, anns):
     raise NotImplemented("Unknown parameters for the task")
@@ -51,26 +51,27 @@ def object_detection(data, preds, target_column, num_classes, anns):
     iou_type = "bbox"
     img_column = None
     src_type = None
+    box_format = None
 
     for key in data.column_names:  # search for the images as path or web
-        if loaders.is_path(data[key][0][0]):
-            if loaders.determine_type(data[key][0][0]) in loaders.get_supported_image_types():
+        if utils.is_path(data[key][0][0]):
+            if utils.determine_type(data[key][0][0]) in utils.get_supported_image_types():
                 img_column = key
                 src_type = "path"
         elif validators.url(data[key][0][0]):
-            image_formats = ["image/" + t.replace(".", "") for t in loaders.get_supported_image_types()]
+            image_formats = ["image/" + t.replace(".", "") for t in utils.get_supported_image_types()]
             r = requests.head(data[key][0][0])
             if r.headers["content-type"] in image_formats:
                 img_column = key
                 src_type = "url"
-    box_format = None
+
     if src_type == "path":  # we can found the images
         for batch in data:
             for img, bboxes in zip(batch[img_column], batch[bbox_column]):
                 image = Image.open(img)
                 width, height = image.size
                 for bbox in bboxes:
-                    box_format = loaders.BoxFormatHelpers.determine_xyxy_or_xywh(bbox, width, height)
+                    box_format = utils.BoxFormatHelpers.determine_xyxy_or_xywh(bbox, width, height)
                     if box_format is not None:
                         break
                 if box_format is not None:
@@ -83,13 +84,14 @@ def object_detection(data, preds, target_column, num_classes, anns):
                 image = Image.open(BytesIO(requests.get(img).content))
                 width, height = image.size
                 for bbox in bboxes:
-                    box_format = loaders.BoxFormatHelpers.determine_xyxy_or_xywh(bbox, width, height)
+                    box_format = utils.BoxFormatHelpers.determine_xyxy_or_xywh(bbox, width, height)
                     if box_format is not None:
                         break
                 if box_format is not None:
                     break
             if box_format is not None:
                 break
+
     if box_format is None:
         warnings.warn("Warning: can't determine box_format. Setting box_format = 'xyxy'. Consider using the box_format option")
         box_format = "xyxy"
@@ -142,8 +144,9 @@ def object_detection(data, preds, target_column, num_classes, anns):
                             "boxes": np.array(object[bbox_column]),#.to(device),
                             "labels": np.array(object[label_column]),#.to(device),
                         })
-    # TODO: (manios) I have literally no idea of what this file is supposed to do
     return {
+        "preds": np.array(preds_ready),
+        "target": np.array(target_ready),
         "iou_type": iou_type,
         "box_format": box_format,
         "task": "MULTILABEL",

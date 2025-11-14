@@ -3,97 +3,14 @@ import time
 import inspect
 
 import evaluation
-from evaluation.task import Task
-from evaluation import loaders, tasks
-from evaluation.utils import human_readable_time, get_hardware_info, get_callable_source
+from evaluation.utils import (human_readable_time,
+                              get_hardware_info,
+                              is_path,
+                              read_data,
+                              convert_to_datasets,
+                              anns_to_datasets,
+                              check_validity_of_target)
 
-import datasets
-
-
-
-
-def handle_object_special_case(data, task: Task):
-    t2t = task.targets
-    targets_found = []
-    for candidate_object in t2t["obj"]:
-        for key in data:
-            if candidate_object.lower() in key.lower():  # we have an object
-                if isinstance(data[key], dict):
-                    for candidate_target in t2t["target"]:
-                        t = []
-                        t_found = 0
-                        l_found = 0
-                        for k in data[key]:
-                            if candidate_target.lower() in k.lower():
-                                t.append(k)
-                                t_found += 1
-                            for candidate_label in t2t["label"]:
-                                if candidate_label.lower() in k.lower():
-                                    t.append(k)
-                                    l_found += 1
-                        if t_found == 1 and l_found == 1:
-                            return [key, t[0], t[1]]  # object, target, label
-                elif isinstance(data[key], list):
-                    for candidate_target in t2t["target"]:
-                        t = []
-                        t_found = 0
-                        l_found = 0
-                        for k in data[key][0]:
-                            if candidate_target.lower() in k.lower():
-                                t.append(k)
-                                t_found += 1
-                            for candidate_label in t2t["label"]:
-                                if candidate_label.lower() in k.lower():
-                                    t.append(k)
-                                    l_found += 1
-                        if t_found == 1 and l_found == 1:
-                            return [key, t[0], t[1]]  # object, target, label
-    # if we don't have an object
-    for candidate_target in t2t["target"]:
-        t = []
-        t_found = 0
-        l_found = 0
-        for k in data:
-            if candidate_target.lower() in k.lower():
-                t.append(k)
-                t_found += 1
-            for candidate_label in t2t["label"]:
-                if candidate_label.lower() in k.lower():
-                    t.append(k)
-                    l_found += 1
-        if t_found == 1 and l_found == 1:
-            return [t[0], t[1]]  # target, category
-
-def check_validity_of_target(data, task: Task, target_column: str|None=None):
-    if task==tasks.vision.image_segmentation or task == tasks.vision.object_detection:
-        target_column = handle_object_special_case(data, task)
-        return target_column
-    if target_column is not None:
-        for key in data:
-            if target_column in key:
-                return target_column
-    t2t = task.targets
-    targets_found = []
-    for candidate in t2t:
-        for key in data:
-            if candidate.lower() in key.lower():  # cases insensitive match
-                targets_found.append(key)
-    assert len(targets_found), f"""Expected one of {', '.join('"'+i+'"' for i in t2t)}, but got {', '.join('"'+key+'"' for key in data)}"""
-    assert len(targets_found) == 1, f"""Found more that one match to target: {', '.join('"'+i+'"' for i in targets_found)}. Use the option "target" to choose which one you want"""
-    return targets_found[0]
-
-def convert_to_datasets(data):
-    if isinstance(data, datasets.Dataset): return data
-    if isinstance(data, dict): return datasets.Dataset.from_dict(data)
-    if isinstance(data, list): return datasets.Dataset.from_list(data)
-    raise AssertionError(f"Dataset of type {type(data)} is not supported")
-
-def anns_to_datasets(anns):
-    # assuming anns is a list
-    if isinstance(anns[0], dict): return datasets.Dataset.from_list(anns)
-    anns = [datasets.Dataset.from_list(ann) for ann in anns]
-    anns = [datasets.Dataset.to_dict(ann) for ann in anns]
-    return datasets.Dataset.from_list(anns)
 
 def autocall(metric, **kwargs):
     args = set(inspect.signature(metric).parameters.keys())
@@ -106,7 +23,7 @@ def autocall(metric, **kwargs):
 def evaluate(
     data: "path or data",
     pipeline: callable,
-    task: Task,
+    task: evaluation.tasks.Task,
     target_column:str|None=None,
     num_classes:int|None=None,  # in case the preds have more classes than target
     batch_size:int=1,
@@ -114,15 +31,15 @@ def evaluate(
 ) -> dict:
     if anns is None:
         anns = [None]
-    if loaders.is_path(data):
-        data = loaders.read_data(data)
+    if is_path(data):
+        data = read_data(data)
     data = convert_to_datasets(data)
     data = data.batch(batch_size)
     anns = anns_to_datasets(anns)
     anns = anns.batch(batch_size)
 
-    out_sample = pipeline(data[0])
     target_column = check_validity_of_target(anns[0] if len(anns.features) else data[0], task, target_column)
+    out_sample = pipeline(data[0])
     task.assert_output_type(out_sample[0])
 
     preds = []
@@ -137,31 +54,28 @@ def evaluate(
         num_classes=num_classes,
         anns=anns
     )
-    start = time.time()
-    ret = {metric.__name__: autocall(metric, **kwargs) for metric in task.metrics}
-    metrics_execution_time = time.time() - start
-    ret = {k: float(v) for k,v in ret.items() if v is not None}
 
+    if 'num_classes' in kwargs and kwargs['num_classes'] == 2: task.metrics.append(evaluation.metrics.precision_recall_curves)
+    start = time.time()
+    metrics = {metric.__name__: autocall(metric, **kwargs) for metric in task.metrics}
+    metrics_execution_time = time.time() - start
+    # metrics = {k: float(v) for k,v in metrics.items() if v is not None}
+
+    caller_path = inspect.stack()[1].filename
+    with open(caller_path, 'r') as f:
+        caller_content = f.read()
 
     out = {
-        'task':task.name ,
-        'metrics': ret,
-        'datetime': datetime.now().strftime('%Y-%b-%d %H:%M'),
-        'pipeline': get_callable_source(pipeline),
-        'batch_size': batch_size,
-        'execution_time': f'inference: {human_readable_time(pipe_execution_time)}, metrics: {human_readable_time(metrics_execution_time)}',
         'package version': evaluation.__version__,
-        'hardware': get_hardware_info()
+        'datetime': datetime.now().strftime('%Y-%b-%d %H:%M'),
+        'task':task.name ,
+        'metrics': metrics,
+        'batch_size': batch_size,
+        'code': caller_content,
+        'hardware': get_hardware_info(),
+        'execution_time': f'inference: {human_readable_time(pipe_execution_time)}, metrics: {human_readable_time(metrics_execution_time)}',
         }
 
     if 'num_classes' in kwargs:out['num_classes'] = kwargs['num_classes']
 
     return out
-
-
-
-# run({'label': [1, 0, 1,0,1,0,1]}, [0.2,0.8,0.8,0.1,0.8,0.3,0.6], 'label', 'Image Classification')
-# run(data={"boxes": [[[300.00, 100.00, 315.00, 150.00],[300.00, 100.00, 315.00, 150.00]]], "labels": [[4,5]]}, preds=[([
-#              [296.55, 93.96, 314.97, 152.79],
-#              [298.55, 98.96, 314.97, 151.79]], [4, 5], [0.9, 0.8])], task='Object Detection',
-#              target=['boxes', "labels"], num_classes_model=None)
