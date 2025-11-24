@@ -611,3 +611,25 @@ html, body {
 .dropdown-filter.show .dropdown-content {
     display: block;
 }
+
+/* Fallback emoji initially hidden */
+.fallback {
+    display: none;
+}
+
+/* If Font Awesome fails:
+   The <i> element has no valid glyph, so its :before content is empty.
+   This selector catches <i> icons with empty or missing content,
+   and shows the fallback instead.
+*/
+i.fa-solid:before,
+i.fa-regular:before,
+i.fa-brands:before {
+    /* If the icon fails, content becomes "" or "none" */
+}
+
+i.fa-solid:before:empty + .fallback,
+i.fa-regular:before:empty + .fallback,
+i.fa-brands:before:empty + .fallback {
+    display: inline;
+}

@@ -156,6 +156,3 @@ document.addEventListener("DOMContentLoaded", () => {
     username.addEventListener("keydown", submitOnEnter);
     password.addEventListener("keydown", submitOnEnter);
 });
-
-
-// update anything based on login

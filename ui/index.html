@@ -12,6 +12,7 @@
     <link rel="shortcut icon" href="img/favicon.png"/>
 
     <!-- CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
     <link rel="stylesheet" href="css/foundation.css"/>
     <link rel="stylesheet" href="css/normalize.css"/>
     <link rel="stylesheet" href="css/index/main.css"/>
@@ -26,9 +27,9 @@
             <div class="header_wrapper">
                 <h2><img src="img/logo.png" width="110"></h2>
                 <p id="whats-this" class="modal__trigger" data-modal="#modal_help">What's this?</p>
-                <p id="login-btn" style="display: none">🔐 Login</p>
-                <p id="logout-btn" style="display: none; color: #F44336">Logout</p>
-                <p id="new_card" style="display: none">✍️ New card</p>
+                <p id="login-btn" style="display: none"><i class="fa-solid fa-lock"></i><span class="fallback">🔐</span>&nbsp;Login</p>
+                <p id="logout-btn" style="display: none; color: #F44336"><i class="fa-solid fa-right-from-bracket"></i><span class="fallback">🔓</span>&nbsp;Logout</p>
+                <p id="new_card" style="display: none"><i class="fa-solid fa-pen-to-square"></i><span class="fallback">✍️</span>&nbsp;New card</p>
                 <span id="login-name" style="color:#EEEEEE;float:right;margin-top:12px;margin-right:15px"></span>
             </div>
 
