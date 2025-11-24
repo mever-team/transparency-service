@@ -361,7 +361,7 @@ ul.nacc .field-value li {
     background-color:#1F1F1F;
     border: 1px solid #434343;
     border-radius: 4px;
-    min-width: 120px;
+    min-width: 220px;
     z-index: 100;
 }
 
@@ -371,9 +371,27 @@ ul.nacc .field-value li {
     cursor: pointer;
 }
 
+.share-btn {
+    color: #EEEEEE!important;
+    text-decoration:none;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.share-btn a {
+    color: #EEEEEE!important;
+    text-decoration:none;
+}
+
+
 .download-dropdown-item:hover {
     background-color: #3B3B3B;
 }
+
+.share-btn:hover {
+    background-color: #3B3B3B;
+}
+
 
 #saveJson {
     display: inline-block;

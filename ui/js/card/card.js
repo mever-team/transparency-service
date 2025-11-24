@@ -767,3 +767,23 @@ $(document).ready(function () {
     })
 
 });
+
+
+
+const pageUrl = encodeURIComponent(window.location.href);
+const pageTitle = encodeURIComponent(document.title);
+
+document.getElementById("share-x").href =
+    `https://twitter.com/intent/tweet?url=${pageUrl}&text=${pageTitle}`;
+
+document.getElementById("share-facebook").href =
+    `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+
+document.getElementById("share-linkedin").href =
+    `https://www.linkedin.com/shareArticle?mini=true&url=${pageUrl}&title=${pageTitle}`;
+
+document.getElementById("share-whatsapp").href =
+    `https://wa.me/?text=${pageUrl}`;
+
+document.getElementById("share-telegram").href =
+    `https://t.me/share/url?url=${pageUrl}&text=${pageTitle}`;
