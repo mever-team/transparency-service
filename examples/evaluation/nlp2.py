@@ -1,7 +1,7 @@
 from datasets import load_dataset
 from huggingface_hub import dataset_info
 from transformers import pipeline
-import aicard as aic
+import evaluation
 
 class TextClassifier:
     def __init__(self):
@@ -18,16 +18,10 @@ class TextClassifier:
             out.append([flat[name] for name in self.class_names.values()])
         return out
 
-metrics = aic.evaluation.evaluate(
+metrics = evaluation.evaluate(
     data=load_dataset("google-research-datasets/go_emotions", split='test'),
     pipeline=TextClassifier(),
-    task=aic.evaluation.tasks.nlp.text_classification,
+    task=evaluation.tasks.nlp.text_classification,
     batch_size=32)
-
-myinfo = aic.ModelCard()
-myinfo.title = "These are my experiments"
-myinfo.considerations.use_case = "This tests model card creation"
-myinfo.considerations.oversight = "MeVer team"
-metrics.merge(myinfo)
 
 print(metrics)

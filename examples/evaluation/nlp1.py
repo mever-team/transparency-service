@@ -1,6 +1,6 @@
+import evaluation
 from transformers import pipeline, AutoTokenizer
 from datasets import load_dataset
-import aicard as aic
 
 classifier = pipeline(
     "text-classification",
@@ -23,10 +23,10 @@ def pipeline(data):
     return simple_scores
 
 
-metrics = aic.evaluation.evaluate(
-    data=data_test,
+metrics = evaluation.evaluate(
+    data=data_test.select(range(200)),
     pipeline=pipeline,
-    task=aic.evaluation.tasks.nlp.text_classification,
+    task=evaluation.tasks.nlp.text_classification,
     batch_size=4)
 
 print(metrics)

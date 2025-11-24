@@ -18,7 +18,7 @@ from threading import Thread
 image_classifier = ImageClassifier()
 app, gc = serve({"wordnet": WordNet(),
         "qwen": Prompter(
-            Ollama("qwen2.5:1.5b", name="🦋 Fast thinker", timeout_secs=10),
+            Ollama("qwen2.5:1.5b", name="🦋 Fast thinker", timeout_secs=30),
             description="Qwen2.5:1.5b is used as the base model.",
             image_classifier=image_classifier),
         "llama": Prompter(
