@@ -17,7 +17,7 @@ class Prompter(Assistant):
     def __init__(self,
                  agent: Agent,
                  image_classifier: ImageClassifier|None=None,
-                 external_get_timeout_sec:int=1,
+                 external_get_timeout_sec:int=3,
                  max_retries:int=3,
                  deep:bool=False,
                  description:str = None):
@@ -70,13 +70,10 @@ class Prompter(Assistant):
                 tag['style'] = 'max-height:600px; display:block; margin:0 auto;'
             results = self.image_classifier.classify_images(images)
             for i, (label, score) in enumerate(results):
-                if label is None:
-                    continue
+                if label is None: continue
                 (cat, field), = label.items()
-                if cat not in card.data:
-                    continue
+                if cat not in card.data: continue
                 card.data[cat][field].set(card.data[cat][field].get()+"<br><br>"+str(img_tags[i]))
-
         if not card.model.home: card.model.home = url
         user_messages[-1] = (
             f"<h2>{self.alias} import</h2>"
@@ -88,8 +85,7 @@ class Prompter(Assistant):
             # Merge all existing LongText content into one text block
             merged_texts = []
             for category, values in card.data.items():
-                if not isinstance(values, dict):
-                    continue
+                if not isinstance(values, dict): continue
                 for field, value in values.items():
                     text_val = value.get().strip()
                     if text_val:
@@ -145,7 +141,7 @@ class Prompter(Assistant):
                     user_messages[-1] = (
                         f"<h2>{self.alias} refinement</h2>"
                         f"{progress_html}<br>"
-                        f"<b>Working on {category.replace('_', ' ')} {field.replace('_', ' ')}</b>"
+                        f"<b>Working on tab: {category.replace('_', ' ')} {field.replace('_', ' ')}</b>"
                     )
 
                 update_progress(progress)
@@ -216,7 +212,7 @@ class Prompter(Assistant):
             user_messages[-1] = (
                 f"<h2>{self.alias} {task}</h2>"
                 f"{progress_html}<br>"
-                f"<b>Working on {category.replace('_', ' ')}</b>"
+                f"<b>Working on tab: {category.replace('_', ' ')}</b>"
             )
             progress += 1
 
@@ -244,7 +240,7 @@ class Prompter(Assistant):
                     #if retry + 1 != max(1, self.max_retries):
                     #     logger.warn(f"{str(e)} on try {retry + 1}/{max(self.max_retries, 1)} - retrying", user=self.alias)
                     #     continue
-                    logger.warn(f"{str(e)} - skipping segment", user=self.alias)
+                    logger.warn(f"{str(e)} - skipping segment {category.replace('_', ' ')}", user=self.alias)
                     break
             if not completion: continue
             if 'eval_set_purpose' in completion: completion['motivation'] = completion.pop('eval_set_purpose')

@@ -51,7 +51,7 @@
                     <div style="float:right;margin-left:4px;position:relative;">
                         <div class="example_button" id="assistCard"
                              style="float:left;background-color:#1F1F1F;border: solid 1px #434343;color:#EEEEEE;width:auto;padding-left:4px;padding-right:4px;">
-                            <span class="btn-text"><i class="fa-solid fa-robot"></i><span class="fallback">🤖</span>&nbsp;New version ▾</span>
+                            <span class="btn-text"><i class="fa-solid fa-robot"></i><span class="fallback">🤖</span>&nbsp;Actions ▾</span>
                         </div>
                         <div id="assistDropdown" class="download-dropdown-menu" style="display:none;">
                             <div class="download-dropdown-item modal_autocomplete" data-format="pdf"><i class="fa-solid fa-folder-open"></i><span class="fallback">📂</span>&nbsp;Import</div>
@@ -79,7 +79,7 @@
     <div id="empty_card_screen" class="delete-confirm-screen">
         <div class="delete-confirm-content">
             <h2 style="color:#64DB96;">New model!</h2>
-            <p>Import data from a website or file?</p>
+            <p>Start by importing from a website or file? This can contain generic info, documentation, or scientific results.</p>
                 <ul style="text-align:left;"><li>An AI assistant will help.</li><li>You can import later.</li><li>You can edit the result.</li></ul>
             <br>
             <div class="buttons">
@@ -162,8 +162,7 @@
 <div id="modal-refine-screen" class="delete-confirm-screen">
     <div class="delete-confirm-content modal_refinement">
         <h2 style="color:#64DB96;">Refine</h2>
-        <p>Select the refinement assistant.</p>
-        <p>This will OVERWRITE fields with a simplification useful to non-experts.</p>
+        <p>Will use a new version, with language that is friendlier to non-experts.</p>
 <!--        <span class="info-tooltip info-tooltip-modal" data-tooltip=-->
 <!--            "The prompts for the summary and the simplification respectively are:-->
 
@@ -201,7 +200,7 @@
             </div>
         </div>
         <br><br>
-        <p>Select an import assistant. That will try to fill all missing information based on a document or web page. Examples:
+        <p>Will try to extract missing info from a document or web page. Examples:
         </p>
         <ul style="text-align:left;"><li>a repository link from <a style="color:#79CFDC" href="https://github.com/" target="_blank">GitHub</a></li>
         <li>a model page from <a style="color:#79CFDC" href="https://huggingface.co/" target="_blank">HuggingFace</a></li></ul>
