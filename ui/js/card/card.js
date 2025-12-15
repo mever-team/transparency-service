@@ -2,18 +2,10 @@ var cardJson;
 var empty_card_flag=true;
 
 // Close confirmation modal
-document.getElementById('cancel-delete-btn').onclick = function () {
-    document.getElementById('delete-confirm-screen').style.display = 'none';
-};
-document.getElementById('manual-fill-card').onclick = function () {
-    document.getElementById('empty_card_screen').style.display = 'none';
-};
-document.getElementById('cancel-autocomplete-btn').onclick = function () {
-    document.getElementById('modal-autocomplete-screen').style.display = 'none';
-};
-document.getElementById('cancel-refine-btn').onclick = function () {
-    document.getElementById('modal-refine-screen').style.display = 'none';
-};
+document.getElementById('cancel-delete-btn').onclick = function () {document.getElementById('delete-confirm-screen').style.display = 'none';};
+document.getElementById('manual-fill-card').onclick = function () {document.getElementById('empty_card_screen').style.display = 'none';};
+document.getElementById('cancel-autocomplete-btn').onclick = function () {document.getElementById('modal-autocomplete-screen').style.display = 'none';};
+document.getElementById('cancel-refine-btn').onclick = function () {document.getElementById('modal-refine-screen').style.display = 'none';};
 document.getElementById('assistant-fill-card').onclick = function () {
     document.getElementById('empty_card_screen').style.display = 'none';
     document.getElementById('modal-autocomplete-screen').style.display = 'flex';
@@ -24,13 +16,8 @@ $(document).on("click", ".naccs .menu div", function () {
     if (!$(this).is("active")) {
         $(".naccs .menu div").removeClass("active");
         $(".naccs ul li").removeClass("active");
-        $(this).addClass("active");
         $(".naccs ul").children("li").eq(numberIndex).addClass("active");
-
-        /* var listItemHeight = $(".naccs ul")
-             .find("li:eq(" + numberIndex + ")")
-             .innerHeight();
-         $(".naccs ul").height(listItemHeight + "px");*/
+        $(this).addClass("active");
     }
 });
 
@@ -48,10 +35,30 @@ $(document).ready(function () {
         }
     });
 
-    let interval = setInterval(function () {
-        checkLocked(interval);
-    }, 100); // do first run immediately
+    let interval = setInterval(function () {checkLocked(interval);}, 100); // do first run immediately
 
+    function runRefinement(assistant, id) {
+        $.ajax({
+            url: "/assistant/" + assistant + '/refine/' + id,
+            method: "POST",
+            contentType: "application/json",
+            dataType: "json",
+            headers: {
+                "Authorization": "Bearer " + token
+            },
+            success: function (response) {
+                //interval = setInterval(function () {checkLocked(interval);}, 500);
+            },
+            error: function (xhr, status, error) {
+                try {
+                    const resp = JSON.parse(xhr.responseText);
+                    //alert(resp.error || error);
+                } catch (e) {
+                    //alert("Unknown refinement error");
+                }
+            }
+        });
+    }
     function checkLocked(interval) {
         $.ajax({
             url: "/card/" + id + "/locked",
@@ -63,13 +70,11 @@ $(document).ready(function () {
                     document.getElementById('card-locked').style.display = 'flex';
                     $('#lock-msg-text').html(jsonData);
                     $('body').addClass('no-overflow');
+                    $('#loading').hide();
                 } else {
                     $('body').removeClass('no-overflow');
                     document.getElementById('card-locked').style.display = 'none';
-                    if (interval) {
-                        clearInterval(interval);
-                    }
-
+                    if (interval) clearInterval(interval);
                     $.ajax({
                         url: "/card/" + id,
                         method: "GET",
@@ -270,11 +275,6 @@ $(document).ready(function () {
                         const title = $tempDiv.find("h1").prop("outerHTML") || "";
                         $tempDiv.find("h1").remove();
                         const description = $.trim($tempDiv.text());
-
-    //                        if (index === 0) {
-    //                            $('#selected_autofilled_assistant,#selected_refined_assistant').text($("<div>").html(title).text())
-    //                        }
-
                         const $card = $("<button>", {
                             id: item.name,
                             class: "card-button",
@@ -284,9 +284,6 @@ $(document).ready(function () {
                         $container.append($card);
                     });
                 });
-
-                /* $('#cards-container').append('<br><p style="margin:12px 0 0px 0px; font-size: 15px; font-weight: 700; color: #1f1f1f;display: inline-block">Actions: </p><p style="display: inline-block;margin:0 5px"><span id="refine">Refine</span> | <span id="autocomplete">Autocomplete: </span> <input type="text" class="text-input" placeholder="Enter URL..." id="card-url" /></p>')
-    */
             },
             error: function (xhr, status, error) {
                 try {
@@ -299,9 +296,6 @@ $(document).ready(function () {
         });
 
     $(".nacc").on("input", ".editable", function () {
-        /* const fieldName = $(this).siblings(".field-name").text().replace(":", "").toLowerCase().replace(/ /g, "_");
-         const sectionName = $(this).closest("section").find("h2").text().toLowerCase().replace(/ /g, "_");
- */
         const fieldName = $(this).siblings(".field-info").contents()[1].outerText.replace(":", "").trim().toLowerCase().replace(/ /g, "_");
         const sectionName = $(this).closest("section").find("h2").contents().filter((_, el) => el.nodeType === 3).text().toLowerCase().replace(/ /g, "_");
 
@@ -310,7 +304,6 @@ $(document).ready(function () {
         if (section) {
             let field = section.value.find(f => f.name === fieldName);
             $("#saveJson").fadeIn();
-//            $("#saveJson").prop("disabled", false);
             if (field) {
                 if(field.type.startsWith("list:")){
                     field.value = $(this).find(":selected").val();
@@ -327,7 +320,6 @@ $(document).ready(function () {
         $("#edit-options").show();
 
     $("#saveJson").click(function () {
-        //$('#saveJson').attr("disabled", true);
         $("#saveJson").fadeOut();
         $.ajax({
             url: "/card/" + id,
@@ -586,75 +578,31 @@ $(document).ready(function () {
     }
 
     $(document).on("click", ".card-button", function () {
-        if (($(this).parents('#modal-refine-screen').length)) {
-            let assistant = $(this).attr("id");
+        if ($(this).parents('#modal-refine-screen').length) {
+            const assistant = $(this).attr("id");
             document.getElementById('modal-refine-screen').style.display = 'none';
-            $("#saveJson").fadeOut();
             $.ajax({
                 url: "/card/" + id,
                 method: "PUT",
                 contentType: "application/json",
                 dataType: "json",
-                data: JSON.stringify(cardJson.data.filter(section => section.name !== "related")),
-                headers: {
-                    "Authorization": "Bearer " + token
-                },
-                success: function (response) {
-                    $('.menu').find('div').find('.light').removeClass('arrow');
-                    $('.menu').find('div').find('.light').addClass('square');
-
-                    ["model", "considerations", "training_set", "eval_set", "performance", "safety"].forEach((sectionName, index) => {
-                        let section = cardJson.data.filter(section => section.name !== "related").find(s => s.name === sectionName);
-                        let hasValue = false;
-
-                        if (section && section.value) {
-                            for (let field of section.value) {
-                                if ((field.value.trim() !== "") && (field.value.trim() !== "<br>") && (field.value.trim() !== "unknown")) {
-                                    hasValue = true;
-                                    $('.menu').find('div').eq(index).find('.light').removeClass('square');
-                                    $('.menu').find('div').eq(index).find('.light').addClass('arrow');
-                                    break; // stop at first non-empty
-                                }
-                            }
-                        }
-                    });
-
+                data: JSON.stringify(cardJson.data.filter(s => s.name !== "related")),
+                headers: { "Authorization": "Bearer " + token },
+                success: function () {
                     $.ajax({
-                        url: "/assistant/" + assistant + '/refine/' + id,
+                        url: "/card/" + id + "/clone",
                         method: "POST",
-                        contentType: "application/json",
-                        dataType: "json",
-                        headers: {
-                            "Authorization": "Bearer " + token
-                        },
-                        success: function (response) {
-
-                            interval = setInterval(function () {
-                                checkLocked(interval);
-                            }, 500);
-                        },
-                        error: function (xhr, status, error) {
-                            try {
-                                const resp = JSON.parse(xhr.responseText);
-                                //alert(resp.error || error);
-                            } catch (e) {
-                                //alert("Unknown refinement error");
-                            }
+                        headers: { "Authorization": "Bearer " + token },
+                        success: function (newId) {
+                            runRefinement(assistant, newId);
+                            window.open("model_card.html?id=" + newId, "_blank");
                         }
                     });
-                },
-                error: function (xhr, status, error) {
-                    try {
-                        const resp = JSON.parse(xhr.responseText);
-                        //alert(resp.error || error);
-                    } catch (e) {
-                        //alert(error || xhr.responseText);
-                    }
                 }
             });
-
-
-        } else {
+            return;
+        }
+        else {
             let assistant = $(this).attr("id");
             $("#saveJson").find('.btn-confirmation').fadeOut();
 
@@ -773,17 +721,8 @@ $(document).ready(function () {
 const pageUrl = encodeURIComponent(window.location.href);
 const pageTitle = encodeURIComponent(document.title);
 
-document.getElementById("share-x").href =
-    `https://twitter.com/intent/tweet?url=${pageUrl}&text=${pageTitle}`;
-
-document.getElementById("share-facebook").href =
-    `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
-
-document.getElementById("share-linkedin").href =
-    `https://www.linkedin.com/shareArticle?mini=true&url=${pageUrl}&title=${pageTitle}`;
-
-document.getElementById("share-whatsapp").href =
-    `https://wa.me/?text=${pageUrl}`;
-
-document.getElementById("share-telegram").href =
-    `https://t.me/share/url?url=${pageUrl}&text=${pageTitle}`;
+document.getElementById("share-x").href = `https://twitter.com/intent/tweet?url=${pageUrl}&text=${pageTitle}`;
+document.getElementById("share-facebook").href = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+document.getElementById("share-linkedin").href = `https://www.linkedin.com/shareArticle?mini=true&url=${pageUrl}&title=${pageTitle}`;
+document.getElementById("share-whatsapp").href = `https://wa.me/?text=${pageUrl}`;
+document.getElementById("share-telegram").href = `https://t.me/share/url?url=${pageUrl}&text=${pageTitle}`;
