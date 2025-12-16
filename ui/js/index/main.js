@@ -33,7 +33,7 @@ $(function () {
 
     $(document).on('click', '.dropdown-content a', function (e) {
         e.preventDefault();
-        const text = $(this).text().trim().toLowerCase();
+        const text = $(this).children().first().text().trim().toLowerCase();
         const tag = `${text}`;
         const $input = $('#topic');
         const currentVal = $input.val();
@@ -44,7 +44,7 @@ $(function () {
         }
 
         $input.focus();
-    })
+    });
 
 });
 

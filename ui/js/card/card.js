@@ -1,4 +1,5 @@
 var cardJson;
+var comparedJson;
 var empty_card_flag=true;
 
 // Close confirmation modal
@@ -24,6 +25,7 @@ $(document).on("click", ".naccs .menu div", function () {
 $(document).ready(function () {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
+    const compareto = urlParams.get('compareto');
     const $menu = $('.menu');
     const menuOffsetTop = $menu.offset().top;
 
@@ -75,6 +77,160 @@ $(document).ready(function () {
                     $('body').removeClass('no-overflow');
                     document.getElementById('card-locked').style.display = 'none';
                     if (interval) clearInterval(interval);
+
+                    function render() {
+                        if(!cardJson || !comparedJson) return;
+                        let jsonData = cardJson;
+                        $("#model-title").text(jsonData.title);
+                        $("#model-description").html(jsonData.description);
+
+                        const historyContainer = document.getElementById("history-dropdown");
+                        historyContainer.innerHTML = ""; // clear previous content
+
+                        // create card buttons
+                        if (jsonData.related && Object.keys(jsonData.related).length > 0) {
+                            const wrapper = document.createElement("div");
+                            wrapper.className = "related-wrapper";
+
+                            const sortedKeys = Object.keys(jsonData.related).sort();
+                            const smallestKey = sortedKeys[0];
+                            const smallestText = jsonData.related[smallestKey] || smallestKey;
+
+                            const button = document.createElement("div");
+                            button.className = "related_button";
+                            button.textContent = `${smallestText} ▾`;
+
+                            const dropdown = document.createElement("div");
+                            dropdown.className = "download-dropdown-menu related-dropdown";
+                            dropdown.style.display = "none";
+
+                            Object.entries(jsonData.related).forEach(([key, rel]) => {
+                                const item = document.createElement("div");
+                                item.className = "download-dropdown-item";
+                                item.textContent = rel || key;
+                                item.addEventListener("click", () => {
+                                    window.location.href = `model_card.html?id=${key}`;
+                                });
+                                dropdown.appendChild(item);
+                            });
+
+                            button.addEventListener("click", () => {
+                                const open = dropdown.style.display === "block";
+                                dropdown.style.display = open ? "none" : "block";
+                                if (!open) {
+                                    const closeMenu = (e) => {
+                                        if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+                                            dropdown.style.display = "none";
+                                            document.removeEventListener("click", closeMenu);
+                                        }
+                                    };
+                                    document.addEventListener("click", closeMenu);
+                                }
+                            });
+                            wrapper.append(button, dropdown);
+                            historyContainer.appendChild(wrapper);
+                        }
+
+                        // fill in fields
+                        const $ul = $(".nacc");
+                        $ul.empty();
+                        $('#loading').hide();
+                        jsonData.data.forEach((section, index) => {
+                            let baseSection = comparedJson.data[index];
+                            let sectionTitle = section.name.replace(/_/g, " ").toUpperCase();
+                            let $li = $("<li>").toggleClass("active", index === 0);
+                            let $section = $("<section>");
+                            $section.append($("<h2>").text(sectionTitle));
+                            if (!section.value.length) $section.append($("<p>").text("No data provided."));
+                            section.value.forEach((field, fieldIndex) => {
+                                let $field = $("<div>").addClass("field");
+
+                                // field-name
+                                let $fieldName = $("<span>")
+                                    .addClass("field-name")
+                                    .text(" "+field.name.replace(/_/g, " "));
+
+                                // info-tooltip
+                                let $fieldInfo = $("<span>")
+                                    .addClass("info-tooltip")
+                                    .attr("data-tooltip", field.description)
+                                    .text("?");
+                                $fieldInfo = $("<span>").addClass("field-info").append($fieldInfo).append($fieldName);
+                                let $fieldValue;
+                                if (field.type.startsWith("list:") && token) {
+                                    $fieldValue = $("<select>").addClass("field-value dropdown");
+                                    const options = field.type.replace("list:", "").split(",");
+                                    options.forEach(opt => {
+                                        const $option = $("<option>").val(opt).text(opt);
+                                        if (field.value === opt) $option.prop("selected", true);
+                                        $fieldValue.append($option);
+                                    });
+                                } else {
+                                    $fieldValue = $("<span>") .addClass("field-value").html(field.value || "");
+                                    if(token) $fieldValue.attr("contenteditable", "true");
+                                }
+                                if(token) $fieldValue.addClass("editable");
+
+                                // Editable field value
+                                if ((field.value.trim() !== "") && (field.value.trim() !== "<br>") && (field.value.trim() !== "unknown")) {
+                                    $('.menu').find('div').eq(index).find('.light').removeClass('square');
+                                    $('.menu').find('div').eq(index).find('.light').addClass('arrow');
+                                }
+
+                                $field.append($fieldInfo).append($fieldValue);
+                                $section.append($field);
+
+                                // compared value
+                                if(baseSection) {
+                                    console.log(baseSection.value[fieldIndex]);
+                                    let $baseFieldValue = $("<span>")
+                                            .addClass("field-value")
+                                            .html(baseSection.value[fieldIndex].value || "");
+
+                                    let $fieldBase = $("<span>")
+                                        .addClass("field-name")
+                                        .text("Original");
+
+                                    $field.append($fieldBase);
+                                    $field.append($baseFieldValue);
+                                }
+                            });
+
+                            $li.append($("<div>").append($section));
+                            $ul.append($li);
+                            $('.menu').find('div').removeClass('active');
+                            $('.menu div:first-child').addClass('active');
+
+                        });
+                        if (!($('.light.arrow').length > 0)&& empty_card_flag && token) {
+                            document.getElementById('empty_card_screen').style.display = 'flex';
+                            empty_card_flag=false;
+                        }
+                        else
+                            empty_card_flag=false;
+                    }
+
+                    if(compareto) {
+                        $.ajax({
+                            url: "/card/" + compareto,
+                            method: "GET",
+                            contentType: "application/json",
+                            dataType: "json",
+                            success: function (jsonData) {
+                                comparedJson = jsonData;
+                                render();
+                            },
+                            error: function (xhr, status, error) {
+                                try {
+                                    const resp = JSON.parse(xhr.responseText);
+                                }
+                                catch (e) {
+                                }
+                            }
+                        });
+                    }
+                    else
+                        comparedJson = {}; // we use the existence of comparedJson as a mark for render()
                     $.ajax({
                         url: "/card/" + id,
                         method: "GET",
@@ -82,150 +238,7 @@ $(document).ready(function () {
                         dataType: "json",
                         success: function (jsonData) {
                             cardJson = jsonData;
-                            //$("#model-title").text("Model Card: " + jsonData.title);
-                            $("#model-title").text(jsonData.title);
-                            $("#model-description").html(jsonData.description);
-
-                            const historyContainer = document.getElementById("history-dropdown");
-                            historyContainer.innerHTML = ""; // clear previous content
-
-                            if (jsonData.related && Object.keys(jsonData.related).length > 0) {
-                                const wrapper = document.createElement("div");
-                                wrapper.className = "related-wrapper";
-
-                                // find smallest key (string order)
-                                const sortedKeys = Object.keys(jsonData.related).sort();
-                                const smallestKey = sortedKeys[0];
-                                const smallestText = jsonData.related[smallestKey] || smallestKey;
-
-                                const button = document.createElement("div");
-                                button.className = "related_button";
-                                button.textContent = `${smallestText} ▾`; // ✅ show first related entry before the arrow
-
-                                const dropdown = document.createElement("div");
-                                dropdown.className = "download-dropdown-menu related-dropdown";
-                                dropdown.style.display = "none";
-
-                                Object.entries(jsonData.related).forEach(([key, rel]) => {
-                                    const item = document.createElement("div");
-                                    item.className = "download-dropdown-item";
-                                    item.textContent = rel || key;
-                                    item.addEventListener("click", () => {
-                                        window.location.href = `model_card.html?id=${key}`;
-                                    });
-                                    dropdown.appendChild(item);
-                                });
-
-                                button.addEventListener("click", () => {
-                                    const open = dropdown.style.display === "block";
-                                    dropdown.style.display = open ? "none" : "block";
-
-                                    if (!open) {
-                                        const closeMenu = (e) => {
-                                            if (!button.contains(e.target) && !dropdown.contains(e.target)) {
-                                                dropdown.style.display = "none";
-                                                document.removeEventListener("click", closeMenu);
-                                            }
-                                        };
-                                        document.addEventListener("click", closeMenu);
-                                    }
-                                });
-
-                                wrapper.append(button, dropdown);
-                                historyContainer.appendChild(wrapper);
-                            }
-
-                            const $ul = $(".nacc");
-                            $ul.empty();
-                            $('#loading').hide();
-                            jsonData.data.forEach((section, index) => {
-                                let sectionTitle = section.name.replace(/_/g, " ").toUpperCase();
-
-                                let $li = $("<li>").toggleClass("active", index === 0);
-                                let $section = $("<section>");
-                                $section.append($("<h2>").text(sectionTitle));
-
-                                if (section.value.length > 0) {
-
-                                    /*section.value.forEach(field => {
-                                        let $field = $("<div>").addClass("field");
-                                        $field.append($("<span>").addClass("field-name").text(field.name.replace(/_/g, " ")));
-
-                                        // Editable field value
-                                        let $fieldValue = $("<span>")
-                                            .addClass("field-value editable")
-                                            .attr("contenteditable", "true")
-                                            .html(field.value || "");
-                                        if ((field.value.trim() !== "") && (field.value.trim() !== "<br>")) {
-                                            $('.menu').find('div').eq(index).find('.light').removeClass('square');
-                                            $('.menu').find('div').eq(index).find('.light').addClass('arrow');
-                                        }
-                                        $field.append($fieldValue);
-                                        $section.append($field);
-
-                                    });*/
-                                    section.value.forEach(field => {
-                                        let $field = $("<div>").addClass("field");
-
-                                        // Create field-name span
-                                        let $fieldName = $("<span>")
-                                            .addClass("field-name")
-                                            .text(" "+field.name.replace(/_/g, " "));
-
-                                        // Add info-tooltip span (you can make tooltip text dynamic if needed)
-                                        let $fieldInfo = $("<span>")
-                                            .addClass("info-tooltip")
-                                            .attr("data-tooltip", field.description)
-                                            .text("?");
-
-                                        $fieldInfo = $("<span>").addClass("field-info").append($fieldInfo).append($fieldName);
-
-                                        // Append tooltip inside field-name
-                                        let $fieldValue;
-                                        if (field.type.startsWith("list:") && token) {
-                                            $fieldValue = $("<select>").addClass("field-value dropdown");
-
-                                            const options = field.type.replace("list:", "").split(",");
-                                            options.forEach(opt => {
-                                                const $option = $("<option>").val(opt).text(opt);
-                                                if (field.value === opt) $option.prop("selected", true);
-                                                $fieldValue.append($option);
-                                            });
-                                        } else {
-                                            $fieldValue = $("<span>")
-                                                .addClass("field-value")
-                                                .html(field.value || "");
-                                            if(token)
-                                                $fieldValue.attr("contenteditable", "true");
-                                        }
-                                        if(token)
-                                            $fieldValue.addClass("editable");
-                                        // Editable field value
-
-                                        if ((field.value.trim() !== "") && (field.value.trim() !== "<br>") && (field.value.trim() !== "unknown")) {
-                                            $('.menu').find('div').eq(index).find('.light').removeClass('square');
-                                            $('.menu').find('div').eq(index).find('.light').addClass('arrow');
-                                        }
-
-                                        $field.append($fieldInfo).append($fieldValue);
-                                        $section.append($field);
-                                    });
-                                } else {
-                                    $section.append($("<p>").text("No data provided."));
-                                }
-
-                                $li.append($("<div>").append($section));
-                                $ul.append($li);
-                                $('.menu').find('div').removeClass('active');
-                                $('.menu div:first-child').addClass('active');
-
-                            });
-                            if (!($('.light.arrow').length > 0)&& empty_card_flag && token) {
-                                document.getElementById('empty_card_screen').style.display = 'flex';
-                                empty_card_flag=false;
-                            }
-                            else
-                                empty_card_flag=false;
+                            render();
                         },
                         error: function (xhr, status, error) {
                             try {
@@ -235,7 +248,7 @@ $(document).ready(function () {
                                 //alert("Unknown card submission error");
                             }
                         }
-                    })
+                    });
 
                 }
             },

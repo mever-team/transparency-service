@@ -5,19 +5,14 @@
     <meta charset="utf-8">
     <meta name="description" content="Transparency services for AI models">
     <meta name="robots" content="index, follow"/>
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="author" content="laaposto">
-
     <link rel="shortcut icon" href="img/favicon.png"/>
-
-    <!-- CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
     <link rel="stylesheet" href="css/foundation.css"/>
     <link rel="stylesheet" href="css/normalize.css"/>
     <link rel="stylesheet" href="css/card/main.css"/>
     <link href="https://fonts.googleapis.com/css?family=Nunito|Roboto+Slab" rel="stylesheet">
-
 </head>
 <body>
 <div id="cover"></div>
@@ -88,7 +83,6 @@
             </div>
         </div>
     </div>
-    <!-- Delete Success Overlay -->
     <div id="delete-confirm-screen" class="delete-confirm-screen">
         <div class="delete-confirm-content">
             <h2>Delete?</h2>
@@ -99,7 +93,6 @@
             </div>
         </div>
     </div>
-    <!-- Delete Success Overlay -->
     <div id="delete-success-screen" class="delete-success-screen">
         <div class="delete-success-content">
             <h2>Card deleted</h2>
@@ -152,7 +145,6 @@
         </div>
         <div class="small-12 medium-4 large-4 columns">
             <h3 class="footer_title" style="border: none">&nbsp;</h3>
-
             <img style="width: 250px;float: right;" src="img/logo_FoundedbyEU.png">
         </div>
     </div>
@@ -163,14 +155,6 @@
     <div class="delete-confirm-content modal_refinement">
         <h2 style="color:#64DB96;">Refine</h2>
         <p>Will create version that is friendlier to non-experts.</p>
-<!--        <span class="info-tooltip info-tooltip-modal" data-tooltip=-->
-<!--            "The prompts for the summary and the simplification respectively are:-->
-
-
-<!--            - You are an AI specialized in simplifying and summarizing technical texts. You will be given html, markdown, or other text, and will produce a very short summary.-->
-
-<!--            - You are an AI specialized in simplifying technical texts while maintaining a professional, academic tone. Your goal is to rewrite technical content in a way that preserves all information but replaces complex terminology with clear, accessible language."-->
-<!--        >More info</span>-->
         <br>
         <div class="assistants_wrapper"></div>
         <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:200px" id="cancel-refine-btn">✖ Cancel</button>
@@ -182,7 +166,6 @@
     <div class="modal__bg"></div>
     <div class="delete-confirm-content">
         <h2 style="color:#64DB96;">Import</h2>
-<!--            <p id="card-url-p" style="font-size: 16px; font-weight: 700; color: white;display: inline-block;margin-right: 26px">Card Url: </p>-->
         <p style="text-align: center;" id="pdf_text">Paste a URL. Do you have a file instead?</p>
         <p style="text-align: center;" id="url_text">Upload a file. Do you have a URL instead?</p>
         <input type="text" class="text-input" placeholder="Enter URL..." id="card-url"/>
@@ -204,21 +187,9 @@
         </p>
         <ul style="text-align:left;"><li>a repository link from <a style="color:#79CFDC" href="https://github.com/" target="_blank">GitHub</a></li>
         <li>a model page from <a style="color:#79CFDC" href="https://huggingface.co/" target="_blank">HuggingFace</a></li></ul>
-<!--        <span class="info-tooltip info-tooltip-modal" data-tooltip=-->
-<!--                "The assistant will fill your card with the bellow steps:-->
-
-
-<!--                1) Retrieve all text from the domain you provide-->
-
-<!--                2) Fill your card based on the text using the prompt: You are a helpful assistant that provide information about an AI model based on a given text."-->
-<!--        >More info</span>-->
         <br>
         <div class="assistants_wrapper"></div>
         <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:200px" id="cancel-autocomplete-btn">✖ Cancel</button>
-<!--            <div class="example_button" id="autocomplete" style="width: 100%;background-color:#1F1F1F;color:#EEEEEE;border:solid 1px #434343">-->
-<!--                <span class="btn-text">Submit task to  <span id="selected_autofilled_assistant"></span>!</span>-->
-<!--            </div>-->
-        <!-- modal close button -->
         <div href="" class="modal__close demo-close">
             <svg class="w-4 h-4" viewBox="0 0 24 24">
                 <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
@@ -231,8 +202,6 @@
     <div class="modal__dialog">
         <div class="modal__content">
             empty
-
-            <!-- modal close button -->
             <div href="" class="modal__close demo-close">
                 <svg class="w-4 h-4" viewBox="0 0 24 24">
                     <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
