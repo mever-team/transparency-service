@@ -136,7 +136,7 @@ $(document).ready(function () {
                         $ul.empty();
                         $('#loading').hide();
                         jsonData.data.forEach((section, index) => {
-                            let baseSection = comparedJson.data[index];
+                            let baseSection = comparedJson&&comparedJson.data?comparedJson.data[index]:undefined;
                             let sectionTitle = section.name.replace(/_/g, " ").toUpperCase();
                             let $li = $("<li>").toggleClass("active", index === 0);
                             let $section = $("<section>");
