@@ -41,7 +41,6 @@ class ModelCardEntry:
         self.card = card
         self.creator = creator
         self.preview = card.to_html_card()
-        self.related = dict()
         self.lock = Lock()
         self._is_completing: bool = False
         self._completion_status: list[str]|None = None
@@ -51,10 +50,41 @@ class ModelCardEntry:
         self.card_id = None
         self.last_accessed = time.time()
 
+    def history(self, k: int = 3):
+        if self.card_id is None or k <= 0:
+            return []
+
+        cursor = self.conn.conn.cursor()
+        visited = {self.card_id}
+        frontier = {self.card_id}
+        edges = set()
+        for _ in range(k):
+            if not frontier: break
+            next_frontier = set()
+            placeholders = ",".join("?" * len(frontier))
+            cursor.execute(
+                f"""
+                SELECT parent_id, child_id, message
+                FROM card_children
+                WHERE parent_id IN ({placeholders}) OR child_id IN ({placeholders})
+                """,
+                tuple(frontier) * 2
+            )
+            for u, v, msg in cursor.fetchall():
+                edges.add((u, v, msg or ""))
+                if u not in visited:
+                    visited.add(u)
+                    next_frontier.add(u)
+                if v not in visited:
+                    visited.add(v)
+                    next_frontier.add(v)
+            frontier = next_frontier
+        return list(edges)
+
     def touch(self):
         self.last_accessed = time.time()
 
-    def commit_card(self, on_thread: bool = False, edit_message: str|None = "Edited card"):
+    def commit_card(self, on_thread: bool = False, edit_message: str|None = "Edited"):
         flattened = self.card.data.flatten()
         assert flattened, "Cannot commit an empty model card."
         assert self.card_id is not None, "Internal error: card_id has not been set for a cached card"
@@ -70,9 +100,8 @@ class ModelCardEntry:
             desc += " for version "+summary
 
         if edit_message:
-            edit_message = f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}] {edit_message} " + summary
+            edit_message = f"{edit_message} " + summary
             desc += f" [{datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}]"
-            self.related[self.card_id] = edit_message
 
         columns = list(flattened.keys())
         values = [flattened[key] for key in columns]+[desc, self.card.title]
@@ -252,7 +281,6 @@ def serve(
                     model_card.data.assign_flattened(flattened)
                     card = ModelCardEntry(model_card, card_creator, conn)
                     card.card_id = card_id
-                    card.related = conn.load_card_relations(card_id)
                     card_cache[card_id] = card
             else:
                 card.touch()
@@ -869,7 +897,6 @@ def serve(
         with exists(parent_card, "Model card does not exist or has been deleted.") as src_card:
             try:
                 card.card.data.assign(src_card.data)
-                related = {k: v for k, v in parent_card.related.items()}
             except AssertionError as e:
                 logger.warn("Assertion error: " + str(e))
                 abort(500, description=str(e))
@@ -886,23 +913,10 @@ def serve(
         conn.conn.commit()
         card_id = cursor.lastrowid
         card.card_id = card_id
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
-
-        with exists(parent_card, "Model card does not exist or has been deleted.") as _:
-            if parent_id in parent_card.related:
-                message = f"{parent_card.related[parent_id]} has been cloned here - go to original"
-                message_parent = f"{parent_card.related[parent_id]} cloned - go to clone"
-            else:
-                message = f"[{timestamp}] Created by cloning - go to original"
-                message_parent = f"[{timestamp}] Cloned - go to clone"
-            parent_card.related[card_id] = message_parent
-
-        card.related = related
-        card.related[parent_id] = message
-        conn.create_card_relation(parent_id=parent_id, child_id=card_id, message=message)
-        conn.create_card_relation(parent_id=card_id, child_id=parent_id, message=message_parent)
+        conn.create_card_relation(parent_id=parent_id, child_id=card_id, message="")
+        #conn.create_card_relation(parent_id=card_id, child_id=parent_id, message="Original")
         parent_card.commit_card(edit_message=None)
-        card.commit_card(edit_message="Just created by cloning")
+        card.commit_card(edit_message="Cloned")
         with card_cache_lock:
             card_cache[card_id] = card
         logger.info("cloned a card", user=creator)
@@ -951,7 +965,7 @@ def serve(
                 description: The JSON representation of the model card.
                 schema:
                   type: object
-                  description: The model card contents. This includes fields title and a list of related card ids and names.
+                  description: The model card contents. This includes fields title and a history graph.
             404:
                 description: The requested card does not exist or has been deleted.
             409:
@@ -960,9 +974,7 @@ def serve(
         found = find_card(card_id)
         with exists(found, "Model card does not exist or has been deleted.") as card:
             desc = "completion "+create_progress_bar(card.quality())
-            # for rel in found.related.values():
-            #     desc += "<br>" + str(rel)
-            return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": desc, "related": found.related})
+            return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": desc, "history": found.history()})
 
     @app.route('/card/<int:card_id>/locked', methods=['GET'])
     def get_card_locked_status(card_id):
@@ -1281,7 +1293,7 @@ def serve(
             except Exception as e: abort(404, "Wrong data: "+str(e))
             desc = "completion " + create_progress_bar(card.quality())
             logger.info("updated a card", user=token2user.get(token, None))
-            return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": desc, "related": card_entry.related})
+            return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": desc, "history": card_entry.history()})
 
     @app.route('/card', methods=['POST'])
     @users.require_auth(token2expiration)

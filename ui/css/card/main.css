@@ -1071,30 +1071,35 @@ details[open] .card-details-content {
     opacity: 1;
 }
 
-.related-wrapper {
-    display: inline-block;
-    position: relative;
-    vertical-align: middle;  /* ✅ align with text baseline */
-    margin-left: 6px;        /* ✅ small space after title */
+.node-current {
+    fill: #4caf50;
 }
 
-.related_button {
-    background-color: #1F1F1F;
-    border: solid 1px #434343;
-    color: #EEEEEE;
-    padding: 2px 6px;
-    cursor: pointer;
-    width: auto;
-    line-height: 1;          /* ✅ avoid adding extra height */
+.node-related {
+    fill: #79CFDC;
 }
 
-.related-dropdown {
-    position: absolute;
-    z-index: 100;
-    width: 600px;
-    top: 100%;               /* ✅ position directly under button */
-    left: 0;
-    margin-top: 2px;         /* ✅ tiny separation for clarity */
+.edge {
+    stroke: #79CFDC;
+    stroke-width: 1.5;
+}
+
+.history-graph text.edge-label {
+    fill: #eeeeee;
+    font-size: 11px;
+    pointer-events: none;
+}
+
+.history-graph text.self-label {
+    fill: #eeeeee;
+    font-size: 11px;
+    font-style: italic;
+}
+
+.history-graph g.node text {
+    fill: #eeeeee;
+    font-size: 12px;
+    pointer-events: none;
 }
 
 /* Fallback emoji initially hidden */
