@@ -702,8 +702,8 @@ def serve(
         page_size = max(int(data.get('page_size', 5)), 1)
         owner = data.get("creator", "").strip().lower()
         owner = [owner] if owner else []
-        desc_filter_simpler = "desc<>''"
-        desc_filter = "cards.desc<>''"
+        desc_filter_simpler = "AND desc<>''"
+        desc_filter = "AND cards.desc<>''"
         import re
         def sanitize_for_fts(s: str) -> str:
             s = s.strip().lower()
@@ -855,7 +855,7 @@ def serve(
                 f"""
                 SELECT id, title, user, desc
                 FROM cards
-                {'WHERE '+desc_filter_simpler if desc_filter_simpler else ''}
+                {desc_filter_simpler.replace('AND', 'WHERE') if desc_filter_simpler else ''}
                 ORDER BY id
                 LIMIT ? OFFSET ?
                 """,
