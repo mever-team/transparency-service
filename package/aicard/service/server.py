@@ -50,7 +50,7 @@ class ModelCardEntry:
         self.card_id = None
         self.last_accessed = time.time()
 
-    def history(self, k: int = 3):
+    def history(self, k: int=5):
         if self.card_id is None or k <= 0:
             return []
 
@@ -95,13 +95,13 @@ class ModelCardEntry:
             self.card.title = truncate(strip_html_tags(self.card.model.name), 30)
         quality = self.card.quality()
         summary = self.card.summary()
-        desc = create_progress_bar(quality)
-        if summary:
-            desc += " for version "+summary
+        if summary: desc = summary#create_progress_bar(quality)+" for "+summary
+        else: desc = ""
 
         if edit_message:
-            edit_message = f"{edit_message} " + summary
-            desc += f" [{datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}]"
+            if edit_message == "Edited" and summary: edit_message = summary
+            else: edit_message = edit_message+" " + summary
+            #if desc: desc += f" [{datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}]"
 
         columns = list(flattened.keys())
         values = [flattened[key] for key in columns]+[desc, self.card.title]
@@ -140,8 +140,7 @@ class ModelCardEntry:
                 tmp_conn.execute(query, values + [self.card_id])
                 tmp_conn.commit()
         else:
-            if edit_message:
-                self.conn.create_card_relation(parent_id=self.card_id, child_id=self.card_id, message=edit_message)
+            if edit_message: self.conn.create_card_relation(parent_id=self.card_id, child_id=self.card_id, message=edit_message)
             with self.conn.conn:
                 cursor = self.conn.conn.cursor()
                 cursor.execute(query, values + [self.card_id])
@@ -703,7 +702,8 @@ def serve(
         page_size = max(int(data.get('page_size', 5)), 1)
         owner = data.get("creator", "").strip().lower()
         owner = [owner] if owner else []
-
+        desc_filter_simpler = "desc<>''"
+        desc_filter = "cards.desc<>''"
         import re
         def sanitize_for_fts(s: str) -> str:
             s = s.strip().lower()
@@ -716,7 +716,10 @@ def serve(
         new_parts = []
         while i<len(parts):
             filter = parts[i]
-            if filter=="--by" and i<len(parts)-1:
+            if filter=="--drafts":
+                desc_filter_simpler = ""
+                desc_filter = ""
+            elif filter=="--by" and i<len(parts)-1:
                 i += 1
                 owner.append(parts[i])
             # elif filter=="--top" and i<len(parts)-1:
@@ -756,6 +759,7 @@ def serve(
                 WHERE cards_fts MATCH ?
                   AND LOWER(cards.user) IN ({placeholders})
                   AND bm25(cards_fts) < 50
+                  {desc_filter}
 
                 UNION ALL
 
@@ -768,6 +772,7 @@ def serve(
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
                   AND LOWER(cards.user) IN ({placeholders})
+                  {desc_filter}
 
                 ORDER BY rank ASC
                 LIMIT ? OFFSET ?
@@ -777,7 +782,7 @@ def serve(
 
         elif len(query) >= 3:
             cursor.execute(
-                """
+                f"""
                 SELECT
                     cards.id,
                     cards.title,
@@ -788,6 +793,7 @@ def serve(
                 JOIN cards ON cards_fts.rowid = cards.id
                 WHERE cards_fts MATCH ?
                   AND bm25(cards_fts) < 10
+                  {desc_filter}
 
                 UNION ALL
 
@@ -799,6 +805,7 @@ def serve(
                     9999 AS rank
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
+                  {desc_filter}
 
                 ORDER BY rank ASC
                 LIMIT ? OFFSET ?
@@ -813,6 +820,7 @@ def serve(
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   AND LOWER(user) IN ({placeholders})
+                  {desc_filter_simpler}
                 ORDER BY id
                 LIMIT ? OFFSET ?
                 """,
@@ -820,10 +828,11 @@ def serve(
             )
         elif query:
             cursor.execute(
-                """
+                f"""
                 SELECT id, title, user, desc
                 FROM cards
                 WHERE LOWER(title) LIKE ?
+                  {desc_filter_simpler}
                 ORDER BY id
                 LIMIT ? OFFSET ?
                 """,
@@ -835,6 +844,7 @@ def serve(
                 SELECT id, title, user, desc
                 FROM cards
                 WHERE LOWER(user) IN ({placeholders})
+                  {desc_filter_simpler}
                 ORDER BY id
                 LIMIT ? OFFSET ?
                 """,
@@ -842,9 +852,10 @@ def serve(
             )
         else:
             cursor.execute(
-                """
+                f"""
                 SELECT id, title, user, desc
                 FROM cards
+                {'WHERE '+desc_filter_simpler if desc_filter_simpler else ''}
                 ORDER BY id
                 LIMIT ? OFFSET ?
                 """,
@@ -864,7 +875,8 @@ def serve(
     def clone_card(card_id, token: str):
         """
         Clones an existing model card into a new one owned by the current user.
-        The new card will have the same content but a new ID and creator.
+        The new card will have the same content but a new ID and creator. Its version
+        will also be cleared out to not make it searchable yet.
         ---
         tags:
           - UI
@@ -916,7 +928,8 @@ def serve(
         conn.create_card_relation(parent_id=parent_id, child_id=card_id, message="")
         #conn.create_card_relation(parent_id=card_id, child_id=parent_id, message="Original")
         parent_card.commit_card(edit_message=None)
-        card.commit_card(edit_message="Cloned")
+        card.card.model.version = ""
+        card.commit_card(edit_message="Clone")
         with card_cache_lock:
             card_cache[card_id] = card
         logger.info("cloned a card", user=creator)
@@ -973,8 +986,7 @@ def serve(
         """
         found = find_card(card_id)
         with exists(found, "Model card does not exist or has been deleted.") as card:
-            desc = "completion "+create_progress_bar(card.quality())
-            return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": desc, "history": found.history()})
+            return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": card.summary(), "history": found.history()})
 
     @app.route('/card/<int:card_id>/locked', methods=['GET'])
     def get_card_locked_status(card_id):
@@ -1291,9 +1303,8 @@ def serve(
                 card_entry.commit_card()
             except AssertionError as e: abort(404, "Wrong data: "+str(e))
             except Exception as e: abort(404, "Wrong data: "+str(e))
-            desc = "completion " + create_progress_bar(card.quality())
             logger.info("updated a card", user=token2user.get(token, None))
-            return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": desc, "history": card_entry.history()})
+            return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": card.summary(), "history": card_entry.history()})
 
     @app.route('/card', methods=['POST'])
     @users.require_auth(token2expiration)

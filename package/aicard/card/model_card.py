@@ -156,7 +156,7 @@ o Did you inform end-users and subjects of existing or potential risks?
         #if self.data.model.name:
         #    summary += " "+truncate(self.data.model.name.split(" ")[0].split("\n")[0], 50)
         if self.data.model.version:
-            summary += " version "+truncate(self.data.model.version, 50)
+            summary += " "+truncate(self.data.model.version, 50)
         return summary[1:] if summary else ""
 
     def quality(self) -> float:

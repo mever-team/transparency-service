@@ -17,7 +17,7 @@ from aicard.agents.extensions.embeddings import ImageClassifier
 
 image_classifier = ImageClassifier()
 app, gc = serve({
-        "run": Combined(
+        "agent": Combined(
             complete=WordNet(),
             refine=Prompter(
                 Ollama("llama3.2:latest", name="🦙 Llama 3.2", timeout_secs=60),

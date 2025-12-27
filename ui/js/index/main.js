@@ -73,6 +73,7 @@ function autocomplete_populate() {
                             <tr class="search_results_button">
                                 <td><a style="display:block;width:100%;height:100%;text-decoration:none" href="model_card.html?id=${it.id}">
                                     <span style="width:300px;display:block;color:#EEE">${name}</span>
+                                    <span style="font-size:13px;color:#F9AB49">${it.desc?"":"DRAFT (no version)"}</span>
                                     <span style="font-size:13px;color:#79CFDC">${it.desc + " by " + it.creator || "No Description"}</span>
                                 </a></td>
                             </tr>`);

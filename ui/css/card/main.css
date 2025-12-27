@@ -1073,6 +1073,7 @@ details[open] .card-details-content {
 
 .node-current {
     fill: #4caf50;
+    opacity: 1;
 }
 
 .node-related {
@@ -1081,7 +1082,7 @@ details[open] .card-details-content {
 
 .edge {
     stroke: #79CFDC;
-    stroke-width: 1.5;
+    stroke-width: 1.2;
 }
 
 .history-graph text.edge-label {

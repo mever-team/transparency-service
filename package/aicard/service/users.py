@@ -70,6 +70,45 @@ class UserDB:
             PRIMARY KEY(parent_id, child_id)
         )''')
 
+        conn.execute('''
+        CREATE INDEX IF NOT EXISTS idx_card_children_child
+        ON card_children(child_id)
+        ''')
+
+        conn.execute('''
+        CREATE TRIGGER IF NOT EXISTS card_children_rewire_parent_deleted
+        BEFORE DELETE ON card_children
+        WHEN OLD.parent_id != OLD.child_id
+          AND NOT EXISTS (SELECT 1 FROM cards WHERE id = OLD.parent_id)
+        BEGIN
+            INSERT OR IGNORE INTO card_children (parent_id, child_id, message)
+            SELECT
+                cc.parent_id,
+                OLD.child_id,
+                cc.message
+            FROM card_children AS cc
+            WHERE cc.child_id = OLD.parent_id
+              AND cc.parent_id != OLD.child_id;
+        END;
+        ''')
+
+        conn.execute('''
+        CREATE TRIGGER IF NOT EXISTS card_children_rewire_child_deleted
+        BEFORE DELETE ON card_children
+        WHEN OLD.parent_id != OLD.child_id
+          AND NOT EXISTS (SELECT 1 FROM cards WHERE id = OLD.child_id)
+        BEGIN
+            INSERT OR IGNORE INTO card_children (parent_id, child_id, message)
+            SELECT
+                OLD.parent_id,
+                cc.child_id,
+                cc.message
+            FROM card_children AS cc
+            WHERE cc.parent_id = OLD.child_id
+              AND cc.child_id != OLD.parent_id;
+        END;
+        ''')
+
         # automatic migration if needed
         expected_columns = ['id', 'user', 'desc'] + col_names
         cursor = conn.execute("PRAGMA table_info(cards)")

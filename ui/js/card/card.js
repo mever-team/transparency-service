@@ -5,6 +5,7 @@ var empty_card_flag=true;
 
 function renderHistoryGraph(history, currentId, container) {
     if (!history || history.length === 0) return;
+    if (history.length<2) return; // don't show one self-loop
 
     const nodeIds = new Set();
     history.forEach(([u, v]) => {
@@ -14,9 +15,9 @@ function renderHistoryGraph(history, currentId, container) {
 
     const rootId = Math.min(...nodeIds);
 
-    const X_SPACING = 140;
-    const Y_SPACING = 60;
-    const NODE_RADIUS = 12;
+    const X_SPACING = 120;
+    const Y_SPACING = 30;
+    const NODE_RADIUS = 10;
 
     const adj = new Map();
     const edges = [];
@@ -77,7 +78,7 @@ function renderHistoryGraph(history, currentId, container) {
 
     const maxDepth = Math.max(...depth.values());
     const width = (maxDepth + 1) * X_SPACING + 80;
-    const height = Math.max(...yPos.values()) + 80;
+    const height = Math.max(...yPos.values()) + 20;
 
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("width", width);
@@ -238,11 +239,10 @@ $(document).ready(function () {
                         let jsonData = cardJson;
                         $("#model-title").text(jsonData.title);
                         $("#model-description").html(jsonData.description);
+                        $("#model-pending").html(jsonData.description?"":"DRAFT (needs version to be searchable)");
 
                         const historyContainer = document.getElementById("history-dropdown");
                         historyContainer.innerHTML = ""; // clear previous content
-
-                        // create card buttons
                         if (jsonData.history) {
                             renderHistoryGraph(
                                 jsonData.history,
@@ -486,6 +486,16 @@ $(document).ready(function () {
 
                 $("#model-title").text(response.title);
                 $("#model-description").html(response.description);
+                $("#model-pending").html(response.description?"":"DRAFT (needs version to be searchable)");
+                const historyContainer = document.getElementById("history-dropdown");
+                historyContainer.innerHTML = ""; // clear previous content
+                if (response.history) {
+                    renderHistoryGraph(
+                        response.history,
+                        Number(id),
+                        historyContainer
+                    );
+                }
                 $("#saveJson").find('.btn-text').hide();
                 $("#saveJson").find('.btn-confirmation').fadeIn();
 

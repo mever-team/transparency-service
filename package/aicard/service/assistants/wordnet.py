@@ -35,9 +35,9 @@ class WordNet(Assistant):
                  external_get_timeout_sec: float=1,
                  max_chars_for_semantic_synonyms: int=1000):
         super().__init__(
-            alias="📚 Text copier",
+            alias="📚 Text copying",
             description=(
-                "<h1>📚 Text copier</h1>"
+                "<h1>📚 Text copying</h1>"
                 "Fast and deterministic copy-paster. Imports text by using a semantic dictionary from WordNet to organize paragraphs by meaning, and refines text by adding explanatory tooltips."
             )
         )

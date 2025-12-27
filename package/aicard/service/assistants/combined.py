@@ -9,7 +9,7 @@ class Combined(Assistant):
         assert isinstance(refine, Assistant)
         self.description = description if description else "<h1>Run</h1>Our assistant switches to "+complete.alias+" for import and "+refine.alias+" for refinement."
         super().__init__(
-            alias="Run",
+            alias="Agent",
             description=self.description
         )
         self._complete = complete
