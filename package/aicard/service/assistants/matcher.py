@@ -35,10 +35,10 @@ class SemanticMatcher(Assistant):
         return embeddings[0]
 
     def embedding_similarity(self, e1, e2) -> float:
-        return float((e1-e2).square().sum())
+        return float((e1*e2).sum())
 
     def __init__(self,
-                 model_name: str="BAAI/bge-m3",
+                 model_name: str="BAAI/bge-small-en-v1.5", #"BAAI/bge-m3",
                  external_get_timeout_sec: float=1,
                  max_chars_for_semantic_synonyms: int=1000):
         super().__init__(
