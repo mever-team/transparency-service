@@ -42,9 +42,9 @@ class SemanticMatcher(Assistant):
                  external_get_timeout_sec: float=1,
                  max_chars_for_semantic_synonyms: int=1000):
         super().__init__(
-            alias="📚 Semantic text copying",
+            alias="📚 Semantic organizer",
             description=(
-                "<h1>📚 Semantic text copying</h1>"
+                "<h1>📚 Semantic organizer</h1>"
                 f"Fast and deterministic copy-paster powered by {model_name}. Re-organizes imported text by using semantic analysis of sentences, and refines text by adding explanatory tooltips."
             )
         )
@@ -94,7 +94,7 @@ class SemanticMatcher(Assistant):
     def complete(self, card: ModelCard, url: str, logger: Logger, user_messages: list[str]):
         user_messages[-1] = (
             f"<h2>{self.alias} import</h2>"
-            f"Matching by embeddings."
+            f"Retrieving document."
         )
         self._wait_until_ready()
         logger.info("Submitted: " + str(url), user=self.alias)
@@ -151,11 +151,34 @@ class SemanticMatcher(Assistant):
         existing = set(cat+"__"+field for cat, values in card.data.items()
                        if isinstance(values, dict)
                        for field, value in values.items() if value.get() and value.get().lower()!="unknown")
+
+        count_sections = 0
         for heading, content in sections:
             content = content.strip()
             if not content.strip():
                 continue
             if not content: continue
+            count_sections += 1
+
+        progress = 0
+        for heading, content in sections:
+            content = content.strip()
+            if not content.strip():
+                continue
+            if not content: continue
+
+            progress_html = (
+                f"<progress value='{int(progress / count_sections * 100)}' max='100' "
+                f"style='width: 300px; height: 20px; "
+                f"accent-color: #79CFDC; border: 2px solid #1F1F1F;'></progress>"
+            )
+            user_messages[-1] = (
+                f"<h2>{self.alias} import</h2>"
+                f"{progress_html}<br>"
+                f"<b>Organizing information.</b>"
+            )
+            progress += 1
+
             embedding = self.get_embeddings("#"+heading+"\n"+content)
             best_score = 0
             best_path = []
