@@ -15,3 +15,5 @@ weasyprint
 openai-clip
 torch
 torchvision
+transformers
+sentencepiece
