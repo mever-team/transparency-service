@@ -25,7 +25,7 @@ app, gc = serve({
                 image_classifier=image_classifier),
         )
     },
-    env="ui/.env"
+    env="ui/.env",
 )
 
 if __name__ == "__main__":

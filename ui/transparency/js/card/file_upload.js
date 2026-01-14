@@ -20,29 +20,23 @@ $(document).ready(function () {
     function displayFiles(files) {
         $fileList.empty();
         let totalBytes = 0;
-
         for (const file of files) {
             const icon = getIconForFile(file);
             totalBytes += file.size;
             $fileList.append(`<li><span class="icon">${icon}</span> ${file.name} — ${formatSize(file.size)}</li>`);
         }
-
         $totalSize.text('Total size: ' + formatSize(totalBytes));
-
         simulateUploadProgress();
     }
 
     function simulateUploadProgress() {
         let progress = 0;
         $progressFill.width('0%');
-
         const interval = setInterval(() => {
             progress += 10;
             $progressFill.width(progress + '%');
-
-            if (progress >= 100) {
+            if (progress >= 100)
                 clearInterval(interval);
-            }
         }, 100);
     }
 
@@ -50,9 +44,8 @@ $(document).ready(function () {
         var $this = this
         displayFiles($this.files);
         // upload the first file (or loop if multiple allowed)
-        if ($this.files.length > 0) {
+        if ($this.files.length > 0)
             uploaded_file=$this.files[0];
-        }
     });
 
     $dropArea.on('dragover', function (e) {
@@ -71,8 +64,7 @@ $(document).ready(function () {
         const files = e.originalEvent.dataTransfer.files;
         $fileInput[0].files = files;
         displayFiles(files);
-        if (files.length > 0) {
+        if (files.length > 0)
             uploaded_file=files[0];
-        }
     });
 });

@@ -93,7 +93,7 @@ class ModelCardEntry:
             return re.sub(r'<[^>]*>', '', text)
         if self.card.model.name:
             self.card.title = truncate(strip_html_tags(self.card.model.name), 30)
-        quality = self.card.quality()
+        #quality = self.card.quality()
         summary = self.card.summary()
         if summary: desc = summary#create_progress_bar(quality)+" for "+summary
         else: desc = ""
@@ -225,7 +225,8 @@ def serve(
     token_expiration_secs: int = 60*60,
     root:str|None = "db", # None or "" initializes a non-persistent database for testing
     log_file:str|None = None, # None or "" uses the console for logging
-    static:str = "ui"
+    static:str = "ui",
+    domain_prefix:str="/transparency"
 ):
     static = os.path.abspath(static)
     if env: config = dotenv_values(env)
@@ -285,8 +286,10 @@ def serve(
                 card.touch()
         return card
 
-    @app.route("/<path:path>")
+    @app.route(domain_prefix+"/<path:path>")
     def static_proxy(path):
+        if domain_prefix:
+            path = "."+domain_prefix+"/"+path
         safe_path = os.path.abspath(os.path.join(static, path)).lower()
         if (not safe_path.endswith(".html") and not safe_path.endswith(".css")
                 and not safe_path.endswith(".js") and not safe_path.endswith(".png") and not safe_path.endswith(".svg")
@@ -304,7 +307,8 @@ def serve(
             abort(403)
         try:
             return send_from_directory(static, path)
-        except Exception:
+        except Exception as e:
+            print(e)
             logger.info(f"Path does not exist (likely an external resource): {path!r}")
             return ""
 
@@ -328,11 +332,11 @@ def serve(
             return response
         return jsonify(error="Unexpected server error\nThis is not shown here for data protection, but the administrator will be notified with specifics, which may include user name and model card contents."), 500
 
-    @app.route("/", methods=['GET'])
+    @app.route(domain_prefix+"/", methods=['GET'])
     def get_index():
         return redirect(redirect_index, code=307)
 
-    @app.route('/users', methods=['GET'])
+    @app.route(domain_prefix+'/users', methods=['GET'])
     @users.require_admin(token2expiration)
     def admin_dashboard(token: str):
         """
@@ -387,7 +391,7 @@ def serve(
             "pending": fetch_all_users("pending_users")
         })
 
-    @app.route('/users/<string:username>', methods=['DELETE'])
+    @app.route(domain_prefix+'/users/<string:username>', methods=['DELETE'])
     @users.require_admin(token2expiration)
     def delete_user(username, token: str):
         """
@@ -432,7 +436,7 @@ def serve(
         logger.warn(username+" - deleted")
         return jsonify({"deleted": username})
 
-    @app.route('/users/<string:username>/accept', methods=['POST'])
+    @app.route(domain_prefix+'/users/<string:username>/accept', methods=['POST'])
     @users.require_admin(token2expiration)
     def promote_user(username, token: str):
         """
@@ -477,7 +481,7 @@ def serve(
         conn.conn.commit()
         return jsonify({"promoted": username})
 
-    @app.route("/register", methods=["POST"])
+    @app.route(domain_prefix+"/register", methods=["POST"])
     def register_user():
         """
         Registers a new user into the pending approval list.
@@ -522,7 +526,7 @@ def serve(
         conn.insert_user('pending_users', username, email, password)
         return jsonify({"status": "pending approval"}), 201
 
-    @app.route("/ping", methods=["GET"])
+    @app.route(domain_prefix+"/ping", methods=["GET"])
     def ping():
         """
         Checks if the bearer token is valid.
@@ -574,7 +578,7 @@ def serve(
         })
 
 
-    @app.route("/login", methods=["POST"])
+    @app.route(domain_prefix+"/login", methods=["POST"])
     def login_user():
         """
         Logs in a user or the admin and returns an expiring bearer token.
@@ -630,7 +634,7 @@ def serve(
         logger.info("logged in", user=username)
         return jsonify({"token": token, "admin": False, "expires_in": token_expiration_secs})
 
-    @app.route('/cards', methods=['POST'])
+    @app.route(domain_prefix+'/cards', methods=['POST'])
     def get_cards():
         """
         Retrieves a list of model cards from the database while filtering for a search query and performing pagination.
@@ -690,6 +694,9 @@ def serve(
                       desc:
                         type: string
                         description: Card description (e.g., completion percentage).
+                      overview:
+                        type: string
+                        description: Card overview (either empty or a long description)
                 pages:
                   type: integer
                   description: Total number of result pages.
@@ -753,6 +760,7 @@ def serve(
                     cards.title,
                     cards.user,
                     cards.desc,
+                    cards.model__overview,
                     bm25(cards_fts) AS rank
                 FROM cards_fts
                 JOIN cards ON cards_fts.rowid = cards.id
@@ -768,6 +776,7 @@ def serve(
                     cards.title,
                     cards.user,
                     cards.desc,
+                    cards.model__overview,
                     9999 AS rank   -- fallback rank for LIKE matches
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
@@ -788,6 +797,7 @@ def serve(
                     cards.title,
                     cards.user,
                     cards.desc,
+                    cards.model__overview,
                     bm25(cards_fts) AS rank
                 FROM cards_fts
                 JOIN cards ON cards_fts.rowid = cards.id
@@ -802,6 +812,7 @@ def serve(
                     cards.title,
                     cards.user,
                     cards.desc,
+                    cards.model__overview,
                     9999 AS rank
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
@@ -816,7 +827,7 @@ def serve(
         elif query and owner:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc
+                SELECT id, title, user, desc, model__overview
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   AND LOWER(user) IN ({placeholders})
@@ -829,7 +840,7 @@ def serve(
         elif query:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc
+                SELECT id, title, user, desc, model__overview
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   {desc_filter_simpler}
@@ -841,7 +852,7 @@ def serve(
         elif owner:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc
+                SELECT id, title, user, desc, model__overview
                 FROM cards
                 WHERE LOWER(user) IN ({placeholders})
                   {desc_filter_simpler}
@@ -853,7 +864,7 @@ def serve(
         else:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc
+                SELECT id, title, user, desc, model__overview
                 FROM cards
                 {desc_filter_simpler.replace('AND', 'WHERE') if desc_filter_simpler else ''}
                 ORDER BY id
@@ -867,10 +878,13 @@ def serve(
         for row in rows:
             if row[0] in added_ids: continue
             added_ids.add(row[0])
-            results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3]})
+            overview = row[4]
+            if "<img" in overview: overview = ""
+            if len(overview)>120: overview = overview[:(120-3)]+"..."
+            results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "overview": overview})
         return jsonify({"results": results, "pages": num_pages, "total": total})
 
-    @app.route('/card/<int:card_id>/clone', methods=['POST'])
+    @app.route(domain_prefix+'/card/<int:card_id>/clone', methods=['POST'])
     @users.require_auth(token2expiration)
     def clone_card(card_id, token: str):
         """
@@ -935,7 +949,7 @@ def serve(
         logger.info("cloned a card", user=creator)
         return jsonify(card_id), 201
 
-    @app.route('/assistants', methods=['GET'])
+    @app.route(domain_prefix+'/assistants', methods=['GET'])
     @users.require_auth(token2expiration)
     def get_assistants(token: str):
         """
@@ -960,7 +974,7 @@ def serve(
         """
         return jsonify([{"name": key, "desc": value.description} for key, value in assistants.items()])
 
-    @app.route('/card/<int:card_id>', methods=['GET'])
+    @app.route(domain_prefix+'/card/<int:card_id>', methods=['GET'])
     def get_card(card_id):
         """
         Retrieves the JSON data for a given model card.
@@ -988,7 +1002,7 @@ def serve(
         with exists(found, "Model card does not exist or has been deleted.") as card:
             return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": card.summary(), "history": found.history()})
 
-    @app.route('/card/<int:card_id>/locked', methods=['GET'])
+    @app.route(domain_prefix+'/card/<int:card_id>/locked', methods=['GET'])
     def get_card_locked_status(card_id):
         """
         Retrieves a string value explaining why the card is locked, for example by an AI assistant working on it.
@@ -1013,7 +1027,7 @@ def serve(
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
         return jsonify(card.check_completion())
 
-    @app.route('/card/<int:card_id>/title', methods=['GET'])
+    @app.route(domain_prefix+'/card/<int:card_id>/title', methods=['GET'])
     def get_card_title(card_id):
         """
         Retrieves the title of the specified model card.
@@ -1037,7 +1051,7 @@ def serve(
         with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
             return jsonify(card.title)
 
-    @app.route('/card/<int:card_id>/title', methods=['PUT'])
+    @app.route(domain_prefix+'/card/<int:card_id>/title', methods=['PUT'])
     @users.require_auth(token2expiration)
     def set_card_title(card_id, token: str):
         """
@@ -1080,7 +1094,7 @@ def serve(
             card.data['title'].set(json_data)
             return jsonify(card.data['title'])
 
-    @app.route('/card/fields', methods=['GET'])
+    @app.route(domain_prefix+'/card/fields', methods=['GET'])
     def get_card_fields():
         """
         Lists all top-level field names for model cards that contain data entries.
@@ -1098,7 +1112,7 @@ def serve(
         """
         return jsonify([key for key, value in empty_card.data.items() if isinstance(value, dict)])
 
-    @app.route('/card/fields/<string:field_name>', methods=['GET'])
+    @app.route(domain_prefix+'/card/fields/<string:field_name>', methods=['GET'])
     def get_card_field_names(field_name):
         """
         Lists all data entry  names under the given field_name in a model card.
@@ -1124,7 +1138,7 @@ def serve(
         exists(isinstance(field, dict), f"Field '{field_name}' does not have data entries.")
         return jsonify(list(field.keys()))
 
-    @app.route('/card/<int:card_id>/<string:field_name>/<string:data_name>', methods=['GET'])
+    @app.route(domain_prefix+'/card/<int:card_id>/<string:field_name>/<string:data_name>', methods=['GET'])
     def get_card_field(card_id, field_name, data_name):
         """
         Retrieves an entry from card.field_name.data_name.
@@ -1162,7 +1176,7 @@ def serve(
             data = exists(field.get(data_name, None), f"Invalid data name {data_name}. Candidates: " + ','.join(field.keys()))
             return jsonify(data)
 
-    @app.route('/card/<int:card_id>/<string:field_name>/<string:data_name>', methods=['PUT'])
+    @app.route(domain_prefix+'/card/<int:card_id>/<string:field_name>/<string:data_name>', methods=['PUT'])
     @users.require_auth(token2expiration)
     def set_card_field(card_id, field_name, data_name, token: str):
         """
@@ -1220,7 +1234,7 @@ def serve(
             return jsonify(data.get())  # do not return json_data directly, as setting the value may format it
 
 
-    @app.route('/card/<int:card_id>', methods=['DELETE'])
+    @app.route(domain_prefix+'/card/<int:card_id>', methods=['DELETE'])
     @users.require_auth(token2expiration)
     def delete_card(card_id, token: str):
         """
@@ -1252,7 +1266,7 @@ def serve(
             logger.info("deleted a card", user=token2user.get(token, None))
             return '', 204
 
-    @app.route('/card/<int:card_id>', methods=['PUT'])
+    @app.route(domain_prefix+'/card/<int:card_id>', methods=['PUT'])
     @users.require_auth(token2expiration)
     def update_card(card_id, token: str):
         """
@@ -1306,7 +1320,7 @@ def serve(
             logger.info("updated a card", user=token2user.get(token, None))
             return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": card.summary(), "history": card_entry.history()})
 
-    @app.route('/card', methods=['POST'])
+    @app.route(domain_prefix+'/card', methods=['POST'])
     @users.require_auth(token2expiration)
     def create_card(token: str):
         """
@@ -1365,7 +1379,7 @@ def serve(
         logger.info("created a card", user=creator)
         return jsonify(card_id), 201
 
-    @app.route('/assistant/<string:assistant_type>/complete/<int:card_id>', methods=['POST'])
+    @app.route(domain_prefix+'/assistant/<string:assistant_type>/complete/<int:card_id>', methods=['POST'])
     @users.require_auth(token2expiration)
     def autocomplete_card(card_id: int, assistant_type: str, token: str):
         """
@@ -1415,7 +1429,7 @@ def serve(
         logger.info(f"requested card {card_id} autocompletion from {assistant_type}", user=token2user.get(token, None))
         return jsonify(status)
 
-    @app.route('/assistant/<string:assistant_type>/refine/<int:card_id>', methods=['POST'])
+    @app.route(domain_prefix+'/assistant/<string:assistant_type>/refine/<int:card_id>', methods=['POST'])
     @users.require_auth(token2expiration)
     def autorefine_card(card_id: int, assistant_type: str, token: str):
         """
@@ -1457,7 +1471,7 @@ def serve(
         logger.info(f"requested card {card_id} refinement from {assistant_type}", user=token2user.get(token, None))
         return jsonify(status)
 
-    @app.route("/card/<int:card_id>/download/<string:fformat>", methods=["GET"])
+    @app.route(domain_prefix+"/card/<int:card_id>/download/<string:fformat>", methods=["GET"])
     def download_card(card_id, fformat):
         """
         Download a model card.
@@ -1537,7 +1551,7 @@ def serve(
             headers={"Content-Disposition": f"attachment; filename={filename}"}
         )
 
-    @app.route('/docs', methods=['GET'])
+    @app.route(domain_prefix+'/docs', methods=['GET'])
     def docs():
         routes = []
         for rule in app.url_map.iter_rules():
@@ -1566,5 +1580,5 @@ def serve(
                 for card_id in to_delete: card_cache.pop(card_id, None)
             time.sleep(600)  # run every 10 minutes
 
-    logger.ok("Server is ready: http://127.0.0.1:5000")
+    logger.ok("Server is ready: http://127.0.0.1:5000"+domain_prefix)
     return app, gc

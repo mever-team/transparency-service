@@ -71,10 +71,8 @@ var Modal = (function () {
         transY = Math.round(yc - trigProps.top - trigProps.height / 2);
 
         // if the modal is aligned to the top then move the button to the center-y of the modal instead of the window
-        if (m.classList.contains('modal--align-top')) {
+        if (m.classList.contains('modal--align-top'))
             transY = Math.round(mProps.height / 2 + mProps.top - trigProps.top - trigProps.height / 2);
-        }
-
 
         // translate button to center of screen
         /* trig.style.transform = 'translate(' + transX + 'px, ' + transY + 'px)';

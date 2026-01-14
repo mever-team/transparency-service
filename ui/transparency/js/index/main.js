@@ -12,7 +12,7 @@ $(function () {
     });
     $('#new_card').click(() => {
         $.ajax({
-            url: "/card",
+            url: "/transparency/card",
             method: "POST",
             contentType: "application/json",
             headers: { "Authorization": "Bearer " + token },
@@ -56,7 +56,7 @@ function autocomplete_populate() {
         const q = $topic.val().trim();
         if (first) $('#loading').show();
         $.ajax({
-            url: "/cards",
+            url: "/transparency/cards",
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({ query: q }),
@@ -75,6 +75,7 @@ function autocomplete_populate() {
                                     <span style="width:300px;display:block;color:#EEE">${name}</span>
                                     <span style="font-size:13px;color:#F9AB49">${it.desc?"":"DRAFT (no version)"}</span>
                                     <span style="font-size:13px;color:#79CFDC">${it.desc + " by " + it.creator || "No Description"}</span>
+                                    <div style="font-size:13px;color:#C8C8C8">${it.overview || ""}</div>
                                 </a></td>
                             </tr>`);
                     });
@@ -107,7 +108,7 @@ document.getElementById('login-confirm-btn').onclick = function () {
         "username": document.getElementById('password').value
     }
     $.ajax({
-        url: "/login",
+        url: "/transparency/login",
         method: "POST",
         contentType: "application/json",
         dataType: "json",

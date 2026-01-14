@@ -12,6 +12,7 @@ class CardConnector():
         self.prototype.data.assign(prototype.data)
 
 class Client():
+    # TODO: the /transparency path is hard-coded here
     def __init__(self, username, url, token, logger: Logger|str|None=None):
         self.username = username
         self.url = url
@@ -21,7 +22,7 @@ class Client():
         self.session.headers.update({"Authorization": f"Bearer {token}"})
 
     def search(self, query: str="Model Card", owned_only: bool=True, top: int=10):
-        response = requests.post(self.url+"/cards", json={"query": query, "page_size": top, "creator": self.username if owned_only else ""})
+        response = requests.post(self.url+"/transparency/cards", json={"query": query, "page_size": top, "creator": self.username if owned_only else ""})
         if response.status_code != 200: self.logger.fatal(f"Card creation failed: {response.status_code} {response.text}")
         results = response.json()["results"]
         return results
@@ -30,7 +31,7 @@ class Client():
         if data is None: data = ModelCard()
         assert isinstance(data, ModelCard), "For now, you can only create a model card given another model card through while using the client api"
         prototype = data
-        response = self.post("/card", json=prototype.data)
+        response = self.post("/transparency/card", json=prototype.data)
         if response.status_code != 201: self.logger.fatal(f"Card creation failed: {response.status_code} {response.text}")
         card_id = response.json()
         new_card = ModelCard(connector=CardConnector(card_id, self, prototype))
@@ -65,7 +66,7 @@ def connect(url:str|None=None,
     assert username, f"User username not found in {env} USER or arguments"
     assert password, f"User password not found in {env} PASS or arguments"
 
-    login_url = url.rstrip("/") + "/login"
+    login_url = url.rstrip("/") + "/transparency/login"
     response = requests.post(login_url, json={"username": username, "password": password})
     logger = Logger() if logger is None else Logger(logger) if isinstance(logger, str) else logger
     if response.status_code != 200: logger.fatal(f"Login failed: {response.status_code} {response.text}")

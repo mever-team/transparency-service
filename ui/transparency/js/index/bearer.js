@@ -21,7 +21,7 @@ function updateUsername() {
     }
 
     $.ajax({
-        url: "/ping",
+        url: "/transparency/ping",
         method: "GET",
         headers: { "Authorization": "Bearer " + token },
         success: function (response) {
@@ -41,7 +41,7 @@ function updateUsername() {
                 const halfLife = (expiresIn * 1000) / 2;
                 pingTimer = setTimeout(() => {
                     $.ajax({
-                        url: "/ping",
+                        url: "/transparency/ping",
                         method: "GET",
                         headers: { "Authorization": "Bearer " + token },
                         success: function (pingResp) {

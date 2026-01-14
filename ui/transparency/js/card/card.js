@@ -197,7 +197,7 @@ $(document).ready(function () {
 
     function runRefinement(assistant, id) {
         $.ajax({
-            url: "/assistant/" + assistant + '/refine/' + id,
+            url: "/transparency/assistant/" + assistant + '/refine/' + id,
             method: "POST",
             contentType: "application/json",
             dataType: "json",
@@ -219,7 +219,7 @@ $(document).ready(function () {
     }
     function checkLocked(interval) {
         $.ajax({
-            url: "/card/" + id + "/locked",
+            url: "/transparency/card/" + id + "/locked",
             method: "GET",
             contentType: "application/json",
             dataType: "json",
@@ -333,7 +333,7 @@ $(document).ready(function () {
 
                     if(compareto) {
                         $.ajax({
-                            url: "/card/" + compareto,
+                            url: "/transparency/card/" + compareto,
                             method: "GET",
                             contentType: "application/json",
                             dataType: "json",
@@ -353,7 +353,7 @@ $(document).ready(function () {
                     else
                         comparedJson = {}; // we use the existence of comparedJson as a mark for render()
                     $.ajax({
-                        url: "/card/" + id,
+                        url: "/transparency/card/" + id,
                         method: "GET",
                         contentType: "application/json",
                         dataType: "json",
@@ -393,7 +393,7 @@ $(document).ready(function () {
 
     if(token)
         $.ajax({
-            url: "/assistants",
+            url: "/transparency/assistants",
             method: "GET",
             headers: {
                 "Authorization": "Bearer " + token
@@ -456,7 +456,7 @@ $(document).ready(function () {
     $("#saveJson").click(function () {
         $("#saveJson").fadeOut();
         $.ajax({
-            url: "/card/" + id,
+            url: "/transparency/card/" + id,
             method: "PUT",
             contentType: "application/json",
             dataType: "json",
@@ -543,7 +543,7 @@ $(document).ready(function () {
         const item = e.target.closest(".download-dropdown-item");
 
         const format = item.getAttribute("data-format");
-        const url = "/card/" + id + "/download/" + format
+        const url = "/transparency/card/" + id + "/download/" + format
 
         $.ajax({
             url: url,
@@ -597,7 +597,7 @@ $(document).ready(function () {
         }
         $("#cardClone").prop("disabled", true).text("Cloning...");
         $.ajax({
-            url: "/card/" + id + "/clone",
+            url: "/transparency/card/" + id + "/clone",
             method: "POST",
             contentType: "application/json",
             headers: { "Authorization": "Bearer " + token },
@@ -628,24 +628,16 @@ $(document).ready(function () {
         document.getElementById('delete-confirm-screen').style.display = 'flex';
     });
     $(".delete-confirm-screen").click(function (e) {
-        if ($(e.target).is(this)) {
+        if ($(e.target).is(this))
             $(this).hide();
-        }
     });
     document.getElementById('confirm-delete-btn').onclick = function () {
         document.getElementById('delete-confirm-screen').style.display = 'none';
-
-        // Call AJAX DELETE
         $.ajax({
-            url: "/card/" + id, // replace id
+            url: "/transparency/card/" + id, // replace id
             method: "DELETE",
-            headers: {
-                "Authorization": "Bearer " + token
-            },
-            success: function (response) {
-                showDeleteSuccess();
-                // optionally remove the card from DOM
-            },
+            headers: {"Authorization": "Bearer " + token},
+            success: function (response) {showDeleteSuccess();},
             error: function (xhr, status, error) {
                 //alert("Error deleting card");
                 try {
@@ -658,14 +650,12 @@ $(document).ready(function () {
         });
     };
 
-// Show success overlay
+    // Show success overlay
     function showDeleteSuccess() {
         const screen = document.getElementById('delete-success-screen');
         screen.style.display = 'flex';
 
-        document.getElementById('close-success-btn').onclick = function () {
-            screen.style.display = 'none';
-        }
+        document.getElementById('close-success-btn').onclick = function () { screen.style.display = 'none'; }
 
         // Optional auto-dismiss
         /* setTimeout(() => { screen.style.display = 'none'; }, 3000);*/
@@ -676,7 +666,7 @@ $(document).ready(function () {
             const assistant = $(this).attr("id");
             document.getElementById('modal-refine-screen').style.display = 'none';
             $.ajax({
-                url: "/card/" + id,
+                url: "/transparency/card/" + id,
                 method: "PUT",
                 contentType: "application/json",
                 dataType: "json",
@@ -684,7 +674,7 @@ $(document).ready(function () {
                 headers: { "Authorization": "Bearer " + token },
                 success: function () {
                     $.ajax({
-                        url: "/card/" + id + "/clone",
+                        url: "/transparency/card/" + id + "/clone",
                         method: "POST",
                         headers: { "Authorization": "Bearer " + token },
                         success: function (newId) {
@@ -699,16 +689,13 @@ $(document).ready(function () {
         else {
             let assistant = $(this).attr("id");
             $("#saveJson").find('.btn-confirmation').fadeOut();
-
             $.ajax({
-                url: "/card/" + id,
+                url: "/transparency/card/" + id,
                 method: "PUT",
                 contentType: "application/json",
                 dataType: "json",
                 data: JSON.stringify(cardJson.data.filter(section => section.name !== "history")),
-                headers: {
-                    "Authorization": "Bearer " + token
-                },
+                headers: {"Authorization": "Bearer " + token},
                 success: function (response) {
                     $('.menu').find('div').find('.light').removeClass('arrow');
                     $('.menu').find('div').find('.light').addClass('square');
@@ -731,7 +718,7 @@ $(document).ready(function () {
 
                     if ($('#card-url').is(":visible")) {
                         $.ajax({
-                            url: "/assistant/" + assistant + '/complete/' + id,
+                            url: "/transparency/assistant/" + assistant + '/complete/' + id,
                             method: "POST",
                             contentType: "application/json",
                             dataType: "json",
@@ -741,9 +728,7 @@ $(document).ready(function () {
                             data: JSON.stringify($('#card-url').val()),
                             success: function (response) {
                                 document.getElementById('modal-autocomplete-screen').style.display = 'none';
-                                interval = setInterval(function () {
-                                    checkLocked(interval);
-                                }, 1);
+                                interval = setInterval(function () {checkLocked(interval);}, 1);
                             },
                             error: function (xhr, status, error) {
                                 document.getElementById('modal-autocomplete-screen').style.display = 'none';
@@ -759,7 +744,7 @@ $(document).ready(function () {
                         let formData = new FormData();
                         formData.append("file", uploaded_file); // "file" is the field name your backend expects
                         $.ajax({
-                            url: "/assistant/" + assistant + '/complete/' + id,
+                            url: "/transparency/assistant/" + assistant + '/complete/' + id,
                             method: "POST",
                             headers: {
                                 "Authorization": "Bearer " + token
