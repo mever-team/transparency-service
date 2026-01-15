@@ -9,6 +9,15 @@ function error_message(message) {
     if(message) document.getElementById('error-message').innerHTML = message;
 }
 
+function error_handler(xhr, status, error) {
+    try {
+        const resp = JSON.parse(xhr.responseText);
+        error_message(resp.error || error);
+    } catch (e) {
+        error_message("");
+    }
+}
+
 function renderHistoryGraph(history, currentId, container) {
     if (!history || history.length === 0) return;
     if (history.length<2) return; // don't show one self-loop
@@ -207,14 +216,7 @@ $(document).ready(function () {
             success: function (response) {
                 //interval = setInterval(function () {checkLocked(interval);}, 500);
             },
-            error: function (xhr, status, error) {
-                try {
-                    const resp = JSON.parse(xhr.responseText);
-                    error_message(resp.error || error);
-                } catch (e) {
-                    error_message("");
-                }
-            }
+            error: error_handler
         });
     }
     function checkLocked(interval) {
@@ -324,7 +326,9 @@ $(document).ready(function () {
 
                         });
                         if (!($('.light.arrow').length > 0)&& empty_card_flag && token) {
-                            document.getElementById('empty_card_screen').style.display = 'flex';
+                            //document.getElementById('empty_card_screen').style.display = 'flex';
+                            // TODO: we have this alternative of just opening the import, which may be more practical
+                            document.getElementById('modal-autocomplete-screen').style.display = 'flex';
                             empty_card_flag=false;
                         }
                         else
@@ -341,13 +345,7 @@ $(document).ready(function () {
                                 comparedJson = jsonData;
                                 render();
                             },
-                            error: function (xhr, status, error) {
-                                try {
-                                    const resp = JSON.parse(xhr.responseText);
-                                }
-                                catch (e) {
-                                }
-                            }
+                            error: function (xhr, status, error) {}
                         });
                     }
                     else
@@ -361,15 +359,7 @@ $(document).ready(function () {
                             cardJson = jsonData;
                             render();
                         },
-                        error: function (xhr, status, error) {
-                            try {
-                                const resp = JSON.parse(xhr.responseText);
-                                error_message(resp.error || error);
-                            }
-                            catch (e) {
-                                error_message("");
-                            }
-                        }
+                        error: error_handler
                     });
 
                 }
@@ -414,14 +404,7 @@ $(document).ready(function () {
                     });
                 });
             },
-            error: function (xhr, status, error) {
-                try {
-                    const resp = JSON.parse(xhr.responseText);
-                    error_message(resp.error || error);
-                } catch (e) {
-                    error_message("");
-                }
-            }
+            error: error_handler
         });
 
     $(".nacc").on("input", ".editable", function () {
@@ -500,14 +483,7 @@ $(document).ready(function () {
                     });
                 }, 1500);
             },
-            error: function (xhr, status, error) {
-                try {
-                    const resp = JSON.parse(xhr.responseText);
-                    error_message(resp.error || error);
-                } catch (e) {
-                    error_message("");
-                }
-            }
+            error: error_handler
         });
     });
 
@@ -543,14 +519,7 @@ $(document).ready(function () {
             success: function (response) {
                 window.location = url
             },
-            error: function (xhr, status, error) {
-                try {
-                    const resp = JSON.parse(xhr.responseText);
-                    error_message(resp.error || error);
-                } catch (e) {
-                    error_message("");
-                }
-            }
+            error: error_handler
         });
     });
 
@@ -598,12 +567,7 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 $("#cardClone").prop("disabled", false).text("Clone");
-                try {
-                    const resp = JSON.parse(xhr.responseText);
-                    error_message(resp.error || "Error cloning card");
-                } catch (e) {
-                    error_message("");
-                }
+                error_handler(xhr, status, error);
             }
         });
     });
@@ -630,14 +594,7 @@ $(document).ready(function () {
             method: "DELETE",
             headers: {"Authorization": "Bearer " + token},
             success: function (response) {showDeleteSuccess();},
-            error: function (xhr, status, error) {
-                try {
-                    const resp = JSON.parse(xhr.responseText);
-                    error_message(resp.error || error);
-                } catch (e) {
-                    error_message("");
-                }
-            }
+            error: error_handler
         });
     };
 
@@ -721,12 +678,7 @@ $(document).ready(function () {
                             },
                             error: function (xhr, status, error) {
                                 document.getElementById('modal-autocomplete-screen').style.display = 'none';
-                                try {
-                                    const resp = JSON.parse(xhr.responseText);
-                                    error_message(resp.error || error);
-                                } catch (e) {
-                                    error_message("");
-                                }
+                                error_handler(xhr, status, error);
                             }
                         });
                     } else {
@@ -747,41 +699,30 @@ $(document).ready(function () {
                             },
                             error: function (xhr, status, error) {
                                 document.getElementById('modal-autocomplete-screen').style.display = 'none';
-                                try {
-                                    const resp = JSON.parse(xhr.responseText);
-                                    error_message(resp.error || error);
-                                } catch (e) {
-                                    error_message("");
-                                }
+                                error_handler(xhr, status, error);
                             }
                         });
                     }
                 },
                 error: function (xhr, status, error) {
                     document.getElementById('modal-autocomplete-screen').style.display = 'none';
-                    try {
-                        const resp = JSON.parse(xhr.responseText);
-                        error_message(resp.error || error);
-                    } catch (e) {
-                        error_message("");
-                    }
+                    error_handler(xhr, status, error);
                 }
             });
-
-
         }
     });
-
     $('#pdf_text').click(function () {
         $('#pdf_text,#card-url,#card-url-p').slideUp();
         $('.upload-container,#url_text').slideDown();
+        $('#url_desc').slideUp();
+        $('#pdf_desc').slideDown();
     })
-
     $('#url_text').click(function () {
         $('#pdf_text,#card-url,#card-url-p').slideDown();
         $('.upload-container,#url_text').slideUp();
+        $('#url_desc').slideDown();
+        $('#pdf_desc').slideUp();
     })
-
 });
 
 
@@ -789,6 +730,7 @@ $(document).ready(function () {
 const pageUrl = encodeURIComponent(window.location.href);
 const pageTitle = encodeURIComponent(document.title);
 
+$('#pdf_desc').hide();
 document.getElementById("share-x").href = `https://twitter.com/intent/tweet?url=${pageUrl}&text=${pageTitle}`;
 document.getElementById("share-facebook").href = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
 document.getElementById("share-linkedin").href = `https://www.linkedin.com/shareArticle?mini=true&url=${pageUrl}&title=${pageTitle}`;

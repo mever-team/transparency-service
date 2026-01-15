@@ -11,8 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
     <link rel="stylesheet" href="css/foundation.css"/>
     <link rel="stylesheet" href="css/normalize.css"/>
-    <link rel="stylesheet" href="css/card/main.css"/>
-    <link href="https://fonts.googleapis.com/css?family=Nunito|Roboto+Slab" rel="stylesheet">
+    <link rel="stylesheet" href="css/card/main.css"/>error_handler(xhr, status, error);
 </head>
 <body>
 <div id="cover"></div>
@@ -21,7 +20,8 @@
         <div class="row bigWidth">
             <div class="small-12 medium-12 large-12 columns" style="padding: 0">
                 <div class="header_wrapper" style="display:inline;float:left">
-                    <h2><a href="index.html"><img src="img/logo.png" width="110"></a>
+                    <h2>
+                        <a href="index.html"><img src="img/logo.png" width="110"></a>
                         <span id="model-title" class="model-title"></span>
                     </h2>&nbsp;&nbsp;
                     <span id="model-pending" style="color:#F9AB49"></span>
@@ -100,7 +100,7 @@
     <div id="delete-success-screen" class="delete-success-screen">
         <div class="delete-success-content">
             <h2>Card deleted</h2>
-            <p>The model card has been successfully removed.</p>
+            <p>The model card has been deleted.</p>
             <a style="text-decoration: none;color: #1F1F1F;" href="index.html"><button id="close-success-btn">Home</button></a>
         </div>
     </div>
@@ -168,8 +168,8 @@
 
 <div id="modal-refine-screen" class="delete-confirm-screen">
     <div class="delete-confirm-content modal_refinement">
-        <h2 style="color:#64DB96;">Refine for non-experts</h2>
-        <p>This will create a new version.</p>
+        <h2 style="color:#64DB96;">Refine for non-experts?</h2>
+        <div style="text-align:left">This will create a new version that is simplified by an AI agent.</div>
         <br>
         <div class="assistants_wrapper"></div>
         <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:200px" id="cancel-refine-btn">✖ Cancel</button>
@@ -180,9 +180,18 @@
     <div class="modal"></div>
     <div class="modal__bg"></div>
     <div class="delete-confirm-content">
-        <h2 style="color:#64DB96;">Import</h2>
-        <p style="text-align: center;" id="pdf_text">Paste a URL. Do you have a file instead?</p>
-        <p style="text-align: center;" id="url_text">Upload a file. Do you have a URL instead?</p>
+        <h2 style="color:#64DB96;">Import missing info?</h2>
+        <p style="text-align:left" id="url_desc">
+        Paste any URL with model info, for example
+        from <a style="color:#79CFDC" href="https://github.com/" target="_blank">GitHub</a> or
+        <a style="color:#79CFDC" href="https://huggingface.co/" target="_blank">HuggingFace</a>.
+            You can try to import later too.
+        </p>
+        <p style="text-align:left" id="pdf_desc">
+        Upload a markdown or pdf file with model information.
+        </p>
+        <p style="text-align: right;" id="pdf_text">Do you have a file instead?</p>
+        <p style="text-align: right;" id="url_text">Do you have a URL instead?</p>
         <input type="text" class="text-input" placeholder="Enter URL..." id="card-url"/>
         <div class="upload-container">
             <div class="file-drop-area" id="dropArea">
@@ -198,11 +207,6 @@
             </div>
         </div>
         <br><br>
-        <p>Will try to extract missing info from a document or web page. Examples:
-        </p>
-        <ul style="text-align:left;"><li>a repository link from <a style="color:#79CFDC" href="https://github.com/" target="_blank">GitHub</a></li>
-        <li>a model page from <a style="color:#79CFDC" href="https://huggingface.co/" target="_blank">HuggingFace</a></li></ul>
-        <br>
         <div class="assistants_wrapper"></div>
         <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:200px" id="cancel-autocomplete-btn">✖ Cancel</button>
         <div href="" class="modal__close demo-close">
