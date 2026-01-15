@@ -10,10 +10,6 @@ body {
 }
 
 .search_section::before {
-
-    /*background: url(../../img/aicode_bg_surface.jpg) no-repeat;
-    background-size: cover;
-    background-position-x: center;*/
     background: #1F1F1F;
 }
 .search_section::after, .search_section::before {
@@ -491,7 +487,6 @@ section.buttons {
     width: 135px;
 }
 
-/* Specific colors */
 #cancel-delete-btn {
     background: #eee;
     color: #1F1F1F;
@@ -502,7 +497,7 @@ section.buttons {
     color: #1F1F1F;
 }
 
-#close-success-btn,.home_url {
+#close-success-btn, #close-error-btn, .home_url {
     position: relative;
     background: #79CFDC;
     cursor: pointer;

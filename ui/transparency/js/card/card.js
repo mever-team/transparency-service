@@ -3,6 +3,12 @@ var comparedJson;
 var empty_card_flag=true;
 
 
+function error_message(message) {
+    console.log(message);
+    document.getElementById('popup-error-screen').style.display = 'flex';
+    if(message) document.getElementById('error-message').innerHTML = message;
+}
+
 function renderHistoryGraph(history, currentId, container) {
     if (!history || history.length === 0) return;
     if (history.length<2) return; // don't show one self-loop
@@ -186,33 +192,27 @@ $(document).ready(function () {
     const menuOffsetTop = $menu.offset().top;
 
     $(window).on('scroll', function () {
-        if ($(window).scrollTop() > menuOffsetTop - 20) {
-            $menu.addClass('fixed');
-        } else {
-            $menu.removeClass('fixed');
-        }
+        if ($(window).scrollTop() > menuOffsetTop - 20) $menu.addClass('fixed');
+        else $menu.removeClass('fixed');
     });
 
     let interval = setInterval(function () {checkLocked(interval);}, 100); // do first run immediately
-
     function runRefinement(assistant, id) {
         $.ajax({
             url: "/transparency/assistant/" + assistant + '/refine/' + id,
             method: "POST",
             contentType: "application/json",
             dataType: "json",
-            headers: {
-                "Authorization": "Bearer " + token
-            },
+            headers: {"Authorization": "Bearer " + token},
             success: function (response) {
                 //interval = setInterval(function () {checkLocked(interval);}, 500);
             },
             error: function (xhr, status, error) {
                 try {
                     const resp = JSON.parse(xhr.responseText);
-                    //alert(resp.error || error);
+                    error_message(resp.error || error);
                 } catch (e) {
-                    //alert("Unknown refinement error");
+                    error_message("");
                 }
             }
         });
@@ -364,9 +364,10 @@ $(document).ready(function () {
                         error: function (xhr, status, error) {
                             try {
                                 const resp = JSON.parse(xhr.responseText);
-                                //alert(resp.error || error); An AI assistant is working on the card
-                            } catch (e) {
-                                //alert("Unknown card submission error");
+                                error_message(resp.error || error);
+                            }
+                            catch (e) {
+                                error_message("");
                             }
                         }
                     });
@@ -385,7 +386,7 @@ $(document).ready(function () {
                     $('.nacc').append('<l1 class="empty_card">⚠️' + (resp.error || error) + '</l1>')
                     $('.example_button').css('pointer-events', 'none');
                 } catch (e) {
-                    //alert("Unknown card lock error");
+                    error_message("");
                 }
             }
         });
@@ -395,17 +396,12 @@ $(document).ready(function () {
         $.ajax({
             url: "/transparency/assistants",
             method: "GET",
-            headers: {
-                "Authorization": "Bearer " + token
-            },
+            headers: {"Authorization": "Bearer " + token},
             success: function (response) {
-
                 $(".assistants_wrapper").each(function () {
                     const $container = $(this);
-
                     $.each(response, function (index, item) {
                         const $tempDiv = $("<div>").html(item.desc);
-
                         const title = $tempDiv.find("h1").prop("outerHTML") || "";
                         $tempDiv.find("h1").remove();
                         const description = $.trim($tempDiv.text());
@@ -414,7 +410,6 @@ $(document).ready(function () {
                             class: "card-button",
                             html: `<div class="desc">${title}</div><div class="tooltip">${description}</div>`
                         });
-
                         $container.append($card);
                     });
                 });
@@ -422,9 +417,9 @@ $(document).ready(function () {
             error: function (xhr, status, error) {
                 try {
                     const resp = JSON.parse(xhr.responseText);
-                    //alert(resp.error || error);
+                    error_message(resp.error || error);
                 } catch (e) {
-                    //alert("Unknown card retrieval error");
+                    error_message("");
                 }
             }
         });
@@ -450,8 +445,7 @@ $(document).ready(function () {
         }
     });
 
-    if(token)
-        $("#edit-options").show();
+    if(token) $("#edit-options").show();
 
     $("#saveJson").click(function () {
         $("#saveJson").fadeOut();
@@ -461,9 +455,7 @@ $(document).ready(function () {
             contentType: "application/json",
             dataType: "json",
             data: JSON.stringify(cardJson.data.filter(section => section.name !== "history")),
-            headers: {
-                "Authorization": "Bearer " + token
-            },
+            headers: {"Authorization": "Bearer " + token},
             success: function (response) {
                 $('.menu').find('div').find('.light').removeClass('arrow');
                 $('.menu').find('div').find('.light').addClass('square');
@@ -511,9 +503,9 @@ $(document).ready(function () {
             error: function (xhr, status, error) {
                 try {
                     const resp = JSON.parse(xhr.responseText);
-                    //alert(resp.error || error);
+                    error_message(resp.error || error);
                 } catch (e) {
-                    //alert(error || xhr.responseText);
+                    error_message("");
                 }
             }
         });
@@ -554,9 +546,9 @@ $(document).ready(function () {
             error: function (xhr, status, error) {
                 try {
                     const resp = JSON.parse(xhr.responseText);
-                    //alert(resp.error || error);
+                    error_message(resp.error || error);
                 } catch (e) {
-                    //alert("Unknown error downloading card");
+                    error_message("");
                 }
             }
         });
@@ -592,7 +584,7 @@ $(document).ready(function () {
 
     $("#cardClone").click(function () {
         if (!token) {
-            //alert("You must be logged in to clone a card.");
+            error_message("You must be logged in to clone a card. Either your session expired or the service temporarily became unavailable, and you need to log in again.");
             return;
         }
         $("#cardClone").prop("disabled", true).text("Cloning...");
@@ -608,9 +600,9 @@ $(document).ready(function () {
                 $("#cardClone").prop("disabled", false).text("Clone");
                 try {
                     const resp = JSON.parse(xhr.responseText);
-                    //alert(resp.error || "Error cloning card");
+                    error_message(resp.error || "Error cloning card");
                 } catch (e) {
-                    //alert("Unknown error cloning card");
+                    error_message("");
                 }
             }
         });
@@ -639,12 +631,11 @@ $(document).ready(function () {
             headers: {"Authorization": "Bearer " + token},
             success: function (response) {showDeleteSuccess();},
             error: function (xhr, status, error) {
-                //alert("Error deleting card");
                 try {
                     const resp = JSON.parse(xhr.responseText);
-                    //alert(resp.error || error);
+                    error_message(resp.error || error);
                 } catch (e) {
-                    //alert("Unknown error at deleting card");
+                    error_message("");
                 }
             }
         });
@@ -722,9 +713,7 @@ $(document).ready(function () {
                             method: "POST",
                             contentType: "application/json",
                             dataType: "json",
-                            headers: {
-                                "Authorization": "Bearer " + token
-                            },
+                            headers: { "Authorization": "Bearer " + token},
                             data: JSON.stringify($('#card-url').val()),
                             success: function (response) {
                                 document.getElementById('modal-autocomplete-screen').style.display = 'none';
@@ -734,9 +723,9 @@ $(document).ready(function () {
                                 document.getElementById('modal-autocomplete-screen').style.display = 'none';
                                 try {
                                     const resp = JSON.parse(xhr.responseText);
-                                    //alert(resp.error || error);
+                                    error_message(resp.error || error);
                                 } catch (e) {
-                                    //alert("Unknown autocomplete error");
+                                    error_message("");
                                 }
                             }
                         });
@@ -760,9 +749,9 @@ $(document).ready(function () {
                                 document.getElementById('modal-autocomplete-screen').style.display = 'none';
                                 try {
                                     const resp = JSON.parse(xhr.responseText);
-                                    //alert(resp.error || error);
+                                    error_message(resp.error || error);
                                 } catch (e) {
-                                    //alert("Unknown card creation error");
+                                    error_message("");
                                 }
                             }
                         });
@@ -772,9 +761,9 @@ $(document).ready(function () {
                     document.getElementById('modal-autocomplete-screen').style.display = 'none';
                     try {
                         const resp = JSON.parse(xhr.responseText);
-                        //alert(resp.error || error);
+                        error_message(resp.error || error);
                     } catch (e) {
-                        //alert(error || xhr.responseText);
+                        error_message("");
                     }
                 }
             });

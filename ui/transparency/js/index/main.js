@@ -18,7 +18,7 @@ $(function () {
             headers: { "Authorization": "Bearer " + token },
             data: JSON.stringify({ title: "" }),
             success: r => window.location.href = 'model_card.html?id=' + r,
-            error: () => alert("ERROR NEW CARD")
+            error: () => alert("Failed to create a new model card. Please refresh the page and try again.")
         });
     });
 

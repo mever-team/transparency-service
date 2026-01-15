@@ -10,9 +10,9 @@ from flask import Flask, abort, redirect, request, jsonify, send_from_directory,
 from flasgger import Swagger
 from threading import Lock, Thread
 from dotenv import dotenv_values
-from werkzeug.exceptions import HTTPException
+from werkzeug.exceptions import HTTPException, Forbidden
 from io import BytesIO
-
+import traceback
 import re
 import json
 import time
@@ -184,8 +184,7 @@ class ModelCardEntry:
             self.commit_card(on_thread=True, edit_message=assistant.alias+" import") # on_thread=True because we are on a heavyweight path either way
             logger.info(f"ended card {self.card_id} import", user=assistant.alias)
         except Exception as e:
-            import traceback
-            traceback.print_exc()
+            if not isinstance(e, Forbidden): traceback.print_exc()
             logger.error(f"aborted card{self.card_id} import with error {e}", user=assistant.alias)
         self.end_completion()
 
@@ -195,8 +194,7 @@ class ModelCardEntry:
             self.commit_card(on_thread=True, edit_message=assistant.alias+" refinement") # on_thread=True because we are on a heavyweight path either way
             logger.info(f"ended card {self.card_id} refinement", user=assistant.alias)
         except Exception as e:
-            import traceback
-            traceback.print_exc()
+            if not isinstance(e, Forbidden): traceback.print_exc()
             logger.error(f"aborted card{self.card_id} refinement with error {e}", user=assistant.alias)
         self.end_completion()
 
@@ -323,8 +321,7 @@ def serve(
 
     @app.errorhandler(Exception)
     def handle_unexpected_exception(e):
-        import traceback
-        traceback.print_exc()
+        if not isinstance(e, Forbidden): traceback.print_exc()
         logger.error(str(e))
         if isinstance(e, HTTPException):
             response = jsonify(error=e.description or str(e))
