@@ -170,9 +170,10 @@
     <div class="delete-confirm-content modal_refinement">
         <h2 style="color:#64DB96;">Refine for non-experts?</h2>
         <div style="text-align:left">This will create a new version that is simplified by an AI agent.</div>
-        <br>
+
+            <img style="width: 70%; flex-shrink: 0;" src="img/transparency_img.png">
         <div class="assistants_wrapper"></div>
-        <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:200px" id="cancel-refine-btn">✖ Cancel</button>
+        <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:100%" id="cancel-refine-btn">✖ Cancel</button>
     </div>
 </div>
 
@@ -181,15 +182,15 @@
     <div class="modal__bg"></div>
     <div class="delete-confirm-content">
         <h2 style="color:#64DB96;">Import missing info?</h2>
-        <p style="text-align:left" id="url_desc">
+        <p style="text-align:left;margin-bottom:0px" id="url_desc">
         Paste any URL with model info, for example
         from <a style="color:#79CFDC" href="https://github.com/" target="_blank">GitHub</a> or
         <a style="color:#79CFDC" href="https://huggingface.co/" target="_blank">HuggingFace</a>.
-            You can try to import later too.
+            You can cancel and import later too.
         </p>
-        <p style="text-align:left" id="pdf_desc">
-        Upload a markdown or pdf file with model information.
-        </p>
+        <p style="text-align:left;margin-bottom:0px" id="pdf_desc">
+        Upload a markdown or pdf file with model information. You can cancel and import later too.</p>
+        <img style="width: 70%; flex-shrink: 0;" src="img/create_img.png">
         <p style="text-align: right;" id="pdf_text">Do you have a file instead?</p>
         <p style="text-align: right;" id="url_text">Do you have a URL instead?</p>
         <input type="text" class="text-input" placeholder="Enter URL..." id="card-url"/>
@@ -208,7 +209,7 @@
         </div>
         <br><br>
         <div class="assistants_wrapper"></div>
-        <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:200px" id="cancel-autocomplete-btn">✖ Cancel</button>
+        <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:100%" id="cancel-autocomplete-btn">✖ Cancel</button>
         <div href="" class="modal__close demo-close">
             <svg class="w-4 h-4" viewBox="0 0 24 24">
                 <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
