@@ -99,8 +99,8 @@ html, body {
     bottom: 0;
 }
 
-.main_search input {
-    padding: 21px 30px;
+input {
+    padding: 11px 20px;
     width: 100%;
     font-size: 20px;
     line-height: 28px;
@@ -114,8 +114,8 @@ html, body {
 }
 
 .main_search {
-    margin-top: 60px;
-    max-width: 1024px;
+    margin-top: 40px;
+    width: 300px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -186,9 +186,9 @@ html, body {
 }
 
 .search_input {
-    display: block;
     overflow: hidden;
     background: #EEEEEE;
+    max-width :500px;
 }
 
 
@@ -478,10 +478,23 @@ html, body {
     color: #64DB96;
 }
 
+#service-logo {
+    color: #64DB96;
+    float: left;
+    text-align:center;
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
 @media (max-width: 600px) {
   #service-title {
     font-size: 2.5rem;
     line-height: 2.5rem;
+  }
+  #service-logo {
+    font-size: 35px;
+    width:100%;
+
   }
 }
 
@@ -648,8 +661,3 @@ i.fa-brands:before {
     /* If the icon fails, content becomes "" or "none" */
 }
 
-i.fa-solid:before:empty + .fallback,
-i.fa-regular:before:empty + .fallback,
-i.fa-brands:before:empty + .fallback {
-    display: inline;
-}

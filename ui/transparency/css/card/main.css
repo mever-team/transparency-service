@@ -29,7 +29,8 @@ body {
 }
 
 .header_wrapper {
-    padding: 25px 0;
+    margin-top: 25px;
+    margin-bottom: 10px;
 }
 
 .header_wrapper.tiny {
@@ -305,11 +306,12 @@ ul.nacc .field-value li {
     font-weight: 700;
     color: #1f1f1f;
     text-align: center;
-    margin: 0;
     display:inline;
 }
-.model-title{
-    margin-left: 80px;
+
+#model-quality{
+    margin-left: 5px;
+    margin-right: 0px;
 }
 
 .example_button {
@@ -536,6 +538,18 @@ button {
     cursor: pointer;
 }
 
+.quality-circle {
+  width: 48px;
+  height: 48px;
+}
+
+.quality-text {
+  font-size: 12px;
+  fill: #C8C8C8;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
 /*button:hover {
     transform: translateY(-1px);
     transition: transform 0.2s ease;
@@ -682,7 +696,36 @@ main {
     }
 }
 
+#service-logo {
+    color: #64DB96;
+    float: left;
+    text-align:left;
+    font-size: 40px;
+    margin-bottom: 10px;
+    min-width: 600px;
+}
 
+.row-top, .row-top-inner {
+  display: flex;
+  align-items: center;
+  align-text: center;
+  gap: 16px;
+}
+
+@media (max-width: 600px) {
+  #service-logo {
+    font-size: 35px;
+    width:100%;
+    margin-left: 5px;
+    margin-top: -10px;
+  }
+  row-top-inner {
+    width:100%;
+  }
+  .row-top {
+    display: block;
+  }
+}
 
 .modal {
     will-change: visibility, opacity;
@@ -1111,8 +1154,3 @@ i.fa-brands:before {
     /* If the icon fails, content becomes "" or "none" */
 }
 
-i.fa-solid:before:empty + .fallback,
-i.fa-regular:before:empty + .fallback,
-i.fa-brands:before:empty + .fallback {
-    display: inline;
-}

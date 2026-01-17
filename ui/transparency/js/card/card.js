@@ -242,6 +242,15 @@ $(document).ready(function () {
                         $("#model-title").text(jsonData.title);
                         $("#model-description").html(jsonData.description);
                         $("#model-pending").html(jsonData.description?"":"DRAFT (needs version to be searchable)");
+                        $("#model-quality").html(`
+                             <svg class="quality-circle" viewBox="0 0 36 36">
+                              <circle cx="18" cy="18" r="18" fill="none" stroke="#434343" stroke-width="3"/>
+                              <circle cx="18" cy="18" r="18" fill="none" stroke="${jsonData.quality>0.7?'6CC060B':jsonData.quality>0.4?'#FBC483':'#F87F76'}" stroke-width="3"
+                                stroke-dasharray="100" stroke-dashoffset="${100 - Math.round(jsonData.quality * 100)}"/>
+                              <text x="18" y="14" class="quality-text"> ${Math.round(jsonData.quality * 100)}%</text>
+                              <text x="18" y="24" class="quality-text">info</text>
+                            </svg>
+                        `);
 
                         const historyContainer = document.getElementById("history-dropdown");
                         historyContainer.innerHTML = ""; // clear previous content
@@ -462,6 +471,15 @@ $(document).ready(function () {
                 $("#model-title").text(response.title);
                 $("#model-description").html(response.description);
                 $("#model-pending").html(response.description?"":"DRAFT (needs version to be searchable)");
+                $("#model-quality").html(`
+                     <svg class="quality-circle" viewBox="0 0 36 36">
+                      <circle cx="18" cy="18" r="18" fill="none" stroke="#434343" stroke-width="3"/>
+                      <circle cx="18" cy="18" r="18" fill="none" stroke="${response.quality>0.7?'6CC060B':response.quality>0.4?'#FBC483':'#F87F76'}" stroke-width="3"
+                        stroke-dasharray="100" stroke-dashoffset="${100 - Math.round(response.quality * 100)}"/>
+                      <text x="18" y="14" class="quality-text"> ${Math.round(response.quality * 100)}%</text>
+                      <text x="18" y="24" class="quality-text">info</text>
+                    </svg>
+                `);
                 const historyContainer = document.getElementById("history-dropdown");
                 historyContainer.innerHTML = ""; // clear previous content
                 if (response.history) {

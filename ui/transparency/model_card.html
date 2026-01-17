@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
     <link rel="stylesheet" href="css/foundation.css"/>
     <link rel="stylesheet" href="css/normalize.css"/>
-    <link rel="stylesheet" href="css/card/main.css"/>error_handler(xhr, status, error);
+    <link rel="stylesheet" href="css/card/main.css"/>
 </head>
 <body>
 <div id="cover"></div>
@@ -20,18 +20,25 @@
         <div class="row bigWidth">
             <div class="small-12 medium-12 large-12 columns" style="padding: 0">
                 <div class="header_wrapper" style="display:inline;float:left">
-                    <h2>
-                        <a href="index.html"><img src="img/logo.png" width="110"></a>
-                        <span id="model-title" class="model-title"></span>
-                    </h2>&nbsp;&nbsp;
-                    <span id="model-pending" style="color:#F9AB49"></span>
-                    <span id="model-description" style="color:#EEEEEE"></span>
+                    <div class="row-top">
+                    <div id="service-logo"><a href="index.html" style="color: #64DB96">AI Model Cards</a></div>
+                    <div class="row-top-inner bigWidth" style="margin-top:-10px">
+                        <div id="model-quality"></div>
+                        <div>
+                            <div id="model-title" style="font-size:30px;color:#EEEEEE" class="model-title"></div>
+                            <div>
+                                <div id="model-pending" style="color:#F9AB49;font-size:16px"></div>
+                                <div id="model-description" style="color:#79CFDC;font-size:16px"></div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
                 </div>
 
                 <div style="float:right;margin-top:7px;margin-left:4px;position:relative;">
                     <div class="example_button" id="downloadCard"
                          style="float:left;background-color:#1F1F1F;border: solid 1px #434343;color:#EEEEEE;width:auto;padding-left:4px;padding-right:4px;">
-                        <span class="btn-text"><i class="fa-solid fa-bullhorn"></i><span class="fallback">📣</span>&nbsp;&nbsp;Download / Share ▾</span>
+                        <span class="btn-text"><i class="fa-solid fa-bullhorn"></i><span class="fallback">📣</span>&nbsp;&nbsp;Share ▾</span>
                     </div>
                     <div id="downloadDropdown" class="download-dropdown-menu" style="display:none;">
                         <div class="download-dropdown-item" data-format="pdf"><i class="fa-solid fa-file-pdf"></i><span class="fallback">📄</span>&nbsp;&nbsp;PDF</div>
@@ -107,7 +114,7 @@
     <div id="popup-error-screen" class="delete-success-screen">
         <div class="delete-success-content">
             <h2>Something went wrong</h2>
-            <div id="error-message">Could not reach transparency services. <br>
+            <div id="error-message">Could not reach the server. <br>
                 <span style="color: #C8C8C8">
                     Please check your internet connection.
                     Then, either refresh this page or restart from home.
@@ -116,9 +123,6 @@
             <a style="text-decoration: none;color: #1F1F1F;" href="index.html"><button id="close-error-btn">Home</button></a>
         </div>
     </div>
-
-    <section class="buttons">
-    </section>
 
     <section class="search_section">
         <div class="naccs">

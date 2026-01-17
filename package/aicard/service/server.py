@@ -1024,7 +1024,8 @@ def serve(
         """
         found = find_card(card_id)
         with exists(found, "Model card does not exist or has been deleted.") as card:
-            return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": card.summary(), "quality": card.quality(), "history": found.history()})
+            return jsonify(converters.dict2dynamic(card.data, {"title"})
+                           |{"description": card.summary(), "quality": card.quality(), "history": found.history()})
 
     @app.route(domain_prefix+'/card/<int:card_id>/locked', methods=['GET'])
     def get_card_locked_status(card_id):
@@ -1342,7 +1343,8 @@ def serve(
             except AssertionError as e: abort(404, "Wrong data: "+str(e))
             except Exception as e: abort(404, "Wrong data: "+str(e))
             logger.info("updated a card", user=token2user.get(token, None))
-            return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": card.summary(), "quality": card.quality(), "history": card_entry.history()})
+            return jsonify(converters.dict2dynamic(card.data, {"title"})
+                           |{"description": card.summary(), "quality": card.quality(), "history": card_entry.history()})
 
     @app.route(domain_prefix+'/card', methods=['POST'])
     @users.require_auth(token2expiration)
