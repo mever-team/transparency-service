@@ -718,6 +718,7 @@ def serve(
 
         # apply filters
         i = 0
+        quality_limits = float(0)
         new_parts = []
         while i<len(parts):
             filter = parts[i]
@@ -727,6 +728,13 @@ def serve(
             elif filter=="--by" and i<len(parts)-1:
                 i += 1
                 owner.append(parts[i])
+            elif filter=="--info" and i<len(parts)-1:
+                i += 1
+                value = parts[i]
+                try:
+                    quality_limits = float(value)/100-0.00001
+                except Exception:
+                    pass
             # elif filter=="--top" and i<len(parts)-1:
             #     i += 1
             #     try:
@@ -766,6 +774,7 @@ def serve(
                 JOIN cards ON cards_fts.rowid = cards.id
                 WHERE cards_fts MATCH ?
                   AND LOWER(cards.user) IN ({placeholders})
+                  AND cards.quality >= {quality_limits}
                   AND bm25(cards_fts) < 50
                   {desc_filter}
 
@@ -783,6 +792,7 @@ def serve(
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
                   AND LOWER(cards.user) IN ({placeholders})
+                  AND cards.quality >= {quality_limits}
                   {desc_filter}
 
                 ORDER BY rank ASC
@@ -807,6 +817,7 @@ def serve(
                 JOIN cards ON cards_fts.rowid = cards.id
                 WHERE cards_fts MATCH ?
                   AND bm25(cards_fts) < 10
+                  AND cards.quality >= {quality_limits}
                   {desc_filter}
 
                 UNION ALL
@@ -822,6 +833,7 @@ def serve(
                     9999 AS rank
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
+                  AND cards.quality >= {quality_limits}
                   {desc_filter}
 
                 ORDER BY rank ASC
@@ -837,6 +849,7 @@ def serve(
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   AND LOWER(user) IN ({placeholders})
+                  AND quality >= {quality_limits}
                   {desc_filter_simpler}
                 ORDER BY id
                 LIMIT ? OFFSET ?
@@ -849,6 +862,7 @@ def serve(
                 SELECT id, title, user, desc, quality, timestamp, model__overview
                 FROM cards
                 WHERE LOWER(title) LIKE ?
+                  AND quality >= {quality_limits}
                   {desc_filter_simpler}
                 ORDER BY id
                 LIMIT ? OFFSET ?
@@ -861,6 +875,7 @@ def serve(
                 SELECT id, title, user, desc, quality, timestamp, model__overview
                 FROM cards
                 WHERE LOWER(user) IN ({placeholders})
+                  AND quality >= {quality_limits}
                   {desc_filter_simpler}
                 ORDER BY id
                 LIMIT ? OFFSET ?
@@ -872,7 +887,8 @@ def serve(
                 f"""
                 SELECT id, title, user, desc, quality, timestamp, model__overview
                 FROM cards
-                {desc_filter_simpler.replace('AND', 'WHERE') if desc_filter_simpler else ''}
+                WHERE quality >= {quality_limits}
+                    {desc_filter_simpler}
                 ORDER BY id
                 LIMIT ? OFFSET ?
                 """,
