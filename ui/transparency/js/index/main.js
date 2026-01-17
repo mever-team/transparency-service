@@ -31,21 +31,6 @@ $(function () {
         $('.dropdown-filter').removeClass('show');
     });
 
-    $(document).on('click', '.dropdown-content a', function (e) {
-        e.preventDefault();
-        const text = $(this).children().first().text().trim().toLowerCase();
-        const tag = `${text}`;
-        const $input = $('#topic');
-        const currentVal = $input.val();
-
-        // Only add tag if not already present
-        if (!currentVal.includes(tag)) {
-            $input.val(currentVal + (currentVal ? ' ' : '') + tag + ' ');
-        }
-
-        $input.focus();
-    });
-
 });
 
 function autocomplete_populate() {
@@ -72,10 +57,25 @@ function autocomplete_populate() {
                         $tbody.append(`
                             <tr class="search_results_button">
                                 <td><a style="display:block;width:100%;height:100%;text-decoration:none" href="model_card.html?id=${it.id}">
-                                    <span style="width:300px;display:block;color:#EEE">${name}</span>
-                                    <span style="font-size:13px;color:#F9AB49">${it.desc?"":"DRAFT (no version)"}</span>
-                                    <span style="font-size:13px;color:#79CFDC">${it.desc + " by " + it.creator || "No Description"}</span>
-                                    <div style="font-size:13px;color:#C8C8C8">${it.overview || ""}</div>
+                                    <div class="row">
+                                      <div>
+                                        <svg class="quality-circle" viewBox="0 0 36 36">
+                                          <circle cx="18" cy="18" r="18" fill="none" stroke="#434343" stroke-width="3"/>
+                                          <circle cx="18" cy="18" r="18" fill="none" stroke="#FBC483" stroke-width="3"
+                                            stroke-dasharray="100" stroke-dashoffset="${100 - Math.round(it.quality * 100)}"/>
+                                          <text x="18" y="14" class="quality-text"> ${Math.round(it.quality * 100)}%</text>
+                                          <text x="18" y="24" class="quality-text">info</text>
+                                        </svg>
+                                      </div>
+                                      <div>
+                                        <span style="display:block;color:#EEE">${name}</span>
+                                        <span style="font-size:13px;color:#F9AB49">
+                                          ${it.desc ? "" : "DRAFT (no version)"}
+                                        </span>
+                                        <span style="font-size:13px;color:#79CFDC"> ${it.desc + " by " + it.creator || ""} </span>
+                                      </div>
+                                    </div>
+                                    <div style="font-size:13px;color:#C8C8C8;margin-top:7px">${it.overview || ""}</div>
                                 </a></td>
                             </tr>`);
                     });
@@ -88,6 +88,23 @@ function autocomplete_populate() {
             error: () => { $('#loading').hide(); first = false; console.error("Error fetching results"); }
         });
     }
+
+    $(document).on('click', '.dropdown-content a', function (e) {
+        e.preventDefault();
+        const text = $(this).children().first().text().trim().toLowerCase();
+        const tag = `${text}`;
+        const $input = $('#topic');
+        const currentVal = $input.val();
+
+        // Only add tag if not already present
+        if (!currentVal.includes(tag)) {
+            $input.val(currentVal + (currentVal ? ' ' : '') + tag + ' ');
+        }
+
+        $input.focus();
+        lastUpdate = Date.now();
+        request();
+    });
 
     $topic.on("keyup", () => {
         const now = Date.now();

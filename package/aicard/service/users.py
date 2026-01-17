@@ -42,17 +42,26 @@ class UserDB:
         # create model card table
         prototype = ModelCard()
         col_names = list(prototype.data.flatten().keys())
-        assert "user" not in col_names and "id" not in col_names and "desc" not in col_names, \
-            "The ModelCard schema cannot be defined to include id, user, or desc fields at the top level, since these are externally managed by the service database"
+        assert "user" not in col_names and "id" not in col_names and "desc" not in col_names and "timestamp" not in col_names and "quality" not in col_names, \
+            "The ModelCard schema cannot be defined to include id, user, desc, timestamp, or quality fields at the top level, since these are externally managed by the service database"
         col_defs = ",\n    ".join([f'"{col}" TEXT' for col in col_names])
         create_cards_table = f'''CREATE TABLE IF NOT EXISTS cards (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user TEXT NOT NULL,
             desc TEXT NOT NULL,
+            quality DOUBLE,
+            timestamp INT,
             {col_defs},
             FOREIGN KEY(user) REFERENCES users(username) ON DELETE CASCADE
         )'''
         conn.execute(create_cards_table)
+
+        # maintenance - TODO: REMOVE THIS SNIPPET IN FUTURE SERVER VERSIONS
+        existing_cols = {row[1] for row in conn.execute("PRAGMA table_info(cards)").fetchall()}
+        if "quality" not in existing_cols:
+            conn.execute("ALTER TABLE cards ADD COLUMN quality DOUBLE")
+        if "timestamp" not in existing_cols:
+            conn.execute("ALTER TABLE cards ADD COLUMN timestamp INTEGER")
 
         # maintenance - TODO: REMOVE THIS SNIPPET IN FUTURE SERVER VERSIONS
         cursor = conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='card_children'")
@@ -110,7 +119,7 @@ class UserDB:
         ''')
 
         # automatic migration if needed
-        expected_columns = ['id', 'user', 'desc'] + col_names
+        expected_columns = ['id', 'user', 'desc', 'quality', 'timestamp'] + col_names
         cursor = conn.execute("PRAGMA table_info(cards)")
         existing_columns = [row[1] for row in cursor.fetchall()]
 

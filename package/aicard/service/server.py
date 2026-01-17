@@ -93,7 +93,7 @@ class ModelCardEntry:
             return re.sub(r'<[^>]*>', '', text)
         if self.card.model.name:
             self.card.title = truncate(strip_html_tags(self.card.model.name), 30)
-        #quality = self.card.quality()
+        quality = self.card.quality()
         summary = self.card.summary()
         if summary: desc = summary#create_progress_bar(quality)+" for "+summary
         else: desc = ""
@@ -103,9 +103,10 @@ class ModelCardEntry:
             else: edit_message = edit_message+" " + summary
             #if desc: desc += f" [{datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}]"
 
+        timestamp = int(time.time())
         columns = list(flattened.keys())
-        values = [flattened[key] for key in columns]+[desc, self.card.title]
-        columns += ["desc", "title"]  # do this after values uses columns, because its a db, not card field
+        values = [flattened[key] for key in columns]+[desc, self.card.title, quality, timestamp]
+        columns += ["desc", "title", "quality", "timestamp"]  # do this after values uses columns, because its a db, not card field
         query = f'''
             UPDATE cards
             SET {", ".join(f'"{col}" = ?' for col in columns)}
@@ -757,6 +758,8 @@ def serve(
                     cards.title,
                     cards.user,
                     cards.desc,
+                    cards.quality,
+                    cards.timestamp,
                     cards.model__overview,
                     bm25(cards_fts) AS rank
                 FROM cards_fts
@@ -773,6 +776,8 @@ def serve(
                     cards.title,
                     cards.user,
                     cards.desc,
+                    cards.quality,
+                    cards.timestamp,
                     cards.model__overview,
                     9999 AS rank   -- fallback rank for LIKE matches
                 FROM cards
@@ -794,6 +799,8 @@ def serve(
                     cards.title,
                     cards.user,
                     cards.desc,
+                    cards.quality,
+                    cards.timestamp,
                     cards.model__overview,
                     bm25(cards_fts) AS rank
                 FROM cards_fts
@@ -809,6 +816,8 @@ def serve(
                     cards.title,
                     cards.user,
                     cards.desc,
+                    cards.quality,
+                    cards.timestamp,
                     cards.model__overview,
                     9999 AS rank
                 FROM cards
@@ -824,7 +833,7 @@ def serve(
         elif query and owner:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, model__overview
+                SELECT id, title, user, desc, quality, timestamp, model__overview
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   AND LOWER(user) IN ({placeholders})
@@ -837,7 +846,7 @@ def serve(
         elif query:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, model__overview
+                SELECT id, title, user, desc, quality, timestamp, model__overview
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   {desc_filter_simpler}
@@ -849,7 +858,7 @@ def serve(
         elif owner:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, model__overview
+                SELECT id, title, user, desc, quality, timestamp, model__overview
                 FROM cards
                 WHERE LOWER(user) IN ({placeholders})
                   {desc_filter_simpler}
@@ -861,7 +870,7 @@ def serve(
         else:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, model__overview
+                SELECT id, title, user, desc, quality, timestamp, model__overview
                 FROM cards
                 {desc_filter_simpler.replace('AND', 'WHERE') if desc_filter_simpler else ''}
                 ORDER BY id
@@ -875,10 +884,12 @@ def serve(
         for row in rows:
             if row[0] in added_ids: continue
             added_ids.add(row[0])
-            overview = row[4]
+            quality = float(row[4])
+            timestamp = int(row[5])
+            overview = row[6]
             if "<img" in overview: overview = ""
             if len(overview)>120: overview = overview[:(120-3)]+"..."
-            results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "overview": overview})
+            results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality, "overview": overview})
         return jsonify({"results": results, "pages": num_pages, "total": total})
 
     @app.route(domain_prefix+'/card/<int:card_id>/clone', methods=['POST'])
@@ -997,7 +1008,7 @@ def serve(
         """
         found = find_card(card_id)
         with exists(found, "Model card does not exist or has been deleted.") as card:
-            return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": card.summary(), "history": found.history()})
+            return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": card.summary(), "quality": card.quality(), "history": found.history()})
 
     @app.route(domain_prefix+'/card/<int:card_id>/locked', methods=['GET'])
     def get_card_locked_status(card_id):
@@ -1315,7 +1326,7 @@ def serve(
             except AssertionError as e: abort(404, "Wrong data: "+str(e))
             except Exception as e: abort(404, "Wrong data: "+str(e))
             logger.info("updated a card", user=token2user.get(token, None))
-            return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": card.summary(), "history": card_entry.history()})
+            return jsonify(converters.dict2dynamic(card.data, {"title"})|{"description": card.summary(), "quality": card.quality(), "history": card_entry.history()})
 
     @app.route(domain_prefix+'/card', methods=['POST'])
     @users.require_auth(token2expiration)
