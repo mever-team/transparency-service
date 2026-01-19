@@ -10,24 +10,22 @@
 # pretend to be thinking, so that invalid requests can be tested.
 
 from aicard.service import serve
+from aicard.service.assistants import SemanticMatcher, Prompter, Combined
 from aicard.agents import Ollama
-from aicard.service.assistants import WordNet, Prompter
-from aicard.agents.extensions.embeddings import ImageClassifier
 from threading import Thread
+from aicard.agents.extensions.embeddings import ImageClassifier
 
 image_classifier = ImageClassifier()
-app, gc = serve({"wordnet": WordNet(),
-        "qwen": Prompter(
-            Ollama("qwen2.5:1.5b", name="🦋 Fast thinker", timeout_secs=30),
-            description="Qwen2.5:1.5b is used as the base model.",
-            image_classifier=image_classifier),
-        "llama": Prompter(
-            Ollama("llama3.2:latest", name="🦙 Deep thinker", timeout_secs=30),
-            description="Llama 3.2 is used as the base model.",
-            image_classifier=image_classifier),
-        # "ollama": Prompter(Ollama("mistral:latest", name="🌬️ Mistral"))
+app, gc = serve({
+        "agent": Combined(
+            complete=SemanticMatcher(external_get_timeout_sec=10),
+            refine=Prompter(
+                Ollama("llama3.2:latest", name="🦙 Llama 3.2", timeout_secs=45),
+                description="Llama 3.2 is used as the base model.",
+                image_classifier=image_classifier),
+        )
     },
-    env="ui/.env"
+    env="ui/.env",
 )
 
 if __name__ == "__main__":
