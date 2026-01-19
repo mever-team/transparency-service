@@ -643,6 +643,10 @@ input {
     background-color: #f0f0f0;
 }
 
+.dropdown-filter {
+    text-align: center;
+}
+
 .dropdown-filter.show .dropdown-content {
     display: block;
 }
