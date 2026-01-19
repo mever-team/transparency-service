@@ -1,7 +1,7 @@
 var cardJson;
 var comparedJson;
 var empty_card_flag=true;
-
+var menuOffsetTop=0;
 
 function error_message(message) {
     console.log(message);
@@ -198,7 +198,7 @@ $(document).ready(function () {
     const id = urlParams.get('id');
     const compareto = urlParams.get('compareto');
     const $menu = $('.menu');
-    const menuOffsetTop = $menu.offset().top;
+    menuOffsetTop = $menu.offset().top;
 
     $(window).on('scroll', function () {
         if ($(window).scrollTop() > menuOffsetTop - 20) $menu.addClass('fixed');
@@ -260,6 +260,7 @@ $(document).ready(function () {
                                 Number(id),
                                 historyContainer
                             );
+                            menuOffsetTop = $menu.offset().top;
                         }
 
 
