@@ -217,7 +217,7 @@ ul.nacc li h2 {
 /* Field rows */
 ul.nacc .field {
     display: grid;
-    grid-template-columns: 110px 1fr;
+    grid-template-columns: 130px 1fr;
     gap: 1rem;
     align-items: start;
     padding: 0.8rem 0;
@@ -1065,14 +1065,14 @@ details[open] .card-details-content {
 .info-tooltip {
     display: inline-block;
     margin-left: 6px;
-    width: 16px;
-    height: 16px;
-    line-height: 16px;
+    width: 20px;
+    height: 20px;
+    line-height: 22px;
     border-radius: 50%;
     background-color: #A2A2A2;
     color: #1f1f1f;
     text-align: center;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
     position: relative;
     cursor: default;
