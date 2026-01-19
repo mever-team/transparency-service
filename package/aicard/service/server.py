@@ -334,6 +334,10 @@ def serve(
     def get_index():
         return redirect(redirect_index, code=307)
 
+    @app.route("/", methods=['GET'])
+    def get_index_no_prefix():
+        return redirect(domain_prefix+'/'+redirect_index, code=307)
+
     @app.route(domain_prefix+'/users', methods=['GET'])
     @users.require_admin(token2expiration)
     def admin_dashboard(token: str):
