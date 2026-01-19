@@ -1,0 +1,23 @@
+.handbook_section {
+    height: 100%;
+    background-color: #252525;
+    color: #dcdcdc;
+    display: flex;
+
+}
+.handbook_section img {
+    display: block;
+    width: 100%;
+    max-width:50rem;
+    margin: 1rem;
+    box-shadow: .2rem .2rem .2rem #aaaaaa;
+    border: .1rem solid #aaaaaa;
+}
+
+.handbook_menu {
+}
+
+.handbook_body {
+    flex: 1;
+    overflow-y: auto;
+}
