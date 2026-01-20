@@ -17,7 +17,8 @@
 <body>
 
 <section class="handbook_section">
-    <div class="handbook_menu">
+    <div class="handbook_menu" id="handbookMenu">
+        <span class="hide-menu-btn" id="hideMenuBtn" onclick="toggleMenuVisibility()">◂</span>
         <div class="menu_item1 active" id="the-serviceMenu" onclick="handbookGoTo('the-service')">The service</div>
         <div class="menu_item1" id="workflowMenu" onclick="handbookGoTo('workflow')">Workflow</div>
         <div class="menu_item2" id="readersMenu" onclick="handbookGoTo('readers')">Readers</div>
