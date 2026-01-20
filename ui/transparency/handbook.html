@@ -18,18 +18,18 @@
 
 <section class="handbook_section">
     <div class="handbook_menu">
-        <div class="menu_item1">The service</div>
-        <div class="menu_item1">Workflow</div>
-        <div class="menu_item2">Readers</div>
-        <div class="menu_item2">Creators</div>
-        <div class="menu_item1">Functionalities</div>
-        <div class="menu_item2">Import</div>
-        <div class="menu_item2">Refine</div>
+        <div class="menu_item1 active" id="the-serviceMenu" onclick="handbookGoTo('the-service')">The service</div>
+        <div class="menu_item1" id="workflowMenu" onclick="handbookGoTo('workflow')">Workflow</div>
+        <div class="menu_item2" id="readersMenu" onclick="handbookGoTo('readers')">Readers</div>
+        <div class="menu_item2" id="creatorsMenu" onclick="handbookGoTo('creators')">Creators</div>
+        <div class="menu_item1" id="functionalitiesMenu" onclick="handbookGoTo('functionalities')">Functionalities</div>
+        <div class="menu_item2" id="importMenu" onclick="handbookGoTo('import')">Import</div>
+        <div class="menu_item2" id="refineMenu" onclick="handbookGoTo('refine')">Refine</div>
     </div>
 
-    <div class="handbook_body">
+    <div class="handbook_body" id="handbookBody">
         <h1>Transparency Services for AI-Model Cards</h1>
-        <h2>The service</h2>
+        <h2 id="the-service">The service</h2>
         <p>
             This service is developed under the AI-CODE Horizon project with Grant <a href="https://cordis.europa.eu/project/id/101135437" target="_blank">Agreement ID: 101135437</a>
             with the purpose of creating, editing, and managing model cards.  A model card is a compact documentation format that
@@ -40,14 +40,14 @@
             create model cards, and second to provide model cards that are comprehensible for both AI-experts and
             non-experts like journalists, data scientists, and media professionals.
         </p>
-        <h2>Workflow</h2>
-        <h3>Readers</h3>
+        <h2 id="workflow">Workflow</h2>
+        <h3 id="readers">Readers</h3>
         <p>
             Readers can open, download, and share model cards without logging in. You can search and filter cards
             from the main screen. Follow the example bellow:
-            <img src="/transparency/img/tutorial/readers1.webp">
+            <img src="/transparency/img/handbook/readers1.webp">
             1. Search for a model you want to read a model card. For example translategemma.
-            <img src="/transparency/img/tutorial/readers2.webp">
+            <img src="/transparency/img/handbook/readers2.webp">
             2. Once you are inside a model card you can browse its content. On the right side of the screen you can
             find the different sections of the card namely: Model, Consider, Training Set, Eval Set, Performance, and
             Safety. The content for each corresponding section is:
@@ -60,13 +60,54 @@
                 <li>Safety: Ethical risks, security concerns caveats and more.</li>
             </ul>
         </p>
-        <h3>Creators</h3>
+        <h3 id="creators">Creators</h3>
+        <p>
+            Creators must login with an acount to create and manage model cards. After you login you can create
+            a model card as follow:
+            <img src="img/handbook/creator1.webp">
+            1. Click the <i>New</i> button 
+            <img src="img/handbook/creator2.webp">
+            2. You will be greeted with this dialog window. Here you can enter a URL from which an AI model with 
+            retrieve information and try to fill the model card for you (e.g. a huggingface URL). You can also ignore 
+            this step, close the dialog window and start drafting a model card from scratch.
+        </p>
 
-        <h2>Functionalities</h2>
-        <h3>Import</h3>
+        <h2 id="functionalities">Functionalities</h2>
+        <h3 id="import">Import</h3>
+        <p>
+            The Import operation enables the automated retrieval of information from a specified URL. 
+            This function is powered by Ollama and CLIP and operates in a multi-step process. Initially, 
+            the system fetches textual content from the provided URL. This text is then processed using a 
+            large language model (LLM), which extracts relevant information and populates the corresponding fields 
+            of the model card. Afterwards, the system retrieves any images present at the URL. These images are 
+            classified using cosine similarity between the OpenAI’s CLIP image embedding and the field’s description 
+            text embedding, allowing the system to assign them accurately to the appropriate field within the card. 
+            Once the automated import process is complete, the user is able to review and modify the information, 
+            ensuring accuracy and completeness.
+        </p>
+        <p>
+            For the Ollama setup we use the prompt “You are a helpful assistant that provides information about 
+            an AI model based on a given text. Output in plain text, no braces, no quotes”. This brevity is intentional 
+            because the LLM is also provided with a JSON schema that forces it to output in a specific provided format. 
+            This scheme contains guidelines that change the behavior of the model. Using this approach, the general 
+            instruction prompt functions as a universal guideline applicable to all sections of the model card, while 
+            the JSON schema supplies field-specific directions. Each field is accompanied by a description that defines 
+            its intended content, along with optional constraints such as character limits or an enum keyword that restricts 
+            the field to one of several predefined values. As such we can achieve a structured output that facilitates 
+            the autofill process and limits the margin for error due to inconsistent and unstructured model outputs. 
+        </p>
+        <p>
+            For the CLIP setup we use the ViT-B/32 variant. The images fetched from the URL are processed by CLIP to 
+            produce their vector representations. Since model cards within the service have a standard schema, card fields 
+            have pre-calculated vector representation stored to memory to avoid redundant calculations. Each image embedding 
+            is compared with the card’s text embeddings to produce the cosine similarity which classifies the image to one 
+            of the fields. However, most URLs will also have images that are irrelevant to the model such as site-related 
+            images or profile pictures. To avoid pulling those into model cards we also compare the image embeddings with 
+            irrelevant classes like symbols, people, and logos. Images that are classified into these categories are discarded. 
+        </p>
         <h3 id="refine">Refine</h3>
     </div>
 </section>
-
+<script src="js/handbook/main.js"></script>
 </body>
 </html>
