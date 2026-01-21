@@ -5,6 +5,7 @@ function handbookGoTo(id) {
 
 handbookBodyElement = document.getElementById("handbookBody");
 const bodyIds = Array.from(handbookBodyElement.querySelectorAll('[id]')).map(el => el.id);
+console.log(bodyIds);
 let previousActiveId = bodyIds[0];
 
 handbookBodyElement.addEventListener("scroll", (event) => { 

@@ -19,7 +19,9 @@
 <section class="handbook_section">
     <div class="handbook_menu" id="handbookMenu">
         <span class="hide-menu-btn" id="hideMenuBtn" onclick="toggleMenuVisibility()">◂</span>
-        <div class="menu_item1 active" id="the-serviceMenu" onclick="handbookGoTo('the-service')">The service</div>
+        <div class="menu_item1 active" id="introductionMenu" onclick="handbookGoTo('introduction')">Introduction</div>
+        <div class="menu_item2" id="the-serviceMenu" onclick="handbookGoTo('the-service')">The service</div>
+        <div class="menu_item2" id="model-cardsMenu" onclick="handbookGoTo('model-cards')">Model Cards</div>
         <div class="menu_item1" id="workflowMenu" onclick="handbookGoTo('workflow')">Workflow</div>
         <div class="menu_item2" id="readersMenu" onclick="handbookGoTo('readers')">Readers</div>
         <div class="menu_item2" id="creatorsMenu" onclick="handbookGoTo('creators')">Creators</div>
@@ -30,17 +32,172 @@
 
     <div class="handbook_body" id="handbookBody">
         <h1>Transparency Services for AI-Model Cards</h1>
-        <h2 id="the-service">The service</h2>
+        <h2>— Handbook —</h2>
+        <hr style="border: 0.1rem dashed;">
+        <h2 id="introduction">Introduction</h2>
+        <h3 id="the-service">The service</h3>
         <p>
-            This service is developed under the AI-CODE Horizon project with Grant <a href="https://cordis.europa.eu/project/id/101135437" target="_blank">Agreement ID: 101135437</a>
-            with the purpose of creating, editing, and managing model cards.  A model card is a compact documentation format that
+            This service is developed under the AI-CODE Horizon project with Grant <a href="https://cordis.europa.eu/project/id/101135437" target="_blank">Agreement ID: 101135437</a>.
+            You can find the main page of the project along with all the services <a href="https://aicode-project.eu/" target="_blank">here</a>.
+            The purpose of this service is to provide a platform to creating, editing, and managing model cards. 
+            A model card is a compact documentation format that
             contains information about an AI model’s purpose, correct usage, training and evaluation methodology,
             performance, ethical risks, potential missuses, and more to promote transparency in deploying and
-            distributing AI models. The service’s goal is two-fold.  First, to assist AI model creators such as
+            distributing AI models. The service’s goal is two-fold. First, to assist AI model creators such as
             engineers, researchers, and developers to produce transparent AI models by equipping them with AI-powered tools to
             create model cards, and second to provide model cards that are comprehensible for both AI-experts and
             non-experts like journalists, data scientists, and media professionals.
         </p>
+        <h3 id="model-cards">Model Cards</h3>
+        <p>
+            Model cards were first introduced by a Google research <a href="https://arxiv.org/abs/1810.03993" target="_blank">paper</a> in 2018 with the intention to clarify the 
+            intended use, minimize unintended use, report performance, and in general provide a transparency report for ML 
+            and AI models. In this service we provide a standardized Model Card format derived from our research and collaboration
+            with experts in legal and ethical issues. We divide all information into six main sections:
+            <ul>
+                <li>
+                    <b>Model Details:</b> Contains all basic information such as model name, overview, person or organization 
+                    developing the model, date of development, version, license and IP, citations, and any other similar 
+                    description about the model.
+                </li>
+                <li>
+                    <b>Considerations:</b> Include intended use, software requirements, hardware requirements, technical 
+                    instructions, ethical risks, and similar information that provides guidance for correct usage.
+                </li>
+                <li>
+                    <b>Training and Eval Set:</b> Contain information about the training and evaluations data sets such as link 
+                    or description of the dataset, motivation for choosing these specific data, reliance on standards 
+                    (e.g. ISO25, IEEE26), and whether the dataset is up to date, of high quality, and representative 
+                    of the intended deployment environment.
+                </li>
+                <li>
+                    <b>Performance:</b> Consists of the performance metrics, decision thresholds, approaches to uncertainty 
+                    and variability of the results, and an overall analysis of the performance, biases, and fairness.
+                </li>
+                <li>
+                    <b>Safety:</b> Includes all information regarding ethical aspects, safety concerns and caveats
+                    in order to raises awareness about bad use and ethical risks. 
+                </li>
+            </ul>
+        </p>
+        <table class="handbook-table">
+            <thead>
+                <tr>
+                <th>Model Card Fields</th>
+                <th>Content</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Model Details</td>
+                    <td>
+                        <ul>
+                            <li>Basic Information
+                                <ul>
+                                    <li>Model Name</li>
+                                    <li>Overview</li>
+                                    <li>Person or organization developing model</li>
+                                    <li>Date of model development</li>
+                                    <li>Model type</li>
+                                    <li>Paper or other resources for more information</li>
+                                    <li>Citation details</li>
+                                    <li>License and IP</li>
+                                    <li>Feedback on the model (e.g. email contact)</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Considerations</td>
+                    <td>
+                        <ul>
+                            <li>Intended Use
+                                <ul>
+                                    <li>Primary intended uses and purpose</li>
+                                    <li>Oversight level (self-learning/autonomous or human-in-the-loop, human-on-the-loop, or human-in-command)</li>
+                                    <li>Primary intended users</li>
+                                    <li>Out-of-scope use cases</li>
+                                </ul>
+                            </li>
+                            <li>Usage Information
+                                <ul>
+                                    <li>Software requirements</li>
+                                    <li>Hardware requirements (Training and Inference)</li>
+                                    <li>Technical usage instructions (e.g. a code snippet illustration)</li>
+                                    <li>Inputs and outputs</li>
+                                    <li>Factors that influence performance (e.g. demographics, environmental conditions, technical attributes etc.)</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                <td>Training Set</td>
+                <td>
+                    <ul>
+                        <li>Training set details
+                            <ul>
+                                <li>Datasets</li>
+                                <li>Motivation (Why were these datasets chosen?)</li>
+                                <li>Data pre-processing (e.g. tokenization, image cropping etc.)</li>
+                                <li>Reliance on standards (e.g. ISO25, IEEE26)</li>
+                                <li>Data update (Is the dataset updated of high quality and representative of the environment the system will be deployed)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+                </tr>
+                <tr>
+                <td>Eval Set</td>
+                <td>
+                    <ul>
+                        <li>Evaluation  set details
+                            <ul>
+                                <li>Datasets</li>
+                                <li>Motivation (Why were these datasets chosen?)</li>
+                                <li>Data pre-processing (e.g. tokenization, image cropping etc.)</li>
+                                <li>Reliance on standards (e.g. ISO25, IEEE26)</li>
+                                <li>Data update (Is the dataset updated of high quality and representative of the environment the system will be deployed)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+                </tr>
+                <tr>
+                <td>Performance</td>
+                <td>
+                    <ul>
+                        <li>Metrics
+                            <ul>
+                                <li>Model performance measures (e.g. Accuracy, F1 score etc.)</li>
+                                <li>Decision thresholds</li>
+                                <li>Approaches to uncertainty and variability (e.g. standard deviation, variance etc.)</li>
+                            </ul>
+                        </li>
+                        <li>Analysis
+                            <ul><li>Disaggregated results and fairness</li></ul>
+                        </li>
+                    </ul>
+                </td>
+                </tr>
+                <tr>
+                <td>Safety</td>
+                <td>
+                    <ul>
+                        <li>Safety concerns and ethical aspects
+                            <ul>
+                                <li>Ethical Risks</li>
+                                <li>Model Fairness</li>
+                                <li>Security (e.g. certifications or security standards)</li>
+                                <li>Caveats (any additional concerns)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+                </tr>
+            </tbody>
+        </table>
         <h2 id="workflow">Workflow</h2>
         <h3 id="readers">Readers</h3>
         <p>
