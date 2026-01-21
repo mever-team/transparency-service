@@ -5,21 +5,18 @@ function handbookGoTo(id) {
 
 handbookBodyElement = document.getElementById("handbookBody");
 const bodyIds = Array.from(handbookBodyElement.querySelectorAll('[id]')).map(el => el.id);
-console.log(bodyIds);
 let previousActiveId = bodyIds[0];
 
-handbookBodyElement.addEventListener("scroll", (event) => { 
+document.addEventListener("scroll", (event) => { 
     getActiveMenuItem();
 })
 
 function getActiveMenuItem() {
     for (let i=bodyIds.length-1; i>-1; i--){
-        const bodyElement = document.getElementById(bodyIds[i])
+        const bodyElement = document.getElementById(bodyIds[i]);
         if (bodyElement.getBoundingClientRect().top - 10<=0) {
             if (previousActiveId === bodyIds[i]) {break;}
-            if (previousActiveId) {
-                document.getElementById(previousActiveId + 'Menu').classList.remove('active');
-            }
+            document.getElementById(previousActiveId + 'Menu').classList.remove('active');
             previousActiveId = bodyIds[i];
             document.getElementById(bodyIds[i] + 'Menu').classList.add('active');
             break;

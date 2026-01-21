@@ -1,16 +1,40 @@
-/* @font-face {
+@font-face {
     font-family: Hero_font;
     src: url('../../fonts/Hero.otf');
 }
 
+
 body {
-  font-family: Hero_font, "Noto Emoji", sans-serif;
-} */
+  /* font-family: Hero_font, "Noto Emoji", sans-serif; */
+  display: flex;
+  flex-direction: column;
+} 
 
+/* Header */
+.header_section {
+    position: relative;
+    background: #1F1F1F;
+    border-bottom: 0.01rem solid #ffffff;
+    padding: 1.6rem 2rem;
+}
 
+#service-logo {
+    color: #64DB96;
+    font-family: Hero_font, "Noto Emoji", sans-serif;
+    float: left;
+    text-align:left;
+    font-size: 40px;
+    margin-bottom: 10px;
+    min-width: 300px;
+}
+#service-logo a {
+    text-decoration: none;
+    color: #64DB96
+}
+
+/* Handbook Section */
 .handbook_section {
-    height: 100%;
-    background-color: #252525;
+    background-color: #1F1F1F;
     color: #dcdcdc;
     display: flex;
 
@@ -34,7 +58,7 @@ body {
 }
 
 .handbook_body a {
-    color: #7FFFD4;
+    color: #8ed7e2;
 }
 
 .handbook_body h1,
@@ -45,8 +69,11 @@ body {
 
 /* Menu */
 .handbook_menu {
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    padding-top: 1rem;
     border-right: 0.1rem solid #dcdcdc;
-    position: relative;
     user-select: none;
     -moz-user-select: none; /* Firefox */
 }
@@ -83,11 +110,11 @@ body {
     border-radius: 0.2rem;
 }
 .menu_item1 {
-    padding: .5rem .2rem;
+    padding: .7rem 1rem;
 }
 
 .menu_item2 {
-    padding: 0.2rem 0 0.2rem 1rem;
+    padding: 0.4rem 0 0.4rem 2rem;
 
 }
 
@@ -107,9 +134,10 @@ body {
 
 table.handbook-table {
   background-color: #363636;
+  border: 0.1rem solid #b9e6ed;
 }
 table.handbook-table td, table.handbook-table th {
-  border: 0.1rem solid #ffffff;
+  /* border: 0.1rem solid #ffffff; */
   padding: 0.5rem;
 }
 
@@ -117,7 +145,7 @@ table.handbook-table tr:nth-child(even) {
   background: #444444;
 }
 table.handbook-table thead {
-  background: #101010;
+  background: #244f36;
 }
 table.handbook-table thead th {
   font-size: 15px;
@@ -125,4 +153,47 @@ table.handbook-table thead th {
   color: #E6E6E6;
   text-align: center;
   padding: 1rem 0.5rem;
+}
+
+
+/* Footer */
+.row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer_section {
+    background: #252525;
+    color: #dcdcdc;
+    overflow-x: hidden;
+    padding-bottom: 30px;
+    padding-top: 30px;
+    flex: 0 0 auto;
+}
+
+
+.footer_title {
+    font-size: 16px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #434343;
+    color: #fff;
+    margin-top: 40px;
+}
+
+.footer_section_entry {
+    display: table-row;
+}
+
+.footer_section_icon {
+    display: table-cell;
+    vertical-align: top;
+    margin-right: 10px;
+    width: 24px;
+}
+
+.footer_section_text {
+    display: table-cell;
+    vertical-align: middle;
 }
