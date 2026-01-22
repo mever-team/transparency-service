@@ -30,24 +30,29 @@
                 <div class="menu_item1 active" id="introductionMenu" onclick="handbookGoTo('introduction')">Introduction</div>
                 <div class="menu_item2" id="the-serviceMenu" onclick="handbookGoTo('the-service')">The service</div>
                 <div class="menu_item2" id="model-cardsMenu" onclick="handbookGoTo('model-cards')">Model Cards</div>
+                <div class="menu_item1" id="basicsMenu" onclick="handbookGoTo('basics')">Basics</div>
+                <div class="menu_item2" id="metricsMenu" onclick="handbookGoTo('metrics')">Metrics</div>
+                <div class="menu_item2" id="fairnessMenu" onclick="handbookGoTo('fairness')">Fairness</div>
                 <div class="menu_item1" id="workflowMenu" onclick="handbookGoTo('workflow')">Workflow</div>
                 <div class="menu_item2" id="readersMenu" onclick="handbookGoTo('readers')">Readers</div>
                 <div class="menu_item2" id="creatorsMenu" onclick="handbookGoTo('creators')">Creators</div>
                 <div class="menu_item1" id="functionalitiesMenu" onclick="handbookGoTo('functionalities')">Functionalities</div>
                 <div class="menu_item2" id="importMenu" onclick="handbookGoTo('import')">Import</div>
                 <div class="menu_item2" id="refineMenu" onclick="handbookGoTo('refine')">Refine</div>
+                <div class="menu_item2" id="cloneMenu" onclick="handbookGoTo('clone')">Clone</div>
+                <div class="menu_item2" id="shareMenu" onclick="handbookGoTo('share')">Share</div>
             </div>
 
             <div class="handbook_body" id="handbookBody">
                 <h1>Transparency Services for AI-Model Cards</h1>
-                <h2>— Handbook —</h2>
-                <hr style="border: 0.1rem dashed; color: #449566;">
+                <p style="text-align: center; font-size: 1.5rem; font-weight:bold;">— Handbook —</p>
+                <!-- <hr style="border: 0.1rem dashed; color: #449566;"> -->
                 <h2 id="introduction">Introduction</h2>
                 <h3 id="the-service">The service</h3>
                 <p>
                     This service is developed under the AI-CODE Horizon project with Grant <a href="https://cordis.europa.eu/project/id/101135437" target="_blank">Agreement ID: 101135437</a>.
                     You can find the main page of the project along with all the services <a href="https://aicode-project.eu/" target="_blank">here</a>.
-                    The purpose of this service is to provide a platform to creating, editing, and managing model cards. 
+                    The purpose of this service is to provide a platform for creating, editing, and managing model cards. 
                     A model card is a compact documentation format that
                     contains information about an AI model’s purpose, correct usage, training and evaluation methodology,
                     performance, ethical risks, potential missuses, and more to promote transparency in deploying and
@@ -206,6 +211,90 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <h2 id="basics">Basics</h3>
+                <h3 id="metrics">Metrics</h3>
+                <p>
+                    In Artificial Intelligence (AI) and Machine Learning, metrics are numbers that report how good or bad 
+                    a model is performing. To produce such metrics we perform an evaluation run during which we give data to 
+                    the model that it has not seen during training. When the AI model generates its output we compare this result 
+                    with the correct answer to calculate the metrics. An explanation of the most common metrics is given bellow.
+                </p>
+                <p>
+                    <ul>
+                        <li>Accuracy: </li>
+                        Accuracy shows how many predictions were correct. Example: with 100 images
+                        model classifies 90 correctly → Accuracy = 90%. 
+                        Accuracy is simple, but it can be misleading. No information about individual classes.
+
+                    </ul>
+                    <ul>
+                        <li>Precision</li>
+                        Precision answers the question: “When the model says YES, how often is it right?”. 
+                        Example: model predicts 20 spam emails. Only 15 are actually spam → Precision = 15 / 20 = 75%
+                        High precision means few false positives.
+                    </ul>
+                    <ul>
+                        <li>Recall</li>
+                        Recall answers the question: “Out of all real YES cases, how many did the model find?”
+                        Example: 50 real spam emails. Model finds 40 of them → Recall = 40 / 50 = 80%
+                        High recall means few false negatives.
+                    </ul>
+                    <ul>
+                        <li>F1 Score</li>
+                        The F1 score combines Precision and Recall into one number. High F1 score means both
+                        Precision and Recall have high scores.
+                    </ul>
+                    <ul>
+                        <li>Mean Absolute Error (MAE)</li>
+                        MAE answers the question: “On average, how far are the model's predictions from 
+                        the real values?”. MAE measures the average size of the mistakes. When MAE is low
+                        predictions are close to the real values.
+                    </ul>
+                    <ul>
+                        <li>ROC AUC Score</li>
+                        ROC AUC answers the question: “How well can the model separate positive cases from 
+                        negative cases?”. We measure this score for different thresholds. For example if
+                        thresholds = 0.6, prediction above 0.6 are considered positive cases and bellow
+                        0.6 negative cases. For ROC AUC Score 1.0 → perfect separation and for
+                        0.5 → random guessing. High value means positive cases get higher scores than negatives.
+                    </ul>
+                    <ul>
+                        <li>AP (Average Precision)</li>
+                        AP answers the question: “How precise is the model across different
+                        confidence thresholds". The model predicts a class with a confidence thresholds. 
+                        We can accept or reject the prediction depending on the confidence thresholds. 
+                        AP is the average precision across different confidence thresholds. 
+                    </ul>
+                    <ul>
+                        <li>mAP (Mean Average Precision)</li>
+                        mAP answers the question: “How precise is the model across many classes and across different
+                        confidence thresholds". Following the AP score, the mAP is the average AP across
+                        all classes. Mostly used in object detection and multi-class problems.
+                    </ul>
+                    <ul>
+                        <li>AR (Average Recall)</li>
+                        AR answers the question: “How many of the real objects does the model manage to find 
+                        across different
+                        confidence thresholds". Similar to AP we calculate the average recall across 
+                        different confidence thresholds. 
+                    </ul>
+                    <ul>
+                        <li>mAR (Mean Average Recall)</li>
+                        mAR answers the question: “How many of the real objects does the model manage to find 
+                        across many classes and across different
+                        confidence thresholds". Following the AR score, the mAR is the average AR across
+                        all classes. Mostly used in object detection and multi-class problems.
+                    </ul>
+                    <ul>
+                        <li>IoU (Intersection over Union)</li>
+                        IoU answers the question: “How much does the predicted area overlap with the real area?”.
+                        Often used in object detection and segmentation 0 → No overlap and 1 → Perfect overlap.
+                        When IoU is high the predicted box matches the real object well.
+                    </ul>
+                </p>
+                <h3 id="fairness">Fairness</h3>
+
                 <h2 id="workflow">Workflow</h2>
                 <h3 id="readers">Readers</h3>
                 <p>
@@ -233,7 +322,7 @@
                     <img src="img/handbook/creator1.webp">
                     1. Click the <i>New</i> button 
                     <img src="img/handbook/creator2.webp">
-                    2. You will be greeted with this dialog window. Here you can enter a URL from which an AI model with 
+                    2. You will be greeted with this dialog window. Here you can enter a URL from which an AI model will 
                     retrieve information and try to fill the model card for you (e.g. a huggingface URL). You can also ignore 
                     this step, close the dialog window and start drafting a model card from scratch.
                 </p>
@@ -249,8 +338,12 @@
                     classified using cosine similarity between the OpenAI’s CLIP image embedding and the field’s description 
                     text embedding, allowing the system to assign them accurately to the appropriate field within the card. 
                     Once the automated import process is complete, the user is able to review and modify the information, 
-                    ensuring accuracy and completeness.
+                    ensuring accuracy and completeness. 
                 </p>
+                <p>
+                    You can use the import functionality by going to <b>Actions > Import</b> from where a dialog window will appear.
+                </p>
+                <img src="img/handbook/import1.webp" alt="">
                 <p>
                     For the Ollama setup we use the prompt “You are a helpful assistant that provides information about 
                     an AI model based on a given text. Output in plain text, no braces, no quotes”. This brevity is intentional 
@@ -296,6 +389,40 @@
                     critical information. With this operation we aim to provide stakeholders with all necessary information without overwhelming 
                     technical descriptions and terminology. 
                 </p>
+                <p>
+                    You can use the <i>Refine </i> action from <b>Actions > Refine</b> from where a dialog window will appear to 
+                    confirm your action.
+                </p>
+                <img src="img/handbook/refine1.webp" alt="">
+
+                <h3 id="clone">Clone</h3>
+                <p>
+                    Clone creates a copy of your model card which you can use to create different versions of the card.
+                    This feature is particularly useful when a model is updated and changes to the model card must be made. 
+                    It also keeps track of the relation between the versions which is used to display the version tree in the card.
+                </p>
+                <p>
+                    You can use the <i>Clone</i> action from <b>Actions > Clone</b>. Once you do that you will automatically be
+                    redirected to the cloned card.
+                </p>
+                <img src="img/handbook/clone1.webp" alt="">
+                <h3 id="share">Share</h3>
+                <p>
+                    With the <i>Share</i> functionality you can download a model card in various formats or share it on social media. <br>
+                </p>
+                <p>
+                    Currently supported download formats are:
+                    <ul>
+                        <li>PDF</li>
+                        <li>JSON</li>
+                        <li>Markdown</li>
+                    </ul>
+                </p>
+                <p>
+                    You can use the <i>Share</i> functionality directly from the <i>Share</i> button.
+                </p>
+                <img src="img/handbook/share1.webp" alt="">
+
             </div>
         </section>
 

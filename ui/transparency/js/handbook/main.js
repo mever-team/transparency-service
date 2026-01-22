@@ -14,14 +14,19 @@ document.addEventListener("scroll", (event) => {
 function getActiveMenuItem() {
     for (let i=bodyIds.length-1; i>-1; i--){
         const bodyElement = document.getElementById(bodyIds[i]);
+        console.log(bodyElement.getBoundingClientRect().top);
         if (bodyElement.getBoundingClientRect().top - 10<=0) {
-            if (previousActiveId === bodyIds[i]) {break;}
+            if (previousActiveId === bodyIds[i]) {return;}
             document.getElementById(previousActiveId + 'Menu').classList.remove('active');
             previousActiveId = bodyIds[i];
             document.getElementById(bodyIds[i] + 'Menu').classList.add('active');
-            break;
+            return;
         }
     }
+    // If all getBoundingClientRect().top >0
+    document.getElementById(previousActiveId + 'Menu').classList.remove('active');
+    previousActiveId = bodyIds[0];
+    document.getElementById(bodyIds[0] + 'Menu').classList.add('active');
 }
 
 
