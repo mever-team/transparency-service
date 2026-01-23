@@ -62,9 +62,11 @@ class SemanticMatcher(Assistant):
             SemanticMatcher._started = True
         def _load():
             try:
-                logger.warn("preparing semantic matcher\n * will proceed asynchronously\n * may take a while the first time\n * agent tasks will wait on this", user="📚 WordNet")
+                logger.warn("preparing semantic matcher\n * will proceed asynchronously\n * may take a while the first time\n * agent tasks will wait on this", user="📚 Semantic Matcher")
+                device = "cuda" if torch.cuda.is_available() else "cpu"
                 self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
-                self.model = AutoModel.from_pretrained(self.model_name)
+                self.model = AutoModel.from_pretrained(self.model_name).to(device)
+                logger.ok(f"Loaded {self.model_name} on torch device: {device}", user="📚 Semantic Matcher")
                 self.model.eval()
                 field_embeddings = dict()
                 for cat, values in ModelCard().data.items():
