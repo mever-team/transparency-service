@@ -88,11 +88,11 @@ class ModelCardEntry:
         flattened = self.card.data.flatten()
         assert flattened, "Cannot commit an empty model card."
         assert self.card_id is not None, "Internal error: card_id has not been set for a cached card"
-
+        
         def strip_html_tags(text: str) -> str:
             return re.sub(r'<[^>]*>', '', text)
-        if self.card.model.name:
-            self.card.title = truncate(strip_html_tags(self.card.model.name), 30)
+        if self.card.overview.name:
+            self.card.title = truncate(strip_html_tags(self.card.overview.name), 30)
         quality = self.card.quality()
         summary = self.card.summary()
         if summary: desc = summary#create_progress_bar(quality)+" for "+summary
@@ -890,7 +890,7 @@ def serve(
         else:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, model__overview
+                SELECT id, title, user, desc, quality, timestamp, overview__description
                 FROM cards
                 WHERE quality >= {quality_limits}
                     {desc_filter_simpler}
@@ -971,7 +971,7 @@ def serve(
         conn.create_card_relation(parent_id=parent_id, child_id=card_id, message="")
         #conn.create_card_relation(parent_id=card_id, child_id=parent_id, message="Original")
         parent_card.commit_card(edit_message=None)
-        card.card.model.version = ""
+        card.card.overview.version = ""
         card.commit_card(edit_message="Clone")
         with card_cache_lock:
             card_cache[card_id] = card
@@ -1172,7 +1172,7 @@ def serve(
     def get_card_field(card_id, field_name, data_name):
         """
         Retrieves an entry from card.field_name.data_name.
-        For example, retrieve card.model.version.
+        For example, retrieve card.overview.version.
         ---
         parameters:
           - name: card_id

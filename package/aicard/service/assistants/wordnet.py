@@ -255,8 +255,8 @@ class WordNet(Assistant):
                 card.data[best_path[0]][best_path[1]].set(content)
             else: not_used_fields.append(heading)
 
-        if not card.model.name: card.model.name = title
-        if not card.model.home: card.model.home = url
+        if not card.overview.name: card.overview.name = title
+        if not card.overview.home: card.overview.home = url
         user_messages[-1] = (
             f"<h2>{self.alias} import</h2>"
             f"Saving..."

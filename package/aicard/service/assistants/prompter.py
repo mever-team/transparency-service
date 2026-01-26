@@ -74,7 +74,7 @@ class Prompter(Assistant):
                 (cat, field), = label.items()
                 if cat not in card.data: continue
                 card.data[cat][field].set(card.data[cat][field].get()+"<br><br>"+str(img_tags[i]))
-        if not card.model.home: card.model.home = url
+        if not card.overview.home: card.overview.home = url
         user_messages[-1] = (
             f"<h2>{self.alias} import</h2>"
             f"Saving..."
