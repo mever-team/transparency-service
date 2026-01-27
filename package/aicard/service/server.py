@@ -18,6 +18,8 @@ import json
 import time
 import secrets
 import datetime
+from pdfminer.high_level import extract_text
+import io
 
 def create_progress_bar(quality: float) -> str:
     quality = max(0.0, min(1.0, quality))
@@ -179,10 +181,12 @@ class ModelCardEntry:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.lock.release()
 
-    def __autocomplete(self, url: str, assistant: Assistant, logger: Logger):
+    def __autocomplete(self, data: dict, assistant: Assistant, logger: Logger):
         try:
-            assistant.complete(self.card, url, logger, self._completion_status)
+            assistant.complete(self.card, data, logger, self._completion_status)
             self.commit_card(on_thread=True, edit_message=assistant.alias+" import") # on_thread=True because we are on a heavyweight path either way
+            if data['data_type'] == 'pdf' and os.path.exists(data['path']):
+                os.remove(data['path'])
             logger.info(f"ended card {self.card_id} import", user=assistant.alias)
         except Exception as e:
             if not isinstance(e, Forbidden) and not isinstance(e, NotFound): traceback.print_exc()
@@ -199,9 +203,9 @@ class ModelCardEntry:
             logger.error(f"aborted card{self.card_id} refinement with error {e}", user=assistant.alias)
         self.end_completion()
 
-    def autocomplete(self, url: str, assistant: Assistant, logger: Logger):
+    def autocomplete(self, data: dict, assistant: Assistant, logger: Logger):
         self.start_completion()
-        self.__thread = Thread(target=self.__autocomplete, args=(url,assistant,logger))
+        self.__thread = Thread(target=self.__autocomplete, args=(data,assistant,logger))
         self.__thread.start()
         return "Autocompletion request was submitted successfully. Please wait while the assistant runs."
 
@@ -1453,11 +1457,29 @@ def serve(
             409:
                 description: An AI assistant is working on the model card.
         """
-        json_data = request.get_json()
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
-        exists(isinstance(json_data, str), "Autocomplete requires a url string as POST data")
-        status = exists(find_card(card_id), "Model card does not exist or has been deleted.").autocomplete(json_data, assistant, logger)
+        card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
+        
+        if 'file' in request.files:
+            uploaded_file = request.files['file']
+            exists(uploaded_file.filename != "", "Empty file uploaded")
+            file_bytes = uploaded_file.read(5)
+            uploaded_file.seek(0)
+            if file_bytes == b"%PDF-":
+                data_type = 'pdf'
+            else:
+                abort(415, description="Unsupported file type.")
+            tmp_file = uploaded_file.filename # files delete in card.autocomplete thread
+            uploaded_file.save(tmp_file)
+            
+            json_data = {"data_type": data_type, "path": tmp_file}
+        else:
+            json_data = {"data_type": "url", "url": request.get_json()}
+            exists(isinstance(json_data['url'], str), "Autocomplete requires a url string as POST data")
+            
+        status = card.autocomplete(json_data, assistant, logger)
         logger.info(f"requested card {card_id} autocompletion from {assistant_type}", user=token2user.get(token, None))
+
         return jsonify(status)
 
     @app.route(domain_prefix+'/assistant/<string:assistant_type>/refine/<int:card_id>', methods=['POST'])
