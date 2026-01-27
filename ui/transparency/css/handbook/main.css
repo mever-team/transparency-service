@@ -64,6 +64,7 @@ body {
 .handbook_body h1,
 .handbook_body h2 {
     text-align: center;
+    scroll-margin-top: 2rem;
 }
 
 .handbook_body h2 {

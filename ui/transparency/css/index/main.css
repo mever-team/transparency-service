@@ -402,6 +402,29 @@ input {
   text-align: center;
 }
 
+.modal-learn-more a {
+    background: linear-gradient(#64DB96, #326d4b);
+    text-decoration: none;
+    color: #EEEEEE;
+    padding: 0.7rem;
+    border-radius: 1rem;
+    box-shadow: .5rem .5rem 3rem black;
+    border-bottom: .1rem solid #193b27;
+    border-right: .1rem solid #193b27;
+    background-clip: padding-box;
+    outline: none;
+
+}
+
+.modal-learn-more a:active {
+    background: linear-gradient(#326d4b, #64DB96);
+    border-bottom: none;
+    border-right: none;
+    border-top: 0.1rem solid #193b27;
+    border-left: 0.1rem solid #193b27;
+}
+
+
 #dontShowAgain {
   padding: 0.6rem 1.2rem;
   font-size: 1rem;

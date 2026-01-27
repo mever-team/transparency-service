@@ -29,7 +29,7 @@ class ModelCard:
                 name=ShortText("Name of the model."),
                 description=LongText("Model purpose, capabilities, novelty and caveats"),
                 author=LongText("Person or organization developed the model."),
-                date=ShortText("Final production date."),
+                date=ShortText("Model development completion date."),
                 version=ShortText("Version of the model."),
                 type=Options(["unknown", "Linear Regression", "Logistic Regression", "Decision Tree", "Random Forest", "Gradient Boosting", "Naive Bayes", "K-Nearest Neighbors", "Support Vector Machine", "Convolutional Neural Network", "Recurrent Neural Network", "Transformer", "Autoencoder", "Generative Adversarial Network", "Graph Neural Network", "Multilayer Perceptron", "Reinforcement Learning Agent", "Clustering Model", "Dimensionality Reduction Model", "Ensemble Model", "Other"],"Model architecture or algorithm type."),
                 license=LongText("Licence and intellectual property (IP) information."),
