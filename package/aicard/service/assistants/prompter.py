@@ -68,7 +68,7 @@ class Prompter(Assistant):
             f"{progress_html}<br>"
             f"<b>Importing images</b>"
         )
-        if self.image_classifier:
+        if self.image_classifier and data['data_type'] == 'url':
             images = []
             img_tags = soup.find_all('img')
             for tag in img_tags:

@@ -189,6 +189,8 @@ class ModelCardEntry:
                 os.remove(data['path'])
             logger.info(f"ended card {self.card_id} import", user=assistant.alias)
         except Exception as e:
+            if data['data_type'] == 'pdf' and os.path.exists(data['path']):
+                os.remove(data['path'])
             if not isinstance(e, Forbidden) and not isinstance(e, NotFound): traceback.print_exc()
             logger.error(f"aborted card{self.card_id} import with error {e}", user=assistant.alias)
         self.end_completion()
