@@ -290,18 +290,33 @@ $(document).ready(function () {
                                     .text("?");
                                 $fieldInfo = $("<span>").addClass("field-info").append($fieldInfo).append($fieldName);
                                 let $fieldValue;
+                                
                                 if (field.type.startsWith("list:") && token) {
                                     $fieldValue = $("<select>").addClass("field-value dropdown");
+                                    $fieldValue.append($("<option>").val("").text("—").prop({
+                                        selected: true,disabled: true,hidden: true}));
                                     const options = field.type.replace("list:", "").split(",");
+                                    let $currentGroup = null;
                                     options.forEach(opt => {
-                                        const $option = $("<option>").val(opt).text(opt);
-                                        if (field.value === opt) $option.prop("selected", true);
-                                        $fieldValue.append($option);
+                                        if (opt.startsWith("#")) {
+                                            $currentGroup = $("<optgroup>").attr("label", opt.replace("#", ""));
+                                            $fieldValue.append($currentGroup);
+                                        } else {
+                                            const $option = $("<option>").val(opt).text(opt);
+                                            if (field.value === opt) $option.prop("selected", true);
+                                            // Append to optgroup if it exists, otherwise directly to select
+                                            if ($currentGroup) {
+                                                $currentGroup.append($option);
+                                            } else {
+                                                $fieldValue.append($option);
+                                            }
+                                        }
                                     });
                                 } else {
                                     $fieldValue = $("<span>") .addClass("field-value").html(field.value || "");
                                     if(token) $fieldValue.attr("contenteditable", "true");
                                 }
+
                                 if(token) $fieldValue.addClass("editable");
 
                                 // Editable field value

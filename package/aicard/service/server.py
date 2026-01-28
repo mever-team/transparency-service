@@ -18,7 +18,6 @@ import json
 import time
 import secrets
 import datetime
-from pdfminer.high_level import extract_text
 import io
 
 def create_progress_bar(quality: float) -> str:
@@ -779,7 +778,7 @@ def serve(
                     cards.desc,
                     cards.quality,
                     cards.timestamp,
-                    cards.model__overview,
+                    cards.overview__description,
                     bm25(cards_fts) AS rank
                 FROM cards_fts
                 JOIN cards ON cards_fts.rowid = cards.id
@@ -798,7 +797,7 @@ def serve(
                     cards.desc,
                     cards.quality,
                     cards.timestamp,
-                    cards.model__overview,
+                    cards.overview__description,
                     9999 AS rank   -- fallback rank for LIKE matches
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
@@ -822,7 +821,7 @@ def serve(
                     cards.desc,
                     cards.quality,
                     cards.timestamp,
-                    cards.model__overview,
+                    cards.overview__description,
                     bm25(cards_fts) AS rank
                 FROM cards_fts
                 JOIN cards ON cards_fts.rowid = cards.id
@@ -840,7 +839,7 @@ def serve(
                     cards.desc,
                     cards.quality,
                     cards.timestamp,
-                    cards.model__overview,
+                    cards.overview__description,
                     9999 AS rank
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
@@ -856,7 +855,7 @@ def serve(
         elif query and owner:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, model__overview
+                SELECT id, title, user, desc, quality, timestamp, overview__description
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   AND LOWER(user) IN ({placeholders})
@@ -870,7 +869,7 @@ def serve(
         elif query:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, model__overview
+                SELECT id, title, user, desc, quality, timestamp, overview__description
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   AND quality >= {quality_limits}
@@ -883,7 +882,7 @@ def serve(
         elif owner:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, model__overview
+                SELECT id, title, user, desc, quality, timestamp, overview__description
                 FROM cards
                 WHERE LOWER(user) IN ({placeholders})
                   AND quality >= {quality_limits}
