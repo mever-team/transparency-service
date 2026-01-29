@@ -779,6 +779,8 @@ def serve(
                     cards.quality,
                     cards.timestamp,
                     cards.overview__description,
+                    cards.overview__type, 
+                    cards.overview__task,
                     bm25(cards_fts) AS rank
                 FROM cards_fts
                 JOIN cards ON cards_fts.rowid = cards.id
@@ -798,6 +800,8 @@ def serve(
                     cards.quality,
                     cards.timestamp,
                     cards.overview__description,
+                    cards.overview__type, 
+                    cards.overview__task,
                     9999 AS rank   -- fallback rank for LIKE matches
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
@@ -822,6 +826,8 @@ def serve(
                     cards.quality,
                     cards.timestamp,
                     cards.overview__description,
+                    cards.overview__type, 
+                    cards.overview__task,
                     bm25(cards_fts) AS rank
                 FROM cards_fts
                 JOIN cards ON cards_fts.rowid = cards.id
@@ -840,6 +846,8 @@ def serve(
                     cards.quality,
                     cards.timestamp,
                     cards.overview__description,
+                    cards.overview__type, 
+                    cards.overview__task,
                     9999 AS rank
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
@@ -855,7 +863,7 @@ def serve(
         elif query and owner:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   AND LOWER(user) IN ({placeholders})
@@ -869,7 +877,7 @@ def serve(
         elif query:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   AND quality >= {quality_limits}
@@ -882,7 +890,7 @@ def serve(
         elif owner:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task
                 FROM cards
                 WHERE LOWER(user) IN ({placeholders})
                   AND quality >= {quality_limits}
@@ -895,7 +903,7 @@ def serve(
         else:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task
                 FROM cards
                 WHERE quality >= {quality_limits}
                     {desc_filter_simpler}
@@ -914,8 +922,10 @@ def serve(
             timestamp = int(row[5])
             overview = row[6]
             if "<img" in overview: overview = ""
-            if len(overview)>120: overview = overview[:(120-3)]+"..."
-            results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality, "overview": overview})
+            # if len(overview)>120: overview = overview[:(120-3)]+"..."
+            overview_type = row[7]
+            overview_task = row[8]
+            results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality, "overview": overview, "type": overview_type, "task": overview_task})
         return jsonify({"results": results, "pages": num_pages, "total": total})
 
     @app.route(domain_prefix+'/card/<int:card_id>/clone', methods=['POST'])
@@ -1604,6 +1614,16 @@ def serve(
             mimetype=mimetype,
             headers={"Content-Disposition": f"attachment; filename={filename}"}
         )
+        
+    @app.route(domain_prefix+"/options/<string:section>/<string:field>", methods=["GET"])
+    def get_options(section, field):
+        try:
+            return jsonify(ModelCard().data[section][field].options())
+        except Exception as e:
+            logger.error("No options for" + section + " " + field)
+            abort(400, "No options for" + section + " " + field)
+            
+        
 
     @app.route(domain_prefix+'/docs', methods=['GET'])
     def docs():
