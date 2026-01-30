@@ -33,6 +33,7 @@
                 <div class="menu_item1" id="basicsMenu" onclick="handbookGoTo('basics')">Basics</div>
                 <div class="menu_item2" id="metricsMenu" onclick="handbookGoTo('metrics')">Metrics</div>
                 <div class="menu_item2" id="fairnessMenu" onclick="handbookGoTo('fairness')">Fairness</div>
+                <div class="menu_item2" id="oversightMenu" onclick="handbookGoTo('oversight')">Oversight</div>
                 <div class="menu_item1" id="workflowMenu" onclick="handbookGoTo('workflow')">Workflow</div>
                 <div class="menu_item2" id="readersMenu" onclick="handbookGoTo('readers')">Readers</div>
                 <div class="menu_item2" id="creatorsMenu" onclick="handbookGoTo('creators')">Creators</div>
@@ -312,6 +313,88 @@
                     false negatives per group. By trying to equalize these factors across groups the overall accuracy of the
                     system can drop making a less accurate but more fair system. 
                 </p>
+
+                <h3 id="oversight">Oversight</h3>
+                <p>
+                    Oversight level describes how much control humans have over a system’s behavior and decision making. 
+                    Below, we provide an explanation of the four categories, ranging from fully autonomous to fully human-supervised.
+                </p>
+                <p>
+                    <ul>
+                        <li>
+                            Self-learning / Autonomous
+                            <ul>
+                                <li>Humans define goals, constraints, and initial training, but do not monitor or approve each action.</li>
+                                <li>The system may learn continuously from new data.</li>
+                                <li>Human involvement is typically limited to maintenance, audits, or review.</li>
+                                <li>This offers high efficiency and scalability, but also higher risk. Strong safeguards, monitoring, and clear accountability mechanisms are essential.</li>
+                                <li>
+                                    Example:
+                                    <ul>
+                                        <li>A self-driving car navigates traffic entirely on its own, adjusting its path based on sensor input.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            
+                        </li>
+                    </ul>
+
+                    <ul>
+                        <li>
+                            Human-on-the-Loop (HOTL)
+                            <ul>
+                                <li>Decisions are executed without prior approval.</li>
+                                <li>Humans monitor performance and behavior.</li>
+                                <li>Intervention may include stopping the system, overriding outputs, or adjusting parameters.</li>
+                                <li>This balances efficiency and safety. It assumes humans can detect problems fast enough to prevent serious harm.</li>
+                                <li>
+                                    Example:
+                                    <ul>
+                                        <li>An automated trading bot executes trades automatically, while a human supervisor monitors performance and can halt trading if anomalies appear.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <ul>
+                        <li>
+                            Human-in-Command (HIC)
+                            <ul>
+                                <li>The system cannot act beyond predefined boundaries.</li>
+                                <li>Humans retain final decision-making power at all times.</li>
+                                <li>Humans can shut down, reconfigure, or permanently disable the system.</li>
+                                <li>This ensures clear accountability and ethical control, especially in high-risk or regulated contexts.</li>
+                                <li>
+                                    Example
+                                    <ul>
+                                        <li>An AI flags contracts with potential legal risks, but a human lawyer decides whether to reject, modify, or approve them.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <ul>
+                        <li>
+                            Human-in-the-Loop (HITL)
+                            <ul>
+                                <li>The system can not act on its own.</li>
+                                <li>The system proposes outputs or recommendations.</li>
+                                <li>A human reviews, modifies, or approves avery decision.</li>
+                                <li>This provides strong control and reduces error or harm, but slows down operation and limits scalability.</li>
+                                <li>
+                                    Example:
+                                    <ul>
+                                        <li>A loan approval AI suggests whether to approve a loan, but a human officer must approve each decision before it is finalized.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </p>
+
 
                 <h2 id="workflow">Workflow</h2>
                 <h3 id="readers">Readers</h3>
