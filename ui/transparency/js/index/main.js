@@ -44,7 +44,7 @@ function autocomplete_populate() {
             url: "/transparency/cards",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify({ query: q }),
+            data: JSON.stringify({ query: q, type: typeFilters, task: taskFilters }),
             success: r => {
                 $('#loading').hide();
                 const results = r.results || [];
@@ -122,6 +122,15 @@ function autocomplete_populate() {
         lastUpdate = now;
         request();
     });
+
+    $("#typeFilters").on('click',  () => {
+        lastUpdate = Date.now();
+        request();
+    });
+    $("#taskFilters").on('click',  () => {
+        lastUpdate = Date.now();
+        request();
+    });
 }
 
 
@@ -196,6 +205,7 @@ function toggleExtraContent(buttonRow) {
         extraContent.classList.add('open');
     }
 }
+
 
 fetch('/transparency/options/overview/task')
     .then(res => res.json())
@@ -283,6 +293,7 @@ document.getElementById("taskFilters").addEventListener("click", (e) => {
         document.getElementById("taskFiltersBtn").classList.remove("active");
         const children = Array.from(document.getElementById("taskFilters").children);
         children.forEach(child => child.classList.remove("active"));
+        autocomplete_populate();
         return;
     }
     if(taskFilters.includes(e.target.id)){
@@ -300,6 +311,7 @@ document.getElementById("taskFilters").addEventListener("click", (e) => {
     {
         document.getElementById("taskFiltersBtn").classList.remove("active");
     }
+    autocomplete_populate();
 });
 
 

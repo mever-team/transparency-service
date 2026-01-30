@@ -28,7 +28,7 @@ class ModelCard:
             overview=DotDict(
                 name=ShortText("Name of the model."),
                 description=LongText("Model purpose, capabilities, novelty and caveats"),
-                author=LongText("Person or organization developed the model."),
+                creator=LongText("Person or organization developed the model."),
                 date=ShortText("Model development completion date."),
                 version=ShortText("Version of the model."),
                 type=Options([

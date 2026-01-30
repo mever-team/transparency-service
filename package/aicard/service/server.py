@@ -711,6 +711,8 @@ def serve(
         """
         data = request.get_json() or {}
         query = data.get('query', '').strip().lower()
+        type_list = data.get('type', '')
+        task_list = data.get('task', '')
         parts = query.split()
 
         page = max(int(data.get('page', 1)), 1)
@@ -758,6 +760,8 @@ def serve(
                 new_parts.append(filter)
             i += 1
         placeholders = ','.join(['?'] * len(owner))
+        type_filter = f"AND cards.overview__type IN ('{'\',\''.join(type_list)}')" if type_list else ""
+        task_filter = f"AND cards.overview__task IN ('{'\',\''.join(task_list)}')" if task_list else ""
         owner = " ".join(owner)
         query = " ".join(new_parts)
         query = query.strip()
@@ -787,6 +791,8 @@ def serve(
                 WHERE cards_fts MATCH ?
                   AND LOWER(cards.user) IN ({placeholders})
                   AND cards.quality >= {quality_limits}
+                  {type_filter}
+                  {task_filter}
                   AND bm25(cards_fts) < 50
                   {desc_filter}
 
@@ -807,6 +813,8 @@ def serve(
                 WHERE LOWER(cards.title) LIKE ?
                   AND LOWER(cards.user) IN ({placeholders})
                   AND cards.quality >= {quality_limits}
+                  {type_filter}
+                  {task_filter}
                   {desc_filter}
 
                 ORDER BY rank ASC
@@ -834,6 +842,8 @@ def serve(
                 WHERE cards_fts MATCH ?
                   AND bm25(cards_fts) < 10
                   AND cards.quality >= {quality_limits}
+                  {type_filter}
+                  {task_filter}
                   {desc_filter}
 
                 UNION ALL
@@ -852,6 +862,8 @@ def serve(
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
                   AND cards.quality >= {quality_limits}
+                  {type_filter}
+                  {task_filter}
                   {desc_filter}
 
                 ORDER BY rank ASC
@@ -868,6 +880,8 @@ def serve(
                 WHERE LOWER(title) LIKE ?
                   AND LOWER(user) IN ({placeholders})
                   AND quality >= {quality_limits}
+                  {type_filter}
+                  {task_filter}
                   {desc_filter_simpler}
                 ORDER BY id
                 LIMIT ? OFFSET ?
@@ -881,6 +895,8 @@ def serve(
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   AND quality >= {quality_limits}
+                  {type_filter}
+                  {task_filter}
                   {desc_filter_simpler}
                 ORDER BY id
                 LIMIT ? OFFSET ?
@@ -894,6 +910,8 @@ def serve(
                 FROM cards
                 WHERE LOWER(user) IN ({placeholders})
                   AND quality >= {quality_limits}
+                  {type_filter}
+                  {task_filter}
                   {desc_filter_simpler}
                 ORDER BY id
                 LIMIT ? OFFSET ?
@@ -906,6 +924,8 @@ def serve(
                 SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task
                 FROM cards
                 WHERE quality >= {quality_limits}
+                {type_filter}
+                {task_filter}
                     {desc_filter_simpler}
                 ORDER BY id
                 LIMIT ? OFFSET ?
