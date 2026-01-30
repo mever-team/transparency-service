@@ -76,7 +76,13 @@ function autocomplete_populate() {
                                 <td>
                                     <div class="extra_content">
                                         <div class="extra_content_inner">
-                                            ${it.overview}
+                                            <p>
+                                                ${it.overview}
+                                            </p>
+                                            <p>
+                                                Date of production: <input type="date" readonly value="${it.date}" class="inline-date">
+                                            </p>
+                                            
                                             <button class="open-card-btn" onclick="window.location='model_card.html?id=${it.id}'"> Open Card</button>
                                         </div>
                                     </div>

@@ -787,3 +787,14 @@ i.fa-brands:before {
     /* If the icon fails, content becomes "" or "none" */
 }
 
+.inline-date {
+    all: unset;              /* nukes almost everything */
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    line-height: inherit;
+    display: inline;
+}

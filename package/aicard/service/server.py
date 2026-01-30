@@ -785,6 +785,7 @@ def serve(
                     cards.overview__description,
                     cards.overview__type, 
                     cards.overview__task,
+                    cards.overview__date,
                     bm25(cards_fts) AS rank
                 FROM cards_fts
                 JOIN cards ON cards_fts.rowid = cards.id
@@ -808,6 +809,7 @@ def serve(
                     cards.overview__description,
                     cards.overview__type, 
                     cards.overview__task,
+                    cards.overview__date,
                     9999 AS rank   -- fallback rank for LIKE matches
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
@@ -836,6 +838,7 @@ def serve(
                     cards.overview__description,
                     cards.overview__type, 
                     cards.overview__task,
+                    cards.overview__date,
                     bm25(cards_fts) AS rank
                 FROM cards_fts
                 JOIN cards ON cards_fts.rowid = cards.id
@@ -858,6 +861,7 @@ def serve(
                     cards.overview__description,
                     cards.overview__type, 
                     cards.overview__task,
+                    cards.overview__date,
                     9999 AS rank
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
@@ -875,7 +879,7 @@ def serve(
         elif query and owner:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   AND LOWER(user) IN ({placeholders})
@@ -891,7 +895,7 @@ def serve(
         elif query:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   AND quality >= {quality_limits}
@@ -906,7 +910,7 @@ def serve(
         elif owner:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date
                 FROM cards
                 WHERE LOWER(user) IN ({placeholders})
                   AND quality >= {quality_limits}
@@ -921,7 +925,7 @@ def serve(
         else:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date
                 FROM cards
                 WHERE quality >= {quality_limits}
                 {type_filter}
@@ -945,7 +949,8 @@ def serve(
             # if len(overview)>120: overview = overview[:(120-3)]+"..."
             overview_type = row[7]
             overview_task = row[8]
-            results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality, "overview": overview, "type": overview_type, "task": overview_task})
+            overview_date = row[9]
+            results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality, "overview": overview, "type": overview_type, "task": overview_task, "date": overview_date})
         return jsonify({"results": results, "pages": num_pages, "total": total})
 
     @app.route(domain_prefix+'/card/<int:card_id>/clone', methods=['POST'])
@@ -1373,6 +1378,7 @@ def serve(
                 description: An AI assistant is working on the model card.
         """
         json_data = request.get_json()
+        print(json_data)
         card_entry = find_card(card_id)
         with exists(card_entry, "Model card does not exist or has been deleted.") as card:
             try:

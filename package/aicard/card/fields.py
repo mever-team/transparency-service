@@ -48,6 +48,20 @@ class Options(Field):
         return self.__contents != None
     def __html__(self):
         return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "list:"+",".join(self.__options)}
+    
+class Date(Field):
+    def __init__(self, description: str=""):
+        self.__contents = ""
+        self.description = description
+    def set(self, value):
+        if isinstance(value, Field): value = value.get()
+        self.__contents = value
+    def get(self):
+        return self.__contents
+    def __bool__(self):
+        return bool(self.__contents)
+    def __html__(self):
+        return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "date"}
 
 # Ollama pattern issue: https://github.com/ollama/ollama/issues/10591
 class Pattern(Field):

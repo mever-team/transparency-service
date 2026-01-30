@@ -238,6 +238,12 @@ ul.nacc .field-name {
 }
 
 /* Editable values */
+ul.nacc .field-value[type="date"],
+ul.nacc .field-value[type="date"]:focus {
+    border: none;
+    outline: none;
+}
+
 ul.nacc .field-value[contenteditable="true"] {
     display: block;
     border: 1px solid #7C7C7C;

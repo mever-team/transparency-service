@@ -9,7 +9,7 @@ from rich.markdown import Markdown
 from pydantic import BaseModel, create_model
 from pydantic import Field as pydantic_Field
 from aicard.card.dot_dict import DotDict
-from aicard.card.fields import ShortText, LongText, Options, Field, Pattern
+from aicard.card.fields import ShortText, LongText, Options, Field, Pattern, Date
 
 def truncate(text, size):
     text = text.strip().split(" ")[0].split("\n")[0].split("/")[-1].strip()
@@ -29,7 +29,7 @@ class ModelCard:
                 name=ShortText("Name of the model."),
                 description=LongText("Model purpose, capabilities, novelty and caveats"),
                 creator=LongText("Person or organization developed the model."),
-                date=ShortText("Model development completion date."),
+                date=Date("Model development completion date."),
                 version=ShortText("Version of the model."),
                 type=Options([
                     "#Neural Networks",

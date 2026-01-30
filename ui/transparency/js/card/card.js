@@ -312,6 +312,11 @@ $(document).ready(function () {
                                             }
                                         }
                                     });
+                                } else if (field.type === 'date') {
+                                    $fieldValue = $("<input>", {type: "date", readonly: token? false: true}).addClass("field-value").val(field.value || "");
+                                    $fieldValue.on("change", function () {field.value = $(this).val();});
+                                    if(token) $fieldValue.attr("contenteditable", "true");
+                                    
                                 } else {
                                     $fieldValue = $("<span>") .addClass("field-value").html(field.value || "");
                                     if(token) $fieldValue.attr("contenteditable", "true");
