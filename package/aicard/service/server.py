@@ -1378,7 +1378,6 @@ def serve(
                 description: An AI assistant is working on the model card.
         """
         json_data = request.get_json()
-        print(json_data)
         card_entry = find_card(card_id)
         with exists(card_entry, "Model card does not exist or has been deleted.") as card:
             try:
