@@ -930,7 +930,7 @@ def serve(
                 WHERE quality >= {quality_limits}
                 {type_filter}
                 {task_filter}
-                    {desc_filter_simpler}
+                {desc_filter_simpler}
                 ORDER BY id
                 LIMIT ? OFFSET ?
                 """,
@@ -946,7 +946,7 @@ def serve(
             timestamp = int(row[5])
             overview = row[6]
             if "<img" in overview: overview = ""
-            # if len(overview)>120: overview = overview[:(120-3)]+"..."
+            if len(overview)>120: overview = overview[:(120-3)]+"..."
             overview_type = row[7]
             overview_task = row[8]
             overview_date = row[9]
