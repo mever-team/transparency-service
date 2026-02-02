@@ -1,9 +1,19 @@
 import PyPDF2
 
 def pdf_to_chunks(pdf_path: str, char_per_chunk: int = 2000):
-    chunks = []
     with open(pdf_path, 'rb') as pdf_file:
         reader = PyPDF2.PdfReader(pdf_file)
+        # If char_per_chunk is -1, return the full text
+        if char_per_chunk == -1:
+            full_text = ""
+            for page in reader.pages:
+                text = page.extract_text()
+                if text:
+                    full_text += text + "\n"
+            return full_text.strip()
+
+        chunks = []
+        # Otherwise, split into chunks
         current_chunk = ""
         for page in reader.pages:
             text = page.extract_text()

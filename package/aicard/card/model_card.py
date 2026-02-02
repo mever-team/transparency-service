@@ -9,7 +9,7 @@ from rich.markdown import Markdown
 from pydantic import BaseModel, create_model
 from pydantic import Field as pydantic_Field
 from aicard.card.dot_dict import DotDict
-from aicard.card.fields import ShortText, LongText, Options, Field, Pattern
+from aicard.card.fields import ShortText, LongText, Options, Field, Pattern, Date
 
 def truncate(text, size):
     text = text.strip().split(" ")[0].split("\n")[0].split("/")[-1].strip()
@@ -25,60 +25,163 @@ class ModelCard:
     def __init__(self, connector=None):
         object.__setattr__(self, "data", DotDict(
             title=ShortText(),
-            model=DotDict(
-                name=ShortText("What is the name of the model?"),
-                overview=LongText("An overview of the model. The reader should have a good idea of what the model is, the purpose, novelty, capabilities, and caveats after reading this."),
-                author=LongText("What person or organization developed the model?"),
-                date=ShortText("When was the model developed?"),
-                version=ShortText("Which version of the model is it? e.g. v1.0"),
-                type=Options(["unknown", "Linear Regression", "Logistic Regression", "Decision Tree", "Random Forest", "Gradient Boosting", "Naive Bayes", "K-Nearest Neighbors", "Support Vector Machine", "Convolutional Neural Network", "Recurrent Neural Network", "Transformer", "Autoencoder", "Generative Adversarial Network", "Graph Neural Network", "Multilayer Perceptron", "Reinforcement Learning Agent", "Clustering Model", "Dimensionality Reduction Model", "Ensemble Model", "Other"],"What type of model is it? This includes basic model architecture details, such as whether it is a Naive Bayes classifier, a Convolutional Neural Network, etc. This is likely to be particularly relevant for software and model developers, as well as individuals knowledgeable about machine learning, to highlight what kinds of assumptions are encoded in the system."),
-                license=LongText("Under which licence is the model published? If necessary, add any other information related to intellectual property (IP)."),
-                home=LongText("Where can resources for more information be found?"),
-                contact=LongText("E.g., what is an email address that people may write to for further information?"),
-                citation=LongText("How should the model be cited? This may include @article or @inproceedings bibtex formats."),
+            overview=DotDict(
+                name=ShortText("Name of the model."),
+                description=LongText("Model purpose, capabilities, novelty and caveats"),
+                creator=LongText("Person or organization developed the model."),
+                date=Date("Model development completion date."),
+                version=ShortText("Version of the model."),
+                type=Options([
+                    "#Neural Networks",
+                    "Convolutional Neural Network",
+                    "Recurrent Neural Network",
+                    "Multilayer Perceptron",
+                    "Transformer",
+                    "Graph Neural Network",
+                    "Autoencoder",
+                    "Generative Adversarial Network",
+
+
+                    "#Classical Machine Learning",
+                    "Linear Regression",
+                    "Logistic Regression",
+                    "K-Nearest Neighbors",
+                    "Naive Bayes",
+                    "Support Vector Machine",
+                    "Decision Tree",
+
+
+                    "#Ensemble Methods",
+                    "Random Forest",
+                    "Gradient Boosting",
+                    "Ensemble Model",
+
+
+                    "#Unsupervised / Representation Learning",
+                    "Clustering Model",
+                    "Dimensionality Reduction Model",
+
+
+                    "#Reinforcement Learning",
+                    "Reinforcement Learning Agent",
+
+
+                    "#Other",
+                    "Other",
+                    "unknown"
+                    ],"Model architecture or algorithm type."),
+                task=Options([
+                    "#Multimodal",
+                    "Audio-Text-to-Text",
+                    "Image-Text-to-Text",
+                    "Image-Text-to-Image",
+                    "Image-Text-to-Video",
+                    "Visual Question Answering",
+                    "Document Question Answering",
+                    "Video-Text-to-Text",
+                    "Visual Document Retrieval",
+                    "Any-to-Any",
+                    
+                    "#Computer Vision",
+                    "Depth Estimation",
+                    "Image Classification",
+                    "Object Detection",
+                    "Image Segmentation",
+                    "Text-to-Image",
+                    "Image-to-Text",
+                    "Image-to-Image",
+                    "Image-to-Video",
+                    "Unconditional Image Generation",
+                    "Video Classification",
+                    "Text-to-Video",
+                    "Zero-Shot Image Classification",
+                    "Mask Generation",
+                    "Zero-Shot Object Detection",
+                    "Text-to-3D",
+                    "Image-to-3D",
+                    "Image Feature Extraction",
+                    "Keypoint Detection",
+                    "Video-to-Video",
+                    
+                    "#Natural Language Processing",
+                    "Text Classification",
+                    "Token Classification",
+                    "Table Question Answering",
+                    "Question Answering",
+                    "Zero-Shot Classification",
+                    "Translation",
+                    "Summarization",
+                    "Feature Extraction",
+                    "Text Generation",
+                    "Fill-Mask",
+                    "Sentence Similarity",
+                    "Text Ranking",
+                    
+                    "#Audio",
+                    "Text-to-Speech",
+                    "Text-to-Audio",
+                    "Automatic Speech Recognition",
+                    "Audio-to-Audio",
+                    "Audio Classification",
+                    "Voice Activity Detection",
+                    
+                    "#Tabular",
+                    "Tabular Classification",
+                    "Tabular Regression",
+                    "Time Series Forecasting",
+                    
+                    "#Reinforcement Learning",
+                    "Reinforcement Learning",
+                    "Robotics",
+                    
+                    "#Other",
+                    "Other",
+                    "unknown"
+                    ], "Model task."),
+                license=LongText("Licence and intellectual property (IP) information."),
+                home=LongText("URL hosting the model."),
+                contact=LongText("Author contact information."),
+                citation=LongText("How should the model be cited?"),
                 more=LongText("Additional model information not found above.")),
-            considerations=DotDict(
-                use_case=LongText("This section details whether the model was developed with general or specific tasks in mind (e.g., plant recognition worldwide or in the Pacific Northwest). The use cases may be as broadly or narrowly defined as the developers intend. For example, if the model was built simply to label images, then this task should be indicated as the primary intended use case."),
-                oversight=Options(["unknown","self-learning/autonomous", "human-in-the-loop", "human-on-the-loop", "human-in-command"]),
-                users=LongText("For example, was the model developed for hobbyists, or enterprise solutions? This helps users gain insight into how robust the model may be to different kinds of inputs."),
-                out_of_scope_use=LongText("Here, the model card should highlight technology that the model might easily be confused with, or related contexts that users could try to apply the model to. This section may provide an opportunity to recommend a related or similar model that was designed to better meet that particular need, where possible. This section is inspired by warning labels on food and toys, and similar disclaimers presented in electronic datasheets. Examples include “not for use on text examples shorter than 100 tokens” or “for use on black-and-white images only; please consider our research group’s full-colour-image classifier for colour images.” Examples include “not for use on text examples shorter than 100 words."),
-                software=LongText("What are software requirements and dependencies? If possible, please add a link to an open source repository like GitHub with details on dependencies, the environment and documentation."),
-                instructions=LongText("Provide any other information which helps users use the model. Ideally, add a code snippet illustrating a typical use-case. You can also add a link to a GitHub repository with usage instructions. This is inspired by model cards such as this: https://huggingface.co/microsoft/beit-base-patch16-224-pt22k-ft22k"),
-                inputs_outputs=LongText("Provide a short description of the model's inputs and outputs"),
-                factors=LongText("What are foreseeable salient factors for which model performance may vary, and how were these determined? "),
-                hardware=LongText("What are hardware requirements for training and inference (e.g. CPU or GPU)? What do users need to take into account regarding hardware regarding deployment?"),
-                more=LongText("Additional considerations not found above.")),
-            training_set=DotDict(
-                datasets=LongText("What dataset(s) were used tot train the model? If possible, please add a link to details on the respective datasets used, for example a datasheet."),
+            use=DotDict(
+                use_cases=LongText("Intended uses of the model."),
+                oversight=Options(["self-learning/autonomous", "human-in-the-loop", "human-on-the-loop", "human-in-command", "unknown"], "Defines the level of human control over the system."),
+                user_groups=LongText("Intended users."),
+                out_of_scope_use=LongText("Unintended and improper use of model."),
+                software=LongText("Software requirements and dependencies?"),
+                instructions=LongText("Use instructions."),
+                inputs_outputs=LongText("Description of the model's inputs and outputs"),
+                factors=LongText("Foreseeable salient factors for which model performance may vary."),
+                hardware=LongText("Hardware requirements for training and inference."),
+                more=LongText("Additional information not found above.")),
+            training=DotDict(
+                datasets=LongText("Dataset(s) used during training."),
                 motivation=LongText("Why were these datasets chosen?"),
-                preprocessing=LongText("How was the data pre-processed for evaluation (e.g., tokenization of sentences, cropping of images, any filtering such as dropping images without faces)? Please provide a short description. You can also add a GitHub link to the respective pre-processing scripts. "),
-                standards=Options(["unknown", "none", "ISO","IEEE"]),
-                update=Options(["unknown", "no", "yes"], "Did you put in place measures to ensure that the data (including training data) used to develop the AI system is up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),
+                preprocessing=LongText("Data pre-processing for training (tokenizer, data augmentation etc.)."),
+                standards=Options(["none", "ISO","IEEE", "unknown"], "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management."),
+                update=Options(["no", "yes", "unknown"], "Is tge training set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),
                 more=LongText("Additional training set information not found above.")),
-            eval_set=DotDict(
-                datasets=LongText("What dataset(s) were used to evaluate the model? If possible, please add a link to details on the respective datasets used, for example a datasheet."),
+            evaluation=DotDict(
+                datasets=LongText("Dataset(s) used during evaluate."),
                 motivation=LongText("Why were these datasets chosen?"),
-                preprocessing=LongText("How was the data pre-processed for evaluation (e.g., tokenization of sentences, cropping of images, any filtering such as dropping images without faces)? Please provide a short description. You can also add a GitHub link to the respective pre-processing scripts. "),
-                standards=Options(["unknown", "none", "ISO","IEEE"]),
-                update=Options(["unknown", "no", "yes"], "Did you put in place measures to ensure that the data (including training data) used to develop the AI system is up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),
-                more=LongText("Additional test set information not found above.")
+                preprocessing=LongText("Data pre-processing for evaluation (tokenizer, data augmentation etc.)."),
+                standards=Options(["none", "ISO","IEEE", "unknown"], "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management."),
+                update=Options(["no", "yes", "unknown"], "Is the evalution set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),
+                more=LongText("Additional evaluation set information not found above.")
             ),
             performance=DotDict(
-                analysis=LongText("Analyse and explain performance results of your model."),
-                metrics=LongText("Include benchmark results for any performance metrics here e.g. accuracy, precision, Recall, ROC-AUC, F1-score."),
-                thresholds=LongText("If decision thresholds are used, what are they, and why were those parameters chosen? When the model card is presented in a digital format, a threshold slider should ideally be available to view performance parameters across various decision thresholds."),
-                uncertainty=LongText("How are the measurements and estimations of these metrics calculated? For example, this may include standard deviation, variance, confidence intervals, or KL divergence. Details of how these values are approximated should also be included (e.g., average of 5 runs, 10-fold cross-validation)."),
-                fairness=LongText("How did the model perform with respect to each factor. Quantitative analyses should be disaggregated, that is, broken down by the chosen factors. Quantitative analyses should provide the results of evaluating the model according to the chosen metrics, providing confidence interval values when possible. Parity on the different metrics across disaggregated population subgroups corresponds to how fairness is often defined. For an example, see figure 2. in https://arxiv.org/pdf/1810.03993.pdf"),
+                analysis=LongText("Analysis and explanation of performance results."),
+                metrics=LongText("Benchmark results for any performance metrics."),
+                thresholds=LongText("If decision thresholds are used, what are they, and why were those parameters chosen?"),
+                methodology=LongText("Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method."),
+                bias=LongText("Performance and bias across different groups (e.g. ethnicity, gender)"),
             ),
             safety=DotDict(
-                ethics=LongText("Example topics for ethical consideration: Does the training data contain sensitive information? What risks and harms could arise during the use of the model? Which mitigation measures are recommended? Are there particularly problematic use-cases? Did the model go through an ethical assessment procedure?"),
-                fairness=LongText("Which definition of fairness have you applied in any phase of setting up the AU system? Did you ensure a quantitative analysis or metrics to measure and test the applied definition of fairness?"),
-                risks=LongText("""• Did you define risks, risk metrics and risk levels of the AI system in each specific use case?
-o Did you put in place a process to continuously measure and assess risks?
-o Did you inform end-users and subjects of existing or potential risks?
-• Did you identify the possible threats to the AI system (design faults, technical faults, environmental threats) and the possible consequences?"""),
-                security=LongText("Is the AI system certified for cybersecurity (e.g. the certification scheme created by the Cybersecurity Act in Europe)19 or is it compliant with specific security standards? Did you red-team/pentest the system?"),
-                caveats=LongText("This section should list additional concerns that were not covered in the previous sections. For example, did the results suggest any further testing? Were there any relevant groups that were not represented in the evaluation dataset? Are there additional recommendations for model use? What are the ideal characteristics of an evaluation dataset for this model?")
+                ethics=LongText("Ethical considerations regarding datasets and usage of model. Recommended mitigation measures."),
+                fairness=LongText("Definition of fairness applied in setting up the AI system."),
+                risks=LongText("Possible threats to the AI system (design faults, technical faults, environmental threats) and the possible consequences."),
+                security=LongText("Is the AI system certified for cybersecurity or is it compliant with specific security standards?"),
+                caveats=LongText("Additional concerns that were not covered in the previous sections.")
             ),
         ))
         self.connector = connector # used by the client - the server does something else and model cards stored there should never set this field
@@ -153,10 +256,10 @@ o Did you inform end-users and subjects of existing or potential risks?
 
     def summary(self):
         summary = ""
-        #if self.data.model.name:
-        #    summary += " "+truncate(self.data.model.name.split(" ")[0].split("\n")[0], 50)
-        if self.data.model.version:
-            summary += " "+truncate(self.data.model.version, 50)
+        #if self.data.overview.name:
+        #    summary += " "+truncate(self.data.overview.name.split(" ")[0].split("\n")[0], 50)
+        if self.data.overview.version:
+            summary += " "+truncate(self.data.overview.version, 50)
         return summary[1:] if summary else ""
 
     def quality(self) -> float:

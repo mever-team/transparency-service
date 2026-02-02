@@ -55,7 +55,23 @@
                             <p>Loading...</p>
                         </div>
                     <table id="resultsTable" border="0" cellpadding="5" cellspacing="0" style="margin-bottom:12px">
-                    <tbody></tbody>
+                          <thead>
+                                <tr>
+                                    <th>Completion</th>
+                                    <th>Name</th>
+                                    <th>
+                                        Task 
+                                        <span id="taskFiltersBtn" class="th-filter" onclick="document.getElementById('taskFilters').classList.toggle('hidden')">▾</span>
+                                        <div id="taskFilters" class="filter-options hidden"></div>
+                                    </th>
+                                    <th>Type 
+                                        <span id="typeFiltersBtn" class="th-filter" onclick="document.getElementById('typeFilters').classList.toggle('hidden')">▾</span>
+                                        <div id="typeFilters" class="filter-options hidden"></div>
+                                    </th>
+                                    </th>
+                                </tr>
+                            </thead>
+                        <tbody></tbody>
                     </table>
                     </div>
 
@@ -149,7 +165,11 @@
                 <path d="M0 0h12v12h-12z" fill="none"/>
             </svg>
         </div>
+    <div class="modal-learn-more">
+        <a href="handbook.html#introduction" target="_blank">Learn more</a> 
     </div>
+    </div>
+
 </div>
 </div>
 <!-- JS -->

@@ -93,12 +93,15 @@ class SemanticMatcher(Assistant):
             if self.field_embeddings is None:
                 raise Exception("Semantic Matcher is still starting")
 
-    def complete(self, card: ModelCard, url: str, logger: Logger, user_messages: list[str]):
+    def complete(self, card: ModelCard, data: dict, logger: Logger, user_messages: list[str]):
         user_messages[-1] = (
             f"<h2>{self.alias} import</h2>"
             f"Retrieving document."
         )
         self._wait_until_ready()
+        
+        url = data['url']
+        
         logger.info("Submitted: " + str(url), user=self.alias)
         parsed = urlparse(url)
         if not parsed.scheme in ("http", "https") or not parsed.netloc: raise Exception("Invalid url format")
@@ -209,8 +212,8 @@ class SemanticMatcher(Assistant):
                 card.data[best_path[0]][best_path[1]].set(content)
             else: not_used_fields.append(heading)
 
-        if not card.model.name: card.model.name = title
-        if not card.model.home: card.model.home = url
+        if not card.overview.name: card.overview.name = title
+        if not card.overview.home: card.overview.home = url
         user_messages[-1] = (
             f"<h2>{self.alias} import</h2>"
             f"Saving..."

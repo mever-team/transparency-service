@@ -44,7 +44,7 @@ function autocomplete_populate() {
             url: "/transparency/cards",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify({ query: q }),
+            data: JSON.stringify({ query: q, type: typeFilters, task: taskFilters }),
             success: r => {
                 $('#loading').hide();
                 const results = r.results || [];
@@ -55,29 +55,41 @@ function autocomplete_populate() {
                     results.forEach(it => {
                         const name = it.name.replace(new RegExp("(" + q + ")", "ig"), "<strong style='color:#79CFDC'>$1</strong>");
                         $tbody.append(`
-                            <tr class="search_results_button">
-                                <td><a style="display:block;width:100%;height:100%;text-decoration:none" href="model_card.html?id=${it.id}">
-                                    <div class="row">
-                                      <div>
-                                        <svg class="quality-circle" viewBox="0 0 36 36">
-                                          <circle cx="18" cy="18" r="18" fill="none" stroke="#434343" stroke-width="3"/>
-                                          <circle cx="18" cy="18" r="18" fill="none" stroke="${it.quality>0.7?'#6CC06B':it.quality>0.4?'#FBC483':'#F87F76'}" stroke-width="3"
-                                            stroke-dasharray="100" stroke-dashoffset="${100 - Math.round(it.quality * 100)}"/>
-                                          <text x="18" y="14" class="quality-text"> ${Math.round(it.quality * 100)}%</text>
-                                          <text x="18" y="24" class="quality-text">info</text>
-                                        </svg>
-                                      </div>
-                                      <div>
-                                        <span style="display:block;color:#EEE">${name}</span>
-                                        <span style="font-size:13px;color:#F9AB49">
-                                          ${it.desc ? "" : "DRAFT (no version)"}
-                                        </span>
-                                        <span style="font-size:13px;color:#79CFDC"> ${it.desc + " by " + it.creator || ""} </span>
-                                      </div>
+                            <tr class="search_results_button" onclick="toggleExtraContent(this);">
+                                <td>
+                                    <div>
+                                    <svg class="quality-circle" viewBox="0 0 36 36">
+                                        <circle cx="18" cy="18" r="18" fill="none" stroke="#434343" stroke-width="3"/>
+                                        <circle cx="18" cy="18" r="18" fill="none" stroke="${it.quality>0.7?'#6CC06B':it.quality>0.4?'#FBC483':'#F87F76'}" stroke-width="3"
+                                        stroke-dasharray="100" stroke-dashoffset="${100 - Math.round(it.quality * 100)}"/>
+                                        <text x="18" y="14" class="quality-text"> ${Math.round(it.quality * 100)}%</text>
+                                        <text x="18" y="24" class="quality-text">info</text>
+                                    </svg>
                                     </div>
-                                    <div style="font-size:13px;color:#C8C8C8;margin-top:7px">${it.overview || ""}</div>
-                                </a></td>
-                            </tr>`);
+                                </td>
+                                <td>${name}</td>
+                                <td>${it.task || '-'}</td>
+                                <td>${it.type || '-'}</td>
+                            </tr>
+
+                            <tr class="results_extra_content">
+                                <td>
+                                    <div class="extra_content">
+                                        <div class="extra_content_inner">
+                                            <p>
+                                                ${it.overview}
+                                            </p>
+                                            <p>
+                                                Date of production: <input type="date" readonly value="${it.date}" class="inline-date">
+                                            </p>
+                                            
+                                            <button class="open-card-btn" onclick="window.location='model_card.html?id=${it.id}'"> Open Card</button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            `);
                     });
                 else
                     $tbody.append(`<tr><td colspan="3" style="text-align:center;color:#EEEEEE;font-weight:bold;font-size:22px;">No matching results</td></tr>`);
@@ -114,6 +126,15 @@ function autocomplete_populate() {
             return;
         }
         lastUpdate = now;
+        request();
+    });
+
+    $("#typeFilters").on('click',  () => {
+        lastUpdate = Date.now();
+        request();
+    });
+    $("#taskFilters").on('click',  () => {
+        lastUpdate = Date.now();
         request();
     });
 }
@@ -174,4 +195,154 @@ document.addEventListener("DOMContentLoaded", () => {
 
     username.addEventListener("keydown", submitOnEnter);
     password.addEventListener("keydown", submitOnEnter);
+});
+
+
+function toggleExtraContent(buttonRow) {
+    const extraContent = buttonRow.nextElementSibling.querySelector('.extra_content');
+    const innerContent = buttonRow.nextElementSibling.querySelector('.extra_content_inner');
+    
+    if (extraContent.classList.contains('open')) {
+        extraContent.classList.remove('open');
+        extraContent.style.maxHeight = '0';
+    } else {
+        const contentHeight = innerContent.scrollHeight;
+        extraContent.style.maxHeight = contentHeight + 20 + 'px';
+        extraContent.classList.add('open');
+    }
+}
+
+
+fetch('/transparency/options/overview/task')
+    .then(res => res.json())
+    .then(data => {
+        const container = document.getElementById("taskFilters");
+        const cancelAll = document.createElement("span");
+        cancelAll.textContent = '❌ Remove All Filters'
+        cancelAll.classList.add("filter-cancel");
+        cancelAll.id = 'taskFiltersCancel';
+        container.appendChild(cancelAll);
+
+        data.forEach(taskOption => {
+            const span = document.createElement("span");
+            if (taskOption.startsWith("#")) {
+                span.textContent = taskOption.replace("#", "");
+                span.classList.add("filter-optgroup");
+            }
+            else{
+                span.textContent = taskOption;
+                span.classList.add("filter-option");
+                span.id = taskOption;
+            }
+            container.appendChild(span);
+        });
+    })
+    .catch(err => {
+        console.error(err);
+});
+
+
+let taskFilters = [];
+let typeFilters = [];
+fetch('/transparency/options/overview/type')
+    .then(res => res.json())
+    .then(data => {
+        const container = document.getElementById("typeFilters");
+        const cancelAll = document.createElement("span");
+        cancelAll.textContent = '❌ Remove All Filters'
+        cancelAll.classList.add("filter-cancel");
+        cancelAll.id = 'typeFiltersCancel';
+        container.appendChild(cancelAll);
+
+        data.forEach(taskOption => {
+            const span = document.createElement("span");
+            if (taskOption.startsWith("#")) {
+                span.textContent = taskOption.replace("#", "");
+                span.classList.add("filter-optgroup");
+            }
+            else{
+                span.textContent = taskOption;
+                span.classList.add("filter-option");
+                span.id = taskOption;
+            }
+            container.appendChild(span);
+        });
+
+    })
+    .catch(err => {
+        console.error(err);
+});
+
+
+document.addEventListener("click", (e) => {
+    const filters = document.getElementById("taskFilters");
+    const toggle = document.getElementById("taskFiltersBtn");
+
+    if (!filters.contains(e.target) && !toggle.contains(e.target)) {
+        filters.classList.add("hidden");
+    }
+});
+
+document.addEventListener("click", (e) => {
+    const filters = document.getElementById("typeFilters");
+    const toggle = document.getElementById("typeFiltersBtn");
+
+    if (!filters.contains(e.target) && !toggle.contains(e.target)) {
+        filters.classList.add("hidden");
+    }
+});
+
+document.getElementById("taskFilters").addEventListener("click", (e) => {
+    if (!e.target.id) return;
+    if (e.target.id.includes("Cancel")) {
+        taskFilters = [];
+        document.getElementById("taskFiltersBtn").classList.remove("active");
+        const children = Array.from(document.getElementById("taskFilters").children);
+        children.forEach(child => child.classList.remove("active"));
+        autocomplete_populate();
+        return;
+    }
+    if(taskFilters.includes(e.target.id)){
+        taskFilters.splice(taskFilters.indexOf(e.target.id), 1);
+    }
+    else {
+        taskFilters.push(e.target.id);
+    }
+    document.getElementById(e.target.id).classList.toggle("active");
+
+    if (taskFilters.length > 0) {
+        document.getElementById("taskFiltersBtn").classList.add("active");
+    }
+    else
+    {
+        document.getElementById("taskFiltersBtn").classList.remove("active");
+    }
+    autocomplete_populate();
+});
+
+
+document.getElementById("typeFilters").addEventListener("click", (e) => {
+    if (!e.target.id) return;
+    if (e.target.id.includes("Cancel")) {
+        typeFilters = [];
+        document.getElementById("typeFiltersBtn").classList.remove("active");
+        const children = Array.from(document.getElementById("typeFilters").children);
+        children.forEach(child => child.classList.remove("active"));
+        return;
+    }
+    if(typeFilters.includes(e.target.id)){
+        typeFilters.splice(typeFilters.indexOf(e.target.id), 1);
+    }
+    else {
+        typeFilters.push(e.target.id);
+    }
+    document.getElementById(e.target.id).classList.toggle("active");
+
+    if (typeFilters.length > 0) {
+        document.getElementById("typeFiltersBtn").classList.add("active");
+    }
+    else
+    {
+        document.getElementById("typeFiltersBtn").classList.remove("active");
+    }
 });

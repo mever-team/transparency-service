@@ -18,6 +18,7 @@ import json
 import time
 import secrets
 import datetime
+import io
 
 def create_progress_bar(quality: float) -> str:
     quality = max(0.0, min(1.0, quality))
@@ -88,11 +89,11 @@ class ModelCardEntry:
         flattened = self.card.data.flatten()
         assert flattened, "Cannot commit an empty model card."
         assert self.card_id is not None, "Internal error: card_id has not been set for a cached card"
-
+        
         def strip_html_tags(text: str) -> str:
             return re.sub(r'<[^>]*>', '', text)
-        if self.card.model.name:
-            self.card.title = truncate(strip_html_tags(self.card.model.name), 30)
+        if self.card.overview.name:
+            self.card.title = truncate(strip_html_tags(self.card.overview.name), 30)
         quality = self.card.quality()
         summary = self.card.summary()
         if summary: desc = summary#create_progress_bar(quality)+" for "+summary
@@ -179,12 +180,16 @@ class ModelCardEntry:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.lock.release()
 
-    def __autocomplete(self, url: str, assistant: Assistant, logger: Logger):
+    def __autocomplete(self, data: dict, assistant: Assistant, logger: Logger):
         try:
-            assistant.complete(self.card, url, logger, self._completion_status)
+            assistant.complete(self.card, data, logger, self._completion_status)
             self.commit_card(on_thread=True, edit_message=assistant.alias+" import") # on_thread=True because we are on a heavyweight path either way
+            if data['data_type'] == 'pdf' and os.path.exists(data['path']):
+                os.remove(data['path'])
             logger.info(f"ended card {self.card_id} import", user=assistant.alias)
         except Exception as e:
+            if data['data_type'] == 'pdf' and os.path.exists(data['path']):
+                os.remove(data['path'])
             if not isinstance(e, Forbidden) and not isinstance(e, NotFound): traceback.print_exc()
             logger.error(f"aborted card{self.card_id} import with error {e}", user=assistant.alias)
         self.end_completion()
@@ -199,9 +204,9 @@ class ModelCardEntry:
             logger.error(f"aborted card{self.card_id} refinement with error {e}", user=assistant.alias)
         self.end_completion()
 
-    def autocomplete(self, url: str, assistant: Assistant, logger: Logger):
+    def autocomplete(self, data: dict, assistant: Assistant, logger: Logger):
         self.start_completion()
-        self.__thread = Thread(target=self.__autocomplete, args=(url,assistant,logger))
+        self.__thread = Thread(target=self.__autocomplete, args=(data,assistant,logger))
         self.__thread.start()
         return "Autocompletion request was submitted successfully. Please wait while the assistant runs."
 
@@ -706,6 +711,8 @@ def serve(
         """
         data = request.get_json() or {}
         query = data.get('query', '').strip().lower()
+        type_list = data.get('type', '')
+        task_list = data.get('task', '')
         parts = query.split()
 
         page = max(int(data.get('page', 1)), 1)
@@ -753,6 +760,8 @@ def serve(
                 new_parts.append(filter)
             i += 1
         placeholders = ','.join(['?'] * len(owner))
+        type_filter = f"AND cards.overview__type IN ('{'\',\''.join(type_list)}')" if type_list else ""
+        task_filter = f"AND cards.overview__task IN ('{'\',\''.join(task_list)}')" if task_list else ""
         owner = " ".join(owner)
         query = " ".join(new_parts)
         query = query.strip()
@@ -773,13 +782,18 @@ def serve(
                     cards.desc,
                     cards.quality,
                     cards.timestamp,
-                    cards.model__overview,
+                    cards.overview__description,
+                    cards.overview__type, 
+                    cards.overview__task,
+                    cards.overview__date,
                     bm25(cards_fts) AS rank
                 FROM cards_fts
                 JOIN cards ON cards_fts.rowid = cards.id
                 WHERE cards_fts MATCH ?
                   AND LOWER(cards.user) IN ({placeholders})
                   AND cards.quality >= {quality_limits}
+                  {type_filter}
+                  {task_filter}
                   AND bm25(cards_fts) < 50
                   {desc_filter}
 
@@ -792,12 +806,17 @@ def serve(
                     cards.desc,
                     cards.quality,
                     cards.timestamp,
-                    cards.model__overview,
+                    cards.overview__description,
+                    cards.overview__type, 
+                    cards.overview__task,
+                    cards.overview__date,
                     9999 AS rank   -- fallback rank for LIKE matches
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
                   AND LOWER(cards.user) IN ({placeholders})
                   AND cards.quality >= {quality_limits}
+                  {type_filter}
+                  {task_filter}
                   {desc_filter}
 
                 ORDER BY rank ASC
@@ -816,13 +835,18 @@ def serve(
                     cards.desc,
                     cards.quality,
                     cards.timestamp,
-                    cards.model__overview,
+                    cards.overview__description,
+                    cards.overview__type, 
+                    cards.overview__task,
+                    cards.overview__date,
                     bm25(cards_fts) AS rank
                 FROM cards_fts
                 JOIN cards ON cards_fts.rowid = cards.id
                 WHERE cards_fts MATCH ?
                   AND bm25(cards_fts) < 10
                   AND cards.quality >= {quality_limits}
+                  {type_filter}
+                  {task_filter}
                   {desc_filter}
 
                 UNION ALL
@@ -834,11 +858,16 @@ def serve(
                     cards.desc,
                     cards.quality,
                     cards.timestamp,
-                    cards.model__overview,
+                    cards.overview__description,
+                    cards.overview__type, 
+                    cards.overview__task,
+                    cards.overview__date,
                     9999 AS rank
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
                   AND cards.quality >= {quality_limits}
+                  {type_filter}
+                  {task_filter}
                   {desc_filter}
 
                 ORDER BY rank ASC
@@ -850,11 +879,13 @@ def serve(
         elif query and owner:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, model__overview
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   AND LOWER(user) IN ({placeholders})
                   AND quality >= {quality_limits}
+                  {type_filter}
+                  {task_filter}
                   {desc_filter_simpler}
                 ORDER BY id
                 LIMIT ? OFFSET ?
@@ -864,10 +895,12 @@ def serve(
         elif query:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, model__overview
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   AND quality >= {quality_limits}
+                  {type_filter}
+                  {task_filter}
                   {desc_filter_simpler}
                 ORDER BY id
                 LIMIT ? OFFSET ?
@@ -877,10 +910,12 @@ def serve(
         elif owner:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, model__overview
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date
                 FROM cards
                 WHERE LOWER(user) IN ({placeholders})
                   AND quality >= {quality_limits}
+                  {type_filter}
+                  {task_filter}
                   {desc_filter_simpler}
                 ORDER BY id
                 LIMIT ? OFFSET ?
@@ -890,9 +925,11 @@ def serve(
         else:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, model__overview
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date
                 FROM cards
                 WHERE quality >= {quality_limits}
+                {type_filter}
+                {task_filter}
                     {desc_filter_simpler}
                 ORDER BY id
                 LIMIT ? OFFSET ?
@@ -909,8 +946,11 @@ def serve(
             timestamp = int(row[5])
             overview = row[6]
             if "<img" in overview: overview = ""
-            if len(overview)>120: overview = overview[:(120-3)]+"..."
-            results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality, "overview": overview})
+            # if len(overview)>120: overview = overview[:(120-3)]+"..."
+            overview_type = row[7]
+            overview_task = row[8]
+            overview_date = row[9]
+            results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality, "overview": overview, "type": overview_type, "task": overview_task, "date": overview_date})
         return jsonify({"results": results, "pages": num_pages, "total": total})
 
     @app.route(domain_prefix+'/card/<int:card_id>/clone', methods=['POST'])
@@ -971,7 +1011,7 @@ def serve(
         conn.create_card_relation(parent_id=parent_id, child_id=card_id, message="")
         #conn.create_card_relation(parent_id=card_id, child_id=parent_id, message="Original")
         parent_card.commit_card(edit_message=None)
-        card.card.model.version = ""
+        card.card.overview.version = ""
         card.commit_card(edit_message="Clone")
         with card_cache_lock:
             card_cache[card_id] = card
@@ -1172,7 +1212,7 @@ def serve(
     def get_card_field(card_id, field_name, data_name):
         """
         Retrieves an entry from card.field_name.data_name.
-        For example, retrieve card.model.version.
+        For example, retrieve card.overview.version.
         ---
         parameters:
           - name: card_id
@@ -1453,11 +1493,29 @@ def serve(
             409:
                 description: An AI assistant is working on the model card.
         """
-        json_data = request.get_json()
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
-        exists(isinstance(json_data, str), "Autocomplete requires a url string as POST data")
-        status = exists(find_card(card_id), "Model card does not exist or has been deleted.").autocomplete(json_data, assistant, logger)
+        card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
+        
+        if 'file' in request.files:
+            uploaded_file = request.files['file']
+            exists(uploaded_file.filename != "", "Empty file uploaded")
+            file_bytes = uploaded_file.read(5)
+            uploaded_file.seek(0)
+            if file_bytes == b"%PDF-":
+                data_type = 'pdf'
+            else:
+                abort(415, description="Unsupported file type.")
+            tmp_file = uploaded_file.filename # files delete in card.autocomplete thread
+            uploaded_file.save(tmp_file)
+            
+            json_data = {"data_type": data_type, "path": tmp_file}
+        else:
+            json_data = {"data_type": "url", "url": request.get_json()}
+            exists(isinstance(json_data['url'], str), "Autocomplete requires a url string as POST data")
+            
+        status = card.autocomplete(json_data, assistant, logger)
         logger.info(f"requested card {card_id} autocompletion from {assistant_type}", user=token2user.get(token, None))
+
         return jsonify(status)
 
     @app.route(domain_prefix+'/assistant/<string:assistant_type>/refine/<int:card_id>', methods=['POST'])
@@ -1581,6 +1639,16 @@ def serve(
             mimetype=mimetype,
             headers={"Content-Disposition": f"attachment; filename={filename}"}
         )
+        
+    @app.route(domain_prefix+"/options/<string:section>/<string:field>", methods=["GET"])
+    def get_options(section, field):
+        try:
+            return jsonify(ModelCard().data[section][field].options())
+        except Exception as e:
+            logger.error("No options for" + section + " " + field)
+            abort(400, "No options for" + section + " " + field)
+            
+        
 
     @app.route(domain_prefix+'/docs', methods=['GET'])
     def docs():

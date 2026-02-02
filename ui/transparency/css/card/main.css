@@ -238,6 +238,12 @@ ul.nacc .field-name {
 }
 
 /* Editable values */
+ul.nacc .field-value[type="date"],
+ul.nacc .field-value[type="date"]:focus {
+    border: none;
+    outline: none;
+}
+
 ul.nacc .field-value[contenteditable="true"] {
     display: block;
     border: 1px solid #7C7C7C;
@@ -1187,3 +1193,16 @@ i.fa-brands:before {
     /* If the icon fails, content becomes "" or "none" */
 }
 
+.import-learn-more,
+.refine-learn-more{
+    text-align: left;
+    padding-top: 0.5rem;
+
+}
+
+.import-learn-more a,
+.refine-learn-more a{
+    color: #EEEEEE;
+    color:#79CFDC;
+    /* text-decoration: none; */
+}

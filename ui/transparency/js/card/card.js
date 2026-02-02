@@ -290,18 +290,38 @@ $(document).ready(function () {
                                     .text("?");
                                 $fieldInfo = $("<span>").addClass("field-info").append($fieldInfo).append($fieldName);
                                 let $fieldValue;
+                                
                                 if (field.type.startsWith("list:") && token) {
                                     $fieldValue = $("<select>").addClass("field-value dropdown");
+                                    $fieldValue.append($("<option>").val("").text("—").prop({
+                                        selected: true,disabled: true,hidden: true}));
                                     const options = field.type.replace("list:", "").split(",");
+                                    let $currentGroup = null;
                                     options.forEach(opt => {
-                                        const $option = $("<option>").val(opt).text(opt);
-                                        if (field.value === opt) $option.prop("selected", true);
-                                        $fieldValue.append($option);
+                                        if (opt.startsWith("#")) {
+                                            $currentGroup = $("<optgroup>").attr("label", opt.replace("#", ""));
+                                            $fieldValue.append($currentGroup);
+                                        } else {
+                                            const $option = $("<option>").val(opt).text(opt);
+                                            if (field.value === opt) $option.prop("selected", true);
+                                            // Append to optgroup if it exists, otherwise directly to select
+                                            if ($currentGroup) {
+                                                $currentGroup.append($option);
+                                            } else {
+                                                $fieldValue.append($option);
+                                            }
+                                        }
                                     });
+                                } else if (field.type === 'date') {
+                                    $fieldValue = $("<input>", {type: "date", readonly: token? false: true}).addClass("field-value").val(field.value || "");
+                                    $fieldValue.on("change", function () {field.value = $(this).val();});
+                                    if(token) $fieldValue.attr("contenteditable", "true");
+                                    
                                 } else {
                                     $fieldValue = $("<span>") .addClass("field-value").html(field.value || "");
                                     if(token) $fieldValue.attr("contenteditable", "true");
                                 }
+
                                 if(token) $fieldValue.addClass("editable");
 
                                 // Editable field value
@@ -453,7 +473,7 @@ $(document).ready(function () {
                 $('.menu').find('div').find('.light').removeClass('arrow');
                 $('.menu').find('div').find('.light').addClass('square');
 
-                ["model", "considerations", "training_set", "eval_set", "performance", "safety"].forEach((sectionName, index) => {
+                ["overview", "use", "training", "evaluation", "performance", "safety"].forEach((sectionName, index) => {
                     let section = cardJson.data.filter(section => section.name !== "history").find(s => s.name === sectionName);
                     let hasValue = false;
 
@@ -667,7 +687,7 @@ $(document).ready(function () {
                     $('.menu').find('div').find('.light').removeClass('arrow');
                     $('.menu').find('div').find('.light').addClass('square');
 
-                    ["model", "considerations", "training_set", "eval_set", "performance", "safety"].forEach((sectionName, index) => {
+                    ["overview", "use", "training", "evaluation", "performance", "safety"].forEach((sectionName, index) => {
                         let section = cardJson.data.filter(section => section.name !== "history").find(s => s.name === sectionName);
                         let hasValue = false;
 
@@ -714,6 +734,7 @@ $(document).ready(function () {
                             contentType: false, // don't set content-type header, let browser set it (multipart/form-data)
                             success: function (response) {
                                 document.getElementById('modal-autocomplete-screen').style.display = 'none';
+                                interval = setInterval(function () {checkLocked(interval);}, 1);
                                 //alert(response)
                             },
                             error: function (xhr, status, error) {

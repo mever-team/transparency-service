@@ -11,6 +11,7 @@ import time
 
 from ...agents.extensions.embeddings import ImageClassifier
 from ...card.fields import LongText
+from ...utils.pdf_split import pdf_to_chunks
 
 
 class Prompter(Assistant):
@@ -35,22 +36,27 @@ class Prompter(Assistant):
         self.deep = deep
         self.image_classifier = image_classifier
 
-    def complete(self, card: ModelCard, url: str, logger: Logger, user_messages: list[str]):
-        logger.info("Submitted: " + str(url), user=self.alias)
-        user_messages.clear()
-        user_messages.append(f"<h2>{self.alias} import</h2>Retrieving data")
+    def complete(self, card: ModelCard, data: dict, logger: Logger, user_messages: list[str]):
+        if data['data_type'] == 'url':
+            url = data['url']
+            logger.info("Submitted: " + str(url), user=self.alias)
+            user_messages.clear()
+            user_messages.append(f"<h2>{self.alias} import</h2>Retrieving data")
 
-        parsed = urlparse(url)
-        if not parsed.scheme in ("http", "https") or not parsed.netloc: raise Exception("Invalid url format")
-        response = requests.get(url, timeout=self.external_get_timeout_sec)
-        text = response.text
+            parsed = urlparse(url)
+            if not parsed.scheme in ("http", "https") or not parsed.netloc: raise Exception("Invalid url format")
+            response = requests.get(url, timeout=self.external_get_timeout_sec)
+            text = response.text
 
-        soup = BeautifulSoup(text, "html.parser")
-        for tag in soup.find_all(href=True): tag["href"] = urljoin(url, tag["href"])
-        for tag in soup.find_all(src=True): tag["src"] = urljoin(url, tag["src"])
+            soup = BeautifulSoup(text, "html.parser")
+            for tag in soup.find_all(href=True): tag["href"] = urljoin(url, tag["href"])
+            for tag in soup.find_all(src=True): tag["src"] = urljoin(url, tag["src"])
 
-        text = soup.get_text(strip=True)
-
+            text = soup.get_text(strip=True)
+        elif data['data_type'] == 'pdf':
+            pdf_path = data['path']
+            text = pdf_to_chunks(pdf_path = pdf_path, char_per_chunk = -1)
+            
         self._complete(text, "import", card, logger, user_messages)
         progress_html = (
             f"<progress value='{100}' max='100' "
@@ -62,7 +68,7 @@ class Prompter(Assistant):
             f"{progress_html}<br>"
             f"<b>Importing images</b>"
         )
-        if self.image_classifier:
+        if self.image_classifier and data['data_type'] == 'url':
             images = []
             img_tags = soup.find_all('img')
             for tag in img_tags:
@@ -74,7 +80,7 @@ class Prompter(Assistant):
                 (cat, field), = label.items()
                 if cat not in card.data: continue
                 card.data[cat][field].set(card.data[cat][field].get()+"<br><br>"+str(img_tags[i]))
-        if not card.model.home: card.model.home = url
+        if not card.overview.home and data['data_type'] == 'url': card.overview.home = url
         user_messages[-1] = (
             f"<h2>{self.alias} import</h2>"
             f"Saving..."
@@ -169,26 +175,22 @@ class Prompter(Assistant):
         output_formats = card.json_schema_per_category()
         # Extra parameterization
 
-        output_formats['model']['properties']['overview']['minLength'] = 500
+        output_formats['overview']['properties']['description']['minLength'] = 500
 
-        output_formats['training_set']['properties']['training_set_purpose'] = output_formats['training_set'][
-            'properties'].pop('motivation')
-        output_formats['eval_set']['properties']['eval_set_purpose'] = output_formats['eval_set']['properties'].pop(
-            'motivation')
-        output_formats['performance']['properties']['performance_insights'] = output_formats['performance'][
-            'properties'].pop('analysis')
-        output_formats['performance']['properties']['eval_test_metrics'] = output_formats['performance'][
-            'properties'].pop('metrics')
+        output_formats['training']['properties']['training_set_purpose'] = output_formats['training']['properties'].pop('motivation')
+        output_formats['evaluation']['properties']['eval_set_purpose'] = output_formats['evaluation']['properties'].pop('motivation')
+        output_formats['performance']['properties']['performance_insights'] = output_formats['performance']['properties'].pop('analysis')
+        output_formats['performance']['properties']['eval_test_metrics'] = output_formats['performance']['properties'].pop('metrics')
 
-        output_formats['training_set']['properties']['training_set_purpose']['title'] = 'training_set_purpose'
-        output_formats['eval_set']['properties']['eval_set_purpose']['title'] = 'eval_set_purpose'
+        output_formats['training']['properties']['training_set_purpose']['title'] = 'training_set_purpose'
+        output_formats['evaluation']['properties']['eval_set_purpose']['title'] = 'eval_set_purpose'
         output_formats['performance']['properties']['performance_insights']['title'] = 'performance_insights'
         output_formats['performance']['properties']['eval_test_metrics']['title'] = 'eval_test_metrics'
 
         output_formats['performance']['properties']['performance_insights']['minLength'] = 200
 
-        output_formats['model']['required'] = ['name', 'overview', 'author']
-        output_formats['considerations']['required'] = ['use_case','users']
+        output_formats['overview']['required'] = ['name', 'description', 'author']
+        output_formats['use']['required'] = ['use_cases','user_groups']
         output_formats['performance']['required'] = ['performance_insights']
 
         for category, values in output_formats.items():
