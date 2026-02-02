@@ -184,7 +184,7 @@ class SemanticMatcher(Assistant):
             )
             progress += 1
 
-            embedding = self.get_embeddings("#"+heading+"\n"+content)
+            embedding = self.get_embeddings("#"+(heading if heading else "")+"\n"+(content if content else ""))
             best_score = 0
             best_path = []
             for cat, values in card.data.items():

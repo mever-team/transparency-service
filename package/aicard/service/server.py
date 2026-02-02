@@ -950,7 +950,7 @@ def serve(
             overview_type = row[7]
             overview_task = row[8]
             overview_date = row[9]
-            results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality, "overview": overview, "type": overview_type, "task": overview_task, "date": overview_date})
+            results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality, "description": overview, "type": overview_type, "task": overview_task, "date": overview_date})
         return jsonify({"results": results, "pages": num_pages, "total": total})
 
     @app.route(domain_prefix+'/card/<int:card_id>/clone', methods=['POST'])

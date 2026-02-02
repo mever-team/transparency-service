@@ -82,13 +82,13 @@ function autocomplete_populate() {
                                             <p>
                                                 Date of production: <input type="date" readonly value="${it.date}" class="inline-date">
                                             </p>
-                                            
+
                                             <button class="open-card-btn" onclick="window.location='model_card.html?id=${it.id}'"> Open Card</button>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
-                            
+
                             `);
                     });
                 else
@@ -201,7 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function toggleExtraContent(buttonRow) {
     const extraContent = buttonRow.nextElementSibling.querySelector('.extra_content');
     const innerContent = buttonRow.nextElementSibling.querySelector('.extra_content_inner');
-    
+
     if (extraContent.classList.contains('open')) {
         extraContent.classList.remove('open');
         extraContent.style.maxHeight = '0';
