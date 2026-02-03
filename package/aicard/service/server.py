@@ -10,7 +10,7 @@ from flask import Flask, abort, redirect, request, jsonify, send_from_directory,
 from flasgger import Swagger
 from threading import Lock, Thread
 from dotenv import dotenv_values
-from werkzeug.exceptions import HTTPException, Forbidden, NotFound
+from werkzeug.exceptions import HTTPException, Forbidden, NotFound, Unauthorized
 from io import BytesIO
 import traceback
 import re
@@ -190,7 +190,7 @@ class ModelCardEntry:
         except Exception as e:
             if data['data_type'] == 'pdf' and os.path.exists(data['path']):
                 os.remove(data['path'])
-            if not isinstance(e, Forbidden) and not isinstance(e, NotFound): traceback.print_exc()
+            if not isinstance(e, Forbidden) and not isinstance(e, NotFound) and not isinstance(Unauthorized): traceback.print_exc()
             logger.error(f"aborted card{self.card_id} import with error {e}", user=assistant.alias)
         self.end_completion()
 
@@ -200,7 +200,7 @@ class ModelCardEntry:
             self.commit_card(on_thread=True, edit_message=assistant.alias+" refinement") # on_thread=True because we are on a heavyweight path either way
             logger.info(f"ended card {self.card_id} refinement", user=assistant.alias)
         except Exception as e:
-            if not isinstance(e, Forbidden) and not isinstance(e, NotFound): traceback.print_exc()
+            if not isinstance(e, Forbidden) and not isinstance(e, NotFound) and not isinstance(Unauthorized): traceback.print_exc()
             logger.error(f"aborted card{self.card_id} refinement with error {e}", user=assistant.alias)
         self.end_completion()
 
@@ -328,7 +328,7 @@ def serve(
 
     @app.errorhandler(Exception)
     def handle_unexpected_exception(e):
-        if not isinstance(e, Forbidden) and not isinstance(e, NotFound): traceback.print_exc()
+        if not isinstance(e, Forbidden) and not isinstance(e, NotFound) and not isinstance(Unauthorized): traceback.print_exc()
         logger.error(str(e))
         if isinstance(e, HTTPException):
             response = jsonify(error=e.description or str(e))
@@ -582,7 +582,8 @@ def serve(
         token2expiration[token] = time.time() + token_expiration_secs
         return jsonify({
             "token": token,
-            "expires_in": token_expiration_secs
+            "expires_in": token_expiration_secs,
+            "username": token2user.get(token, "unknown")
         })
 
 

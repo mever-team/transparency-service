@@ -371,7 +371,7 @@ input {
     align-items: center;
 }
 
-#login-btn,#whats-this,#login-confirm-btn,#cancel-login-btn,#logout-btn,#new_card {
+#account-btn,#login-btn,#register-btn,#whats-this,#login-confirm-btn,#cancel-login-btn,#logout-btn,#new_card {
     color: #EEEEEE;
     border: solid 1px #434343;
     padding:5px 10px;
@@ -387,7 +387,7 @@ input {
     color: #64DB96;
 }
 
-#login-confirm-btn,#cancel-login-btn {
+#login-confirm-btn,#cancel-login-btn,#register-confirm-btn,#cancel-register-btn {
     padding: 15px 15px;
     font-size: 1.2em;
 }

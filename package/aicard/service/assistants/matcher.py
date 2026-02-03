@@ -63,7 +63,7 @@ class SemanticMatcher(Assistant):
         def _load():
             try:
                 logger.warn("preparing semantic matcher\n * will proceed asynchronously\n * may take a while the first time\n * agent tasks will wait on this", user="📚 Semantic Matcher")
-                device = "cuda" if torch.cuda.is_available() else "cpu"
+                device = "cpu"# "cuda" if torch.cuda.is_available() else "cpu"
                 self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
                 self.model = AutoModel.from_pretrained(self.model_name).to(device)
                 logger.ok(f"Loaded {self.model_name} on torch device: {device}", user="📚 Semantic Matcher")

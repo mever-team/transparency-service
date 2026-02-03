@@ -155,17 +155,29 @@ document.getElementById('login-confirm-btn').onclick = function () {
     });
 };
 
-document.getElementById('login-btn').onclick = function () {
-    document.getElementById('login-error').text = "";
-    document.getElementById('login-confirm-screen').style.display = 'flex';
-};
+
 document.getElementById('logout-btn').onclick = function () {
     token = "";
     updateUsername();
 };
+document.getElementById('login-btn').onclick = function () {
+    document.getElementById('login-error').text = "";
+    document.getElementById('login-confirm-screen').style.display = 'flex';
+};
 document.getElementById('cancel-login-btn').onclick = function () {
     document.getElementById('login-error').text = "";
     document.getElementById('login-confirm-screen').style.display = 'none';
+};
+document.getElementById('register-btn').onclick = function () {
+    document.getElementById('register-error').text = "";
+    document.getElementById('register-confirm-screen').style.display = 'flex';
+};
+document.getElementById('cancel-register-btn').onclick = function () {
+    document.getElementById('register-error').text = "";
+    document.getElementById('register-confirm-screen').style.display = 'none';
+};
+document.getElementById('account-btn').onclick = function () {
+    window.location.href = 'account.html';
 };
 
 document.addEventListener("DOMContentLoaded", () => {

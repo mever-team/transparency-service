@@ -15,7 +15,9 @@ function updateUsername() {
         clearTimeout(pingTimer);
         $('#new_card').hide();
         $('#login-btn').show();
+        $('#register-btn').show();
         $('#logout-btn').hide();
+        $('#account-btn').hide();
         $('#login-name').text("");
         return;
     }
@@ -32,7 +34,10 @@ function updateUsername() {
 
                 $('#new_card').show();
                 $('#login-btn').hide();
+                $('#register-btn').hide();
                 $('#logout-btn').show();
+                $('#account-btn').show();
+                $('#account-name').text(response.username);
 
                 // Clear any existing ping timer
                 clearTimeout(pingTimer);
@@ -68,7 +73,9 @@ function updateUsername() {
                 token = "";
                 $('#new_card').hide();
                 $('#login-btn').show();
+                $('#register-btn').show();
                 $('#logout-btn').hide();
+                $('#account-btn').hide();
                 $('#login-name').text("");
             }
         },
@@ -78,7 +85,9 @@ function updateUsername() {
             token = "";
             $('#new_card').hide();
             $('#login-btn').show();
+            $('#register-btn').show();
             $('#logout-btn').hide();
+            $('#account-btn').hide();
             $('#login-name').text("");
         }
     });
