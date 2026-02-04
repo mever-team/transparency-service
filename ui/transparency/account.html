@@ -38,59 +38,11 @@
         </div>
     </div>
 </section>
-<section class="account_section" id="account-section" style="display:none;">
-    <div class="row bigWidth">
-        <div class="small-12 medium-8 large-6 columns">
-            <div class="login-confirm-content" style="margin-top:40px">
-                <h2 style="color:#64DB96;margin-bottom:20px">Account</h2>
-
-                <!-- Change Email -->
-                <div style="margin-bottom:30px">
-                    <h4 style="color:#EEEEEE">Change email</h4>
-                    <label for="account-email">New email</label><br />
-                    <input type="text" id="account-email" name="account-email" /><br><br>
-                    <button style="background-color:#64DB96;color:#1F1F1F;border:0;width:160px">
-                        Update email
-                    </button>
-                </div>
-
-                <!-- Change Password -->
-                <div style="margin-bottom:10px">
-                    <h4 style="color:#EEEEEE">Change password</h4>
-                    <label for="account-password">New password</label><br />
-                    <input type="password" id="account-password" /><br><br>
-                    <label for="account-password-verify">Verify password</label><br />
-                    <input type="password" id="account-password-verify" /><br><br>
-                    <button style="background-color:#64DB96;color:#1F1F1F;border:0;width:160px">
-                        Update password
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Admin-only section -->
-    <div class="row bigWidth is-admin" style="display:none;margin-top:40px">
+<section class="account_section" id="account-section">
+    <div class="row bigWidth is-admin" style="margin-top:40px display: none">
         <div class="small-12 medium-12 large-12 columns">
-            <div class="login-confirm-content">
-                <h3 style="color:#F9AB49;margin-bottom:20px">Administration</h3>
-
-                <div style="margin-bottom:30px">
-                    <h4 style="color:#EEEEEE">Pending users</h4>
-                    <div id="pending-users"
-                         style="border:1px solid #434343;padding:15px;color:#7C7C7C">
-                        <!-- pending users list placeholder -->
-                    </div>
-                </div>
-
-                <div>
-                    <h4 style="color:#EEEEEE">Registered users</h4>
-                    <div id="registered-users"
-                         style="border:1px solid #434343;padding:15px;color:#7C7C7C">
-                        <!-- registered users list placeholder -->
-                    </div>
-                </div>
-            </div>
+            <div id="pending-users"></div>
+            <div id="registered-users"></div>
         </div>
     </div>
 </section>

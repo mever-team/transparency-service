@@ -7,9 +7,7 @@ handbookBodyElement = document.getElementById("handbookBody");
 const bodyIds = Array.from(handbookBodyElement.querySelectorAll('[id]')).map(el => el.id);
 let previousActiveId = bodyIds[0];
 
-document.addEventListener("scroll", (event) => { 
-    getActiveMenuItem();
-})
+document.addEventListener("scroll", (event) => { getActiveMenuItem(); });
 
 function getActiveMenuItem() {
     for (let i=bodyIds.length-1; i>-1; i--){
@@ -34,14 +32,8 @@ let menuIsVisible = true;
 function toggleMenuVisibility() {
     const handbookMenuEl = document.getElementById('handbookMenu');
     const hideMenuBtnEl = document.getElementById('hideMenuBtn');
-    if (menuIsVisible) {
-        handbookMenuEl.classList.add('hidden');
-        hideMenuBtnEl.textContent = '▸';
-        menuIsVisible = false;
-    }
-    else {
-        handbookMenuEl.classList.remove('hidden');
-        hideMenuBtnEl.textContent = '◂';
-        menuIsVisible = true;
-    }
+    if(menuIsVisible) handbookMenuEl.classList.add('hidden');
+    else handbookMenuEl.classList.remove('hidden');
+    hideMenuBtnEl.textContent = menuIsVisible?'▸':'◂';
+    menuIsVisible = !menuIsVisible;
 }

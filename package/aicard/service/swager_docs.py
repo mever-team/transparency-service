@@ -1,0 +1,754 @@
+admin_dashboard = """
+Retrieves all active and pending users.
+Requires a valid admin bearer token in the Authorization header.
+---
+tags:
+  - Admin
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for admin authentication (e.g., "Bearer <token>")
+responses:
+  200:
+    description: Lists of all users and pending registrations.
+    schema:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            type: object
+            properties:
+              username:
+                type: string
+              email:
+                type: string
+        pending:
+          type: array
+          items:
+            type: object
+            properties:
+              username:
+                type: string
+              email:
+                type: string
+  401:
+    description: Unauthorized — missing token or invalid token format.
+  403:
+    description: Unauthorized — token expired or not valid.
+"""
+
+delete_user = """
+Deletes a user or pending user by username.
+Requires a valid admin bearer token in the Authorization header.
+---
+tags:
+  - Admin
+parameters:
+  - name: username
+    in: path
+    type: string
+    required: true
+    description: The username to delete.
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for admin authentication (e.g., "Bearer <token>")
+responses:
+  200:
+    description: Successfully deleted the user.
+    schema:
+      type: object
+      properties:
+        deleted:
+          type: string
+          description: The username that was deleted.
+  401:
+    description: Unauthorized — missing or invalid token.
+  403:
+    description: Token expired or not valid for admin access.
+  404:
+    description: User not found.
+"""
+
+promote_user = """
+Promotes a pending user to an active user.
+Requires a valid admin bearer token in the Authorization header.
+---
+tags:
+  - Admin
+parameters:
+  - name: username
+    in: path
+    type: string
+    required: true
+    description: The username to promote.
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for admin authentication (e.g., "Bearer <token>")
+responses:
+  200:
+    description: User was successfully promoted.
+    schema:
+      type: object
+      properties:
+        promoted:
+          type: string
+          description: The username that was promoted.
+  401:
+    description: Unauthorized — missing or invalid token.
+  403:
+    description: Token expired or not valid for admin access.
+  404:
+    description: Pending user not found.
+"""
+
+register_user = """
+Registers a new user into the pending approval list.
+Administrator acceptance is required for them to log in.
+---
+tags:
+  - Auth
+parameters:
+  - name: body
+    in: body
+    required: true
+    description: JSON object with username, email, and password.
+    schema:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+responses:
+  201:
+    description: Successfully registered. Pending admin approval.
+    schema:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "pending approval"
+  400:
+    description: Missing required fields (username, email, or password).
+  409:
+    description: User already exists in active or pending list.
+"""
+
+ping = """
+Checks if the bearer token is valid.
+If valid, echoes it back and refreshes its expiration.
+Otherwise returns an empty string.
+---
+tags:
+  - Auth
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token to check validity.
+responses:
+  200:
+    description: Token is valid; echoed back with renewed expiration.
+    schema:
+      type: object
+      properties:
+        token:
+          type: string
+        expires_in:
+          type: integer
+  200:
+    description: Empty string if invalid or expired.
+"""
+
+login_user = """
+Logs in a user or the admin and returns an expiring bearer token.
+---
+tags:
+  - Auth
+parameters:
+  - name: body
+    in: body
+    required: true
+    description: JSON object with username and password.
+    schema:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+responses:
+  200:
+    description: Login successful; bearer token issued.
+    schema:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Bearer token to be used in Authorization header.
+        admin:
+          type: boolean
+          description: Whether the logged-in user is an admin.
+        expires_in:
+          type: integer
+          description: Token expiration time in seconds.
+  401:
+    description: Invalid credentials.
+"""
+
+get_cards = """
+Retrieves a list of model cards from the database while filtering for a search query and performing pagination.
+The results contain both card id, title, and descriptions, and the total number of pages
+for the particular pagination limit. If no query is provided, all cards will be considered.
+If no page size is provided, or if non-positive, 10 is assumed. If no page is provided,
+or if it's non-positive, 1 (the first page) is assumed.
+---
+tags:
+  - UI
+parameters:
+  - name: query
+    in: body
+    type: string
+    required: false
+    description: Case-insensitive filter on card titles.
+    example: "my card"
+  - name: creator
+    in: body
+    type: string
+    required: false
+    description: Case-sensitive filter on card creator names.
+    example: "admin"
+  - name: page
+    in: body
+    type: integer
+    required: false
+    default: 1
+    description: Page number, starting from 1.
+  - name: page_size
+    in: body
+    type: integer
+    required: false
+    default: 10
+    description: Number of results per page.
+responses:
+  200:
+    description: A paginated list of card summaries.
+    schema:
+      type: object
+      properties:
+        results:
+          type: array
+          description: List of card summaries.
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Card identifier.
+              name:
+                type: string
+                description: Card title.
+              creator:
+                type: string
+                description: The creator's username.
+              desc:
+                type: string
+                description: Card description (e.g., completion percentage).
+              overview:
+                type: string
+                description: Card overview (either empty or a long description)
+        pages:
+          type: integer
+          description: Total number of result pages.
+"""
+
+clone_card = """
+Clones an existing model card into a new one owned by the current user.
+The new card will have the same content but a new ID and creator. Its version
+will also be cleared out to not make it searchable yet.
+---
+tags:
+  - UI
+parameters:
+  - name: card_id
+    in: path
+    type: integer
+    required: true
+    description: The ID of the card to clone.
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for user authentication (e.g., "Bearer <token>")
+responses:
+    201:
+        description: Successfully cloned the card; returns the new card ID.
+    401:
+        description: Unauthorized — missing token or invalid token format.
+    403:
+        description: Unauthorized — token expired or not valid.
+    404:
+        description: The card does not exist or has been deleted.
+    409:
+        description: The card is currently locked or being processed by an AI assistant.
+"""
+
+get_assistants = """
+Retrieves all available AI assistants for the current user and card, including their names and descriptions.
+---
+tags:
+  - UI
+responses:
+    200:
+        description: A list of assistants with their names and descriptions.
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the assistant.
+              desc:
+                type: string
+                description: The description of the assistant.
+"""
+
+get_card = """
+Retrieves the JSON data for a given model card.
+---
+tags:
+  - UI
+parameters:
+  - name: card_id
+    in: path
+    type: integer
+    required: true
+    description: The unique identifier for the model card.
+responses:
+    200:
+        description: The JSON representation of the model card.
+        schema:
+          type: object
+          description: The model card contents. This includes fields title and a history graph.
+    404:
+        description: The requested card does not exist or has been deleted.
+    409:
+        description: An AI assistant is working on the model card.
+"""
+
+get_card_token_status = """"
+Retrieves a string value explaining why the card is locked, for example by an AI assistant working on it.
+If the card is locked, post or put methods on the card will create errors.
+---
+tags:
+  - UI
+parameters:
+  - name: card_id
+    in: path
+    type: integer
+    required: true
+    description: The card's unique identifier.
+responses:
+    200:
+        description: The description (e.g., LLM progress stage) of the mechanism currently locking the card. An empty string if the card can be freely viewed or edited.
+        schema:
+          type: string
+    404:
+        description: The request's card does not exist or has been deleted.
+"""
+
+get_card_title = """
+Retrieves the title of the specified model card.
+---
+parameters:
+  - name: card_id
+    in: path
+    type: integer
+    required: true
+    description: The card's unique identifier.
+responses:
+    200:
+        description: The title of the model card.
+        schema:
+          type: string
+    404:
+        description: The requested card does not exist or has been deleted.
+    409:
+        description: An AI assistant is working on the model card.
+"""
+
+set_card_title = """
+Updates the title of the specified model card.
+---
+parameters:
+  - name: card_id
+    in: path
+    type: integer
+    required: true
+    description: The card's unique identifier.
+  - name: body
+    in: body
+    required: true
+    schema:
+      type: string
+      example: "New model card title"
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for user authentication (e.g., "Bearer <token>")
+responses:
+    200:
+        description: The updated title of the model card.
+        schema:
+          type: string
+    401:
+        description: Unauthorized — missing token or invalid token format.
+    403:
+        description: Unauthorized — token expired or not valid.
+    404:
+        description: The requested card does not exist or has been deleted, or invalid request body.
+    409:
+        description: An AI assistant is working on the model card.
+"""
+
+get_card_fields = """
+Lists all top-level field names for model cards that contain data entries.
+For example, this list does not contain the title but that it contains test datasets, training datasets, etc.
+This method helps the frontend be generalize-able in case there is a need for extensibility.
+Once fields are obtained, use /card/fields/<field_name> to retrieve its data entries.
+---
+responses:
+    200:
+        description: List of top-level card field names.
+        schema:
+            type: array
+            items:
+                type: string
+"""
+
+get_card_field_names = """
+Lists all data entry  names under the given field_name in a model card.
+---
+parameters:
+  - name: field_name
+    in: path
+    type: string
+    required: true
+    description: The top-level field name.
+responses:
+    200:
+        description: List of subfield names for the field.
+        schema:
+            type: array
+            items:
+                type: string
+    404:
+        description: Field does not exist.
+"""
+
+get_card_field = """
+Retrieves an entry from card.field_name.data_name.
+For example, retrieve card.overview.version.
+---
+parameters:
+  - name: card_id
+    in: path
+    type: integer
+    required: true
+    description: The card's identifier.
+  - name: field_name
+    in: path
+    type: string
+    required: true
+    description: The card's field name. To see all field names available for cards get /card/fields.
+  - name: data_name
+    in: path
+    type: string
+    required: true
+    description: The data entry name within the card's field To see all data entries available for the field get /card/fields/field_name.
+responses:
+    200:
+        description: A string containing an editable (markdown) version of data values.
+        schema:
+          type: string
+          description: The card's editable string representation.
+    404:
+        description: Resource does not exist.
+    409:
+        description: An AI assistant is working on the model card.
+"""
+
+set_card_field = """
+Sets a value to card.field_name.data_name.
+---
+parameters:
+  - name: card_id
+    in: path
+    type: integer
+    required: true
+    description: The card's identifier.
+  - name: field_name
+    in: path
+    type: string
+    required: true
+    description: The card's field name. To see all field names available for cards get /card/fields.
+  - name: data_name
+    in: path
+    type: string
+    required: true
+    description: The data entry name within the card's field To see all data entries available for the field get /card/fields/field_name.
+  - name: body
+    in: body
+    required: true
+    description: A string to set as value.
+    schema:
+      type: string
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for user authentication (e.g., "Bearer <token>")
+responses:
+    200:
+        description: A list of integer identifiers.
+        schema:
+            type: array
+            items:
+                type: integer
+    401:
+        description: Unauthorized — missing token or invalid token format.
+    403:
+        description: Unauthorized — token expired or not valid.
+    404:
+        description: Resource does not exist, or invalid body.
+    409:
+        description: An AI assistant is working on the model card.
+"""
+
+delete_card = """
+Removes the respective card; it will be considered a missing resource from now on.
+---
+tags:
+  - UI
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for user authentication (e.g., "Bearer <token>")
+responses:
+    204:
+        description: Successfully removed.
+    401:
+        description: Unauthorized — missing token or invalid token format.
+    403:
+        description: Unauthorized — token expired or not valid.
+    404:
+        description: Resource does not exist.
+"""
+
+update_card = """
+Updates a model card's contents - enables manual upload.
+The provided json data should be (parts of) a model card's
+json representation with potentially some missing fields, and updates everything in the
+target card. The card's contents after setting everything are returned. This operation
+is safe in that all fields should be valid in order for any to be set.
+---
+tags:
+  - UI
+parameters:
+  - name: card_id
+    in: path
+    type: integer
+    required: true
+    description: The card's identifier.
+  - name: body
+    in: body
+    required: true
+    description: Partial or full model card JSON to update the card with. This can be either in the dynamic format used by this API or in a static format that is exported by the aicard library.
+    schema:
+      type: object
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for user authentication (e.g., "Bearer <token>")
+responses:
+    200:
+        description: Successfully set everything and retrieves a json representation of the model card.
+    401:
+        description: Unauthorized — missing token or invalid token format.
+    403:
+        description: Unauthorized — token expired or not valid.
+    404:
+        description: Either the card or at least one of the provided fields do not exist.
+    409:
+        description: An AI assistant is working on the model card.
+"""
+
+create_card = """
+Creates a model card given an optional json representation - the representation is for manual upload.
+The provided json data should be either an empty dict or (parts of) a model card's
+json representation with potentially some missing fields, and updates everything in the
+target card. The card's contents after setting everything are retrieved.
+---
+tags:
+  - UI
+parameters:
+  - name: body
+    in: body
+    required: false
+    schema:
+      type: object
+      description: Binary encoding of a file loading the card.
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for user authentication (e.g., "Bearer <token>")
+responses:
+    201:
+        description: Successfully set everything and retrieves a json representation of the model card.
+    401:
+        description: Unauthorized — missing token or invalid token format.
+    403:
+        description: Unauthorized — token expired or not valid.
+    404:
+        description: One of the provided fields do not exist.
+    409:
+        description: An AI assistant is working on the model card.
+"""
+
+autocomplete_card = """
+Autocompletes an already created model card given a string pointing to a repository URL or some file contents.
+This calls on an AI assistant to work on the card, blocking editing while the latter runs.
+---
+tags:
+  - UI
+parameters:
+  - name: card_id
+    in: path
+    type: integer
+    required: true
+    description: The card's identifier.
+  - name: assistant_type
+    in: path
+    type: string
+    required: true
+    description: The AI assistant type. Options available from get /assistants.
+  - name: body
+    description: A repository url starting with http:// or https://, or an uploaded readme text file's contents (can be the contents of a .txt, .md, or .html file).
+    in: body
+    required: true
+    schema:
+      type: string
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for user authentication (e.g., "Bearer <token>")
+responses:
+    200:
+        description: Successfully submitted task.
+    401:
+        description: Unauthorized — missing token or invalid token format.
+    403:
+        description: Unauthorized — token expired or not valid.
+    404:
+        description: Resource does not exist.
+    409:
+        description: An AI assistant is working on the model card.
+"""
+
+autorefine_card = """
+Refines an already created model card so that its contents are easier to parse by laypeople.
+This calls on an AI assistant to work on the card, blocking editing while the latter runs.
+---
+tags:
+  - UI
+parameters:
+  - name: card_id
+    in: path
+    type: integer
+    required: true
+    description: The card's identifier.
+  - name: assistant_type
+    in: path
+    type: string
+    required: true
+    description: The AI assistant type. Options available from get /assistants.
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for user authentication (e.g., "Bearer <token>")
+responses:
+    200:
+        description: Successfully submitted task.
+    401:
+        description: Unauthorized — missing token or invalid token format.
+    403:
+        description: Unauthorized — token expired or not valid.
+    404:
+        description: Resource does not exist.
+    409:
+        description: An AI assistant is working on the model card.
+"""
+
+download_card = """
+Download a model card.
+---
+tags:
+  - UI
+parameters:
+  - name: card_id
+    in: path
+    type: integer
+    required: true
+    description: The card's identifier.
+  - name: fformat
+    in: path
+    type: string
+    required: true
+    description: The download format. Must be 'json' or 'markdown'.
+responses:
+    200:
+        description: Successfully downloaded the model card.
+    400:
+        description: Invalid format. Must be 'json' or 'markdown'.
+    404:
+        description: Model card does not exist or has been deleted.
+"""
+
+# swagger = Swagger(app, template = {
+#     "swagger": "2.0",
+#     "info": {"title": "ModelCard",
+#         "description": "API docs",
+#         "version": "0.0.4"
+#     }
+# })
+
+# @app.route(domain_prefix + '/docs', methods=['GET'])
+# def docs():
+#     routes = []
+#     for rule in app.url_map.iter_rules():
+#         if rule.endpoint == 'static':  continue
+#         methods = ','.join(sorted(rule.methods - {'HEAD', 'OPTIONS'}))
+#         routes.append({
+#             "endpoint": rule.endpoint,
+#             "methods": methods,
+#             "path": str(rule),
+#         })
+#      return jsonify(routes)
