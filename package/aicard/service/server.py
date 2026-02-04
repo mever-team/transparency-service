@@ -252,6 +252,7 @@ def serve(
     card_cache_lock = Lock()
     card_cache: dict[int, ModelCardEntry | None] = dict()
     logger = Logger(log_file)
+    auth_lock = Lock()
     token2expiration = dict()
     token2user = dict()
     for assistant in assistants.values():
@@ -570,21 +571,22 @@ def serve(
         if len(parts) != 2 or parts[0] != "Bearer":
             return ""
 
-        token = parts[1]
-        expiry = token2expiration.get(token)
-        if not expiry or time.time() > expiry:
-            # Clean up expired entries
-            token2expiration.pop(token, None)
-            token2user.pop(token, None)
-            return ""
+        with auth_lock:
+            token = parts[1]
+            expiry = token2expiration.get(token)
+            if not expiry or time.time() > expiry:
+                # Clean up expired entries
+                token2expiration.pop(token, None)
+                token2user.pop(token, None)
+                return ""
 
-        # Valid token: refresh expiration
-        token2expiration[token] = time.time() + token_expiration_secs
-        return jsonify({
-            "token": token,
-            "expires_in": token_expiration_secs,
-            "username": token2user.get(token, "unknown")
-        })
+            # Valid token: refresh expiration
+            token2expiration[token] = time.time() + token_expiration_secs
+            return jsonify({
+                "token": token,
+                "expires_in": token_expiration_secs,
+                "username": token2user.get(token, "unknown")
+            })
 
 
     @app.route(domain_prefix+"/login", methods=["POST"])
@@ -627,19 +629,21 @@ def serve(
         data = request.get_json()
         username = data.get("username", "")
         password = data.get("password", "")
-        if username == admin_username and password == admin_password:
-            token = secrets.token_urlsafe(32)
-            token2expiration[token] = time.time() + token_expiration_secs
-            token2user[token] = username
-            logger.warn("logged in as administrator", user=username)
-            return jsonify({"token": token, "admin": True, "expires_in": token_expiration_secs})
+        with auth_lock:
+            if username == admin_username and password == admin_password:
+                token = secrets.token_urlsafe(32)
+                token2expiration[token] = time.time() + token_expiration_secs
+                token2user[token] = username
+                logger.warn("logged in as administrator", user=username)
+                return jsonify({"token": token, "admin": True, "expires_in": token_expiration_secs})
         row = conn.find_user('users', username)
         if not row: abort(401, description="Invalid credentials")
         stored_hash = row[2]
         if not users.verify_password(password, stored_hash): abort(401, description="Invalid credentials")
-        token = secrets.token_urlsafe(32)
-        token2expiration[token] = time.time() + token_expiration_secs
-        token2user[token] = username
+        with auth_lock:
+            token = secrets.token_urlsafe(32)
+            token2expiration[token] = time.time() + token_expiration_secs
+            token2user[token] = username
         logger.info("logged in", user=username)
         return jsonify({"token": token, "admin": False, "expires_in": token_expiration_secs})
 
@@ -988,7 +992,8 @@ def serve(
                 description: The card is currently locked or being processed by an AI assistant.
         """
         parent_id = card_id
-        card = ModelCardEntry(ModelCard(), token2user.get(token, ""), conn)
+        with auth_lock: creator = token2user.get(token, "")
+        card = ModelCardEntry(ModelCard(), creator, conn)
         parent_card = find_card(card_id)
         with exists(parent_card, "Model card does not exist or has been deleted.") as src_card:
             try:
@@ -1001,7 +1006,6 @@ def serve(
                 abort(500, description=str(e))
         flattened = card.card.data.flatten()
         columns = list(flattened.keys())
-        creator = token2user.get(token, "")
         cursor = conn.conn.cursor()
         cursor.execute(
             f'''INSERT INTO cards (user, desc, {','.join(columns)}) VALUES (?,?, {",".join(["?"] * len(columns))})''',
@@ -1334,7 +1338,8 @@ def serve(
             cursor.execute("DELETE FROM cards WHERE id = ?", (card_id,))
             conn.conn.commit()
             with card_cache_lock: del card_cache[card_id]
-            logger.info("deleted a card", user=token2user.get(token, None))
+            with auth_lock: creator = token2user.get(token, None)
+            logger.info("deleted a card", user=creator)
             return '', 204
 
     @app.route(domain_prefix+'/card/<int:card_id>', methods=['PUT'])
@@ -1388,7 +1393,8 @@ def serve(
                 card_entry.commit_card()
             except AssertionError as e: abort(404, "Wrong data: "+str(e))
             except Exception as e: abort(404, "Wrong data: "+str(e))
-            logger.info("updated a card", user=token2user.get(token, None))
+            with auth_lock: creator = token2user.get(token, None)
+            logger.info("updated a card", user=creator)
             return jsonify(converters.dict2dynamic(card.data, {"title"})
                            |{"description": card.summary(), "quality": card.quality(), "history": card_entry.history()})
 
@@ -1428,7 +1434,8 @@ def serve(
                 description: An AI assistant is working on the model card.
         """
         json_data = request.get_json()
-        card = ModelCardEntry(ModelCard(), token2user.get(token, ""), conn)
+        with auth_lock: creator = token2user.get(token, "")
+        card = ModelCardEntry(ModelCard(), creator, conn)
         if json_data:
             try: card.card.data.assign(converters.dynamic2dict(json_data, {"title"}))
             except AssertionError as e:
@@ -1439,7 +1446,6 @@ def serve(
                 abort(500, description=str(e))
         flattened = card.card.data.flatten()
         columns = list(flattened.keys())
-        creator = token2user.get(token, "")
         cursor = conn.conn.cursor()
         cursor.execute(f'''INSERT INTO cards (user, desc, {','.join(columns)}) VALUES (?,?, {",".join(["?"] * len(columns))})''',
                        [creator, ""] + [flattened[key] for key in columns])
@@ -1515,7 +1521,8 @@ def serve(
             exists(isinstance(json_data['url'], str), "Autocomplete requires a url string as POST data")
             
         status = card.autocomplete(json_data, assistant, logger)
-        logger.info(f"requested card {card_id} autocompletion from {assistant_type}", user=token2user.get(token, None))
+        with auth_lock: creator = token2user.get(token, None)
+        logger.info(f"requested card {card_id} autocompletion from {assistant_type}", user=creator)
 
         return jsonify(status)
 
@@ -1558,7 +1565,8 @@ def serve(
         """
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
         status = exists(find_card(card_id), "Model card does not exist or has been deleted.").autorefine(assistant, logger)
-        logger.info(f"requested card {card_id} refinement from {assistant_type}", user=token2user.get(token, None))
+        with auth_lock: creator = token2user.get(token, None)
+        logger.info(f"requested card {card_id} refinement from {assistant_type}", user=creator)
         return jsonify(status)
 
     @app.route(domain_prefix+"/card/<int:card_id>/download/<string:fformat>", methods=["GET"])
