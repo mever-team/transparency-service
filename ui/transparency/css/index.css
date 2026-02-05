@@ -131,7 +131,6 @@ input {
   padding: 1.5rem;
   padding-top: 0rem;
   line-height: 1.2;
-  font-size: 1.0em;
   color: #EEEEEE;
   margin-bottom: 30px
 }
@@ -151,8 +150,8 @@ input {
 #resultsTable tbody tr {display: table; width: 100%; table-layout: fixed; text-align: center;}
 #resultsTable td { padding: 0px;}
 #resultsTable td a {padding: 20px;padding-bottom: 10px!important;}
+#resultsTable .row {display: flex; align-items: center;gap: 16px;}
 
-.row {display: flex; align-items: center;gap: 16px;}
 .quality-circle {width: 48px;height: 48px;}
 .quality-text {font-size: 12px;fill: #C8C8C8;text-anchor: middle;dominant-baseline: middle;}
 #resultsTable tbody {display: block; overflow-y: auto;}

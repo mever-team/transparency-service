@@ -39,7 +39,6 @@ function updateUsername() {
                 $('#account-btn').show();
                 $('#account-name').text(response.username);
 
-                // Clear any existing ping timer
                 clearTimeout(pingTimer);
 
                 // Schedule the next ping at half the expiration time
@@ -94,7 +93,7 @@ function updateUsername() {
 }
 
 // Ensure timer clears when logging out
-$('#logout-btn').on('click', function() {
+$('#logout-btn').on('click', ()=>{
     clearTimeout(pingTimer);
     token = "";
     document.cookie = "access_token=; path=/; max-age=0;";

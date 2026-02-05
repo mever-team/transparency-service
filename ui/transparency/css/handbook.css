@@ -1,0 +1,67 @@
+.handbook_section {color: #c8c8c8; display: flex;line-height: 20px!important;}
+.handbook_section img {
+    display: block;
+    width: 95%;
+    max-width:50rem;
+    margin: 1rem;
+    box-shadow: .2rem .2rem .2rem #aaaaaa;
+    border: .1rem solid #aaaaaa;
+}
+
+.handbook_body {
+    margin-left: 50px;
+    max-width: 800px;
+}
+.handbook_body a {color: #8ed7e2;}
+.handbook_body h1, .handbook_body h2 {text-align: center; scroll-margin-top: 2rem;}
+.handbook_body h2 {margin-top: 5rem; padding: 2rem 0;}
+
+/* Menu */
+.handbook_menu {
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    padding-top: 1rem;
+    border-right: 0.1rem solid #dcdcdc;
+    user-select: none;
+    -moz-user-select: none; /* Firefox */
+}
+.handbook_menu.hidden {margin: 0; min-width: 0; width: 0; visibility: hidden;}
+
+.hide-menu-btn {
+    content: '◄';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1F1F1F;
+    position: absolute;
+    right: -1rem;
+    top: 20%;
+    width: 1rem;
+    height: 2.5rem;
+    border-right: 0.1rem solid #dcdcdc;
+    border-top: 0.1rem solid #dcdcdc;
+    border-bottom: 0.1rem solid #dcdcdc;
+    border-top-right-radius: 0.3rem;
+    border-bottom-right-radius: 0.3rem;
+    cursor: pointer;
+    visibility: visible !important;
+}
+
+.menu_item1, .menu_item2 {cursor: pointer;border-radius: 0.2rem;}
+.menu_item1 {padding: .7rem 1rem;}
+.menu_item2 {padding: 0.3rem 0 0.3rem 2rem;}
+.menu_item1:hover, menu_item2:hover {filter: brightness(1.2);}
+.menu_item1.active, .menu_item2.active {color: #64DB96;}
+
+table.handbook-table {background-color: #363636;border: 0.1rem solid #b9e6ed;}
+table.handbook-table td, table.handbook-table th {padding: 0.5rem;}
+table.handbook-table tr:nth-child(even) {background: #444444;}
+table.handbook-table thead {background: #244f36;}
+table.handbook-table thead th {
+  font-size: 15px;
+  font-weight: bold;
+  color: #E6E6E6;
+  text-align: center;
+  padding: 1rem 0.5rem;
+}

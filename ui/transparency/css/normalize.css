@@ -3,7 +3,7 @@ audio, canvas, video {display: inline-block;}
 audio:not([controls]) {display: none;height: 0;}
 
 [hidden] {display: none;}
-html {font-family: sans-serif; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;}
+html {-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;}
 body {margin: 0;}
 a:focus {outline: thin dotted;}
 a:active, a:hover {outline: 0;}
@@ -41,7 +41,9 @@ textarea {overflow: auto;vertical-align: top;}
 table {border-collapse: collapse;border-spacing: 0;}
 
 
-body {"Noto Emoji", sans-serif;}
+@import url('https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap');
+@font-face {font-family: Hero_font;src: url('../../fonts/Hero.otf');}
+body {font-family: Hero_font, "Noto Emoji", sans-serif;}
 html, body {height: 100%; margin: 0; display: flex; flex-direction: column;}
 
 .footer_section {background: #252525;color: #dcdcdc;overflow-x: hidden;padding-bottom: 30px; padding-top: 30px;flex: 0 0 auto;}
@@ -71,7 +73,7 @@ html, body {height: 100%; margin: 0; display: flex; flex-direction: column;}
 .button:hover {filter: brightness(1.2);}
 a:hover {filter: brightness(1.2);}
 .warning.button, .warning.title {color: #F9AB49;}
-.success.button, .warning.title {color: #64DB96;}
+.success.button, .success.title {color: #64DB96;}
 .error {color:#F44336}
 .hidden {display: none;}
 #service-logo {color: #64DB96;float: left;text-align:center;font-size: 40px;margin-bottom: 10px;}
