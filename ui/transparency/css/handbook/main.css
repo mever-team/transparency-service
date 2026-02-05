@@ -1,14 +1,6 @@
-@font-face {
-    font-family: Hero_font;
-    src: url('../../fonts/Hero.otf');
-}
-
-
-body {
-  /* font-family: Hero_font, "Noto Emoji", sans-serif; */
-  display: flex;
-  flex-direction: column;
-} 
+@import url('https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap');
+@font-face {font-family: Hero_font;src: url('../../fonts/Hero.otf');}
+body {font-family: Hero_font, "Noto Emoji", sans-serif;}
 
 /* Header */
 .header_section {

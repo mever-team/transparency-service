@@ -1,4 +1,6 @@
-$(document).ready(function () {
+$(function () {
+    $('#logout-btn').click(() => { token = ""; document.cookie = "access_token=; path=/; max-age=0;"; window.location.href = 'index.html'; });
+    $('#loading').show();
     $.ajax({
         url: "/transparency/users",
         contentType: "application/json",
@@ -20,6 +22,7 @@ $(document).ready(function () {
                 <span style="float: right;color:#64DB96">registered</span></div>
             `);});
             $(".is-admin").show();
+            $('#loading').hide();
         },
         error: {}
     });

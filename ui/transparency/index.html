@@ -5,30 +5,30 @@
     <meta charset="utf-8">
     <meta name="description" content="Transparency services for AI models">
     <meta name="robots" content="index, follow"/>
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="author" content="laaposto">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="author" content="mever">
     <link rel="shortcut icon" href="img/favicon.png"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
     <link rel="stylesheet" href="css/foundation.css"/>
     <link rel="stylesheet" href="css/normalize.css"/>
-    <link rel="stylesheet" href="css/index/main.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
 </head>
 <body>
 
-<section class="header_section">
+<section class="header">
     <div class="row bigWidth">
         <div class="small-12 medium-12 large-12 columns">
             <div class="header_wrapper">
                 <div id="service-logo">Transparent AI</div>
-                <p id="whats-this" class="modal__trigger" data-modal="#modal_help">About</p>
-                <p id="register-btn" style="display: none;color: #F9AB49"><i class="fa-solid fa-key"></i><span class="fallback">🔐</span>&nbsp;Register</p>
-                <p id="login-btn" style="display: none;color: #F9AB49"><i class="fa-solid fa-lock"></i><span class="fallback">🔐</span>&nbsp;Login</p>
-                <p id="account-btn" style="display: none;color: #F9AB49"><i class="fa-solid fa-user"></i><span class="fallback">🔐</span>&nbsp;<span id="account-name">Account</span></p>
-                <p id="logout-btn" style="display: none; color: #F9AB49"><i class="fa-solid fa-right-from-bracket"></i><span class="fallback">🔓</span>&nbsp;Logout</p>
-                <p id="new_card" style="display: none"><i class="fa-solid fa-pen-to-square"></i><span class="fallback">✍️</span>&nbsp;New</p>
-                <span id="login-name" style="color:#EEEEEE;float:right;margin-top:12px;margin-right:15px"></span>
-                <span class="search_input"><input placeholder="Search for model name or text." type="text" id="topic"></span>
+                <p id="whats-this"   class="button modal__trigger" data-modal="#help">about</p>
+                <p id="register-btn" class="hidden warning button"><i class="fa-solid fa-key"></i>&nbsp;register</p>
+                <p id="login-btn"    class="hidden warning button"><i class="fa-solid fa-lock"></i>&nbsp;login</p>
+                <p id="account-btn"  class="hidden warning button"><i class="fa-solid fa-user"></i>&nbsp;<span id="account-name">account</span></p>
+                <p id="new_card"     class="hidden success button"><i class="fa-solid fa-pen-to-square"></i>&nbsp;new</p>
+                <p id="login-name"   style="hidden warning button"></p>
+                <span class="search_input">
+                    <input placeholder="Search for model name or text." type="text" id="topic">
+                </span>
             </div>
 
         </div>
@@ -39,84 +39,50 @@
         <div class="row">
             <div class="small-12 medium-12 large-12 columns">
                 <div class="search">
-<!--                    <div class="dropdown-filter" style="text-align:center;margin-top:10px">-->
-<!--                        <span style="font-weight: bold;color:#7C7C7C;"><span id="search_results_wrapper"></span> <span id="search_results"></span></span>-->
-<!--                        <br>-->
-<!--                        <button class="dropdown-btn" style="display:none">Add text filter ⏷</button>-->
-<!--                        <div class="dropdown-content">-->
-<!--                            <a href="#" style="display: flex"><div style="width:120px">&#45;&#45;more</div> Shows more results.</a>-->
-<!--                            <a href="#" style="display: flex"><div style="width:120px">&#45;&#45;drafts</div> Also search for drafts (cards without version).</a>-->
-<!--                            <a href="#" style="display: flex"><div style="width:120px">&#45;&#45;info 70</div> Only cards with at least the given info level.</a>-->
-<!--                            <a href="#" style="display: flex"><div style="width:120px">&#45;&#45;by admin</div> Only cards created by a specific user.</a>-->
-<!--                        </div>-->
-<!--                    </div>-->
                     <div class="main_search_wrapper_results">
-                        <div class="loading-overlay" id="loading">
-                            <div class="spinner"></div>
-                            <p>Loading...</p>
-                        </div>
-                    <table id="resultsTable" border="0" cellpadding="5" cellspacing="0" style="margin-bottom:12px;">
-                          <thead style="display:none">
-                                <tr>
-                                    <th>Completion</th>
-                                    <th>Name</th>
-                                    <th>
-                                        Task
-                                        <span id="taskFiltersBtn" class="th-filter" onclick="document.getElementById('taskFilters').classList.toggle('hidden')">▾</span>
-                                        <div id="taskFilters" class="filter-options hidden"></div>
-                                    </th>
-                                    <th>Type
-                                        <span id="typeFiltersBtn" class="th-filter" onclick="document.getElementById('typeFilters').classList.toggle('hidden')">▾</span>
-                                        <div id="typeFilters" class="filter-options hidden"></div>
-                                    </th>
-                                    </th>
-                                </tr>
-                            </thead>
-                        <tbody></tbody>
-                    </table>
+                        <div class="loading-overlay" id="loading"><div class="spinner"></div><p>Loading...</p></div>
                     </div>
-
+                    <table id="resultsTable"><tbody></tbody></table>
                 </div>
-
             </div>
         </div>
     </div>
 </section>
 
 <section class="footer_section">
-    <div class="row bigWidth" style="margin-bottom:5px">
-        <img style="width: 80px;" src="img/logo.png">
-        <img style="width: 200px;" src="img/logo_FoundedbyEU.png">
+    <div class="row bigWidth footer_section_icons">
+        <img class="footer_section_logo" src="img/logo.png">
+        <img class="footer_section_eu" src="img/logo_FoundedbyEU.png">
     </div>
-    <div class="row bigWidth">
+    <div class="row bigWidth footer_section_text">
         Empowering media professionals against disinformation.
         This project has received funding from the European Union’s Horizon Europe research and innovation programme
         under grant agreement No. 101135437
     </div>
 </section>
 
-<div id="login-confirm-screen" class="login-confirm-screen">
-    <div class="login-confirm-content">
-        <h2 style="color:#64DB96;margin-bottom:20px">Login</h2>
+<div id="login" class="popup">
+    <div class="popup_content">
+        <h2 class="success title">Login</h2>
         <p>Grants access to additional services:</p>
         <ul style="text-align:left;margin-bottom:40px"><li>Create and edit model cards.</li><li>Aid by assistants.</li><li>Python integration.</li></ul>
-        <p id="login-error" style="color:#F44336"></p>
+        <p id="login-error" class="error"></p>
         <label for="username">Username</label><br />
         <input type="text" id="username" name="username" /><br><br>
         <label for="password">Password</label><br />
         <input type="password" id="password" name="password" /><br><br><br><br>
         <div class="buttons">
-            <button id="login-confirm-btn" style="background-color: #64DB96; color: #1F1F1F;border:0px!important;width:120px"><i class="fa-solid fa-lock"></i><span class="fallback">🔐</span> Login</button>
-            <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:120px" id="cancel-login-btn">✖ Cancel</button>
+            <button id="login-confirm-btn" class="success button"><i class="fa-solid fa-lock"></i>&nbsp;Login</button>
+            <button class="button" id="cancel-login-btn">✖&nbsp;Cancel</button>
         </div>
     </div>
 </div>
 
-<div id="register-confirm-screen" class="login-confirm-screen">
-    <div class="login-confirm-content">
-        <h2 style="color:#64DB96;margin-bottom:20px">Register</h2>
+<div id="register" class="popup">
+    <div class="popup_content">
+        <h2 class="success title">Register</h2>
         <p>Create an account to log in. Wait for approval by the administrator.</p>
-        <p id="register-error" style="color:#F44336"></p>
+        <p id="register-error" class="error"></p>
         <label for="username">Username</label><br />
         <input type="text" id="register-username" name="register-username" /><br><br>
         <label for="username">Email</label><br />
@@ -126,68 +92,44 @@
         <label for="password">Verify password</label><br />
         <input type="password" id="register-password-verify" name="register-password-verify" /><br><br><br><br>
         <div class="buttons">
-            <button id="register-confirm-btn" style="background-color: #64DB96; color: #1F1F1F;border:0px!important;width:120px"><i class="fa-solid fa-key"></i><span class="fallback">🔐</span> Send</button>
-            <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:120px" id="cancel-register-btn">✖ Cancel</button>
+            <button id="register-confirm-btn" class="success button"><i class="fa-solid fa-key"></i>&nbsp;Send</button>
+            <button id="cancel-register-btn" class="button">✖ Cancel</button>
         </div>
     </div>
 </div>
 
-<div id="modal_help" class="modal modal__bg">
+<div id="help" class="modal modal__bg">
     <div class="modal__dialog" style="width: 85%;">
         <div class="modal__content">
         <div class="modal-cards">
-
             <div class="modal-card">
-                <h2>A repository of AI <b>model cards</b></h2>
+                <h2>A repository of AI models</h2>
                 <br>-Search for model names or keywords.
-                <br>-Log in to create new cards.
-                <br>-Import and simplify with agentic assistants.
+                <br>-Log in to enter new models.<br>
                 <img style="width: 150px; flex-shrink: 0;" src="img/create_img.png">
             </div>
 
             <div class="modal-card">
-                <h2>What's a model card?</h2>
-                <p>
-                    <br>
-                    A document describing the capabilities, usage, limits, risks, and repercussions of AI models.
-                    <br>&nbsp;
-                </p>
+                <h2>It contains AI model cards</h2>
+                <p><br>These describe AI capabilities, usage, limits, risks, and repercussions.<br>&nbsp;</p>
                 <img style="width: 150px; flex-shrink: 0;" src="img/manage_img.png">
             </div>
 
             <div class="modal-card">
                 <h2>Why is it important?</h2>
-                <p style="margin: 0;">
-                    <br>
-                    It makes the described AI more transparent,
-                    promoting responsible real-world use.
-                </p>
+                <p style="margin: 0;"> <br>It promotes transparent AI and responsible real-world use.</p>
                 <img style="width: 200px; flex-shrink: 0;" src="img/transparency_img.png">
             </div>
-
-
-
-
-
-<!--                          <div class="modal-card image-card">-->
-<!--                            <h2>🖼️ Visual overview</h2>-->
-<!--                            <img src="img/aicode.drawio.png" alt="Transparency services" style="max-width:100%; height:auto; display:block; margin:auto;">-->
-<!--                          </div>-->
-
         </div>
-
-<!--        <button id="dontShowAgain">OK – don't show this</button>-->
-
-        <!-- modal close button -->
-        <div href="" class="modal__close demo-close">
+        <div href="" class="modal__close modal-close">
             <svg class="w-4 h-4" viewBox="0 0 24 24">
                 <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
                 <path d="M0 0h12v12h-12z" fill="none"/>
             </svg>
         </div>
-    <div class="modal-learn-more">
-        <a href="handbook.html#introduction" target="_blank">Learn more</a>
-    </div>
+        <div>
+            <a href="handbook.html#introduction" class="button success" target="_blank">Learn more in our handbook</a>
+        </div>
     </div>
 
 </div>
@@ -195,7 +137,6 @@
 <!-- JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="js/index/bearer.js"></script>
-<script src="js/index/modal.js"></script>
 <script src="js/index/main.js"></script>
 </body>
 </html>

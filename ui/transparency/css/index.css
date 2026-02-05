@@ -1,0 +1,174 @@
+.search {
+    position: relative;
+    z-index: 2;
+}
+
+.search h1 {
+    font-size: 60px;
+    line-height: 60px;
+    font-weight: 700;
+    text-align: center;
+    color: #1F1F1F;
+    margin-bottom: 0;
+}
+
+
+.search_wrapper {width: 100%;position: relative;}
+.search_wrapper::after, .search_wrapper::before {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    bottom: 0;
+}
+
+input {
+    padding: 11px 20px;
+    width: 100%;
+    font-size: 20px;
+    line-height: 28px;
+    border: 0;
+    background: #EEEEEE;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 14px 24px rgba(50, 48, 58, .25);
+    box-shadow: 0 14px 24px rgba(50, 48, 58, .25);
+    outline: 0;
+    color: #1F1F1F;
+}
+
+.search_results_button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    cursor: pointer;
+    letter-spacing: normal;
+    display: block;
+    text-decoration: none;
+    font-size: 20px;
+    float: right;
+    transform: translateY(0);
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+    transition: transform 200ms ease-in, box-shadow 200ms ease-in;
+}
+
+.search_results_button:hover {transform: translateY(-2px);}
+.search_results_button.large {
+    float: none;
+    max-width: 340px;
+    margin: 0 auto;
+    border-radius: 20px;
+    margin-bottom: 25px;
+}
+
+.modal {
+    will-change: visibility, opacity;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 1000;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.modal--active {visibility: visible;opacity: 1;}
+.modal__bg {background: rgba(0, 0, 0, 0.5);}
+.modal__dialog {width: 500px; padding: 1.2rem;}
+.modal__content {
+    will-change: transform, opacity;
+    position: relative;
+    padding: 2.4rem;
+    background: #1F1F1F;
+    color: #dcdcdc;
+    background-clip: padding-box;
+    box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+    padding-top: 60px;
+}
+.modal__content--active {opacity: 1;}
+.modal__close {z-index: 1100;cursor: pointer;}
+.modal__trigger {-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none; transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);}
+.modal__trigger--active {z-index: 10;}
+.modal__content a {color: #64DB96}
+.modal-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 1.2rem;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.modal-close svg {
+    width: 24px;
+    fill: #1F1F1F;
+    pointer-events: none;
+    vertical-align: top;
+    padding: 5px;
+}
+.modal-close:hover {background: rgba(255, 255, 255, 0.36);}
+
+:focus {outline: none;}
+.modal-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.modal-card {
+  margin-top: 0px;
+  padding: 1.5rem;
+  padding-top: 0rem;
+  line-height: 1.2;
+  font-size: 1.0em;
+  color: #EEEEEE;
+  margin-bottom: 30px
+}
+.modal-card h2 {margin: 0 0 8px 0;;}
+.modal-card p{text-align: justify-left;margin: 0;}
+.modal-card img {float: left;width: 150px;flex-shrink: 0;margin: 0 16px 16px 0;}
+.modal-action-card {text-align: center;}
+
+
+#resultsTable {
+    margin-top:10px;
+    display:none;
+    border-collapse: collapse;
+    width: 100%;
+}
+#resultsTable thead,
+#resultsTable tbody tr {display: table; width: 100%; table-layout: fixed; text-align: center;}
+#resultsTable td { padding: 0px;}
+#resultsTable td a {padding: 20px;padding-bottom: 10px!important;}
+
+.row {display: flex; align-items: center;gap: 16px;}
+.quality-circle {width: 48px;height: 48px;}
+.quality-text {font-size: 12px;fill: #C8C8C8;text-anchor: middle;dominant-baseline: middle;}
+#resultsTable tbody {display: block; overflow-y: auto;}
+
+.search_section {
+    flex: 1 0 auto;
+    min-height: 400px;
+    display: flex;
+    box-sizing: border-box
+    position: relative;
+    z-index: 3;
+}
+i.fa-solid:before,
+i.fa-regular:before,
+i.fa-brands:before {
+    /* If the icon fails, content becomes "" or "none" */
+}
+
+.inline-date {all: unset;font: inherit;color: inherit;background: inherit;border: none;padding: 0;margin: 0;line-height: inherit; display: inline;}

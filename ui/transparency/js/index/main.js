@@ -1,15 +1,20 @@
 $(function () {
     $('#loading').show();
-    const lastSearch = localStorage.getItem("last_search_term") || "";
-    $("#topic").val(lastSearch);
+    $("#topic").val(localStorage.getItem("last_search_term") || "");
     autocomplete_populate();
     $("#topic").trigger("keyup");
-    if (localStorage.getItem('modalDismissed') !== 'true')
-        $('.modal__trigger[data-modal="#modal_help"]').click();
-
-    $('body').on('click', '.demo-close', function () {
-        localStorage.setItem('modalDismissed', 'true');
+    if(localStorage.getItem('modalDismissed') !== 'true') $('.modal__trigger[data-modal="#modal_help"]').click();
+    $('body').on('click', '.demo-close', ()=>{localStorage.setItem('modalDismissed', 'true');});
+    $("#username, #password").on("keydown", (e)=>{
+        if ((e.key && e.key !== "Enter") && e.which !== 13 && e.keyCode !== 13) return;
+        e.preventDefault();
+        $("#login-confirm-btn").trigger("click");
     });
+    $('#login-btn').click(() => { $('#login-error').text(""); $('#login').addClass('show'); });
+    $('#cancel-login-btn').click(() => { $('#login-error').text(""); $('#login').removeClass('show'); });
+    $('#register-btn').click(() => { $('#register-error').text(""); $('#register').addClass('show'); });
+    $('#cancel-register-btn').click(() => { $('#register-error').text(""); $('#register').removeClass('show'); });
+    $('#account-btn').click(() => { window.location.href = 'account.html'; });
     $('#new_card').click(() => {
         $.ajax({
             url: "/transparency/card",
@@ -21,22 +26,11 @@ $(function () {
             error: () => alert("Failed to create a new model card. Please refresh the page and try again.")
         });
     });
-
-    $(document).on('click', '.dropdown-btn', function(e) {
-        e.stopPropagation();
-        $(this).parent().toggleClass('show');
-    });
-
-    $(document).on('click', function() {
-        $('.dropdown-filter').removeClass('show');
-    });
-
 });
 
 function autocomplete_populate() {
     let lastUpdate = 0, pending = null, first = true, delay = 150;
     const $topic = $("#topic"), $tbody = $("#resultsTable tbody");
-
     function request() {
         const q = $topic.val().trim();
         if (first) $('#loading').show();
@@ -44,77 +38,76 @@ function autocomplete_populate() {
             url: "/transparency/cards",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify({ query: q, type: typeFilters, task: taskFilters }),
+            data: JSON.stringify({ query: q }),
             success: r => {
                 $('#loading').hide();
                 const results = r.results || [];
-                $('#search_results_wrapper').text(q ? "Showing" : "Showing");
+
+                $('#search_results_wrapper').text("Showing");
                 $('#search_results').text(results.length + " of " + (r.total || 0));
                 $tbody.empty();
+
                 if (results.length)
                     results.forEach(it => {
-                        const name = it.name.replace(new RegExp("(" + q + ")", "ig"), "<strong style='color:#79CFDC'>$1</strong>");
+                        const name = it.name.replace(new RegExp("(" + q + ")", "ig"),"<strong style='color:#79CFDC'>$1</strong>");
+                        const type = (it.type || it.task || "").toLowerCase();
+                        const task = it.task ? " for " + it.task.toLowerCase() : "";
                         $tbody.append(`
-                            <tr class="search_results_button">
-                                <td><a style="display:block;width:100%;height:100%;text-decoration:none;text-align:left" href="model_card.html?id=${it.id}">
-                                    <div class="row">
-                                      <div>
-                                        <svg class="quality-circle" viewBox="0 0 36 36">
-                                          <circle cx="18" cy="18" r="18" fill="none" stroke="#434343" stroke-width="3"/>
-                                          <circle cx="18" cy="18" r="18" fill="none" stroke="${it.quality>0.7?'#6CC06B':it.quality>0.4?'#FBC483':'#F87F76'}" stroke-width="3"
-                                            stroke-dasharray="100" stroke-dashoffset="${100 - Math.round(it.quality * 100)}"/>
-                                          <text x="18" y="14" class="quality-text"> ${Math.round(it.quality * 100)}%</text>
-                                          <text x="18" y="24" class="quality-text">info</text>
-                                        </svg>
-                                      </div>
-                                      <div>
-                                        <span style="display:block;color:#EEE">${name}</span>
-                                        <span style="font-size:13px;color:#F9AB49">
-                                          ${it.desc ? "" : "DRAFT (no version)"}
-                                        </span>
-                                        <span style="font-size:13px;color:#79CFDC"> ${(it.desc||"") + (it.creator?" by " + it.creator:"")} </span>
-                                        <span style="font-size:13px;color:#79CFDC"> ${
-                                            ((it.type||it.task)?" --- ":"")
-                                            + (it.type.toLowerCase()||"")
-                                            + (it.task?" for " + it.task.toLowerCase(): "")}
-                                        </span>
-                                      </div>
-                                    </div>
-
-                                    <div style="font-size:13px;color:#C8C8C8;margin-top:7px;text-align:left">
-                                        ${it.description || ""}
-                                    </div>
-                                </a></td>
-                            </tr>`);
+<tr class="search_results_button">
+<td>
+<a style="display:block;width:100%;height:100%;text-decoration:none;text-align:left" href="model_card.html?id=${it.id}">
+<div class="row">
+<div>
+<svg class="quality-circle" viewBox="0 0 36 36">
+<circle cx="18" cy="18" r="18" fill="none" stroke="#434343" stroke-width="3"/>
+<circle cx="18" cy="18" r="18" fill="none"
+stroke="${it.quality>0.7?'#6CC06B':it.quality>0.4?'#FBC483':'#F87F76'}"
+stroke-width="3"
+stroke-dasharray="100"
+stroke-dashoffset="${100 - Math.round(it.quality * 100)}"/>
+<text x="18" y="14" class="quality-text">${Math.round(it.quality * 100)}%</text>
+<text x="18" y="24" class="quality-text">info</text>
+</svg>
+</div>
+<div>
+<span style="display:block;color:#EEE">${name}</span>
+<span style="font-size:13px;color:#F9AB49">${it.desc ? "" : "DRAFT (no version)"}</span>
+<span style="font-size:13px;color:#79CFDC">${(it.desc || "") + (it.creator ? " by " + it.creator : "")}</span>
+<span style="font-size:13px;color:#79CFDC">${type ? " --- " + type + task : ""}</span>
+</div>
+</div>
+<div style="font-size:13px;color:#C8C8C8;margin-top:7px;text-align:left">
+${it.description || ""}
+</div>
+</a>
+</td>
+</tr>`);
                     });
-                else
-                    $tbody.append(`<tr><td colspan="3" style="text-align:center;color:#EEEEEE;font-weight:bold;font-size:22px;">No matching results</td></tr>`);
+                else $tbody.append(`<tr><td colspan="3" style="text-align:center;color:#EEEEEE;font-weight:bold;font-size:22px;">No matching results</td></tr>`);
                 $("#resultsTable").show();
-                localStorage.setItem("last_search_term", $("#topic").val());
+                localStorage.setItem("last_search_term", q);
                 first = false;
             },
-            error: () => { $('#loading').hide(); first = false; console.error("Error fetching results"); }
+            error: () => {
+                $('#loading').hide();
+                first = false;
+                console.error("Error fetching results");
+            }
         });
     }
 
     $(document).on('click', '.dropdown-content a', function (e) {
         e.preventDefault();
         const text = $(this).children().first().text().trim().toLowerCase();
-        const tag = `${text}`;
         const $input = $('#topic');
-        const currentVal = $input.val();
-
-        // Only add tag if not already present
-        if (!currentVal.includes(tag)) {
-            $input.val(currentVal + (currentVal ? ' ' : '') + tag + ' ');
-        }
-
+        if (!$input.val().includes(text))
+            $input.val(($input.val() ? $input.val() + ' ' : '') + text + ' ');
         $input.focus();
         lastUpdate = Date.now();
         request();
     });
 
-    $topic.on("keyup", () => {
+    $topic.on("keyup", ()=>{
         const now = Date.now();
         if (now - lastUpdate < delay && !first) {
             clearTimeout(pending);
@@ -126,194 +119,44 @@ function autocomplete_populate() {
     });
 }
 
-
-document.getElementById('login-confirm-btn').onclick = function () {
-    let json = {
-        "password": document.getElementById('username').value,
-        "username": document.getElementById('password').value
-    }
+$('#login-confirm-btn').click(()=>{
     $.ajax({
-        url: "/transparency/login",
-        method: "POST",
-        contentType: "application/json",
-        dataType: "json",
-        data: JSON.stringify(json),
+        url: '/transparency/login',
+        method: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({username: $('#username').val(), password: $('#password').val()}),
         success: function (response) {
             token = response.token;
             updateUsername();
-            document.getElementById('login-confirm-screen').style.display = 'none';
+            $('#login').removeClass('show');
         },
-        error: function (xhr, status, error) {
-            token = "";
+        error: function (xhr) {
+            token = '';
             updateUsername();
-            try {
-                $('#login-error').text("Failed to login: "+xhr.responseJSON.error);
-            } catch (e) {
-                $('#login-error').text(xhr||"Server is offline");
-            }
+            if (xhr.responseJSON && xhr.responseJSON.error) $('#login-error').text('Failed to login: ' + xhr.responseJSON.error);
+            else $('#login-error').text('Server is offline');
         }
     });
-};
-
-
-document.getElementById('logout-btn').onclick = function () {
-    token = "";
-    updateUsername();
-};
-document.getElementById('login-btn').onclick = function () {
-    document.getElementById('login-error').text = "";
-    document.getElementById('login-confirm-screen').style.display = 'flex';
-};
-document.getElementById('cancel-login-btn').onclick = function () {
-    document.getElementById('login-error').text = "";
-    document.getElementById('login-confirm-screen').style.display = 'none';
-};
-document.getElementById('register-btn').onclick = function () {
-    document.getElementById('register-error').text = "";
-    document.getElementById('register-confirm-screen').style.display = 'flex';
-};
-document.getElementById('cancel-register-btn').onclick = function () {
-    document.getElementById('register-error').text = "";
-    document.getElementById('register-confirm-screen').style.display = 'none';
-};
-document.getElementById('account-btn').onclick = function () {
-    window.location.href = 'account.html';
-};
-
-document.addEventListener("DOMContentLoaded", () => {
-    const username = document.getElementById("username");
-    const password = document.getElementById("password");
-    const loginBtn = document.getElementById("login-confirm-btn");
-
-    function submitOnEnter(event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            loginBtn.click();
-        }
-    }
-    username.addEventListener("keydown", submitOnEnter);
-    password.addEventListener("keydown", submitOnEnter);
 });
 
-
-
-function toggleExtraContent(buttonRow) {
-    const extraContent = buttonRow.nextElementSibling.querySelector('.extra_content');
-    const innerContent = buttonRow.nextElementSibling.querySelector('.extra_content_inner');
-
-    if (extraContent.classList.contains('open')) {
-        extraContent.classList.remove('open');
-        extraContent.style.maxHeight = '0';
-    } else {
-        const contentHeight = innerContent.scrollHeight;
-        extraContent.style.maxHeight = contentHeight + 20 + 'px';
-        extraContent.classList.add('open');
-    }
-}
-
-
-fetch('/transparency/options/overview/task')
-    .then(res => res.json())
-    .then(data => {
-        const container = document.getElementById("taskFilters");
-        const cancelAll = document.createElement("span");
-        cancelAll.textContent = '❌ Remove All Filters'
-        cancelAll.classList.add("filter-cancel");
-        cancelAll.id = 'taskFiltersCancel';
-        container.appendChild(cancelAll);
-
-        data.forEach(taskOption => {
-            const span = document.createElement("span");
-            if (taskOption.startsWith("#")) {
-                span.textContent = taskOption.replace("#", "");
-                span.classList.add("filter-optgroup");
-            }
-            else{
-                span.textContent = taskOption;
-                span.classList.add("filter-option");
-                span.id = taskOption;
-            }
-            container.appendChild(span);
-        });
-    })
-    .catch(err => {console.error(err);}
-);
-
-
-let taskFilters = [];
-let typeFilters = [];
-fetch('/transparency/options/overview/type')
-    .then(res => res.json())
-    .then(data => {
-        const container = document.getElementById("typeFilters");
-        const cancelAll = document.createElement("span");
-        cancelAll.textContent = '❌ Remove All Filters'
-        cancelAll.classList.add("filter-cancel");
-        cancelAll.id = 'typeFiltersCancel';
-        container.appendChild(cancelAll);
-        data.forEach(taskOption => {
-            const span = document.createElement("span");
-            if (taskOption.startsWith("#")) {
-                span.textContent = taskOption.replace("#", "");
-                span.classList.add("filter-optgroup");
-            }
-            else{
-                span.textContent = taskOption;
-                span.classList.add("filter-option");
-                span.id = taskOption;
-            }
-            container.appendChild(span);
-        });
-
-    })
-    .catch(err => {console.error(err);}
-);
-
-
-document.addEventListener("click", (e) => {
-    const filters = document.getElementById("taskFilters");
-    const toggle = document.getElementById("taskFiltersBtn");
-    if (!filters.contains(e.target) && !toggle.contains(e.target)) filters.classList.add("hidden");
+$('.modal__trigger').on('click', function () {
+    const target = $(this).data('modal');
+    $(target)
+        .addClass('modal--active')
+        .find('.modal__content')
+        .addClass('modal__content--active');
 });
-
-document.addEventListener("click", (e) => {
-    const filters = document.getElementById("typeFilters");
-    const toggle = document.getElementById("typeFiltersBtn");
-    if (!filters.contains(e.target) && !toggle.contains(e.target)) filters.classList.add("hidden");
+$('.modal-close').on('click', function () {
+    $(this).closest('.modal')
+        .removeClass('modal--active')
+        .find('.modal__content')
+        .removeClass('modal__content--active');
 });
-
-document.getElementById("taskFilters").addEventListener("click", (e) => {
-    if (!e.target.id) return;
-    if (e.target.id.includes("Cancel")) {
-        taskFilters = [];
-        document.getElementById("taskFiltersBtn").classList.remove("active");
-        const children = Array.from(document.getElementById("taskFilters").children);
-        children.forEach(child => child.classList.remove("active"));
-        autocomplete_populate();
-        return;
-    }
-    if(taskFilters.includes(e.target.id)) taskFilters.splice(taskFilters.indexOf(e.target.id), 1);
-    else taskFilters.push(e.target.id);
-    document.getElementById(e.target.id).classList.toggle("active");
-
-    if (taskFilters.length) document.getElementById("taskFiltersBtn").classList.add("active");
-    else document.getElementById("taskFiltersBtn").classList.remove("active");
-    autocomplete_populate();
-});
-
-
-document.getElementById("typeFilters").addEventListener("click", (e) => {
-    if (!e.target.id) return;
-    if (e.target.id.includes("Cancel")) {
-        typeFilters = [];
-        document.getElementById("typeFiltersBtn").classList.remove("active");
-        const children = Array.from(document.getElementById("typeFilters").children);
-        children.forEach(child => child.classList.remove("active"));
-        return;
-    }
-    if(typeFilters.includes(e.target.id)) typeFilters.splice(typeFilters.indexOf(e.target.id), 1);
-    else typeFilters.push(e.target.id);
-    document.getElementById(e.target.id).classList.toggle("active");
-    if(typeFilters.length) document.getElementById("typeFiltersBtn").classList.add("active");
-    else document.getElementById("typeFiltersBtn").classList.remove("active");
+$('.modal').on('click', function (e) {
+    if (e.target !== this) return;
+    $(this)
+        .removeClass('modal--active')
+        .find('.modal__content')
+        .removeClass('modal__content--active');
 });
