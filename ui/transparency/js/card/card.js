@@ -13,20 +13,14 @@ function error_handler(xhr, status, error) {
     try {
         const resp = JSON.parse(xhr.responseText);
         error_message(resp.error || error);
-    } catch (e) {
-        error_message("");
     }
+    catch(e) { error_message(""); }
 }
 
 // Close confirmation modal
 document.getElementById('cancel-delete-btn').onclick = function () {document.getElementById('delete-confirm-screen').style.display = 'none';};
-document.getElementById('manual-fill-card').onclick = function () {document.getElementById('empty_card_screen').style.display = 'none';};
 document.getElementById('cancel-autocomplete-btn').onclick = function () {document.getElementById('modal-autocomplete-screen').style.display = 'none';};
 document.getElementById('cancel-refine-btn').onclick = function () {document.getElementById('modal-refine-screen').style.display = 'none';};
-document.getElementById('assistant-fill-card').onclick = function () {
-    document.getElementById('empty_card_screen').style.display = 'none';
-    document.getElementById('modal-autocomplete-screen').style.display = 'flex';
-};
 
 $(document).on("click", ".naccs .menu div", function () {
     let numberIndex = $(this).index();
@@ -150,11 +144,8 @@ $(document).ready(function () {
                                             const $option = $("<option>").val(opt).text(opt);
                                             if (field.value === opt) $option.prop("selected", true);
                                             // Append to optgroup if it exists, otherwise directly to select
-                                            if ($currentGroup) {
-                                                $currentGroup.append($option);
-                                            } else {
-                                                $fieldValue.append($option);
-                                            }
+                                            if ($currentGroup) $currentGroup.append($option);
+                                            else $fieldValue.append($option);
                                         }
                                     });
                                 } else if (field.type === 'date') {
@@ -242,14 +233,15 @@ $(document).ready(function () {
             error: function (xhr, status, error) {
                 try {
                     const resp = JSON.parse(xhr.responseText);
-
-                    if (interval) {
-                        clearInterval(interval);
-                    }
+                    if (interval) clearInterval(interval);
                     $('#model-title').remove();
                     $('#loading').hide();
-                    $('.nacc').append('<l1 class="empty_card">⚠️' + (resp.error || error) + '</l1>')
+                    $('#loading').hide();
+                    $('#share-options').hide();
+                    $('#edit-options').hide();
+                    $('#deleteCard').hide();
                     $('.example_button').css('pointer-events', 'none');
+                    if(resp.error || error) error_handler(xhr, status, error);
                 } catch (e) {
                     error_message("");
                 }

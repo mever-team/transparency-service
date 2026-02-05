@@ -11,12 +11,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
     <link rel="stylesheet" href="css/foundation.css"/>
     <link rel="stylesheet" href="css/normalize.css"/>
-    <link rel="stylesheet" href="css/card/main.css"/>
+    <link rel="stylesheet" href="css/card.css"/>
 </head>
 <body>
-<div id="cover"></div>
 <main>
-    <section class="header_section">
+    <section class="header">
         <div class="row bigWidth">
             <div class="small-12 medium-12 large-12 columns">
                 <div class="header_wrapper" style="display:inline;float:left">
@@ -35,21 +34,21 @@
                     </div>
                 </div>
 
-                <div style="float:right;margin-top:7px;margin-left:4px;position:relative;">
+                <div style="float:right;margin-top:7px;margin-left:4px;position:relative;" id="share-options">
                     <div class="example_button" id="downloadCard"
                          style="float:left;background-color:#1F1F1F;border: solid 1px #434343;color:#EEEEEE;width:auto;padding-left:4px;padding-right:4px;">
-                        <span class="btn-text"><i class="fa-solid fa-bullhorn"></i><span class="fallback">📣</span>&nbsp;&nbsp;Share ▾</span>
+                        <span class="btn-text"><i class="fa-solid fa-bullhorn"></i>&nbsp;&nbsp;Share ▾</span>
                     </div>
                     <div id="downloadDropdown" class="download-dropdown-menu" style="display:none;">
-                        <div class="download-dropdown-item" data-format="pdf"><i class="fa-solid fa-file-pdf"></i><span class="fallback">📄</span>&nbsp;&nbsp;PDF</div>
-                        <div class="download-dropdown-item" data-format="json"><i class="fa-solid fa-code"></i><span class="fallback">{}</span>&nbsp;JSON</div>
-                        <div class="download-dropdown-item" data-format="markdown"><i class="fa-brands fa-markdown"></i><span class="fallback">#</span>&nbsp;Markdown</div>
+                        <div class="download-dropdown-item" data-format="pdf"><i class="fa-solid fa-file-pdf"></i>&nbsp;&nbsp;PDF</div>
+                        <div class="download-dropdown-item" data-format="json"><i class="fa-solid fa-code"></i>&nbsp;JSON</div>
+                        <div class="download-dropdown-item" data-format="markdown"><i class="fa-brands fa-markdown"></i>&nbsp;Markdown</div>
                         <hr>
-                        <div class="share-btn"><a id="share-x" target="_blank" rel="noopener"><i class="fa-brands fa-x-twitter"></i><span class="fallback">🐦&nbsp;X</span>&nbsp;(Twitter)</a></div>
-                        <div class="share-btn"><a id="share-facebook" target="_blank" rel="noopener"><i class="fa-brands fa-facebook"></i><span class="fallback">📘</span>&nbsp;Facebook</a></div>
-                        <div class="share-btn"><a id="share-linkedin" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i><span class="fallback">💼</span>&nbsp;LinkedIn</a></div>
-                        <div class="share-btn"><a id="share-whatsapp" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i><span class="fallback">💬</span>&nbsp;WhatsApp</a></div>
-                        <div class="share-btn"><a id="share-telegram" target="_blank" rel="noopener"><i class="fa-brands fa-telegram"></i><span class="fallback">✈️</span>&nbsp;Telegram</a></div>
+                        <div class="share-btn"><a id="share-x" target="_blank" rel="noopener"><i class="fa-brands fa-x-twitter"></i>&nbsp;(Twitter)</a></div>
+                        <div class="share-btn"><a id="share-facebook" target="_blank" rel="noopener"><i class="fa-brands fa-facebook"></i>&nbsp;Facebook</a></div>
+                        <div class="share-btn"><a id="share-linkedin" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i>&nbsp;LinkedIn</a></div>
+                        <div class="share-btn"><a id="share-whatsapp" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i>&nbsp;WhatsApp</a></div>
+                        <div class="share-btn"><a id="share-telegram" target="_blank" rel="noopener"><i class="fa-brands fa-telegram"></i>&nbsp;Telegram</a></div>
                     </div>
                 </div>
 
@@ -57,21 +56,21 @@
                     <div style="float:right;margin-left:4px;position:relative;">
                         <div class="example_button" id="assistCard"
                              style="float:left;background-color:#1F1F1F;border: solid 1px #434343;color:#EEEEEE;width:auto;padding-left:4px;padding-right:4px;">
-                            <span class="btn-text"><i class="fa-solid fa-robot"></i><span class="fallback">🤖</span>&nbsp;Actions ▾</span>
+                            <span class="btn-text"><i class="fa-solid fa-robot"></i>&nbsp;Actions ▾</span>
                         </div>
                         <div id="assistDropdown" class="download-dropdown-menu" style="display:none;">
-                            <div class="download-dropdown-item modal_autocomplete" data-format="pdf"><i class="fa-solid fa-folder-open"></i><span class="fallback">📂</span>&nbsp;Import</div>
-                            <div class="download-dropdown-item modal_refine" data-format="json"><i class="fa-regular fa-gem"></i><span class="fallback">💠</span>&nbsp;Refine</div>
+                            <div class="download-dropdown-item modal_autocomplete" data-format="pdf"><i class="fa-solid fa-folder-open"></i>&nbsp;Import</div>
+                            <div class="download-dropdown-item modal_refine" data-format="json"><i class="fa-regular fa-gem"></i>&nbsp;Refine</div>
                             <div class="download-dropdown-item" id="cardClone">
-                                <span class="btn-text"><i class="fa-solid fa-copy"></i><span class="fallback">🗐</span>&nbsp;Clone</span>
+                                <span class="btn-text"><i class="fa-solid fa-copy"></i>&nbsp;Clone</span>
                             </div>
                         </div>
                     </div>
                     <div class="example_button" id="saveJson" style="background-color: #64DB96;width: 80px;display:none">
-                        <span class="btn-text"><i class="fa-solid fa-floppy-disk"></i><span class="fallback">💾</span>&nbsp;Save</span>
-                        <span class="btn-confirmation"><i class="fa-solid fa-check"></i><span class="fallback">✔</span>&nbsp;Saved</span>
+                        <span class="btn-text"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Save</span>
+                        <span class="btn-confirmation"><i class="fa-solid fa-check"></i>&nbsp;Saved</span>
                     </div>
-                    <div class="example_button" id="deleteCard" style="width: 80px; background-color:#1F1F1F;border: solid 1px #434343;color:#F44336"><i class="fa-solid fa-trash"></i><span class="fallback">🗑️</span> Delete</div>
+                    <div class="example_button" id="deleteCard" style="width: 80px; background-color:#1F1F1F;border: solid 1px #434343;color:#F44336"><i class="fa-solid fa-trash"></i> Delete</div>
                 </div>
             </div>
         </div>
@@ -82,24 +81,12 @@
             <a style="text-decoration: none;color: #1F1F1F;" href="index.html"><button class="home_url">Home</button></a>
         </div>
     </div>
-    <div id="empty_card_screen" class="delete-confirm-screen">
-        <div class="delete-confirm-content">
-            <h2 style="color:#64DB96;">New model!</h2>
-            <p>Start by importing from a website or file? This can contain generic info, documentation, or scientific results.</p>
-                <ul style="text-align:left;"><li>An AI assistant will help.</li><li>You can import later.</li><li>You can edit the result.</li></ul>
-            <br>
-            <div class="buttons">
-                <button style="background-color: #64DB96" id="assistant-fill-card"><i class="fa-solid fa-folder-open"></i><span class="fallback">📂</span> Import</button>
-                <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343" id="manual-fill-card"><i class="fa-solid fa-pen"></i><span class="fallback">✏️</span> Skip</button>
-            </div>
-        </div>
-    </div>
     <div id="delete-confirm-screen" class="delete-confirm-screen">
         <div class="delete-confirm-content">
             <h2>Delete?</h2>
             <p>This <strong>cannot be undone</strong>. Are you sure?</p>
             <div class="buttons">
-                <button id="confirm-delete-btn"><i class="fa-solid fa-trash"></i><span class="fallback">🗑️</span> Delete</button>
+                <button id="confirm-delete-btn"><i class="fa-solid fa-trash"></i>&nbsp;Delete</button>
                 <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343" id="cancel-delete-btn">✖ Cancel</button>
             </div>
         </div>
@@ -108,7 +95,7 @@
         <div class="delete-success-content">
             <h2>Card deleted</h2>
             <p>The model card has been deleted.</p>
-            <a style="text-decoration: none;color: #1F1F1F;" href="index.html"><button id="close-success-btn">Home</button></a>
+            <a style="text-decoration: none;" href="index.html"><button id="close-success-btn">Home</button></a>
         </div>
     </div>
     <div id="popup-error-screen" class="delete-success-screen">
@@ -151,11 +138,11 @@
 </main>
 
 <section class="footer_section">
-    <div class="row bigWidth" style="margin-bottom:5px">
-        <img style="width: 80px;" src="img/logo.png">
-        <img style="width: 200px;" src="img/logo_FoundedbyEU.png">
+    <div class="row bigWidth footer_section_icons">
+        <img class="footer_section_logo" src="img/logo.png">
+        <img class="footer_section_eu" src="img/logo_FoundedbyEU.png">
     </div>
-    <div class="row bigWidth">
+    <div class="row bigWidth footer_section_text">
         Empowering media professionals against disinformation.
         This project has received funding from the European Union’s Horizon Europe research and innovation programme
         under grant agreement No. 101135437
@@ -165,9 +152,9 @@
 
 <div id="modal-refine-screen" class="delete-confirm-screen">
     <div class="delete-confirm-content modal_refinement">
-        <h2 style="color:#64DB96;">Refine for non-experts?</h2>
-        <div style="text-align:left">This will create a new version that is simplified by an AI agent.</div>
-        <div class="refine-learn-more"><a href="handbook.html#refine" target="_blank">Learn more</a></div>
+        <h2 class="success title">Refine for non-experts?</h2>
+        <div style="text-align:left">Will use an agent to create a simpler model card version. <a href="handbook.html#refine" target="_blank">Learn more</a></div>
+
         <img style="width: 70%; flex-shrink: 0;" src="img/transparency_img.png">
         <div class="assistants_wrapper"></div>
         <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:100%" id="cancel-refine-btn">✖ Cancel</button>
@@ -178,30 +165,28 @@
     <div class="modal"></div>
     <div class="modal__bg"></div>
     <div class="delete-confirm-content">
-        <h2 style="color:#64DB96;">Import missing info?</h2>
-        <p style="text-align:left;margin-bottom:0px" id="url_desc">
+        <h2 class="success title">Import missing info?</h2>
+        <p id="url_desc" class="import_options">
             Paste any URL with model info, for example
-            from <a style="color:#79CFDC" href="https://github.com/" target="_blank">GitHub</a> or
-            <a style="color:#79CFDC" href="https://huggingface.co/" target="_blank">HuggingFace</a>.
+            from <a href="https://github.com/" target="_blank">GitHub</a> or
+            <a href="https://huggingface.co/" target="_blank">HuggingFace</a>.
             You can cancel and import later.
         </p>
-        <p style="text-align:left;margin-bottom:0px" id="pdf_desc">
-            Upload a markdown or pdf file that contains model info. You can cancel and import later.
-        </p>
+        <p id="pdf_desc" class="import_options">Upload a markdown or pdf file that contains model info. You can cancel and import later. </p>
         <img style="width: 70%; flex-shrink: 0;" src="img/create_img.png">
 
-        <p style="text-align: right;" id="pdf_text">
-            <span class="import-learn-more"><a href="handbook.html#creators" target="_blank" style="float:left">Learn more</a></span>
+        <p id="pdf_text">
+            <span class="learn-more"><a href="handbook.html#creators" target="_blank" style="float:left">Learn more</a></span>
             Do you have a file instead?</p>
-        <p style="text-align: right;" id="url_text">
-            <span class="import-learn-more"><a href="handbook.html#creators" target="_blank" style="float:left">Learn more</a></span>
+        <p id="url_text">
+            <span class="learn-more"><a href="handbook.html#creators" target="_blank" style="float:left">Learn more</a></span>
             Do you have a URL instead?</p>
         <input type="text" class="text-input" placeholder="Enter URL..." id="card-url"/>
         <div class="upload-container">
             <div class="file-drop-area" id="dropArea">
                 <br><br>
                 <span class="fake-btn">Choose file</span>
-                <span class="file-msg">or drag &amp; drop here</span>
+                <span class="file-msg">or drag here</span>
                 <input class="file-input" type="file" accept=".pdf">
             </div>
             <ul class="file-list" id="fileList"></ul>
@@ -213,32 +198,12 @@
         <br><br>
         <div class="assistants_wrapper"></div>
         <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:100%" id="cancel-autocomplete-btn">✖ Cancel</button>
-        <div href="" class="modal__close demo-close">
-            <svg class="w-4 h-4" viewBox="0 0 24 24">
-                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                <path d="M0 0h12v12h-12z" fill="none"/>
-            </svg>
-        </div>
     </div>
 </div>
-<div id="modal_empty" class="modal modal__bg">
-    <div class="modal__dialog">
-        <div class="modal__content">
-            empty
-            <div href="" class="modal__close demo-close">
-                <svg class="w-4 h-4" viewBox="0 0 24 24">
-                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                    <path d="M0 0h12v12h-12z" fill="none"/>
-                </svg>
-            </div>
-
-        </div>
-    </div>
-</div>
+z
 <!-- JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="js/card/file_upload.js"></script>
-<script src="js/index/modal.js"></script>
 <script src="js/card/bearer.js"></script>
 <script src="js/card/history.js"></script>
 <script src="js/card/card.js"></script>

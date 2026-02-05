@@ -42,7 +42,7 @@ table {border-collapse: collapse;border-spacing: 0;}
 
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap');
-@font-face {font-family: Hero_font;src: url('../../fonts/Hero.otf');}
+@font-face {font-family: Hero_font;src: url('../fonts/Hero.otf');}
 body {font-family: Hero_font, "Noto Emoji", sans-serif;}
 html, body {height: 100%; margin: 0; display: flex; flex-direction: column;}
 
@@ -108,3 +108,5 @@ a:hover {filter: brightness(1.2);}
     color: #EEEEEE;
 }
 .popup_content input {width: 90%; border-radius:5px; padding:5px; margin-top:5px;}
+
+a {color:#79CFDC}
