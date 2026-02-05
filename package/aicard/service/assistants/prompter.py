@@ -53,9 +53,9 @@ class Prompter(Assistant):
             for tag in soup.find_all(src=True): tag["src"] = urljoin(url, tag["src"])
 
             text = soup.get_text(strip=True)
-        elif data['data_type'] == 'pdf':
-            pdf_path = data['path']
-            text = pdf_to_chunks(pdf_path = pdf_path, char_per_chunk = -1)
+        elif data['data_type'] == '.pdf':
+            pdf_bytes = data['bytes']
+            text = pdf_to_chunks(pdf_bytes = pdf_bytes, char_per_chunk = 30000)
             
         self._complete(text, "import", card, logger, user_messages)
         progress_html = (
@@ -176,6 +176,7 @@ class Prompter(Assistant):
         # Extra parameterization
 
         output_formats['overview']['properties']['description']['minLength'] = 500
+        output_formats['overview']['properties']['description']['description'] = "An overview of the model. The reader should have a good idea of what the model is, the purpose, novelty, capabilities, and caveats after reading this."
 
         output_formats['training']['properties']['training_set_purpose'] = output_formats['training']['properties'].pop('motivation')
         output_formats['evaluation']['properties']['eval_set_purpose'] = output_formats['evaluation']['properties'].pop('motivation')
@@ -217,33 +218,39 @@ class Prompter(Assistant):
                 f"<b>Working on tab: {category.replace('_', ' ')}</b>"
             )
             progress += 1
+            
+            if not isinstance(text, list):
+                text = [text]
 
-            prompt = f"Output in plain text, no braces, no quotes, no JSON. Provide information about: {text}"
-            category_format = output_formats[category]
-            params = {"format": category_format}
-
-            # Ollama bug workaround: invalid json
             completion = dict()
-            for retry in range(max(1, self.max_retries)):
-                try:
-                    completion = self.agent.completion(prompt, **params)
-                    # Ollama bug workaround: https://github.com/ollama/ollama/issues/1910
-                    time.sleep(1)
-                    completion = json.loads(completion)
-                    break
-                except (json.JSONDecodeError, TypeError):
-                    if retry + 1 == max(1, self.max_retries): completion = dict()
-                    logger.warn(f"invalid json on try {retry + 1}/{max(self.max_retries, 1)} - retrying", user=self.alias)
-                except Exception as e:
-                    try: self.agent.abort()
-                    except Exception as e:
-                        logger.warn(str(e), user=self.alias)
+            last_out = ""
+            for chunk in text:
+                prompt = f"Output in plain text, no braces, no quotes, no JSON. Provide information about: {last_out + chunk}"
+                category_format = output_formats[category]
+                params = {"format": category_format}
+
+                # Ollama bug workaround: invalid json
+                for retry in range(max(1, self.max_retries)):
+                    try:
+                        completion = self.agent.completion(prompt, **params)
+                        last_out = completion
+                        # Ollama bug workaround: https://github.com/ollama/ollama/issues/1910
+                        time.sleep(1)
+                        completion = json.loads(completion)
                         break
-                    #if retry + 1 != max(1, self.max_retries):
-                    #     logger.warn(f"{str(e)} on try {retry + 1}/{max(self.max_retries, 1)} - retrying", user=self.alias)
-                    #     continue
-                    logger.warn(f"{str(e)} - skipping segment {category.replace('_', ' ')}", user=self.alias)
-                    break
+                    except (json.JSONDecodeError, TypeError):
+                        if retry + 1 == max(1, self.max_retries): completion = dict()
+                        logger.warn(f"invalid json on try {retry + 1}/{max(self.max_retries, 1)} - retrying", user=self.alias)
+                    except Exception as e:
+                        try: self.agent.abort()
+                        except Exception as e:
+                            logger.warn(str(e), user=self.alias)
+                            break
+                        #if retry + 1 != max(1, self.max_retries):
+                        #     logger.warn(f"{str(e)} on try {retry + 1}/{max(self.max_retries, 1)} - retrying", user=self.alias)
+                        #     continue
+                        logger.warn(f"{str(e)} - skipping segment {category.replace('_', ' ')}", user=self.alias)
+                        break
             if not completion: continue
             if 'eval_set_purpose' in completion: completion['motivation'] = completion.pop('eval_set_purpose')
             if 'performance_insights' in completion: completion['analysis'] = completion.pop('performance_insights')

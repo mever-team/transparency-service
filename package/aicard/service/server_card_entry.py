@@ -168,16 +168,10 @@ class ModelCardEntry:
     def __autocomplete(self, data: dict, assistant: Assistant, logger: Logger):
         try:
             assistant.complete(self.card, data, logger, self._completion_status)
-            self.commit_card(on_thread=True,
-                             edit_message=assistant.alias + " import")  # on_thread=True because we are on a heavyweight path either way
-            if data['data_type'] == 'pdf' and os.path.exists(data['path']):
-                os.remove(data['path'])
+            self.commit_card(on_thread=True, edit_message=assistant.alias + " import")  # on_thread=True because we are on a heavyweight path either way
             logger.info(f"ended card {self.card_id} import", user=assistant.alias)
         except Exception as e:
-            if data['data_type'] == 'pdf' and os.path.exists(data['path']):
-                os.remove(data['path'])
-            if not isinstance(e, Forbidden) and not isinstance(e, NotFound) and not isinstance(e,
-                                                                                               Unauthorized): traceback.print_exc()
+            if not isinstance(e, Forbidden) and not isinstance(e, NotFound) and not isinstance(e, Unauthorized): traceback.print_exc()
             logger.error(f"aborted card{self.card_id} import with error {e}", user=assistant.alias)
         self.end_completion()
 

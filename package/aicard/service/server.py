@@ -14,6 +14,7 @@ import traceback
 import secrets
 import time
 import re
+import pathlib
 
 def exists(condition, message):
     # empty strings are allowed
@@ -615,12 +616,9 @@ def serve(
         if 'file' in request.files:
             uploaded_file = request.files['file']
             exists(uploaded_file.filename != "", "Empty file uploaded")
-            file_bytes = uploaded_file.read(5)
-            uploaded_file.seek(0)
-            if file_bytes != b"%PDF-": abort(415, description="Unsupported file type.")
-            tmp_file = uploaded_file.filename # files delete in card.autocomplete thread
-            uploaded_file.save(tmp_file)
-            json_data = {"data_type": 'pdf', "path": tmp_file}
+            ext = pathlib.Path(uploaded_file.filename).suffix
+            file_bytes = uploaded_file.read()
+            json_data = {"data_type": ext, "bytes": file_bytes}
         else:
             json_data = {"data_type": "url", "url": request.get_json()}
             exists(isinstance(json_data['url'], str), "Import requires a url string")
