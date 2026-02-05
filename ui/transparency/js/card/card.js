@@ -1,6 +1,5 @@
 var cardJson;
 var comparedJson;
-var empty_card_flag=true;
 var menuOffsetTop=0;
 
 function error_message(message) {
@@ -37,7 +36,28 @@ $(document).ready(function () {
     const id = urlParams.get('id');
     const compareto = urlParams.get('compareto');
     const $menu = $('.menu');
-    menuOffsetTop = $menu.offset().top;
+    let menuOffsetTop = $menu.offset().top; // this will be updated, depending on history taking up space
+    const pageUrl = encodeURIComponent(window.location.href);
+    const pageTitle = encodeURIComponent(document.title);
+    $('#pdf_desc').hide();
+    $("#share-x").attr("href", `https://twitter.com/intent/tweet?url=${pageUrl}&text=${pageTitle}`);
+    $("#share-facebook").attr("href", `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`);
+    $("#share-linkedin").attr("href", `https://www.linkedin.com/shareArticle?mini=true&url=${pageUrl}&title=${pageTitle}`);
+    $("#share-whatsapp").attr("href", `https://wa.me/?text=${pageUrl}`);
+    $("#share-telegram").attr("href", `https://t.me/share/url?url=${pageUrl}&text=${pageTitle}`);
+
+    $('#pdf_text').click(function () {
+        $('#pdf_text,#card-url,#card-url-p').slideUp();
+        $('.upload-container,#url_text').slideDown();
+        $('#url_desc').slideUp();
+        $('#pdf_desc').slideDown();
+    })
+    $('#url_text').click(function () {
+        $('#pdf_text,#card-url,#card-url-p').slideDown();
+        $('.upload-container,#url_text').slideUp();
+        $('#url_desc').slideDown();
+        $('#pdf_desc').slideUp();
+    })
 
     $(window).on('scroll', function () {
         if ($(window).scrollTop() > menuOffsetTop - 20) $menu.addClass('fixed');
@@ -52,9 +72,7 @@ $(document).ready(function () {
             contentType: "application/json",
             dataType: "json",
             headers: {"Authorization": "Bearer " + token},
-            success: function (response) {
-                //interval = setInterval(function () {checkLocked(interval);}, 500);
-            },
+            success: function (response) {},
             error: error_handler
         });
     }
@@ -191,14 +209,10 @@ $(document).ready(function () {
                             $('.menu div:first-child').addClass('active');
 
                         });
-                        if (!($('.light.arrow').length > 0)&& empty_card_flag && token) {
-                            //document.getElementById('empty_card_screen').style.display = 'flex';
-                            // TODO: we have this alternative of just opening the import, which may be more practical
+                        if (!($('.light.arrow').length > 0)&& token) {
+                            // TODO: we have the option of just opening the import, which may be more practical
                             document.getElementById('modal-autocomplete-screen').style.display = 'flex';
-                            empty_card_flag=false;
                         }
-                        else
-                            empty_card_flag=false;
                     }
 
                     if(compareto) {
@@ -242,9 +256,7 @@ $(document).ready(function () {
                     $('#deleteCard').hide();
                     $('.example_button').css('pointer-events', 'none');
                     if(resp.error || error) error_handler(xhr, status, error);
-                } catch (e) {
-                    error_message("");
-                }
+                } catch (e) { error_message(""); }
             }
         });
     }
@@ -284,13 +296,8 @@ $(document).ready(function () {
             let field = section.value.find(f => f.name === fieldName);
             $("#saveJson").fadeIn();
             if (field) {
-                if(field.type.startsWith("list:")){
-                    field.value = $(this).find(":selected").val();
-                }
-                else{
-                    field.value = $(this).html();
-                }
-
+                if(field.type.startsWith("list:")) field.value = $(this).find(":selected").val();
+                else field.value = $(this).html();
             }
         }
     });
@@ -369,66 +376,53 @@ $(document).ready(function () {
     downloadBtn.addEventListener("click", function() {
         const isOpen = downloadMenu.style.display === "block";
         downloadMenu.style.display = isOpen ? "none" : "block";
-
-        if (!isOpen) {
-            const closeMenu = (event) => {
-                if (!downloadBtn.contains(event.target) && !downloadMenu.contains(event.target)) {
-                    downloadMenu.style.display = "none";
-                    document.removeEventListener("click", closeMenu);
-                }
-            };
-            document.addEventListener("click", closeMenu);
+        if(isOpen) return;
+        const closeMenu = (event) => {
+            if(downloadBtn.contains(event.target)) return;
+            if(downloadMenu.contains(event.target)) return;
+            downloadMenu.style.display = "none";
+            document.removeEventListener("click", closeMenu);
         }
+        document.addEventListener("click", closeMenu);
     });
 
     downloadMenu.addEventListener("click", e => {
         downloadMenu.style.display = "none";
-
         const item = e.target.closest(".download-dropdown-item");
-
         const format = item.getAttribute("data-format");
         const url = "/transparency/card/" + id + "/download/" + format
-
         $.ajax({
             url: url,
             method: "GET",
-            success: function (response) {
-                window.location = url
-            },
+            success: function (response) {window.location = url},
             error: error_handler
         });
     });
-
 
     const assistBtn = document.getElementById("assistCard");
     const assistMenu = document.getElementById("assistDropdown");
     assistBtn.addEventListener("click", function() {
         const isOpen = assistMenu.style.display === "block";
         assistMenu.style.display = isOpen ? "none" : "block";
-        if (!isOpen) {
-            const closeMenu = (event) => {
-                if (!assistBtn.contains(event.target) && !assistMenu.contains(event.target)) {
-                    assistMenu.style.display = "none";
-                    document.removeEventListener("click", closeMenu);
-                }
-            };
-            document.addEventListener("click", closeMenu);
-        }
+        if(isOpen) return;
+        const closeMenu = (event) => {
+            if(assistBtn.contains(event.target)) return;
+            if(assistMenu.contains(event.target)) return;
+            assistMenu.style.display = "none";
+            document.removeEventListener("click", closeMenu);
+        };
+        document.addEventListener("click", closeMenu);
     });
     assistMenu.addEventListener("click", function(e) {
         const item = e.target.closest(".download-dropdown-item, .modal_autocomplete, .modal_refine");
-        if (!item) return;
+        if(!item) return;
         assistMenu.style.display = "none";
-        if (item.classList.contains("modal_autocomplete")) {
-            document.getElementById('modal-autocomplete-screen').style.display = 'flex';
-        }
-        else if (item.classList.contains("modal_refine")) {
-            document.getElementById('modal-refine-screen').style.display = 'flex';
-        }
+        if(item.classList.contains("modal_autocomplete")) document.getElementById('modal-autocomplete-screen').style.display = 'flex';
+        else if(item.classList.contains("modal_refine")) document.getElementById('modal-refine-screen').style.display = 'flex';
     });
 
     $("#cardClone").click(function () {
-        if (!token) {
+        if(!token) {
             error_message("You must be logged in to clone a card. Either your session expired or the service temporarily became unavailable, and you need to log in again.");
             return;
         }
@@ -438,9 +432,7 @@ $(document).ready(function () {
             method: "POST",
             contentType: "application/json",
             headers: { "Authorization": "Bearer " + token },
-            success: function (newId) {
-                window.location.href = "model_card.html?id=" + newId;
-            },
+            success: function (newId) {window.location.href = "model_card.html?id=" + newId;},
             error: function (xhr, status, error) {
                 $("#cardClone").prop("disabled", false).text("Clone");
                 error_handler(xhr, status, error);
@@ -571,28 +563,3 @@ $(document).ready(function () {
         }
     });
 });
-
-
-
-const pageUrl = encodeURIComponent(window.location.href);
-const pageTitle = encodeURIComponent(document.title);
-
-$('#pdf_desc').hide();
-document.getElementById("share-x").href = `https://twitter.com/intent/tweet?url=${pageUrl}&text=${pageTitle}`;
-document.getElementById("share-facebook").href = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
-document.getElementById("share-linkedin").href = `https://www.linkedin.com/shareArticle?mini=true&url=${pageUrl}&title=${pageTitle}`;
-document.getElementById("share-whatsapp").href = `https://wa.me/?text=${pageUrl}`;
-document.getElementById("share-telegram").href = `https://t.me/share/url?url=${pageUrl}&text=${pageTitle}`;
-
-$('#pdf_text').click(function () {
-    $('#pdf_text,#card-url,#card-url-p').slideUp();
-    $('.upload-container,#url_text').slideDown();
-    $('#url_desc').slideUp();
-    $('#pdf_desc').slideDown();
-})
-$('#url_text').click(function () {
-    $('#pdf_text,#card-url,#card-url-p').slideDown();
-    $('.upload-container,#url_text').slideUp();
-    $('#url_desc').slideDown();
-    $('#pdf_desc').slideUp();
-})

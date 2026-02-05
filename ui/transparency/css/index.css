@@ -81,7 +81,7 @@ input {
 }
 
 .modal--active {visibility: visible;opacity: 1;}
-.modal__bg {background: rgba(0, 0, 0, 0.5);}
+.modal__bg {background: rgba(0, 0, 0, 0.5);backdrop-filter: blur(8px);-webkit-backdrop-filter: blur(8px);}
 .modal__dialog {width: 500px; padding: 1.2rem;}
 .modal__content {
     will-change: transform, opacity;
@@ -119,25 +119,21 @@ input {
 .modal-close:hover {background: rgba(255, 255, 255, 0.36);}
 
 :focus {outline: none;}
-.modal-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  padding: 1rem;
-}
 
 .modal-card {
   margin-top: 0px;
-  padding: 1.5rem;
   padding-top: 0rem;
   line-height: 1.2;
   color: #EEEEEE;
-  margin-bottom: 30px
 }
-.modal-card h2 {margin: 0 0 8px 0;;}
+.modal-card h2 {margin: 8px 0 -8px 0;font-size-}
 .modal-card p{text-align: justify-left;margin: 0;}
-.modal-card img {float: left;width: 150px;flex-shrink: 0;margin: 0 16px 16px 0;}
+.modal-card img {float: left;width: 90px;flex-shrink: 0;margin: 0 16px 0px 0;}
 .modal-action-card {text-align: center;}
+@media (max-width: 900px) {
+    .modal-card img {width: 30px;}
+    .modal-card h2 {font-size: 22px;}
+}
 
 
 #resultsTable {
