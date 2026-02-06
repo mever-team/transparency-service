@@ -226,7 +226,7 @@ class SemanticMatcher(Assistant):
 
         if not card.overview.name: card.overview.name = title
         if not card.overview.creator: card.overview.creator = creator
-        if not card.overview.date or card.overview.date=="dd/mm/yyyy": card.overview.date = date.today().strftime("%d/%m/%Y")
+        if not card.overview.date: card.overview.date = date.today().strftime("%Y-%m-%d")
         if not card.overview.home: card.overview.home = url
         user_messages[-1] = (
             f"<h2>{self.alias} import</h2>"
