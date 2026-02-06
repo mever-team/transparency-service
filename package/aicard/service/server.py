@@ -234,9 +234,11 @@ def serve(
     @app.route(domain_prefix+'/cards', methods=['POST'])
     def get_cards():
         data = request.get_json() or {}
-        query = data.get('query', '').strip().lower()
-        type_list = data.get('type', '')
-        task_list = data.get('task', '')
+        query = data.get('query', '')
+        query = re.sub(r'\s+', ' ', query).strip().lower()
+        query = re.sub(r'[^a-z0-9_\-\s]', '', query)
+        type_list = ''#data.get('type', '')
+        task_list = ''#data.get('task', '')
         parts = query.split()
 
         page = max(int(data.get('page', 1)), 1)
@@ -266,14 +268,17 @@ def serve(
             elif filter=="--info" and i<len(parts)-1:
                 i += 1
                 value = parts[i]
-                try: quality_limits = float(value)/100-0.00001
+                try: quality_limits = float(value)/100-0.00001 # NEVER REMOVE THE CAST FOR SAFETY
                 except Exception: pass
             elif filter == "--more": page_size = 20
             else: new_parts.append(filter)
             i += 1
         placeholders = ','.join(['?'] * len(owner))
-        type_filter = f"AND cards.overview__type IN ('{'\',\''.join(type_list)}')" if type_list else ""
-        task_filter = f"AND cards.overview__task IN ('{'\',\''.join(task_list)}')" if task_list else ""
+        # TODO: beware that the commented filters are VULNERABLE TO SQL INJECTION AND SHOULD BE FIXED
+        # type_filter = f"AND cards.overview__type IN ('{'\',\''.join(type_list)}')" if type_list else ""
+        # task_filter = f"AND cards.overview__task IN ('{'\',\''.join(task_list)}')" if task_list else ""
+        type_filter = ""
+        task_filter = ""
         owner = " ".join(owner)
         query = " ".join(new_parts)
         query = query.strip()
