@@ -72,8 +72,8 @@
         <label for="password">Password</label><br />
         <input type="password" id="password" name="password" /><br><br><br><br>
         <div class="buttons">
-            <button id="login-confirm-btn" class="success button"><i class="fa-solid fa-lock"></i>&nbsp;Login</button>
-            <button class="button" id="cancel-login-btn">✖&nbsp;Cancel</button>
+            <button id="login-confirm-btn" class="success button"><i class="fa-solid fa-lock"></i>&nbsp;&nbsp;Login</button>
+            <button class="button" id="cancel-login-btn"><i class="fa-solid fa-cancel"></i>&nbsp;&nbsp;Cancel</button>
         </div>
     </div>
 </div>
@@ -82,6 +82,7 @@
     <div class="popup_content">
         <h2 class="success title">Register</h2>
         <p>Create an account to log in and wait for approval by the administrator.</p>
+        <p id="register-success" class="title success"></p>
         <p id="register-error" class="error"></p>
         <label for="username">Username</label><br />
         <input type="text" id="register-username" name="register-username" /><br><br>
@@ -92,14 +93,14 @@
         <label for="password">Verify password</label><br />
         <input type="password" id="register-password-verify" name="register-password-verify" /><br><br><br><br>
         <div class="buttons">
-            <button id="register-confirm-btn" class="success button"><i class="fa-solid fa-key"></i>&nbsp;Send</button>
-            <button id="cancel-register-btn" class="button">✖ Cancel</button>
+            <button id="register-confirm-btn" class="success button"><i class="fa-solid fa-key"></i>&nbsp;&nbsp;Send</button>
+            <button id="cancel-register-btn" class="button"><i class="fa-solid fa-cancel"></i>&nbsp;&nbsp;Cancel</button>
         </div>
     </div>
 </div>
 
 <div id="help" class="modal modal__bg">
-    <div class="modal__dialog" style="width: 85%;">
+    <div class="modal__dialog">
         <div class="modal__content">
         <div class="modal-cards">
             <div class="modal-card">

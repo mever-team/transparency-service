@@ -1,9 +1,70 @@
 let token = "";
 let pingTimer = null;
 let first_check = true;
+var loggedUser = "";
 
 document.cookie.split(";").forEach(cookie => {
     const [name, value] = cookie.trim().split("=");
-    if (name === "access_token")
+    if(name === "access_token")
         token = value;
 });
+
+updateUsername();
+
+function updateUsername() {
+    if (!token) {
+        clearTimeout(pingTimer);
+        return;
+    }
+    $.ajax({
+        url: "/transparency/ping",
+        method: "GET",
+        headers: { "Authorization": "Bearer " + token },
+        success: function (response) {
+            if (response && response.token) {
+                token = response.token;
+                const expiresIn = response.expires_in || 3600;
+                document.cookie = "access_token=" + token + "; path=/; max-age=" + expiresIn + ";";
+                $('#account-name').text(response.username);
+                loggedUser = response.username;
+                clearTimeout(pingTimer);
+                // Schedule the next ping at half the expiration time
+                const halfLife = (expiresIn * 1000) / 2;
+                pingTimer = setTimeout(() => {
+                    $.ajax({
+                        url: "/transparency/ping",
+                        method: "GET",
+                        headers: { "Authorization": "Bearer " + token },
+                        success: function (pingResp) {
+                            if (pingResp && pingResp.token) {
+                                token = pingResp.token;
+                                document.cookie = "access_token=" + token + "; path=/; max-age=" + pingResp.expires_in + ";";
+                                updateUsername(); // Refresh UI and reschedule next ping
+                            } else {
+                                token = "";
+                                document.cookie = "access_token=; path=/; max-age=0;";
+                                updateUsername();
+                            }
+                        },
+                        error: function () {
+                            token = "";
+                            document.cookie = "access_token=; path=/; max-age=0;";
+                            updateUsername();
+                        }
+                    });
+                }, halfLife);
+            } else {
+                clearTimeout(pingTimer);
+                document.cookie = "access_token=; path=/; max-age=0;";
+                token = "";
+                $('#account-name').text("");
+            }
+        },
+        error: function () {
+            clearTimeout(pingTimer);
+            document.cookie = "access_token=; path=/; max-age=0;";
+            token = "";
+            $('#account-name').text("");
+        }
+    });
+}

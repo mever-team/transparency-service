@@ -95,9 +95,11 @@ $(document).ready(function () {
 
                     function render() {
                         if(!cardJson || !comparedJson) return;
+                        let is_logged_in = token&&cardJson.creator === loggedUser;
+
                         let jsonData = cardJson;
                         $("#model-title").text(jsonData.title);
-                        $("#model-description").html(jsonData.description);
+                        $("#model-description").html(jsonData.description+" by "+jsonData.creator);
                         $("#model-pending").html(jsonData.description?"":"DRAFT (needs version to be searchable)");
                         $("#model-quality").html(`
                              <svg class="quality-circle" viewBox="0 0 36 36">
@@ -148,7 +150,7 @@ $(document).ready(function () {
                                 $fieldInfo = $("<span>").addClass("field-info").append($fieldInfo).append($fieldName);
                                 let $fieldValue;
                                 
-                                if (field.type.startsWith("list:") && token) {
+                                if (field.type.startsWith("list:") && is_logged_in) {
                                     $fieldValue = $("<select>").addClass("field-value dropdown");
                                     $fieldValue.append($("<option>").val("").text("—").prop({
                                         selected: true,disabled: true,hidden: true}));
@@ -167,16 +169,16 @@ $(document).ready(function () {
                                         }
                                     });
                                 } else if (field.type === 'date') {
-                                    $fieldValue = $("<input>", {type: "date", readonly: token? false: true}).addClass("field-value").val(field.value || "");
+                                    $fieldValue = $("<input>", {type: "date", readonly: is_logged_in? false: true}).addClass("field-value").val(field.value || "");
                                     $fieldValue.on("change", function () {field.value = $(this).val();});
-                                    if(token) $fieldValue.attr("contenteditable", "true");
+                                    if(is_logged_in) $fieldValue.attr("contenteditable", "true");
                                     
                                 } else {
                                     $fieldValue = $("<span>") .addClass("field-value").html(field.value || "");
-                                    if(token) $fieldValue.attr("contenteditable", "true");
+                                    if(is_logged_in) $fieldValue.attr("contenteditable", "true");
                                 }
 
-                                if(token) $fieldValue.addClass("editable");
+                                if(is_logged_in) $fieldValue.addClass("editable");
 
                                 // Editable field value
                                 if ((field.value.trim() !== "") && (field.value.trim() !== "<br>") && (field.value.trim() !== "unknown")) {
@@ -209,7 +211,7 @@ $(document).ready(function () {
                             $('.menu div:first-child').addClass('active');
 
                         });
-                        if (!($('.light.arrow').length > 0)&& token) {
+                        if (!($('.light.arrow').length > 0)&& is_logged_in) {
                             // TODO: we have the option of just opening the import, which may be more practical
                             document.getElementById('modal-autocomplete-screen').style.display = 'flex';
                         }
@@ -334,7 +336,7 @@ $(document).ready(function () {
                 });
 
                 $("#model-title").text(response.title);
-                $("#model-description").html(response.description);
+                $("#model-description").html(response.description+" by "+response.creator);
                 $("#model-pending").html(response.description?"":"DRAFT (needs version to be searchable)");
                 $("#model-quality").html(`
                      <svg class="quality-circle" viewBox="0 0 36 36">

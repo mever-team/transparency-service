@@ -140,8 +140,15 @@ def serve(
         return redirect(domain_prefix+'/'+redirect_index, code=307)
 
     @app.route(domain_prefix+'/users', methods=['GET'])
-    @users.require_admin(token2expiration)
+    @users.require_auth(token2expiration)
     def admin_dashboard(token: str):
+        with auth_lock: creator = token2user.get(token, "")
+        if creator != admin_username:
+            cursor = conn.conn.cursor()
+            cursor.execute("SELECT username, email FROM users WHERE username = ?", (creator,))
+            row = cursor.fetchone()
+            if not row: abort(404, description="User not found")
+            return jsonify({"users": [{"username": row[0], "email": row[1]}], "pending": []})
         def fetch_all_users(table_name: str):
             cursor = conn.conn.cursor()
             cursor.execute(f"SELECT username, email FROM {table_name}")
@@ -152,6 +159,7 @@ def serve(
     @app.route(domain_prefix+'/users/<string:username>', methods=['DELETE'])
     @users.require_admin(token2expiration)
     def delete_user(username, token: str):
+        if username == admin_username: abort(403, "You are not allowed to delete the administrator account. To remove this account, restart the service with different administrator credentials.")
         deleted = False
         for table_name in ['users', 'pending_users']:
             cur = conn.conn.execute(f"DELETE FROM {table_name} WHERE username = ?", (username,))
@@ -500,7 +508,7 @@ def serve(
         found = find_card(card_id)
         with exists(found, "Model card does not exist or has been deleted.") as card:
             return jsonify(converters.dict2dynamic(card.data, {"title"})
-                           |{"description": card.summary(), "quality": card.quality(), "history": found.history()})
+                           |{"description": card.summary(), "quality": card.quality(), "history": found.history(), "creator": found.creator})
 
     @app.route(domain_prefix+'/card/<int:card_id>/locked', methods=['GET'])
     def get_card_locked_status(card_id):
@@ -515,7 +523,9 @@ def serve(
     @app.route(domain_prefix+'/card/<int:card_id>/title', methods=['PUT'])
     @users.require_auth(token2expiration)
     def set_card_title(card_id, token: str):
+        with auth_lock: creator = token2user.get(token, None)
         with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
+            if creator != card.creator: abort(403, "Only the card's creator can edit it.")
             json_data = request.get_json()
             exists(isinstance(json_data, str), "Can only send string data to update model card titles.")
             card.data['title'].set(json_data)
@@ -542,7 +552,9 @@ def serve(
     @app.route(domain_prefix+'/card/<int:card_id>/<string:field_name>/<string:data_name>', methods=['PUT'])
     @users.require_auth(token2expiration)
     def set_card_field(card_id, field_name, data_name, token: str):
+        with auth_lock: creator = token2user.get(token, None)
         with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
+            if creator != card.creator: abort(403, "Only the card's creator can edit it.")
             field = exists(card.data.get(field_name, None), "Invalid field name. Candidates: " + ','.join(card.data.keys()))
             data = exists(field.get(data_name, None), f"Invalid data name {data_name}. Candidates: " + ','.join(field.keys()))
             json_data = request.get_json()
@@ -550,24 +562,26 @@ def serve(
             data.set(json_data)
             return jsonify(data.get())  # do not return json_data directly, as setting the value may format it
 
-
     @app.route(domain_prefix+'/card/<int:card_id>', methods=['DELETE'])
     @users.require_auth(token2expiration)
     def delete_card(card_id, token: str):
-        with exists(find_card(card_id), "Model card does not exist or has been deleted.") as _:
+        with auth_lock: creator = token2user.get(token, None)
+        with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
+            if creator != card.creator: abort(403, "Only the card's creator can delete it.")
             cursor = conn.conn.cursor()
             cursor.execute("DELETE FROM cards WHERE id = ?", (card_id,))
             conn.conn.commit()
             with card_cache_lock: del card_cache[card_id]
-            with auth_lock: creator = token2user.get(token, None)
             logger.info("deleted a card", user=creator)
             return '', 204
 
     @app.route(domain_prefix+'/card/<int:card_id>', methods=['PUT'])
     @users.require_auth(token2expiration)
     def update_card(card_id, token: str):
-        json_data = request.get_json()
         card_entry = find_card(card_id)
+        with auth_lock: creator = token2user.get(token, None)
+        if creator != card_entry.creator: abort(403, "Only the card's creator can edit it.")
+        json_data = request.get_json()
         with exists(card_entry, "Model card does not exist or has been deleted.") as card:
             try:
                 assignable = converters.dynamic2dict(json_data, {"title"})
@@ -576,7 +590,6 @@ def serve(
                 card_entry.commit_card()
             except AssertionError as e: abort(404, "Wrong data: "+str(e))
             except Exception as e: abort(404, "Wrong data: "+str(e))
-            with auth_lock: creator = token2user.get(token, None)
             logger.info("updated a card", user=creator)
             return jsonify(converters.dict2dynamic(card.data, {"title"})
                            |{"description": card.summary(), "quality": card.quality(), "history": card_entry.history()})
@@ -613,6 +626,8 @@ def serve(
     def autocomplete_card(card_id: int, assistant_type: str, token: str):
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
+        with auth_lock: creator = token2user.get(token, None)
+        if creator != card.creator: abort(403, "Only the card's creator can import information.")
         if 'file' in request.files:
             uploaded_file = request.files['file']
             exists(uploaded_file.filename != "", "Empty file uploaded")
@@ -623,7 +638,6 @@ def serve(
             json_data = {"data_type": "url", "url": request.get_json()}
             exists(isinstance(json_data['url'], str), "Import requires a url string")
         status = card.autocomplete(json_data, assistant, logger)
-        with auth_lock: creator = token2user.get(token, None)
         logger.info(f"requested card {card_id} imported from {assistant_type}", user=creator)
         return jsonify(status)
 
@@ -631,8 +645,10 @@ def serve(
     @users.require_auth(token2expiration)
     def autorefine_card(card_id: int, assistant_type: str, token: str):
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
-        status = exists(find_card(card_id), "Model card does not exist or has been deleted.").autorefine(assistant, logger)
+        card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
         with auth_lock: creator = token2user.get(token, None)
+        if creator!=card.creator: abort(403, "Only the card's creator can refine it in-place.")
+        status = card.autorefine(assistant, logger)
         logger.info(f"requested card {card_id} refinement from {assistant_type}", user=creator)
         return jsonify(status)
 

@@ -42,7 +42,7 @@
     border-top: 6px solid transparent;
     border-bottom: 6px solid transparent;
     border-left: 10px solid #64DB96;
-    cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
     position: relative;
     top: 2px;
     left: -24px;
@@ -55,7 +55,7 @@
     height: 5px;
     margin-right: -12px;
     background: #F44336;
-    cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
     position: relative;
     top: -2px;
     border-radius: 0;

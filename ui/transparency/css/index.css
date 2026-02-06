@@ -82,7 +82,7 @@ input {
 
 .modal--active {visibility: visible;opacity: 1;}
 .modal__bg {background: rgba(0, 0, 0, 0.5);backdrop-filter: blur(8px);-webkit-backdrop-filter: blur(8px);}
-.modal__dialog {width: 500px; padding: 1.2rem;}
+.modal__dialog {padding: 1.2rem;width: 85%;}
 .modal__content {
     will-change: transform, opacity;
     position: relative;
@@ -133,6 +133,7 @@ input {
 @media (max-width: 900px) {
     .modal-card img {width: 30px;}
     .modal-card h2 {font-size: 22px;}
+    .modal__dialog {width: 95%;}
 }
 
 
