@@ -118,7 +118,7 @@ stroke-dashoffset="${100 - Math.round(it.quality * 100)}"/>
 <div>
 <span style="display:block;color:#EEE">${name}</span>
 <span style="font-size:13px;color:#F9AB49">${it.desc ? "" : "DRAFT (no version)"}</span>
-<span style="font-size:13px;color:#79CFDC">${(it.desc || "") + (it.creator ? " by " + it.creator : "")}</span>
+<span style="font-size:13px;color:#79CFDC">${(it.desc || "") + (it.creator ? " uploaded by " + it.creator : "")}</span>
 <span style="font-size:13px;color:#79CFDC">${type ? " --- " + type + task : ""}</span>
 </div>
 </div>

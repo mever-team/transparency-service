@@ -1,5 +1,6 @@
 .example_button {
-    padding:5px 10px;
+    padding-left:10px!important;
+    padding-right:10px!important;
     cursor: pointer;
     border-radius: 10px!important;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
@@ -400,16 +401,15 @@ section.buttons {
     width: 135px;
 }
 
-#cancel-delete-btn {
-    background: #eee;
-    color: #1F1F1F;
-}
-
 #confirm-delete-btn {
     background: #F44336;
     color: #1F1F1F;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
 }
 
+#confirm-delete-btn:hover {
+    filter: brightness(1.2);
+}
 #close-success-btn, #close-error-btn, .home_url {
     position: relative;
     background: #79CFDC;
@@ -436,11 +436,12 @@ section.buttons {
     position: relative; /* anchor for tooltip */
     border-radius: 10px;
     padding: 7px 10px;
-    background: #1F1F1F;
+    background: inherit!important;
     width: 100%!important;
     margin-bottom: 10px;
     text-align: center;
     color:#EEEEEE;
+    margin-left: 0px!important;
 }
 
 .quality-circle {

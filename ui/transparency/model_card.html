@@ -70,7 +70,7 @@
                         <span class="btn-text"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Save</span>
                         <span class="btn-confirmation"><i class="fa-solid fa-check"></i>&nbsp;Saved</span>
                     </div>
-                    <div class="example_button" id="deleteCard" style="width: 80px; background-color:#1F1F1F;border: solid 1px #434343;color:#F44336; display:none"><i class="fa-solid fa-trash"></i> Delete</div>
+                    <div class="example_button" id="deleteCard" style="width: 100px; background-color:#1F1F1F;border: solid 1px #434343;color:#F44336; display:none"><i class="fa-solid fa-trash"></i>&nbsp;Delete</div>
                 </div>
             </div>
         </div>
@@ -87,7 +87,7 @@
             <p>This <strong>cannot be undone</strong>. Are you sure?</p>
             <div class="buttons">
                 <button id="confirm-delete-btn"><i class="fa-solid fa-trash"></i>&nbsp;Delete</button>
-                <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343" id="cancel-delete-btn">✖ Cancel</button>
+                <button style="card-button button" id="cancel-delete-btn"><i class="fa-solid fa-cancel"></i>&nbsp;Cancel</button>
             </div>
         </div>
     </div>
@@ -157,7 +157,7 @@
 
         <img style="width: 70%; flex-shrink: 0;" src="img/transparency_img.png">
         <div class="assistants_wrapper"></div>
-        <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:100%" id="cancel-refine-btn">✖ Cancel</button>
+        <button style="width:100%;margin-left:0px!important" class="button" id="cancel-refine-btn"><i class="fa-solid fa-cancel"></i>&nbsp;Maybe later</button>
     </div>
 </div>
 
@@ -170,9 +170,8 @@
             Paste any URL with model info, for example
             from <a href="https://github.com/" target="_blank">GitHub</a> or
             <a href="https://huggingface.co/" target="_blank">HuggingFace</a>.
-            You can cancel and import later.
         </p>
-        <p id="pdf_desc" class="import_options">Upload a markdown or pdf file that contains model info. You can cancel and import later. </p>
+        <p id="pdf_desc" class="import_options">Upload a markdown or pdf file that contains model info. </p>
         <img style="width: 70%; flex-shrink: 0;" src="img/create_img.png">
 
         <p id="pdf_text">
@@ -197,7 +196,7 @@
         </div>
         <br><br>
         <div class="assistants_wrapper"></div>
-        <button style="background-color: #1F1F1F;color:#EEEEEE;border:solid 1px #434343;width:100%" id="cancel-autocomplete-btn">✖ Cancel</button>
+        <button style="width:100%;margin-left:0px!important" class="button" id="cancel-autocomplete-btn"><i class="fa-solid fa-cancel"></i>&nbsp;Maybe later</button>
     </div>
 </div>
 z

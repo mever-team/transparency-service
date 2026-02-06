@@ -103,7 +103,8 @@ $(document).ready(function () {
 
                         let jsonData = cardJson;
                         $("#model-title").text(jsonData.title);
-                        $("#model-description").html(jsonData.description+" by "+jsonData.creator);
+                        console.log(jsonData);
+                        $("#model-description").html(jsonData.description+" uploaded by "+jsonData.creator);
                         $("#model-pending").html(jsonData.description?"":"DRAFT (needs version to be searchable)");
                         $("#model-quality").html(`
                              <svg class="quality-circle" viewBox="0 0 36 36">
@@ -282,8 +283,8 @@ $(document).ready(function () {
                         const description = $.trim($tempDiv.text());
                         const $card = $("<button>", {
                             id: item.name,
-                            class: "card-button",
-                            html: `<div class="desc">${title}</div><div class="tooltip">${description}</div>`
+                            class: "card-button button",
+                            html: `<div class="desc">${title}</div>`//+`<div class="tooltip">${description}</div>`
                         });
                         $container.append($card);
                     });
@@ -340,7 +341,7 @@ $(document).ready(function () {
                 });
 
                 $("#model-title").text(response.title);
-                $("#model-description").html(response.description+" by "+response.creator);
+                $("#model-description").html(response.description+" uploaded by "+response.creator);
                 $("#model-pending").html(response.description?"":"DRAFT (needs version to be searchable)");
                 $("#model-quality").html(`
                      <svg class="quality-circle" viewBox="0 0 36 36">
