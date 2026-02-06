@@ -1,3 +1,6 @@
+var userFilterOn = false;
+var draftFilterOn = false;
+
 $(function () {
     $('#loading').show();
     $("#topic").val(localStorage.getItem("last_search_term") || "");
@@ -81,7 +84,7 @@ function autocomplete_populate() {
             url: "/transparency/cards",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify({ query: q }),
+            data: JSON.stringify({ query: q + (draftFilterOn?" --drafts":"")+(userFilterOn?" --more --by "+$('#account-name').text():"")}),
             success: r => {
                 $('#loading').hide();
                 const results = r.results || [];
@@ -147,6 +150,39 @@ ${it.description || ""}
             $input.val(($input.val() ? $input.val() + ' ' : '') + text + ' ');
         $input.focus();
         lastUpdate = Date.now();
+        request();
+    });
+
+
+    $('#user-filter').on('click', function () {
+        const $topic = $('#topic');
+        const username = $('#account-name').text().trim();
+        if (!username) return;
+        userFilterOn = !userFilterOn;
+        $(this).toggleClass('success', userFilterOn);
+        const now = Date.now();
+        if (now - lastUpdate < delay && !first) {
+            clearTimeout(pending);
+            pending = setTimeout(request, delay);
+            return;
+        }
+        lastUpdate = now;
+        request();
+    });
+
+    $('#draft-filter').on('click', function () {
+        const $topic = $('#topic');
+        const username = $('#account-name').text().trim();
+        if (!username) return;
+        draftFilterOn = !draftFilterOn;
+        $(this).toggleClass('success', draftFilterOn);
+        const now = Date.now();
+        if (now - lastUpdate < delay && !first) {
+            clearTimeout(pending);
+            pending = setTimeout(request, delay);
+            return;
+        }
+        lastUpdate = now;
         request();
     });
 

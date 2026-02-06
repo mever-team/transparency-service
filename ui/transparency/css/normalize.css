@@ -62,11 +62,10 @@ html, body {height: 100%; margin: 0; display: flex; flex-direction: column;}
 .button {
     background: inherit;
     color: #EEEEEE;
-    border: solid 1px #434343;
-    padding:5px 10px;
     margin-left:5px!important;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
     border: 1px solid #434343!important;
+    padding:5px 10px;
     cursor: pointer;
     border-radius: 10px;
     filter: brightness(1);
@@ -75,6 +74,7 @@ html, body {height: 100%; margin: 0; display: flex; flex-direction: column;}
 a:hover {filter: brightness(1.2);}
 .warning.button, .warning.title {color: #F9AB49;}
 .success.button, .success.title {color: #64DB96;}
+.secondary {color: #C8C8C8}
 .error {color:#F44336}
 .hidden {display: none;}
 #service-logo {color: #64DB96;float: left;text-align:center;font-size: 40px;margin-bottom: 10px;}

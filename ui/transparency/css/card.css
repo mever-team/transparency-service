@@ -1,3 +1,13 @@
+.example_button {
+    padding:5px 10px;
+    cursor: pointer;
+    border-radius: 10px!important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
+    border: 1px solid #434343!important;
+}
+
+.example_button:hover {filter: brightness(1.2);}
+
 .search_section::after, .search_section::before {
     content: '';
     display: block;
@@ -744,6 +754,8 @@ section.buttons {
 .history-graph text.edge-label {fill: #eeeeee;font-size: 11px; pointer-events: none;}
 .history-graph text.self-label {fill: #eeeeee;font-size: 11px;font-style: italic;}
 .history-graph g.node text {fill: #eeeeee;font-size: 12px;pointer-events: none;}
-.node-current {fill: #79CFDC; opacity: 1;}
-.node-related {fill: #C8C8C8;}
+.node-current {fill: #79CFDC;stroke: #4FB3C1;stroke-width: 2px;filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));opacity: 1;}
+.node-related {fill: #C8C8C8;stroke: #A8A8A8;stroke-width: 2px;}
+.node-related:hover {filter: brightness(1.2);}
+.node-related{transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;}
 .edge {stroke: #C8C8C8;stroke-width: 1.2;}

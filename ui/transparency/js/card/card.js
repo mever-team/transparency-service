@@ -96,6 +96,10 @@ $(document).ready(function () {
                     function render() {
                         if(!cardJson || !comparedJson) return;
                         let is_logged_in = token&&cardJson.creator === loggedUser;
+                        if(is_logged_in) {
+                            $('#deleteCard').show();
+                            $('#import-btn').show();
+                        }
 
                         let jsonData = cardJson;
                         $("#model-title").text(jsonData.title);

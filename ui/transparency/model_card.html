@@ -59,7 +59,7 @@
                             <span class="btn-text"><i class="fa-solid fa-robot"></i>&nbsp;Actions ▾</span>
                         </div>
                         <div id="assistDropdown" class="download-dropdown-menu" style="display:none;">
-                            <div class="download-dropdown-item modal_autocomplete" data-format="pdf"><i class="fa-solid fa-folder-open"></i>&nbsp;Import</div>
+                            <div class="download-dropdown-item modal_autocomplete" style="display:none;" data-format="pdf" id="import-btn"><i class="fa-solid fa-folder-open"></i>&nbsp;Import</div>
                             <div class="download-dropdown-item modal_refine" data-format="json"><i class="fa-regular fa-gem"></i>&nbsp;Refine</div>
                             <div class="download-dropdown-item" id="cardClone">
                                 <span class="btn-text"><i class="fa-solid fa-copy"></i>&nbsp;Clone</span>
@@ -70,7 +70,7 @@
                         <span class="btn-text"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Save</span>
                         <span class="btn-confirmation"><i class="fa-solid fa-check"></i>&nbsp;Saved</span>
                     </div>
-                    <div class="example_button" id="deleteCard" style="width: 80px; background-color:#1F1F1F;border: solid 1px #434343;color:#F44336"><i class="fa-solid fa-trash"></i> Delete</div>
+                    <div class="example_button" id="deleteCard" style="width: 80px; background-color:#1F1F1F;border: solid 1px #434343;color:#F44336; display:none"><i class="fa-solid fa-trash"></i> Delete</div>
                 </div>
             </div>
         </div>

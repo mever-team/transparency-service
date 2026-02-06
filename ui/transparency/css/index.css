@@ -155,11 +155,11 @@ input {
 
 .search_section {
     flex: 1 0 auto;
-    min-height: 400px;
     display: flex;
     box-sizing: border-box
     position: relative;
     z-index: 3;
+    margin-top: 10px;
 }
 i.fa-solid:before,
 i.fa-regular:before,
@@ -168,3 +168,4 @@ i.fa-brands:before {
 }
 
 .inline-date {all: unset;font: inherit;color: inherit;background: inherit;border: none;padding: 0;margin: 0;line-height: inherit; display: inline;}
+.filter {margin-top:0px;margin-bottom:5px;margin-left:0px!important}
