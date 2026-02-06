@@ -17,9 +17,10 @@ class ShortText(Field):
         return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "short text"}
 
 class LongText(Field):
-    def __init__(self, description: str=""):
+    def __init__(self, description: str="", technical_nature: bool=False):
         self.__contents = ""
         self.description = description
+        self.technical_nature = technical_nature
     def set(self, value):
         if isinstance(value, Field): value = value.get()
         self.__contents = value

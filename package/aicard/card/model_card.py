@@ -28,7 +28,7 @@ class ModelCard:
             overview=DotDict(
                 name=ShortText("Name of the model."),
                 description=LongText("Model purpose, capabilities, novelty and caveats"),
-                creator=LongText("Person or organization developed the model."),
+                creator=ShortText("Person or organization developed the model."),
                 date=Date("Model development completion date."),
                 version=ShortText("Version of the model."),
                 type=Options([
@@ -139,9 +139,9 @@ class ModelCard:
                     "unknown"
                     ], "Model task."),
                 license=LongText("Licence and intellectual property (IP) information."),
-                home=LongText("URL hosting the model."),
-                contact=LongText("Author contact information."),
-                citation=LongText("How should the model be cited?"),
+                home=ShortText("URL hosting the model."),
+                contact=ShortText("Author contact information."),
+                citation=LongText("How should the model be cited? This may include a formatted citation or bibtex entries like @article."),
                 more=LongText("Additional model information not found above.")),
             use=DotDict(
                 use_cases=LongText("Intended uses of the model."),
@@ -149,31 +149,31 @@ class ModelCard:
                 user_groups=LongText("Intended users."),
                 out_of_scope_use=LongText("Unintended and improper use of model."),
                 software=LongText("Software requirements and dependencies?"),
-                instructions=LongText("Use instructions."),
-                inputs_outputs=LongText("Description of the model's inputs and outputs"),
+                instructions=LongText("Use instructions.", technical_nature=True),
+                inputs_outputs=LongText("Description of the model's inputs and outputs", technical_nature=True),
                 factors=LongText("Foreseeable salient factors for which model performance may vary."),
                 hardware=LongText("Hardware requirements for training and inference."),
-                more=LongText("Additional information not found above.")),
+                more=LongText("Additional information about intended uses not found above.", technical_nature=True)),
             training=DotDict(
                 datasets=LongText("Dataset(s) used during training."),
                 motivation=LongText("Why were these datasets chosen?"),
-                preprocessing=LongText("Data pre-processing for training (tokenizer, data augmentation etc.)."),
+                preprocessing=LongText("Data pre-processing for training (tokenizer, data augmentation etc.).", technical_nature=True),
                 standards=Options(["none", "ISO","IEEE", "unknown"], "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management."),
                 update=Options(["no", "yes", "unknown"], "Is tge training set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),
-                more=LongText("Additional training set information not found above.")),
+                more=LongText("Additional training set information not found above.", technical_nature=True)),
             evaluation=DotDict(
                 datasets=LongText("Dataset(s) used during evaluate."),
                 motivation=LongText("Why were these datasets chosen?"),
-                preprocessing=LongText("Data pre-processing for evaluation (tokenizer, data augmentation etc.)."),
+                preprocessing=LongText("Data pre-processing for evaluation (tokenizer, data augmentation etc.).", technical_nature=True),
                 standards=Options(["none", "ISO","IEEE", "unknown"], "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management."),
                 update=Options(["no", "yes", "unknown"], "Is the evalution set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),
-                more=LongText("Additional evaluation set information not found above.")
+                more=LongText("Additional evaluation set information not found above.", technical_nature=True)
             ),
             performance=DotDict(
                 analysis=LongText("Analysis and explanation of performance results."),
                 metrics=LongText("Benchmark results for any performance metrics."),
                 thresholds=LongText("If decision thresholds are used, what are they, and why were those parameters chosen?"),
-                methodology=LongText("Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method."),
+                methodology=LongText("Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method.", technical_nature=True),
                 bias=LongText("Performance and bias across different groups (e.g. ethnicity, gender)"),
             ),
             safety=DotDict(

@@ -8,6 +8,7 @@ from urllib.parse import urlparse, urljoin
 from bs4 import BeautifulSoup
 from ...card.fields import Field, LongText, Options
 import torch
+from datetime import date
 from transformers import AutoTokenizer, AutoModel
 
 class SemanticMatcher(Assistant):
@@ -112,6 +113,15 @@ class SemanticMatcher(Assistant):
         for tag in soup.find_all(src=True): tag["src"] = urljoin(url, tag["src"])
         first_header = soup.find(re.compile("^h[1-6]$"))
         title = first_header.get_text(separator=" ", strip=True) if first_header else ""
+        creator = ""
+        if "/" in title:
+            title = title.split("/")
+            creator = title[0].strip()
+            title = title[1].strip()
+        if " " in title and "-" in title:
+            title = title.split(" ")
+            if title[0].strip() and "-" in title[0]:
+                title = title[0]
         # sections = []
         # for header in soup.find_all(re.compile("^h[1-6]$")):
         #     content = []
@@ -187,6 +197,7 @@ class SemanticMatcher(Assistant):
             embedding = self.get_embeddings("#"+(heading if heading else "")+"\n"+(content if content else ""))
             best_score = 0
             best_path = []
+            is_technical = "<pre>" in content
             for cat, values in card.data.items():
                 if not isinstance(values, dict): continue
                 for field, value in values.items():
@@ -200,6 +211,7 @@ class SemanticMatcher(Assistant):
                                 value.set(option)
                         continue
                     if not isinstance(value, LongText) and (len(content)>120 or ' ' in content.strip()): continue
+                    if isinstance(value, LongText) and is_technical and not value.technical_nature: continue
                     score = self.embedding_similarity(embedding, self.field_embeddings[cat+"__"+field])
                     if score > best_score:
                         best_score = score
@@ -213,6 +225,8 @@ class SemanticMatcher(Assistant):
             else: not_used_fields.append(heading)
 
         if not card.overview.name: card.overview.name = title
+        if not card.overview.creator: card.overview.creator = creator
+        if not card.overview.date or card.overview.date=="dd/mm/yyyy": card.overview.date = date.today().strftime("%d/%m/%Y")
         if not card.overview.home: card.overview.home = url
         user_messages[-1] = (
             f"<h2>{self.alias} import</h2>"

@@ -566,8 +566,9 @@ def serve(
     @users.require_auth(token2expiration)
     def delete_card(card_id, token: str):
         with auth_lock: creator = token2user.get(token, None)
-        with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
-            if creator != card.creator: abort(403, "Only the card's creator can delete it.")
+        card_entry = find_card(card_id)
+        if creator != card_entry.creator: abort(403, "Only the card's creator can delete it.")
+        with exists(card_entry, "Model card does not exist or has been deleted.") as card:
             cursor = conn.conn.cursor()
             cursor.execute("DELETE FROM cards WHERE id = ?", (card_id,))
             conn.conn.commit()
@@ -592,7 +593,7 @@ def serve(
             except Exception as e: abort(404, "Wrong data: "+str(e))
             logger.info("updated a card", user=creator)
             return jsonify(converters.dict2dynamic(card.data, {"title"})
-                           |{"description": card.summary(), "quality": card.quality(), "history": card_entry.history()})
+                           |{"description": card.summary(), "quality": card.quality(), "history": card_entry.history(), "creator": card_entry.creator})
 
     @app.route(domain_prefix+'/card', methods=['POST'])
     @users.require_auth(token2expiration)
