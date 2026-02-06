@@ -38,33 +38,41 @@ function updateUsername() {
                         success: function (pingResp) {
                             if (pingResp && pingResp.token) {
                                 token = pingResp.token;
+                                loggedUser = pingResp.username;
                                 document.cookie = "access_token=" + token + "; path=/; max-age=" + pingResp.expires_in + ";";
                                 updateUsername(); // Refresh UI and reschedule next ping
+                                $('#account-name').text(loggedUser);
                             } else {
                                 token = "";
+                                loggedUser = "";
                                 document.cookie = "access_token=; path=/; max-age=0;";
                                 updateUsername();
+                                $('#account-name').text(loggedUser);
                             }
                         },
                         error: function () {
                             token = "";
+                            loggedUser = "";
                             document.cookie = "access_token=; path=/; max-age=0;";
                             updateUsername();
+                            $('#account-name').text(loggedUser);
                         }
                     });
                 }, halfLife);
             } else {
                 clearTimeout(pingTimer);
-                document.cookie = "access_token=; path=/; max-age=0;";
                 token = "";
-                $('#account-name').text("");
+                loggedUser = "";
+                document.cookie = "access_token=; path=/; max-age=0;";
+                $('#account-name').text(loggedUser);
             }
         },
         error: function () {
             clearTimeout(pingTimer);
             document.cookie = "access_token=; path=/; max-age=0;";
             token = "";
-            $('#account-name').text("");
+            loggedUser = "";
+            $('#account-name').text(loggedUser);
         }
     });
 }

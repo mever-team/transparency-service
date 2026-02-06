@@ -23,7 +23,7 @@ $(function () {
             else response.users.forEach(u => { $registered.append(`
                 <div class="user">
                     <span class="username">${u.username}</span> - ${u.email||"no contact info"}
-                    <span class="delete-btn error button" data-username="${u.username}"><i class="fa-solid fa-cancel"></i>&nbsp;Delete</span>
+                    <span class="delete-btn error button" data-username="${u.username}"><i class="fa-solid fa-trash"></i>&nbsp;Delete</span>
                     <span class="registered-label">Registered</span>
                 </div>
             `);});
