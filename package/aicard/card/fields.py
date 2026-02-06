@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class Field:
     def set(self, value: str): raise Exception("Cannot set to abstract Field")
     def get(self): raise Exception("Cannot get from abstract Field")
@@ -54,8 +56,10 @@ class Date(Field):
     def __init__(self, description: str=""):
         self.__contents = ""
         self.description = description
+        self.__format = "%Y-%m-%d"
     def set(self, value):
         if isinstance(value, Field): value = value.get()
+        assert datetime.strptime(value, self.__format), f"Date format must be {self.__format}"
         self.__contents = value
     def get(self):
         return self.__contents
