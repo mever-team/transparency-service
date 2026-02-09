@@ -103,7 +103,6 @@ $(document).ready(function () {
 
                         let jsonData = cardJson;
                         $("#model-title").text(jsonData.title);
-                        console.log(jsonData);
                         $("#model-description").html(jsonData.description+" uploaded by "+jsonData.creator);
                         $("#model-pending").html(jsonData.description?"":"DRAFT (needs version to be searchable)");
                         $("#model-quality").html(`
