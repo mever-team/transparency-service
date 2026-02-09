@@ -352,7 +352,8 @@ class ModelCard:
             if isinstance(dotdict, DotDict):
                 segment = ""
                 for field, value in dotdict.items():
-                    val = value.get().strip()
+                    v = value.get()
+                    val = v.strip() if v else ""
                     if val and str(val) != "unknown":
                         field_label = field.replace("_", " ")
                         segment += f"<p><b>{field_label}</b>: {val}</p>\n"

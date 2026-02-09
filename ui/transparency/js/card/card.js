@@ -186,7 +186,8 @@ $(document).ready(function () {
                                 if(is_logged_in) $fieldValue.addClass("editable");
 
                                 // Editable field value
-                                if ((field.value.trim() !== "") && (field.value.trim() !== "<br>") && (field.value.trim() !== "unknown")) {
+                                let val = String(field.value || "").trim();
+                                if ((val  !== "") && (val  !== "<br>") && (val  !== "unknown")) {
                                     $('.menu').find('div').eq(index).find('.light').removeClass('square');
                                     $('.menu').find('div').eq(index).find('.light').addClass('arrow');
                                 }
