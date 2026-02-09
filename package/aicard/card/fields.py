@@ -59,8 +59,11 @@ class Date(Field):
         self.__format = "%Y-%m-%d"
     def set(self, value):
         if isinstance(value, Field): value = value.get()
-        assert (not value) or datetime.strptime(value, self.__format), f"Date format must be {self.__format}"
-        self.__contents = value
+        try:
+            datetime.strptime(value, self.__format)
+            self.__contents = value
+        except:
+            return
     def get(self):
         return self.__contents
     def __bool__(self):
