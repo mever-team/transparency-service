@@ -531,7 +531,7 @@ $(document).ready(function () {
                             data: JSON.stringify($('#card-url').val()),
                             success: function (response) {
                                 document.getElementById('modal-autocomplete-screen').style.display = 'none';
-                                interval = setInterval(function () {checkLocked(interval);}, 1);
+                                interval = setInterval(function () {checkLocked(interval);}, 100);
                             },
                             error: function (xhr, status, error) {
                                 document.getElementById('modal-autocomplete-screen').style.display = 'none';
@@ -552,7 +552,7 @@ $(document).ready(function () {
                             contentType: false, // don't set content-type header, let browser set it (multipart/form-data)
                             success: function (response) {
                                 document.getElementById('modal-autocomplete-screen').style.display = 'none';
-                                interval = setInterval(function () {checkLocked(interval);}, 1);
+                                interval = setInterval(function () {checkLocked(interval);}, 100);
                                 //alert(response)
                             },
                             error: function (xhr, status, error) {
