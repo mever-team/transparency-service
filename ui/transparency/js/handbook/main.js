@@ -12,7 +12,6 @@ document.addEventListener("scroll", (event) => { getActiveMenuItem(); });
 function getActiveMenuItem() {
     for (let i=bodyIds.length-1; i>-1; i--){
         const bodyElement = document.getElementById(bodyIds[i]);
-        console.log(bodyElement.getBoundingClientRect().top);
         if (bodyElement.getBoundingClientRect().top - 10<=0) {
             if (previousActiveId === bodyIds[i]) {return;}
             document.getElementById(previousActiveId + 'Menu').classList.remove('active');
