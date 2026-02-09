@@ -19,11 +19,9 @@ image_classifier = ImageClassifier()
 app, gc = serve({
         "agent": Combined(
             complete=SemanticMatcher(external_get_timeout_sec=10),
-            refine=Prompter(
-                Ollama("llama3.2:latest", name="🦙 Llama 3.2", timeout_secs=45),
-                description="Llama 3.2 is used as the base model.",
-                image_classifier=image_classifier),
-        )
+            # refine=Prompter(Ollama("llama3.2:latest", name="🦙 Llama 3.2", timeout_secs=45),description="Llama 3.2 is used as the base model.",image_classifier=image_classifier),
+            refine=Prompter(Ollama("mistral:latest", name="🌬️ Mistral", timeout_secs=45),description="Mistral is used as the base model.",image_classifier=image_classifier),
+            )
     },
     env="ui/.env",
 )
