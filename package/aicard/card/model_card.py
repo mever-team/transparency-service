@@ -156,14 +156,14 @@ class ModelCard:
                 more=LongText("Additional information about intended uses not found above.", technical_nature=True)),
             training=DotDict(
                 datasets=LongText("Dataset(s) used during training."),
-                motivation=LongText("Why were these datasets chosen?"),
+                motivation=LongText("Why were training datasets chosen?"),
                 preprocessing=LongText("Data pre-processing for training (tokenizer, data augmentation etc.).", technical_nature=True),
                 standards=Options(["none", "ISO","IEEE", "unknown"], "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management."),
                 update=Options(["no", "yes", "unknown"], "Is tge training set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),
                 more=LongText("Additional training set information not found above.", technical_nature=True)),
             evaluation=DotDict(
-                datasets=LongText("Dataset(s) used during evaluate."),
-                motivation=LongText("Why were these datasets chosen?"),
+                datasets=LongText("Dataset(s) used during evaluation."),
+                motivation=LongText("Why were evaluation datasets chosen?"),
                 preprocessing=LongText("Data pre-processing for evaluation (tokenizer, data augmentation etc.).", technical_nature=True),
                 standards=Options(["none", "ISO","IEEE", "unknown"], "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management."),
                 update=Options(["no", "yes", "unknown"], "Is the evalution set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),

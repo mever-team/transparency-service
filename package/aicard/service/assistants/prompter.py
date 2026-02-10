@@ -10,7 +10,7 @@ import markdown2
 import time
 
 from ...agents.extensions.embeddings import ImageClassifier
-from ...card.fields import LongText
+from ...card.fields import LongText, Pattern
 from ...utils.pdf_split import pdf_to_chunks
 
 
@@ -21,7 +21,8 @@ class Prompter(Assistant):
                  external_get_timeout_sec:int=3,
                  max_retries:int=3,
                  deep:bool=False,
-                 description:str = None):
+                 description:str = None,
+                 text_preprocessor = None):
         if not description:
             self.description = "<h1>"+agent.name()+("</h1>Slow but deep thinker, especially for refinement. "if not deep else "</h1>Thinks for a little bit. ")+agent.description()
         else:
@@ -35,6 +36,7 @@ class Prompter(Assistant):
         self.max_retries = max_retries
         self.deep = deep
         self.image_classifier = image_classifier
+        self.text_preprocessor = text_preprocessor
 
     def complete(self, card: ModelCard, data: dict, logger: Logger, user_messages: list[str]):
         if data['data_type'] == 'url':
@@ -104,6 +106,12 @@ class Prompter(Assistant):
             user_messages.append(f"<h2>{self.alias} refinement</h2>Running global completion...")
             new_card = ModelCard()
             self._complete(merged_input, "refinement", new_card, logger, user_messages)
+            # retrieve unset short fields/dropdowns/dates/etc from the original
+            for category, values in new_card.data.items():
+                if not isinstance(values, dict): continue
+                for field, value in values.items():
+                    if not isinstance(value, LongText) and not isinstance(value, Pattern) and not value:
+                        value.set(card.data[category][field].get())
             card.assign(new_card)
             # for category, values in card.data.items():
             #     if not isinstance(values, dict): continue
@@ -171,7 +179,11 @@ class Prompter(Assistant):
         )
         #card.assign(card.to_html_card()) # this creates some errors - under investigation
 
-    def _complete(self, text: str, task: str, card: ModelCard, logger: Logger, user_messages: list[str]):
+    def _complete(self, text: str|list[str], task: str, card: ModelCard, logger: Logger, user_messages: list[str]):
+        if not isinstance(text, list):
+            text = [text]
+        if self.text_preprocessor:
+            text = [self.text_preprocessor(t) for t in text]
         output_formats = card.json_schema_per_category()
         # Extra parameterization
 
@@ -218,9 +230,6 @@ class Prompter(Assistant):
                 f"<b>Working on tab: {category.replace('_', ' ')}</b>"
             )
             progress += 1
-            
-            if not isinstance(text, list):
-                text = [text]
 
             completion = dict()
             last_out = ""
