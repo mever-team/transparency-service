@@ -38,8 +38,6 @@
 <section class="filters">
     <div class="row bigWidth">
         <div class="small-12 medium-12 large-12 columns">
-            <p id="user-filter" class="filter button secondary" style="display:hide"><i class="fa-solid fa-plus"></i>&nbsp;&nbsp;My cards only</p>
-            <p id="draft-filter" class="filter button secondary"><i class="fa-solid fa-plus"></i>&nbsp;&nbsp;Show drafts</p>
         </div>
     </div>
 </section>
@@ -137,9 +135,13 @@
 
 </div>
 </div>
+
+<div id="filters" class="modal modal__bg"></div>
 <!-- JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://unpkg.com/mustache@4.2.0/mustache.min.js"></script>
 <script src="js/index/bearer.js"></script>
+<script src="js/index/filters.js"></script>
 <script src="js/index/main.js"></script>
 </body>
 </html>

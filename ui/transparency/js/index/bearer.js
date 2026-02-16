@@ -18,7 +18,7 @@ function updateUsername() {
         $('#register-btn').show();
         $('#logout-btn').hide();
         $('#account-btn').hide();
-        $('#user-filter').hide();
+        // $('#user-filter').hide();
         $('#login-name').text("");
         return;
     }
@@ -77,7 +77,7 @@ function updateUsername() {
                 $('#register-btn').show();
                 $('#logout-btn').hide();
                 $('#account-btn').hide();
-                $('#user-filter').hide();
+                // $('#user-filter').hide();
                 $('#login-name').text("");
             }
         },
@@ -90,7 +90,7 @@ function updateUsername() {
             $('#register-btn').show();
             $('#logout-btn').hide();
             $('#account-btn').hide();
-            $('#user-filter').hide();
+            // $('#user-filter').hide();
             $('#login-name').text("");
         }
     });

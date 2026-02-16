@@ -1,10 +1,8 @@
-var userFilterOn = false;
-var draftFilterOn = false;
+
 
 $(function () {
     $('#loading').show();
     $("#topic").val(localStorage.getItem("last_search_term") || "");
-    autocomplete_populate();
     $("#topic").trigger("keyup");
     if(localStorage.getItem('modalDismissed') !== 'true') $('.modal__trigger[data-modal="#modal_help"]').click();
     $('body').on('click', '.demo-close', ()=>{localStorage.setItem('modalDismissed', 'true');});
@@ -74,129 +72,6 @@ $(function () {
 
 });
 
-function autocomplete_populate() {
-    let lastUpdate = 0, pending = null, first = true, delay = 150;
-    const $topic = $("#topic"), $tbody = $("#resultsTable tbody");
-    function request() {
-        const q = $topic.val().trim();
-        if (first) $('#loading').show();
-        $.ajax({
-            url: "/transparency/cards",
-            method: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({ query: q + (draftFilterOn?" --drafts":"")+(userFilterOn?" --more --by "+$('#account-name').text():"")}),
-            success: r => {
-                $('#loading').hide();
-                const results = r.results || [];
-
-                $('#search_results_wrapper').text("Showing");
-                $('#search_results').text(results.length + " of " + (r.total || 0));
-                $tbody.empty();
-
-                if (results.length)
-                    results.forEach(it => {
-                        const name = it.name.replace(new RegExp("(" + q + ")", "ig"),"<strong style='color:#79CFDC'>$1</strong>");
-                        const type = (it.type || it.task || "").toLowerCase();
-                        const task = it.task ? " for " + it.task.toLowerCase() : "";
-                        $tbody.append(`
-<tr class="search_results_button">
-<td>
-<a style="display:block;width:100%;height:100%;text-decoration:none;text-align:left" href="model_card.html?id=${it.id}">
-<div class="row">
-<div>
-<svg class="quality-circle" viewBox="0 0 36 36">
-<circle cx="18" cy="18" r="18" fill="none" stroke="#434343" stroke-width="3"/>
-<circle cx="18" cy="18" r="18" fill="none"
-stroke="${it.quality>0.7?'#6CC06B':it.quality>0.4?'#FBC483':'#F87F76'}"
-stroke-width="3"
-stroke-dasharray="100"
-stroke-dashoffset="${100 - Math.round(it.quality * 100)}"/>
-<text x="18" y="14" class="quality-text">${Math.round(it.quality * 100)}%</text>
-<text x="18" y="24" class="quality-text">info</text>
-</svg>
-</div>
-<div>
-<span style="display:block;color:#EEE">${name}</span>
-<span style="font-size:13px;color:#F9AB49">${it.desc ? "" : "DRAFT (no version)"}</span>
-<span style="font-size:13px;color:#79CFDC">${(it.desc || "") + (it.creator ? " uploaded by " + it.creator : "")}</span>
-<span style="font-size:13px;color:#79CFDC">${type ? " --- " + type + task : ""}</span>
-</div>
-</div>
-<div style="font-size:13px;color:#C8C8C8;margin-top:7px;text-align:left">
-${it.description || ""}
-</div>
-</a>
-</td>
-</tr>`);
-                    });
-                else $tbody.append(`<tr><td colspan="3" style="text-align:center;color:#EEEEEE;font-weight:bold;font-size:22px;">No matching results</td></tr>`);
-                $("#resultsTable").show();
-                localStorage.setItem("last_search_term", q);
-                first = false;
-            },
-            error: () => {
-                $('#loading').hide();
-                first = false;
-                console.error("Error fetching results");
-            }
-        });
-    }
-
-    $(document).on('click', '.dropdown-content a', function (e) {
-        e.preventDefault();
-        const text = $(this).children().first().text().trim().toLowerCase();
-        const $input = $('#topic');
-        if (!$input.val().includes(text))
-            $input.val(($input.val() ? $input.val() + ' ' : '') + text + ' ');
-        $input.focus();
-        lastUpdate = Date.now();
-        request();
-    });
-
-
-    $('#user-filter').on('click', function () {
-        const $topic = $('#topic');
-        const username = $('#account-name').text().trim();
-        if (!username) return;
-        userFilterOn = !userFilterOn;
-        $(this).toggleClass('success', userFilterOn);
-        const now = Date.now();
-        if (now - lastUpdate < delay && !first) {
-            clearTimeout(pending);
-            pending = setTimeout(request, delay);
-            return;
-        }
-        lastUpdate = now;
-        request();
-    });
-
-    $('#draft-filter').on('click', function () {
-        const $topic = $('#topic');
-        const username = $('#account-name').text().trim();
-        if (!username) return;
-        draftFilterOn = !draftFilterOn;
-        $(this).toggleClass('success', draftFilterOn);
-        const now = Date.now();
-        if (now - lastUpdate < delay && !first) {
-            clearTimeout(pending);
-            pending = setTimeout(request, delay);
-            return;
-        }
-        lastUpdate = now;
-        request();
-    });
-
-    $topic.on("keyup", ()=>{
-        const now = Date.now();
-        if (now - lastUpdate < delay && !first) {
-            clearTimeout(pending);
-            pending = setTimeout(request, delay);
-            return;
-        }
-        lastUpdate = now;
-        request();
-    });
-}
 
 $('#login-confirm-btn').click(()=>{
     $.ajax({

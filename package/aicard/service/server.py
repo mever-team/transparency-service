@@ -93,7 +93,7 @@ def serve(
         if (not safe_path.endswith(".html") and not safe_path.endswith(".css")
                 and not safe_path.endswith(".js") and not safe_path.endswith(".png") and not safe_path.endswith(".svg")
                 and not safe_path.endswith(".jpg") and not safe_path.endswith(".otf") and not safe_path.endswith(".ico")
-                and not safe_path.endswith(".webp")
+                and not safe_path.endswith(".webp") and not safe_path.endswith(".mustache")
         ):
             logger.warn(f"WE ARE UNDER ATTACK!\n * non-web file access blocked: {safe_path!r}")
             abort(403)
