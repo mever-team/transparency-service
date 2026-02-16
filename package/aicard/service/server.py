@@ -248,21 +248,26 @@ def serve(
         else:
             desc_filter_simpler = "AND desc<>''"
             desc_filter = "AND cards.desc<>''"
+
         def sanitize_for_fts(s: str) -> str:
             s = s.strip().lower()
             s = re.sub(r'[^a-z0-9\s]', ' ', s)
             s = re.sub(r'\s+', ' ', s)
             return s
 
-        # apply filters
-        i = 0
-        quality_limits = float(0)
+        quality_limits = float(data.get("info", 0)) # FLOAT CAST IS MANDATORY TO AVOID INJECTION
         placeholders = ','.join(['?'] * len(owner))
         # TODO: beware that the commented filters are VULNERABLE TO SQL INJECTION AND SHOULD BE FIXED
-        # type_filter = f"AND cards.overview__type IN ('{'\',\''.join(type_list)}')" if type_list else ""
-        # task_filter = f"AND cards.overview__task IN ('{'\',\''.join(task_list)}')" if task_list else ""
-        type_filter = ""
-        task_filter = ""
+        type_list = data.get('type', [])
+        task_list = data.get('task', [])
+        if isinstance(type_list, str): type_list = [type_list]
+        if isinstance(task_list, str): task_list = [task_list]
+        type_filter = f"AND cards.overview__type IN ("+",".join("?" for _ in type_list)+")" if type_list else ""
+        task_filter = f"AND cards.overview__task IN ("+",".join("?" for _ in task_list)+")" if task_list else ""
+        safe_argument_list = list() # order and positioning matters
+        if type_list: safe_argument_list.extend(type_list)
+        if task_list: safe_argument_list.extend(task_list)
+
         owner = " ".join(owner)
         query = query.strip()
 
@@ -322,7 +327,7 @@ def serve(
                 ORDER BY rank ASC
                 LIMIT ? OFFSET ?
                 """,
-                (sanitize_for_fts(query), *owner, f"%{query.lower()}%", *owner, page_size, offset)
+                (sanitize_for_fts(query), *owner, f"%{query.lower()}%", *owner, *safe_argument_list, page_size, offset)
             )
 
         elif len(query) >= 3:
@@ -373,7 +378,7 @@ def serve(
                 ORDER BY rank ASC
                 LIMIT ? OFFSET ?
                 """,
-                (sanitize_for_fts(query), f"%{query.lower()}%", page_size, offset)
+                (sanitize_for_fts(query), f"%{query.lower()}%", *safe_argument_list, page_size, offset)
             )
 
         elif query and owner:
@@ -390,7 +395,7 @@ def serve(
                 ORDER BY id
                 LIMIT ? OFFSET ?
                 """,
-                (f"%{query.lower()}%", owner, page_size, offset)
+                (f"%{query.lower()}%", owner, *safe_argument_list, page_size, offset)
             )
         elif query:
             cursor.execute(
@@ -405,7 +410,7 @@ def serve(
                 ORDER BY id
                 LIMIT ? OFFSET ?
                 """,
-                (f"%{query.lower()}%", page_size, offset)
+                (f"%{query.lower()}%", *safe_argument_list, page_size, offset)
             )
         elif owner:
             cursor.execute(
@@ -420,7 +425,7 @@ def serve(
                 ORDER BY id
                 LIMIT ? OFFSET ?
                 """,
-                (owner, page_size, offset)
+                (owner, *safe_argument_list, page_size, offset)
             )
         else:
             cursor.execute(
@@ -434,7 +439,7 @@ def serve(
                 ORDER BY id
                 LIMIT ? OFFSET ?
                 """,
-                (page_size, offset)
+                (*safe_argument_list, page_size, offset)
             )
         rows = cursor.fetchall()
         added_ids = set()
