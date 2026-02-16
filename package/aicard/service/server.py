@@ -237,16 +237,17 @@ def serve(
         query = data.get('query', '')
         query = re.sub(r'\s+', ' ', query).strip().lower()
         query = re.sub(r'[^a-z0-9_\-\s]', '', query)
-        type_list = ''#data.get('type', '')
-        task_list = ''#data.get('task', '')
-        parts = query.split()
 
         page = max(int(data.get('page', 1)), 1)
         page_size = max(int(data.get('page_size', 5)), 1)
         owner = data.get("creator", "").strip().lower()
         owner = [owner] if owner else []
-        desc_filter_simpler = "AND desc<>''"
-        desc_filter = "AND cards.desc<>''"
+        if data.get('drafts', False):
+            desc_filter_simpler = ""
+            desc_filter = ""
+        else:
+            desc_filter_simpler = "AND desc<>''"
+            desc_filter = "AND cards.desc<>''"
         def sanitize_for_fts(s: str) -> str:
             s = s.strip().lower()
             s = re.sub(r'[^a-z0-9\s]', ' ', s)
@@ -256,23 +257,6 @@ def serve(
         # apply filters
         i = 0
         quality_limits = float(0)
-        new_parts = []
-        while i<len(parts):
-            filter = parts[i]
-            if filter=="--drafts":
-                desc_filter_simpler = ""
-                desc_filter = ""
-            elif filter=="--by" and i<len(parts)-1:
-                i += 1
-                owner.append(parts[i])
-            elif filter=="--info" and i<len(parts)-1:
-                i += 1
-                value = parts[i]
-                try: quality_limits = float(value)/100-0.00001 # NEVER REMOVE THE CAST FOR SAFETY
-                except Exception: pass
-            elif filter == "--more": page_size = 20
-            else: new_parts.append(filter)
-            i += 1
         placeholders = ','.join(['?'] * len(owner))
         # TODO: beware that the commented filters are VULNERABLE TO SQL INJECTION AND SHOULD BE FIXED
         # type_filter = f"AND cards.overview__type IN ('{'\',\''.join(type_list)}')" if type_list else ""
@@ -280,7 +264,6 @@ def serve(
         type_filter = ""
         task_filter = ""
         owner = " ".join(owner)
-        query = " ".join(new_parts)
         query = query.strip()
 
         cursor = conn.conn.cursor()

@@ -83,6 +83,7 @@ input {
 .modal--active {visibility: visible;opacity: 1;}
 .modal__bg {background: rgba(0, 0, 0, 0.5);backdrop-filter: blur(8px);-webkit-backdrop-filter: blur(8px);}
 .modal__dialog {padding: 1.2rem;width: 85%;}
+.filter__dialog {padding: 1.2rem;width: 50%!important;}
 .modal__content {
     will-change: transform, opacity;
     position: relative;
@@ -90,6 +91,7 @@ input {
     background: #1F1F1F;
     color: #dcdcdc;
     background-clip: padding-box;
+    border-radius: 20px;
     box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
     opacity: 0;
     transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);

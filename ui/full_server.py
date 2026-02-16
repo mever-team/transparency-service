@@ -6,8 +6,6 @@
 # .venv serves index.html at http://127.0.0.1:5000
 # server specs in http://127.0.0.1:5000/apidocs
 # refer to the implementation in package/service/server.py
-# The delay below is for how many seconds the test agent will
-# pretend to be thinking, so that invalid requests can be tested.
 
 from aicard.service import serve
 from aicard.service.assistants import SemanticMatcher, Prompter, Combined

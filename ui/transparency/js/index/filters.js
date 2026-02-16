@@ -56,7 +56,7 @@ $(function () {
 
         init_filters: function() {
             this.filters.drafts = false; 
-            this.filters.user = false; 
+            this.filters.user = false;
             this.filters.query = localStorage.getItem("last_search_term") || '';
         },
 
@@ -95,12 +95,10 @@ $(function () {
         filterType: function(e) {
             if (!e.target.id) return;
             $(e.target).toggleClass("active");
-            if(this.current.value.includes(e.target.id)){
+            if(this.current.value.includes(e.target.id))
                 this.current.value.splice(this.current.value.indexOf(e.target.id), 1);
-            }
-            else {
+            else
                 this.current.value.push(e.target.id);
-            }
         },
         newFilter: function() {
             this.templates.modal.render();
@@ -207,7 +205,7 @@ $(function () {
                 if (this.options[filter].active) return;
                 $('<option>')
                     .val(filter)
-                    .text(capitalizeFirstLetter(filter))
+                    .text(formatDisplayName(filter))
                     .appendTo(this.$modal.find('#filter-select'));
             });
         },
@@ -251,7 +249,7 @@ $(function () {
                 .attr('id', 'new-filter')
                 .addClass('filter button secondary modal__trigger')
                 .attr('data-modal', '#filters')
-                .html('<div><i class="fa-solid fa-plus"></i>&nbsp;&nbsp;New Filter</div>')
+                .html('<div><i class="fa-solid fa-plus"></i>&nbsp;&nbsp;Add filter</div>')
                 .appendTo(this.$filters);
             
         },
@@ -307,7 +305,7 @@ $(function () {
             });
         }, 
         getInfoDashboard: function () {
-            return 'Info %: <input type="number" class="info-input"/>'
+            return '<br>Minimum completion<br><input type="number" class="info-input"/>&nbsp;%'
         },
         done: function() {
             if ((Array.isArray(this.current.value) && this.current.value.length === 0) || this.current.value === '' || !this.current.name) { 
@@ -325,14 +323,12 @@ $(function () {
             newP
                 .attr('data-filter', filter)
                 .addClass('filter button secondary success')
-                .html('<div>✏️&nbsp;'+capitalizeFirstLetter(filter)+'</div><span class="remove-filter">X</span>')
+                .html('<div>✏️&nbsp;'+formatDisplayName(filter)+'</div><span class="remove-filter">X</span>')
             this.$filters.children('p').eq(-1).before(newP);
         }
     };
 
-    function capitalizeFirstLetter(val) {
-        return String(val).charAt(0).toUpperCase() + String(val).slice(1);
-    }
+    function formatDisplayName(val) {return "Model "+val;}
 
     filters.init();
 })
