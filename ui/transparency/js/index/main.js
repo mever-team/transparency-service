@@ -16,10 +16,12 @@ $(function () {
         e.preventDefault();
         $("#register-confirm-btn").trigger("click");
     });
+    let cancelLogin = () => { $('#login-error').text(""); $('#login').removeClass('show'); }
+    let cancelRegister = () => { $('#register-success').text("");$('#register-error').text(""); $('#register').removeClass('show'); }
     $('#login-btn').click(() => { $('#login-error').text(""); $('#login').addClass('show'); });
-    $('#cancel-login-btn').click(() => { $('#login-error').text(""); $('#login').removeClass('show'); });
+    $('#cancel-login-btn').click(cancelLogin);
     $('#register-btn').click(() => { $('#register-error').text("");$('#register-success').text(""); $('#register').addClass('show'); });
-    $('#cancel-register-btn').click(() => { $('#register-success').text("");$('#register-error').text(""); $('#register').removeClass('show'); });
+    $('#cancel-register-btn').click(cancelRegister);
     $('#account-btn').click(() => { window.location.href = 'account.html'; });
     $('#new_card').click(() => {
         $.ajax({
@@ -70,6 +72,13 @@ $(function () {
         });
     });
 
+    $(document).on('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if ($('#login').hasClass('show')) cancelLogin();
+        if ($('#register').hasClass('show')) cancelRegister();
+      }
+    });
+
 });
 
 
@@ -114,3 +123,4 @@ $('.modal').on('click', function (e) {
         .find('.modal__content')
         .removeClass('modal__content--active');
 });
+

@@ -31,6 +31,24 @@ $(document).on("click", ".naccs .menu div", function () {
     }
 });
 
+
+$(document).on('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const modals = [
+        'delete-confirm-screen',
+        'modal-autocomplete-screen',
+        'modal-refine-screen',
+        'popup-error-screen',
+        'delete-success-screen',
+        'card-locked'
+    ];
+    modals.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.style.display === 'flex') el.style.display = 'none';
+    });
+  }
+});
+
 $(document).ready(function () {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
