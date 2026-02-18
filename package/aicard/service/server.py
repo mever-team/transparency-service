@@ -1,7 +1,7 @@
 from aicard.card import ModelCard
 from aicard.service.converters import card2format
 from aicard.service.server_card_entry import ModelCardEntry
-from aicard.service.assistants import Assistant
+from aicard.service.assistants import Assistant, SemanticMatcher
 from aicard.service import users
 from aicard.service import converters
 from aicard.service.logger import Logger
@@ -35,6 +35,7 @@ def serve(
     domain_prefix:str="/transparency",
     third_party_realm: str|None = None,
     third_party_client: str|None = None,
+    feature_extractor: SemanticMatcher|None = None
 ):
     static = os.path.abspath(static)
     if env: config = dotenv_values(env)
@@ -494,6 +495,23 @@ def serve(
             results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality, "description": overview, "type": overview_type, "task": overview_task, "date": overview_date})
         return jsonify({"results": results, "pages": num_pages, "total": total})
 
+    @app.route(domain_prefix + '/card/<int:card_id>/ask', methods=['POST'])
+    def ask_card(card_id: int):
+        data = request.get_json()
+        question = data.get("question", "")
+        assert question, "No question provided."
+        card_entry = exists(find_card(card_id), "Model card does not exist or has been deleted.")
+        with card_entry: question_id = card_entry.chat_ask(question, feature_extractor)
+        return jsonify({"id": question_id,})
+
+    @app.route(domain_prefix + '/card/<int:card_id>/ask/<int:question_id>', methods=['POST'])
+    def reply_card(card_id: int, question_id: int):
+        card_entry = exists(find_card(card_id), "Model card does not exist or has been deleted.")
+        completing = card_entry.check_completion()
+        if completing: return jsonify({"id": question_id, "answer": "...", "isfinal": False})
+        with card_entry: isdone, answer = card_entry.chat_reply(question_id)
+        return jsonify({"id": question_id, "answer": answer, "isfinal": isdone})
+
     @app.route(domain_prefix+'/card/<int:card_id>/clone', methods=['POST'])
     @users.require_auth(token2expiration, third_party_auth)
     def clone_card(card_id, token: str):
@@ -687,7 +705,7 @@ def serve(
         with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
             content, mimetype, filename = card2format(card, fformat)
         return Response(content, mimetype=mimetype, headers={"Content-Disposition": f"attachment; filename={filename}"})
-        
+
     @app.route(domain_prefix+"/options/<string:section>/<string:field>", methods=["GET"])
     def get_options(section, field):
         try:

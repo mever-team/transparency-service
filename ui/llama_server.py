@@ -14,13 +14,14 @@ from aicard.agents import Ollama
 from aicard.agents.extensions.speedups import text_compression
 from threading import Thread
 
+matcher = SemanticMatcher(external_get_timeout_sec=3)
 prompter = Prompter(
     Ollama("llama3.2:latest", name="🦙 Llama 3.2", timeout_secs=60),
     description="Llama 3.2 is used as the base model.",
     text_preprocessor=text_compression
 )
-agent = Combined(complete=SemanticMatcher(external_get_timeout_sec=3), refine=prompter)
-app, gc = serve({"agent": agent}, env="ui/.env",)
+agent = Combined(refine=prompter, complete=matcher)
+app, gc = serve({"agent": agent}, env="ui/.env", feature_extractor=matcher)
 
 if __name__ == "__main__":
     Thread(target=gc, daemon=True).start()

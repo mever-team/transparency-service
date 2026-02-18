@@ -1,8 +1,6 @@
-import os.path
-
 from aicard.card import ModelCard
 from aicard.card.model_card import truncate
-from aicard.service.assistants import Assistant
+from aicard.service.assistants import Assistant, SemanticMatcher
 from aicard.service.logger import Logger
 from flask import abort
 from threading import Lock, Thread
@@ -10,7 +8,6 @@ from werkzeug.exceptions import Forbidden, NotFound, Unauthorized
 import traceback
 import re
 import time
-
 
 class ModelCardEntry:
     def __init__(self, card: ModelCard, creator: str, conn):
@@ -22,9 +19,12 @@ class ModelCardEntry:
         self._completion_status: list[str] | None = None
         self._completion_start = 0
         self.__thread = None
+        self.__chat_thread = None
         self.conn = conn
         self.card_id = None
         self.last_accessed = time.time()
+        self.__questions = list()
+        self.__num_answered = 0
 
     def history(self, k: int = 5):
         if self.card_id is None or k <= 0:
@@ -142,11 +142,8 @@ class ModelCardEntry:
     def check_completion(self):
         ret = "An AI assistant is working on the model card"  # failsafe is to complain
         with self.lock:
-            if not self._is_completing:
-                ret = ""
-            else:
-                ret = "<br>".join(self._completion_status) + " (" + str(
-                    int(time.time() - self._completion_start)) + " sec)"
+            if not self._is_completing: ret = ""
+            else: ret = "<br>".join(self._completion_status) + " (" + str(int(time.time() - self._completion_start)) + " sec)"
         return ret
 
     def end_completion(self):
@@ -178,8 +175,7 @@ class ModelCardEntry:
     def __autorefine(self, assistant: Assistant, logger: Logger):
         try:
             assistant.refine(self.card, logger, self._completion_status)
-            self.commit_card(on_thread=True,
-                             edit_message=assistant.alias + " refinement")  # on_thread=True because we are on a heavyweight path either way
+            self.commit_card(on_thread=True, edit_message=assistant.alias + " refinement")  # on_thread=True because we are on a heavyweight path either way
             logger.info(f"ended card {self.card_id} refinement", user=assistant.alias)
         except Exception as e:
             if not isinstance(e, Forbidden) and not isinstance(e, NotFound) and not isinstance(e,
@@ -202,3 +198,55 @@ class ModelCardEntry:
     def get_status(self):
         if self.check_completion(): return {"status": "locked", "message": "AI assistant is working on the model card"}
         return {"status": "editable", "message": "You can edit the model card"}
+
+    def __answer_chats(self):
+        # answers all pending chats while allowing new ones, but locking modifications to the card
+        self.start_completion()
+        while True:
+            with self.lock:
+                num_questions = len(self.__questions)
+            if self.__num_answered>=num_questions:
+                break
+            question, feature_extractor, _, _ = self.__questions[self.__num_answered]
+            try:
+                sentences = dict()
+                for category, values in self.card.data.items():
+                    if not isinstance(values, dict): continue
+                    for field, value in values.items():
+                        text_val = value.get().strip()
+                        if not text_val: continue
+                        for sentence in text_val.split("."):
+                            enriched = category + ". " + sentence
+                            sentences[sentence] = feature_extractor.get_embeddings(enriched)
+                question_embeddings = feature_extractor.get_embeddings(question)
+                reply = "I was unable to find relevant information."
+                best_score = 0
+                for sentence, embedding in sentences.items():
+                    score = feature_extractor.embedding_similarity(question_embeddings, embedding)
+                    if score <= best_score: continue
+                    best_score = score
+                    reply = sentence
+            except:
+                reply = "Something went wrong. Please try again."
+            self.__questions[self.__num_answered-1] = question, feature_extractor, True, reply
+            self.__num_answered += 1
+        with self.lock:
+            self.__chat_thread = None
+        self.end_completion()
+
+    def chat_ask(self, question: str, feature_extractor: SemanticMatcher|None):
+        # entered only via a with lock
+        assert feature_extractor, "Chat capabilities are not available"
+        self.__questions.append((question, feature_extractor, False, "..."))
+        self.touch()
+        if not self.__chat_thread:
+            self.__chat_thread = Thread(target=self.__answer_chats)
+            self.__chat_thread.start()
+        return len(self.__questions)-1
+
+    def chat_reply(self, question_id: int):
+        # entered only via a with lock
+        assert 0<=question_id<len(self.__questions), "Invalid question index"
+        self.touch()
+        question, feature_extractor, status, reply = self.__questions[question_id]
+        return status, reply

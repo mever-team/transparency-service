@@ -17,6 +17,12 @@ class SemanticMatcher(Assistant):
     _started = False
 
     def get_embeddings(self, text: str):
+        with SemanticMatcher._loader_lock:
+            if self.field_embeddings is None:
+                raise Exception("Semantic Matcher is still starting")
+            return self._get_embeddings(text) # within the lock so that we can compute one embedding at a time
+
+    def _get_embeddings(self, text: str):
         def mean_pooling(model_output, attention_mask):
             token_embeddings = model_output.last_hidden_state
             mask = attention_mask.unsqueeze(-1).expand(token_embeddings.size()).float()
@@ -72,12 +78,12 @@ class SemanticMatcher(Assistant):
                 field_embeddings = dict()
                 for cat, values in ModelCard().data.items():
                     if not isinstance(values, dict): continue
-                    field_embeddings[cat] = self.get_embeddings("AI model card "+cat)
+                    field_embeddings[cat] = self._get_embeddings("AI model card "+cat)
                     for field, value in values.items():
                         if isinstance(value, Options):
                             for option in value.options():
-                                field_embeddings[cat+"__"+field+"__"+option] = self.get_embeddings("# AI model card "+cat+" "+field+" "+option+"\n"+value.description)
-                        field_embeddings[cat+"__"+field] = self.get_embeddings("# AI model card "+cat+" "+field+"\n"+value.description)
+                                field_embeddings[cat+"__"+field+"__"+option] = self._get_embeddings("# AI model card "+cat+" "+field+" "+option+"\n"+value.description)
+                        field_embeddings[cat+"__"+field] = self._get_embeddings("# AI model card "+cat+" "+field+"\n"+value.description)
                 logger.ok(f"loading complete" 
                         f"\n * {len(field_embeddings)} card field semantic embeddings", user="📚 Semantic Matcher")
                 with SemanticMatcher._loader_lock:
@@ -102,7 +108,6 @@ class SemanticMatcher(Assistant):
         self._wait_until_ready()
         
         url = data['url']
-        
         logger.info("Submitted: " + str(url), user=self.alias)
         parsed = urlparse(url)
         if not parsed.scheme in ("http", "https") or not parsed.netloc: raise Exception("Invalid url format")
@@ -194,7 +199,7 @@ class SemanticMatcher(Assistant):
             )
             progress += 1
             with SemanticMatcher._loader_lock: # TODO: more advanced scheduling in the future
-                embedding = self.get_embeddings("#"+(heading if heading else "")+"\n"+(content if content else ""))
+                embedding = self._get_embeddings("#"+(heading if heading else "")+"\n"+(content if content else ""))
             best_score = 0
             best_path = []
             is_technical = "<pre>" in content
