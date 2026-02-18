@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/foundation.css"/>
     <link rel="stylesheet" href="css/normalize.css"/>
     <link rel="stylesheet" href="css/card.css"/>
+    <link rel="stylesheet" href="css/chat.css"/>
 </head>
 <body>
 <main>
@@ -199,12 +200,32 @@
         <button style="width:100%;margin-left:0px!important" class="button" id="cancel-autocomplete-btn"><i class="fa-solid fa-cancel"></i>&nbsp;Maybe later</button>
     </div>
 </div>
-z
+
+<div id="ai-chat-trigger"><i class="fa-solid fa-robot"></i></div>
+<div id="ai-chat-overlay">
+    <div class="ai-chat-window">
+        <div class="ai-chat-header"><span>Chat</span><i class="fa-solid fa-xmark" id="ai-chat-close"></i></div>
+        <div class="ai-chat-body">
+            <div class="ai-chat-messages" id="ai-chat-messages">
+                <div class="ai-msg system">Ask me something...</div>
+            </div>
+
+            <div class="ai-chat-input-row">
+                <input type="text" id="ai-chat-input" placeholder="Type your question..." />
+                <button id="ai-chat-ask" class="button">Send</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
 <!-- JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="js/card/file_upload.js"></script>
 <script src="js/card/bearer.js"></script>
 <script src="js/card/history.js"></script>
 <script src="js/card/card.js"></script>
+<script src="js/card/chat.js"></script>
 </body>
 </html>

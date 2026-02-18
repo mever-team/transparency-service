@@ -193,8 +193,8 @@ class SemanticMatcher(Assistant):
                 f"<b>Organizing information.</b>"
             )
             progress += 1
-
-            embedding = self.get_embeddings("#"+(heading if heading else "")+"\n"+(content if content else ""))
+            with SemanticMatcher._loader_lock: # TODO: more advanced scheduling in the future
+                embedding = self.get_embeddings("#"+(heading if heading else "")+"\n"+(content if content else ""))
             best_score = 0
             best_path = []
             is_technical = "<pre>" in content
