@@ -55,7 +55,8 @@ $(function () {
         },
 
         init_filters: function() {
-            this.filters.drafts = false;
+            this.filters.drafts = false; 
+            this.filters.user = false; 
             this.filters.query = localStorage.getItem("last_search_term") || '';
         },
 
@@ -64,52 +65,84 @@ $(function () {
             this.$filters.on('click', '.remove-filter', this.removeFilter.bind(this))
             this.$modal.on('change', '#filter-select', this.dashboardRender.bind(this))
             this.$topic.on("keyup", this.topicCallback.bind(this));
-            this.$modal.on('click', '.filter-done', this.done.bind(this));
+            this.$modal.on('click', '.filter-done', this.done.bind(this))
+            this.$filters.on('click', '#user-filter', this.toggleUserFilter.bind(this));
+            this.$filters.on('click', '#draft-filter', this.toggleDraftFilter.bind(this));
             this.$modal.on('click', '.filter-dashboard[data-filter="task"]', this.filterTask.bind(this))
             this.$modal.on('click', '.filter-dashboard[data-filter="type"]', this.filterType.bind(this))
-            this.$modal.on('input', '.info-slider', this.filterInfo.bind(this));
-            this.$modal.on('change', '.info-user', this.filterInfo.bind(this));
-            this.$modal.on('change', '.info-draft', this.filterInfo.bind(this));
+            this.$modal.on('keyup', '.filter-dashboard[data-filter="info"] .info-input', this.filterInfo.bind(this))
         },
 
 
         ////////////////////////////
         //       Ugly Logic       //
         ////////////////////////////
+
         filterInfo: function(e) {
-            const $modal = this.$modal;
-            const completion = parseInt($modal.find('.info-slider').val(), 10) || 0;
-            const user = $modal.find('.info-user').is(':checked');
-            const drafts = $modal.find('.info-draft').is(':checked');
-            $modal.find('.info-value').text(completion + '%');
-            this.current.value = {completion: completion, user: user, drafts: drafts};
+            this.current.value = Math.min(Math.max($(e.currentTarget).val(), 0), 100);
+            $(e.currentTarget).val(this.current.value);
         },
         filterTask: function(e) {
             if (!e.target.id) return;
             $(e.target).toggleClass("active");
-            if(this.current.value.includes(e.target.id)) this.current.value.splice(this.current.value.indexOf(e.target.id), 1);
-            else this.current.value.push(e.target.id);
+            if(this.current.value.includes(e.target.id)){
+                this.current.value.splice(this.current.value.indexOf(e.target.id), 1);
+            }
+            else {
+                this.current.value.push(e.target.id);
+            }
         },
         filterType: function(e) {
             if (!e.target.id) return;
             $(e.target).toggleClass("active");
-            if(this.current.value.includes(e.target.id)) this.current.value.splice(this.current.value.indexOf(e.target.id), 1);
-            else this.current.value.push(e.target.id);
+            if(this.current.value.includes(e.target.id)){
+                this.current.value.splice(this.current.value.indexOf(e.target.id), 1);
+            }
+            else {
+                this.current.value.push(e.target.id);
+            }
         },
-        newFilter: function() {this.templates.modal.render();},
+        newFilter: function() {
+            this.templates.modal.render();
+        },
         removeFilter: function(event) {
             const $el = $(event.target).closest('p');
             const filter = $el.attr('data-filter');
-            if (filter === 'info') {
-                delete this.filters.info;
-                delete this.filters.user;
-                this.filters.drafts = false;
-            }
-            else delete this.filters[filter];
+            delete this.filters[filter];
             $el.remove();
             this.options[filter].active = false;
             this.request();
         },
+        toggleUserFilter: function () {
+                const username = $('#account-name').text().trim();
+                if (!username) return;
+                userFilterOn = !userFilterOn;
+                $('#user-filter').toggleClass('success', userFilterOn);
+                const now = Date.now();
+                if (now - this.lastUpdate < this.delay && !this.first) {
+                    clearTimeout(this.pending);
+                    this.pending = setTimeout(this.request.bind(this), this.delay);
+                    return;
+                }
+                this.lastUpdate = now;
+                this.filters.user = Boolean(this.filters.user ^ true);
+                this.request();
+            },
+        toggleDraftFilter: function () {
+                const username = $('#account-name').text().trim();
+                if (!username) return;
+                draftFilterOn = !draftFilterOn;
+                $('#draft-filter').toggleClass('success', draftFilterOn);
+                const now = Date.now();
+                if (now - this.lastUpdate < this.delay && !this.first) {
+                    clearTimeout(this.pending);
+                    this.pending = setTimeout(this.request.bind(this), this.delay);
+                    return;
+                }
+                this.lastUpdate = now;
+                this.filters.drafts = Boolean(this.filters.drafts ^ true);
+                this.request();
+            },
         topicCallback: function () {
                 const now = Date.now();
                 if (now - this.lastUpdate < this.delay && !this.first) {
@@ -174,7 +207,7 @@ $(function () {
                 if (this.options[filter].active) return;
                 $('<option>')
                     .val(filter)
-                    .text(formatDisplayName(filter))
+                    .text(capitalizeFirstLetter(filter))
                     .appendTo(this.$modal.find('#filter-select'));
             });
         },
@@ -204,17 +237,28 @@ $(function () {
         filtersRender: function() {
             this.$filters.html("");
             $('<p>')
+                .attr('id', 'user-filter')
+                .addClass('filter button secondary')
+                .html('<div><i class="fa-solid fa-plus"></i>&nbsp;&nbsp;My cards only</div>')
+                .css('display', token?'auto':'none')
+                .appendTo(this.$filters);
+            $('<p>')
+                .attr('id', 'draft-filter')
+                .addClass('filter button secondary')
+                .html('<div><i class="fa-solid fa-plus"></i>&nbsp;&nbsp;Show drafts</div>')
+                .appendTo(this.$filters);
+            $('<p>')
                 .attr('id', 'new-filter')
                 .addClass('filter button secondary modal__trigger')
                 .attr('data-modal', '#filters')
-                .html('<div><i class="fa-solid fa-plus"></i>&nbsp;&nbsp;Add filter</div>')
+                .html('<div><i class="fa-solid fa-plus"></i>&nbsp;&nbsp;New Filter</div>')
                 .appendTo(this.$filters);
             
         },
         setCurrent: function(filter) {
             if (filter === 'type'){ this.current = {name: 'type', value: []} }
             else if (filter === 'task'){ this.current = {name: 'task', value: []} }
-            else if (filter === 'info'){ this.current = {name: 'info', value: {completion: 0, user: false, drafts: false}} }
+            else if (filter === 'info'){ this.current = {name: 'info', value: ''} }
         },
         getTaskDashboard: function () {
             return $.getJSON('/transparency/options/overview/task').then(function (data) {
@@ -263,48 +307,15 @@ $(function () {
             });
         }, 
         getInfoDashboard: function () {
-            let currentUser = $('#account-name').text().trim() || undefined;
-            const userSection = currentUser ? `
-                <div class="info-section">
-                    <label><input type="checkbox" class="info-user"/> My cards only
-                    </label>
-                </div>
-            ` : '';
-            return `
-                <div class="info-panel">
-                    ${userSection}
-                    <div class="info-section">
-                        <label><input type="checkbox" class="info-draft"/>Include drafts in search results</label>
-                    </div>
-                    <div class="info-section">
-                        <label>Minimum completion</label>
-                        <input type="range" min="0" max="100" value="0" class="info-slider"/>
-                        <span class="info-value">0%</span>
-                    </div>
-                </div>
-            `;
+            return 'Info %: <input type="number" class="info-input"/>'
         },
         done: function() {
-            if (
-                !this.current.name ||
-                (Array.isArray(this.current.value) && this.current.value.length === 0) ||
-                (this.current.name === 'info' &&
-                !this.current.value.user &&
-                !this.current.value.drafts &&
-                !this.current.value.completion)
-            ) {
+            if ((Array.isArray(this.current.value) && this.current.value.length === 0) || this.current.value === '' || !this.current.name) { 
                 this.$modal.removeClass('modal--active');
                 return 
             }
+            this.filters[this.current.name] = this.current.value;
             this.options[this.current.name].active = true;
-            if (this.current.name === 'info') {
-                this.filters.user = $('#account-name').text().trim() || undefined;
-                if (!this.current.value.user)
-                    delete this.filters.user;
-                this.filters.drafts = this.current.value.drafts;
-                this.filters.info = this.current.value.completion;
-            }
-            else this.filters[this.current.name] = this.current.value;
             this.request();
             this.addfilter(this.current.name);
             this.$modal.removeClass('modal--active');
@@ -314,12 +325,14 @@ $(function () {
             newP
                 .attr('data-filter', filter)
                 .addClass('filter button secondary success')
-                .html('<div>✏️&nbsp;'+formatDisplayName(filter)+'</div><span class="remove-filter">X</span>')
+                .html('<div>✏️&nbsp;'+capitalizeFirstLetter(filter)+'</div><span class="remove-filter">X</span>')
             this.$filters.children('p').eq(-1).before(newP);
         }
     };
 
-    function formatDisplayName(val) {return "Model "+val;}
+    function capitalizeFirstLetter(val) {
+        return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+    }
 
     filters.init();
 })
