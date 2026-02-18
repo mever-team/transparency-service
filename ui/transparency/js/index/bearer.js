@@ -11,17 +11,19 @@ document.cookie.split(";").forEach(cookie => {
 updateUsername();
 
 function updateUsername() {
-    if (!token) {
-        clearTimeout(pingTimer);
-        $('#new_card').hide();
-        $('#login-btn').show();
-        $('#register-btn').show();
-        $('#logout-btn').hide();
-        $('#account-btn').hide();
-        // $('#user-filter').hide();
-        $('#login-name').text("");
-        return;
-    }
+//    TODO: THIS SECTION IS DISABLED BECAUSE WE NEED TO PING BASED ON COOKIES BUT FIND A WAY TO RE-ENABLE IT MAYBE
+//    OTHERWISE WE GET THE AJAX RESPONSE TO DISABLE THE PING TIMER
+//    if (!token) {
+//        clearTimeout(pingTimer);
+//        $('#new_card').hide();
+//        $('#login-btn').show();
+//        $('#register-btn').show();
+//        $('#logout-btn').hide();
+//        $('#account-btn').hide();
+//        // $('#user-filter').hide();
+//        $('#login-name').text("");
+//        return;
+//    }
 
     $.ajax({
         url: "/transparency/ping",

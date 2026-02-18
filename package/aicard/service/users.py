@@ -1,12 +1,14 @@
-import sqlite3
-import bcrypt
 from functools import wraps
 from flask import request, abort, Response
+from aicard.card import ModelCard
+import sqlite3
+import bcrypt
 import time
 import os
 import atexit
 import sys
-from aicard.card import ModelCard
+import jwt
+import requests
 
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
@@ -242,11 +244,47 @@ class UserDB:
         return {row[0]: row[1] for row in cursor.fetchall()}
 
 
-def require_auth(token2expiration: dict):
+class CookieAuthenticator:
+    def __init__(self, KEYCLOAK_ISSUER, AUDIENCE, register_token):
+        self.KEYCLOAK_ISSUER = KEYCLOAK_ISSUER
+        self.JWKS_URL = f"{KEYCLOAK_ISSUER}/protocol/openid-connect/certs"
+        self.AUDIENCE = AUDIENCE
+        self.jwks = requests.get(self.JWKS_URL).json()
+        self.register_token = register_token
+
+    def get_public_key(self, token):
+        header = jwt.get_unverified_header(token)
+        kid = header.get("kid")
+        key = next((k for k in self.jwks["keys"] if k["kid"] == kid), None)
+        if not key: abort(401, description="Unknown signing key")
+        return jwt.algorithms.RSAAlgorithm.from_jwk(key)
+
+    def validate_token(self, token):
+        try:
+            public_key = self.get_public_key(token)
+            payload = jwt.decode(token, public_key, algorithms=["RS256"], audience=self.AUDIENCE, issuer=self.KEYCLOAK_ISSUER)
+            return payload
+        except jwt.ExpiredSignatureError:
+            abort(401, description="Token expired")
+        except jwt.InvalidTokenError:
+            abort(401, description="Invalid token")
+
+
+def require_auth(token2expiration: dict, third_party_authenticator: CookieAuthenticator|None=None):
     def decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
             auth = request.headers.get("Authorization", "")
+            if not auth.startswith("Bearer ") and third_party_authenticator:
+                token = request.cookies.get("access_token")
+                payload = third_party_authenticator.validate_token(token)
+                username = payload.get("username")
+                email = payload.get("email")
+                if not username: abort(401, description="Invalid cookie payload")
+                third_party_authenticator.register_token(token, username, email)
+                token2expiration[token] = time.time() # we allow always, so expire immediately
+                return f(*args, **kwargs, token=token)
+            # continue with normal internal validation
             if not auth.startswith("Bearer "): abort(401, description="Missing token")
             parts = auth.strip().split()
             if len(parts) != 2 or parts[0] != "Bearer": abort(401, description="Invalid token format")

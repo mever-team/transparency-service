@@ -12,10 +12,12 @@ document.cookie.split(";").forEach(cookie => {
 updateUsername();
 
 function updateUsername() {
-    if (!token) {
-        clearTimeout(pingTimer);
-        return;
-    }
+//    TODO: THIS SECTION IS DISABLED BECAUSE WE NEED TO PING BASED ON COOKIES BUT FIND A WAY TO RE-ENABLE IT MAYBE
+//    OTHERWISE WE GET THE AJAX RESPONSE TO DISABLE THE PING TIMER
+//    if (!token) {
+//        clearTimeout(pingTimer);
+//        return;
+//    }
     $.ajax({
         url: "/transparency/ping",
         method: "GET",

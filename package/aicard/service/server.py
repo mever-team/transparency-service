@@ -32,7 +32,9 @@ def serve(
     root:str|None = "db", # None or "" initializes a non-persistent database for testing
     log_file:str|None = None, # None or "" uses the console for logging
     static:str = "ui",
-    domain_prefix:str="/transparency"
+    domain_prefix:str="/transparency",
+    third_party_realm: str|None = None,
+    third_party_client: str|None = None,
 ):
     static = os.path.abspath(static)
     if env: config = dotenv_values(env)
@@ -41,6 +43,8 @@ def serve(
     if not admin_password: admin_password = config.get("PASS")
     if not redirect_index: redirect_index = config.get("INDEX")
     if not log_file: log_file = config.get("LOG", log_file)
+    if not third_party_realm: third_party_realm = config.get("THIRD_PARTY_REALM")
+    if not third_party_client: third_party_client = config.get("THIRD_PARTY_CLIENT")
     assert admin_username, f"Admin username not found in {env} USER or arguments"
     assert admin_password, f"Admin password not found in {env} PASS or arguments"
     assert redirect_index, f"Index route to redirect not found in {env} INDEX or arguments"
@@ -62,6 +66,25 @@ def serve(
     conn = users.UserDB(logger=logger, root=root)
     app = Flask(__name__)
     empty_card = ModelCard()
+
+    def register_third_party_token(token, user, email):
+        # TODO: This strategy for occupying user names could prove frustrating. Consider some way of utilizing emails for uniqueness in the future.
+        if not user: abort(401, description="Invalid username from third-party provider")
+        with auth_lock:
+            if token2user.get(token)==user: return
+        normalized_email = (email or "").strip().lower()
+        cursor = conn.conn.cursor()
+        cursor.execute("SELECT username, email FROM users WHERE username = ?", (user,))
+        row = cursor.fetchone()
+        if not row:
+            conn.insert_user("users", user, normalized_email, "", commit=True)
+            db_username = user
+        else:
+            db_username, db_email = row
+            if (db_email or "").strip().lower() != normalized_email:
+                abort(403, description="Your username is occupied by another email account")
+        with auth_lock: token2user[token] = db_username
+    third_party_auth = users.CookieAuthenticator(third_party_realm, third_party_client, register_third_party_token) if third_party_realm and third_party_client else None
 
     def find_card(card_id: int):
         assert isinstance(card_id, int), "Card identifier must be an integer"
@@ -140,7 +163,7 @@ def serve(
         return redirect(domain_prefix+'/'+redirect_index, code=307)
 
     @app.route(domain_prefix+'/users', methods=['GET'])
-    @users.require_auth(token2expiration)
+    @users.require_auth(token2expiration, third_party_auth)
     def admin_dashboard(token: str):
         with auth_lock: creator = token2user.get(token, "")
         if creator != admin_username:
@@ -195,6 +218,17 @@ def serve(
     @app.route(domain_prefix+"/ping", methods=["GET"])
     def ping():
         auth = request.headers.get("Authorization", "")
+        if not auth.startswith("Bearer ") and third_party_auth:
+            token = request.cookies.get("access_token")
+            payload = third_party_auth.validate_token(token)
+            username = payload.get("username")
+            email = payload.get("email")
+            if not username: abort(401, description="Invalid cookie payload")
+            third_party_auth.register_token(token, username, email)
+            with auth_lock:
+                token2expiration[token] = time.time()  # we allow always, so expire immediately
+                return jsonify({"token": token, "expires_in": token_expiration_secs, "username": token2user.get(token, "unknown")})
+
         if not auth.startswith("Bearer "): return ""
         parts = auth.strip().split()
         if len(parts) != 2 or parts[0] != "Bearer": return ""
@@ -212,7 +246,9 @@ def serve(
     def login_user():
         data = request.get_json()
         username = data.get("username", "")
-        password = data.get("password", "")
+        password = data.get("password", "") # extra important to reject empty passwords because third-party users are assigned those
+        if not username: abort(401, description="Invalid credentials")
+        if not password: abort(401, description="Invalid credentials")
         with auth_lock:
             if username == admin_username and password == admin_password:
                 token = secrets.token_urlsafe(32)
@@ -459,7 +495,7 @@ def serve(
         return jsonify({"results": results, "pages": num_pages, "total": total})
 
     @app.route(domain_prefix+'/card/<int:card_id>/clone', methods=['POST'])
-    @users.require_auth(token2expiration)
+    @users.require_auth(token2expiration, third_party_auth)
     def clone_card(card_id, token: str):
         parent_id = card_id
         with auth_lock: creator = token2user.get(token, "")
@@ -492,7 +528,7 @@ def serve(
         return jsonify(card_id), 201
 
     @app.route(domain_prefix+'/assistants', methods=['GET'])
-    @users.require_auth(token2expiration)
+    @users.require_auth(token2expiration, third_party_auth)
     def get_assistants(token: str):
         return jsonify([{"name": key, "desc": value.description} for key, value in assistants.items()])
 
@@ -514,7 +550,7 @@ def serve(
             return jsonify(card.title)
 
     @app.route(domain_prefix+'/card/<int:card_id>/title', methods=['PUT'])
-    @users.require_auth(token2expiration)
+    @users.require_auth(token2expiration, third_party_auth)
     def set_card_title(card_id, token: str):
         with auth_lock: creator = token2user.get(token, None)
         with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
@@ -543,7 +579,7 @@ def serve(
             return jsonify(data)
 
     @app.route(domain_prefix+'/card/<int:card_id>/<string:field_name>/<string:data_name>', methods=['PUT'])
-    @users.require_auth(token2expiration)
+    @users.require_auth(token2expiration, third_party_auth)
     def set_card_field(card_id, field_name, data_name, token: str):
         with auth_lock: creator = token2user.get(token, None)
         with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
@@ -556,7 +592,7 @@ def serve(
             return jsonify(data.get())  # do not return json_data directly, as setting the value may format it
 
     @app.route(domain_prefix+'/card/<int:card_id>', methods=['DELETE'])
-    @users.require_auth(token2expiration)
+    @users.require_auth(token2expiration, third_party_auth)
     def delete_card(card_id, token: str):
         with auth_lock: creator = token2user.get(token, None)
         card_entry = find_card(card_id)
@@ -570,7 +606,7 @@ def serve(
             return '', 204
 
     @app.route(domain_prefix+'/card/<int:card_id>', methods=['PUT'])
-    @users.require_auth(token2expiration)
+    @users.require_auth(token2expiration, third_party_auth)
     def update_card(card_id, token: str):
         card_entry = find_card(card_id)
         with auth_lock: creator = token2user.get(token, None)
@@ -589,7 +625,7 @@ def serve(
                            |{"description": card.summary(), "quality": card.quality(), "history": card_entry.history(), "creator": card_entry.creator})
 
     @app.route(domain_prefix+'/card', methods=['POST'])
-    @users.require_auth(token2expiration)
+    @users.require_auth(token2expiration, third_party_auth)
     def create_card(token: str):
         json_data = request.get_json()
         with auth_lock: creator = token2user.get(token, "")
@@ -616,7 +652,7 @@ def serve(
         return jsonify(card_id), 201
 
     @app.route(domain_prefix+'/assistant/<string:assistant_type>/complete/<int:card_id>', methods=['POST'])
-    @users.require_auth(token2expiration)
+    @users.require_auth(token2expiration, third_party_auth)
     def autocomplete_card(card_id: int, assistant_type: str, token: str):
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
@@ -636,7 +672,7 @@ def serve(
         return jsonify(status)
 
     @app.route(domain_prefix+'/assistant/<string:assistant_type>/refine/<int:card_id>', methods=['POST'])
-    @users.require_auth(token2expiration)
+    @users.require_auth(token2expiration, third_party_auth)
     def autorefine_card(card_id: int, assistant_type: str, token: str):
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
