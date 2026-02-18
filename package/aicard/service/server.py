@@ -291,9 +291,9 @@ def serve(
             s = re.sub(r'\s+', ' ', s)
             return s
 
-        quality_limits = float(data.get("info", 0)) # FLOAT CAST IS MANDATORY TO AVOID INJECTION
+        quality_limits = float(data.get("info", 0))/100.0 # FLOAT CAST IS MANDATORY TO AVOID INJECTION
         placeholders = ','.join(['?'] * len(owner))
-        # TODO: beware that the commented filters are VULNERABLE TO SQL INJECTION AND SHOULD BE FIXED
+        # the commented filters are VULNERABLE TO SQL INJECTION and therefore we properly create ?-based argument parsing
         type_list = data.get('type', [])
         task_list = data.get('task', [])
         if isinstance(type_list, str): type_list = [type_list]
