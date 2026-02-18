@@ -196,9 +196,7 @@ justify-content: space-between; }
 }
 
 .filter-options.hidden { visibility: hidden; }
-
 .filter-option.active { background-color: #326d4b; }
-
 .filter-option,
 .filter-optgroup {
     text-align: left;

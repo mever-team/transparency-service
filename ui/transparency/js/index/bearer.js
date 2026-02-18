@@ -15,12 +15,12 @@ function updateUsername() {
 //    OTHERWISE WE GET THE AJAX RESPONSE TO DISABLE THE PING TIMER
 //    if (!token) {
 //        clearTimeout(pingTimer);
-//        $('#new_card').hide();
-//        $('#login-btn').show();
-//        $('#register-btn').show();
-//        $('#logout-btn').hide();
-//        $('#account-btn').hide();
-//        // $('#user-filter').hide();
+//        $('#new_card').addClass("hidden");
+//        $('#login-btn').removeClass("hidden");
+//        $('#register-btn').removeClass("hidden");
+//        $('#logout-btn').addClass("hidden");
+//        $('#account-btn').addClass("hidden");
+//        // $('#user-filter').addClass("hidden");
 //        $('#login-name').text("");
 //        return;
 //    }
@@ -35,12 +35,12 @@ function updateUsername() {
                 const expiresIn = response.expires_in || 3600;
                 document.cookie = "access_token=" + token + "; path=/; max-age=" + expiresIn + ";";
 
-                $('#new_card').show();
-                $('#login-btn').hide();
-                $('#register-btn').hide();
-                $('#logout-btn').show();
-                $('#account-btn').show();
-                $('#user-filter').show();
+                $('#new_card').removeClass("hidden");
+                $('#login-btn').addClass("hidden");
+                $('#register-btn').addClass("hidden");
+                $('#logout-btn').removeClass("hidden");
+                $('#account-btn').removeClass("hidden");
+                $('#user-filter').removeClass("hidden");
                 $('#account-name').text(response.username);
 
                 clearTimeout(pingTimer);
@@ -74,12 +74,12 @@ function updateUsername() {
                 clearTimeout(pingTimer);
                 document.cookie = "access_token=; path=/; max-age=0;";
                 token = "";
-                $('#new_card').hide();
-                $('#login-btn').show();
-                $('#register-btn').show();
-                $('#logout-btn').hide();
-                $('#account-btn').hide();
-                // $('#user-filter').hide();
+                $('#new_card').addClass("hidden");
+                $('#login-btn').removeClass("hidden");
+                $('#register-btn').removeClass("hidden");
+                $('#logout-btn').addClass("hidden");
+                $('#account-btn').addClass("hidden");
+                // $('#user-filter').addClass("hidden");
                 $('#login-name').text("");
             }
         },
@@ -87,12 +87,12 @@ function updateUsername() {
             clearTimeout(pingTimer);
             document.cookie = "access_token=; path=/; max-age=0;";
             token = "";
-            $('#new_card').hide();
-            $('#login-btn').show();
-            $('#register-btn').show();
-            $('#logout-btn').hide();
-            $('#account-btn').hide();
-            // $('#user-filter').hide();
+            $('#new_card').addClass("hidden");
+            $('#login-btn').removeClass("hidden");
+            $('#register-btn').removeClass("hidden");
+            $('#logout-btn').addClass("hidden");
+            $('#account-btn').addClass("hidden");
+            // $('#user-filter').addClass("hidden");
             $('#login-name').text("");
         }
     });
