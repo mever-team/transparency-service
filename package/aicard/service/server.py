@@ -276,7 +276,7 @@ def serve(
 
         page = max(int(data.get('page', 1)), 1)
         page_size = max(int(data.get('page_size', 5)), 1)
-        owner = data.get("user", "").strip().lower()
+        owner = "" # TODO: enable data.get("user", "").strip().lower()
         owner = [owner] if owner else []
         if data.get('drafts', False):
             desc_filter_simpler = ""
