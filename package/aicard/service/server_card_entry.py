@@ -223,21 +223,35 @@ class ModelCardEntry:
                         if not isinstance(values, dict): continue
                         for field, value in values.items():
                             text_val = value.get().strip()
-                            if not text_val: continue
-                            for sentence in text_val.split("."):
-                                sentence = sentence.strip()
-                                if not sentence: continue
-                                enriched = "# Question about " + category + "/" + field + ":\n\n" + sentence
-                                sentence = "From " + category + " " + field + ": \"" + sentence + "\""
+                            if not text_val or text_val=="unknown":
+                                enriched = "passage:" + category + "/" + field + ":\n\n"+value.description+"\n\nunknown"
+                                sentence = "Would have looked for an answer at " + field.lower() + " in " + category.lower() + ", but that is empty."
                                 sentences[sentence] = feature_extractor.get_embeddings(enriched)
-                question_embeddings = feature_extractor.get_embeddings(question)
+                                continue
+                            if not " " in text_val:
+                                enriched = "passage: " + category + "/" + field + ":\n\n"+value.description+"\n\n" + text_val
+                                sentence = (field + " in " + category).capitalize() + " is: " + text_val
+                                sentences[sentence] = feature_extractor.get_embeddings(enriched)
+                                continue
+                            text_val = text_val.replace("<br>",". ").replace("<div>", ". ").replace("<p>", ". ").replace("\n", ". ")
+                            text_val = re.sub(r"<[^>]+>", " ", value.get()).strip() # html to fullstops
+                            for sentence in text_val.split(". "):
+                                sentence = sentence.strip()
+                                #if not sentence: continue # redundant for next line
+                                if not " " in sentence: continue
+                                enriched = "passage: " + category + "/" + field + ":\n\n"+value.description+"\n\n" + sentence
+                                sentence = "From " + field.lower() + " in " + category.lower() + ": \"" + sentence + "\""
+                                sentences[sentence] = feature_extractor.get_embeddings(enriched)
+                question_embeddings = feature_extractor.get_embeddings("question: "+question)
                 reply = "I was unable to find relevant information."
-                best_score = 0.5
+                best_score = 0.3
                 for sentence, embedding in sentences.items():
                     score = feature_extractor.embedding_similarity(question_embeddings, embedding)
                     if score <= best_score: continue
                     best_score = score
                     reply = sentence
+            except Exception as e:
+                reply = str(e)
             except:
                 reply = "Something went wrong. Please try again."
             self.__questions[self.__num_answered] = question, feature_extractor, True, reply
