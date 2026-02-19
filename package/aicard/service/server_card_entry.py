@@ -244,7 +244,7 @@ class ModelCardEntry:
                                 sentences[sentence] = feature_extractor.get_embeddings(enriched)
                 question_embeddings = feature_extractor.get_embeddings("question: "+question)
                 reply = "I was unable to find relevant information."
-                best_score = 0.3
+                best_score = 0
                 for sentence, embedding in sentences.items():
                     score = feature_extractor.embedding_similarity(question_embeddings, embedding)
                     if score <= best_score: continue
