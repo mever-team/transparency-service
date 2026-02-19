@@ -25,6 +25,7 @@ class ModelCardEntry:
         self.last_accessed = time.time()
         self.__questions = list()
         self.__num_answered = 0
+        self.__extracted_sentences = dict()
 
     def history(self, k: int = 5):
         if self.card_id is None or k <= 0:
@@ -209,18 +210,28 @@ class ModelCardEntry:
                 break
             question, feature_extractor, _, _ = self.__questions[self.__num_answered]
             try:
-                sentences = dict()
-                for category, values in self.card.data.items():
-                    if not isinstance(values, dict): continue
-                    for field, value in values.items():
-                        text_val = value.get().strip()
-                        if not text_val: continue
-                        for sentence in text_val.split("."):
-                            enriched = category + ". " + sentence
-                            sentences[sentence] = feature_extractor.get_embeddings(enriched)
+                need_to_recompute_embeddings = False
+                with self.lock:
+                    sentences = self.__extracted_sentences.get(feature_extractor, None)
+                    if sentences is None:
+                        sentences = dict()
+                        need_to_recompute_embeddings = True
+                if need_to_recompute_embeddings:
+                    self.__extracted_sentences[feature_extractor] = sentences
+                    for category, values in self.card.data.items():
+                        if not isinstance(values, dict): continue
+                        for field, value in values.items():
+                            text_val = value.get().strip()
+                            if not text_val: continue
+                            for sentence in text_val.split("."):
+                                sentence = sentence.strip()
+                                if not sentence: continue
+                                enriched = "# Question about " + category + "/" + field + ":\n\n" + sentence
+                                sentence = "From " + category + " " + field + ": \"" + sentence + "\""
+                                sentences[sentence] = feature_extractor.get_embeddings(enriched)
                 question_embeddings = feature_extractor.get_embeddings(question)
                 reply = "I was unable to find relevant information."
-                best_score = 0
+                best_score = 0.5
                 for sentence, embedding in sentences.items():
                     score = feature_extractor.embedding_similarity(question_embeddings, embedding)
                     if score <= best_score: continue
@@ -228,14 +239,13 @@ class ModelCardEntry:
                     reply = sentence
             except:
                 reply = "Something went wrong. Please try again."
-            self.__questions[self.__num_answered-1] = question, feature_extractor, True, reply
+            self.__questions[self.__num_answered] = question, feature_extractor, True, reply
             self.__num_answered += 1
         with self.lock:
             self.__chat_thread = None
         self.end_completion()
 
     def chat_ask(self, question: str, feature_extractor: SemanticMatcher|None):
-        # entered only via a with lock
         assert feature_extractor, "Chat capabilities are not available"
         self.__questions.append((question, feature_extractor, False, "..."))
         self.touch()
@@ -245,7 +255,6 @@ class ModelCardEntry:
         return len(self.__questions)-1
 
     def chat_reply(self, question_id: int):
-        # entered only via a with lock
         assert 0<=question_id<len(self.__questions), "Invalid question index"
         self.touch()
         question, feature_extractor, status, reply = self.__questions[question_id]
