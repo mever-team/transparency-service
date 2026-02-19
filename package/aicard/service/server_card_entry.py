@@ -62,6 +62,7 @@ class ModelCardEntry:
         self.last_accessed = time.time()
 
     def commit_card(self, on_thread: bool = False, edit_message: str | None = "Edited"):
+        self.__extracted_sentences = dict() # clear extracted sentences TODO: consider keeping those retained
         flattened = self.card.data.flatten()
         assert flattened, "Cannot commit an empty model card."
         assert self.card_id is not None, "Internal error: card_id has not been set for a cached card"
