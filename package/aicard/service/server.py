@@ -186,7 +186,7 @@ def serve(
     @app.route(domain_prefix+'/users/<string:username>', methods=['DELETE'])
     @users.require_admin(token2expiration)
     def delete_user(username, token: str):
-        if username == admin_username: abort(403, "You are not allowed to delete the administrator account. To remove this account, restart the service with different administrator credentials.")
+        if username == admin_username: abort(403, "You are not allowed to delete the administrator account. To remove this account, first restart the service with different administrator credentials.")
         deleted = False
         for table_name in ['users', 'pending_users']:
             cur = conn.conn.execute(f"DELETE FROM {table_name} WHERE username = ?", (username,))
@@ -195,6 +195,30 @@ def serve(
         if not deleted: abort(404, description="User not found")
         logger.warn(username+" - deleted")
         return jsonify({"deleted": username})
+
+    @app.route(domain_prefix + "/update_password", methods=["POST"])
+    @users.require_auth(token2expiration, third_party_auth)
+    def update_password(token: str):
+        data = request.get_json()
+        new_password = data.get("password", "")
+        if not new_password: abort(400, description="Missing new password")
+        with auth_lock: username = token2user.get(token)
+        if not username: abort(401, description="Invalid session")
+        if username == admin_username: abort(403, description="Administrator password cannot be modified via API")
+        row = conn.find_user("users", username)
+        if not row: abort(404, description="User not found or has been deleted")
+        new_hash = users.hash_password(new_password)
+        cursor = conn.conn.cursor()
+        cursor.execute("UPDATE users SET password=? WHERE username=?", (new_hash, username))
+        conn.conn.commit()
+        with auth_lock:
+            for t, u in list(token2user.items()):
+                if u == username: token2user.pop(t, None);token2expiration.pop(t, None)
+            new_token = secrets.token_urlsafe(32)
+            token2user[new_token] = username
+            token2expiration[new_token] = time.monotonic() + token_expiration_secs
+        logger.info("password updated and token rotated", user=username)
+        return jsonify({"token": new_token, "expires_in": token_expiration_secs})
 
     @app.route(domain_prefix+'/users/<string:username>/accept', methods=['POST'])
     @users.require_admin(token2expiration)
@@ -249,8 +273,8 @@ def serve(
         with auth_lock: entry = verification_tokens.get(token)
         if not entry: abort(400, description="Verification token invalid or already used")
         username, expiry = entry
+        del verification_tokens[token]
         if time.monotonic() > expiry:
-            del verification_tokens[token]
             abort(400, description="Token expired")
         cursor = conn.conn.cursor()
         cursor.execute("SELECT username, email, password FROM pending_users WHERE username = ?", (username,))
@@ -260,7 +284,6 @@ def serve(
         cursor.execute("DELETE FROM pending_users WHERE username = ?", (username,))
         conn.conn.commit()
         with auth_lock:
-            del verification_tokens[token]
             auth_token = secrets.token_urlsafe(32)
             token2expiration[auth_token] = time.monotonic() + token_expiration_secs
             token2user[auth_token] = username

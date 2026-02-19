@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/foundation.css"/>
     <link rel="stylesheet" href="css/normalize.css"/>
     <link rel="stylesheet" href="css/account.css"/>
+    <link rel="stylesheet" href="css/card.css"/>
 </head>
 <body>
 <section class="header">
@@ -19,7 +20,8 @@
         <div class="small-12 medium-12 large-12 columns">
             <div class="header_wrapper">
                 <div id="service-logo"><a href="index.html" class="title success">Transparent AI</a></div>
-                <p id="logout-btn"   class="hidden warning button"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp;Logout</p>
+                <p id="logout-btn" class="hidden warning button"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp;Logout</p>
+                <p id="password-open-btn" class="hidden warning button"><i class="fa-solid fa-key"></i>&nbsp;&nbsp;Update password</p>
                 <p class="greet">Welcome <span id="account-name"></span></p>
             </div>
         </div>
@@ -33,6 +35,7 @@
         </div>
     </div>
 </section>
+
 <section class="footer_section">
     <div class="row bigWidth footer_section_icons">
         <img class="footer_section_logo" src="img/logo.png">
@@ -44,6 +47,29 @@
         under grant agreement No. 101135437
     </div>
 </section>
+
+<div id="password-modal-screen" class="delete-confirm-screen">
+    <div class="delete-confirm-content">
+        <h2>Update password</h2>
+        <div class="title error" id="password-error"></div>
+        <br><br>
+        <label for="password">New password</label><br>
+        <input type="password" id="password" placeholder="New password" class="text-input">
+        <br>
+        <br>
+        <label for="password-verify">Verify new password</label><br>
+        <input type="password" id="password-verify" placeholder="Verify password" class="text-input">
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="buttons">
+            <button id="confirm-password-btn" class="button warning"><i class="fa-solid fa-key"></i>&nbsp;&nbsp;Save</button>
+            <button id="cancel-password-btn" class="button"><i class="fa-solid fa-cancel"></i>&nbsp;&nbsp;Cancel</button>
+        </div>
+    </div>
+</div>
+
 
 <!-- JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

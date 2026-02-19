@@ -67,4 +67,45 @@ $(function () {
             error: xhr => alert(xhr.responseJSON?.error || "Failed to delete user")
         });
     });
+
+
+    $('#password-open-btn').click(()=>{
+        document.getElementById('password-modal-screen').style.display = 'flex';
+    });
+    $('#cancel-password-btn').click(()=>{
+        document.getElementById('password-modal-screen').style.display = 'none';
+        $('#password-error').text("");
+    });
+    $('#confirm-password-btn').click(function(){
+        const password=$("#password").val();
+        const verify=$("#password-verify").val();
+        if(!password) {
+            $('#password-error').text("Provide a new password.");
+            return;
+        }
+        if(password!==verify) {
+            $('#password-error').text("The new password does not match its verification.");
+            return;
+        }
+        $.ajax({
+            url: "/transparency/update_password",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({password:password}),
+            headers: {"Authorization":"Bearer "+token},
+            success: function(res){
+                token=res.token;
+                document.cookie="access_token="+res.token+"; path=/;";
+                $('#password-modal-screen').fadeOut(150);
+                $("#password").val("");
+                $("#password-verify").val("");
+                document.getElementById('password-modal-screen').style.display = 'none';
+            },
+            error: function(xhr){
+                $('#password-error').text(xhr.responseJSON?.error||"Failed to set new password.");
+            }
+        });
+    });
+
+
 });
