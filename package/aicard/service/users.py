@@ -11,9 +11,11 @@ import jwt
 import requests
 
 def hash_password(password: str) -> str:
+    if not password: return password
     return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
 def verify_password(password: str, hashed: str) -> bool:
+    if not password or not hashed: return False
     return bcrypt.checkpw(password.encode(), hashed.encode())
 
 class UserDB:
@@ -282,7 +284,7 @@ def require_auth(token2expiration: dict, third_party_authenticator: CookieAuthen
                 email = payload.get("email")
                 if not username: abort(401, description="Invalid cookie payload")
                 third_party_authenticator.register_token(token, username, email)
-                token2expiration[token] = time.time() # we allow always, so expire immediately
+                token2expiration[token] = time.monotonic() # we allow always, so expire immediately
                 return f(*args, **kwargs, token=token)
             # continue with normal internal validation
             if not auth.startswith("Bearer "): abort(401, description="Missing token")
@@ -290,7 +292,7 @@ def require_auth(token2expiration: dict, third_party_authenticator: CookieAuthen
             if len(parts) != 2 or parts[0] != "Bearer": abort(401, description="Invalid token format")
             token = parts[1]
             expiry = token2expiration.get(token)
-            if not expiry or time.time() > expiry: abort(403, description="Token expired or invalid - please log in")
+            if not expiry or time.monotonic() > expiry: abort(403, description="Token expired or invalid - please log in")
             return f(*args, **kwargs, token=token)
         return wrapper
     return decorator
@@ -305,7 +307,7 @@ def require_admin(token2expiration: dict):
             if len(parts) != 2 or parts[0] != "Bearer": abort(403, description="Token expired or invalid - please log in")
             token = parts[1]
             expiry = token2expiration.get(token)
-            if not expiry or time.time() > expiry: abort(403, description="Token expired or invalid - please log in")
+            if not expiry or time.monotonic() > expiry: abort(403, description="Token expired or invalid - please log in")
             return f(*args, **kwargs, token=token)
         return wrapper
     return decorator

@@ -10,6 +10,7 @@ refer to the implementation in package/service/server.py
 
 from aicard.service import serve
 from aicard.service.assistants import SemanticMatcher, Prompter, Combined
+from aicard.service.email import EmailVerification
 from aicard.agents import Ollama
 from aicard.agents.extensions.speedups import text_compression
 from threading import Thread
@@ -21,7 +22,12 @@ prompter = Prompter(
     text_preprocessor=text_compression
 )
 agent = Combined(refine=prompter, complete=matcher)
-app, gc = serve({"agent": agent}, env="ui/.env", feature_extractor=matcher)
+app, gc = serve(
+    {"agent": agent},
+    env="ui/.env",
+    feature_extractor=matcher,
+    email_verification=EmailVerification(env="ui/.env")
+)
 
 if __name__ == "__main__":
     Thread(target=gc, daemon=True).start()

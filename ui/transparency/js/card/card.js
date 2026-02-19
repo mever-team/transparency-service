@@ -69,13 +69,13 @@ $(document).ready(function () {
         $('.upload-container,#url_text').slideDown();
         $('#url_desc').slideUp();
         $('#pdf_desc').slideDown();
-    })
+    });
     $('#url_text').click(function () {
         $('#pdf_text,#card-url,#card-url-p').slideDown();
         $('.upload-container,#url_text').slideUp();
         $('#url_desc').slideDown();
         $('#pdf_desc').slideUp();
-    })
+    });
 
     $(window).on('scroll', function () {
         if ($(window).scrollTop() > menuOffsetTop - 20) $menu.addClass('fixed');

@@ -1,27 +1,17 @@
-
-
 $(function () {
     $('#loading').show();
     $("#topic").val(localStorage.getItem("last_search_term") || "");
     $("#topic").trigger("keyup");
     if(localStorage.getItem('modalDismissed') !== 'true') $('.modal__trigger[data-modal="#modal_help"]').click();
     $('body').on('click', '.demo-close', ()=>{localStorage.setItem('modalDismissed', 'true');});
-    $("#username, #password").on("keydown", (e)=>{
+    $("#username, #password", "#email-login-btn").on("keydown", (e)=>{
         if ((e.key && e.key !== "Enter") && e.which !== 13 && e.keyCode !== 13) return;
         e.preventDefault();
         $("#login-confirm-btn").trigger("click");
     });
-    $("#register-username, #register-password, #register-password-verify, #register-email").on("keydown", (e)=>{
-        if ((e.key && e.key !== "Enter") && e.which !== 13 && e.keyCode !== 13) return;
-        e.preventDefault();
-        $("#register-confirm-btn").trigger("click");
-    });
     let cancelLogin = () => { $('#login-error').text(""); $('#login').removeClass('show'); }
-    let cancelRegister = () => { $('#register-success').text("");$('#register-error').text(""); $('#register').removeClass('show'); }
     $('#login-btn').click(() => { $('#login-error').text(""); $('#login').addClass('show'); });
     $('#cancel-login-btn').click(cancelLogin);
-    $('#register-btn').click(() => { $('#register-error').text("");$('#register-success').text(""); $('#register').addClass('show'); });
-    $('#cancel-register-btn').click(cancelRegister);
     $('#account-btn').click(() => { window.location.href = 'account.html'; });
     $('#new_card').click(() => {
         $.ajax({
@@ -34,55 +24,46 @@ $(function () {
             error: () => alert("Failed to create a new model card. Please refresh the page and try again.")
         });
     });
-    $('#register-confirm-btn').click(() => {
-        const username = $('#register-username').val().trim();
-        const email = $('#register-email').val().trim();
-        const password = $('#register-password').val();
-        const verify = $('#register-password-verify').val();
-        $('#register-error').text("");
-        $('#register-success').text("");
-        if (!username || !email || !password || !verify) {
-            $('#register-error').text("All fields are required.");
-            return;
-        }
-        if (password !== verify) {
-            $('#register-error').text("Passwords do not match.");
-            return;
-        }
+    $(document).on('keydown', (e) => {
+      if(e.key !== 'Escape') return;
+      if($('#login').hasClass('show')) cancelLogin();
+    });
+});
+
+$('#login_password').click(function () {
+    $('#password_label').slideUp();
+    $('#email_label').slideDown();
+});
+
+$('#login_email').click(function () {
+    $('#password_label').slideDown();
+    $('#email_label').slideUp();
+});
+
+$('#login-confirm-btn').click(()=>{
+    if ($('#email').is(':visible')) {
         $.ajax({
             url: '/transparency/register',
             method: 'POST',
             contentType: 'application/json',
             dataType: 'json',
-            data: JSON.stringify({
-                username: username,
-                email: email,
-                password: password
-            }),
+            data: JSON.stringify({username: $('#username').val(), email: $('#email').val(), password: ""}),
             success: function () {
+                $('#login-error').text("");
                 //$('#register').removeClass('show');
-                $('#register-success').addClass('show');
-                $('#register-success').text("Your account is pending administrator approval.");
+                $('#login-success').addClass('show');
+                $('#login-success').text("An email will be sent to your account with a login link.");
             },
             error: function (xhr) {
-                if (xhr.responseJSON && xhr.responseJSON.error) $('#register-error').text(xhr.responseJSON.error);
-                else if (xhr.responseText) $('#register-error').text(xhr.responseText);
-                else $('#register-error').text("Registration failed");
+                $('#login-success').text("");
+                if (xhr.responseJSON && xhr.responseJSON.error) $('#login-error').text(xhr.responseJSON.error);
+                else if (xhr.responseText) $('#login-error').text(xhr.responseText);
+                else $('#login-error').text("Registration failed");
             }
         });
-    });
+        return;
+    }
 
-    $(document).on('keydown', (e) => {
-      if (e.key === 'Escape') {
-        if ($('#login').hasClass('show')) cancelLogin();
-        if ($('#register').hasClass('show')) cancelRegister();
-      }
-    });
-
-});
-
-
-$('#login-confirm-btn').click(()=>{
     $.ajax({
         url: '/transparency/login',
         method: 'POST',

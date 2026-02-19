@@ -1,11 +1,12 @@
 from aicard.card import ModelCard
 from aicard.service.converters import card2format
+from aicard.service.email import EmailVerification
 from aicard.service.server_card_entry import ModelCardEntry
 from aicard.service.assistants import Assistant, SemanticMatcher
 from aicard.service import users
 from aicard.service import converters
 from aicard.service.logger import Logger
-from flask import Flask, abort, redirect, request, jsonify, send_from_directory, Response
+from flask import Flask, abort, redirect, request, jsonify, send_from_directory, Response, url_for
 from threading import Lock
 from dotenv import dotenv_values
 from werkzeug.exceptions import HTTPException, Forbidden, NotFound, Unauthorized
@@ -35,7 +36,8 @@ def serve(
     domain_prefix:str="/transparency",
     third_party_realm: str|None = None,
     third_party_client: str|None = None,
-    feature_extractor: SemanticMatcher|None = None
+    feature_extractor: SemanticMatcher|None = None,
+    email_verification: EmailVerification|None = None,
 ):
     static = os.path.abspath(static)
     if env: config = dotenv_values(env)
@@ -62,6 +64,7 @@ def serve(
     auth_lock = Lock()
     token2expiration = dict()
     token2user = dict()
+    verification_tokens = {}
     for assistant in assistants.values():
         assistant.start(logger)
     conn = users.UserDB(logger=logger, root=root)
@@ -200,21 +203,69 @@ def serve(
         cursor.execute("SELECT username, email, password FROM pending_users WHERE username = ?",(username,))
         row = cursor.fetchone()
         if not row: abort(404, description="Pending user not found")
-        cursor.execute("INSERT INTO users (username, email, password) VALUES (?, ?, ?)",(row[0], row[1], row[2]))
+        cursor.execute("INSERT INTO users (username, email, password) SELECT ?, ?, ? WHERE NOT EXISTS (SELECT 1 FROM users WHERE username = ?)",(row[0], row[1], row[2], row[0]))
         cursor.execute("DELETE FROM pending_users WHERE username = ?",(username,))
         conn.conn.commit()
         return jsonify({"promoted": username})
 
     @app.route(domain_prefix+"/register", methods=["POST"])
     def register_user():
+        # we accept registration requests from the same user
         data = request.get_json()
-        username = data.get("username")
-        email = data.get("email")
-        password = data.get("password")
-        if not username or not email or not password: return "Missing fields among username, email, or password", 400# abort(400, description="Missing fields among username, email, or password")
-        if conn.find_user('users', username) or conn.find_user('pending_users', username): return "User already exists", 409 #abort(409, description="User already exists")
-        conn.insert_user('pending_users', username, email, password)
+        username = data.get("username", "")
+        email = data.get("email", "")
+        password = data.get("password", "") # EMPTY PASSWORD ALWAYS FAILS AT LOGING IN - USERS NEED TO SET IT UP
+        username = username.replace("<", "&lt;")
+        if len(username) > 64: return "Username is too long.", 400
+        if not username: return "Missing username.", 400
+        if not email and email_verification: return "Missing email.", 400
+        if not password and not email_verification: return "Missing password. Email-based login has not been enabled for this server.", 409
+        existing_user = conn.find_user('users', username)
+        if existing_user:
+            if existing_user[1]!=email: return "This username is associated with a different email.", 409
+            if password: return "You have already registered.", 409
+            if not email_verification: return "Missing password. Email-based login has not been enabled for this server.", 409 # redundant check
+            # otherwise continue with normal email verification, which REQUIRES a pending user
+        pending = conn.find_user('pending_users', username)
+        if not pending: conn.insert_user('pending_users', username, email, password)
+        elif pending[1]!=email: return "This username has already made a login request with a different email.", 409
+        if email_verification:
+            if password: return "This server uses email-based login. For safety, passwords can only be set after logging in.", 409
+            token = secrets.token_urlsafe(32)
+            with auth_lock: verification_tokens[token] = (username, time.monotonic() + token_expiration_secs)
+            if not email_verification.send_email(
+                email,
+                "Email verification for Trustworthy AI (TrAI)",
+                "Visit the link below to login with username: "+username
+                +"\nThis link works only once. You can set up password-based access from your account page.\n\n"
+                +url_for("verify_user", token=token, _external=True)
+            ):
+                return "You have already requested login with the same username and email. Wait for a minute and try again.", 409
+            return jsonify({"status": "pending verification"}), 201
         return jsonify({"status": "pending approval"}), 201
+
+    @app.route(domain_prefix + "/verify/<string:token>", methods=["GET"])
+    def verify_user(token):
+        with auth_lock: entry = verification_tokens.get(token)
+        if not entry: abort(400, description="Verification token invalid or already used")
+        username, expiry = entry
+        if time.monotonic() > expiry:
+            del verification_tokens[token]
+            abort(400, description="Token expired")
+        cursor = conn.conn.cursor()
+        cursor.execute("SELECT username, email, password FROM pending_users WHERE username = ?", (username,))
+        row = cursor.fetchone()
+        if not row: abort(404, description="Pending user not found")
+        cursor.execute("INSERT INTO users (username, email, password) SELECT ?, ?, ? WHERE NOT EXISTS (SELECT 1 FROM users WHERE username = ?)", (row[0], row[1], row[2], row[0]))
+        cursor.execute("DELETE FROM pending_users WHERE username = ?", (username,))
+        conn.conn.commit()
+        with auth_lock:
+            del verification_tokens[token]
+            auth_token = secrets.token_urlsafe(32)
+            token2expiration[auth_token] = time.monotonic() + token_expiration_secs
+            token2user[auth_token] = username
+            logger.info("verified and logged in", user=username)
+        return redirect(domain_prefix+"/"+redirect_index+"?token="+auth_token)
 
     @app.route(domain_prefix+"/ping", methods=["GET"])
     def ping():
@@ -227,7 +278,7 @@ def serve(
             if not username: abort(401, description="Invalid cookie payload")
             third_party_auth.register_token(token, username, email)
             with auth_lock:
-                token2expiration[token] = time.time()  # we allow always, so expire immediately
+                token2expiration[token] = time.monotonic()  # we allow always, so expire immediately
                 return jsonify({"token": token, "expires_in": token_expiration_secs, "username": token2user.get(token, "unknown")})
 
         if not auth.startswith("Bearer "): return ""
@@ -236,11 +287,11 @@ def serve(
         with auth_lock:
             token = parts[1]
             expiry = token2expiration.get(token)
-            if not expiry or time.time() > expiry:
+            if not expiry or time.monotonic() > expiry:
                 token2expiration.pop(token, None)
                 token2user.pop(token, None)
                 return ""
-            token2expiration[token] = time.time() + token_expiration_secs
+            token2expiration[token] = time.monotonic() + token_expiration_secs
             return jsonify({"token": token, "expires_in": token_expiration_secs, "username": token2user.get(token, "unknown")})
 
     @app.route(domain_prefix+"/login", methods=["POST"])
@@ -253,7 +304,7 @@ def serve(
         with auth_lock:
             if username == admin_username and password == admin_password:
                 token = secrets.token_urlsafe(32)
-                token2expiration[token] = time.time() + token_expiration_secs
+                token2expiration[token] = time.monotonic() + token_expiration_secs
                 token2user[token] = username
                 logger.warn("logged in as administrator", user=username)
                 return jsonify({"token": token, "admin": True, "expires_in": token_expiration_secs})
@@ -263,7 +314,7 @@ def serve(
         if not users.verify_password(password, stored_hash): abort(401, description="Invalid credentials")
         with auth_lock:
             token = secrets.token_urlsafe(32)
-            token2expiration[token] = time.time() + token_expiration_secs
+            token2expiration[token] = time.monotonic() + token_expiration_secs
             token2user[token] = username
         logger.info("logged in", user=username)
         return jsonify({"token": token, "admin": False, "expires_in": token_expiration_secs})
@@ -711,12 +762,12 @@ def serve(
         try:
             return jsonify(ModelCard().data[section][field].options())
         except Exception as e:
-            logger.error("No options for" + section + " " + field)
-            abort(400, "No options for" + section + " " + field)
+            logger.error("No options for " + section + " " + field)
+            abort(400, "No options for " + section + " " + field)
 
     def gc():
         while True:
-            now = time.time()
+            now = time.monotonic()
             one_hour = 3600
             to_delete = []
             with card_cache_lock:

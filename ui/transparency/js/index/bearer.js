@@ -1,11 +1,19 @@
 let token = "";
 let pingTimer = null;
 
+// incoming token from registration verification redirect
+const params = new URLSearchParams(window.location.search);
+const incomingBearer = params.get("token");
+const incomingExpiry = params.get("expires_in");
+if (incomingBearer) {
+    document.cookie = "access_token=" + incomingBearer + "; path=/; max-age=" + (incomingExpiry || 3600) + ";";
+    const clean = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, document.title, clean);
+}
+
 document.cookie.split(";").forEach(cookie => {
     const [name, value] = cookie.trim().split("=");
-    if (name === "access_token") {
-        token = value;
-    }
+    if (name === "access_token") token = value;
 });
 
 updateUsername();
@@ -17,7 +25,6 @@ function updateUsername() {
 //        clearTimeout(pingTimer);
 //        $('#new_card').addClass("hidden");
 //        $('#login-btn').removeClass("hidden");
-//        $('#register-btn').removeClass("hidden");
 //        $('#logout-btn').addClass("hidden");
 //        $('#account-btn').addClass("hidden");
 //        // $('#user-filter').addClass("hidden");
@@ -37,7 +44,6 @@ function updateUsername() {
 
                 $('#new_card').removeClass("hidden");
                 $('#login-btn').addClass("hidden");
-                $('#register-btn').addClass("hidden");
                 $('#logout-btn').removeClass("hidden");
                 $('#account-btn').removeClass("hidden");
                 $('#user-filter').removeClass("hidden");
@@ -76,7 +82,6 @@ function updateUsername() {
                 token = "";
                 $('#new_card').addClass("hidden");
                 $('#login-btn').removeClass("hidden");
-                $('#register-btn').removeClass("hidden");
                 $('#logout-btn').addClass("hidden");
                 $('#account-btn').addClass("hidden");
                 // $('#user-filter').addClass("hidden");
@@ -89,7 +94,6 @@ function updateUsername() {
             token = "";
             $('#new_card').addClass("hidden");
             $('#login-btn').removeClass("hidden");
-            $('#register-btn').removeClass("hidden");
             $('#logout-btn').addClass("hidden");
             $('#account-btn').addClass("hidden");
             // $('#user-filter').addClass("hidden");

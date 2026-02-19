@@ -23,7 +23,6 @@
             <div class="header_wrapper">
                 <div id="service-logo">Transparent AI</div>
                 <p id="whats-this"   class="button modal__trigger" data-modal="#help"><i class="fa-solid fa-question"></i>&nbsp;&nbsp;About</p>
-                <p id="register-btn" class="hidden warning button"><i class="fa-solid fa-key"></i>&nbsp;&nbsp;Register</p>
                 <p id="login-btn"    class="hidden success button"><i class="fa-solid fa-lock"></i>&nbsp;&nbsp;Login</p>
                 <p id="account-btn"  class="hidden warning button"><i class="fa-solid fa-user"></i>&nbsp;&nbsp;<span id="account-name">Account</span></p>
                 <p id="new_card"     class="hidden success button"><i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;New</p>
@@ -74,37 +73,30 @@
 <div id="login" class="popup">
     <div class="popup_content">
         <h2 class="success title">Login</h2>
-        <p>Grants access to additional services:</p>
         <ul style="text-align:left;margin-bottom:40px"><li>Create and edit model cards.</li><li>Aid by assistants.</li><li>Python integration.</li></ul>
         <p id="login-error" class="error"></p>
+        <p id="login-success" class="title success"></p>
         <label for="username">Username</label><br />
         <input type="text" id="username" name="username" /><br><br>
-        <label for="password">Password</label><br />
-        <input type="password" id="password" name="password" /><br><br><br><br>
+        <br />
+        <div id="password_label">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" />
+            <p id="login_password">
+                <span class="learn-more"><a href="handbook.html#creators" target="_blank" style="float:left">Learn more</a></span>
+                Login/register with email?</p>
+        </div>
+        <div id="email_label" >
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" />
+            <p id="login_email">
+                <span class="learn-more"><a href="handbook.html#creators" target="_blank" style="float:left">Learn more</a></span>
+                Login with password?</p>
+        </div>
+        <br><br>
         <div class="buttons">
             <button id="login-confirm-btn" class="success button"><i class="fa-solid fa-lock"></i>&nbsp;&nbsp;Login</button>
             <button class="button" id="cancel-login-btn"><i class="fa-solid fa-cancel"></i>&nbsp;&nbsp;Cancel</button>
-        </div>
-    </div>
-</div>
-
-<div id="register" class="popup">
-    <div class="popup_content">
-        <h2 class="success title">Register</h2>
-        <p>Create an account to log in and wait for approval by the administrator.</p>
-        <p id="register-success" class="title success"></p>
-        <p id="register-error" class="error"></p>
-        <label for="username">Username</label><br />
-        <input type="text" id="register-username" name="register-username" /><br><br>
-        <label for="username">Email</label><br />
-        <input type="text" id="register-email" name="register-email" /><br><br>
-        <label for="password">Password</label><br />
-        <input type="password" id="register-password" name="register-password" /><br><br>
-        <label for="password">Verify password</label><br />
-        <input type="password" id="register-password-verify" name="register-password-verify" /><br><br><br><br>
-        <div class="buttons">
-            <button id="register-confirm-btn" class="success button"><i class="fa-solid fa-key"></i>&nbsp;&nbsp;Send</button>
-            <button id="cancel-register-btn" class="button"><i class="fa-solid fa-cancel"></i>&nbsp;&nbsp;Cancel</button>
         </div>
     </div>
 </div>

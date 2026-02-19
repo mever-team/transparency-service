@@ -2,7 +2,6 @@
     position: relative;
     z-index: 2;
 }
-
 .search h1 {
     font-size: 60px;
     line-height: 60px;
@@ -11,8 +10,18 @@
     color: #1F1F1F;
     margin-bottom: 0;
 }
-
-
+#email_label{display: none;}
+#login_email,#login_password {
+    color: #EEEEEE;
+    text-align: right;
+    font-size: 14px;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: bold;
+    font-style: italic;
+    margin-left: 5%;
+    margin-right: 5%;
+}
 .search_wrapper {width: 100%;position: relative;}
 .search_wrapper::after, .search_wrapper::before {
     content: '';
