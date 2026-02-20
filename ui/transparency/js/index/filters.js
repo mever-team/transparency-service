@@ -32,9 +32,12 @@ $(function () {
         },
 
         init_dashboards: async function() {
-            this.getTaskDashboard().then(function (html) { this.dashboards.task = html; }.bind(this));
-            this.getTypeDashboard().then(function (html) { this.dashboards.type = html; }.bind(this));
-            this.dashboards.info = this.getInfoDashboard();
+            this.dashboards.task = {html: "", setState: this.taskSetState.bind(this)};
+            this.dashboards.type = {html: "", setState: this.typeSetState.bind(this)};
+            this.dashboards.info = {html: "", setState: this.infoSetState.bind(this)};
+            this.getTaskDashboard().then(function (html) { this.dashboards.task.html = html; }.bind(this));
+            this.getTypeDashboard().then(function (html) { this.dashboards.type.html = html; }.bind(this));
+            this.dashboards.info.html = this.getInfoDashboard();
         },
 
         init_options: function() {
@@ -44,25 +47,22 @@ $(function () {
         },
 
         init_templates: async function () {
-            this.templates.cardRow = {template: "", render: this.cardRowRender.bind(this)};
-            this.templates.modal = {template: "", render: this.modalRender.bind(this)};
-            const [cardRowTemplate, modalTemplate] = await Promise.all([
-                $.get("templates/index/cardRow.mustache"),
-                $.get("templates/index/filtersModal.mustache")
-            ]);
-            this.templates.cardRow.template = cardRowTemplate;
-            this.templates.modal.template = modalTemplate;
+            this.templates.cardRow = {template: "", render: this.cardRowRender.bind(this), path: "templates/index/cardRow.mustache"};
+            this.templates.modal = {template: "", render: this.modalRender.bind(this), path: "templates/index/filtersModal.mustache"};
+            this.templates.editModal = {template: "", render: this.EditModalRender.bind(this), path: "templates/index/filtersModal.mustache"};
+            await this.loadTemplates(this.templates);
         },
 
         init_filters: function() {
             this.filters.drafts = false; 
             this.filters.user = false; 
-            this.filters.query = localStorage.getItem("last_search_term") || '';
+            this.filters.query = '';
         },
 
         bindEvents: function() { 
             this.$filters.on('click', '#new-filter', this.newFilter.bind(this));
             this.$filters.on('click', '.remove-filter', this.removeFilter.bind(this))
+            this.$filters.on('click', '#edit-filter', this.editFilter.bind(this))
             this.$modal.on('change', '#filter-select', this.dashboardRender.bind(this))
             this.$topic.on("keyup", this.topicCallback.bind(this));
             this.$modal.on('click', '.filter-done', this.done.bind(this))
@@ -78,28 +78,66 @@ $(function () {
         //       Ugly Logic       //
         ////////////////////////////
 
+        taskSetState: function() {
+            this.current.value.forEach(function(task){
+                this.$modal.find('[data-filter="' + task + '"]').addClass("active");
+            }.bind(this));
+        },
+        typeSetState: function() {
+            this.current.value.forEach(function(type){
+                this.$modal.find('[data-filter="' + type + '"]').addClass("active");
+            }.bind(this));
+
+        },
+        infoSetState: function() {
+            console.log('infoSetState')
+
+        },
+        editFilter: function(e) {
+            if ($(e.target).closest('.remove-filter').length) return;
+            const filter = $(e.currentTarget).attr('data-filter');
+            this.current = {name: filter, value: this.filters[filter]};
+            console.log(this.current);
+            console.log(this.filters);
+            this.EditModalRender(filter);
+            this.dashboards[filter].setState();
+        },
+        EditModalRender: function(filter) {
+            const dashboard = this.dashboards[filter].html;
+            this.$modal.addClass('modal--active').html(this.templates.editModal.template);
+            $filterdashboard = $(".filter-dashboard");
+            $filterdashboard
+                .html(dashboard)
+                .attr('data-filter', filter);
+        },
+
         filterInfo: function(e) {
             this.current.value = Math.min(Math.max($(e.currentTarget).val(), 0), 100);
             $(e.currentTarget).val(this.current.value);
         },
         filterTask: function(e) {
-            if (!e.target.id) return;
-            $(e.target).toggleClass("active");
-            if(this.current.value.includes(e.target.id)){
-                this.current.value.splice(this.current.value.indexOf(e.target.id), 1);
+            const $target = $(e.target)
+            const option = $target.attr('data-filter')
+            if (!(option && $target.hasClass('filter-option'))) return;
+            $target.toggleClass("active");
+            console.log(this.current);
+            if(this.current.value.includes(option)){
+                this.current.value.splice(this.current.value.indexOf(option), 1);
             }
             else {
-                this.current.value.push(e.target.id);
+                this.current.value.push(option);
             }
         },
         filterType: function(e) {
-            if (!e.target.id) return;
-            $(e.target).toggleClass("active");
-            if(this.current.value.includes(e.target.id)){
-                this.current.value.splice(this.current.value.indexOf(e.target.id), 1);
+            const $target = $(e.target)
+            const option = $target.attr('data-filter')
+            if (!(option && $target.hasClass('filter-option'))) return;
+            $target.toggleClass("active");
+            if(this.current.value.includes(option)){
+                this.current.value.splice(this.current.value.indexOf(option), 1);
             }
             else {
-                this.current.value.push(e.target.id);
+                this.current.value.push(option);
             }
         },
         newFilter: function() {
@@ -178,7 +216,6 @@ $(function () {
                         });
                     else this.$tbody.append(`<tr><td colspan="3" style="text-align:center;color:#EEEEEE;font-weight:bold;font-size:22px;">No matching results</td></tr>`);
                     $("#resultsTable").show();
-                    localStorage.setItem("last_search_term", this.filters.query);
                     this.first = false;
                 },
                 error: () => {
@@ -195,7 +232,7 @@ $(function () {
             $dashboard = $(".dashboard");
             this.setCurrent(selectedDashboard);
             $dashboard.slideUp(300, function() {
-                $filterdashboard.html(this.dashboards[selectedDashboard]);
+                $filterdashboard.html(this.dashboards[selectedDashboard].html);
                 $dashboard.slideDown();
             }.bind(this));
         },
@@ -273,7 +310,7 @@ $(function () {
                             $span
                                 .text(taskOption)
                                 .addClass("filter-option")
-                                .attr("id", taskOption);
+                                .attr("data-filter", taskOption);
                         }
                         $element.append($span);
                     });
@@ -296,7 +333,7 @@ $(function () {
                         $span
                             .text(typeOption)
                             .addClass("filter-option")
-                            .attr("id", typeOption);
+                            .attr("data-filter", typeOption);
                     }
                     $element.append($span);
                 });
@@ -314,19 +351,41 @@ $(function () {
                 this.$modal.removeClass('modal--active');
                 return 
             }
+            if (!(this.current.name in this.filters))
+            {
+                this.addfilter(this.current.name);
+            }
             this.filters[this.current.name] = this.current.value;
             this.options[this.current.name].active = true;
             this.request();
-            this.addfilter(this.current.name);
             this.$modal.removeClass('modal--active');
+            this.current = {};
         },
         addfilter: function(filter) {
             var newP = $('<p>');
             newP
                 .attr('data-filter', filter)
+                .attr('id', 'edit-filter')
                 .addClass('filter button secondary success')
-                .html('<div>✏️&nbsp;'+capitalizeFirstLetter(filter)+'</div><span class="remove-filter">X</span>')
+                .html('<div><i class="fa-solid fa-pencil"></i>&nbsp;'+capitalizeFirstLetter(filter)+'</div><span class="remove-filter">X</span>')
             this.$filters.children('p').eq(-1).before(newP);
+        },
+
+        loadTemplates: async function(templates) {
+            const keys = Object.keys(templates);
+            const promises = keys.map(key => $.get(templates[key].path));
+            
+            const results = await Promise.all(promises);
+            
+            results.forEach((template, index) => { 
+                if (keys[index] === "editModal") {
+                    const $html = $('<div>').html(template);
+                    $html.find('label[for="filter-select"]').remove();
+                    $html.find('select#filter-select').remove();
+                    template = $html.html();
+                }
+                templates[keys[index]].template = template;
+            });
         }
     };
 
