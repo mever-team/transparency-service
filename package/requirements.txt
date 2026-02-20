@@ -17,6 +17,6 @@ torch
 torchvision
 transformers
 sentencepiece
-PyPDF2
+pypdf
 pymupdf
 PyJWT
