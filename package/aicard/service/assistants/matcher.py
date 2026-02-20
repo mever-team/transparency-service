@@ -48,8 +48,7 @@ class SemanticMatcher(Assistant):
 
     def __init__(self,
                  model_name: str="BAAI/bge-small-en-v1.5", #"BAAI/bge-m3",
-                 external_get_timeout_sec: float=1,
-                 max_chars_for_semantic_synonyms: int=1000):
+                 external_get_timeout_sec: float=1):
         super().__init__(
             alias="📚 Semantic organizer",
             description=(
@@ -62,7 +61,6 @@ class SemanticMatcher(Assistant):
         self.model = None
         self.field_embeddings = None
         self.external_get_timeout_sec = external_get_timeout_sec
-        self.max_chars_for_semantic_synonyms = max_chars_for_semantic_synonyms
 
 
     def start(self, logger: Logger):
@@ -84,12 +82,11 @@ class SemanticMatcher(Assistant):
                     for field, value in values.items():
                         if isinstance(value, Options):
                             for option in value.options():
-                                field_embeddings[cat+"__"+field+"__"+option] = self._get_embeddings("# AI model card "+cat+" "+field+" "+option+"\n"+value.description)
-                        field_embeddings[cat+"__"+field] = self._get_embeddings("# AI model card "+cat+" "+field+"\n"+value.description)
+                                field_embeddings[cat+"__"+field+"__"+option] = self._get_embeddings("question: # AI model card "+cat+" "+field+" "+option+"\n"+value.description)
+                        field_embeddings[cat+"__"+field] = self._get_embeddings("question: # AI model card "+cat+" "+field+"\n"+value.description)
                 logger.ok(f"loading complete" 
                         f"\n * {len(field_embeddings)} card field semantic embeddings", user="📚 Semantic Matcher")
-                with SemanticMatcher._loader_lock:
-                    self.field_embeddings = field_embeddings
+                with SemanticMatcher._loader_lock: self.field_embeddings = field_embeddings
             except Exception as e:
                 logger.error(f"failed to start: {e}", user="📚 Semantic Matcher")
                 self.field_embeddings = dict()
@@ -126,9 +123,9 @@ class SemanticMatcher(Assistant):
             creator = title[0].strip()
             title = title[1].strip()
         if " " in title and "-" in title:
-            title = title.split(" ")
-            if title[0].strip() and "-" in title[0]:
-                title = title[0]
+            title_parts = title.split(" ")
+            if title_parts[0].strip() and "-" in title_parts[0]:
+                title = title_parts[0]
         # sections = []
         # for header in soup.find_all(re.compile("^h[1-6]$")):
         #     content = []
@@ -170,10 +167,10 @@ class SemanticMatcher(Assistant):
         not_used_fields = list()
         has_been_replaced = dict()
         best_option_matches = dict()
-        existing = set(cat+"__"+field for cat, values in card.data.items()
-                       if isinstance(values, dict)
-                       for field, value in values.items() if value.get() and value.get().lower()!="unknown")
-
+        existing = set(
+            cat+"__"+field for cat, values in card.data.items()
+           if isinstance(values, dict)
+           for field, value in values.items() if value.get() and value.get().lower()!="unknown")
         count_sections = 0
         for heading, content in sections:
             content = content.strip()
@@ -181,7 +178,6 @@ class SemanticMatcher(Assistant):
                 continue
             if not content: continue
             count_sections += 1
-
         progress = 0
         for heading, content in sections:
             content = content.strip()
@@ -201,10 +197,10 @@ class SemanticMatcher(Assistant):
             )
             progress += 1
             with SemanticMatcher._loader_lock: # TODO: more advanced scheduling in the future
-                embedding = self._get_embeddings("#"+(heading if heading else "")+"\n"+(content if content else ""))
+                embedding = self._get_embeddings("passage: #"+(heading if heading else "")+"\n"+(content if content else ""))
             best_score = 0
             best_path = []
-            is_technical = "<pre>" in content
+            is_technical = "<pre>" in content or "<math" in content
             for cat, values in card.data.items():
                 if not isinstance(values, dict): continue
                 for field, value in values.items():
@@ -231,6 +227,7 @@ class SemanticMatcher(Assistant):
                 card.data[best_path[0]][best_path[1]].set(content)
             else: not_used_fields.append(heading)
 
+        print(title)
         if not card.overview.name: card.overview.name = title
         if not card.overview.creator: card.overview.creator = creator
         if not card.overview.date: card.overview.date = date.today().strftime("%Y-%m-%d")

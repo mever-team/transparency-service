@@ -19,3 +19,4 @@ transformers
 sentencepiece
 PyPDF2
 pymupdf
+PyJWT

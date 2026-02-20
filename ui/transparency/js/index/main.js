@@ -4,7 +4,7 @@ $(function () {
     $("#topic").trigger("keyup");
     if(localStorage.getItem('modalDismissed') !== 'true') $('.modal__trigger[data-modal="#modal_help"]').click();
     $('body').on('click', '.demo-close', ()=>{localStorage.setItem('modalDismissed', 'true');});
-    $("#username, #password", "#email-login-btn").on("keydown", (e)=>{
+    $("#username,#password,#email").on("keydown", (e)=>{
         if ((e.key && e.key !== "Enter") && e.which !== 13 && e.keyCode !== 13) return;
         e.preventDefault();
         $("#login-confirm-btn").trigger("click");

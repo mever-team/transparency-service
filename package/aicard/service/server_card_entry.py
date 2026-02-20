@@ -68,23 +68,16 @@ class ModelCardEntry:
         assert self.card_id is not None, "Internal error: card_id has not been set for a cached card"
 
         def strip_html_tags(text: str) -> str:
-            return re.sub(r'<[^>]*>', '', text)
+            return re.sub(r'<[^>]*>', '', str(text))
 
         if self.card.overview.name:
             self.card.title = truncate(strip_html_tags(self.card.overview.name), 30)
         quality = self.card.quality()
         summary = self.card.summary()
-        if summary:
-            desc = summary  # create_progress_bar(quality)+" for "+summary
-        else:
-            desc = ""
-
+        desc = summary if summary else ""
         if edit_message:
-            if edit_message == "Edited" and summary:
-                edit_message = summary
-            else:
-                edit_message = edit_message + " " + summary
-            # if desc: desc += f" [{datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}]"
+            if edit_message == "Edited" and summary: edit_message = summary
+            else: edit_message = edit_message + " " + summary
 
         timestamp = int(time.time())
         columns = list(flattened.keys())
@@ -225,22 +218,22 @@ class ModelCardEntry:
                             text_val = value.get().strip()
                             if not text_val or text_val=="unknown":
                                 enriched = "passage:" + category + "/" + field + ":\n\n"+value.description+"\n\nunknown"
-                                sentence = "Would have looked for an answer at " + field.lower() + " in " + category.lower() + ", but that is empty."
+                                sentence = "Would have looked for an answer at " + field.lower().replace("_", " ") + " in " + category.lower().replace("_", " ") + ", but that is empty."
                                 sentences[sentence] = feature_extractor.get_embeddings(enriched)
                                 continue
                             if not " " in text_val:
                                 enriched = "passage: " + category + "/" + field + ":\n\n"+value.description+"\n\n" + text_val
-                                sentence = (field + " in " + category).capitalize() + " is: " + text_val
+                                sentence = (field.lower().replace("_", " ") + " in " + category.lower().replace("_", " ")).capitalize() + " is: " + text_val
                                 sentences[sentence] = feature_extractor.get_embeddings(enriched)
                                 continue
-                            text_val = text_val.replace("<br>",". ").replace("<div>", ". ").replace("<p>", ". ").replace("\n", ". ")
-                            text_val = re.sub(r"<[^>]+>", " ", value.get()).strip() # html to fullstops
+                            text_val = text_val.replace("<br>"," ").replace("<div>", ". ").replace("<p>", ". ").replace("\n", " ")
+                            text_val = re.sub(r"<[^>]+>", " ", text_val).strip() # html to fullstops
                             for sentence in text_val.split(". "):
                                 sentence = sentence.strip()
                                 #if not sentence: continue # redundant for next line
                                 if not " " in sentence: continue
                                 enriched = "passage: " + category + "/" + field + ":\n\n"+value.description+"\n\n" + sentence
-                                sentence = "From " + field.lower() + " in " + category.lower() + ": \"" + sentence + "\""
+                                sentence = "From " + field.lower().replace("_", " ") + " in " + category.lower().replace("_", " ") + ": \"" + sentence + "\""
                                 sentences[sentence] = feature_extractor.get_embeddings(enriched)
                 question_embeddings = feature_extractor.get_embeddings("question: "+question)
                 reply = "I was unable to find relevant information."
@@ -251,7 +244,7 @@ class ModelCardEntry:
                     best_score = score
                     reply = sentence
             except Exception as e:
-                reply = str(e)
+                reply = "Something went wrong: "+str(e)
             except:
                 reply = "Something went wrong. Please try again."
             self.__questions[self.__num_answered] = question, feature_extractor, True, reply
