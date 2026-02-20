@@ -1,6 +1,5 @@
 $(function () {
     $('#loading').show();
-    $("#topic").val(localStorage.getItem("last_search_term") || "");
     $("#topic").trigger("keyup");
     if(localStorage.getItem('modalDismissed') !== 'true') $('.modal__trigger[data-modal="#modal_help"]').click();
     $('body').on('click', '.demo-close', ()=>{localStorage.setItem('modalDismissed', 'true');});
