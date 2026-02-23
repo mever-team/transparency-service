@@ -8,6 +8,7 @@ from werkzeug.exceptions import Forbidden, NotFound, Unauthorized
 import traceback
 import re
 import time
+import numpy as np
 
 class ModelCardEntry:
     def __init__(self, card: ModelCard, creator: str, conn):
@@ -26,6 +27,7 @@ class ModelCardEntry:
         self.__questions = list()
         self.__num_answered = 0
         self.__extracted_sentences = dict()
+        self.__average_sentence_embeddings = dict()
 
     def history(self, k: int = 5):
         if self.card_id is None or k <= 0:
@@ -62,6 +64,7 @@ class ModelCardEntry:
         self.last_accessed = time.time()
 
     def commit_card(self, on_thread: bool = False, edit_message: str | None = "Edited"):
+        self.__average_sentence_embeddings = dict()
         self.__extracted_sentences = dict() # clear extracted sentences TODO: consider keeping those retained
         flattened = self.card.data.flatten()
         assert flattened, "Cannot commit an empty model card."
@@ -235,14 +238,59 @@ class ModelCardEntry:
                                 enriched = "passage: " + category + "/" + field + ":\n\n"+value.description+"\n\n" + sentence
                                 sentence = "From " + field.lower().replace("_", " ") + " in " + category.lower().replace("_", " ") + ": \"" + sentence + "\""
                                 sentences[sentence] = feature_extractor.get_embeddings(enriched)
+                    # compute average embeddings too because we will use them for a projection trick (it's a common axis that shouldn't be matched)
+                    average_sentence_embeddings = 0
+                    for embeddings in sentences.values(): average_sentence_embeddings = embeddings + average_sentence_embeddings
+                    if sentences: average_sentence_embeddings = average_sentence_embeddings/len(sentences)
+                    for sentence in sentences:
+                        mu = average_sentence_embeddings
+                        x = sentences[sentence]
+                        sentences[sentence] -= (np.dot(x, mu) / np.dot(mu, mu)) * mu # remove projection
+                    with self.lock:
+                        self.__average_sentence_embeddings[feature_extractor] = average_sentence_embeddings
                 question_embeddings = feature_extractor.get_embeddings("question: "+question)
-                reply = "I was unable to find relevant information."
-                best_score = 0
-                for sentence, embedding in sentences.items():
-                    score = feature_extractor.embedding_similarity(question_embeddings, embedding)
-                    if score <= best_score: continue
-                    best_score = score
-                    reply = sentence
+                mu = self.__average_sentence_embeddings[feature_extractor]
+                x = question_embeddings
+                question_embeddings -= (np.dot(x, mu) / np.dot(mu, mu)) * mu # remove projection
+
+
+                #reply = "I was unable to find relevant information."
+                # best_score = 0
+                # for sentence, embedding in sentences.items():
+                #     score = feature_extractor.embedding_similarity(question_embeddings, embedding)
+                #     if score <= best_score: continue
+                #     best_score = score
+                #     reply = sentence
+                scores = {sentence: feature_extractor.embedding_similarity(question_embeddings, embedding) for sentence, embedding in sentences.items()}
+                min_score = min(scores.values())
+                max_score = max(scores.values())
+                # normalize scores and use an elbow criterion to determine which sentences to show
+                if min_score != max_score: scores = {sentence: (score-min_score)/(max_score-min_score) for sentence, score in scores.items()}
+                sorted_items = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+                vals = [v for _, v in sorted_items]
+                gaps = [vals[i] - vals[i + 1] for i in range(len(vals) - 1)]
+                if gaps:
+                    k = max(range(len(gaps)), key=lambda i: gaps[i])
+                    threshold = 0.5 * (vals[k] + vals[k + 1])
+                else: threshold = 0.9
+                reply = ""
+                last_title = ""
+                errors = ""
+                for sentence, score in sorted(scores.items(), key=lambda item: item[0]):
+                    if score - min_score <= threshold: continue
+                    found = sentence.split(": ", 1) # just split message
+                    if len(found) < 2:
+                        errors += f"<span class='error'>{sentence}</span><br>"
+                        last_title = ""
+                        continue
+                    title, sentence = found
+                    if title!=last_title:
+                        if last_title: reply += "\n"
+                        last_title = title
+                        reply += f"<h3>{title}</h3>"
+                    reply += sentence+"<br>"
+                if errors: reply += "<h3>Missing info</h3>"+errors
+                if not reply: reply = "I was unable to find relevant information."
             except Exception as e:
                 reply = "Something went wrong: "+str(e)
             except:

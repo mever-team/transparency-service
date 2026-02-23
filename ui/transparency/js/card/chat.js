@@ -21,7 +21,7 @@ function closeChat() {
 function addMessage(text, role) {
     const div = document.createElement("div");
     div.classList.add("ai-msg", role);
-    div.innerText = text;
+    div.innerHTML = text;
     messages.appendChild(div);
     messages.scrollTop = messages.scrollHeight;
     return div;
@@ -50,7 +50,7 @@ function sendMessage() {
             }
             catch(e) {}
             assistantMessage.classList.add("error");
-            assistantMessage.innerText = message;
+            assistantMessage.innerHTML = message;
         }
    });
 }
@@ -63,12 +63,12 @@ function pollForAnswer(questionId, messageElement) {
             contentType: "application/json",
             data: JSON.stringify({}),
             success: function (response) {
-                if(response.answer!==undefined && response.answer !== null) messageElement.innerText = response.answer;
+                if(response.answer!==undefined && response.answer !== null) messageElement.innerHTML = response.answer;
                 if(response.isfinal===true) clearInterval(interval);
             },
             error: function () {
                 clearInterval(interval);
-                messageElement.innerText = "Error retrieving answer.";
+                messageElement.innerHTML = "Error retrieving answer.";
             }
         });
 
