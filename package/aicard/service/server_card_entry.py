@@ -221,7 +221,7 @@ class ModelCardEntry:
                             text_val = value.get().strip()
                             if not text_val or text_val=="unknown":
                                 enriched = "passage:" + category + "/" + field + ":\n\n"+value.description+"\n\nunknown"
-                                sentence = "Would have looked for an answer at " + field.lower().replace("_", " ") + " in " + category.lower().replace("_", " ") + ", but that is empty."
+                                sentence = "Would have looked at " + field.lower().replace("_", " ") + " in " + category.lower().replace("_", " ") + ", but that is empty."
                                 sentences[sentence] = feature_extractor.get_embeddings(enriched)
                                 continue
                             if not " " in text_val:
@@ -236,7 +236,7 @@ class ModelCardEntry:
                                 #if not sentence: continue # redundant for next line
                                 if not " " in sentence: continue
                                 enriched = "passage: " + category + "/" + field + ":\n\n"+value.description+"\n\n" + sentence
-                                sentence = "From " + field.lower().replace("_", " ") + " in " + category.lower().replace("_", " ") + ": \"" + sentence + "\""
+                                sentence = "From " + field.lower().replace("_", " ") + " in " + category.lower().replace("_", " ") + ": " + sentence + "."
                                 sentences[sentence] = feature_extractor.get_embeddings(enriched)
                     # compute average embeddings too because we will use them for a projection trick (it's a common axis that shouldn't be matched)
                     average_sentence_embeddings = 0
@@ -268,33 +268,51 @@ class ModelCardEntry:
                 if min_score != max_score: scores = {sentence: (score-min_score)/(max_score-min_score) for sentence, score in scores.items()}
                 sorted_items = sorted(scores.items(), key=lambda x: x[1], reverse=True)
                 vals = [v for _, v in sorted_items]
-                gaps = [vals[i] - vals[i + 1] for i in range(len(vals) - 1)]
+                gaps = [vals[i+1]/(vals[i]+1.E-8) for i in range(len(vals) - 1)]
+                trigger_vague_question_warning = 0
+                MAX_NUMBER_OF_QUOTES = 10
                 if gaps:
-                    k = max(range(len(gaps)), key=lambda i: gaps[i])
+                    order = sorted(range(len(gaps)), key=lambda i: gaps[i], reverse=True)
+                    n = len(vals)
+                    # print(order)
+                    # print([gaps[o] for o in order])
+                    for k in order:
+                        if k > n: continue
+                        #print("considering top "+str(k))
+                        if k<=n*0.25:
+                            if k>MAX_NUMBER_OF_QUOTES:
+                                if not trigger_vague_question_warning: trigger_vague_question_warning = k
+                                n = k
+                                continue
+                            break
+                        n = k
+                        continue
+                    #k = max(range(len(gaps)), key=lambda i: gaps[i])
                     threshold = 0.5 * (vals[k] + vals[k + 1])
                 else: threshold = 0.9
                 reply = ""
                 last_title = ""
                 errors = ""
+                added = 0
                 for sentence, score in sorted(scores.items(), key=lambda item: item[0]):
-                    if score - min_score <= threshold: continue
+                    if score <= threshold: continue
+                    added += 1
                     found = sentence.split(": ", 1) # just split message
                     if len(found) < 2:
-                        errors += f"<span class='error'>{sentence}</span><br>"
+                        errors += f"<span>{sentence}</span><br>"
                         last_title = ""
                         continue
                     title, sentence = found
                     if title!=last_title:
                         if last_title: reply += "\n"
                         last_title = title
-                        reply += f"<h3>{title}</h3>"
+                        reply += f"<h3 class='success title'>{title}</h3>"
                     reply += sentence+"<br>"
-                if errors: reply += "<h3>Missing info</h3>"+errors
+                if trigger_vague_question_warning > MAX_NUMBER_OF_QUOTES: reply += f"<h3 class='error'>Vague question</h3><span>There are {trigger_vague_question_warning-added} more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+                if errors: reply += "<h3 class='error'>Missing info</h3>"+errors
                 if not reply: reply = "I was unable to find relevant information."
-            except Exception as e:
-                reply = "Something went wrong: "+str(e)
-            except:
-                reply = "Something went wrong. Please try again."
+            except Exception as e: reply = "<h3 class='error'>Something went wrong</h3>"+str(e)
+            except: reply = "<h3 class='error'>Something went wrong. Please try again.</h3>"
             self.__questions[self.__num_answered] = question, feature_extractor, True, reply
             self.__num_answered += 1
         with self.lock:

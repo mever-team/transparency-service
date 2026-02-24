@@ -1,13 +1,14 @@
 import threading
 import re
+import torch
 import requests
+import numpy as np
 from .assistant import Assistant
 from aicard.card import ModelCard
 from aicard.service.logger import Logger
 from urllib.parse import urlparse, urljoin
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString
 from ...card.fields import Field, LongText, Options
-import torch
 from datetime import date
 from transformers import AutoTokenizer, AutoModel
 
@@ -60,6 +61,8 @@ class SemanticMatcher(Assistant):
         self.tokenizer = None
         self.model = None
         self.field_embeddings = None
+        self.average_field_embeddings = 0
+        self.max_noise_similarity = 0
         self.external_get_timeout_sec = external_get_timeout_sec
 
 
@@ -84,9 +87,16 @@ class SemanticMatcher(Assistant):
                             for option in value.options():
                                 field_embeddings[cat+"__"+field+"__"+option] = self._get_embeddings("question: # AI model card "+cat+" "+field+" "+option+"\n"+value.description)
                         field_embeddings[cat+"__"+field] = self._get_embeddings("question: # AI model card "+cat+" "+field+"\n"+value.description)
+                vals = list(field_embeddings.values())
+                sims = [self.embedding_similarity(vals[s1], vals[s2]) for s1 in range(len(vals)) for s2 in range(s1+1, len(vals))]
+                max_noise_similarity = min(sims)
                 logger.ok(f"loading complete" 
-                        f"\n * {len(field_embeddings)} card field semantic embeddings", user="📚 Semantic Matcher")
-                with SemanticMatcher._loader_lock: self.field_embeddings = field_embeddings
+                        f"\n * {len(field_embeddings)} card field semantic embeddings"
+                        f"\n * {max_noise_similarity:.3f} minimum matching (semantic similarity lesser than this is considered irrelevant)", user="📚 Semantic Matcher")
+
+                with SemanticMatcher._loader_lock:
+                    self.field_embeddings = field_embeddings
+                    self.max_noise_similarity = max_noise_similarity
             except Exception as e:
                 logger.error(f"failed to start: {e}", user="📚 Semantic Matcher")
                 self.field_embeddings = dict()
@@ -116,8 +126,10 @@ class SemanticMatcher(Assistant):
         for tag in soup.find_all(href=True): tag["href"] = urljoin(url, tag["href"])
         for tag in soup.find_all(src=True): tag["src"] = urljoin(url, tag["src"])
         first_header = soup.find(re.compile("^h[1-6]$"))
-        title = first_header.get_text(separator=" ", strip=True) if first_header else ""
         creator = ""
+        title = ""
+        if first_header: title = next((child.strip() for child in first_header.children if isinstance(child, NavigableString) and child.strip()), "")
+        if not title: title = first_header.get_text(separator=" ", strip=True) if first_header else ""
         if "/" in title:
             title = title.split("/")
             creator = title[0].strip()
@@ -137,9 +149,7 @@ class SemanticMatcher(Assistant):
         sections = []
         last_header = ""
         for tag in soup.find_all(["h1", "h2", "h3", "h4", "h5", "h6", "table", "img", "pre"]):
-            if tag.name.startswith("h"):
-                # Store latest header text
-                last_header = tag.get_text(strip=True)
+            if tag.name.startswith("h"): last_header = tag.get_text(strip=True)
             else:
                 # Preserve previous header + image
                 context = last_header if last_header else ""
@@ -174,17 +184,12 @@ class SemanticMatcher(Assistant):
         count_sections = 0
         for heading, content in sections:
             content = content.strip()
-            if not content.strip():
-                continue
             if not content: continue
             count_sections += 1
         progress = 0
         for heading, content in sections:
             content = content.strip()
-            if not content.strip():
-                continue
             if not content: continue
-
             progress_html = (
                 f"<progress value='{int(progress / count_sections * 100)}' max='100' "
                 f"style='width: 300px; height: 20px; "
@@ -198,8 +203,12 @@ class SemanticMatcher(Assistant):
             progress += 1
             with SemanticMatcher._loader_lock: # TODO: more advanced scheduling in the future
                 embedding = self._get_embeddings("passage: #"+(heading if heading else "")+"\n"+(content if content else ""))
-            best_score = 0
+            best_score = self.max_noise_similarity
             best_path = []
+            # find where to place new content:
+            # - short-circuit option selection
+            # - place short content in short fields only
+            # - place technical content only when on LongText.technical_nature
             is_technical = "<pre>" in content or "<math" in content
             for cat, values in card.data.items():
                 if not isinstance(values, dict): continue
@@ -219,6 +228,7 @@ class SemanticMatcher(Assistant):
                     if score > best_score:
                         best_score = score
                         best_path = (cat, field)
+            # actually place the new content (some minor formatting for paragraphs too)
             if best_path and best_path[0]+"__"+best_path[1] not in existing:
                 prev_content = has_been_replaced.get(best_path[0]+"__"+best_path[1], "")
                 if prev_content and (not prev_content.endswith(".") or not content.endswith(".")): prev_content = prev_content+"<br>"
@@ -226,16 +236,11 @@ class SemanticMatcher(Assistant):
                 has_been_replaced[best_path[0] + "__" + best_path[1]] = content
                 card.data[best_path[0]][best_path[1]].set(content)
             else: not_used_fields.append(heading)
-
-        print(title)
         if not card.overview.name: card.overview.name = title
         if not card.overview.creator: card.overview.creator = creator
         if not card.overview.date: card.overview.date = date.today().strftime("%Y-%m-%d")
         if not card.overview.home: card.overview.home = url
-        user_messages[-1] = (
-            f"<h2>{self.alias} import</h2>"
-            f"Saving..."
-        )
+        user_messages[-1] =  f"<h2>{self.alias} import</h2> Saving..."
 
     def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]):
         raise Exception("Semantic matcher cannot perform refinement - consider combining it with an LLM")

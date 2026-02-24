@@ -1,6 +1,6 @@
 def text_compression(text: str) -> str:
     #print("preprocessing text size "+str(len(text)))
-    for symbol in "()[]*_/\\\"'`:;-+.,?\n\t\r=|><{}&!#": # remove common symbols
+    for symbol in "()[]*_/\\\"'`:;-+.,?\n\t\r=|><{}&!#$": # remove common symbols
         text = text.replace(symbol, " ")
     text = text.lower()
     found = dict()
