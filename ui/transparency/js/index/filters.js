@@ -101,8 +101,6 @@ $(function () {
             if ($(e.target).closest('.remove-filter').length) return;
             const filter = $(e.currentTarget).attr('data-filter');
             this.current = {name: filter, value: this.filters[filter]};
-            console.log(this.current);
-            console.log(this.filters);
             this.EditModalRender(filter);
             this.dashboards[filter].setState();
         },
@@ -128,7 +126,6 @@ $(function () {
             const option = $target.attr('data-filter')
             if (!(option && $target.hasClass('filter-option'))) return;
             $target.toggleClass("active");
-            console.log(this.current);
             if(this.current.value.includes(option)){
                 this.current.value.splice(this.current.value.indexOf(option), 1);
             }

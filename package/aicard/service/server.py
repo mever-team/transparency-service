@@ -345,7 +345,6 @@ def serve(
     @app.route(domain_prefix+'/cards', methods=['POST'])
     def get_cards():
         data = request.get_json() or {}
-        print(data)
         query = data.get('query', '')
         query = re.sub(r'\s+', ' ', query).strip().lower()
         query = re.sub(r'[^a-z0-9_\-\s]', '', query)
