@@ -17,7 +17,8 @@ from threading import Thread
 
 matcher = SemanticMatcher(
     "sentence-transformers/all-mpnet-base-v2",
-    external_get_timeout_sec=3)
+    external_get_timeout_sec=3,
+    matching_strictness=0.5)
 prompter = Prompter(
     Ollama("llama3.2:latest", name="🦙 Llama 3.2", timeout_secs=60),
     description="Llama 3.2 is used as the base model.",
