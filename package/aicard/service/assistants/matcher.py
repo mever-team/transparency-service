@@ -49,7 +49,8 @@ class SemanticMatcher(Assistant):
 
     def __init__(self,
                  model_name: str="BAAI/bge-small-en-v1.5", #"BAAI/bge-m3",
-                 external_get_timeout_sec: float=1):
+                 external_get_timeout_sec: float=1,
+                 matching_strictness: float=1):
         super().__init__(
             alias="📚 Semantic organizer",
             description=(
@@ -64,6 +65,7 @@ class SemanticMatcher(Assistant):
         self.average_field_embeddings = 0
         self.max_noise_similarity = 0
         self.external_get_timeout_sec = external_get_timeout_sec
+        self.matching_strictness = matching_strictness
 
 
     def start(self, logger: Logger):
@@ -203,13 +205,13 @@ class SemanticMatcher(Assistant):
             progress += 1
             with SemanticMatcher._loader_lock: # TODO: more advanced scheduling in the future
                 embedding = self._get_embeddings("passage: #"+(heading if heading else "")+"\n"+(content if content else ""))
-            best_score = self.max_noise_similarity
             best_path = []
             # find where to place new content:
             # - short-circuit option selection
             # - place short content in short fields only
-            # - place technical content only when on LongText.technical_nature
-            is_technical = "<pre>" in content or "<math" in content
+            # - place technical content only when on LongText.technical_nature (also that content cannot have the textual-derived threshold)
+            is_technical = "<pre>" in content or "<math" in content or "<table" in content
+            best_score = 0 if is_technical else self.max_noise_similarity*self.matching_strictness
             for cat, values in card.data.items():
                 if not isinstance(values, dict): continue
                 for field, value in values.items():
@@ -224,7 +226,8 @@ class SemanticMatcher(Assistant):
                         continue
                     if not isinstance(value, LongText) and (len(content)>120 or ' ' in content.strip()): continue
                     if isinstance(value, LongText) and is_technical and not value.technical_nature: continue
-                    score = self.embedding_similarity(embedding, self.field_embeddings[cat+"__"+field])
+                    idx = cat+"__"+field
+                    score = self.embedding_similarity(embedding, self.field_embeddings[idx])
                     if score > best_score:
                         best_score = score
                         best_path = (cat, field)

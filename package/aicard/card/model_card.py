@@ -141,7 +141,7 @@ class ModelCard:
                 license=LongText("Licence and intellectual property (IP) information."),
                 home=ShortText("URL hosting the model."),
                 contact=ShortText("Author contact information."),
-                citation=LongText("How should the model be cited? This may include a formatted citation or bibtex entries like @article."),
+                citation=LongText("How should the model be cited? Typically includes title, author, year, and publisher. May be a formatted citation or bibtex entries like @article.", technical_nature=True),
                 more=LongText("Additional model information not found above.")),
             use=DotDict(
                 use_cases=LongText("Intended uses of the model."),
@@ -171,9 +171,9 @@ class ModelCard:
             ),
             performance=DotDict(
                 analysis=LongText("Analysis and explanation of performance results."),
-                metrics=LongText("Benchmark results for any performance metrics."),
+                metrics=LongText("Benchmark results for any performance metrics.", technical_nature=True),
                 thresholds=LongText("If decision thresholds are used, what are they, and why were those parameters chosen?"),
-                methodology=LongText("Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method.", technical_nature=True),
+                methodology=LongText("Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method."),
                 bias=LongText("Performance and bias across different groups (e.g. ethnicity, gender)"),
             ),
             safety=DotDict(
