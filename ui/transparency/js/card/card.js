@@ -239,6 +239,14 @@ $(document).ready(function () {
                             // TODO: we have the option of just opening the import, which may be more practical
                             document.getElementById('modal-autocomplete-screen').style.display = 'flex';
                         }
+                        // render syntax highlighting and remove autocorrect
+                        document.querySelectorAll('pre').forEach((block) => {hljs.highlightElement(block);});
+                        document.querySelectorAll('pre, pre code').forEach(el => {
+                          el.setAttribute('spellcheck', 'false');
+                          el.setAttribute('autocorrect', 'off');
+                          el.setAttribute('autocapitalize', 'off');
+                          el.setAttribute('translate', 'no');
+                        });
                     }
 
                     if(compareto) {

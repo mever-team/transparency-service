@@ -760,3 +760,5 @@ section.buttons {
 .node-related:hover {filter: brightness(1.2);}
 .node-related{transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;}
 .edge {stroke: #C8C8C8;stroke-width: 1.2;}
+
+pre {font-size: 14px;background:inherit!important}
