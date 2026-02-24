@@ -32,9 +32,9 @@ $(function () {
         },
 
         init_dashboards: async function() {
-            this.dashboards.task = {html: "", setState: this.taskSetState.bind(this)};
-            this.dashboards.type = {html: "", setState: this.typeSetState.bind(this)};
-            this.dashboards.info = {html: "", setState: this.infoSetState.bind(this)};
+            this.dashboards.task = {html: "", setState: this.taskSetState.bind(this), description: 'Filter Model Cards by task.'};
+            this.dashboards.type = {html: "", setState: this.typeSetState.bind(this), description: 'Filter Model Cards by type.'};
+            this.dashboards.info = {html: "", setState: this.infoSetState.bind(this), description: 'Show only model cards based on how complete their information is.'};
             this.getTaskDashboard().then(function (html) { this.dashboards.task.html = html; }.bind(this));
             this.getTypeDashboard().then(function (html) { this.dashboards.type.html = html; }.bind(this));
             this.dashboards.info.html = this.getInfoDashboard();
@@ -55,7 +55,7 @@ $(function () {
 
         init_filters: function() {
             this.filters.drafts = false; 
-            this.filters.user = false; 
+            this.filters.user = ''; 
             this.filters.query = '';
         },
 
@@ -66,11 +66,12 @@ $(function () {
             this.$modal.on('change', '#filter-select', this.dashboardRender.bind(this))
             this.$topic.on("keyup", this.topicCallback.bind(this));
             this.$modal.on('click', '.filter-done', this.done.bind(this))
+            this.$modal.on('click', '.filter-cancel', this.cancel.bind(this))
             this.$filters.on('click', '#user-filter', this.toggleUserFilter.bind(this));
             this.$filters.on('click', '#draft-filter', this.toggleDraftFilter.bind(this));
             this.$modal.on('click', '.filter-dashboard[data-filter="task"]', this.filterTask.bind(this))
             this.$modal.on('click', '.filter-dashboard[data-filter="type"]', this.filterType.bind(this))
-            this.$modal.on('keyup', '.filter-dashboard[data-filter="info"] .info-input', this.filterInfo.bind(this))
+            this.$modal.on('input', '.filter-dashboard[data-filter="info"] .info-input', this.filterInfo.bind(this))
         },
 
 
@@ -90,37 +91,41 @@ $(function () {
 
         },
         infoSetState: function() {
-            console.log('infoSetState')
-
+            $('.info-input')
+                .val(this.current.value)
+                .css('background', 'linear-gradient(90deg, #3e3e3e '+ this.current.value + '%, #EEEEEE '+this.current.value+'%)');
+            $('.info-value').text(this.current.value);
+            
         },
         editFilter: function(e) {
             if ($(e.target).closest('.remove-filter').length) return;
             const filter = $(e.currentTarget).attr('data-filter');
             this.current = {name: filter, value: this.filters[filter]};
-            console.log(this.current);
-            console.log(this.filters);
             this.EditModalRender(filter);
             this.dashboards[filter].setState();
         },
         EditModalRender: function(filter) {
             const dashboard = this.dashboards[filter].html;
             this.$modal.addClass('modal--active').html(this.templates.editModal.template);
+            $('.filter-title h1').text('Edit Filter')
             $filterdashboard = $(".filter-dashboard");
             $filterdashboard
                 .html(dashboard)
-                .attr('data-filter', filter);
+                .attr('data-filter', filter)
+                .css('overflow-y', 'auto');
+            $('.dashboard-description').text(capitalizeFirstLetter(filter)+': '+this.dashboards[filter].description);
         },
 
         filterInfo: function(e) {
-            this.current.value = Math.min(Math.max($(e.currentTarget).val(), 0), 100);
-            $(e.currentTarget).val(this.current.value);
+            this.current.value = $(e.currentTarget).val();
+            $('.info-value').text(this.current.value);
+            $(e.currentTarget).css('background', 'linear-gradient(90deg, #3e3e3e '+ this.current.value + '%, #EEEEEE '+this.current.value+'%)');
         },
         filterTask: function(e) {
             const $target = $(e.target)
             const option = $target.attr('data-filter')
             if (!(option && $target.hasClass('filter-option'))) return;
             $target.toggleClass("active");
-            console.log(this.current);
             if(this.current.value.includes(option)){
                 this.current.value.splice(this.current.value.indexOf(option), 1);
             }
@@ -163,7 +168,7 @@ $(function () {
                     return;
                 }
                 this.lastUpdate = now;
-                this.filters.user = Boolean(this.filters.user ^ true);
+                this.filters.user = this.filters.user? '': $('#account-name').text();
                 this.request();
             },
         toggleDraftFilter: function () {
@@ -231,15 +236,20 @@ $(function () {
             $filterdashboard.attr('data-filter', selectedDashboard);
             $dashboard = $(".dashboard");
             this.setCurrent(selectedDashboard);
+            $filterdashboard.css('overflow-y', 'hidden');
             $dashboard.slideUp(300, function() {
                 $filterdashboard.html(this.dashboards[selectedDashboard].html);
-                $dashboard.slideDown();
+                $('.dashboard-description').text(this.dashboards[selectedDashboard].description);
+                $dashboard.slideDown(400, function(){
+                    $filterdashboard.css('overflow-y', 'auto');
+                });
             }.bind(this));
         },
         modalRender: function (){
             this.$modal.addClass('modal--active').html(this.templates.modal.template);
             $dashboard = $(".dashboard");
             $dashboard.hide();
+            $('.filter-title h1').text('Filters')
             Object.keys(this.options).forEach(filter => {
                 if (this.options[filter].active) return;
                 $('<option>')
@@ -275,9 +285,8 @@ $(function () {
             this.$filters.html("");
             $('<p>')
                 .attr('id', 'user-filter')
-                .addClass('filter button secondary')
+                .addClass('filter button secondary' + (token ? '' : ' hidden'))
                 .html('<div><i class="fa-solid fa-plus"></i>&nbsp;&nbsp;My cards only</div>')
-                .css('display', token?'auto':'none')
                 .appendTo(this.$filters);
             $('<p>')
                 .attr('id', 'draft-filter')
@@ -344,7 +353,7 @@ $(function () {
             });
         }, 
         getInfoDashboard: function () {
-            return 'Info %: <input type="number" class="info-input"/>'
+            return 'Info at least <span class="info-value">0</span>% <input type="range" class="info-input" min="0" max="100" step="1" value="0"/>'
         },
         done: function() {
             if ((Array.isArray(this.current.value) && this.current.value.length === 0) || this.current.value === '' || !this.current.name) { 
@@ -360,6 +369,9 @@ $(function () {
             this.request();
             this.$modal.removeClass('modal--active');
             this.current = {};
+        },
+        cancel: function() {
+            this.$modal.removeClass('modal--active');
         },
         addfilter: function(filter) {
             var newP = $('<p>');
