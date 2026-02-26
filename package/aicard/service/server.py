@@ -88,7 +88,7 @@ def serve(
             if (db_email or "").strip().lower() != normalized_email:
                 abort(403, description="Your username is occupied by another email account")
         with auth_lock: token2user[token] = db_username
-    third_party_auth = users.CookieAuthenticator(third_party_realm, third_party_client, register_third_party_token) if third_party_realm and third_party_client else None
+    third_party_auth = users.CookieAuthenticator(third_party_realm, third_party_client, register_third_party_token, logger) if third_party_realm and third_party_client else None
 
     def find_card(card_id: int):
         assert isinstance(card_id, int), "Card identifier must be an integer"
@@ -293,6 +293,8 @@ def serve(
     @app.route(domain_prefix+"/ping", methods=["GET"])
     def ping():
         auth = request.headers.get("Authorization", "")
+        logger.info("Ping headers: "+str(request.headers))
+        logger.info("Ping auth: "+str(auth))
         if not auth.startswith("Bearer ") and third_party_auth:
             token = request.cookies.get("access_token")
             payload = third_party_auth.validate_token(token)

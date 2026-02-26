@@ -248,16 +248,21 @@ class UserDB:
 
 
 class CookieAuthenticator:
-    def __init__(self, KEYCLOAK_ISSUER, AUDIENCE, register_token):
+    def __init__(self, KEYCLOAK_ISSUER, AUDIENCE, register_token, logger=None):
         self.ISSUER = KEYCLOAK_ISSUER.rstrip("/")
         self.AUDIENCE = AUDIENCE
         self.register_token = register_token
         self.jwks_client = PyJWKClient(f"{self.ISSUER}/protocol/openid-connect/certs")
+        self.logger = logger
 
     def validate_token(self, token: str):
-        if not token: return {}
+        if not token:
+            if self.logger: self.logger.warn("No token to validate")
+            return {}
         try:
+            if self.logger: self.logger.info(f"Validating token: {token}")
             signing_key = self.jwks_client.get_signing_key_from_jwt(token)
+            if self.logger: self.logger.info(f"Signing key: {signing_key}")
             return jwt.decode(
                 token,
                 signing_key.key,
