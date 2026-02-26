@@ -1,3 +1,5 @@
+import json
+
 from aicard.card import ModelCard
 from aicard.service.converters import card2format
 from aicard.service.email import EmailVerification
@@ -295,12 +297,15 @@ def serve(
         auth = request.cookies.get("auth", "")
         logger.info("Auth: "+auth)
         if auth and third_party_auth:
-            token = request.cookies.get("token")
+            if isinstance(auth, str):
+                auth = json.loads(auth)
+                logger.info("Auth was a string")
+            token = auth.get("token")
             payload = third_party_auth.validate_token(token)
             logger.info("payload: "+str(payload))
             if not payload: return ""
-            username = token.get("username")
-            email = token.get("email")
+            username = payload.get("username")
+            email = payload.get("email")
             if not username: abort(401, description="Invalid cookie payload")
             third_party_auth.register_token(token, username, email)
             with auth_lock:
