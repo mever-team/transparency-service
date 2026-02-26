@@ -297,12 +297,10 @@ def serve(
     def ping():
         if third_party_auth:
             auth = request.cookies.get("auth", "")
-            logger.info("Auth: "+auth)
             if auth:
                 auth = json.loads(unquote(auth))
                 token = auth.get("token")
                 payload = third_party_auth.validate_token(token)
-                logger.info("payload: "+str(payload))
                 if not payload: return ""
                 username = payload.get("username")
                 email = payload.get("email")
