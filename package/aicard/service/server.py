@@ -296,6 +296,7 @@ def serve(
         if not auth.startswith("Bearer ") and third_party_auth:
             token = request.cookies.get("access_token")
             payload = third_party_auth.validate_token(token)
+            if not payload: return ""
             username = payload.get("username")
             email = payload.get("email")
             if not username: abort(401, description="Invalid cookie payload")

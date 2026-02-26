@@ -8,7 +8,8 @@ import os
 import atexit
 import sys
 import jwt
-import requests
+from jwt import PyJWKClient
+
 
 def hash_password(password: str) -> str:
     if not password: return password
@@ -248,33 +249,27 @@ class UserDB:
 
 class CookieAuthenticator:
     def __init__(self, KEYCLOAK_ISSUER, AUDIENCE, register_token):
-        self.KEYCLOAK_ISSUER = KEYCLOAK_ISSUER
-        self.JWKS_URL = f"{KEYCLOAK_ISSUER}/protocol/openid-connect/certs"
+        self.ISSUER = KEYCLOAK_ISSUER.rstrip("/")
         self.AUDIENCE = AUDIENCE
-        self.jwks = requests.get(self.JWKS_URL).json()
         self.register_token = register_token
+        self.jwks_client = PyJWKClient(f"{self.ISSUER}/protocol/openid-connect/certs")
 
-    def get_public_key(self, token):
-        header = jwt.get_unverified_header(token)
-        print("get_public_key header:", header)
-        kid = header.get("kid")
-        print("get_public_key header kid:", kid)
-        key = next((k for k in self.jwks["keys"] if k["kid"] == kid), None)
-        if not key: abort(401, description="Unknown signing key")
-        return jwt.algorithms.RSAAlgorithm.from_jwk(key)
-
-    def validate_token(self, token):
-        print("We are validating this token: "+token)
+    def validate_token(self, token: str):
+        if not token: return {}
         try:
-            public_key = self.get_public_key(token)
-            print("Public key from token:", public_key)
-            payload = jwt.decode(token, public_key, algorithms=["RS256"], audience=self.AUDIENCE, issuer=self.KEYCLOAK_ISSUER)
-            print("Payload:", payload)
-            return payload
-        except jwt.ExpiredSignatureError:
-            abort(401, description="Token expired")
-        except jwt.InvalidTokenError:
-            abort(401, description="Invalid token")
+            signing_key = self.jwks_client.get_signing_key_from_jwt(token)
+            return jwt.decode(
+                token,
+                signing_key.key,
+                algorithms=["RS256"],
+                audience=self.AUDIENCE,
+                issuer=self.ISSUER,
+                leeway=10
+            )
+        except jwt.ExpiredSignatureError: abort(401, "Token expired")
+        except jwt.InvalidAudienceError: abort(401, "Invalid audience")
+        except jwt.InvalidIssuerError: abort(401, "Invalid issuer")
+        except jwt.InvalidTokenError: abort(401, "Invalid token")
 
 
 def require_auth(token2expiration: dict, third_party_authenticator: CookieAuthenticator|None=None):
@@ -285,12 +280,13 @@ def require_auth(token2expiration: dict, third_party_authenticator: CookieAuthen
             if not auth.startswith("Bearer ") and third_party_authenticator:
                 token = request.cookies.get("access_token")
                 payload = third_party_authenticator.validate_token(token)
-                username = payload.get("username")
-                email = payload.get("email")
-                if not username: abort(401, description="Invalid cookie payload")
-                third_party_authenticator.register_token(token, username, email)
-                token2expiration[token] = time.monotonic() # we allow always, so expire immediately
-                return f(*args, **kwargs, token=token)
+                if payload:
+                    username = payload.get("username")
+                    email = payload.get("email")
+                    if not username: abort(401, description="Invalid cookie payload")
+                    third_party_authenticator.register_token(token, username, email)
+                    token2expiration[token] = time.monotonic() # we allow always, so expire immediately
+                    return f(*args, **kwargs, token=token)
             # continue with normal internal validation
             if not auth.startswith("Bearer "): abort(401, description="Missing token")
             parts = auth.strip().split()
