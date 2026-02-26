@@ -256,15 +256,20 @@ class CookieAuthenticator:
 
     def get_public_key(self, token):
         header = jwt.get_unverified_header(token)
+        print("get_public_key header:", header)
         kid = header.get("kid")
+        print("get_public_key header kid:", kid)
         key = next((k for k in self.jwks["keys"] if k["kid"] == kid), None)
         if not key: abort(401, description="Unknown signing key")
         return jwt.algorithms.RSAAlgorithm.from_jwk(key)
 
     def validate_token(self, token):
+        print("We are validating this token: "+token)
         try:
             public_key = self.get_public_key(token)
+            print("Public key from token:", public_key)
             payload = jwt.decode(token, public_key, algorithms=["RS256"], audience=self.AUDIENCE, issuer=self.KEYCLOAK_ISSUER)
+            print("Payload:", payload)
             return payload
         except jwt.ExpiredSignatureError:
             abort(401, description="Token expired")
