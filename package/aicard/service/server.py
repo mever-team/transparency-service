@@ -12,6 +12,7 @@ from flask import Flask, abort, redirect, request, jsonify, send_from_directory,
 from threading import Lock
 from dotenv import dotenv_values
 from werkzeug.exceptions import HTTPException, Forbidden, NotFound, Unauthorized
+from urllib.parse import unquote
 import os.path
 import traceback
 import secrets
@@ -298,7 +299,7 @@ def serve(
             auth = request.cookies.get("auth", "")
             logger.info("Auth: "+auth)
             if auth:
-                auth = json.loads(json.url_decode(auth))
+                auth = json.loads(unquote(auth))
                 token = auth.get("token")
                 payload = third_party_auth.validate_token(token)
                 logger.info("payload: "+str(payload))
