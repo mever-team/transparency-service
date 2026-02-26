@@ -294,23 +294,22 @@ def serve(
 
     @app.route(domain_prefix+"/ping", methods=["GET"])
     def ping():
-        auth = request.cookies.get("auth", "")
-        logger.info("Auth: "+auth)
-        if auth and third_party_auth:
-            if isinstance(auth, str):
-                auth = json.loads(auth)
-                logger.info("Auth was a string")
-            token = auth.get("token")
-            payload = third_party_auth.validate_token(token)
-            logger.info("payload: "+str(payload))
-            if not payload: return ""
-            username = payload.get("username")
-            email = payload.get("email")
-            if not username: abort(401, description="Invalid cookie payload")
-            third_party_auth.register_token(token, username, email)
-            with auth_lock:
-                token2expiration[token] = time.monotonic()  # we allow always, so expire immediately
-                return jsonify({"token": token, "expires_in": token_expiration_secs, "username": token2user.get(token, "unknown")})
+        if third_party_auth:
+            auth = request.cookies.get("auth", "")
+            logger.info("Auth: "+auth)
+            if auth:
+                auth = json.loads(json.url_decode(auth))
+                token = auth.get("token")
+                payload = third_party_auth.validate_token(token)
+                logger.info("payload: "+str(payload))
+                if not payload: return ""
+                username = payload.get("username")
+                email = payload.get("email")
+                if not username: abort(401, description="Invalid cookie payload")
+                third_party_auth.register_token(token, username, email)
+                with auth_lock:
+                    token2expiration[token] = time.monotonic()  # we allow always, so expire immediately
+                    return jsonify({"token": token, "expires_in": token_expiration_secs, "username": token2user.get(token, "unknown")})
 
         auth = request.headers.get("Authorization", "")
         if not auth.startswith("Bearer "): return ""
