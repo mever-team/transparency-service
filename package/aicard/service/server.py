@@ -292,21 +292,22 @@ def serve(
 
     @app.route(domain_prefix+"/ping", methods=["GET"])
     def ping():
-        auth = request.headers.get("Authorization", "")
-        logger.info("Ping headers: "+str(request.headers))
-        logger.info("Ping auth: "+str(auth))
-        if not auth.startswith("Bearer ") and third_party_auth:
-            token = request.cookies.get("access_token")
+        auth = request.cookies.get("auth", "")
+        logger.info("Auth: "+auth)
+        if auth and third_party_auth:
+            token = request.cookies.get("token")
             payload = third_party_auth.validate_token(token)
+            logger.info("payload: "+str(payload))
             if not payload: return ""
-            username = payload.get("username")
-            email = payload.get("email")
+            username = token.get("username")
+            email = token.get("email")
             if not username: abort(401, description="Invalid cookie payload")
             third_party_auth.register_token(token, username, email)
             with auth_lock:
                 token2expiration[token] = time.monotonic()  # we allow always, so expire immediately
                 return jsonify({"token": token, "expires_in": token_expiration_secs, "username": token2user.get(token, "unknown")})
 
+        auth = request.headers.get("Authorization", "")
         if not auth.startswith("Bearer "): return ""
         parts = auth.strip().split()
         if len(parts) != 2 or parts[0] != "Bearer": return ""
