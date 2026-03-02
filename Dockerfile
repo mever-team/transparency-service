@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     shared-mime-info \
     build-essential \
     curl \
+    vim \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app

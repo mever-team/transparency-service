@@ -18,5 +18,6 @@ torchvision
 transformers
 sentencepiece
 pypdf
+PyPDF2
 pymupdf
 PyJWT
