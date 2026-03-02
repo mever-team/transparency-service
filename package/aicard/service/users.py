@@ -260,9 +260,7 @@ class CookieAuthenticator:
             if self.logger: self.logger.warn("No token to validate")
             return {}
         try:
-            #if self.logger: self.logger.info(f"Validating token: {token}")
             signing_key = self.jwks_client.get_signing_key_from_jwt(token)
-            #if self.logger: self.logger.info(f"Signing key: {signing_key}")
             return jwt.decode(
                 token,
                 signing_key.key,
