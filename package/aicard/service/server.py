@@ -5,6 +5,7 @@ from aicard.service.converters import card2format
 from aicard.service.email import EmailVerification
 from aicard.service.server_card_entry import ModelCardEntry
 from aicard.service.assistants import Assistant, SemanticMatcher
+from aicard.service.monitoring import SystemMonitor
 from aicard.service import users
 from aicard.service import converters
 from aicard.service.logger import Logger
@@ -64,6 +65,7 @@ def serve(
     card_cache_lock = Lock()
     card_cache: dict[int, ModelCardEntry | None] = dict()
     logger = Logger(log_file)
+    monitor = SystemMonitor(logger=logger) # immediately after logger
     auth_lock = Lock()
     token2expiration = dict()
     token2user = dict()
@@ -184,7 +186,8 @@ def serve(
             cursor.execute(f"SELECT username, email FROM {table_name}")
             rows = [{"username": u, "email": e} for u, e in cursor.fetchall()]
             return rows
-        return jsonify({"users": fetch_all_users("users"), "pending": fetch_all_users("pending_users")})
+        with monitor.lock:
+            return jsonify({"users": fetch_all_users("users"), "pending": fetch_all_users("pending_users"), "resources": monitor.unsafe_status()})
 
     @app.route(domain_prefix+'/users/<string:username>', methods=['DELETE'])
     @users.require_admin(token2expiration)
@@ -810,5 +813,6 @@ def serve(
                             to_delete.append(card_id)
                 for card_id in to_delete: card_cache.pop(card_id, None)
             time.sleep(600)  # run every 10 minutes
+
     logger.ok("Server is ready: http://127.0.0.1:5000"+domain_prefix)
-    return app, gc
+    return app, gc, monitor

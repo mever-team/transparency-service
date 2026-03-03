@@ -25,7 +25,7 @@ prompter = Prompter(
     text_preprocessor=text_compression
 )
 agent = Combined(refine=prompter, complete=matcher)
-app, gc = serve(
+app, gc, monitor = serve(
     {"agent": agent},
     env="ui/.env",
     feature_extractor=matcher,
@@ -34,4 +34,5 @@ app, gc = serve(
 
 if __name__ == "__main__":
     Thread(target=gc, daemon=True).start()
+    Thread(target=monitor, daemon=True).start()
     app.run(threaded=False)  # TODO: temporarily mandatory
