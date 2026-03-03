@@ -7,7 +7,8 @@ $(function () {
         templates: {}, // {name: {template: .mustache, render: function()},...}
         options: {}, // dropdown menu
         dashboards: {}, // html strings e.g. {type: "...",...}
-        current:{}, // current editable filter
+        current:{}, // current editable filter {name:, value:}
+        captions: {}, 
         lastUpdate: 0,
         pending: null,
         first: true,
@@ -18,6 +19,7 @@ $(function () {
             this.init_filters();
             this.init_options();
             await this.init_dashboards();
+            this.init_captions();
             this.cacheDom();
             this.filtersRender();
             this.bindEvents();
@@ -38,6 +40,12 @@ $(function () {
             this.getTaskDashboard().then(function (html) { this.dashboards.task.html = html; }.bind(this));
             this.getTypeDashboard().then(function (html) { this.dashboards.type.html = html; }.bind(this));
             this.dashboards.info.html = this.getInfoDashboard();
+        },
+
+        init_captions: function() {
+            this.captions.task = {update: this.updateTaskCaption.bind(this)};
+            this.captions.type = {update: this.updateTypeCaption.bind(this)};
+            this.captions.info = {update: this.updateInfoCaption.bind(this)};
         },
 
         init_options: function() {
@@ -78,6 +86,34 @@ $(function () {
         ////////////////////////////
         //       Ugly Logic       //
         ////////////////////////////
+
+        updateTaskCaption: function(){
+            let value = ''
+            this.filters.task.forEach(item => { 
+                value += `<span class="captionValue">${noLineBreak(item)}</span> `
+            })
+            this.captionBuilder('task', value)
+        },
+
+        updateTypeCaption: function(){
+            let value = ''
+            this.filters.type.forEach(item => { 
+                value += `<span class="captionValue">${noLineBreak(item)}</span> `
+            })
+            this.captionBuilder('type', value)
+        },
+
+        updateInfoCaption: function(){
+            const value = `<span class="captionValue">${this.filters.info}&nbsp;%</span>`
+            this.captionBuilder('info', value);
+        },
+
+        captionBuilder: function(filter, value){
+            const icon = '<i class="fa-solid fa-pencil"></i>'
+            const $caption = $('<div>').html(`${icon}&nbsp;${capitalizeFirstLetter(filter)}:  ${value}`);
+            const $cancel = $('<div>').html(`<span class="remove-filter">X</span>`);
+            this.$filters.find(`[data-filter="${filter}"]`).empty().append($caption).append($cancel);
+        },
 
         taskSetState: function() {
             this.current.value.forEach(function(task){
@@ -360,12 +396,12 @@ $(function () {
                 this.$modal.removeClass('modal--active');
                 return 
             }
-            if (!(this.current.name in this.filters))
-            {
+            if (!(this.options[this.current.name].active)) {
                 this.addfilter(this.current.name);
+                this.options[this.current.name].active = true;
             }
             this.filters[this.current.name] = this.current.value;
-            this.options[this.current.name].active = true;
+            this.captions[this.current.name].update()
             this.request();
             this.$modal.removeClass('modal--active');
             this.current = {};
@@ -379,7 +415,6 @@ $(function () {
                 .attr('data-filter', filter)
                 .attr('id', 'edit-filter')
                 .addClass('filter button secondary success')
-                .html('<div><i class="fa-solid fa-pencil"></i>&nbsp;'+capitalizeFirstLetter(filter)+'</div><span class="remove-filter">X</span>')
             this.$filters.children('p').eq(-1).before(newP);
         },
 
@@ -403,6 +438,9 @@ $(function () {
 
     function capitalizeFirstLetter(val) {
         return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+    }
+    function noLineBreak(string) {
+        return string.replaceAll(' ', '&nbsp;').replaceAll('-', '&#8209;')
     }
 
     filters.init();

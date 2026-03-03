@@ -340,3 +340,12 @@ i.fa-brands:before {
     border: 1px solid #434343 !important;
     font-size: 1.2rem;
 }
+
+.filters .captionValue {
+    color:white;
+    border:solid 1px;
+    padding:0.3rem;
+    border-radius:12px;
+    margin: 0.2rem;
+    line-height: 2rem;
+}
