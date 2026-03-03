@@ -71,7 +71,7 @@ $(function () {
                     },
                     options: {
                         animation: false,
-                        plugins: { title: { display: true, text: 'System Resources (total RAM: ' + r.ram_total_gb + ' GB)' } },
+                        plugins: { title: { display: true, text: 'System resources (worst value per minute of uptime, total RAM: ' + r.ram_total_gb + ' GB)' } },
                         scales: { y: { min: 0, max: 100 } }
                     }
                 });
@@ -104,8 +104,8 @@ $(function () {
 
     fetchData(); // Initial fetch
 
-    // Poll every 1 second if resources exist
-    setInterval(fetchData, 1000);
+    // Poll every 60 seconds if resources exist
+    setInterval(fetchData, 60000);
 
     $(document).on('click', '.pending-btn', function () {
         const username = $(this).data('username');
