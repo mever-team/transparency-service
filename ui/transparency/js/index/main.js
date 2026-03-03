@@ -51,7 +51,7 @@ $('#login-confirm-btn').click(()=>{
                 $('#login-error').text("");
                 //$('#register').removeClass('show');
                 $('#login-success').addClass('show');
-                $('#login-success').text("An email will be sent to your account with a login link.");
+                $('#login-success').text("An email was sent to your account with a login link. Check your spam folder.");
             },
             error: function (xhr) {
                 $('#login-success').text("");

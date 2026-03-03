@@ -46,7 +46,7 @@ class EmailVerification:
     def _send_email_worker(self, to_email: str, subject: str, body: str):
         msg = MIMEText(body)
         msg["Subject"] = subject
-        msg["From"] = self.EMAIL_USERNAME
+        msg["From"] = self.EMAIL_SENDER
         msg["To"] = to_email
         context = ssl.create_default_context()
         try:
