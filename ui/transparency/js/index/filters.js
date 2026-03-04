@@ -1,3 +1,24 @@
+/* 
+=====================================
+HOW TO ADD A NEW FILTER
+=====================================
+init_dashboards()
+    Design the dashboard of the filter
+    The user interact with it to set the value for the filter
+    Store it in this.dashboard
+        html: the actual dashboard
+        setState: a funtion to set css styles if filter is active
+        description: the user will see this
+    
+bindEvents()
+    Bind your event of the dashboard
+
+init_options()
+    Initialize the value to false.
+
+init_captions()
+    Design the caption and create an update function
+*/
 $(function () {
     var userFilterOn = false;
     var draftFilterOn = false;
