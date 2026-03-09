@@ -332,8 +332,8 @@ def serve(
         data = request.get_json()
         username = data.get("username", "")
         password = data.get("password", "") # extra important to reject empty passwords because third-party users are assigned those
-        if not username: abort(401, description="Invalid credentials")
-        if not password: abort(401, description="Invalid credentials")
+        if not username: abort(401, description="Invalid credentials - missing username")
+        if not password: abort(401, description="Invalid credentials - missing password")
         with auth_lock:
             if username == admin_username and password == admin_password:
                 token = secrets.token_urlsafe(32)
@@ -342,9 +342,9 @@ def serve(
                 logger.warn("logged in as administrator", user=username)
                 return jsonify({"token": token, "admin": True, "expires_in": token_expiration_secs})
         row = conn.find_user('users', username)
-        if not row: abort(401, description="Invalid credentials")
+        if not row: abort(401, description=f"Invalid credentials - wrong username {username} or password")
         stored_hash = row[2]
-        if not users.verify_password(password, stored_hash): abort(401, description="Invalid credentials")
+        if not users.verify_password(password, stored_hash): abort(401, description=f"Invalid credentials - wrong username {username} or password")
         with auth_lock:
             token = secrets.token_urlsafe(32)
             token2expiration[token] = time.monotonic() + token_expiration_secs

@@ -25,6 +25,10 @@ class SystemMonitor:
         self.ram_total_gb = round(psutil.virtual_memory().total/(1024**3), 2)
         self.track_once() # first timestamp on creation
         self.accumulate()
+        if logger: logger.ok(f"Initialized system resource monitor (not started yet):"
+                              f"\n * checks progress every {interval} seconds"
+                              f"\n * tracks worst resource values across {bucket_size} checks"
+                              f"\n * keep the last {window} tracked points");
 
     def accumulate(self):
         with self.lock:
@@ -50,10 +54,7 @@ class SystemMonitor:
             self.accumulate()
 
     def __call__(self):
-        if self.logger:
-            self.logger.info("System monitoring started")
-        psutil.cpu_percent(interval=None)
-        psutil.disk_usage(self.disk_path)
+        if self.logger: self.logger.ok("System monitoring started")
         self.running = True
         while self.running:
             self.track_once()
