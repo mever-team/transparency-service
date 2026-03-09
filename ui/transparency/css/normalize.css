@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap');
+
 article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {display: block;}
 audio, canvas, video {display: inline-block;}
 audio:not([controls]) {display: none;height: 0;}
@@ -41,7 +43,6 @@ textarea {overflow: auto;vertical-align: top;}
 table {border-collapse: collapse;border-spacing: 0;}
 
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap');
 @font-face {font-family: Hero_font;src: url('../fonts/Hero.otf');}
 body {font-family: Hero_font, "Noto Emoji", sans-serif;}
 html, body {height: 100%; margin: 0; display: flex; flex-direction: column;}
