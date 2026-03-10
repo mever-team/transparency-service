@@ -4,6 +4,7 @@ $(function () {
     if(localStorage.getItem('modalDismissed') !== 'true') $('.modal__trigger[data-modal="#modal_help"]').click();
     $('body').on('click', '.demo-close', ()=>{localStorage.setItem('modalDismissed', 'true');});
     $("#username,#password,#email").on("keydown", (e)=>{
+        if (!$('#username').is(':visible')) return;
         if ((e.key && e.key !== "Enter") && e.which !== 13 && e.keyCode !== 13) return;
         e.preventDefault();
         $("#login-confirm-btn").trigger("click");
@@ -40,13 +41,18 @@ $('#login_email').click(function () {
 });
 
 $('#login-confirm-btn').click(()=>{
+    let username = $('#username').val();
+    if(!username)
+        return;
+    let password = $('#password').val();
+    let email = $('#email').val();
     if ($('#email').is(':visible')) {
         $.ajax({
             url: '/transparency/register',
             method: 'POST',
             contentType: 'application/json',
             dataType: 'json',
-            data: JSON.stringify({username: $('#username').val(), email: $('#email').val(), password: ""}),
+            data: JSON.stringify({username: username, email: email, password: ""}),
             success: function () {
                 $('#login-error').text("");
                 //$('#register').removeClass('show');
@@ -62,13 +68,12 @@ $('#login-confirm-btn').click(()=>{
         });
         return;
     }
-
     $.ajax({
         url: '/transparency/login',
         method: 'POST',
         contentType: 'application/json',
         dataType: 'json',
-        data: JSON.stringify({username: $('#username').val(), password: $('#password').val()}),
+        data: JSON.stringify({username: username, password: password}),
         success: function (response) {
             token = response.token;
             updateUsername();
