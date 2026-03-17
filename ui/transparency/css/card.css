@@ -432,7 +432,8 @@ section.buttons {
     text-align: left;
 }
 
-.card-button {
+.card-button,
+.card-button2 {
     position: relative; /* anchor for tooltip */
     border-radius: 10px;
     padding: 7px 10px;
@@ -457,7 +458,8 @@ section.buttons {
 }
 
 /* truncated text */
-.card-button .desc h1 {
+.card-button .desc h1,
+.card-button2 .desc h1 {
     font-size: 17px;
     margin: 0;
 }
@@ -507,7 +509,7 @@ section.buttons {
     filter: drop-shadow(0 -1px 1px rgba(0, 0, 0, 0.1));
 }
 
-.card-button:hover .tooltip {display: block;}
+.card-button:hover .tooltip, .card-button2:hover .tooltip {display: block;}
 @keyframes fadeIn {
     from {opacity: 0; transform: translateX(-50%) translateY(10px);}
     to {opacity: 1; transform: translateX(-50%) translateY(0);}

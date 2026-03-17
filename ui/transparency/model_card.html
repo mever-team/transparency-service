@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/normalize.css"/>
     <link rel="stylesheet" href="css/card.css"/>
     <link rel="stylesheet" href="css/chat.css"/>
+    <link rel="stylesheet" href="css/eval.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
@@ -64,6 +65,9 @@
                         <div id="assistDropdown" class="download-dropdown-menu" style="display:none;">
                             <div class="download-dropdown-item modal_autocomplete" style="display:none;" data-format="pdf" id="import-btn"><i class="fa-solid fa-folder-open"></i>&nbsp;Import</div>
                             <div class="download-dropdown-item modal_refine" data-format="json"><i class="fa-regular fa-gem"></i>&nbsp;Refine</div>
+                            <div class="download-dropdown-item" id="uploadMetrics"> 
+                                <i class="fa-solid fa-chart-area"></i>&nbsp;Metrics</span>
+                            </div>
                             <div class="download-dropdown-item" id="cardClone">
                                 <span class="btn-text"><i class="fa-solid fa-copy"></i>&nbsp;Clone</span>
                             </div>
@@ -203,6 +207,42 @@
     </div>
 </div>
 
+<div id="modal-metrics-screen" class="delete-confirm-screen">
+    <div class="delete-confirm-content modal_metrics">
+        <h2 class="success title">
+            Upload Metric Scores
+        </h2>
+        <div style="text-align:left">
+            Do you have a metric score report from our <a href="https://pypi.org/project/aicard-eval/">evaluation tool</a>?
+            Upload your results here.
+        </div>
+
+        <img style="width: 70%; flex-shrink: 0;" src="img/transparency_img.png">
+        <div class="upload-container" style="display:block;">
+            <div class="file-drop-area" id="dropArea">
+                <br><br>
+                <span class="fake-btn">Choose file</span>
+                <span class="file-msg">or drag here</span>
+                <input class="file-input" type="file" accept=".json">
+            </div>
+            <ul class="file-list" id="fileList"></ul>
+            <div class="total-size" id="totalSize">Total size: 0 KB</div>
+            <div class="progress-bar-file">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+        <br><br>
+        <button class="card-button2 button" id="metrics-request">
+            <div class="desc">
+                <h1>Confirm</h1>
+            </div>
+        </button>
+        <button class="card-button2 button" id="metrics-cancel">
+            <i class="fa-solid fa-cancel"></i>&nbsp;Maybe later
+        </button>
+    </div>
+</div>
+
 <div id="ai-chat-trigger"><i class="fa-solid fa-robot"></i></div>
 <div id="ai-chat-overlay">
     <div class="ai-chat-window">
@@ -229,5 +269,6 @@
 <script src="js/card/history.js"></script>
 <script src="js/card/card.js"></script>
 <script src="js/card/chat.js"></script>
+<script src="js/card/eval_adapter.js"></script>
 </body>
 </html>

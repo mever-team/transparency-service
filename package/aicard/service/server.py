@@ -9,6 +9,7 @@ from aicard.service.monitoring import SystemMonitor
 from aicard.service import users
 from aicard.service import converters
 from aicard.service.logger import Logger
+from aicard.utils.eval_adapter.eval_adapter import eval_adapter
 from flask import Flask, abort, redirect, request, jsonify, send_from_directory, Response, url_for
 from threading import Lock
 from dotenv import dotenv_values
@@ -789,6 +790,28 @@ def serve(
         with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
             content, mimetype, filename = card2format(card, fformat)
         return Response(content, mimetype=mimetype, headers={"Content-Disposition": f"attachment; filename={filename}"})
+
+    @app.route(domain_prefix+'/eval_adapter/<int:card_id>', methods=['POST'])
+    @users.require_auth(token2expiration, third_party_auth)
+    def eval_adapter_endpoint(card_id, token: str):
+        card_entry = find_card(card_id)
+        with auth_lock: creator = token2user.get(token, None)
+        if creator != card_entry.creator: abort(403, "Only the card's creator can edit it.")
+        
+        data = request.get_json()
+        if not data:
+            return abort(400, "Empty JSON")
+        with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
+            try:
+                html_formated_data = eval_adapter(data)
+                card.data.performance.metrics += html_formated_data
+                card.data.validate_integrity()
+                card_entry.commit_card()
+            except AssertionError as e: abort(404, "AssertionError: "+str(e))
+            except Exception as e: abort(404, "Exception: "+str(e))
+            logger.info("updated a card with eval data", user=creator)
+            return jsonify(converters.dict2dynamic(card.data, {"title"})
+                |{"description": card.summary(), "quality": card.quality(), "history": card_entry.history(), "creator": card_entry.creator})
 
     @app.route(domain_prefix+"/options/<string:section>/<string:field>", methods=["GET"])
     def get_options(section, field):
