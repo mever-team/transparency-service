@@ -14,9 +14,26 @@
     margin-left: 50px;
     max-width: 800px;
 }
+.handbook_title {
+    display: inline-block;
+}
 .handbook_body a {color: #8ed7e2;}
 .handbook_body h1, .handbook_body h2 {text-align: center; scroll-margin-top: 2rem;}
-.handbook_body h2 {margin-top: 5rem; padding: 2rem 0;}
+.handbook_body h2 {
+    margin-top: 5rem; 
+    padding: 2rem 0;
+}
+h2::after {
+  content: "";
+  display: block;
+  width: 50%;
+  height: 1px;
+  background: #e6e6e6;
+  margin: 0.5em auto 0;
+}
+.handbook_body h3 {
+    color: #64DB96;
+}
 
 /* Menu */
 .handbook_menu {
@@ -50,9 +67,16 @@
     visibility: visible !important;
 }
 
-.menu_item1, .menu_item2 {cursor: pointer;border-radius: 0.2rem;}
-.menu_item1 {padding: .7rem 1rem;}
-.menu_item2 {padding: 0.3rem 0 0.3rem 2rem;}
+.menu_item1, .menu_item2 {cursor: pointer;}
+.menu_item1 {
+    margin: .4rem 0.5rem;
+    padding: .3rem .5rem;
+    border-top: 1px solid #e6e6e64a;
+    border-bottom: 1px solid #e6e6e64a;
+}
+.menu_item2 {
+    padding: 0.3rem 0 0.3rem 2rem;
+}
 .menu_item1:hover, menu_item2:hover {filter: brightness(1.2);}
 .menu_item1.active, .menu_item2.active {color: #64DB96;}
 
