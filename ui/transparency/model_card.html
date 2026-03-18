@@ -65,9 +65,6 @@
                         <div id="assistDropdown" class="download-dropdown-menu" style="display:none;">
                             <div class="download-dropdown-item modal_autocomplete" style="display:none;" data-format="pdf" id="import-btn"><i class="fa-solid fa-folder-open"></i>&nbsp;Import</div>
                             <div class="download-dropdown-item modal_refine" data-format="json"><i class="fa-regular fa-gem"></i>&nbsp;Refine</div>
-                            <div class="download-dropdown-item" id="uploadMetrics"> 
-                                <i class="fa-solid fa-chart-area"></i>&nbsp;Metrics</span>
-                            </div>
                             <div class="download-dropdown-item" id="cardClone">
                                 <span class="btn-text"><i class="fa-solid fa-copy"></i>&nbsp;Clone</span>
                             </div>
@@ -173,22 +170,31 @@
     <div class="modal__bg"></div>
     <div class="delete-confirm-content">
         <h2 class="success title">Import missing info?</h2>
+        <div id="import_selector">
+            <div id="url_text" class="active">
+                URL
+            </div><div id="pdf_text">
+                File
+            </div><div id="metrics_text">
+                Metrics
+            </div>
+        </div>
+
         <p id="url_desc" class="import_options">
             Paste any URL with model info, for example
             from <a href="https://github.com/" target="_blank">GitHub</a> or
             <a href="https://huggingface.co/" target="_blank">HuggingFace</a>.
         </p>
         <p id="pdf_desc" class="import_options">Upload a markdown or pdf file that contains model info. </p>
+        <p id="metrics_desc" class="import_options">
+            Do you have a metric score report from our <a href="https://pypi.org/project/aicard-eval/">evaluation tool</a>?
+            Upload your results here.
+        </p>
         <img style="width: 70%; flex-shrink: 0;" src="img/create_img.png">
-
-        <p id="pdf_text">
-            <span class="learn-more"><a href="handbook.html#creators" target="_blank" style="float:left">Learn more</a></span>
-            Do you have a file instead?</p>
-        <p id="url_text">
-            <span class="learn-more"><a href="handbook.html#creators" target="_blank" style="float:left">Learn more</a></span>
-            Do you have a URL instead?</p>
+        <div><span class="learn-more"><a href="handbook.html#creators" target="_blank" style="float:left">Learn more</a></span></div>
+        <br>
         <input type="text" class="text-input" placeholder="Enter URL..." id="card-url"/>
-        <div class="upload-container">
+        <div id="pdf-container" class="upload-container">
             <div class="file-drop-area" id="dropArea">
                 <br><br>
                 <span class="fake-btn">Choose file</span>
@@ -201,27 +207,10 @@
                 <div class="progress-fill" id="progressFill"></div>
             </div>
         </div>
-        <br><br>
-        <div class="assistants_wrapper"></div>
-        <button style="width:100%;margin-left:0px!important" class="button" id="cancel-autocomplete-btn"><i class="fa-solid fa-cancel"></i>&nbsp;Maybe later</button>
-    </div>
-</div>
-
-<div id="modal-metrics-screen" class="delete-confirm-screen">
-    <div class="delete-confirm-content modal_metrics">
-        <h2 class="success title">
-            Upload Metric Scores
-        </h2>
-        <div style="text-align:left">
-            Do you have a metric score report from our <a href="https://pypi.org/project/aicard-eval/">evaluation tool</a>?
-            Upload your results here.
-        </div>
-
-        <img style="width: 70%; flex-shrink: 0;" src="img/transparency_img.png">
-        <div class="upload-container" style="display:block;">
+        <div id ="metrics-container" class="upload-container">
             <div class="file-drop-area" id="dropArea">
                 <br><br>
-                <span class="fake-btn">Choose file</span>
+                <span class="fake-btn">Choose JSON</span>
                 <span class="file-msg">or drag here</span>
                 <input class="file-input" type="file" accept=".json">
             </div>
@@ -232,14 +221,8 @@
             </div>
         </div>
         <br><br>
-        <button class="card-button2 button" id="metrics-request">
-            <div class="desc">
-                <h1>Confirm</h1>
-            </div>
-        </button>
-        <button class="card-button2 button" id="metrics-cancel">
-            <i class="fa-solid fa-cancel"></i>&nbsp;Maybe later
-        </button>
+        <div class="assistants_wrapper"></div>
+        <button style="width:100%;margin-left:0px!important" class="button" id="cancel-autocomplete-btn"><i class="fa-solid fa-cancel"></i>&nbsp;Maybe later</button>
     </div>
 </div>
 

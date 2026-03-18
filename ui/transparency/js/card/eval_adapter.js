@@ -1,13 +1,12 @@
 $(function () {
     var uploaded_metrics;
-    const $modal = $('#modal-metrics-screen');
+    const $modal = $('#metrics-container');
     const $dropArea = $modal.find('#dropArea');
     const $fileInput = $modal.find('.file-input');
     const $fileList = $modal.find('#fileList');
     const $totalSize = $modal.find('#totalSize');
     const $progressFill = $modal.find('#progressFill');
-    $('#uploadMetrics').on('click', openMetricsModal);
-    $('#metrics-request').on('click', request);
+    $(document).on('click', '.card-button#agent[data-type="metrics"]', request);
 
     function request (){
         const urlParams = new URLSearchParams(window.location.search);

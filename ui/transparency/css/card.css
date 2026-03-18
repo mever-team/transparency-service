@@ -639,17 +639,33 @@ section.buttons {
     padding: 5px;
 }
 
-#pdf_text,#url_text {
+#pdf_text,#url_text,#metrics_text {
     color: #EEEEEE;
     text-align: right;
     margin: 7px 0 7px;
     font-size: 14px;
-    text-decoration: underline;
+    /* text-decoration: underline; */
     cursor: pointer;
     font-weight: bold;
     font-style: italic;
 }
-#url_text{display: none;}
+#pdf_text.active,
+#url_text.active,
+#metrics_text.active {
+    color: #64DB96;
+
+}
+
+#import_selector div {
+    display: inline-block;
+    border-left: 2px solid #EEEEEE;
+    padding: 0.2rem;
+    margin: 0;
+}
+
+#import_selector div#metrics_text {
+    border-right: 2px solid #EEEEEE;
+}
 
 .upload-container {
     color: #EEEEEE;
