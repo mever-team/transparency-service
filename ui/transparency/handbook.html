@@ -40,6 +40,7 @@
                 <div class="menu_item1" id="functionalitiesMenu" onclick="handbookGoTo('functionalities')">Functionalities</div>
                 <div class="menu_item2" id="importMenu" onclick="handbookGoTo('import')">Import</div>
                 <div class="menu_item2" id="refineMenu" onclick="handbookGoTo('refine')">Refine</div>
+                <div class="menu_item2" id="ai_chatMenu" onclick="handbookGoTo('ai_chat')">AI-Chat</div>
                 <div class="menu_item2" id="cloneMenu" onclick="handbookGoTo('clone')">Clone</div>
                 <div class="menu_item2" id="shareMenu" onclick="handbookGoTo('share')">Share</div>
             </div>
@@ -47,472 +48,490 @@
             <div class="handbook_body" id="handbookBody">
                 <h2 id="introduction">Introduction</h2>
                 <h3 id="the-service">Our service</h3>
-                <p>
-                    This service is developed under the AI-CODE Horizon project with Grant <a href="https://cordis.europa.eu/project/id/101135437" target="_blank">Agreement ID: 101135437</a>.
-                    You can find the main page of the project along with all the services <a href="https://aicode-project.eu/" target="_blank">here</a>.
-                    The purpose of this one is to provide a platform for creating, editing, and managing model cards.
-                </p>
-                <p>
-                    So what is a model card? Briefly, it is a compact document that
-                    contains information about an AI model’s purpose, correct usage, training and evaluation methodology,
-                    performance, ethical risks, potential missuses, and more. Its goal is to promote transparency when
-                    distributing and deploying AI models.
-                </p>
-                <p>
-                    Our service here aims to make high-quality model cards more accessible.
-                    THis, it first aims to assist AI model creators such as
-                    engineers, researchers, and developers to produce transparent models. This is achieved by
-                    equipping them with AI-powered tools to
-                    create model cards, and second to provide model cards that are comprehensible for both AI-experts and
-                    non-experts like journalists, data scientists, and media professionals.
-                </p>
+                    <p>
+                        This service is developed under the AI-CODE Horizon project with Grant <a href="https://cordis.europa.eu/project/id/101135437" target="_blank">Agreement ID: 101135437</a>.
+                        You can find the main page of the project along with all the services <a href="https://aicode-project.eu/" target="_blank">here</a>.
+                        The purpose of this one is to provide a platform for creating, editing, and managing model cards.
+                    </p>
+                    <p>
+                        So what is a model card? Briefly, it is a compact document that
+                        contains information about an AI model’s purpose, correct usage, training and evaluation methodology,
+                        performance, ethical risks, potential missuses, and more. Its goal is to promote transparency when
+                        distributing and deploying AI models.
+                    </p>
+                    <p>
+                        Our service here aims to make high-quality model cards more accessible.
+                        THis, it first aims to assist AI model creators such as
+                        engineers, researchers, and developers to produce transparent models. This is achieved by
+                        equipping them with AI-powered tools to
+                        create model cards, and second to provide model cards that are comprehensible for both AI-experts and
+                        non-experts like journalists, data scientists, and media professionals.
+                    </p>
                 <h3 id="model-cards">Model cards</h3>
-                <p>
-                    Model cards were first introduced by a Google research <a href="https://arxiv.org/abs/1810.03993" target="_blank">paper</a> in 2018 with the intention to clarify the 
-                    intended use, minimize unintended use, report performance, and in general provide a transparency report for ML 
-                    and AI models.
-                </p>
-                <p>
-                In this service we provide a standardized model card format derived from our research and collaboration
-                with experts in legal and ethical issues. We divide all information into six main sections:</p>
-                <p><i>1. Model details</i><br>
-                Contains all basic information such as model name, overview, person or organization
-                developing the model, date of development, version, license and IP, citations, and any other similar
-                metadata about the model.</p>
-                <p><i>2. Considerations</i><br>
-                Include intended use, software requirements, hardware requirements, technical
-                instructions, ethical risks, and similar information that provides guidance for correct usage.</p>
-                <p><i>3. Training and eval set</i><br>
-                Contain information about the training and evaluations data sets such as link
-                or description of the dataset, motivation for choosing these specific data, reliance on standards
-                (e.g. ISO25, IEEE26), and whether the dataset is up to date, of high quality, and representative
-                of the intended deployment environment.</p>
-                <p><i>4. Performance</i><br>
-                Consists of the performance metrics, decision thresholds, approaches to uncertainty
-                and variability of the results, and an overall analysis of the performance, biases, and fairness.
-                </p>
-                <p><i>5. Safety</i><br>
-                Includes all information regarding ethical aspects, safety concerns and caveats
-                in order to raises awareness about bad use and ethical risks.
-                </p>
-                <table class="handbook-table">
-                    <thead>
-                        <tr>
-                        <th>Model Card Fields</th>
-                        <th>Content</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Model Details</td>
+                    <p>
+                        Model cards were first introduced by a Google research <a href="https://arxiv.org/abs/1810.03993" target="_blank">paper</a> in 2018 with the intention to clarify the 
+                        intended use, minimize unintended use, report performance, and in general provide a transparency report for ML 
+                        and AI models.
+                    </p>
+                    <p>
+                    In this service we provide a standardized model card format derived from our research and collaboration
+                    with experts in legal and ethical issues. We divide all information into six main sections:</p>
+                    <p><i>1. Model details</i><br>
+                    Contains all basic information such as model name, overview, person or organization
+                    developing the model, date of development, version, license and IP, citations, and any other similar
+                    metadata about the model.</p>
+                    <p><i>2. Considerations</i><br>
+                    Include intended use, software requirements, hardware requirements, technical
+                    instructions, ethical risks, and similar information that provides guidance for correct usage.</p>
+                    <p><i>3. Training and eval set</i><br>
+                    Contain information about the training and evaluations data sets such as link
+                    or description of the dataset, motivation for choosing these specific data, reliance on standards
+                    (e.g. ISO25, IEEE26), and whether the dataset is up to date, of high quality, and representative
+                    of the intended deployment environment.</p>
+                    <p><i>4. Performance</i><br>
+                    Consists of the performance metrics, decision thresholds, approaches to uncertainty
+                    and variability of the results, and an overall analysis of the performance, biases, and fairness.
+                    </p>
+                    <p><i>5. Safety</i><br>
+                    Includes all information regarding ethical aspects, safety concerns and caveats
+                    in order to raises awareness about bad use and ethical risks.
+                    </p>
+                    <table class="handbook-table">
+                        <thead>
+                            <tr>
+                            <th>Model Card Fields</th>
+                            <th>Content</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Model Details</td>
+                                <td>
+                                    <ul>
+                                        <li>Basic Information
+                                            <ul>
+                                                <li>Model Name</li>
+                                                <li>Overview</li>
+                                                <li>Person or organization developing model</li>
+                                                <li>Date of model development</li>
+                                                <li>Model type</li>
+                                                <li>Paper or other resources for more information</li>
+                                                <li>Citation details</li>
+                                                <li>License and IP</li>
+                                                <li>Feedback on the model (e.g. email contact)</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Considerations</td>
+                                <td>
+                                    <ul>
+                                        <li>Intended Use
+                                            <ul>
+                                                <li>Primary intended uses and purpose</li>
+                                                <li>Oversight level (self-learning/autonomous or human-in-the-loop, human-on-the-loop, or human-in-command)</li>
+                                                <li>Primary intended users</li>
+                                                <li>Out-of-scope use cases</li>
+                                            </ul>
+                                        </li>
+                                        <li>Usage Information
+                                            <ul>
+                                                <li>Software requirements</li>
+                                                <li>Hardware requirements (Training and Inference)</li>
+                                                <li>Technical usage instructions (e.g. a code snippet illustration)</li>
+                                                <li>Inputs and outputs</li>
+                                                <li>Factors that influence performance (e.g. demographics, environmental conditions, technical attributes etc.)</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                            <td>Training Set</td>
                             <td>
                                 <ul>
-                                    <li>Basic Information
+                                    <li>Training set details
                                         <ul>
-                                            <li>Model Name</li>
-                                            <li>Overview</li>
-                                            <li>Person or organization developing model</li>
-                                            <li>Date of model development</li>
-                                            <li>Model type</li>
-                                            <li>Paper or other resources for more information</li>
-                                            <li>Citation details</li>
-                                            <li>License and IP</li>
-                                            <li>Feedback on the model (e.g. email contact)</li>
+                                            <li>Datasets</li>
+                                            <li>Motivation (Why were these datasets chosen?)</li>
+                                            <li>Data pre-processing (e.g. tokenization, image cropping etc.)</li>
+                                            <li>Reliance on standards (e.g. ISO25, IEEE26)</li>
+                                            <li>Data update (Is the dataset updated of high quality and representative of the environment the system will be deployed)</li>
                                         </ul>
                                     </li>
                                 </ul>
                             </td>
-                        </tr>
-                        <tr>
-                            <td>Considerations</td>
+                            </tr>
+                            <tr>
+                            <td>Eval Set</td>
                             <td>
                                 <ul>
-                                    <li>Intended Use
+                                    <li>Evaluation  set details
                                         <ul>
-                                            <li>Primary intended uses and purpose</li>
-                                            <li>Oversight level (self-learning/autonomous or human-in-the-loop, human-on-the-loop, or human-in-command)</li>
-                                            <li>Primary intended users</li>
-                                            <li>Out-of-scope use cases</li>
-                                        </ul>
-                                    </li>
-                                    <li>Usage Information
-                                        <ul>
-                                            <li>Software requirements</li>
-                                            <li>Hardware requirements (Training and Inference)</li>
-                                            <li>Technical usage instructions (e.g. a code snippet illustration)</li>
-                                            <li>Inputs and outputs</li>
-                                            <li>Factors that influence performance (e.g. demographics, environmental conditions, technical attributes etc.)</li>
+                                            <li>Datasets</li>
+                                            <li>Motivation (Why were these datasets chosen?)</li>
+                                            <li>Data pre-processing (e.g. tokenization, image cropping etc.)</li>
+                                            <li>Reliance on standards (e.g. ISO25, IEEE26)</li>
+                                            <li>Data update (Is the dataset updated of high quality and representative of the environment the system will be deployed)</li>
                                         </ul>
                                     </li>
                                 </ul>
                             </td>
-                        </tr>
-                        <tr>
-                        <td>Training Set</td>
-                        <td>
-                            <ul>
-                                <li>Training set details
-                                    <ul>
-                                        <li>Datasets</li>
-                                        <li>Motivation (Why were these datasets chosen?)</li>
-                                        <li>Data pre-processing (e.g. tokenization, image cropping etc.)</li>
-                                        <li>Reliance on standards (e.g. ISO25, IEEE26)</li>
-                                        <li>Data update (Is the dataset updated of high quality and representative of the environment the system will be deployed)</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </td>
-                        </tr>
-                        <tr>
-                        <td>Eval Set</td>
-                        <td>
-                            <ul>
-                                <li>Evaluation  set details
-                                    <ul>
-                                        <li>Datasets</li>
-                                        <li>Motivation (Why were these datasets chosen?)</li>
-                                        <li>Data pre-processing (e.g. tokenization, image cropping etc.)</li>
-                                        <li>Reliance on standards (e.g. ISO25, IEEE26)</li>
-                                        <li>Data update (Is the dataset updated of high quality and representative of the environment the system will be deployed)</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </td>
-                        </tr>
-                        <tr>
-                        <td>Performance</td>
-                        <td>
-                            <ul>
-                                <li>Metrics
-                                    <ul>
-                                        <li>Model performance measures (e.g. Accuracy, F1 score etc.)</li>
-                                        <li>Decision thresholds</li>
-                                        <li>Approaches to uncertainty and variability (e.g. standard deviation, variance etc.)</li>
-                                    </ul>
-                                </li>
-                                <li>Analysis
-                                    <ul><li>Disaggregated results and fairness</li></ul>
-                                </li>
-                            </ul>
-                        </td>
-                        </tr>
-                        <tr>
-                        <td>Safety</td>
-                        <td>
-                            <ul>
-                                <li>Safety concerns and ethical aspects
-                                    <ul>
-                                        <li>Ethical Risks</li>
-                                        <li>Model Fairness</li>
-                                        <li>Security (e.g. certifications or security standards)</li>
-                                        <li>Caveats (any additional concerns)</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </td>
-                        </tr>
-                    </tbody>
-                </table>
+                            </tr>
+                            <tr>
+                            <td>Performance</td>
+                            <td>
+                                <ul>
+                                    <li>Metrics
+                                        <ul>
+                                            <li>Model performance measures (e.g. Accuracy, F1 score etc.)</li>
+                                            <li>Decision thresholds</li>
+                                            <li>Approaches to uncertainty and variability (e.g. standard deviation, variance etc.)</li>
+                                        </ul>
+                                    </li>
+                                    <li>Analysis
+                                        <ul><li>Disaggregated results and fairness</li></ul>
+                                    </li>
+                                </ul>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td>Safety</td>
+                            <td>
+                                <ul>
+                                    <li>Safety concerns and ethical aspects
+                                        <ul>
+                                            <li>Ethical Risks</li>
+                                            <li>Model Fairness</li>
+                                            <li>Security (e.g. certifications or security standards)</li>
+                                            <li>Caveats (any additional concerns)</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
                 <h2 id="basics">Basics</h2>
                 <h3 id="metrics">Metrics</h3>
-                <p>
-                    In Artificial Intelligence (AI) and Machine Learning, metrics are numbers that report how good or bad 
-                    a model is performing. To produce such metrics we perform an evaluation run during which we give data to 
-                    the model that it has not seen during training. When the AI model generates its output we compare this result 
-                    with the correct answer to calculate the metrics. An explanation of the most common metrics is given bellow.
-                </p>
-                <p><i>Accuracy</i><br>Shows how many predictions were correct. Example: with 100 images
-                model classifies 90 correctly → Accuracy = 90%.
-                Accuracy is simple, but it can be misleading. No information about individual classes.</p>
+                    <p>
+                        In Artificial Intelligence (AI) and Machine Learning, metrics are numbers that report how good or bad 
+                        a model is performing. To produce such metrics we perform an evaluation run during which we give data to 
+                        the model that it has not seen during training. When the AI model generates its output we compare this result 
+                        with the correct answer to calculate the metrics. An explanation of the most common metrics is given bellow.
+                    </p>
+                    <p><i>Accuracy</i><br>Shows how many predictions were correct. Example: with 100 images
+                    model classifies 90 correctly → Accuracy = 90%.
+                    Accuracy is simple, but it can be misleading. No information about individual classes.</p>
 
-                <p><i>Precision</i><br>Answers the question: “When the model says YES, how often is it right?”.
-                Example: model predicts 20 spam emails. Only 15 are actually spam → Precision = 15 / 20 = 75%
-                High precision means few false positives.</p>
+                    <p><i>Precision</i><br>Answers the question: “When the model says YES, how often is it right?”.
+                    Example: model predicts 20 spam emails. Only 15 are actually spam → Precision = 15 / 20 = 75%
+                    High precision means few false positives.</p>
 
-                <p><i>Recall</i><br>
-                Recall answers the question: “Out of all real YES cases, how many did the model find?”
-                Example: 50 real spam emails. Model finds 40 of them → Recall = 40 / 50 = 80%
-                High recall means few false negatives.</p>
+                    <p><i>Recall</i><br>
+                    Recall answers the question: “Out of all real YES cases, how many did the model find?”
+                    Example: 50 real spam emails. Model finds 40 of them → Recall = 40 / 50 = 80%
+                    High recall means few false negatives.</p>
 
-                <p><i>F1 Score</i><br>
-                Combines Precision and Recall into one number. High F1 score means both
-                Precision and Recall have high scores.</p>
-                <p><i>Mean Absolute Error (MAE)</i>
-                Answers the question: “On average, how far are the model's predictions from
-                the real values?”. MAE measures the average size of the mistakes. When MAE is low
-                predictions are close to the real values.
-                </p>
-                <p><i>ROC AUC Score</i><br>
-                Answers the question: “How well can the model separate positive cases from
-                negative cases?”. We measure this score for different thresholds. For example if
-                thresholds = 0.6, prediction above 0.6 are considered positive cases and bellow
-                0.6 negative cases. For ROC AUC Score 1.0 → perfect separation and for
-                0.5 → random guessing. High value means positive cases get higher scores than negatives.
-                </p>
-                <p><i>AP (Average Precision)</i><br>
-                Answers the question: “How precise is the model across different
-                confidence thresholds". The model predicts a class with a confidence thresholds.
-                We can accept or reject the prediction depending on the confidence thresholds.
-                AP is the average precision across different confidence thresholds.
-                </p>
-                <p><i>mAP (Mean Average Precision)</i><br>
-                Answers the question: “How precise is the model across many classes and across different
-                confidence thresholds". Following the AP score, the mAP is the average AP across
-                all classes. Mostly used in object detection and multi-class problems.
-                </p>
-                <p><i>AR (Average Recall)</i><br>
-                Answers the question: “How many of the real objects does the model manage to find
-                across different
-                confidence thresholds". Similar to AP we calculate the average recall across
-                different confidence thresholds.
-                </p>
-                <p><i>mAR (Mean Average Recall)</i><br>
-                Answers the question: “How many of the real objects does the model manage to find
-                across many classes and across different
-                confidence thresholds". Following the AR score, the mAR is the average AR across
-                all classes. Mostly used in object detection and multi-class problems.
-                </p>
-                <p><i>IoU (Intersection over Union)</i><br>
-                Answers the question: “How much does the predicted area overlap with the real area?”.
-                Often used in object detection and segmentation 0 → No overlap and 1 → Perfect overlap.
-                When IoU is high the predicted box matches the real object well.
-                </p>
+                    <p><i>F1 Score</i><br>
+                    Combines Precision and Recall into one number. High F1 score means both
+                    Precision and Recall have high scores.</p>
+                    <p><i>Mean Absolute Error (MAE)</i>
+                    Answers the question: “On average, how far are the model's predictions from
+                    the real values?”. MAE measures the average size of the mistakes. When MAE is low
+                    predictions are close to the real values.
+                    </p>
+                    <p><i>ROC AUC Score</i><br>
+                    Answers the question: “How well can the model separate positive cases from
+                    negative cases?”. We measure this score for different thresholds. For example if
+                    thresholds = 0.6, prediction above 0.6 are considered positive cases and bellow
+                    0.6 negative cases. For ROC AUC Score 1.0 → perfect separation and for
+                    0.5 → random guessing. High value means positive cases get higher scores than negatives.
+                    </p>
+                    <p><i>AP (Average Precision)</i><br>
+                    Answers the question: “How precise is the model across different
+                    confidence thresholds". The model predicts a class with a confidence thresholds.
+                    We can accept or reject the prediction depending on the confidence thresholds.
+                    AP is the average precision across different confidence thresholds.
+                    </p>
+                    <p><i>mAP (Mean Average Precision)</i><br>
+                    Answers the question: “How precise is the model across many classes and across different
+                    confidence thresholds". Following the AP score, the mAP is the average AP across
+                    all classes. Mostly used in object detection and multi-class problems.
+                    </p>
+                    <p><i>AR (Average Recall)</i><br>
+                    Answers the question: “How many of the real objects does the model manage to find
+                    across different
+                    confidence thresholds". Similar to AP we calculate the average recall across
+                    different confidence thresholds.
+                    </p>
+                    <p><i>mAR (Mean Average Recall)</i><br>
+                    Answers the question: “How many of the real objects does the model manage to find
+                    across many classes and across different
+                    confidence thresholds". Following the AR score, the mAR is the average AR across
+                    all classes. Mostly used in object detection and multi-class problems.
+                    </p>
+                    <p><i>IoU (Intersection over Union)</i><br>
+                    Answers the question: “How much does the predicted area overlap with the real area?”.
+                    Often used in object detection and segmentation 0 → No overlap and 1 → Perfect overlap.
+                    When IoU is high the predicted box matches the real object well.
+                    </p>
                 <h3 id="fairness">Fairness</h3>
-                <p>
-                    Fairness in AI is the attempt to correct bias in model decision. It usually refers to unfair
-                    outcomes against sensitive variables such as gender, ethnicity, disability and more. The importance
-                    of such topics differs between countries and cultures and thus there is no single definition of
-                    fairness. Nevertheless, such variables are important for the behaviour of systems that approve loans,
-                    screen job applications, detect fraud, recommend content and more. Biased AI can exclude
-                    people and reinforce existing inequalities.
-                </p>
-                <p>
-                    Unfairness often derives from biased or incomplete training data, historical inequalities in the data,
-                    or metrics that optimize accuracy but ignore fairness. A fair system should produce similar outcomes 
-                    for variables such as gender or ethnicity when such variables are irrelevant to the problem. 
-                    In some cases fairness and accuracy can conflict. A model can be very accurate but unfair. 
-                    A common practice to check the fairness of a system is to compare metrics like accuracy, precision, 
-                    and recall across groups, acceptance or rejection rates, or false positives and 
-                    false negatives per group. By trying to equalize these factors across groups the overall accuracy of the
-                    system can drop making a less accurate but more fair system. 
-                </p>
+                    <p>
+                        Fairness in AI is the attempt to correct bias in model decision. It usually refers to unfair
+                        outcomes against sensitive variables such as gender, ethnicity, disability and more. The importance
+                        of such topics differs between countries and cultures and thus there is no single definition of
+                        fairness. Nevertheless, such variables are important for the behaviour of systems that approve loans,
+                        screen job applications, detect fraud, recommend content and more. Biased AI can exclude
+                        people and reinforce existing inequalities.
+                    </p>
+                    <p>
+                        Unfairness often derives from biased or incomplete training data, historical inequalities in the data,
+                        or metrics that optimize accuracy but ignore fairness. A fair system should produce similar outcomes 
+                        for variables such as gender or ethnicity when such variables are irrelevant to the problem. 
+                        In some cases fairness and accuracy can conflict. A model can be very accurate but unfair. 
+                        A common practice to check the fairness of a system is to compare metrics like accuracy, precision, 
+                        and recall across groups, acceptance or rejection rates, or false positives and 
+                        false negatives per group. By trying to equalize these factors across groups the overall accuracy of the
+                        system can drop making a less accurate but more fair system. 
+                    </p>
 
                 <h3 id="oversight">Oversight</h3>
-                <p>
-                    Oversight level describes how much control humans have over a system’s behavior and decision making. 
-                    Below, we provide an explanation of the four categories, ranging from fully autonomous to fully human-supervised.
-                </p>
-                <p>
-                    <ul>
-                        <li>
-                            Self-learning / Autonomous
-                            <ul>
-                                <li>Humans define goals, constraints, and initial training, but do not monitor or approve each action.</li>
-                                <li>The system may learn continuously from new data.</li>
-                                <li>Human involvement is typically limited to maintenance, audits, or review.</li>
-                                <li>This offers high efficiency and scalability, but also higher risk. Strong safeguards, monitoring, and clear accountability mechanisms are essential.</li>
-                                <li>
-                                    Example:
-                                    <ul>
-                                        <li>A self-driving car navigates traffic entirely on its own, adjusting its path based on sensor input.</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            
-                        </li>
-                    </ul>
+                    <p>
+                        Oversight level describes how much control humans have over a system’s behavior and decision making. 
+                        Below, we provide an explanation of the four categories, ranging from fully autonomous to fully human-supervised.
+                    </p>
+                    <p>
+                        <ul>
+                            <li>
+                                Self-learning / Autonomous
+                                <ul>
+                                    <li>Humans define goals, constraints, and initial training, but do not monitor or approve each action.</li>
+                                    <li>The system may learn continuously from new data.</li>
+                                    <li>Human involvement is typically limited to maintenance, audits, or review.</li>
+                                    <li>This offers high efficiency and scalability, but also higher risk. Strong safeguards, monitoring, and clear accountability mechanisms are essential.</li>
+                                    <li>
+                                        Example:
+                                        <ul>
+                                            <li>A self-driving car navigates traffic entirely on its own, adjusting its path based on sensor input.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                
+                            </li>
+                        </ul>
 
-                    <ul>
-                        <li>
-                            Human-on-the-Loop (HOTL)
-                            <ul>
-                                <li>Decisions are executed without prior approval.</li>
-                                <li>Humans monitor performance and behavior.</li>
-                                <li>Intervention may include stopping the system, overriding outputs, or adjusting parameters.</li>
-                                <li>This balances efficiency and safety. It assumes humans can detect problems fast enough to prevent serious harm.</li>
-                                <li>
-                                    Example:
-                                    <ul>
-                                        <li>An automated trading bot executes trades automatically, while a human supervisor monitors performance and can halt trading if anomalies appear.</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                        <ul>
+                            <li>
+                                Human-on-the-Loop (HOTL)
+                                <ul>
+                                    <li>Decisions are executed without prior approval.</li>
+                                    <li>Humans monitor performance and behavior.</li>
+                                    <li>Intervention may include stopping the system, overriding outputs, or adjusting parameters.</li>
+                                    <li>This balances efficiency and safety. It assumes humans can detect problems fast enough to prevent serious harm.</li>
+                                    <li>
+                                        Example:
+                                        <ul>
+                                            <li>An automated trading bot executes trades automatically, while a human supervisor monitors performance and can halt trading if anomalies appear.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
 
-                    <ul>
-                        <li>
-                            Human-in-Command (HIC)
-                            <ul>
-                                <li>The system cannot act beyond predefined boundaries.</li>
-                                <li>Humans retain final decision-making power at all times.</li>
-                                <li>Humans can shut down, reconfigure, or permanently disable the system.</li>
-                                <li>This ensures clear accountability and ethical control, especially in high-risk or regulated contexts.</li>
-                                <li>
-                                    Example
-                                    <ul>
-                                        <li>An AI flags contracts with potential legal risks, but a human lawyer decides whether to reject, modify, or approve them.</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                        <ul>
+                            <li>
+                                Human-in-Command (HIC)
+                                <ul>
+                                    <li>The system cannot act beyond predefined boundaries.</li>
+                                    <li>Humans retain final decision-making power at all times.</li>
+                                    <li>Humans can shut down, reconfigure, or permanently disable the system.</li>
+                                    <li>This ensures clear accountability and ethical control, especially in high-risk or regulated contexts.</li>
+                                    <li>
+                                        Example
+                                        <ul>
+                                            <li>An AI flags contracts with potential legal risks, but a human lawyer decides whether to reject, modify, or approve them.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
 
-                    <ul>
-                        <li>
-                            Human-in-the-Loop (HITL)
-                            <ul>
-                                <li>The system can not act on its own.</li>
-                                <li>The system proposes outputs or recommendations.</li>
-                                <li>A human reviews, modifies, or approves avery decision.</li>
-                                <li>This provides strong control and reduces error or harm, but slows down operation and limits scalability.</li>
-                                <li>
-                                    Example:
-                                    <ul>
-                                        <li>A loan approval AI suggests whether to approve a loan, but a human officer must approve each decision before it is finalized.</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                        <ul>
+                            <li>
+                                Human-in-the-Loop (HITL)
+                                <ul>
+                                    <li>The system can not act on its own.</li>
+                                    <li>The system proposes outputs or recommendations.</li>
+                                    <li>A human reviews, modifies, or approves avery decision.</li>
+                                    <li>This provides strong control and reduces error or harm, but slows down operation and limits scalability.</li>
+                                    <li>
+                                        Example:
+                                        <ul>
+                                            <li>A loan approval AI suggests whether to approve a loan, but a human officer must approve each decision before it is finalized.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
 
-                </p>
+                    </p>
 
 
                 <h2 id="workflow">Workflow</h2>
                 <h3 id="readers">Readers</h3>
-                <p>
-                    Readers can open, download, and share model cards without logging in. You can search and filter cards
-                    from the main screen. Follow the example bellow:
-                    <img src="/transparency/img/handbook/readers1.webp">
-                    1. Search for a model you want to read a model card. For example translategemma.
-                    <img src="/transparency/img/handbook/readers2.webp">
-                    2. Once you are inside a model card you can browse its content. On the right side of the screen you can
-                    find the different sections of the card namely: Model, Consider, Training Set, Eval Set, Performance, and
-                    Safety. The content for each corresponding section is:
-                    <ul>
-                        <li>Model: General model information like overview, author, date, version, citations etc.</li>
-                        <li>Consider: Intended uses, user groups, hardware instructions etc. </li>
-                        <li>Training Set: The data set that was used for training.</li>
-                        <li>Eval Set: The data set that was used for evaluation.</li>
-                        <li>Performance: Metrics, and explanation of inference results.</li>
-                        <li>Safety: Ethical risks, security concerns caveats and more.</li>
-                    </ul>
-                </p>
+                    <p>
+                        Readers can open, download, and share model cards without logging in. You can search and filter cards
+                        from the main screen. Follow the example bellow:
+                        <img src="/transparency/img/handbook/readers1.webp">
+                        1. Search for a model you want to read a model card. For example translategemma.
+                        <img src="/transparency/img/handbook/readers2.webp">
+                        2. Once you are inside a model card you can browse its content. On the right side of the screen you can
+                        find the different sections of the card namely: Model, Consider, Training Set, Eval Set, Performance, and
+                        Safety. The content for each corresponding section is:
+                        <ul>
+                            <li>Model: General model information like overview, author, date, version, citations etc.</li>
+                            <li>Consider: Intended uses, user groups, hardware instructions etc. </li>
+                            <li>Training Set: The data set that was used for training.</li>
+                            <li>Eval Set: The data set that was used for evaluation.</li>
+                            <li>Performance: Metrics, and explanation of inference results.</li>
+                            <li>Safety: Ethical risks, security concerns caveats and more.</li>
+                        </ul>
+                    </p>
                 <h3 id="creators">Creators</h3>
-                <p>
-                    Creators must login with an acount to create and manage model cards. After you login you can create
-                    a model card as follow:
-                    <img src="img/handbook/creator1.webp">
-                    1. Click the <i>New</i> button 
-                    <img src="img/handbook/creator2.webp">
-                    2. You will be greeted with this dialog window. Here you can enter a URL that contains model
-                    information (e.g. a huggingface URL). 
-                    The system will retrieve this information and try to fill the model card for you using an AI agent. 
-                    Instead of entering a URL you can instead upload a PDF with model information by clicking on 
-                    <i>"Do you have a file instead?"</i>. 
-                    You can also ignore 
-                    this step, close the dialog window and start drafting a model card from scratch.
-                    To learn more about the technical implementation of this process read the 
-                    <a href="handbook.html#import">Import</a> section.
-                </p>
+                    <p>
+                        Creators must login with an acount to create and manage model cards. After you login you can create
+                        a model card as follow:
+                        <img src="img/handbook/creator1.webp">
+                        1. Click the <i>New</i> button 
+                        <img src="img/handbook/creator2.webp">
+                        2. You will be greeted with this dialog window. Here you can enter a URL that contains model
+                        information (e.g. a huggingface URL). 
+                        The system will retrieve this information and try to fill the model card for you using an AI agent. 
+                        Instead of entering a URL you can instead upload a PDF with model information by clicking on 
+                        <i>"Do you have a file instead?"</i>. 
+                        You can also ignore 
+                        this step, close the dialog window and start drafting a model card from scratch.
+                        To learn more about the technical implementation of this process read the 
+                        <a href="handbook.html#import">Import</a> section.
+                    </p>
 
                 <h2 id="functionalities">Functionalities</h2>
                 <h3 id="import">Import</h3>
-                <p>
-                    The Import operation enables the automated retrieval of information from a specified URL. 
-                    This function is powered by Ollama and CLIP and operates in a multi-step process. Initially, 
-                    the system fetches textual content from the provided URL. This text is then processed using a 
-                    large language model (LLM), which extracts relevant information and populates the corresponding fields 
-                    of the model card. Afterwards, the system retrieves any images present at the URL. These images are 
-                    classified using cosine similarity between the OpenAI’s CLIP image embedding and the field’s description 
-                    text embedding, allowing the system to assign them accurately to the appropriate field within the card. 
-                    Once the automated import process is complete, the user is able to review and modify the information, 
-                    ensuring accuracy and completeness. 
-                </p>
-                <p>
-                    You can use the import functionality by going to <b>Actions > Import</b> from where a dialog window will appear.
-                </p>
-                <img src="img/handbook/import1.webp" alt="">
-                <p>
-                    For the Ollama setup we use the prompt “You are a helpful assistant that provides information about 
-                    an AI model based on a given text. Output in plain text, no braces, no quotes”. This brevity is intentional 
-                    because the LLM is also provided with a JSON schema that forces it to output in a specific provided format. 
-                    This scheme contains guidelines that change the behavior of the model. Using this approach, the general 
-                    instruction prompt functions as a universal guideline applicable to all sections of the model card, while 
-                    the JSON schema supplies field-specific directions. Each field is accompanied by a description that defines 
-                    its intended content, along with optional constraints such as character limits or an enum keyword that restricts 
-                    the field to one of several predefined values. As such we can achieve a structured output that facilitates 
-                    the autofill process and limits the margin for error due to inconsistent and unstructured model outputs. 
-                </p>
-                <p>
-                    For the CLIP setup we use the ViT-B/32 variant. The images fetched from the URL are processed by CLIP to 
-                    produce their vector representations. Since model cards within the service have a standard schema, card fields 
-                    have pre-calculated vector representation stored to memory to avoid redundant calculations. Each image embedding 
-                    is compared with the card’s text embeddings to produce the cosine similarity which classifies the image to one 
-                    of the fields. However, most URLs will also have images that are irrelevant to the model such as site-related 
-                    images or profile pictures. To avoid pulling those into model cards we also compare the image embeddings with 
-                    irrelevant classes like symbols, people, and logos. Images that are classified into these categories are discarded. 
-                </p>
-                <h3 id="refine">Refine</h3>
-                <p>
-                    The service also provides the Refine operation. During this process, an already competed card can be forwarded to an LLM, 
-                    which then simplifies the content of each field. The simplification process is specifically designed to make technical 
-                    descriptions and model specifications accessible to non-experts, without altering the underlying information. This 
-                    ensures that model cards are readable and interpretable by a broader audience, supporting transparency and accessibility. 
-                    Refine is also powered by Ollama with the following prompt:
-                </p>
-                <p>
-                    You are an AI assistant specialized in simplifying and summarizing technical texts. You will be given html, markdown, 
-                    or other text, and will produce a very short summary. <br>
-                    Instructions:<br>
-                    - Avoid technical jargon. Instead, explain concepts in a way that an educated reader can understand without specialized knowledge.<br>
-                    - Maintain an academic tone. <br>
-                    - Rephrase rather than omit: if a concept is difficult to explain simply, break it down into intuitive phrases.<br>
-                    - Use precise language. Do not oversimplify to the point of losing meaning.<br>
-                    - Make sure that the output contains at most a few sentences and reads tersely.<br>
-                    - Make sure that the output is considerably shorter than the input.<br>
-                    - The output should be in pure text format, with no lists, line breaks, or paragraphs.
-                </p>
-                <p>
-                    Using this prompt, we ensure that the AI assistant outputs a short, simplified summary for each field by also maintaining all 
-                    critical information. With this operation we aim to provide stakeholders with all necessary information without overwhelming 
-                    technical descriptions and terminology. 
-                </p>
-                <p>
-                    You can use the <i>Refine </i> action from <b>Actions > Refine</b> from where a dialog window will appear to 
-                    confirm your action.
-                </p>
-                <img src="img/handbook/refine1.webp" alt="">
+                    <p>
+                        The Import operation allows users to upload model information from various sources. 
+                        The source can be URL, File, or Metrics. 
+                    </p>
+                    <p>
+                        For the first two options the operation enables the automated retrieval of information from a specified URL or a file. 
+                        This function is powered by Ollama and CLIP and operates in a multi-step process. Initially, 
+                        the system fetches textual content from the provided URL. This text is then processed using a 
+                        large language model (LLM), which extracts relevant information and populates the corresponding fields 
+                        of the model card. Afterwards, the system retrieves any images present at the URL. These images are 
+                        classified using cosine similarity between the OpenAI’s CLIP image embedding and the field’s description 
+                        text embedding, allowing the system to assign them accurately to the appropriate field within the card. 
+                        Once the automated import process is complete, the user is able to review and modify the information, 
+                        ensuring accuracy and completeness. 
+                    </p>
+                    <p>
+                        You can use the import functionality by going to <b>Actions > Import</b> from where a dialog window will appear.
+                    </p>
+                    <img src="img/handbook/import1.webp" alt="">
+                    <p>
+                        For the Ollama setup we use the prompt “You are a helpful assistant that provides information about 
+                        an AI model based on a given text. Output in plain text, no braces, no quotes”. This brevity is intentional 
+                        because the LLM is also provided with a JSON schema that forces it to output in a specific provided format. 
+                        This scheme contains guidelines that change the behavior of the model. Using this approach, the general 
+                        instruction prompt functions as a universal guideline applicable to all sections of the model card, while 
+                        the JSON schema supplies field-specific directions. Each field is accompanied by a description that defines 
+                        its intended content, along with optional constraints such as character limits or an enum keyword that restricts 
+                        the field to one of several predefined values. As such we can achieve a structured output that facilitates 
+                        the autofill process and limits the margin for error due to inconsistent and unstructured model outputs. 
+                    </p>
+                    <p>
+                        For the CLIP setup we use the ViT-B/32 variant. The images fetched from the URL are processed by CLIP to 
+                        produce their vector representations. Since model cards within the service have a standard schema, card fields 
+                        have pre-calculated vector representation stored to memory to avoid redundant calculations. Each image embedding 
+                        is compared with the card’s text embeddings to produce the cosine similarity which classifies the image to one 
+                        of the fields. However, most URLs will also have images that are irrelevant to the model such as site-related 
+                        images or profile pictures. To avoid pulling those into model cards we also compare the image embeddings with 
+                        irrelevant classes like symbols, people, and logos. Images that are classified into these categories are discarded. 
+                    </p>
+
+                    <p>
+                        For the <i>Metrics</i> option we allow the user to upload an evaluation report from our <a href="https://pypi.org/project/aicard-eval/">evaluation tool</a>.
+                        This report is in a JSON format and includes metric scores, inference details, and package information. 
+                        The operations will convert the JSON format into a readable HTML format and insert it into the <i>Performance->Metrics</i> field of the model card.
+                    </p>
+                    <img src="img/handbook/eval1.png" alt="">
+
+                    <h3 id="refine">Refine</h3>
+                    <p>
+                        The service also provides the Refine operation. During this process, an already competed card can be forwarded to an LLM, 
+                        which then simplifies the content of each field. The simplification process is specifically designed to make technical 
+                        descriptions and model specifications accessible to non-experts, without altering the underlying information. This 
+                        ensures that model cards are readable and interpretable by a broader audience, supporting transparency and accessibility. 
+                        Refine is also powered by Ollama with the following prompt:
+                    </p>
+                    <p>
+                        You are an AI assistant specialized in simplifying and summarizing technical texts. You will be given html, markdown, 
+                        or other text, and will produce a very short summary. <br>
+                        Instructions:<br>
+                        - Avoid technical jargon. Instead, explain concepts in a way that an educated reader can understand without specialized knowledge.<br>
+                        - Maintain an academic tone. <br>
+                        - Rephrase rather than omit: if a concept is difficult to explain simply, break it down into intuitive phrases.<br>
+                        - Use precise language. Do not oversimplify to the point of losing meaning.<br>
+                        - Make sure that the output contains at most a few sentences and reads tersely.<br>
+                        - Make sure that the output is considerably shorter than the input.<br>
+                        - The output should be in pure text format, with no lists, line breaks, or paragraphs.
+                    </p>
+                    <p>
+                        Using this prompt, we ensure that the AI assistant outputs a short, simplified summary for each field by also maintaining all 
+                        critical information. With this operation we aim to provide stakeholders with all necessary information without overwhelming 
+                        technical descriptions and terminology. 
+                    </p>
+                    <p>
+                        You can use the <i>Refine </i> action from <b>Actions > Refine</b> from where a dialog window will appear to 
+                        confirm your action.
+                    </p>
+                    <img src="img/handbook/refine1.webp" alt="">
+                <h3 id="ai_chat">AI-Chat</h3>
+                    The AI-Chat is a tool to extract information from the model card.
+                    It uses a BGE model to retrieve information from the model card based on the semantic meaning of the question that the user provides. 
+                    Each answer incudes the section and field from which the information is retrieved. 
+                    The user can ask several questions about the usability, performace, ethical concerns and more. 
+                    <img src="img/handbook/ai_chat1.webp" alt="">
 
                 <h3 id="clone">Clone</h3>
-                <p>
-                    Clone creates a copy of your model card which you can use to create different versions of the card.
-                    This feature is particularly useful when a model is updated and changes to the model card must be made. 
-                    It also keeps track of the relation between the versions which is used to display the version tree in the card.
-                </p>
-                <p>
-                    You can use the <i>Clone</i> action from <b>Actions > Clone</b>. Once you do that you will automatically be
-                    redirected to the cloned card.
-                </p>
-                <img src="img/handbook/clone1.webp" alt="">
+                    <p>
+                        Clone creates a copy of your model card which you can use to create different versions of the card.
+                        This feature is particularly useful when a model is updated and changes to the model card must be made. 
+                        It also keeps track of the relation between the versions which is used to display the version tree in the card.
+                    </p>
+                    <p>
+                        You can use the <i>Clone</i> action from <b>Actions > Clone</b>. Once you do that you will automatically be
+                        redirected to the cloned card.
+                    </p>
+                    <img src="img/handbook/clone1.webp" alt="">
                 <h3 id="share">Share</h3>
-                <p>
-                    With the <i>Share</i> functionality you can download a model card in various formats or share it on social media. <br>
-                </p>
-                <p>
-                    Currently supported download formats are:
-                    <ul>
-                        <li>PDF</li>
-                        <li>JSON</li>
-                        <li>Markdown</li>
-                    </ul>
-                </p>
-                <p>
-                    You can use the <i>Share</i> functionality directly from the <i>Share</i> button.
-                </p>
-                <img src="img/handbook/share1.webp" alt="">
+                    <p>
+                        With the <i>Share</i> functionality you can download a model card in various formats or share it on social media. <br>
+                    </p>
+                    <p>
+                        Currently supported download formats are:
+                        <ul>
+                            <li>PDF</li>
+                            <li>JSON</li>
+                            <li>Markdown</li>
+                        </ul>
+                    </p>
+                    <p>
+                        You can use the <i>Share</i> functionality directly from the <i>Share</i> button.
+                    </p>
+                    <img src="img/handbook/share1.webp" alt="">
 
             </div>
         </section>

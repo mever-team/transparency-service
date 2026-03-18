@@ -4,8 +4,10 @@
     width: 95%;
     max-width:50rem;
     margin: 1rem;
-    box-shadow: .2rem .2rem .2rem #aaaaaa;
-    border: .1rem solid #aaaaaa;
+    box-shadow: .1rem .1rem .5rem #747474;
+    border: 1px solid #aaaaaa;
+    /* padding: 1rem; */
+    border-radius: 1rem;
 }
 
 .handbook_body {
