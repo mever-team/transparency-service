@@ -399,7 +399,6 @@ def serve(
         num_pages = (total + page_size - 1) // page_size
         offset = (page - 1) * page_size
         if len(query) >= 3 and owner:
-            placeholders = ",".join(["?"] * len(owner))
             cursor.execute(
                 f"""
                 SELECT
@@ -449,7 +448,7 @@ def serve(
                 ORDER BY rank ASC
                 LIMIT ? OFFSET ?
                 """,
-                (sanitize_for_fts(query), *owner, f"%{query.lower()}%", *owner, *safe_argument_list, page_size, offset)
+                (sanitize_for_fts(query), owner,*safe_argument_list, f"%{query.lower()}%", owner, *safe_argument_list, page_size, offset)
             )
 
         elif len(query) >= 3:
@@ -500,7 +499,7 @@ def serve(
                 ORDER BY rank ASC
                 LIMIT ? OFFSET ?
                 """,
-                (sanitize_for_fts(query), f"%{query.lower()}%", *safe_argument_list, page_size, offset)
+                (sanitize_for_fts(query),*safe_argument_list, f"%{query.lower()}%", *safe_argument_list, page_size, offset)
             )
 
         elif query and owner:
