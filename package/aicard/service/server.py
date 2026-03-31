@@ -33,6 +33,7 @@ def serve(
     redirect_index: str|None = None,
     admin_username: str|None = None,
     admin_password: str|None = None,
+    OLLAMA_API_KEY: str|None = None,
     env: str|None = None, # retrieve missing arguments from a .env file. That can have fields USER PASS INDEX LOG (the last is the log_file)
     token_expiration_secs: int = 60*60,
     root:str|None = "db", # None or "" initializes a non-persistent database for testing
@@ -50,6 +51,7 @@ def serve(
     if not admin_username: admin_username = config.get("USER")
     if not admin_password: admin_password = config.get("PASS")
     if not redirect_index: redirect_index = config.get("INDEX")
+    if not OLLAMA_API_KEY: OLLAMA_API_KEY = config.get("OLLAMA_API_KEY")
     if not log_file: log_file = config.get("LOG", log_file)
     if not third_party_realm: third_party_realm = config.get("THIRD_PARTY_REALM")
     if not third_party_client: third_party_client = config.get("THIRD_PARTY_CLIENT")

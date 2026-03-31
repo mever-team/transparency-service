@@ -1,6 +1,8 @@
+from dotenv import dotenv_values
 import requests
 import os
 import json
+from typing import Optional
 from aicard.agents.agent import Agent
 from aicard.utils.image_converters import to_base64
 
@@ -40,18 +42,22 @@ Instructions:
 
     def __init__(
             self,
-            model: str='mistral:latest',
+            model: str,
             vision_model: str='gemma3:4b',
-            base_url: str=os.getenv("OLLAMA_BASE_URL","http://localhost:11434"),
+            # base_url: str=os.getenv("OLLAMA_BASE_URL","http://localhost:11434"),
+            base_url: str="https://ollama.com",
+            env: Optional[str] = None,
             name=None,
             description="Powered by Ollama.",
             timeout_secs=40
         ):
+        config = dotenv_values(env) if env else {}
         if name is None:
             name = "🦙 "+model.split(":")[0]
         self._description = description
         self._name = name
         self._base_url = base_url
+        self.OLLAMA_API_KEY = config.get("OLLAMA_API_KEY", '')
         self._url = f"{base_url}/api/chat"
         self._model = model
         self._vision_model = vision_model
@@ -60,7 +66,10 @@ Instructions:
             "model": model,
             "stream": False,
             "messages": [{"role": "user", "content": "Request test"}],
-        })
+            },
+            headers={"Authorization": "Bearer " + self.OLLAMA_API_KEY},
+        )
+        print(test.text)
         assert test.status_code == 200, f"Failed to initialize model '{model}'\nResponse: {test.text}"
 
     def abort(self):
@@ -92,7 +101,12 @@ Instructions:
             }
         if params:
             payload.update(params)
-        response = requests.post(self._url, json=payload, timeout=self.timeout_secs)
+        response = requests.post(
+            self._url, 
+            json=payload, 
+            headers={"Authorization": "Bearer " + self.OLLAMA_API_KEY},)
+            # timeout=self.timeout_secs)
+        print(response.text)
         response = json.loads(response.text)["message"]["content"]
         if response.startswith("Here"):
             idx_colon = response.find(':')
