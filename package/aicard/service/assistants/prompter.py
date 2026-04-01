@@ -107,8 +107,8 @@ class Prompter(Assistant):
         current_category = None
         current_field = None
         for line in lines:
-            line = line.strip()
-            # print(line)
+            line = line.strip() + ' '
+            print(line)
             if line.startswith('# '):
                 current_category = line[2:].strip().lower()
             elif line.startswith('## '):
@@ -121,7 +121,7 @@ class Prompter(Assistant):
                 if current_category and current_field:
                     try:
                         old_value = card.data[current_category][current_field].get()
-                        card.data[current_category][current_field].set(old_value+'<span style="color:red;">'+line+'</span>')
+                        card.data[current_category][current_field].set(old_value+'<span style="color:red !important;">'+line+'</span>')
                     except:
                         logger.error(f'Cannot assign value to {current_category}, {current_field}. Wrong category or field')
                 

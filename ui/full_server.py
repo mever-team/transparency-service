@@ -20,7 +20,7 @@ matcher = SemanticMatcher(
     external_get_timeout_sec=3,
     matching_strictness=0.5)
 prompter = Prompter(
-    OllamaCloud("nemotron-3-nano:30b", name="nemotron-3-nano:30b", env="ui/.env", timeout_secs=45),
+    OllamaCloud("qwen3.5:397b", name="qwen3.5:397b", env="ui/.env", timeout_secs=100),
     description="Mistral is used as the base model.",
     text_preprocessor=text_compression
 )

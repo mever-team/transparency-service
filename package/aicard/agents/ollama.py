@@ -23,12 +23,10 @@ Instructions:
 - Make sure that the output is considerably shorter than the input.
 - The output should be in pure text format, with no lists, line breaks, or paragraphs.
 """,
-        "simplification": """You are given a Markdown document.
-
-Your task:
+        "simplification": """Your task:
 
 - Rewrite the text under each header to make it easier to understand
-- Improve clarity and explain ideas more explicitly
+- Improve clarity and explain ideas more explicitly, without changing the meaning
 - Keep the EXACT same Markdown structure
 
 Rules:
@@ -36,13 +34,15 @@ Rules:
 - Keep all headers (#) exactly as they are (same number, same order)
 - Do NOT merge or remove sections
 - Do NOT add new sections
-- Do NOT add external information beyond what is implied in the original text
+- Do NOT introduce new information that is not implied by the original text
 - Do NOT remove or omit any information
+- Use simple, natural language
+- Prefer slightly longer explanations only when they improve understanding
 - Use natural language
-- Prefer slightly longer explanations when they improve understanding
-- When a concept is complex, briefly clarify it in simple terms
-- Identify technical words and provide explanation inside parenthesis 
+- When a concept is complex, briefly explain it in simple terms
+- When using technical or uncommon words, add a short explanation in parentheses
 - Preserve the original meaning
+- The result should be understandable by a 12-year-old
 
 Output:
 
