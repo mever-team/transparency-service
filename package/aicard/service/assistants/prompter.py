@@ -88,6 +88,11 @@ class Prompter(Assistant):
             f"Saving..."
         )
 
+    def refine_field(self, text: str, logger: Logger):
+        params = {}
+        refined_stream = self.agent.simplificationStream(text, **params)
+        return refined_stream
+        
     def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]):
         if not self.deep:
             # Merge all existing LongText content into one text block

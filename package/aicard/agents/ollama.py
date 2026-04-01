@@ -3,6 +3,7 @@ import os
 import json
 from aicard.agents.agent import Agent
 from aicard.utils.image_converters import to_base64
+from flask import Response
 
 
 class Ollama(Agent):
@@ -101,4 +102,27 @@ Instructions:
             if indices:
                 response = response[min(indices) + 1:].strip()
         return response
+    
+    def _run_stream(self, content: str, task: str, **params):
+        assert isinstance(content, str), "Content must be of type str"
+        assert task in Ollama.tasks, "Not supported task: "+task
+        payload = {
+            "model": self._model,
+            "stream": True,
+            "messages": [{"role": "system", "content": Ollama.tasks[task]}, {"role": "user", "content": content}]
+        }
+        if params:
+            payload.update(params)
+            
+        def generate():
+            with requests.post(self._url, json=payload, stream=True) as r:
+                for line in r.iter_lines():
+                    if line:
+                        yield line.decode("utf-8") + "\n"
+        return Response(
+            generate(), 
+            content_type="application/x-ndjson", 
+            headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"}
+            )
+
 

@@ -783,6 +783,19 @@ def serve(
         status = card.autorefine(assistant, logger)
         logger.info(f"requested card {card_id} refinement from {assistant_type}", user=creator)
         return jsonify(status)
+    
+    @app.route(domain_prefix+'/assistant/<string:assistant_type>/refinefield/<int:card_id>', methods=['POST'])
+    @users.require_auth(token2expiration, third_party_auth)
+    def autorefine_field(card_id: int, assistant_type: str, token: str):
+        assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
+        card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
+        with auth_lock: creator = token2user.get(token, None)
+        if creator!=card.creator: abort(403, "Only the card's creator can refine it in-place.")
+        data = request.get_json()
+        text = data.get('value', '')
+        refined_stream = assistant.refine_field(text, logger)
+        logger.info(f"requested field card {card_id} refinement from {assistant_type}", user=creator)
+        return refined_stream
 
     @app.route(domain_prefix+"/card/<int:card_id>/download/<string:fformat>", methods=["GET"])
     def download_card(card_id, fformat):

@@ -243,7 +243,13 @@ $(document).ready(function () {
                                     $('.menu').find('div').eq(index).find('.light').addClass('arrow');
                                 }
 
+                                let $refineBtn = $("<button>")
+                                    .addClass("refine-field")
+                                    .text("refine field");
                                 $field.append($fieldInfo).append($fieldValue);
+                                if (token && cardJson.creator===loggedUser){
+                                    $field.append($refineBtn);
+                                }
                                 $section.append($field);
 
                                 // compared value
@@ -371,6 +377,62 @@ $(document).ready(function () {
     });
 
     if(token) $("#edit-options").show();
+
+$('.contents').on('click', '.refine-field', async function () {
+    const container = $(this).parent();
+
+    const section_name = $('.menu').find('.active span:eq(1)').text().trim().toLowerCase();
+    const field_name = container.find('.field-info .field-name').text().trim().toLowerCase();
+    const field_value_el = container.find('.field-value');
+
+    const field_value = field_value_el.text().trim().toLowerCase();
+    const assistant = 'agent';
+
+    const response = await fetch(
+        "/transparency/assistant/" + assistant + '/refinefield/' + id,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify({ value: field_value })
+        }
+    );
+
+    console.log('nice hehe');
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+
+    let buffer = "";
+    let fullText = field_value + "<br><br>";
+
+    while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+
+        const lines = buffer.split("\n");
+        buffer = lines.pop();
+
+        for (const line of lines) {
+            if (!line.trim()) continue;
+
+            try {
+                const json = JSON.parse(line);
+                const content = json.message.content
+
+                if (content) {
+                    fullText += content;
+                    field_value_el.text(fullText); // 🔥 live update
+                }
+            } catch (e) {
+                console.error("Parse error:", line);
+            }
+        }
+    }
+});
 
     $("#saveJson").click(function () {
         $("#saveJson").fadeOut();

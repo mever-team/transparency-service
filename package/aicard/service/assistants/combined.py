@@ -27,3 +27,6 @@ class Combined(Assistant):
 
     def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]):
         return self._refine.refine(card, logger, user_messages)
+    
+    def refine_field(self, text: str, logger: Logger):
+        return self._refine.refine_field(text, logger)

@@ -9,3 +9,4 @@ class Assistant:
     def start(self, logger: Logger): pass
     def complete(self, card: ModelCard, url: str, logger: Logger, user_messages: list[str]): pass
     def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]): pass
+    def refine_field(self, text: str, logger: Logger): pass
