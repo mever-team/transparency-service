@@ -10,9 +10,8 @@ import markdown2
 import time
 
 from ...agents.extensions.embeddings import ImageClassifier
-from ...card.fields import LongText, Pattern
+from ...card.fields import LongText, Pattern, ShortText
 from ...utils.pdf_split import pdf_to_chunks
-
 
 class Prompter(Assistant):
     def __init__(self,
@@ -89,95 +88,120 @@ class Prompter(Assistant):
         )
 
     def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]):
-        if not self.deep:
-            # Merge all existing LongText content into one text block
-            merged_texts = []
-            for category, values in card.data.items():
-                if not isinstance(values, dict): continue
-                for field, value in values.items():
-                    text_val = value.get().strip()
-                    if text_val:
-                        merged_texts.append(f"{category}.{field}: {text_val}\n")
-            if not merged_texts:
-                logger.warn("No long text fields found for refinement", user=self.alias)
-                return
-            merged_input = "\n\n".join(merged_texts)
-            user_messages.clear()
-            user_messages.append(f"<h2>{self.alias} refinement</h2>Running global completion...")
-            new_card = ModelCard()
-            self._complete(merged_input, "refinement", new_card, logger, user_messages)
-            # retrieve unset short fields/dropdowns/dates/etc from the original
-            for category, values in new_card.data.items():
-                if not isinstance(values, dict): continue
-                for field, value in values.items():
-                    if not isinstance(value, LongText) and not isinstance(value, Pattern) and not value:
-                        value.set(card.data[category][field].get())
-            card.assign(new_card)
-            # for category, values in card.data.items():
-            #     if not isinstance(values, dict): continue
-            #     for field, value in values.items():
-            #         if not isinstance(value, LongText): continue
-            #         new_value = value.get()
-            #         if not new_value: continue
-            #         # merged_html = (
-            #         #     f"<details>\n<summary><h2>Refined on {datetime.datetime.now().strftime('%Y %B %d, %I:%M%p')}</h2></summary>\n\n"
-            #         #     f"<div class=\"card-details-content\">\n{new_value}\n</div>\n</details>\n\n"
-            #         #     f"{value.get()}"
-            #         # )
-            #         value.set(new_value)
-            return
-
-        user_messages.clear()
-        user_messages.append(f"<h2>{self.alias} refinement</h2>")
-        count_categories = 0
+        combined_text_md = ''
         for category, values in card.data.items():
             if not isinstance(values, dict): continue
+            combined_text_md += '# ' + category + '\n'
             for field, value in values.items():
                 if not isinstance(value, LongText): continue
-                if len(value.get().split(' '))<2: continue
-                count_categories += 2
-        progress = 0
-        for category, values in card.data.items():
-            if not isinstance(values, dict): continue
-            for field, value in values.items():
-                if not isinstance(value, LongText): continue
-                value_text = value.get()
-                if len(value_text.split(' '))<2: continue
-                if ("<summary><h2>Simplified</h2></summary>" in value_text or
-                    "<summary><h2>Original</h2></summary>" in value_text): continue
+                text_val = value.get().strip()
+                if text_val:
+                    combined_text_md += '## ' + field + '\n'
+                    combined_text_md += text_val + '\n\n'
+                    
+        prompt = combined_text_md
+        params = {}
+        refined = self.agent.simplification(prompt, **params)
+        
+        lines = refined.splitlines()
+        current_category = None
+        current_field = None
+        for line in lines:
+            line = line.strip()
+            # print(line)
+            if line.startswith('# '):
+                current_category = line[2:].strip().lower()
+            elif line.startswith('## '):
+                current_field = line[3:].strip().lower()
+                try:
+                    card.data[current_category][current_field].set('')
+                except:
+                    logger.error(f'Rifine produces wrong category or field: {current_category} {current_field}')
+            else:
+                if current_category and current_field:
+                    try:
+                        old_value = card.data[current_category][current_field].get()
+                        card.data[current_category][current_field].set(old_value+'<span style="color:red;">'+line+'</span>')
+                    except:
+                        logger.error(f'Cannot assign value to {current_category}, {current_field}. Wrong category or field')
+                
+        # if not self.deep:
+        #     # Merge all existing LongText content into one text block
+        #     merged_texts = []
+        #     for category, values in card.data.items():
+        #         if not isinstance(values, dict): continue
+        #         for field, value in values.items():
+        #             text_val = value.get().strip()
+        #             if text_val:
+        #                 merged_texts.append(f"{category}.{field}: {text_val}\n")
+        #     if not merged_texts:
+        #         logger.warn("No long text fields found for refinement", user=self.alias)
+        #         return
+        #     merged_input = "\n\n".join(merged_texts)
+        #     user_messages.clear()
+        #     user_messages.append(f"<h2>{self.alias} refinement</h2>Running global completion...")
+        #     new_card = ModelCard()
+        #     self._complete(merged_input, "refinement", new_card, logger, user_messages)
+        #     # retrieve unset short fields/dropdowns/dates/etc from the original
+        #     for category, values in new_card.data.items():
+        #         if not isinstance(values, dict): continue
+        #         for field, value in values.items():
+        #             if not isinstance(value, LongText) and not isinstance(value, Pattern) and not value:
+        #                 value.set(card.data[category][field].get())
+        #     card.assign(new_card)
+        #     return
 
-                def update_progress(progress):
-                    progress_html = (
-                        f"<progress value='{int(progress / count_categories * 100)}' max='100' "
-                        f"style='width: 300px; height: 20px; "
-                        f"accent-color: #79CFDC; border: 2px solid #1F1F1F;'></progress>"
-                    )
-                    user_messages[-1] = (
-                        f"<h2>{self.alias} refinement</h2>"
-                        f"{progress_html}<br>"
-                        f"<b>Working on tab: {category.replace('_', ' ')} {field.replace('_', ' ')}</b>"
-                    )
+        # user_messages.clear()
+        # user_messages.append(f"<h2>{self.alias} refinement</h2>")
+        # count_categories = 0
+        # for category, values in card.data.items():
+        #     if not isinstance(values, dict): continue
+        #     for field, value in values.items():
+        #         if not isinstance(value, LongText): continue
+        #         if len(value.get().split(' '))<2: continue
+        #         count_categories += 2
+        # progress = 0
+        # for category, values in card.data.items():
+        #     if not isinstance(values, dict): continue
+        #     for field, value in values.items():
+        #         if not isinstance(value, LongText): continue
+        #         value_text = value.get()
+        #         if len(value_text.split(' '))<2: continue
+        #         if ("<summary><h2>Simplified</h2></summary>" in value_text or
+        #             "<summary><h2>Original</h2></summary>" in value_text): continue
 
-                update_progress(progress)
-                progress += 1
-                summarization = self.agent.summarization(value_text)
+        #         def update_progress(progress):
+        #             progress_html = (
+        #                 f"<progress value='{int(progress / count_categories * 100)}' max='100' "
+        #                 f"style='width: 300px; height: 20px; "
+        #                 f"accent-color: #79CFDC; border: 2px solid #1F1F1F;'></progress>"
+        #             )
+        #             user_messages[-1] = (
+        #                 f"<h2>{self.alias} refinement</h2>"
+        #                 f"{progress_html}<br>"
+        #                 f"<b>Working on tab: {category.replace('_', ' ')} {field.replace('_', ' ')}</b>"
+        #             )
 
-                update_progress(progress)
-                progress += 1
-                simplification = self.agent.simplification(value_text)
+        #         update_progress(progress)
+        #         progress += 1
+        #         summarization = self.agent.summarization(value_text)
 
-                summarization = markdown2.markdown(summarization, extras=["markdown-in-html", "code-friendly"])
-                simplification = markdown2.markdown(simplification, extras=["markdown-in-html", "code-friendly"])
-                value.set(
-                    f"{summarization}\n\n"
-                    f"<details>\n<summary><h2>Simplified</h2></summary>\n\n<div class=\"card-details-content\">\n{simplification}\n</div>\n</details>\n\n"
-                    f"<details>\n<summary><h2>Original</h2></summary>\n\n<div class=\"card-details-content\">\n{value_text}\n</div>\n</details>"
-                )
-        user_messages[-1] = (
-            f"<h2>{self.alias} refinement</h2>"
-            f"Saving..."
-        )
-        #card.assign(card.to_html_card()) # this creates some errors - under investigation
+        #         update_progress(progress)
+        #         progress += 1
+        #         simplification = self.agent.simplification(value_text)
+
+        #         summarization = markdown2.markdown(summarization, extras=["markdown-in-html", "code-friendly"])
+        #         simplification = markdown2.markdown(simplification, extras=["markdown-in-html", "code-friendly"])
+        #         value.set(
+        #             f"{summarization}\n\n"
+        #             f"<details>\n<summary><h2>Simplified</h2></summary>\n\n<div class=\"card-details-content\">\n{simplification}\n</div>\n</details>\n\n"
+        #             f"<details>\n<summary><h2>Original</h2></summary>\n\n<div class=\"card-details-content\">\n{value_text}\n</div>\n</details>"
+        #         )
+        # user_messages[-1] = (
+        #     f"<h2>{self.alias} refinement</h2>"
+        #     f"Saving..."
+        # )
+        # #card.assign(card.to_html_card()) # this creates some errors - under investigation
 
     def _complete(self, text: str|list[str], task: str, card: ModelCard, logger: Logger, user_messages: list[str]):
         if not isinstance(text, list):

@@ -23,15 +23,32 @@ Instructions:
 - Make sure that the output is considerably shorter than the input.
 - The output should be in pure text format, with no lists, line breaks, or paragraphs.
 """,
-        "simplification": """You are an AI specialized in simplifying technical texts while maintaining a professional, academic tone. 
-Your goal is to rewrite technical content in a way that preserves all information but replaces complex terminology with clear, accessible language.
-Instructions:
-- Do not shorten the text—keep all details intact.
-- Avoid technical jargon—instead, explain concepts in a way that an educated reader can understand without specialized knowledge.
-- Maintain an academic tone—the text should still feel like it belongs in a research paper.
-- Rephrase rather than omit—if a concept is difficult to explain simply, break it down into intuitive steps.
-- Use precise language—do not oversimplify to the point of losing meaning. 
-- Keep the same content length as the original.""",
+        "simplification": """You are given a Markdown document.
+
+Your task:
+
+- Rewrite the text under each header to make it easier to understand
+- Improve clarity and explain ideas more explicitly
+- Keep the EXACT same Markdown structure
+
+Rules:
+
+- Keep all headers (#) exactly as they are (same number, same order)
+- Do NOT merge or remove sections
+- Do NOT add new sections
+- Do NOT add external information beyond what is implied in the original text
+- Do NOT remove or omit any information
+- Use natural language
+- Prefer slightly longer explanations when they improve understanding
+- When a concept is complex, briefly clarify it in simple terms
+- Identify technical words and provide explanation inside parenthesis 
+- Preserve the original meaning
+
+Output:
+
+- Return ONLY the final Markdown
+- Do NOT include any extra text before or after
+""",
         "vision": "Provide explanation about the image."
     }
     def name(self):
@@ -44,8 +61,7 @@ Instructions:
             self,
             model: str,
             vision_model: str='gemma3:4b',
-            # base_url: str=os.getenv("OLLAMA_BASE_URL","http://localhost:11434"),
-            base_url: str="https://ollama.com",
+            base_url: str=os.getenv("OLLAMA_BASE_URL","http://localhost:11434"),
             env: Optional[str] = None,
             name=None,
             description="Powered by Ollama.",
@@ -69,7 +85,6 @@ Instructions:
             },
             headers={"Authorization": "Bearer " + self.OLLAMA_API_KEY},
         )
-        print(test.text)
         assert test.status_code == 200, f"Failed to initialize model '{model}'\nResponse: {test.text}"
 
     def abort(self):
@@ -106,7 +121,6 @@ Instructions:
             json=payload, 
             headers={"Authorization": "Bearer " + self.OLLAMA_API_KEY},)
             # timeout=self.timeout_secs)
-        print(response.text)
         response = json.loads(response.text)["message"]["content"]
         if response.startswith("Here"):
             idx_colon = response.find(':')
@@ -116,3 +130,23 @@ Instructions:
                 response = response[min(indices) + 1:].strip()
         return response
 
+class OllamaCloud(Ollama):
+       def __init__(
+            self,
+            model: str, # nemotron-3-nano:30b qwen3-next:80b gemma3:27b qwen3.5:397b 
+            vision_model: str='gemma3:4b',
+            base_url: str="https://ollama.com",
+            env: Optional[str] = None,
+            name=None,
+            description="Powered by Ollama.",
+            timeout_secs=40
+        ):
+           super().__init__(
+                model = model,
+                vision_model= vision_model,
+                base_url = base_url,
+                env = env,
+                name = name,
+                description = description,
+                timeout_secs = timeout_secs
+            )

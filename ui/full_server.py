@@ -11,7 +11,7 @@ refer to the implementation in package/service/server.py
 from aicard.service import serve
 from aicard.service.assistants import SemanticMatcher, Prompter, Combined
 from aicard.service.email import EmailVerification
-from aicard.agents import Ollama
+from aicard.agents import Ollama, OllamaCloud
 from aicard.agents.extensions.speedups import text_compression
 from threading import Thread
 
@@ -20,7 +20,7 @@ matcher = SemanticMatcher(
     external_get_timeout_sec=3,
     matching_strictness=0.5)
 prompter = Prompter(
-    Ollama("qwen3.5:397b", name="qwen3.5:397b", env="ui/.env", timeout_secs=45),
+    OllamaCloud("nemotron-3-nano:30b", name="nemotron-3-nano:30b", env="ui/.env", timeout_secs=45),
     description="Mistral is used as the base model.",
     text_preprocessor=text_compression
 )
