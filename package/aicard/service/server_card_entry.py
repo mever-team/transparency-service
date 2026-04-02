@@ -2,6 +2,7 @@ from aicard.card import ModelCard
 from aicard.card.model_card import truncate
 from aicard.service.assistants import Assistant, SemanticMatcher
 from aicard.service.logger import Logger
+from aicard.service.cards_status import CardStatus, Status
 from flask import abort
 from threading import Lock, Thread
 from werkzeug.exceptions import Forbidden, NotFound, Unauthorized
@@ -170,9 +171,9 @@ class ModelCardEntry:
             logger.error(f"aborted card{self.card_id} import with error {e}", user=assistant.alias)
         self.end_completion()
 
-    def __autorefine(self, assistant: Assistant, logger: Logger):
+    def __autorefine(self, assistant: Assistant, logger: Logger, card_status: CardStatus):
         try:
-            assistant.refine(self.card, logger, self._completion_status)
+            assistant.refine(self.card, self.card_id, logger, self._completion_status, card_status)
             self.commit_card(on_thread=True, edit_message=assistant.alias + " refinement")  # on_thread=True because we are on a heavyweight path either way
             logger.info(f"ended card {self.card_id} refinement", user=assistant.alias)
         except Exception as e:
@@ -187,12 +188,12 @@ class ModelCardEntry:
         self.__thread.start()
         return "Autocompletion request was submitted successfully. Please wait while the assistant runs."
 
-    def autorefine(self, assistant: Assistant, logger: Logger):
+    def autorefine(self, assistant: Assistant, logger: Logger, card_status: CardStatus):
         self.start_completion()
-        self.__thread = Thread(target=self.__autorefine, args=(assistant, logger))
+        self.__thread = Thread(target=self.__autorefine, args=(assistant, logger, card_status))
         self.__thread.start()
         return "Refinement request was submitted successfully. Please wait while the assistant runs."
-
+    
     def get_status(self):
         if self.check_completion(): return {"status": "locked", "message": "AI assistant is working on the model card"}
         return {"status": "editable", "message": "You can edit the model card"}

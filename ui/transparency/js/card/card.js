@@ -197,6 +197,8 @@ $(document).ready(function () {
                                 let $fieldName = $("<span>")
                                     .addClass("field-name")
                                     .text(" "+field.name.replace(/_/g, " "));
+                                
+
 
                                 // info-tooltip
                                 let $fieldInfo = $("<span>")
@@ -268,12 +270,79 @@ $(document).ready(function () {
                                 }
                             });
 
+
+
                             $li.append($("<div>").append($section));
                             $ul.append($li);
                             $('.menu').find('div').removeClass('active');
                             $('.menu div:first-child').addClass('active');
 
                         });
+
+                        if (localStorage.getItem("refine_" + id) === "true") {
+                            localStorage.removeItem("refine_" + id);
+                            runRefinement('agent', id);
+                            let $loading_spinner = $("<div>")
+                                .addClass('spinner')
+                                .css({
+                                    'width': '20px', 
+                                    'height': '20px'
+                                })
+                            $('.field-value').html($loading_spinner);
+                            const completed = {};
+                            const intervalId = setInterval(async () => {
+                                try {
+                                    $.ajax({
+                                        url: "/transparency/card/" + id + "/status",
+                                        method: "GET",
+                                        headers: {"Authorization": "Bearer " + token},
+                                        contentType: "application/json",
+                                        dataType: "json",
+                                        success: function (status) {
+                                            if (status && Object.keys(status).length === 0) {
+                                                clearInterval(intervalId);
+                                                return;
+                                            }
+                                            for (const [section, fields] of Object.entries(status.data)) {
+                                                if (!completed[section]) {completed[section] = [];}
+                                                for (let [field, value] of Object.entries(fields)) {
+                                                    if (completed[section].includes(field)) {continue;}
+                                                    field = field.replaceAll('_', ' ');
+                                                    let matched = false;
+                                                    $('.contents .nacc li').each(function () {
+                                                        const this_section = $(this).find('h2').first().text().trim().toLowerCase();
+                                                        if (this_section === section) {
+                                                            $(this).find('.field').each(function () {
+                                                                const this_field = $(this).find('.field-name').text().trim().toLowerCase();
+                                                                if (this_field === field) {
+                                                                    $(this).find('.field-value').html(value);
+                                                                    matched = true;
+                                                                    completed[section].push(field);
+                                                                    return false; // break .each()
+                                                                }
+                                                            });
+                                                            return false; // break outer .each()
+                                                        }
+                                                    });
+                                                    if (matched) {
+                                                        continue;
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        error: function (xhr, status, error) {}
+                                    });
+
+                                } catch (err) {
+                                    console.error(err);
+                                }
+                            }, 100);
+
+                            jsonData.data.forEach((section, index) => {
+
+                            });
+                        }
+
                         if (!($('.light.arrow').length > 0)&& is_logged_in) {
                             // TODO: we have the option of just opening the import, which may be more practical
                             document.getElementById('modal-autocomplete-screen').style.display = 'flex';
@@ -400,12 +469,11 @@ $('.contents').on('click', '.refine-field', async function () {
         }
     );
 
-    console.log('nice hehe');
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
 
     let buffer = "";
-    let fullText = field_value + "<br><br>";
+    let fullText = field_value_el.html() + "<br><br>";
 
     while (true) {
         const { done, value } = await reader.read();
@@ -425,7 +493,7 @@ $('.contents').on('click', '.refine-field', async function () {
 
                 if (content) {
                     fullText += content;
-                    field_value_el.text(fullText); // 🔥 live update
+                    field_value_el.html(fullText);
                 }
             } catch (e) {
                 console.error("Parse error:", line);
@@ -606,7 +674,7 @@ $('.contents').on('click', '.refine-field', async function () {
                         method: "POST",
                         headers: { "Authorization": "Bearer " + token },
                         success: function (newId) {
-                            runRefinement(assistant, newId);
+                            localStorage.setItem("refine_" + newId, "true");
                             window.open("model_card.html?id=" + newId, "_blank");
                         }
                     });

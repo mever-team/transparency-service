@@ -114,15 +114,15 @@ Instructions:
         if params:
             payload.update(params)
             
-        def generate():
-            with requests.post(self._url, json=payload, stream=True) as r:
-                for line in r.iter_lines():
-                    if line:
-                        yield line.decode("utf-8") + "\n"
-        return Response(
-            generate(), 
-            content_type="application/x-ndjson", 
-            headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"}
-            )
-
+            
+        with requests.post(self._url, json=payload, stream=True) as r:
+            for line in r.iter_lines():
+                if line:
+                    data = json.loads(line)
+                    # data = data['message']['content']
+                    yield data
+            
+    def _run_stream_ndjson(self, content: str, task: str, **params):
+        for chunk in self._run_stream(content, task, **params):
+            yield json.dumps(chunk) + "\n"
 
