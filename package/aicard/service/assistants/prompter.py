@@ -2,7 +2,7 @@ from .assistant import Assistant
 from ..logger import Logger
 from aicard.card import ModelCard
 from aicard.agents import Agent
-from aicard.service.cards_status import CardStatus, Status
+from aicard.service.card_jobs import CardJobsTracker, Job
 
 from urllib.parse import urlparse, urljoin
 from bs4 import BeautifulSoup
@@ -95,32 +95,27 @@ class Prompter(Assistant):
         refined_stream = self.agent.simplificationStream(text, **params)
         return refined_stream
     
-    def refine_field_ndjson(self, text: str, logger: Logger):
-        params = {}
-        refined_stream = self.agent.simplificationStream_ndjson(text, **params)
-        return refined_stream
-        
-    def refine(self, card: ModelCard, card_id: int, logger: Logger, user_messages: list[str], card_status: CardStatus):
-        status = Status(
-            locked = True,
+    def refine(self, card: ModelCard, card_id: int, logger: Logger, user_messages: list[str], job_tracker: CardJobsTracker):
+        job = Job(
             worker = 'prompter',
             operation = 'refine',
             data={})
-        card_status.set(card_id, status)
+        job_tracker.set(card_id, job)
         for category, values in card.data.items():
             if not isinstance(values, dict): continue
-            status.data[category] = {}
+            job.data[category] = {}
             for field, value in values.items():
                 if not isinstance(value, LongText): 
                     text = value.get()
                 else:
                     text = ''
                     for chunks in self.refine_field(value.get(), logger):
+                        chunks = json.loads(chunks)
                         text += chunks['message']['content']
                     card.data[category][field].set(text)
-                status.data[category][field] = text
-                card_status.set(card_id, status)
-        card_status.delete(card_id)
+                job.data[category][field] = text
+                job_tracker.set(card_id, job)
+        job_tracker.delete(card_id)
         
         
     def _complete(self, text: str|list[str], task: str, card: ModelCard, logger: Logger, user_messages: list[str]):

@@ -10,7 +10,7 @@ from aicard.service import users
 from aicard.service import converters
 from aicard.service.logger import Logger
 from aicard.utils.eval_adapter.eval_adapter import eval_adapter
-from aicard.service.cards_status import CardStatus, Status
+from aicard.service.card_jobs import CardJobsTracker, Job
 from flask import Flask, abort, redirect, request, jsonify, send_from_directory, Response, url_for
 from threading import Lock
 from dotenv import dotenv_values
@@ -44,7 +44,7 @@ def serve(
     third_party_client: str|None = None,
     feature_extractor: SemanticMatcher|None = None,
     email_verification: EmailVerification|None = None,
-    cards_status: CardStatus = CardStatus(),
+    card_jobs: CardJobsTracker = CardJobsTracker(),
 ):
     static = os.path.abspath(static)
     if env: config = dotenv_values(env)
@@ -782,7 +782,7 @@ def serve(
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
         with auth_lock: creator = token2user.get(token, None)
         if creator!=card.creator: abort(403, "Only the card's creator can refine it in-place.")
-        status = card.autorefine(assistant, logger, cards_status)
+        status = card.autorefine(assistant, logger, card_jobs)
         logger.info(f"requested card {card_id} refinement from {assistant_type}", user=creator)
         return jsonify(status)
     
@@ -795,17 +795,17 @@ def serve(
         if creator!=card.creator: abort(403, "Only the card's creator can refine it in-place.")
         data = request.get_json()
         text = data.get('value', '')
-        refined_stream = assistant.refine_field_ndjson(text, logger)
+        refined_stream = assistant.refine_field(text, logger)
         logger.info(f"requested field card {card_id} refinement from {assistant_type}", user=creator)
         return Response(refined_stream, content_type="application/x-ndjson")
     
-    @app.route(domain_prefix+'/card/<int:card_id>/status', methods=['GET'])
+    @app.route(domain_prefix+'/job/<int:card_id>', methods=['GET'])
     @users.require_auth(token2expiration, third_party_auth)
-    def card_status(card_id: int, token: str):
+    def card_job(card_id: int, token: str):
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
         with auth_lock: creator = token2user.get(token, None)
         if creator!=card.creator: abort(403, "Only the card's creator can see its status.")
-        status = cards_status.get(card_id)
+        status = card_jobs.get(card_id)
         if status:
             return jsonify(status.to_dict())
         else:

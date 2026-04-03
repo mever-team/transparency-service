@@ -282,28 +282,42 @@ $(document).ready(function () {
                         if (localStorage.getItem("refine_" + id) === "true") {
                             localStorage.removeItem("refine_" + id);
                             runRefinement('agent', id);
-                            let $loading_spinner = $("<div>")
-                                .addClass('spinner')
+                            const $loading_spinner_dark = $("<div>").addClass('spinnerDark')
                                 .css({
                                     'width': '20px', 
-                                    'height': '20px'
+                                    'height': '20px',
+                                    'border': '3px solid #b7b7b7 !important'
                                 })
-                            $('.field-value').html($loading_spinner);
+                            const $loading_spinner = $("<span>").addClass('spinner')
+                                .css({
+                                    'display': 'inline-block',
+                                    'width': '15px', 
+                                    'height': '15px',
+                                    'border-width': '3px',
+                                    'margin': '0 5px 0 -19px',
+                                    'border-width': '2px',
+                                    'vertical-align': 'middle',
+                                })
+                            $('span.field-value').html($loading_spinner_dark).attr('contenteditable', 'false');
+                            $('.menu .arrow').css('display', 'none');
+                            $('.menu div').prepend($loading_spinner);
                             const completed = {};
+                            let doneMenus = [];
+                            
                             const intervalId = setInterval(async () => {
                                 try {
                                     $.ajax({
-                                        url: "/transparency/card/" + id + "/status",
+                                        url: "/transparency/job/" + id,
                                         method: "GET",
                                         headers: {"Authorization": "Bearer " + token},
                                         contentType: "application/json",
                                         dataType: "json",
-                                        success: function (status) {
-                                            if (status && Object.keys(status).length === 0) {
+                                        success: function (job) {
+                                            if (job && Object.keys(job).length === 0) {
                                                 clearInterval(intervalId);
                                                 return;
                                             }
-                                            for (const [section, fields] of Object.entries(status.data)) {
+                                            for (const [section, fields] of Object.entries(job.data)) {
                                                 if (!completed[section]) {completed[section] = [];}
                                                 for (let [field, value] of Object.entries(fields)) {
                                                     if (completed[section].includes(field)) {continue;}
@@ -315,7 +329,7 @@ $(document).ready(function () {
                                                             $(this).find('.field').each(function () {
                                                                 const this_field = $(this).find('.field-name').text().trim().toLowerCase();
                                                                 if (this_field === field) {
-                                                                    $(this).find('.field-value').html(value);
+                                                                    $(this).find('span.field-value').html(value).attr('contenteditable', 'true');
                                                                     matched = true;
                                                                     completed[section].push(field);
                                                                     return false; // break .each()
@@ -324,6 +338,20 @@ $(document).ready(function () {
                                                             return false; // break outer .each()
                                                         }
                                                     });
+                                                    // update menu
+                                                    $('.contents .nacc li').each(function () {
+                                                        const this_section = $(this).find('h2').first().text().trim().toLowerCase();
+                                                        if ($(this).find('.spinnerDark').length === 0 && !doneMenus.includes(this_section)) {
+                                                            $('.menu div').each(function (){
+                                                                if ($(this).html().toLowerCase().includes(this_section)) {
+                                                                    doneMenus.push(this_section);
+                                                                    $(this).find('.arrow').css('display', 'inline-block');
+                                                                    $(this).find('.spinner').remove();
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                    
                                                     if (matched) {
                                                         continue;
                                                     }
@@ -336,7 +364,7 @@ $(document).ready(function () {
                                 } catch (err) {
                                     console.error(err);
                                 }
-                            }, 100);
+                            }, 200);
 
                             jsonData.data.forEach((section, index) => {
 

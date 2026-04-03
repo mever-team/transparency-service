@@ -120,9 +120,5 @@ Instructions:
                 if line:
                     data = json.loads(line)
                     # data = data['message']['content']
-                    yield data
+                    yield json.dumps(data) + "\n"
             
-    def _run_stream_ndjson(self, content: str, task: str, **params):
-        for chunk in self._run_stream(content, task, **params):
-            yield json.dumps(chunk) + "\n"
-
