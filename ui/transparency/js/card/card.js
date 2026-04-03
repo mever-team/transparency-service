@@ -301,75 +301,11 @@ $(document).ready(function () {
                             $('span.field-value').html($loading_spinner_dark).attr('contenteditable', 'false');
                             $('.menu .arrow').css('display', 'none');
                             $('.menu div').prepend($loading_spinner);
-                            const completed = {};
-                            let doneMenus = [];
-                            
-                            const intervalId = setInterval(async () => {
-                                try {
-                                    $.ajax({
-                                        url: "/transparency/job/" + id,
-                                        method: "GET",
-                                        headers: {"Authorization": "Bearer " + token},
-                                        contentType: "application/json",
-                                        dataType: "json",
-                                        success: function (job) {
-                                            if (job && Object.keys(job).length === 0) {
-                                                clearInterval(intervalId);
-                                                return;
-                                            }
-                                            for (const [section, fields] of Object.entries(job.data)) {
-                                                if (!completed[section]) {completed[section] = [];}
-                                                for (let [field, value] of Object.entries(fields)) {
-                                                    if (completed[section].includes(field)) {continue;}
-                                                    field = field.replaceAll('_', ' ');
-                                                    let matched = false;
-                                                    $('.contents .nacc li').each(function () {
-                                                        const this_section = $(this).find('h2').first().text().trim().toLowerCase();
-                                                        if (this_section === section) {
-                                                            $(this).find('.field').each(function () {
-                                                                const this_field = $(this).find('.field-name').text().trim().toLowerCase();
-                                                                if (this_field === field) {
-                                                                    $(this).find('span.field-value').html(value).attr('contenteditable', 'true');
-                                                                    matched = true;
-                                                                    completed[section].push(field);
-                                                                    return false; // break .each()
-                                                                }
-                                                            });
-                                                            return false; // break outer .each()
-                                                        }
-                                                    });
-                                                    // update menu
-                                                    $('.contents .nacc li').each(function () {
-                                                        const this_section = $(this).find('h2').first().text().trim().toLowerCase();
-                                                        if ($(this).find('.spinnerDark').length === 0 && !doneMenus.includes(this_section)) {
-                                                            $('.menu div').each(function (){
-                                                                if ($(this).html().toLowerCase().includes(this_section)) {
-                                                                    doneMenus.push(this_section);
-                                                                    $(this).find('.arrow').css('display', 'inline-block');
-                                                                    $(this).find('.spinner').remove();
-                                                                }
-                                                            });
-                                                        }
-                                                    });
-                                                    
-                                                    if (matched) {
-                                                        continue;
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        error: function (xhr, status, error) {}
-                                    });
 
-                                } catch (err) {
-                                    console.error(err);
-                                }
-                            }, 200);
 
-                            jsonData.data.forEach((section, index) => {
-
-                            });
                         }
+
+
 
                         if (!($('.light.arrow').length > 0)&& is_logged_in) {
                             // TODO: we have the option of just opening the import, which may be more practical
@@ -383,6 +319,80 @@ $(document).ready(function () {
                           el.setAttribute('autocapitalize', 'off');
                           el.setAttribute('translate', 'no');
                         });
+                    }
+
+
+                    function renderWhileRefine(){
+                        const completed = {};
+                        let doneMenus = [];
+                        const intervalId = setInterval(async () => {
+                            try {
+                                $.ajax({
+                                    url: "/transparency/job/" + id,
+                                    method: "GET",
+                                    headers: {"Authorization": "Bearer " + token},
+                                    contentType: "application/json",
+                                    dataType: "json",
+                                    success: function (job) {
+                                        if (job && Object.keys(job).length === 0) {
+                                            clearInterval(intervalId);
+                                            return;
+                                        }
+                                        for (const [section, fields] of Object.entries(job.data)) {
+                                            if (!completed[section]) {completed[section] = [];}
+                                            for (let [field, value] of Object.entries(fields)) {
+                                                field = field.replaceAll('_', ' ');
+                                                if (completed[section].includes(field)) {continue;}
+                                                let matched = false;
+                                                $('.contents .nacc li').each(function () {
+                                                    const this_section = $(this).find('h2').first().text().trim().toLowerCase();
+                                                    if (this_section === section) {
+                                                        $(this).find('.field').each(function () {
+                                                            const this_field = $(this).find('.field-name').text().trim().toLowerCase();
+                                                            if (this_field === field) {
+                                                            $(this)
+                                                                .find('span.field-value')
+                                                                .html(value)
+                                                                .fadeOut(0, function () {
+                                                                    $(this)
+                                                                        .attr('contenteditable', 'true')
+                                                                        .fadeIn(300);
+                                                                });
+                                                                matched = true;
+                                                                completed[section].push(field);
+                                                                return false; // break .each()
+                                                            }
+                                                        });
+                                                        return false; // break outer .each()
+                                                    }
+                                                });
+                                                // update menu
+                                                $('.contents .nacc li').each(function () {
+                                                    const this_section = $(this).find('h2').first().text().trim().toLowerCase();
+                                                    if ($(this).find('.spinnerDark').length === 0 && !doneMenus.includes(this_section)) {
+                                                        $('.menu div').each(function (){
+                                                            if ($(this).html().toLowerCase().includes(this_section)) {
+                                                                doneMenus.push(this_section);
+                                                                $(this).find('.arrow').css('display', 'inline-block');
+                                                                $(this).find('.spinner').remove();
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                                
+                                                if (matched) {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    },
+                                    error: function (xhr, status, error) {}
+                                });
+
+                            } catch (err) {
+                                console.error(err);
+                            }
+                        }, 200);
                     }
 
                     if(compareto) {
@@ -408,6 +418,7 @@ $(document).ready(function () {
                         success: function (jsonData) {
                             cardJson = jsonData;
                             render();
+                            renderWhileRefine();
                         },
                         error: error_handler
                     });
