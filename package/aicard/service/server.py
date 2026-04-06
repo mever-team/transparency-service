@@ -10,7 +10,7 @@ from aicard.service import users
 from aicard.service import converters
 from aicard.service.logger import Logger
 from aicard.utils.eval_adapter.eval_adapter import eval_adapter
-from aicard.service.card_jobs import CardJobsTracker, Job
+from aicard.service.jobs_tracker import CardJobsTracker, Job
 from flask import Flask, abort, redirect, request, jsonify, send_from_directory, Response, url_for
 from threading import Lock
 from dotenv import dotenv_values
@@ -44,7 +44,7 @@ def serve(
     third_party_client: str|None = None,
     feature_extractor: SemanticMatcher|None = None,
     email_verification: EmailVerification|None = None,
-    card_jobs: CardJobsTracker = CardJobsTracker(),
+    jobs_tracker: CardJobsTracker = CardJobsTracker(),
 ):
     static = os.path.abspath(static)
     if env: config = dotenv_values(env)
@@ -782,7 +782,7 @@ def serve(
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
         with auth_lock: creator = token2user.get(token, None)
         if creator!=card.creator: abort(403, "Only the card's creator can refine it in-place.")
-        status = card.autorefine(assistant, logger, card_jobs)
+        status = card.autorefine(assistant, logger, jobs_tracker)
         logger.info(f"requested card {card_id} refinement from {assistant_type}", user=creator)
         return jsonify(status)
     
@@ -805,7 +805,7 @@ def serve(
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
         with auth_lock: creator = token2user.get(token, None)
         if creator!=card.creator: abort(403, "Only the card's creator can see its status.")
-        status = card_jobs.get(card_id)
+        status = jobs_tracker.get(card_id)
         if status:
             return jsonify(status.to_dict())
         else:

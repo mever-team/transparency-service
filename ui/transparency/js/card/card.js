@@ -237,9 +237,9 @@ $(document).ready(function () {
                         .addClass("refine-field")
                         .text("refine field");
                     $field.append($fieldInfo).append($fieldValue);
-                    if (token && cardJson.creator===loggedUser){
-                        $field.append($refineBtn);
-                    }
+                    // if (token && cardJson.creator===loggedUser){
+                    //     $field.append($refineBtn);
+                    // }
                     $section.append($field);
 
                     // compared value

@@ -2,7 +2,7 @@ from .assistant import Assistant
 from ..logger import Logger
 from aicard.card import ModelCard
 from aicard.agents import Agent
-from aicard.service.card_jobs import CardJobsTracker, Job
+from aicard.service.jobs_tracker import CardJobsTracker, Job
 
 from urllib.parse import urlparse, urljoin
 from bs4 import BeautifulSoup

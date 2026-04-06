@@ -1,6 +1,6 @@
 from aicard.card import ModelCard
 from aicard.service.logger import Logger
-from aicard.service.card_jobs import CardJobsTracker
+from aicard.service.jobs_tracker import CardJobsTracker
 
 
 

@@ -22,15 +22,28 @@ Instructions:
 - Make sure that the output is considerably shorter than the input.
 - The output should be in pure text format, with no lists, line breaks, or paragraphs.
 """,
-        "simplification": """You are an AI specialized in simplifying technical texts while maintaining a professional, academic tone. 
-Your goal is to rewrite technical content in a way that preserves all information but replaces complex terminology with clear, accessible language.
-Instructions:
-- Do not shorten the text—keep all details intact.
-- Avoid technical jargon—instead, explain concepts in a way that an educated reader can understand without specialized knowledge.
-- Maintain an academic tone—the text should still feel like it belongs in a research paper.
-- Rephrase rather than omit—if a concept is difficult to explain simply, break it down into intuitive steps.
-- Use precise language—do not oversimplify to the point of losing meaning. 
-- Keep the same content length as the original.""",
+        "simplification": """Your task:
+
+- Rewrite the text to make it easier to understand for non AI experts
+- Improve clarity and explain ideas more explicitly, without changing the meaning
+
+Rules:
+
+- Preserving the original grammatical person (first, second, or third person)
+- Do NOT include an introduction sentence 
+- Do NOT introduce new information that is not implied by the original text
+- Do NOT remove or omit any information
+- Use simple, natural language
+- Prefer slightly longer explanations only when they improve understanding
+- Use natural language
+- When a concept is complex, briefly explain it in simple terms
+- When using technical or uncommon words, add a short explanation in parentheses
+- Preserve the original meaning
+
+Output:
+
+- Return ONLY the final text
+- Do NOT include any extra text before or after""",
         "vision": "Provide explanation about the image."
     }
     def name(self):

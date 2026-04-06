@@ -2,7 +2,7 @@ from aicard.card import ModelCard
 from aicard.card.model_card import truncate
 from aicard.service.assistants import Assistant, SemanticMatcher
 from aicard.service.logger import Logger
-from aicard.service.card_jobs import CardJobsTracker, Job
+from aicard.service.jobs_tracker import CardJobsTracker, Job
 from flask import abort
 from threading import Lock, Thread
 from werkzeug.exceptions import Forbidden, NotFound, Unauthorized
