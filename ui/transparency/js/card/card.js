@@ -115,8 +115,8 @@ $(document).ready(function () {
         if ($(window).scrollTop() > menuOffsetTop - 20) $menu.addClass('fixed');
         else $menu.removeClass('fixed');
     });
-
-    let interval = setInterval(function () {checkLocked(interval);}, 100); // do first run immediately
+    // let interval = setInterval(function () {checkLocked(interval);}, 100); // do first run immediately
+    let interval = null;
     function runRefinement(assistant, id) {
         $.ajax({
             url: "/transparency/assistant/" + assistant + '/refine/' + id,
@@ -128,6 +128,297 @@ $(document).ready(function () {
             error: error_handler
         });
     }
+    function normalRender(interval=null){
+        $('body').removeClass('no-overflow');
+        document.getElementById('card-locked').style.display = 'none';
+        if (interval) clearInterval(interval);
+
+        function render() {
+            if(!cardJson || !comparedJson) return;
+            let is_logged_in = token&&cardJson.creator === loggedUser;
+            if(is_logged_in) {
+                $('#deleteCard').show();
+                $('#import-btn').show();
+            }
+
+            let jsonData = cardJson;
+            $("#model-title").text(jsonData.title);
+            $("#model-description").html(jsonData.description+" uploaded by "+jsonData.creator);
+            $("#model-pending").html(jsonData.description?"":"DRAFT (needs version to be searchable)");
+            $("#model-quality").html(`
+                    <svg class="quality-circle" viewBox="0 0 36 36">
+                    <circle cx="18" cy="18" r="18" fill="none" stroke="#434343" stroke-width="3"/>
+                    <circle cx="18" cy="18" r="18" fill="none" stroke="${jsonData.quality>0.7?'#6CC06B':jsonData.quality>0.4?'#FBC483':'#F87F76'}" stroke-width="3"
+                    stroke-dasharray="100" stroke-dashoffset="${100 - Math.round(jsonData.quality * 100)}"/>
+                    <text x="18" y="14" class="quality-text"> ${Math.round(jsonData.quality * 100)}%</text>
+                    <text x="18" y="24" class="quality-text">info</text>
+                </svg>
+            `);
+
+            const historyContainer = document.getElementById("history-dropdown");
+            historyContainer.innerHTML = ""; // clear previous content
+            if (jsonData.history) {
+                renderHistoryGraph(
+                    jsonData.history,
+                    Number(id),
+                    historyContainer
+                );
+                menuOffsetTop = $menu.offset().top;
+            }
+
+
+            // fill in fields
+            const $ul = $(".nacc");
+            $ul.empty();
+            $('#loading').hide();
+            jsonData.data.forEach((section, index) => {
+                let baseSection = comparedJson&&comparedJson.data?comparedJson.data[index]:undefined;
+                let sectionTitle = section.name.replace(/_/g, " ").toUpperCase();
+                let $li = $("<li>").toggleClass("active", index === 0);
+                let $section = $("<section>");
+                $section.append($("<h2>").text(sectionTitle));
+                if (!section.value.length) $section.append($("<p>").text("No data provided."));
+                section.value.forEach((field, fieldIndex) => {
+                    let $field = $("<div>").addClass("field");
+
+                    // field-name
+                    let $fieldName = $("<span>")
+                        .addClass("field-name")
+                        .text(" "+field.name.replace(/_/g, " "));
+                    
+
+
+                    // info-tooltip
+                    let $fieldInfo = $("<span>")
+                        .addClass("info-tooltip")
+                        .attr("data-tooltip", field.description)
+                        .text("?");
+                    $fieldInfo = $("<span>").addClass("field-info").append($fieldInfo).append($fieldName);
+                    let $fieldValue;
+                    
+                    if (field.type.startsWith("list:") && is_logged_in) {
+                        $fieldValue = $("<select>").addClass("field-value dropdown");
+                        $fieldValue.append($("<option>").val("").text("—").prop({
+                            selected: true,disabled: true,hidden: true}));
+                        const options = field.type.replace("list:", "").split(",");
+                        let $currentGroup = null;
+                        options.forEach(opt => {
+                            if (opt.startsWith("#")) {
+                                $currentGroup = $("<optgroup>").attr("label", opt.replace("#", ""));
+                                $fieldValue.append($currentGroup);
+                            } else {
+                                const $option = $("<option>").val(opt).text(opt);
+                                if (field.value === opt) $option.prop("selected", true);
+                                // Append to optgroup if it exists, otherwise directly to select
+                                if ($currentGroup) $currentGroup.append($option);
+                                else $fieldValue.append($option);
+                            }
+                        });
+                    } else if (field.type === 'date') {
+                        $fieldValue = $("<input>", {type: "date", readonly: is_logged_in? false: true}).addClass("field-value").val(field.value || "");
+                        $fieldValue.on("change", function () {field.value = $(this).val();});
+                        if(is_logged_in) $fieldValue.attr("contenteditable", "true");
+                        
+                    } else {
+                        $fieldValue = $("<span>") .addClass("field-value").html(field.value || "");
+                        if(is_logged_in) $fieldValue.attr("contenteditable", "true");
+                    }
+
+                    if(is_logged_in) $fieldValue.addClass("editable");
+
+                    // Editable field value
+                    let val = String(field.value || "").trim();
+                    if ((val  !== "") && (val  !== "<br>") && (val  !== "unknown")) {
+                        $('.menu').find('div').eq(index).find('.light').removeClass('square');
+                        $('.menu').find('div').eq(index).find('.light').addClass('arrow');
+                    }
+
+                    let $refineBtn = $("<button>")
+                        .addClass("refine-field")
+                        .text("refine field");
+                    $field.append($fieldInfo).append($fieldValue);
+                    if (token && cardJson.creator===loggedUser){
+                        $field.append($refineBtn);
+                    }
+                    $section.append($field);
+
+                    // compared value
+                    if(baseSection) {
+                        console.log(baseSection.value[fieldIndex]);
+                        let $baseFieldValue = $("<span>")
+                                .addClass("field-value")
+                                .html(baseSection.value[fieldIndex].value || "");
+
+                        let $fieldBase = $("<span>")
+                            .addClass("field-name")
+                            .text("Original");
+
+                        $field.append($fieldBase);
+                        $field.append($baseFieldValue);
+                    }
+                });
+
+
+
+                $li.append($("<div>").append($section));
+                $ul.append($li);
+                $('.menu').find('div').removeClass('active');
+                $('.menu div:first-child').addClass('active');
+
+            });
+
+            if (!($('.light.arrow').length > 0)&& is_logged_in) {
+                // TODO: we have the option of just opening the import, which may be more practical
+                document.getElementById('modal-autocomplete-screen').style.display = 'flex';
+            }
+            // render syntax highlighting and remove autocorrect
+            document.querySelectorAll('pre').forEach((block) => {hljs.highlightElement(block);});
+            document.querySelectorAll('pre, pre code').forEach(el => {
+                el.setAttribute('spellcheck', 'false');
+                el.setAttribute('autocorrect', 'off');
+                el.setAttribute('autocapitalize', 'off');
+                el.setAttribute('translate', 'no');
+            });
+        }
+
+
+        function renderWhileRefine(){
+            const completed = {};
+            let doneMenus = [];
+            let firstpass = true;
+            function isEmpty(obj) {
+                for (const prop in obj) {
+                    if (Object.hasOwn(obj, prop)) {
+                    return false;
+                    }
+                }
+                return true;
+                }
+            const intervalId = setInterval(async () => {
+                try {
+                    $.ajax({
+                        url: "/transparency/job/" + id,
+                        method: "GET",
+                        headers: {"Authorization": "Bearer " + token},
+                        contentType: "application/json",
+                        dataType: "json",
+                        success: function (job) {
+                            if (isEmpty(job)) {
+                                clearInterval(intervalId);
+                                return;
+                            }
+                            // put loading spinners in UI
+                            if (firstpass){
+                                firstpass = false;
+                                const $loading_spinner_dark = $("<div>").addClass('spinnerDark')
+                                    .css({
+                                        'width': '20px', 
+                                        'height': '20px',
+                                        'border': '3px solid #b7b7b7 !important'
+                                    });
+                                const $loading_spinner = $("<span>").addClass('spinner')
+                                    .css({
+                                        'display': 'inline-block',
+                                        'width': '15px', 
+                                        'height': '15px',
+                                        'border-width': '3px',
+                                        'margin': '0 5px 0 -19px',
+                                        'border-width': '2px',
+                                        'vertical-align': 'middle',
+                                    });
+                                $('span.field-value').html($loading_spinner_dark).attr('contenteditable', 'false');
+                                $('.menu .arrow').css('display', 'none');
+                                $('.menu div').prepend($loading_spinner);
+                            }
+                            // poll update
+                            for (const [section, fields] of Object.entries(job.data)) {
+                                if (!completed[section]) {completed[section] = [];}
+                                for (let [field, value] of Object.entries(fields)) {
+                                    field = field.replaceAll('_', ' ');
+                                    if (completed[section].includes(field)) {continue;}
+                                    let matched = false;
+                                    $('.contents .nacc li').each(function () {
+                                        const this_section = $(this).find('h2').first().text().trim().toLowerCase();
+                                        if (this_section === section) {
+                                            $(this).find('.field').each(function () {
+                                                const this_field = $(this).find('.field-name').text().trim().toLowerCase();
+                                                if (this_field === field) {
+                                                $(this)
+                                                    .find('span.field-value')
+                                                    .html(value)
+                                                    .fadeOut(0, function () {
+                                                        $(this)
+                                                            .attr('contenteditable', 'true')
+                                                            .fadeIn(300);
+                                                    });
+                                                    matched = true;
+                                                    completed[section].push(field);
+                                                    return false; // break .each()
+                                                }
+                                            });
+                                            return false; // break outer .each()
+                                        }
+                                    });
+                                    // update menu
+                                    $('.contents .nacc li').each(function () {
+                                        const this_section = $(this).find('h2').first().text().trim().toLowerCase();
+                                        if ($(this).find('.spinnerDark').length === 0 && !doneMenus.includes(this_section)) {
+                                            $('.menu div').each(function (){
+                                                if ($(this).html().toLowerCase().includes(this_section)) {
+                                                    doneMenus.push(this_section);
+                                                    $(this).find('.arrow').css('display', 'inline-block');
+                                                    $(this).find('.spinner').remove();
+                                                }
+                                            });
+                                        }
+                                    });
+                                    
+                                    if (matched) {
+                                        continue;
+                                    }
+                                }
+                            }
+                        },
+                        error: function (xhr, status, error) {}
+                    });
+
+                } catch (err) {
+                    console.error(err);
+                }
+            }, 200);
+        }
+
+        if(compareto) {
+            $.ajax({
+                url: "/transparency/card/" + compareto,
+                method: "GET",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (jsonData) {
+                    comparedJson = jsonData;
+                    render();
+                },
+                error: function (xhr, status, error) {}
+            });
+        }
+        else
+            comparedJson = {}; // we use the existence of comparedJson as a mark for render()
+        $.ajax({
+            url: "/transparency/card/" + id,
+            method: "GET",
+            contentType: "application/json",
+            dataType: "json",
+            success: function (jsonData) {
+                cardJson = jsonData;
+                render();
+                if (token){
+                    renderWhileRefine();
+                }
+            },
+            error: error_handler
+        });
+    }
+    normalRender();
     function checkLocked(interval) {
         $.ajax({
             url: "/transparency/card/" + id + "/locked",
@@ -135,300 +426,13 @@ $(document).ready(function () {
             contentType: "application/json",
             dataType: "json",
             success: function (jsonData) {
-                // if (jsonData !== "") {
-                if (false) {
+                if (jsonData !== "") {
                     document.getElementById('card-locked').style.display = 'flex';
                     $('#lock-msg-text').html(jsonData);
                     $('body').addClass('no-overflow');
                     $('#loading').hide();
                 } else {
-                    $('body').removeClass('no-overflow');
-                    document.getElementById('card-locked').style.display = 'none';
-                    if (interval) clearInterval(interval);
-
-                    function render() {
-                        if(!cardJson || !comparedJson) return;
-                        let is_logged_in = token&&cardJson.creator === loggedUser;
-                        if(is_logged_in) {
-                            $('#deleteCard').show();
-                            $('#import-btn').show();
-                        }
-
-                        let jsonData = cardJson;
-                        $("#model-title").text(jsonData.title);
-                        $("#model-description").html(jsonData.description+" uploaded by "+jsonData.creator);
-                        $("#model-pending").html(jsonData.description?"":"DRAFT (needs version to be searchable)");
-                        $("#model-quality").html(`
-                             <svg class="quality-circle" viewBox="0 0 36 36">
-                              <circle cx="18" cy="18" r="18" fill="none" stroke="#434343" stroke-width="3"/>
-                              <circle cx="18" cy="18" r="18" fill="none" stroke="${jsonData.quality>0.7?'#6CC06B':jsonData.quality>0.4?'#FBC483':'#F87F76'}" stroke-width="3"
-                                stroke-dasharray="100" stroke-dashoffset="${100 - Math.round(jsonData.quality * 100)}"/>
-                              <text x="18" y="14" class="quality-text"> ${Math.round(jsonData.quality * 100)}%</text>
-                              <text x="18" y="24" class="quality-text">info</text>
-                            </svg>
-                        `);
-
-                        const historyContainer = document.getElementById("history-dropdown");
-                        historyContainer.innerHTML = ""; // clear previous content
-                        if (jsonData.history) {
-                            renderHistoryGraph(
-                                jsonData.history,
-                                Number(id),
-                                historyContainer
-                            );
-                            menuOffsetTop = $menu.offset().top;
-                        }
-
-
-                        // fill in fields
-                        const $ul = $(".nacc");
-                        $ul.empty();
-                        $('#loading').hide();
-                        jsonData.data.forEach((section, index) => {
-                            let baseSection = comparedJson&&comparedJson.data?comparedJson.data[index]:undefined;
-                            let sectionTitle = section.name.replace(/_/g, " ").toUpperCase();
-                            let $li = $("<li>").toggleClass("active", index === 0);
-                            let $section = $("<section>");
-                            $section.append($("<h2>").text(sectionTitle));
-                            if (!section.value.length) $section.append($("<p>").text("No data provided."));
-                            section.value.forEach((field, fieldIndex) => {
-                                let $field = $("<div>").addClass("field");
-
-                                // field-name
-                                let $fieldName = $("<span>")
-                                    .addClass("field-name")
-                                    .text(" "+field.name.replace(/_/g, " "));
-                                
-
-
-                                // info-tooltip
-                                let $fieldInfo = $("<span>")
-                                    .addClass("info-tooltip")
-                                    .attr("data-tooltip", field.description)
-                                    .text("?");
-                                $fieldInfo = $("<span>").addClass("field-info").append($fieldInfo).append($fieldName);
-                                let $fieldValue;
-                                
-                                if (field.type.startsWith("list:") && is_logged_in) {
-                                    $fieldValue = $("<select>").addClass("field-value dropdown");
-                                    $fieldValue.append($("<option>").val("").text("—").prop({
-                                        selected: true,disabled: true,hidden: true}));
-                                    const options = field.type.replace("list:", "").split(",");
-                                    let $currentGroup = null;
-                                    options.forEach(opt => {
-                                        if (opt.startsWith("#")) {
-                                            $currentGroup = $("<optgroup>").attr("label", opt.replace("#", ""));
-                                            $fieldValue.append($currentGroup);
-                                        } else {
-                                            const $option = $("<option>").val(opt).text(opt);
-                                            if (field.value === opt) $option.prop("selected", true);
-                                            // Append to optgroup if it exists, otherwise directly to select
-                                            if ($currentGroup) $currentGroup.append($option);
-                                            else $fieldValue.append($option);
-                                        }
-                                    });
-                                } else if (field.type === 'date') {
-                                    $fieldValue = $("<input>", {type: "date", readonly: is_logged_in? false: true}).addClass("field-value").val(field.value || "");
-                                    $fieldValue.on("change", function () {field.value = $(this).val();});
-                                    if(is_logged_in) $fieldValue.attr("contenteditable", "true");
-                                    
-                                } else {
-                                    $fieldValue = $("<span>") .addClass("field-value").html(field.value || "");
-                                    if(is_logged_in) $fieldValue.attr("contenteditable", "true");
-                                }
-
-                                if(is_logged_in) $fieldValue.addClass("editable");
-
-                                // Editable field value
-                                let val = String(field.value || "").trim();
-                                if ((val  !== "") && (val  !== "<br>") && (val  !== "unknown")) {
-                                    $('.menu').find('div').eq(index).find('.light').removeClass('square');
-                                    $('.menu').find('div').eq(index).find('.light').addClass('arrow');
-                                }
-
-                                let $refineBtn = $("<button>")
-                                    .addClass("refine-field")
-                                    .text("refine field");
-                                $field.append($fieldInfo).append($fieldValue);
-                                if (token && cardJson.creator===loggedUser){
-                                    $field.append($refineBtn);
-                                }
-                                $section.append($field);
-
-                                // compared value
-                                if(baseSection) {
-                                    console.log(baseSection.value[fieldIndex]);
-                                    let $baseFieldValue = $("<span>")
-                                            .addClass("field-value")
-                                            .html(baseSection.value[fieldIndex].value || "");
-
-                                    let $fieldBase = $("<span>")
-                                        .addClass("field-name")
-                                        .text("Original");
-
-                                    $field.append($fieldBase);
-                                    $field.append($baseFieldValue);
-                                }
-                            });
-
-
-
-                            $li.append($("<div>").append($section));
-                            $ul.append($li);
-                            $('.menu').find('div').removeClass('active');
-                            $('.menu div:first-child').addClass('active');
-
-                        });
-
-                        if (!($('.light.arrow').length > 0)&& is_logged_in) {
-                            // TODO: we have the option of just opening the import, which may be more practical
-                            document.getElementById('modal-autocomplete-screen').style.display = 'flex';
-                        }
-                        // render syntax highlighting and remove autocorrect
-                        document.querySelectorAll('pre').forEach((block) => {hljs.highlightElement(block);});
-                        document.querySelectorAll('pre, pre code').forEach(el => {
-                          el.setAttribute('spellcheck', 'false');
-                          el.setAttribute('autocorrect', 'off');
-                          el.setAttribute('autocapitalize', 'off');
-                          el.setAttribute('translate', 'no');
-                        });
-                    }
-
-
-                    function renderWhileRefine(){
-                        const completed = {};
-                        let doneMenus = [];
-                        let firstpass = true;
-                        function isEmpty(obj) {
-                            for (const prop in obj) {
-                                if (Object.hasOwn(obj, prop)) {
-                                return false;
-                                }
-                            }
-                            return true;
-                            }
-                        const intervalId = setInterval(async () => {
-                            try {
-                                $.ajax({
-                                    url: "/transparency/job/" + id,
-                                    method: "GET",
-                                    headers: {"Authorization": "Bearer " + token},
-                                    contentType: "application/json",
-                                    dataType: "json",
-                                    success: function (job) {
-                                        if (isEmpty(job)) {
-                                            clearInterval(intervalId);
-                                            return;
-                                        }
-                                        // put loading spinners in UI
-                                        if (firstpass){
-                                            firstpass = false;
-                                            const $loading_spinner_dark = $("<div>").addClass('spinnerDark')
-                                                .css({
-                                                    'width': '20px', 
-                                                    'height': '20px',
-                                                    'border': '3px solid #b7b7b7 !important'
-                                                });
-                                            const $loading_spinner = $("<span>").addClass('spinner')
-                                                .css({
-                                                    'display': 'inline-block',
-                                                    'width': '15px', 
-                                                    'height': '15px',
-                                                    'border-width': '3px',
-                                                    'margin': '0 5px 0 -19px',
-                                                    'border-width': '2px',
-                                                    'vertical-align': 'middle',
-                                                });
-                                            $('span.field-value').html($loading_spinner_dark).attr('contenteditable', 'false');
-                                            $('.menu .arrow').css('display', 'none');
-                                            $('.menu div').prepend($loading_spinner);
-                                        }
-                                        // poll update
-                                        for (const [section, fields] of Object.entries(job.data)) {
-                                            if (!completed[section]) {completed[section] = [];}
-                                            for (let [field, value] of Object.entries(fields)) {
-                                                field = field.replaceAll('_', ' ');
-                                                if (completed[section].includes(field)) {continue;}
-                                                let matched = false;
-                                                $('.contents .nacc li').each(function () {
-                                                    const this_section = $(this).find('h2').first().text().trim().toLowerCase();
-                                                    if (this_section === section) {
-                                                        $(this).find('.field').each(function () {
-                                                            const this_field = $(this).find('.field-name').text().trim().toLowerCase();
-                                                            if (this_field === field) {
-                                                            $(this)
-                                                                .find('span.field-value')
-                                                                .html(value)
-                                                                .fadeOut(0, function () {
-                                                                    $(this)
-                                                                        .attr('contenteditable', 'true')
-                                                                        .fadeIn(300);
-                                                                });
-                                                                matched = true;
-                                                                completed[section].push(field);
-                                                                return false; // break .each()
-                                                            }
-                                                        });
-                                                        return false; // break outer .each()
-                                                    }
-                                                });
-                                                // update menu
-                                                $('.contents .nacc li').each(function () {
-                                                    const this_section = $(this).find('h2').first().text().trim().toLowerCase();
-                                                    if ($(this).find('.spinnerDark').length === 0 && !doneMenus.includes(this_section)) {
-                                                        $('.menu div').each(function (){
-                                                            if ($(this).html().toLowerCase().includes(this_section)) {
-                                                                doneMenus.push(this_section);
-                                                                $(this).find('.arrow').css('display', 'inline-block');
-                                                                $(this).find('.spinner').remove();
-                                                            }
-                                                        });
-                                                    }
-                                                });
-                                                
-                                                if (matched) {
-                                                    continue;
-                                                }
-                                            }
-                                        }
-                                    },
-                                    error: function (xhr, status, error) {}
-                                });
-
-                            } catch (err) {
-                                console.error(err);
-                            }
-                        }, 200);
-                    }
-
-                    if(compareto) {
-                        $.ajax({
-                            url: "/transparency/card/" + compareto,
-                            method: "GET",
-                            contentType: "application/json",
-                            dataType: "json",
-                            success: function (jsonData) {
-                                comparedJson = jsonData;
-                                render();
-                            },
-                            error: function (xhr, status, error) {}
-                        });
-                    }
-                    else
-                        comparedJson = {}; // we use the existence of comparedJson as a mark for render()
-                    $.ajax({
-                        url: "/transparency/card/" + id,
-                        method: "GET",
-                        contentType: "application/json",
-                        dataType: "json",
-                        success: function (jsonData) {
-                            cardJson = jsonData;
-                            render();
-                            renderWhileRefine();
-                        },
-                        error: error_handler
-                    });
-
+                    normalRender(interval);
                 }
             },
             error: function (xhr, status, error) {
