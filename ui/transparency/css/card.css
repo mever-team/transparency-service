@@ -648,7 +648,6 @@ section.buttons {
     cursor: pointer;
     font-weight: bold;
     font-style: italic;
-    transition: background-color 0.3s, color 0.3s;
 }
 #pdf_text.active,
 #url_text.active,
