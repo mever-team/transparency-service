@@ -648,24 +648,29 @@ section.buttons {
     cursor: pointer;
     font-weight: bold;
     font-style: italic;
+    transition: background-color 0.3s, color 0.3s;
 }
 #pdf_text.active,
 #url_text.active,
 #metrics_text.active {
-    color: #64DB96;
+    color: #1f1f1f;
+    border-color: #64DB96;
+    background-color: #64DB96;
 
 }
 
 #import_selector div {
     display: inline-block;
-    border-left: 2px solid #EEEEEE;
+    border: 2px solid #64DB96;
+    color: #64DB96;
+    border-radius: 6px;
     padding: 0.2rem;
-    margin: 0;
+    margin: 0.2rem;
 }
 
-#import_selector div#metrics_text {
+/* #import_selector div#metrics_text {
     border-right: 2px solid #EEEEEE;
-}
+} */
 
 .upload-container {
     color: #EEEEEE;
