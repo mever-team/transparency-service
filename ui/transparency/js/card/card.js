@@ -719,7 +719,7 @@ $('.contents').on('click', '.refine-field', async function () {
                         method: "POST",
                         headers: { "Authorization": "Bearer " + token },
                         success: function (newId) {
-                            runRefinement('agent', id);
+                            runRefinement('agent', newId);
                             window.open("model_card.html?id=" + newId, "_blank");
                         }
                     });
