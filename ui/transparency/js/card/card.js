@@ -344,6 +344,7 @@ $(document).ready(function () {
                         const $card = $("<button>", {
                             id: item.name,
                             class: "card-button button",
+                            attr: {"data-type": "url"},
                             html: `<div class="desc">${title}</div>`//+`<div class="tooltip">${description}</div>`
                         });
                         $container.append($card);
