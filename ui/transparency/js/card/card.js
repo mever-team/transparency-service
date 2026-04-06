@@ -135,7 +135,8 @@ $(document).ready(function () {
             contentType: "application/json",
             dataType: "json",
             success: function (jsonData) {
-                if (jsonData !== "") {
+                // if (jsonData !== "") {
+                if (false) {
                     document.getElementById('card-locked').style.display = 'flex';
                     $('#lock-msg-text').html(jsonData);
                     $('body').addClass('no-overflow');
@@ -297,33 +298,15 @@ $(document).ready(function () {
                     function renderWhileRefine(){
                         const completed = {};
                         let doneMenus = [];
-                        // this is a hacky if block. Remove when change bakend lock mechanism
-                        if (localStorage.getItem("refine_" + id) === "true") {
-                            localStorage.removeItem("refine_" + id);
-                            runRefinement('agent', id);
-                            const $loading_spinner_dark = $("<div>").addClass('spinnerDark')
-                                .css({
-                                    'width': '20px', 
-                                    'height': '20px',
-                                    'border': '3px solid #b7b7b7 !important'
-                                })
-                            const $loading_spinner = $("<span>").addClass('spinner')
-                                .css({
-                                    'display': 'inline-block',
-                                    'width': '15px', 
-                                    'height': '15px',
-                                    'border-width': '3px',
-                                    'margin': '0 5px 0 -19px',
-                                    'border-width': '2px',
-                                    'vertical-align': 'middle',
-                                })
-                            $('span.field-value').html($loading_spinner_dark).attr('contenteditable', 'false');
-                            $('.menu .arrow').css('display', 'none');
-                            $('.menu div').prepend($loading_spinner);
-
-
-                        }
-
+                        let firstpass = true;
+                        function isEmpty(obj) {
+                            for (const prop in obj) {
+                                if (Object.hasOwn(obj, prop)) {
+                                return false;
+                                }
+                            }
+                            return true;
+                            }
                         const intervalId = setInterval(async () => {
                             try {
                                 $.ajax({
@@ -333,10 +316,34 @@ $(document).ready(function () {
                                     contentType: "application/json",
                                     dataType: "json",
                                     success: function (job) {
-                                        if (job && Object.keys(job).length === 0) {
+                                        if (isEmpty(job)) {
                                             clearInterval(intervalId);
                                             return;
                                         }
+                                        // put loading spinners in UI
+                                        if (firstpass){
+                                            firstpass = false;
+                                            const $loading_spinner_dark = $("<div>").addClass('spinnerDark')
+                                                .css({
+                                                    'width': '20px', 
+                                                    'height': '20px',
+                                                    'border': '3px solid #b7b7b7 !important'
+                                                });
+                                            const $loading_spinner = $("<span>").addClass('spinner')
+                                                .css({
+                                                    'display': 'inline-block',
+                                                    'width': '15px', 
+                                                    'height': '15px',
+                                                    'border-width': '3px',
+                                                    'margin': '0 5px 0 -19px',
+                                                    'border-width': '2px',
+                                                    'vertical-align': 'middle',
+                                                });
+                                            $('span.field-value').html($loading_spinner_dark).attr('contenteditable', 'false');
+                                            $('.menu .arrow').css('display', 'none');
+                                            $('.menu div').prepend($loading_spinner);
+                                        }
+                                        // poll update
                                         for (const [section, fields] of Object.entries(job.data)) {
                                             if (!completed[section]) {completed[section] = [];}
                                             for (let [field, value] of Object.entries(fields)) {
@@ -712,7 +719,7 @@ $('.contents').on('click', '.refine-field', async function () {
                         method: "POST",
                         headers: { "Authorization": "Bearer " + token },
                         success: function (newId) {
-                            localStorage.setItem("refine_" + newId, "true");
+                            runRefinement('agent', id);
                             window.open("model_card.html?id=" + newId, "_blank");
                         }
                     });
