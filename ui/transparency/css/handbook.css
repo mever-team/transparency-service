@@ -78,7 +78,7 @@ h2::after {
     border-bottom: 1px solid #e6e6e64a;
 }
 .menu_item2 {
-    padding: 0.3rem 0 0.3rem 2rem;
+    padding: 0.2rem 0 0.2rem 2rem;
 }
 .menu_item1.active, .menu_item2.active {color: #64DB96;}
 
