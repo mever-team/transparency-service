@@ -311,19 +311,10 @@ $(document).ready(function () {
                             if (firstpass){
                                 firstpass = false;
                                 const $loading_field = $("<div>").addClass('fieldLoader');
-                                const $loading_spinner = $("<span>").addClass('spinner')
-                                    .css({
-                                        'display': 'inline-block',
-                                        'width': '15px', 
-                                        'height': '15px',
-                                        'border-width': '3px',
-                                        'margin': '0 5px 0 -19px',
-                                        'border-width': '2px',
-                                        'vertical-align': 'middle',
-                                    });
+                                const $loading_section = $("<span>").addClass('sectionLoader');
                                 $('span.field-value').html($loading_field).attr('contenteditable', 'false');
-                                $('.menu .arrow').css('display', 'none');
-                                $('.menu div').prepend($loading_spinner);
+                                $('.menu .light').css('display', 'none');
+                                $('.menu div').prepend($loading_section);
                             }
                             // poll update
                             for (const [section, fields] of Object.entries(job.data)) {
@@ -361,7 +352,7 @@ $(document).ready(function () {
                                             $('.menu div').each(function (){
                                                 if ($(this).html().toLowerCase().includes(this_section)) {
                                                     doneMenus.push(this_section);
-                                                    $(this).find('.arrow').css('display', 'inline-block');
+                                                    $(this).find('.light').css('display', 'inline-block');
                                                     $(this).find('.spinner').remove();
                                                 }
                                             });
