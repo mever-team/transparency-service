@@ -89,6 +89,9 @@ Output:
     def _run(self, content: str, task: str, **params):
         assert isinstance(content, str), "Content must be of type str"
         assert task in Ollama.tasks, "Not supported task: "+task
+        if not content:
+            yield ''
+            return
         if task == "vision":
             content, status = to_base64(content)
             if status != 200:
@@ -119,6 +122,9 @@ Output:
     def _run_stream(self, content: str, task: str, **params):
         assert isinstance(content, str), "Content must be of type str"
         assert task in Ollama.tasks, "Not supported task: "+task
+        if not content:
+            yield ''
+            return
         payload = {
             "model": self._model,
             "stream": True,
