@@ -310,12 +310,7 @@ $(document).ready(function () {
                             // put loading spinners in UI
                             if (firstpass){
                                 firstpass = false;
-                                const $loading_spinner_dark = $("<div>").addClass('spinnerDark')
-                                    .css({
-                                        'width': '20px', 
-                                        'height': '20px',
-                                        'border': '3px solid #b7b7b7 !important'
-                                    });
+                                const $loading_field = $("<div>").addClass('fieldLoader');
                                 const $loading_spinner = $("<span>").addClass('spinner')
                                     .css({
                                         'display': 'inline-block',
@@ -326,7 +321,7 @@ $(document).ready(function () {
                                         'border-width': '2px',
                                         'vertical-align': 'middle',
                                     });
-                                $('span.field-value').html($loading_spinner_dark).attr('contenteditable', 'false');
+                                $('span.field-value').html($loading_field).attr('contenteditable', 'false');
                                 $('.menu .arrow').css('display', 'none');
                                 $('.menu div').prepend($loading_spinner);
                             }

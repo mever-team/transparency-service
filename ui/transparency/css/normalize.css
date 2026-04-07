@@ -94,6 +94,25 @@ a:hover {filter: brightness(1.2);}
     100% { transform: rotate(360deg); }
 }
 
+.fieldLoader {
+    width: 100%;
+    height: 12px;
+    border-radius: 6px;
+    background: linear-gradient(
+        100deg,
+        transparent,
+        rgba(255, 255, 255, 0.6) 50%,
+        transparent 80%
+        ),
+        #444;
+    background-size: 200% 100%;
+    animation: animloader 1s linear infinite;
+}
+@keyframes animloader {
+    0% {background-position: -100% 0;}
+    100% {background-position: 100% 0;}
+}
+
 
 .popup {display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px);-webkit-backdrop-filter: blur(8px);z-index: 2000; justify-content: center; align-items: center;}
 .popup.show {display: flex;}
