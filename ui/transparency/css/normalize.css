@@ -121,7 +121,7 @@ a:hover {filter: brightness(1.2);}
     background: #393939;
     border-radius: 50%;
     position: relative;
-    margin: 0 5px 0 -19px;
+    margin: 0 5px 0 -15px;
     vertical-align: middle;
     animation: skLinRotate 1s ease-in-out infinite alternate;
   }

@@ -544,7 +544,7 @@ section.buttons {
     position: relative;
     top: 0;
     transition: top 0.3s;
-    width: 165px;
+    width: 180px;
     margin: 20px 0;
     float: left;
 }
