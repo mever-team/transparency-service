@@ -10,8 +10,9 @@ import traceback
 import re
 import time
 import numpy as np
+import contextlib
 
-class ModelCardEntry:
+class ModelCardEntry(contextlib.AbstractContextManager):
     def __init__(self, card: ModelCard, creator: str, conn):
         self.card = card
         self.creator = creator

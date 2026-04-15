@@ -563,8 +563,9 @@ section.buttons {
 .card_view div {
     border: solid 1px #434343;
     margin: 1rem 0 0 0;
-    padding: 0.5rem;
     cursor: pointer;
+    width: 50%;
+    padding: 10px 0;
 }
 
 .card_view .active {
@@ -572,14 +573,16 @@ section.buttons {
 }
 
 .contents {
-    margin-left: 190px;
-    margin-top: -70px;
+    margin-top: 0;
     position:relative;
     min-height: 400px;
 }
+.contents.menu-space {
+    margin-left: 190px;
+}
 @media screen and (max-width: 768px) {
     .menu {display:flex; position: relative; width: 100%; margin: 0; float: none; flex-wrap: wrap; margin-top: 10px;}
-    .contents {margin-left: 0px;margin-top: 0;position: relative; min-height: 400px;}
+    .contents {margin-left: 0;margin-top: 0;position: relative; min-height: 400px;}
     .menu.fixed {position: relative; width: 100%; margin: 0; margin-top: 10px;}
     .menu div {min-width: 33%; height:30px; padding-top:7px!important; margin:0px!important;}
     .card_view{margin: 0 auto;}

@@ -22,8 +22,10 @@ import secrets
 import time
 import re
 import pathlib
+from typing import Any
 
-def exists(condition, message):
+
+def exists(condition:str|ModelCardEntry|Any|None, message: str):
     # empty strings are allowed
     if condition is not None and isinstance(condition, str): return condition
     if not condition: abort(404, description=message)
@@ -804,12 +806,12 @@ def serve(
     def card_job(card_id: int, token: str):
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
         with auth_lock: creator = token2user.get(token, None)
-        if creator!=card.creator: abort(403, "Only the card's creator can see its status.")
+        # TODO: this was disabled because it's a request from the frontend in all cases (and maybe we can allow it?)
+        #if creator!=card.creator: abort(403, "Only the card's creator can see its status.")
         status = jobs_tracker.get(card_id)
         if status:
             return jsonify(status.to_dict())
-        else:
-            return jsonify({})
+        return jsonify({})
 
     @app.route(domain_prefix+"/card/<int:card_id>/download/<string:fformat>", methods=["GET"])
     def download_card(card_id, fformat):

@@ -54,7 +54,7 @@ $(document).ready(function () {
     const id = urlParams.get('id');
     const compareto = urlParams.get('compareto');
     const $menu = $('.menu');
-    let menuOffsetTop = $menu.offset().top; // this will be updated, depending on history taking up space
+    menuOffsetTop = $menu.offset().top; // this will be updated, depending on history taking up space
     const pageUrl = encodeURIComponent(window.location.href);
     const pageTitle = encodeURIComponent(document.title);
     $('#pdf_desc').hide();
@@ -101,7 +101,7 @@ $(document).ready(function () {
         $('#url_text').removeClass('active');
         $('#card-url,#card-url-p').slideUp();
         $('#url_desc').slideUp();
-        
+
         $('#pdf_text').removeClass('active');
         $('#pdf-container').slideUp();
         $('#pdf_desc').slideUp();
@@ -114,19 +114,20 @@ $(document).ready(function () {
     $('#simple-view').click(function(){
         $('#technical-view').removeClass('active');
         $('#simple-view').addClass('active');
+        $('.contents').removeClass('menu-space');
         $menu.hide();
     })
-
     
     $('#technical-view').click(function(){
         $('#technical-view').addClass('active');
         $('#simple-view').removeClass('active');
+        $('.contents').addClass('menu-space');
         $menu.show();
     })
     $('#simple-view').trigger('click');
 
     $(window).on('scroll', function () {
-        if ($(window).scrollTop() > menuOffsetTop - 20) $menu.addClass('fixed');
+        if ($(window).scrollTop() > menuOffsetTop + 40) $menu.addClass('fixed');
         else $menu.removeClass('fixed');
     });
     // let interval = setInterval(function () {checkLocked(interval);}, 100); // do first run immediately
