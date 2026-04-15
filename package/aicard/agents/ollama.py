@@ -90,7 +90,7 @@ Output:
         assert isinstance(content, str), "Content must be of type str"
         assert task in Ollama.tasks, "Not supported task: "+task
         if not content:
-            yield ''
+            yield '{"message": {"content": ""}}\n'
             return
         if task == "vision":
             content, status = to_base64(content)
@@ -123,7 +123,7 @@ Output:
         assert isinstance(content, str), "Content must be of type str"
         assert task in Ollama.tasks, "Not supported task: "+task
         if not content:
-            yield ''
+            yield '{"message": {"content": ""}}\n'
             return
         payload = {
             "model": self._model,

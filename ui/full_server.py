@@ -20,7 +20,7 @@ matcher = SemanticMatcher(
     external_get_timeout_sec=3,
     matching_strictness=0.5)
 prompter = Prompter(
-    Ollama("mistral:latest", name="mistral:latest", timeout_secs=45),
+    Ollama("mistral:latest", name="🌬️ Mistral", timeout_secs=45),
     description="Mistral is used as the base model.",
     text_preprocessor=text_compression
 )
