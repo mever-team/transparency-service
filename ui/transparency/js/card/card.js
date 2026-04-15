@@ -111,6 +111,20 @@ $(document).ready(function () {
         $('#metrics_desc').slideDown();
     });
 
+    $('#simple-view').click(function(){
+        $('#technical-view').removeClass('active');
+        $('#simple-view').addClass('active');
+        $menu.hide();
+    })
+
+    
+    $('#technical-view').click(function(){
+        $('#technical-view').addClass('active');
+        $('#simple-view').removeClass('active');
+        $menu.show();
+    })
+    $('#simple-view').trigger('click');
+
     $(window).on('scroll', function () {
         if ($(window).scrollTop() > menuOffsetTop - 20) $menu.addClass('fixed');
         else $menu.removeClass('fixed');
@@ -279,6 +293,8 @@ $(document).ready(function () {
                 el.setAttribute('autocapitalize', 'off');
                 el.setAttribute('translate', 'no');
             });
+
+
         }
 
 
