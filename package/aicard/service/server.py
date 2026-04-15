@@ -10,6 +10,7 @@ from aicard.service import users
 from aicard.service import converters
 from aicard.service.logger import Logger
 from aicard.utils.eval_adapter.eval_adapter import eval_adapter
+from aicard.service.jobs_tracker import CardJobsTracker, Job
 from flask import Flask, abort, redirect, request, jsonify, send_from_directory, Response, url_for
 from threading import Lock
 from dotenv import dotenv_values
@@ -43,6 +44,7 @@ def serve(
     third_party_client: str|None = None,
     feature_extractor: SemanticMatcher|None = None,
     email_verification: EmailVerification|None = None,
+    jobs_tracker: CardJobsTracker = CardJobsTracker(),
 ):
     static = os.path.abspath(static)
     if env: config = dotenv_values(env)
@@ -637,9 +639,9 @@ def serve(
     @app.route(domain_prefix+'/card/<int:card_id>', methods=['GET'])
     def get_card(card_id):
         found = find_card(card_id)
-        with exists(found, "Model card does not exist or has been deleted.") as card:
-            return jsonify(converters.dict2dynamic(card.data, {"title"})
-                           |{"description": card.summary(), "quality": card.quality(), "history": found.history(), "creator": found.creator})
+        card = exists(found, "Model card does not exist or has been deleted.").card
+        return jsonify(converters.dict2dynamic(card.data, {"title"})
+                       |{"description": card.summary(), "quality": card.quality(), "history": found.history(), "creator": found.creator})
 
     @app.route(domain_prefix+'/card/<int:card_id>/locked', methods=['GET'])
     def get_card_locked_status(card_id):
@@ -780,9 +782,34 @@ def serve(
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
         with auth_lock: creator = token2user.get(token, None)
         if creator!=card.creator: abort(403, "Only the card's creator can refine it in-place.")
-        status = card.autorefine(assistant, logger)
+        status = card.autorefine(assistant, logger, jobs_tracker)
         logger.info(f"requested card {card_id} refinement from {assistant_type}", user=creator)
         return jsonify(status)
+    
+    @app.route(domain_prefix+'/assistant/<string:assistant_type>/refinefield/<int:card_id>', methods=['POST'])
+    @users.require_auth(token2expiration, third_party_auth)
+    def autorefine_field(card_id: int, assistant_type: str, token: str):
+        assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
+        card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
+        with auth_lock: creator = token2user.get(token, None)
+        if creator!=card.creator: abort(403, "Only the card's creator can refine it in-place.")
+        data = request.get_json()
+        text = data.get('value', '')
+        refined_stream = assistant.refine_field(text, logger)
+        logger.info(f"requested field card {card_id} refinement from {assistant_type}", user=creator)
+        return Response(refined_stream, content_type="application/x-ndjson")
+    
+    @app.route(domain_prefix+'/job/<int:card_id>', methods=['GET'])
+    @users.require_auth(token2expiration, third_party_auth)
+    def card_job(card_id: int, token: str):
+        card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
+        with auth_lock: creator = token2user.get(token, None)
+        if creator!=card.creator: abort(403, "Only the card's creator can see its status.")
+        status = jobs_tracker.get(card_id)
+        if status:
+            return jsonify(status.to_dict())
+        else:
+            return jsonify({})
 
     @app.route(domain_prefix+"/card/<int:card_id>/download/<string:fformat>", methods=["GET"])
     def download_card(card_id, fformat):

@@ -87,10 +87,54 @@ a:hover {filter: brightness(1.2);}
 
 .loading-overlay {margin-top:50px;display: flex; justify-content: center; align-items: center; z-index: 9999; font-family: sans-serif; color: #1F1F1F;}
 .spinner {border: 4px solid #f3f3f3; border-top: 4px solid #64DB96; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px; margin-top: 9px;}
+.spinnerDark {border: 4px solid #b7b7b7; border-top: 4px solid #64DB96; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px; margin-top: 9px;}
 #loading p {margin-left: 20px; font-weight: bold; font-size: 22px;}
 @keyframes spin {
     0%   { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+.fieldLoader {
+    width: 100%;
+    height: 12px;
+    border-radius: 6px;
+    background: linear-gradient(
+        100deg,
+        transparent,
+        #64DB96 50%,
+        transparent 80%
+        ),
+        #444;
+    background-size: 200% 100%;
+    animation: animloader 1s linear infinite;
+}
+@keyframes animloader {
+    0% {background-position: -100% 0;}
+    100% {background-position: 100% 0;}
+}
+
+.sectionLoader {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    /* background: #1f1f1f; */
+    background: #393939;
+    border-radius: 50%;
+    position: relative;
+    margin: 0 5px 0 -15px;
+    vertical-align: middle;
+    animation: skLinRotate 1s ease-in-out infinite alternate;
+  }
+.sectionLoader:after{
+    content:"";
+    position: absolute;
+    inset: 2px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top-color: #64DB96;
+}
+@keyframes skLinRotate {
+    95% ,100% { transform: rotate(840deg) }
 }
 
 

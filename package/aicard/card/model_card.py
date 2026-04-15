@@ -31,46 +31,87 @@ class ModelCard:
                 creator=ShortText("Person or organization developed the model."),
                 date=Date("Model development completion date."),
                 version=ShortText("Version of the model."),
-                type=Options([
-                    "#Neural Networks",
-                    "Convolutional Neural Network",
-                    "Recurrent Neural Network",
-                    "Multilayer Perceptron",
-                    "Transformer",
-                    "Graph Neural Network",
-                    "Autoencoder",
-                    "Generative Adversarial Network",
+                type=Options(self._type_options,"Model architecture or algorithm type."),
+                task=Options(self._task_options, "Model task."),
+                license=ShortText("Licence and intellectual property (IP) information."),
+                home=ShortText("URL hosting the model."),
+                contact=ShortText("Author contact information."),
+                citation=ShortText("How should the model be cited? Typically includes title, author, year, and publisher. May be a formatted citation or bibtex entries like @article.", technical_nature=True),
+                more=LongText("Additional model information not found above.")),
+            use=DotDict(
+                use_cases=ShortText("Intended uses of the model."),
+                oversight=Options(["self-learning/autonomous", "human-in-the-loop", "human-on-the-loop", "human-in-command", "unknown"], "Defines the level of human control over the system."),
+                user_groups=ShortText("Intended users."),
+                out_of_scope_use=ShortText("Unintended and improper use of model."),
+                software=ShortText("Software requirements and dependencies?"),
+                instructions=ShortText("Use instructions.", technical_nature=True),
+                inputs_outputs=ShortText("Description of the model's inputs and outputs", technical_nature=True),
+                factors=LongText("Foreseeable salient factors for which model performance may vary."),
+                hardware=ShortText("Hardware requirements for training and inference."),
+                more=LongText("Additional information about intended uses not found above.", technical_nature=True)),
+            training=DotDict(
+                datasets=ShortText("Dataset(s) used during training."),
+                motivation=LongText("Why were training datasets chosen?"),
+                preprocessing=ShortText("Data pre-processing for training (tokenizer, data augmentation etc.).", technical_nature=True),
+                standards=Options(["none", "ISO","IEEE", "unknown"], "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management."),
+                update=Options(["no", "yes", "unknown"], "Is tge training set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),
+                more=LongText("Additional training set information not found above.", technical_nature=True)),
+            evaluation=DotDict(
+                datasets=ShortText("Dataset(s) used during evaluation."),
+                motivation=LongText("Why were evaluation datasets chosen?"),
+                preprocessing=ShortText("Data pre-processing for evaluation (tokenizer, data augmentation etc.).", technical_nature=True),
+                standards=Options(["none", "ISO","IEEE", "unknown"], "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management."),
+                update=Options(["no", "yes", "unknown"], "Is the evalution set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),
+                more=LongText("Additional evaluation set information not found above.", technical_nature=True)
+            ),
+            performance=DotDict(
+                analysis=LongText("Analysis and explanation of performance results."),
+                metrics=ShortText("Benchmark results for any performance metrics.", technical_nature=True),
+                thresholds=ShortText("If decision thresholds are used, what are they, and why were those parameters chosen?"),
+                methodology=LongText("Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method."),
+                bias=LongText("Performance and bias across different groups (e.g. ethnicity, gender)"),
+            ),
+            safety=DotDict(
+                ethics=LongText("Ethical considerations regarding datasets and usage of model. Recommended mitigation measures."),
+                fairness=LongText("Definition of fairness applied in setting up the AI system."),
+                risks=LongText("Possible threats to the AI system (design faults, technical faults, environmental threats) and the possible consequences."),
+                security=LongText("Is the AI system certified for cybersecurity or is it compliant with specific security standards?"),
+                caveats=LongText("Additional concerns that were not covered in the previous sections.")
+            ),
+        ))
+        self.connector = connector # used by the client - the server does something else and model cards stored there should never set this field
+        #VersionControl.__init__(self)
 
+    def __enter__(self):
+        assert self.connector, "You need a model card connector to use it as a context"
+        return self
 
-                    "#Classical Machine Learning",
-                    "Linear Regression",
-                    "Logistic Regression",
-                    "K-Nearest Neighbors",
-                    "Naive Bayes",
-                    "Support Vector Machine",
-                    "Decision Tree",
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.commit()
+        return False
 
+    def __del__(self):
+        if self.connector:
+            assert json.dumps(self.connector.prototype.data) == json.dumps(self.data), \
+                "There are uncommitted changes to a model card with a connector. Do one of these:\n * Commit the changes\n * Detach the connector\n * Use the card as a context to auto-commit"
 
-                    "#Ensemble Methods",
-                    "Random Forest",
-                    "Gradient Boosting",
-                    "Ensemble Model",
+    def detach(self):
+        self.connector = None
+        return self
 
+    def __getattr__(self, key):
+        if key in ["data", "connector"]: return object.__getattribute__(self, key)
+        if key in self.data:
+            ret = self.data[key]
+            return ret.get() if isinstance(ret, Field) else ret
+        raise AttributeError
 
-                    "#Unsupervised / Representation Learning",
-                    "Clustering Model",
-                    "Dimensionality Reduction Model",
-
-
-                    "#Reinforcement Learning",
-                    "Reinforcement Learning Agent",
-
-
-                    "#Other",
-                    "Other",
-                    "unknown"
-                    ],"Model architecture or algorithm type."),
-                task=Options([
+    def __setattr__(self, key, value):
+        if key in ["data", "connector"]: return object.__setattr__(self, key, value)
+        if key in self.data: self.data[key].set(value)
+        return object.__setattr__(self, key, value)
+    
+    _task_options = [
                     "#Multimodal",
                     "Audio-Text-to-Text",
                     "Image-Text-to-Text",
@@ -137,84 +178,46 @@ class ModelCard:
                     "#Other",
                     "Other",
                     "unknown"
-                    ], "Model task."),
-                license=LongText("Licence and intellectual property (IP) information."),
-                home=ShortText("URL hosting the model."),
-                contact=ShortText("Author contact information."),
-                citation=LongText("How should the model be cited? Typically includes title, author, year, and publisher. May be a formatted citation or bibtex entries like @article.", technical_nature=True),
-                more=LongText("Additional model information not found above.")),
-            use=DotDict(
-                use_cases=LongText("Intended uses of the model."),
-                oversight=Options(["self-learning/autonomous", "human-in-the-loop", "human-on-the-loop", "human-in-command", "unknown"], "Defines the level of human control over the system."),
-                user_groups=LongText("Intended users."),
-                out_of_scope_use=LongText("Unintended and improper use of model."),
-                software=LongText("Software requirements and dependencies?"),
-                instructions=LongText("Use instructions.", technical_nature=True),
-                inputs_outputs=LongText("Description of the model's inputs and outputs", technical_nature=True),
-                factors=LongText("Foreseeable salient factors for which model performance may vary."),
-                hardware=LongText("Hardware requirements for training and inference."),
-                more=LongText("Additional information about intended uses not found above.", technical_nature=True)),
-            training=DotDict(
-                datasets=LongText("Dataset(s) used during training."),
-                motivation=LongText("Why were training datasets chosen?"),
-                preprocessing=LongText("Data pre-processing for training (tokenizer, data augmentation etc.).", technical_nature=True),
-                standards=Options(["none", "ISO","IEEE", "unknown"], "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management."),
-                update=Options(["no", "yes", "unknown"], "Is tge training set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),
-                more=LongText("Additional training set information not found above.", technical_nature=True)),
-            evaluation=DotDict(
-                datasets=LongText("Dataset(s) used during evaluation."),
-                motivation=LongText("Why were evaluation datasets chosen?"),
-                preprocessing=LongText("Data pre-processing for evaluation (tokenizer, data augmentation etc.).", technical_nature=True),
-                standards=Options(["none", "ISO","IEEE", "unknown"], "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management."),
-                update=Options(["no", "yes", "unknown"], "Is the evalution set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),
-                more=LongText("Additional evaluation set information not found above.", technical_nature=True)
-            ),
-            performance=DotDict(
-                analysis=LongText("Analysis and explanation of performance results."),
-                metrics=LongText("Benchmark results for any performance metrics.", technical_nature=True),
-                thresholds=LongText("If decision thresholds are used, what are they, and why were those parameters chosen?"),
-                methodology=LongText("Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method."),
-                bias=LongText("Performance and bias across different groups (e.g. ethnicity, gender)"),
-            ),
-            safety=DotDict(
-                ethics=LongText("Ethical considerations regarding datasets and usage of model. Recommended mitigation measures."),
-                fairness=LongText("Definition of fairness applied in setting up the AI system."),
-                risks=LongText("Possible threats to the AI system (design faults, technical faults, environmental threats) and the possible consequences."),
-                security=LongText("Is the AI system certified for cybersecurity or is it compliant with specific security standards?"),
-                caveats=LongText("Additional concerns that were not covered in the previous sections.")
-            ),
-        ))
-        self.connector = connector # used by the client - the server does something else and model cards stored there should never set this field
-        #VersionControl.__init__(self)
+                    ]
+    _type_options = [
+                    "#Neural Networks",
+                    "Convolutional Neural Network",
+                    "Recurrent Neural Network",
+                    "Multilayer Perceptron",
+                    "Transformer",
+                    "Graph Neural Network",
+                    "Autoencoder",
+                    "Generative Adversarial Network",
 
-    def __enter__(self):
-        assert self.connector, "You need a model card connector to use it as a context"
-        return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
-        self.commit()
-        return False
+                    "#Classical Machine Learning",
+                    "Linear Regression",
+                    "Logistic Regression",
+                    "K-Nearest Neighbors",
+                    "Naive Bayes",
+                    "Support Vector Machine",
+                    "Decision Tree",
 
-    def __del__(self):
-        if self.connector:
-            assert json.dumps(self.connector.prototype.data) == json.dumps(self.data), \
-                "There are uncommitted changes to a model card with a connector. Do one of these:\n * Commit the changes\n * Detach the connector\n * Use the card as a context to auto-commit"
 
-    def detach(self):
-        self.connector = None
-        return self
+                    "#Ensemble Methods",
+                    "Random Forest",
+                    "Gradient Boosting",
+                    "Ensemble Model",
 
-    def __getattr__(self, key):
-        if key in ["data", "connector"]: return object.__getattribute__(self, key)
-        if key in self.data:
-            ret = self.data[key]
-            return ret.get() if isinstance(ret, Field) else ret
-        raise AttributeError
 
-    def __setattr__(self, key, value):
-        if key in ["data", "connector"]: return object.__setattr__(self, key, value)
-        if key in self.data: self.data[key].set(value)
-        return object.__setattr__(self, key, value)
+                    "#Unsupervised / Representation Learning",
+                    "Clustering Model",
+                    "Dimensionality Reduction Model",
+
+
+                    "#Reinforcement Learning",
+                    "Reinforcement Learning Agent",
+
+
+                    "#Other",
+                    "Other",
+                    "unknown"
+                    ]
 
     def is_stable(self):
         return (not self.connector) or json.dumps(self.connector.prototype.data) == json.dumps(self.data)

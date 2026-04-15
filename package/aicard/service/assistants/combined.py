@@ -1,6 +1,7 @@
 from .assistant import Assistant
 from aicard.card import ModelCard
 from aicard.service.logger import Logger
+from aicard.service.jobs_tracker import CardJobsTracker
 
 
 class Combined(Assistant):
@@ -25,5 +26,8 @@ class Combined(Assistant):
         if not self._refine_immediately: return ret
         return self._refine.refine(card, logger, user_messages)
 
-    def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]):
-        return self._refine.refine(card, logger, user_messages)
+    def refine(self, card: ModelCard, card_id: int, logger: Logger, user_messages: list[str], job_tracker: CardJobsTracker):
+        return self._refine.refine(card, card_id, logger, user_messages, job_tracker)
+    
+    def refine_field(self, text: str, logger: Logger):
+        return self._refine.refine_field(text, logger)
