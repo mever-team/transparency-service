@@ -54,7 +54,8 @@ $(document).ready(function () {
     const id = urlParams.get('id');
     const compareto = urlParams.get('compareto');
     const $menu = $('.menu');
-    menuOffsetTop = $menu.offset().top; // this will be updated, depending on history taking up space
+    const $menubarrier = $('.menubarrier');
+    menuOffsetTop = $menubarrier.offset().top; // this will be updated, depending on history taking up space
     const pageUrl = encodeURIComponent(window.location.href);
     const pageTitle = encodeURIComponent(document.title);
     $('#pdf_desc').hide();
@@ -127,7 +128,7 @@ $(document).ready(function () {
     $('#simple-view').trigger('click');
 
     $(window).on('scroll', function () {
-        if ($(window).scrollTop() > menuOffsetTop + 40) $menu.addClass('fixed');
+        if ($(window).scrollTop() > menuOffsetTop - 20) $menu.addClass('fixed');
         else $menu.removeClass('fixed');
     });
     // let interval = setInterval(function () {checkLocked(interval);}, 100); // do first run immediately
@@ -178,7 +179,7 @@ $(document).ready(function () {
                     Number(id),
                     historyContainer
                 );
-                menuOffsetTop = $menu.offset().top;
+                menuOffsetTop = $menubarrier.offset().top;
             }
 
 
@@ -329,7 +330,7 @@ $(document).ready(function () {
                             const $loading_field = $("<div>").addClass('fieldLoader');
                             const $loading_section = $("<span>").addClass('sectionLoader');
                             $('span.field-value').html($loading_field).attr('contenteditable', 'false');
-                            console.log($('.menu .light'));
+                            //console.log($('.menu .light'));
                             $('.menu .light').hide();
                             $('.menu div').prepend($loading_section);
                         }
@@ -443,7 +444,7 @@ $(document).ready(function () {
                     if (interval) clearInterval(interval);
                     $('#model-title').remove();
                     $('#loading').hide();
-                    $('#loading').hide();
+                    //$('#loading').hide();
                     $('#share-options').hide();
                     $('#edit-options').hide();
                     $('#deleteCard').hide();

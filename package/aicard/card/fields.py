@@ -5,10 +5,11 @@ class Field:
     def get(self): raise Exception("Cannot get from abstract Field")
 
 class ShortText(Field):
-    def __init__(self, description: str="", technical_nature: bool=False):
+    def __init__(self, description: str="", technical_nature: bool=False, in_summary: bool=False):
         self.__contents = ""
         self.description = description
         self.technical_nature = technical_nature
+        self.in_summary = in_summary
     def set(self, value):
         if isinstance(value, Field): value = value.get()
         self.__contents = value
@@ -17,13 +18,14 @@ class ShortText(Field):
     def __bool__(self):
         return bool(self.__contents)
     def __html__(self):
-        return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "short text"}
+        return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "short text", "in_summary": self.in_summary}
 
 class LongText(Field):
-    def __init__(self, description: str="", technical_nature: bool=False):
+    def __init__(self, description: str="", technical_nature: bool=False, in_summary: bool=False):
         self.__contents = ""
         self.description = description
         self.technical_nature = technical_nature
+        self.in_summary = in_summary
     def set(self, value):
         if isinstance(value, Field): value = value.get()
         self.__contents = value
@@ -32,13 +34,14 @@ class LongText(Field):
     def __bool__(self):
         return bool(self.__contents)
     def __html__(self):
-        return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "long text"}
+        return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "long text", "in_summary": self.in_summary}
 
 class Options(Field):
-    def __init__(self, options: list[str], description: str=""):
+    def __init__(self, options: list[str], description: str="", in_summary: bool=False):
         self.__options = options  # leave as a list
         self.__contents = None
         self.description = description
+        self.in_summary = in_summary
     def set(self, value):
         if isinstance(value, Field): value = value.get()
         if not value: value = None
@@ -51,13 +54,14 @@ class Options(Field):
     def __bool__(self):
         return self.__contents != None
     def __html__(self):
-        return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "list:"+",".join(self.__options)}
+        return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "list:"+",".join(self.__options), "in_summary": self.in_summary}
     
 class Date(Field):
-    def __init__(self, description: str=""):
+    def __init__(self, description: str="", in_summary: bool=False):
         self.__contents = ""
         self.description = description
         self.__format = "%Y-%m-%d"
+        self.in_summary = in_summary
     def set(self, value):
         if isinstance(value, Field): value = value.get()
         try:
@@ -70,14 +74,15 @@ class Date(Field):
     def __bool__(self):
         return bool(self.__contents)
     def __html__(self):
-        return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "date"}
+        return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "date", "in_summary": self.in_summary}
 
 # Ollama pattern issue: https://github.com/ollama/ollama/issues/10591
 class Pattern(Field):
-    def __init__(self, regex: str, description: str=""):
+    def __init__(self, regex: str, description: str="", in_summary: bool=False):
         self.__pattern = regex
         self.__contents = ''
         self.description = description
+        self.in_summary = in_summary
     def set(self, value):
         if isinstance(value, Field): value = value.get()
         self.__contents = value
@@ -88,4 +93,4 @@ class Pattern(Field):
     def __bool__(self):
         return bool(self.__contents)
     def __html__(self):
-        return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "long text"}
+        return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "long text", "in_summary": self.in_summary}
