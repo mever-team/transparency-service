@@ -322,8 +322,9 @@ class ModelCard:
             if isinstance(dotdict, DotDict):
                 segment = ""
                 for field, value in dotdict.items():
-                    val = value.get().strip()
+                    val = value.get()
                     if val and val != "unknown":
+                        val = val.strip()
                         segment += f"{('*' + field.replace('_', ' ') + '*').ljust(20)} {val}\n\n"
 
                 if segment:
