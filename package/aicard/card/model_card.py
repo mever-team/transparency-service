@@ -101,14 +101,14 @@ class ModelCard:
         return self
 
     def __getattr__(self, key):
-        if key in ["data", "connector"]: return object.__getattribute__(self, key)
+        if key in ["data", "connector", "simple_fields"]: return object.__getattribute__(self, key)
         if key in self.data:
             ret = self.data[key]
             return ret.get() if isinstance(ret, Field) else ret
         raise AttributeError
 
     def __setattr__(self, key, value):
-        if key in ["data", "connector"]: return object.__setattr__(self, key, value)
+        if key in ["data", "connector", "simple_fields"]: return object.__setattr__(self, key, value)
         if key in self.data: self.data[key].set(value)
         return object.__setattr__(self, key, value)
     
@@ -223,7 +223,7 @@ class ModelCard:
     def __get_simple_fields(self):
         # used internally in the constructor, as simple fields do not change
         simple_fields = dict()
-        for k, v in self.data:
+        for k, v in self.data.items():
             if isinstance(v, dict):
                 for field_k, field_v in v.items():
                     if hasattr(field_v, "is_simple") and field_v.is_simple:
@@ -235,7 +235,7 @@ class ModelCard:
         return simple_fields
 
     def get_simple_fields(self):
-        return self.simple_fields
+        return {k: v.get() for k,v in self.simple_fields.items()}
 
     def set_simple_fields(self, simple_field_values: dict[str,str]):
         for k, v in simple_field_values.items():

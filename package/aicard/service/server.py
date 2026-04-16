@@ -649,7 +649,7 @@ def serve(
     def get_card_simple(card_id):
         found = find_card(card_id)
         card = exists(found, "Model card does not exist or has been deleted.").card
-        return jsonify(converters.dict2dynamic({"simple": card.get_simple_fields()}, {"title"})
+        return jsonify(converters.dict2dynamic({"simple": card.get_simple_fields()}, dict())
                        |{"description": card.summary(), "quality": card.quality(), "creator": found.creator})
 
     @app.route(domain_prefix+'/card/<int:card_id>/locked', methods=['GET'])

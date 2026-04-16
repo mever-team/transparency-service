@@ -17,7 +17,7 @@ def dynamic2dict(data, mixed: set=None):
     return data
 
 def dict2dynamic(data, mixed: set=None):
-    if mixed:
+    if mixed is not None:
         assert isinstance(data, dict)
         for mix in mixed: assert mix in data
         return {mix: data[mix].get() for mix in mixed}|{"data": dict2dynamic({k: v for k, v in data.items() if k not in mixed})}
