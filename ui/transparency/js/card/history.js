@@ -1,22 +1,32 @@
 function renderHistoryGraph(history, currentId, container) {
+    let node_info = history.info;
+    history = history.edges; // dict from node id to tuple (username, version)
+
     if (!history || history.length === 0) return;
     if (history.length<2) return;
+
+    // TODO: homomorphism of history here
+
     const nodeIds = new Set();
     history.forEach(([u, v]) => {
         nodeIds.add(u);
         nodeIds.add(v);
     });
+    const hidden = new Set();
+    nodeIds.forEach(u => {if(!node_info[u][1].length && node_info[u][0]!==loggedUser) hidden.add(u)});
+    console.log(hidden);
 
     const rootId = Math.min(...nodeIds);
-    const X_SPACING = 120;
-    const Y_SPACING = 30;
+    const X_SPACING = 180;
+    const Y_SPACING = 35;
     const NODE_RADIUS = 10;
     const adj = new Map();
     const edges = [];
     const selfLabels = new Map();
+
     history.forEach(([u, v, msg]) => {
-        if (u === v) {
-            if (msg) selfLabels.set(u, msg);
+        if(u === v) {
+            if (msg) selfLabels.set(u, ((node_info[u][1]&&node_info[u][1]!==msg)?(node_info[u][1]+" "):"")+msg + " by " + node_info[u][0]);
             return;
         }
         if (!adj.has(u)) adj.set(u, new Set());
@@ -126,9 +136,9 @@ function renderHistoryGraph(history, currentId, container) {
         g.appendChild(c);
         if (selfLabels.has(id)) {
             const label = document.createElementNS(svg.namespaceURI, "text");
-            label.setAttribute("x", x);
+            label.setAttribute("x", x-30);
             label.setAttribute("y", y - NODE_RADIUS - 6);
-            label.setAttribute("text-anchor", "middle");
+            label.setAttribute("text-anchor", "left");
             label.setAttribute("pointer-events", "none");
             label.classList.add("node-label");
             label.textContent = selfLabels.get(id);
