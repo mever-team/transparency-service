@@ -26,16 +26,16 @@ class ModelCard:
         object.__setattr__(self, "data", DotDict(
             title=ShortText(),
             overview=DotDict(
-                name=ShortText("Name of the model."),
-                description=LongText("Model purpose, capabilities, novelty and caveats"),
-                creator=ShortText("Person or organization developed the model."),
-                date=Date("Model development completion date."),
-                version=ShortText("Version of the model."),
-                type=Options(self._type_options,"Model architecture or algorithm type."),
-                task=Options(self._task_options, "Model task."),
+                name=ShortText("Name of the model.", is_simple=True),
+                description=LongText("Model purpose, capabilities, novelty and caveats", is_simple=True),
+                creator=ShortText("Person or organization developed the model.", is_simple=True),
+                date=Date("Model development completion date.", is_simple=True),
+                version=ShortText("Version of the model.", is_simple=True),
+                type=Options(self._type_options,"Model architecture or algorithm type.", is_simple=True),
+                task=Options(self._task_options, "Model task.", is_simple=True),
                 license=ShortText("Licence and intellectual property (IP) information."),
                 home=ShortText("URL hosting the model."),
-                contact=ShortText("Author contact information."),
+                contact=ShortText("Author contact information.", is_simple=True),
                 citation=ShortText("How should the model be cited? Typically includes title, author, year, and publisher. May be a formatted citation or bibtex entries like @article.", technical_nature=True),
                 more=LongText("Additional model information not found above.")),
             use=DotDict(
@@ -81,6 +81,7 @@ class ModelCard:
         ))
         self.connector = connector # used by the client - the server does something else and model cards stored there should never set this field
         #VersionControl.__init__(self)
+        self.simple_fields = self.__get_simple_fields() # TODO: consider making this a fixed declaration to save on compute
 
     def __enter__(self):
         assert self.connector, "You need a model card connector to use it as a context"
@@ -218,6 +219,28 @@ class ModelCard:
                     "Other",
                     "unknown"
                     ]
+
+    def __get_simple_fields(self):
+        # used internally in the constructor, as simple fields do not change
+        simple_fields = dict()
+        for k, v in self.data:
+            if isinstance(v, dict):
+                for field_k, field_v in v.items():
+                    if hasattr(field_v, "is_simple") and field_v.is_simple:
+                        assert field_k not in simple_fields, "Duplicate simple field names in card definition (they must be unique across categories)"
+                        simple_fields[field_k] = field_v
+            elif hasattr(v, "is_simple") and v.is_simple:
+                assert k not in simple_fields, "Duplicate simple field names in card definition (they must be unique across categories)"
+                simple_fields[k] = v
+        return simple_fields
+
+    def get_simple_fields(self):
+        return self.simple_fields
+
+    def set_simple_fields(self, simple_field_values: dict[str,str]):
+        for k, v in simple_field_values.items():
+            assert k in self.simple_fields, "Not found simple field in card definition: "+str(k)
+            self.simple_fields[k].set(v)
 
     def is_stable(self):
         return (not self.connector) or json.dumps(self.connector.prototype.data) == json.dumps(self.data)
