@@ -54,8 +54,7 @@ $(document).ready(function () {
     const id = urlParams.get('id');
     const compareto = urlParams.get('compareto');
     const $menu = $('.menu');
-    const $menubarrier = $('.menubarrier');
-    menuOffsetTop = $menubarrier.offset().top; // this will be updated, depending on history taking up space
+    let menuOffsetTop = $menu.offset().top; // this will be updated, depending on history taking up space
     const pageUrl = encodeURIComponent(window.location.href);
     const pageTitle = encodeURIComponent(document.title);
     $('#pdf_desc').hide();
@@ -102,7 +101,7 @@ $(document).ready(function () {
         $('#url_text').removeClass('active');
         $('#card-url,#card-url-p').slideUp();
         $('#url_desc').slideUp();
-
+        
         $('#pdf_text').removeClass('active');
         $('#pdf-container').slideUp();
         $('#pdf_desc').slideUp();
@@ -115,14 +114,13 @@ $(document).ready(function () {
     $('#simple-view').click(function(){
         $('#technical-view').removeClass('active');
         $('#simple-view').addClass('active');
-        $('.contents').removeClass('menu-space');
         $menu.hide();
     })
+
     
     $('#technical-view').click(function(){
         $('#technical-view').addClass('active');
         $('#simple-view').removeClass('active');
-        $('.contents').addClass('menu-space');
         $menu.show();
     })
     $('#simple-view').trigger('click');
@@ -179,7 +177,7 @@ $(document).ready(function () {
                     Number(id),
                     historyContainer
                 );
-                menuOffsetTop = $menubarrier.offset().top;
+                menuOffsetTop = $menu.offset().top;
             }
 
 
@@ -330,7 +328,7 @@ $(document).ready(function () {
                             const $loading_field = $("<div>").addClass('fieldLoader');
                             const $loading_section = $("<span>").addClass('sectionLoader');
                             $('span.field-value').html($loading_field).attr('contenteditable', 'false');
-                            //console.log($('.menu .light'));
+                            console.log($('.menu .light'));
                             $('.menu .light').hide();
                             $('.menu div').prepend($loading_section);
                         }
@@ -444,7 +442,7 @@ $(document).ready(function () {
                     if (interval) clearInterval(interval);
                     $('#model-title').remove();
                     $('#loading').hide();
-                    //$('#loading').hide();
+                    $('#loading').hide();
                     $('#share-options').hide();
                     $('#edit-options').hide();
                     $('#deleteCard').hide();
