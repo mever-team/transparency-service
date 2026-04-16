@@ -1,12 +1,37 @@
+function compressHistory(historyEdges, hidden, nodeIds) {
+    const visible = new Set([...nodeIds].filter(id => !hidden.has(id)));
+    if (visible.size <=1 ) return {compactHistory: [], newRootId: null};
+    const newRootId = Math.min(...visible);   // smallest visible id → new root
+    const children = new Map();
+    for (const [u, v, msg] of historyEdges) {
+        if (!children.has(u)) children.set(u, []);
+        children.get(u).push({id: v, msg});
+    }
+    const compactHistory = [];
+    const stack = [{visibleAncestor: newRootId, node: newRootId}];
+    const visited = new Set();
+    while (stack.length) {
+        const {visibleAncestor, node} = stack.pop();
+        if (visited.has(node)) continue;
+        visited.add(node);
+        const out = children.get(node) || [];
+        for (const {id: nb, msg} of out) {
+            if (hidden.has(nb)) {
+                stack.push({visibleAncestor, node: nb});
+                continue;
+            }
+            compactHistory.push([visibleAncestor, nb, msg]);
+            stack.push({visibleAncestor: nb, node: nb});
+        }
+    }
+    return {compactHistory, newRootId};
+}
+
 function renderHistoryGraph(history, currentId, container) {
     let node_info = history.info;
     history = history.edges; // dict from node id to tuple (username, version)
-
     if (!history || history.length === 0) return;
     if (history.length<2) return;
-
-    // TODO: homomorphism of history here
-
     const nodeIds = new Set();
     history.forEach(([u, v]) => {
         nodeIds.add(u);
@@ -14,10 +39,13 @@ function renderHistoryGraph(history, currentId, container) {
     });
     const hidden = new Set();
     nodeIds.forEach(u => {if(!node_info[u][1].length && node_info[u][0]!==loggedUser) hidden.add(u)});
-    console.log(hidden);
+    let rootId = Math.min(...nodeIds);
+    const {compactHistory, newRootId} = compressHistory(history, hidden, nodeIds);
+    history = compactHistory;
+    rootId = newRootId;
+    if (history.length<2) return;
 
-    const rootId = Math.min(...nodeIds);
-    const X_SPACING = 180;
+    const X_SPACING = 200;
     const Y_SPACING = 35;
     const NODE_RADIUS = 10;
     const adj = new Map();
@@ -26,7 +54,7 @@ function renderHistoryGraph(history, currentId, container) {
 
     history.forEach(([u, v, msg]) => {
         if(u === v) {
-            if (msg) selfLabels.set(u, ((node_info[u][1]&&node_info[u][1]!==msg)?(node_info[u][1]+" "):"")+msg + " by " + node_info[u][0]);
+            if (msg) selfLabels.set(u, (node_info[u][1].length===0?"[DRAFT] ":(node_info[u][1]!==msg)?(node_info[u][1]+" "):"")+msg + " by " + node_info[u][0]);
             return;
         }
         if (!adj.has(u)) adj.set(u, new Set());
