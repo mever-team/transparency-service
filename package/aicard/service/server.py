@@ -645,6 +645,13 @@ def serve(
         return jsonify(converters.dict2dynamic(card.data, {"title"})
                        |{"description": card.summary(), "quality": card.quality(), "history": found.history(), "creator": found.creator})
 
+    @app.route(domain_prefix+'/card/simple/<int:card_id>', methods=['GET'])
+    def get_card_simple(card_id):
+        found = find_card(card_id)
+        card = exists(found, "Model card does not exist or has been deleted.").card
+        return jsonify(converters.dict2dynamic({"simple": card.get_simple_fields()}, dict())
+                       |{"description": card.summary(), "quality": card.quality(), "creator": found.creator})
+
     @app.route(domain_prefix+'/card/<int:card_id>/locked', methods=['GET'])
     def get_card_locked_status(card_id):
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
@@ -729,6 +736,30 @@ def serve(
             logger.info("updated a card", user=creator)
             return jsonify(converters.dict2dynamic(card.data, {"title"})
                            |{"description": card.summary(), "quality": card.quality(), "history": card_entry.history(), "creator": card_entry.creator})
+
+    @app.route(domain_prefix + '/card/simple/<int:card_id>', methods=['PUT'])
+    @users.require_auth(token2expiration, third_party_auth)
+    def update_card_simple(card_id, token: str):
+        card_entry = find_card(card_id)
+        with auth_lock:
+            creator = token2user.get(token, None)
+        if creator != card_entry.creator: abort(403, "Only the card's creator can edit it.")
+        json_data = request.get_json()
+        with exists(card_entry, "Model card does not exist or has been deleted.") as card:
+            try:
+                assignable = converters.dynamic2dict(json_data, {"title"})
+                assert "simple" in assignable, "Invalid request: did not pack data into a 'simple' entry"
+                card.data.set_simple_fields(assignable["simple"])
+                card.data.validate_integrity()
+                card_entry.commit_card()
+            except AssertionError as e:
+                abort(404, "Wrong data: " + str(e))
+            except Exception as e:
+                abort(404, "Wrong data: " + str(e))
+            logger.info("updated a card/simple", user=creator)
+            return jsonify(converters.dict2dynamic(card.data, {"title"})
+                           | {"description": card.summary(), "quality": card.quality(),
+                              "creator": card_entry.creator})
 
     @app.route(domain_prefix+'/card', methods=['POST'])
     @users.require_auth(token2expiration, third_party_auth)
