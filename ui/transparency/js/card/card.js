@@ -123,7 +123,6 @@ $(document).ready(function () {
         $('#simple-view').removeClass('active');
         $menu.show();
     })
-    $('#simple-view').trigger('click');
 
     $(window).on('scroll', function () {
         if ($(window).scrollTop() > menuOffsetTop - 20) $menu.addClass('fixed');
@@ -412,6 +411,7 @@ $(document).ready(function () {
             success: function (jsonData) {
                 cardJson = jsonData;
                 render();
+                $('#simple-view').trigger('click');
                 if (token){
                     renderWhileRefine();
                 }
