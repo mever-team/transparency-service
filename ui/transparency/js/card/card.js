@@ -115,6 +115,8 @@ $(document).ready(function () {
         $('#technical-view').removeClass('active');
         $('#simple-view').addClass('active');
         $menu.hide();
+        // $('.contents').css('margin-left', '0');
+        $('.contents').addClass('simple');
     })
 
     
@@ -122,6 +124,8 @@ $(document).ready(function () {
         $('#technical-view').addClass('active');
         $('#simple-view').removeClass('active');
         $menu.show();
+        // $('.contents').css('margin-left', '190px')
+        $('.contents').removeClass('simple');
     })
 
     $(window).on('scroll', function () {
