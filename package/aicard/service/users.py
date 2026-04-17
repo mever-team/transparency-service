@@ -44,6 +44,13 @@ class UserDB:
             password TEXT NOT NULL
         )''')
 
+        # create report table
+        conn.execute('''CREATE TABLE IF NOT EXISTS reports (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            card_id INTEGER NOT NULL,
+            message TEXT NOT NULL
+        )''')
+
         # create model card table
         prototype = ModelCard()
         col_names = list(prototype.data.flatten().keys())
