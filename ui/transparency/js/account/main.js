@@ -2,7 +2,6 @@ $(function () {
     let chartInstance = null;
 
     function update_resources(response) {
-        console.log(response);
         const $pending = $("#pending-users").empty();
         if (response.pending.length === 0) $pending.hide();
         else {
@@ -35,10 +34,10 @@ $(function () {
             response.cards.forEach(card => {$cards.append(`
                 <div class="card" data-card="${card.id}">
                     <span class="username"><a href="/transparency/model_card.html?id=${card.id}">${card.name}&nbsp;</a></span>
-                    <span class="error">${card.report_count?("&nbsp;("+card.report_count+" reports)"):""}</span>
                     <span class="card-delete-btn error button" data-card="${card.id}"><i class="fa-solid fa-trash"></i>&nbsp;Delete</span>
                 `
-                +(card.desc?`    <span class="unpublish-btn warning button" data-card="${card.id}"><i class="fa-solid fa-undo"></i>&nbsp;Unpublish version: ${card.desc}</span>`:"<span class='placeholder'>[DRAFT]</span>")
+                +(card.desc?`    <span class="unpublish-btn warning button" data-card="${card.id}"><i class="fa-solid fa-undo"></i>&nbsp;Unpublish: ${card.desc}</span>`:"<span class='placeholder'>[DRAFT]</span>")
+                +(card.report_count?`<span class="show-reports-btn error button" data-card="${card.id}" data-cardname="${card.name+' '+card.desc}">${card.report_count} reports</span>`:"")
                 +`</div>
             `);});
         }
@@ -49,11 +48,11 @@ $(function () {
             response.reported.forEach(card => {$reported.append(`
                 <div class="card" data-card="${card.id}">
                     <span class="username"><a href="/transparency/model_card.html?id=${card.id}">${card.name}&nbsp;</a></span>
-                    <span class="error">${card.report_count?("&nbsp;("+card.report_count+" reports)"):""}</span>
                     <span class="card-delete-btn error button" data-card="${card.id}"><i class="fa-solid fa-trash"></i>&nbsp;Delete</span>
                 `
-                +(card.desc?`    <span class="unpublish-btn warning button" data-card="${card.id}"><i class="fa-solid fa-undo"></i>&nbsp;Unpublish version: ${card.desc}</span>`:"<span class='placeholder'>DRAFT</span>")
+                +(card.desc?`    <span class="unpublish-btn warning button" data-card="${card.id}"><i class="fa-solid fa-undo"></i>&nbsp;Unpublish: ${card.desc}</span>`:"<span class='placeholder'>DRAFT</span>")
                 +`<span class="resolve-btn success button" data-card="${card.id}"><i class="fa-solid fa-check"></i>&nbsp;Close reports</span>`
+                +(card.report_count?`<span class="show-reports-btn error button" data-card="${card.id}" data-cardname="${card.name+' '+card.desc}">${card.report_count} reports</span>`:"")
                 +`</div>
             `);});
         }
@@ -190,16 +189,35 @@ $(function () {
             url: `/transparency/card/${card_id}/overview/version`,
             method: "PUT",
             contentType: "application/json",
-            data: JSON.stringify({value: "", message: "unpublished"}),
+            data: JSON.stringify({value: "", message: "Unpublished"}),
             headers: { "Authorization": "Bearer " + token },
             success: function () {location.reload();},
             error: xhr => alert(xhr.responseJSON?.error || "Failed to unpublish card")
         });
     });
+    $(document).on('click', '.show-reports-btn', function () {
+        const card_id = $(this).data('card');
+        const card_name = $(this).data('cardname');
+        $.ajax({
+            url: `/transparency/reports/${card_id}`,
+            method: "GET",
+            contentType: "application/json",
+            data: JSON.stringify({value: "", message: "unpublished"}),
+            headers: { "Authorization": "Bearer " + token },
+            success: function (reports) {
+                console.log(reports);
+                $('#report-card-name').text(card_name);
+                const $list = $('#report-list').empty();
+                reports.forEach(r => $list.append(`<div class="report-entry">${r}</div>`));
+                document.getElementById('report-modal-screen').style.display = 'flex';
+            },
+            error: xhr => alert(xhr.responseJSON?.error || "Failed to obtain a list of reports")
+        });
+    });
     $(document).on('click', '.resolve-btn', function () {
         const card_id = $(this).data('card');
         $.ajax({
-            url: `/transparency/card/${card_id}/reports`,
+            url: `/transparency/reports/${card_id}`,
             method: "DELETE",
             headers: { "Authorization": "Bearer " + token },
             success: function () {location.reload();},
@@ -212,6 +230,9 @@ $(function () {
     $('#cancel-password-btn').click(()=>{
         document.getElementById('password-modal-screen').style.display = 'none';
         $('#password-error').text("");
+    });
+    $('#cancel-report-btn').click(()=>{
+        document.getElementById('report-modal-screen').style.display = 'none';
     });
     $('#confirm-password-btn').click(function(){
         const password=$("#password").val();
@@ -242,5 +263,11 @@ $(function () {
                 $('#password-error').text(xhr.responseJSON?.error||"Failed to set new password.");
             }
         });
+    });
+
+
+    $(document).on('click', '.close-modal, #report-modal-screen', function (e) {
+        if (e.target.id === 'report-modal-screen' || $(e.target).hasClass('close‑modal'))
+            document.getElementById('report-modal-screen').style.display = 'none';
     });
 });

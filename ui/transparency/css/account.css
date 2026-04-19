@@ -17,3 +17,9 @@
 .card .placeholder {padding-top: 5px}
 .greet {padding: 7px;}
 h2 {color:#EEEEEE;margin-top:40px}
+
+.report-entry {
+    margin: 10px;
+    width: 100%;
+    text-align: left;
+}

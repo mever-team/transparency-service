@@ -219,7 +219,7 @@ def serve(
             rows = [{"username": u, "email": e} for u, e in cursor.fetchall()]
             return rows
         with monitor.lock:
-            return jsonify({"users": fetch_all_users("users"), "pending": fetch_all_users("pending_users"), "resources": monitor.unsafe_status(), "cards": fetch_cards(cursor, creator), "reported": fetch_cards(cursor, creator, "user<>? AND report_count<>0 AND desc<>''")})
+            return jsonify({"users": fetch_all_users("users"), "pending": fetch_all_users("pending_users"), "resources": monitor.unsafe_status(), "cards": fetch_cards(cursor, creator), "reported": fetch_cards(cursor, creator, "user<>? AND report_count<>0")})
 
     @app.route(domain_prefix+'/users/<string:username>', methods=['DELETE'])
     @users.require_admin(token2expiration)
@@ -714,8 +714,20 @@ def serve(
             logger.info(f"someone reported card {card_id}")
             return jsonify(card.data['title'])
 
+    @app.route(domain_prefix+'/reports/<int:card_id>', methods=['GET'])
+    @users.require_auth(token2expiration, third_party_auth)
+    def get_card_reports(card_id, token: str):
+        with auth_lock: creator = token2user.get(token, None)
+        found = find_card(card_id)
+        with exists(found, "Model card does not exist or has been deleted.") as card:
+            if creator!=found.creator and creator!=admin_username: abort(403, "Only the card's creator or an admin can view reports.")
+        with report_lock:
+            cursor = conn.conn.cursor()
+            cursor.execute("SELECT message FROM reports WHERE reports.card_id = ?", (card_id,))
+            rows = cursor.fetchall()
+        return jsonify(rows)
 
-    @app.route(domain_prefix+'/card/<int:card_id>/reports', methods=['DELETE'])
+    @app.route(domain_prefix+'/reports/<int:card_id>', methods=['DELETE'])
     @users.require_auth(token2expiration, third_party_auth)
     def resolve_card_reports(card_id, token: str):
         with auth_lock: creator = token2user.get(token, None)

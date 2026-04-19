@@ -702,7 +702,7 @@ $('.contents').on('click', '.refine-field', async function () {
             method: "POST",
             contentType: "application/json",
             dataType: "json",
-            data: JSON.stringify(document.getElementById("report-text").textContent),
+            data: JSON.stringify(document.getElementById("report-text").value),
             headers: {"Authorization": "Bearer " + token},
             success: function (response) {
                 const screen = document.getElementById('report-success-screen');
