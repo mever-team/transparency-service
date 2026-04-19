@@ -48,14 +48,15 @@ class UserDB:
         conn.execute('''CREATE TABLE IF NOT EXISTS reports (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             card_id INTEGER NOT NULL,
-            message TEXT NOT NULL
+            message TEXT NOT NULL,
+            FOREIGN KEY(card_id) REFERENCES cards(id) ON DELETE CASCADE
         )''')
 
         # create model card table
         prototype = ModelCard()
         col_names = list(prototype.data.flatten().keys())
-        assert "user" not in col_names and "id" not in col_names and "desc" not in col_names and "timestamp" not in col_names and "quality" not in col_names, \
-            "The ModelCard schema cannot be defined to include id, user, desc, timestamp, or quality fields at the top level, since these are externally managed by the service database"
+        assert "user" not in col_names and "id" not in col_names and "desc" not in col_names and "timestamp" not in col_names and "quality" not in col_names and "report_count" not in col_names, \
+            "The ModelCard schema cannot be defined to include id, user, desc, timestamp, quality, or report_count fields at the top level, since these are externally managed by the service database"
         col_defs = ",\n    ".join([f'"{col}" TEXT' for col in col_names])
         create_cards_table = f'''CREATE TABLE IF NOT EXISTS cards (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -80,6 +81,10 @@ class UserDB:
         exists = cursor.fetchone() is not None
         if exists and not conn.execute("SELECT COUNT(*) FROM card_children").fetchone()[0]:
             conn.execute("DROP TABLE card_children")
+
+        # maintenance - TODO: REMOVE THIS SNIPPET IN FUTURE SERVER VERSIONS
+        if "report_count" not in existing_cols:
+            conn.execute('ALTER TABLE cards ADD COLUMN report_count INTEGER NOT NULL DEFAULT 0')
 
         # create card children table
         conn.execute('''CREATE TABLE IF NOT EXISTS card_children (
@@ -130,8 +135,24 @@ class UserDB:
         END;
         ''')
 
+        # report counting (INVARIANCE: CAN ONLY INSERT OR DELETE REPORTS)
+        conn.executescript("""
+        CREATE TRIGGER IF NOT EXISTS reports_ai AFTER INSERT ON reports
+        BEGIN
+            UPDATE cards SET report_count = report_count + 1
+            WHERE id = NEW.card_id;
+        END;
+        """)
+        conn.executescript("""
+        CREATE TRIGGER IF NOT EXISTS reports_ad AFTER DELETE ON reports
+        BEGIN
+            UPDATE cards SET report_count = report_count - 1
+            WHERE id = OLD.card_id;
+        END;
+        """)
+
         # automatic migration if needed
-        expected_columns = ['id', 'user', 'desc', 'quality', 'timestamp'] + col_names
+        expected_columns = ['id', 'user', 'desc', 'quality', 'timestamp', 'report_count'] + col_names
         cursor = conn.execute("PRAGMA table_info(cards)")
         existing_columns = [row[1] for row in cursor.fetchall()]
 

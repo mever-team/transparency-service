@@ -2,34 +2,65 @@ $(function () {
     let chartInstance = null;
 
     function update_resources(response) {
+        console.log(response);
         const $pending = $("#pending-users").empty();
         if (response.pending.length === 0) $pending.hide();
-        else response.pending.forEach(u => {
-            $pending.append(`
+        else {
+            $registered.append("<h2>Pending approval (did not register via email)</h2>");
+            response.pending.forEach(u => {$pending.append(`
                 <div class="user">
                     <span style="username">${u.username}</span> - ${u.email || "no contact info"}
                     <span class="delete-btn error button" data-username="${u.username}"><i class="fa-solid fa-cancel"></i>&nbsp;Reject</span>
                     <span class="pending-btn warning button" data-username="${u.username}"><i class="fa-solid fa-key"></i>&nbsp;Accept</span>
                 </div>
-            `);
-        });
+            `);});
+        }
         const $registered = $("#registered-users").empty();
         if (response.users.length === 0) $registered.hide();
-        else response.users.forEach(u => { $registered.append(`
-            <div class="user">
-                <span class="username">${u.username}</span> - ${u.email||"no contact info"}
-                <span class="delete-btn error button" data-username="${u.username}"><i class="fa-solid fa-trash"></i>&nbsp;Delete</span>
-                <span class="registered-label">Registered</span>
-            </div>
-        `);});
-
+        else {
+            if(response.users.length>1) $registered.append("<h2>Registered users</h2>");
+            else $registered.append("<h2>Your account</h2>");
+            response.users.forEach(u => { $registered.append(`
+                <div class="user">
+                    <span class="username">${u.username}</span> - ${u.email||"no contact info"}
+                    <span class="delete-btn error button" data-username="${u.username}"><i class="fa-solid fa-trash"></i>&nbsp;Delete</span>
+                    <span class="registered-label">Registered</span>
+                </div>
+            `);});
+        }
+        const $cards = $("#cards").empty();
+        if (!response.cards || response.cards.length === 0) $cards.hide();
+        else {
+            $cards.append("<h2>Your cards at a glance</h2>");
+            response.cards.forEach(card => {$cards.append(`
+                <div class="card" data-card="${card.id}">
+                    <span class="username"><a href="/transparency/model_card.html?id=${card.id}">${card.name}&nbsp;</a></span>
+                    <span class="error">${card.report_count?("&nbsp;- "+card.report_count+" reports"):""}</span>
+                    <span class="card-delete-btn error button" data-card="${card.id}"><i class="fa-solid fa-trash"></i>&nbsp;Delete</span>
+                `
+                +(card.desc?`    <span class="unpublish-btn warning button" data-card="${card.id}"><i class="fa-solid fa-undo"></i>&nbsp;Unpublish version: ${card.desc}</span>`:"<span class='placeholder'>[DRAFT]</span>")
+                +`</div>
+            `);});
+        }
+        const $reported = $("#reported").empty();
+        if (!response.reported || response.reported.length === 0) $reported.hide();
+        else {
+            $reported.append("<h2>Reported cards from other users</h2>");
+            response.reported.forEach(card => {$reported.append(`
+                <div class="card" data-card="${card.id}">
+                    <span class="username"><a href="/transparency/model_card.html?id=${card.id}">${card.name}&nbsp;</a></span>
+                    <span class="error">${card.report_count?("&nbsp;("+card.report_count+" reports)"):""}</span>
+                    <span class="card-delete-btn error button" data-card="${card.id}"><i class="fa-solid fa-trash"></i>&nbsp;Delete</span>
+                `
+                +(card.desc?`    <span class="unpublish-btn warning button" data-card="${card.id}"><i class="fa-solid fa-undo"></i>&nbsp;Unpublish version: ${card.desc}</span>`:"<span class='placeholder'>DRAFT</span>")
+                +`</div>
+            `);});
+        }
         const $resources = $("#resources");
         if (response.resources) {
             $resources.show();
             const r = response.resources;
             const labels = r.cpu.map((_, i) => i);
-
-            // If chart already exists, update data; otherwise create it
             if (chartInstance) {
                 chartInstance.data.labels = labels;
                 chartInstance.data.datasets[0].data = r.cpu;
@@ -142,7 +173,28 @@ $(function () {
             error: xhr => alert(xhr.responseJSON?.error || "Failed to delete user")
         });
     });
-
+    $(document).on('click', '.card-delete-btn', function () {
+        const card_id = $(this).data('card');
+        $.ajax({
+            url: `/transparency/card/${card_id}`,
+            method: "DELETE",
+            headers: { "Authorization": "Bearer " + token },
+            success: function () {location.reload();},
+            error: xhr => alert(xhr.responseJSON?.error || "Failed to delete card")
+        });
+    });
+    $(document).on('click', '.unpublish-btn', function () {
+        const card_id = $(this).data('card');
+        $.ajax({
+            url: `/transparency/card/${card_id}/overview/version`,
+            method: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify({value: "", message: "unpublished"}),
+            headers: { "Authorization": "Bearer " + token },
+            success: function () {location.reload();},
+            error: xhr => alert(xhr.responseJSON?.error || "Failed to unpublish card")
+        });
+    });
     $('#password-open-btn').click(()=>{
         document.getElementById('password-modal-screen').style.display = 'flex';
     });

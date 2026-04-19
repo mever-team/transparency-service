@@ -36,6 +36,7 @@ def serve(
     admin_password: str|None = None,
     env: str|None = None, # retrieve missing arguments from a .env file. That can have fields USER PASS INDEX LOG (the last is the log_file)
     token_expiration_secs: int = 60*60,
+    report_spacing_secs: int = 60*5,
     root:str|None = "db", # None or "" initializes a non-persistent database for testing
     log_file:str|None = None, # None or "" uses the console for logging
     static:str = "ui",
@@ -70,7 +71,9 @@ def serve(
     logger = Logger(log_file)
     monitor = SystemMonitor(logger=logger) # immediately after logger
     auth_lock = Lock()
-    token2expiration = dict()
+    report_lock = Lock()
+    user2last_report = dict() # last report timestamps to impose report rate limits
+    token2expiration = dict() # expiration of logged in sessions
     token2user = dict()
     verification_tokens = {}
     for assistant in assistants.values():
@@ -177,20 +180,46 @@ def serve(
     @app.route(domain_prefix+'/users', methods=['GET'])
     @users.require_auth(token2expiration, third_party_auth)
     def admin_dashboard(token: str):
+        def fetch_cards(cursor, owner):
+            cursor.execute(f"""
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, report_count
+                FROM cards
+                WHERE user=?
+                """,
+            (owner,))
+            rows = cursor.fetchall()
+            added_ids = set()
+            results = []
+            for row in rows:
+                if row[0] in added_ids: continue
+                added_ids.add(row[0])
+                quality = float(row[4]) if row[4] else 0
+                timestamp = int(row[5]) if row[5] else 0
+                overview = row[6]
+                if "<img" in overview: overview = ""
+                if len(overview) > 120: overview = overview[:(120 - 3)] + "..."
+                overview_type = row[7]
+                overview_task = row[8]
+                overview_date = row[9]
+                report_count = row[10]
+                results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality,
+                                "description": overview, "type": overview_type, "task": overview_task,
+                                "date": overview_date, "report_count": report_count})
+            return results
+
         with auth_lock: creator = token2user.get(token, "")
+        cursor = conn.conn.cursor()
         if creator != admin_username:
-            cursor = conn.conn.cursor()
             cursor.execute("SELECT username, email FROM users WHERE username = ?", (creator,))
             row = cursor.fetchone()
             if not row: abort(404, description="User not found")
-            return jsonify({"users": [{"username": row[0], "email": row[1]}], "pending": []})
+            return jsonify({"users": [{"username": row[0], "email": row[1]}], "pending": [], "cards": fetch_cards(cursor, creator)})
         def fetch_all_users(table_name: str):
-            cursor = conn.conn.cursor()
             cursor.execute(f"SELECT username, email FROM {table_name}")
             rows = [{"username": u, "email": e} for u, e in cursor.fetchall()]
             return rows
         with monitor.lock:
-            return jsonify({"users": fetch_all_users("users"), "pending": fetch_all_users("pending_users"), "resources": monitor.unsafe_status()})
+            return jsonify({"users": fetch_all_users("users"), "pending": fetch_all_users("pending_users"), "resources": monitor.unsafe_status(), "cards": fetch_cards(cursor, creator)})
 
     @app.route(domain_prefix+'/users/<string:username>', methods=['DELETE'])
     @users.require_admin(token2expiration)
@@ -657,11 +686,32 @@ def serve(
     @users.require_auth(token2expiration, third_party_auth)
     def set_card_title(card_id, token: str):
         with auth_lock: creator = token2user.get(token, None)
-        with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
-            if creator != card.creator: abort(403, "Only the card's creator can edit it.")
+        found = find_card(card_id)
+        with exists(found, "Model card does not exist or has been deleted.") as card:
+            if creator != found.creator: abort(403, "Only the card's creator can edit it.")
             json_data = request.get_json()
             exists(isinstance(json_data, str), "Can only send string data to update model card titles.")
             card.data['title'].set(json_data)
+            return jsonify(card.data['title'])
+
+    @app.route(domain_prefix+'/card/<int:card_id>/report', methods=['POST'])
+    @users.require_auth(token2expiration, third_party_auth)
+    def report_card(card_id, token: str):
+        with auth_lock: creator = token2user.get(token, None)
+        found = find_card(card_id)
+        with exists(found, "Model card does not exist or has been deleted.") as card:
+            if creator == found.creator: abort(403, "The card's creator cannot report it.")
+            json_data = request.get_json() # this is the description
+            exists(isinstance(json_data, str), "Can only send string data to report model cards.")
+            exists(len(json_data)<=180, "The reason why you report a card should be at most 180 characters long. Example report: 'This card contains inappropriate language in overview/description.'")
+            with report_lock:
+                last_report = user2last_report.get(creator, None)
+                if last_report and time.monotonic() < last_report: abort(403, description=f"You cannot submit reports within {int(round(report_spacing_secs/60))} minutes of each other.")
+                cursor = conn.conn.cursor()
+                cursor.execute(f'''INSERT INTO reports (card_id, message) VALUES (?,?)''', [card_id, json_data])
+                conn.conn.commit()
+                user2last_report[creator] = time.monotonic()+report_spacing_secs
+            logger.info(f"someone reported card {card_id}")
             return jsonify(card.data['title'])
 
     @app.route(domain_prefix+'/card/fields', methods=['GET'])
@@ -686,13 +736,15 @@ def serve(
     @users.require_auth(token2expiration, third_party_auth)
     def set_card_field(card_id, field_name, data_name, token: str):
         with auth_lock: creator = token2user.get(token, None)
-        with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
-            if creator != card.creator: abort(403, "Only the card's creator can edit it.")
+        found = find_card(card_id)
+        with exists(found, "Model card does not exist or has been deleted.") as card:
+            if creator != found.creator: abort(403, "Only the card's creator can edit it.")
             field = exists(card.data.get(field_name, None), "Invalid field name. Candidates: " + ','.join(card.data.keys()))
             data = exists(field.get(data_name, None), f"Invalid data name {data_name}. Candidates: " + ','.join(field.keys()))
             json_data = request.get_json()
-            exists(isinstance(json_data, str), "Can only send string data to update model card fields.")
-            data.set(json_data)
+            exists(isinstance(json_data, dict), "Can only send a dict of data and message update model card fields.")
+            data.set(json_data.get("value", ""))
+            found.commit_card(json_data.get("message", "Edited"))
             return jsonify(data.get())  # do not return json_data directly, as setting the value may format it
 
     @app.route(domain_prefix+'/card/<int:card_id>', methods=['DELETE'])
@@ -804,7 +856,7 @@ def serve(
     def card_job(card_id: int, token: str):
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
         with auth_lock: creator = token2user.get(token, None)
-        if creator!=card.creator: abort(403, "Only the card's creator can see its status.")
+        #if creator!=card.creator: abort(403, "Only the card's creator can see its status.")
         status = jobs_tracker.get(card_id)
         if status:
             return jsonify(status.to_dict())
