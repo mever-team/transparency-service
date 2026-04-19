@@ -35,7 +35,7 @@ $(function () {
             response.cards.forEach(card => {$cards.append(`
                 <div class="card" data-card="${card.id}">
                     <span class="username"><a href="/transparency/model_card.html?id=${card.id}">${card.name}&nbsp;</a></span>
-                    <span class="error">${card.report_count?("&nbsp;- "+card.report_count+" reports"):""}</span>
+                    <span class="error">${card.report_count?("&nbsp;("+card.report_count+" reports)"):""}</span>
                     <span class="card-delete-btn error button" data-card="${card.id}"><i class="fa-solid fa-trash"></i>&nbsp;Delete</span>
                 `
                 +(card.desc?`    <span class="unpublish-btn warning button" data-card="${card.id}"><i class="fa-solid fa-undo"></i>&nbsp;Unpublish version: ${card.desc}</span>`:"<span class='placeholder'>[DRAFT]</span>")
@@ -53,10 +53,11 @@ $(function () {
                     <span class="card-delete-btn error button" data-card="${card.id}"><i class="fa-solid fa-trash"></i>&nbsp;Delete</span>
                 `
                 +(card.desc?`    <span class="unpublish-btn warning button" data-card="${card.id}"><i class="fa-solid fa-undo"></i>&nbsp;Unpublish version: ${card.desc}</span>`:"<span class='placeholder'>DRAFT</span>")
+                +`<span class="resolve-btn success button" data-card="${card.id}"><i class="fa-solid fa-check"></i>&nbsp;Close reports</span>`
                 +`</div>
             `);});
         }
-        const $resources = $("#resources");
+        const $resources = $("#resources");``
         if (response.resources) {
             $resources.show();
             const r = response.resources;
@@ -193,6 +194,16 @@ $(function () {
             headers: { "Authorization": "Bearer " + token },
             success: function () {location.reload();},
             error: xhr => alert(xhr.responseJSON?.error || "Failed to unpublish card")
+        });
+    });
+    $(document).on('click', '.resolve-btn', function () {
+        const card_id = $(this).data('card');
+        $.ajax({
+            url: `/transparency/card/${card_id}/reports`,
+            method: "DELETE",
+            headers: { "Authorization": "Bearer " + token },
+            success: function () {location.reload();},
+            error: xhr => alert(xhr.responseJSON?.error || "Failed to resolve card reports")
         });
     });
     $('#password-open-btn').click(()=>{

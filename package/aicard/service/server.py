@@ -180,11 +180,11 @@ def serve(
     @app.route(domain_prefix+'/users', methods=['GET'])
     @users.require_auth(token2expiration, third_party_auth)
     def admin_dashboard(token: str):
-        def fetch_cards(cursor, owner):
+        def fetch_cards(cursor, owner, WHERE="user=?"):
             cursor.execute(f"""
                 SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, report_count
                 FROM cards
-                WHERE user=?
+                WHERE {WHERE}
                 """,
             (owner,))
             rows = cursor.fetchall()
@@ -219,7 +219,7 @@ def serve(
             rows = [{"username": u, "email": e} for u, e in cursor.fetchall()]
             return rows
         with monitor.lock:
-            return jsonify({"users": fetch_all_users("users"), "pending": fetch_all_users("pending_users"), "resources": monitor.unsafe_status(), "cards": fetch_cards(cursor, creator)})
+            return jsonify({"users": fetch_all_users("users"), "pending": fetch_all_users("pending_users"), "resources": monitor.unsafe_status(), "cards": fetch_cards(cursor, creator), "reported": fetch_cards(cursor, creator, "user<>? AND report_count<>0 AND desc<>''")})
 
     @app.route(domain_prefix+'/users/<string:username>', methods=['DELETE'])
     @users.require_admin(token2expiration)
@@ -706,13 +706,26 @@ def serve(
             exists(len(json_data)<=180, "The reason why you report a card should be at most 180 characters long. Example report: 'This card contains inappropriate language in overview/description.'")
             with report_lock:
                 last_report = user2last_report.get(creator, None)
-                if last_report and time.monotonic() < last_report: abort(403, description=f"You cannot submit reports within {int(round(report_spacing_secs/60))} minutes of each other.")
+                if last_report and time.monotonic() < last_report and creator!=admin_username: abort(403, description=f"You cannot submit reports within {int(round(report_spacing_secs/60))} minutes of each other.")
                 cursor = conn.conn.cursor()
-                cursor.execute(f'''INSERT INTO reports (card_id, message) VALUES (?,?)''', [card_id, json_data])
+                cursor.execute("INSERT INTO reports (card_id, message) VALUES (?,?)", [card_id, json_data])
                 conn.conn.commit()
                 user2last_report[creator] = time.monotonic()+report_spacing_secs
             logger.info(f"someone reported card {card_id}")
             return jsonify(card.data['title'])
+
+
+    @app.route(domain_prefix+'/card/<int:card_id>/reports', methods=['DELETE'])
+    @users.require_auth(token2expiration, third_party_auth)
+    def resolve_card_reports(card_id, token: str):
+        with auth_lock: creator = token2user.get(token, None)
+        if creator != admin_username: abort(403, "The card's creator cannot clear reports.")
+        with report_lock:
+            cursor = conn.conn.cursor()
+            cursor.execute("DELETE FROM reports WHERE reports.card_id = ?", (card_id,))
+            conn.conn.commit()
+        logger.warn(f"all reports have been resolved for {card_id}", user=admin_username)
+        return '', 204
 
     @app.route(domain_prefix+'/card/fields', methods=['GET'])
     def get_card_fields():
@@ -738,11 +751,24 @@ def serve(
         with auth_lock: creator = token2user.get(token, None)
         found = find_card(card_id)
         with exists(found, "Model card does not exist or has been deleted.") as card:
-            if creator != found.creator: abort(403, "Only the card's creator can edit it.")
-            field = exists(card.data.get(field_name, None), "Invalid field name. Candidates: " + ','.join(card.data.keys()))
-            data = exists(field.get(data_name, None), f"Invalid data name {data_name}. Candidates: " + ','.join(field.keys()))
             json_data = request.get_json()
             exists(isinstance(json_data, dict), "Can only send a dict of data and message update model card fields.")
+            if creator != found.creator:
+                if creator==admin_username and field_name=="overview" and data_name=="version":
+                    # THE ADMINISTRATOR CAN UNPUBLISH ANYTHING, THOUGH THE INTERFACE FOCUSES ONLY ON REPORTED
+                    # STUFF, BECAUSE IT'S MORE TRACTABLE AS AN INTERFACE AND THE ADMIN CAN REPORT THEM FIRST
+                    # AND UNPUBLISH FROM THE ADMIN CONSOLE - THE REPORT MESSAGE CAN BE ADDED THERE
+                    # WE JUST PROVIDE AN EXPLICIT MESSAGE HERE TO KNOW THAT REPORTS ARE INITIATED BY THE
+                    # ADMIN, TO AVOID USER CONFUSION OF WHY THIS HAPPENED
+                    with report_lock:
+                        cursor = conn.conn.cursor()
+                        cursor.execute(f'''INSERT INTO reports (card_id, message) VALUES (?,?)''', [card_id, json_data.get("message", "Edited")+" by the administrator. This is a tacit acknowledgemenet that actions should be taken to address at least one of the resolved items."])
+                        conn.conn.commit()
+                        user2last_report[creator] = time.monotonic() + report_spacing_secs
+                    logger.warn(f"Forcefully unpublished card with report notifications {card_id}", user=admin_username)
+                else: abort(403, "Only the card's creator can edit it. Admins may also explicitly remove its version to unpublish.")
+            field = exists(card.data.get(field_name, None), "Invalid field name. Candidates: " + ','.join(card.data.keys()))
+            data = exists(field.get(data_name, None), f"Invalid data name {data_name}. Candidates: " + ','.join(field.keys()))
             data.set(json_data.get("value", ""))
             found.commit_card(json_data.get("message", "Edited"))
             return jsonify(data.get())  # do not return json_data directly, as setting the value may format it
@@ -752,7 +778,7 @@ def serve(
     def delete_card(card_id, token: str):
         with auth_lock: creator = token2user.get(token, None)
         card_entry = find_card(card_id)
-        if creator != card_entry.creator: abort(403, "Only the card's creator can delete it.")
+        if creator != card_entry.creator and creator!=admin_username: abort(403, "Only the card's creator or an amin can delete it.")
         with exists(card_entry, "Model card does not exist or has been deleted.") as card:
             cursor = conn.conn.cursor()
             cursor.execute("DELETE FROM cards WHERE id = ?", (card_id,))
