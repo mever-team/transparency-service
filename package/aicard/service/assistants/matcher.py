@@ -7,7 +7,7 @@ from .assistant import Assistant
 from aicard.card import ModelCard
 from aicard.service.logger import Logger
 from urllib.parse import urlparse, urljoin
-from bs4 import BeautifulSoup, NavigableString
+from bs4 import BeautifulSoup, NavigableString, Comment
 from ...card.fields import Field, LongText, Options
 from datetime import date
 from transformers import AutoTokenizer, AutoModel
@@ -125,6 +125,7 @@ class SemanticMatcher(Assistant):
         response = requests.get(url, timeout=self.external_get_timeout_sec)
 
         soup = BeautifulSoup(response.text, "html.parser")
+        for comment in soup.findAll(string=lambda text: isinstance(text, Comment)): comment.extract() # remove comments
         for tag in soup.find_all(href=True): tag["href"] = urljoin(url, tag["href"])
         for tag in soup.find_all(src=True): tag["src"] = urljoin(url, tag["src"])
         first_header = soup.find(re.compile("^h[1-6]$"))
