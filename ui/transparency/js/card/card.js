@@ -115,8 +115,9 @@ $(document).ready(function () {
         $('#technical-view').removeClass('active');
         $('#simple-view').addClass('active');
         $menu.hide();
-        // $('.contents').css('margin-left', '0');
         $('.contents').addClass('simple');
+        $('.nacc li').removeClass('active');
+        $('.nacc li#simpleSection').addClass('active');
     })
 
     
@@ -126,6 +127,10 @@ $(document).ready(function () {
         $menu.show();
         // $('.contents').css('margin-left', '190px')
         $('.contents').removeClass('simple');
+        $('.nacc li').removeClass('active');
+        $('.nacc li').first().addClass('active');
+        $('.menu').find('div').removeClass('active');
+        $('.menu div:first-child').addClass('active');
     })
 
     $(window).on('scroll', function () {
@@ -144,6 +149,93 @@ $(document).ready(function () {
             success: function (response) {},
             error: error_handler
         });
+    }
+    function renderSection(section, index, is_logged_in, no_title=false){
+        let baseSection = comparedJson&&comparedJson.data?comparedJson.data[index]:undefined;
+        let sectionTitle = section.name.replace(/_/g, " ").toUpperCase();
+        let $section = $("<section>");
+        if (!no_title) $section.append($("<h2>").text(sectionTitle));
+        if (!section.value.length) $section.append($("<p>").text("No data provided."));
+        section.value.forEach((field, fieldIndex) => {
+            let $field = $("<div>").addClass("field");
+
+            // field-name
+            let $fieldName = $("<span>")
+                .addClass("field-name")
+                .text(" "+field.name.replace(/_/g, " "));
+            
+
+
+            // info-tooltip
+            let $fieldInfo = $("<span>")
+                .addClass("info-tooltip")
+                .attr("data-tooltip", field.description)
+                .text("?");
+            $fieldInfo = $("<span>").addClass("field-info").append($fieldInfo).append($fieldName);
+            let $fieldValue;
+            
+            if (field.type.startsWith("list:") && is_logged_in) {
+                $fieldValue = $("<select>").addClass("field-value dropdown");
+                $fieldValue.append($("<option>").val("").text("—").prop({
+                    selected: true,disabled: true,hidden: true}));
+                const options = field.type.replace("list:", "").split(",");
+                let $currentGroup = null;
+                options.forEach(opt => {
+                    if (opt.startsWith("#")) {
+                        $currentGroup = $("<optgroup>").attr("label", opt.replace("#", ""));
+                        $fieldValue.append($currentGroup);
+                    } else {
+                        const $option = $("<option>").val(opt).text(opt);
+                        if (field.value === opt) $option.prop("selected", true);
+                        // Append to optgroup if it exists, otherwise directly to select
+                        if ($currentGroup) $currentGroup.append($option);
+                        else $fieldValue.append($option);
+                    }
+                });
+            } else if (field.type === 'date') {
+                $fieldValue = $("<input>", {type: "date", readonly: is_logged_in? false: true}).addClass("field-value").val(field.value || "");
+                $fieldValue.on("change", function () {field.value = $(this).val();});
+                if(is_logged_in) $fieldValue.attr("contenteditable", "true");
+                
+            } else {
+                $fieldValue = $("<span>") .addClass("field-value").html(field.value || "");
+                if(is_logged_in) $fieldValue.attr("contenteditable", "true");
+            }
+
+            if(is_logged_in) $fieldValue.addClass("editable");
+
+            // Editable field value
+            let val = String(field.value || "").trim();
+            if ((val  !== "") && (val  !== "<br>") && (val  !== "unknown")) {
+                $('.menu').find('div').eq(index).find('.light').removeClass('square');
+                $('.menu').find('div').eq(index).find('.light').addClass('arrow');
+            }
+
+            let $refineBtn = $("<button>")
+                .addClass("refine-field")
+                .text("refine field");
+            $field.append($fieldInfo).append($fieldValue);
+            // if (token && cardJson.creator===loggedUser){
+            //     $field.append($refineBtn);
+            // }
+            $section.append($field);
+
+            // compared value
+            if(baseSection) {
+                console.log(baseSection.value[fieldIndex]);
+                let $baseFieldValue = $("<span>")
+                        .addClass("field-value")
+                        .html(baseSection.value[fieldIndex].value || "");
+
+                let $fieldBase = $("<span>")
+                    .addClass("field-name")
+                    .text("Original");
+
+                $field.append($fieldBase);
+                $field.append($baseFieldValue);
+            }
+        });
+        return $section;
     }
     function normalRender(interval=null){
         $('body').removeClass('no-overflow');
@@ -189,94 +281,8 @@ $(document).ready(function () {
             $ul.empty();
             $('#loading').hide();
             jsonData.data.forEach((section, index) => {
-                let baseSection = comparedJson&&comparedJson.data?comparedJson.data[index]:undefined;
-                let sectionTitle = section.name.replace(/_/g, " ").toUpperCase();
-                let $li = $("<li>").toggleClass("active", index === 0);
-                let $section = $("<section>");
-                $section.append($("<h2>").text(sectionTitle));
-                if (!section.value.length) $section.append($("<p>").text("No data provided."));
-                section.value.forEach((field, fieldIndex) => {
-                    let $field = $("<div>").addClass("field");
-
-                    // field-name
-                    let $fieldName = $("<span>")
-                        .addClass("field-name")
-                        .text(" "+field.name.replace(/_/g, " "));
-                    
-
-
-                    // info-tooltip
-                    let $fieldInfo = $("<span>")
-                        .addClass("info-tooltip")
-                        .attr("data-tooltip", field.description)
-                        .text("?");
-                    $fieldInfo = $("<span>").addClass("field-info").append($fieldInfo).append($fieldName);
-                    let $fieldValue;
-                    
-                    if (field.type.startsWith("list:") && is_logged_in) {
-                        $fieldValue = $("<select>").addClass("field-value dropdown");
-                        $fieldValue.append($("<option>").val("").text("—").prop({
-                            selected: true,disabled: true,hidden: true}));
-                        const options = field.type.replace("list:", "").split(",");
-                        let $currentGroup = null;
-                        options.forEach(opt => {
-                            if (opt.startsWith("#")) {
-                                $currentGroup = $("<optgroup>").attr("label", opt.replace("#", ""));
-                                $fieldValue.append($currentGroup);
-                            } else {
-                                const $option = $("<option>").val(opt).text(opt);
-                                if (field.value === opt) $option.prop("selected", true);
-                                // Append to optgroup if it exists, otherwise directly to select
-                                if ($currentGroup) $currentGroup.append($option);
-                                else $fieldValue.append($option);
-                            }
-                        });
-                    } else if (field.type === 'date') {
-                        $fieldValue = $("<input>", {type: "date", readonly: is_logged_in? false: true}).addClass("field-value").val(field.value || "");
-                        $fieldValue.on("change", function () {field.value = $(this).val();});
-                        if(is_logged_in) $fieldValue.attr("contenteditable", "true");
-                        
-                    } else {
-                        $fieldValue = $("<span>") .addClass("field-value").html(field.value || "");
-                        if(is_logged_in) $fieldValue.attr("contenteditable", "true");
-                    }
-
-                    if(is_logged_in) $fieldValue.addClass("editable");
-
-                    // Editable field value
-                    let val = String(field.value || "").trim();
-                    if ((val  !== "") && (val  !== "<br>") && (val  !== "unknown")) {
-                        $('.menu').find('div').eq(index).find('.light').removeClass('square');
-                        $('.menu').find('div').eq(index).find('.light').addClass('arrow');
-                    }
-
-                    let $refineBtn = $("<button>")
-                        .addClass("refine-field")
-                        .text("refine field");
-                    $field.append($fieldInfo).append($fieldValue);
-                    // if (token && cardJson.creator===loggedUser){
-                    //     $field.append($refineBtn);
-                    // }
-                    $section.append($field);
-
-                    // compared value
-                    if(baseSection) {
-                        console.log(baseSection.value[fieldIndex]);
-                        let $baseFieldValue = $("<span>")
-                                .addClass("field-value")
-                                .html(baseSection.value[fieldIndex].value || "");
-
-                        let $fieldBase = $("<span>")
-                            .addClass("field-name")
-                            .text("Original");
-
-                        $field.append($fieldBase);
-                        $field.append($baseFieldValue);
-                    }
-                });
-
-
-
+                let $li = $("<li>");
+                $section = renderSection(section, index, is_logged_in);
                 $li.append($("<div>").append($section));
                 $ul.append($li);
                 $('.menu').find('div').removeClass('active');
@@ -415,7 +421,8 @@ $(document).ready(function () {
             success: function (jsonData) {
                 cardJson = jsonData;
                 render();
-                $('#simple-view').trigger('click');
+                renderSimple();
+                
                 if (token){
                     renderWhileRefine();
                 }
@@ -424,6 +431,30 @@ $(document).ready(function () {
         });
     }
     normalRender();
+    function renderSimple(){
+        $.ajax({
+            url: "/transparency/card/simple/" + id,
+            method: "GET",
+            contentType: "application/json",
+            dataType: "json",
+            success: function (jsonData) {
+                let is_logged_in = token&&cardJson.creator === loggedUser;
+                // fill in fields
+                const $ul = $(".nacc");
+                $ul.find("li#simpleSection").remove();
+                jsonData.data.forEach((section, index) => {
+                    let $li = $("<li>").attr('id', 'simpleSection').toggleClass("active", index === 0);
+                    $section = renderSection(section, index, false, true);
+                    $li.append($("<div>").append($section));
+                    $ul.append($li);
+                    $('.menu').find('div').removeClass('active');
+                    $('.menu div:first-child').addClass('active');
+                });
+                $('#simple-view').trigger('click');
+            },
+            error: error_handler
+        });
+    }
     function checkLocked(interval) {
         $.ajax({
             url: "/transparency/card/" + id + "/locked",

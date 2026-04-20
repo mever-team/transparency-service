@@ -541,6 +541,7 @@ section.buttons {
 .text-input::placeholder {color: #9aa6b2; opacity: 1;}
 
 .menu {
+    display: none;
     position: relative;
     top: 0;
     transition: top 0.3s;
