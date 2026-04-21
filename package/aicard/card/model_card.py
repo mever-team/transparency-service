@@ -29,8 +29,8 @@ class ModelCard:
                 name=ShortText("Name of the model.", is_simple=True),
                 description=LongText("Model purpose, capabilities, novelty and caveats", is_simple=True),
                 creator=ShortText("Person or organization developed the model.", is_simple=True),
-                date=Date("Model development completion date.", is_simple=True),
-                version=ShortText("Version of the model.", is_simple=True),
+                date=Date("Model development completion date."),
+                version=ShortText("Version of the model."),
                 type=Options(self._type_options,"Model architecture or algorithm type.", is_simple=True),
                 task=Options(self._task_options, "Model task.", is_simple=True),
                 license=ShortText("Licence and intellectual property (IP) information."),
@@ -39,10 +39,10 @@ class ModelCard:
                 citation=ShortText("How should the model be cited? Typically includes title, author, year, and publisher. May be a formatted citation or bibtex entries like @article.", technical_nature=True),
                 more=LongText("Additional model information not found above.")),
             use=DotDict(
-                use_cases=ShortText("Intended uses of the model."),
+                use_cases=ShortText("Intended uses of the model.", is_simple=True),
                 oversight=Options(["self-learning/autonomous", "human-in-the-loop", "human-on-the-loop", "human-in-command", "unknown"], "Defines the level of human control over the system."),
-                user_groups=ShortText("Intended users."),
-                out_of_scope_use=ShortText("Unintended and improper use of model."),
+                user_groups=ShortText("Intended users.", is_simple=True),
+                out_of_scope_use=ShortText("Unintended and improper use of model.", is_simple=True),
                 software=ShortText("Software requirements and dependencies?"),
                 instructions=ShortText("Use instructions.", technical_nature=True),
                 inputs_outputs=ShortText("Description of the model's inputs and outputs", technical_nature=True),
@@ -72,11 +72,11 @@ class ModelCard:
                 bias=LongText("Performance and bias across different groups (e.g. ethnicity, gender)"),
             ),
             safety=DotDict(
-                ethics=LongText("Ethical considerations regarding datasets and usage of model. Recommended mitigation measures."),
-                fairness=LongText("Definition of fairness applied in setting up the AI system."),
-                risks=LongText("Possible threats to the AI system (design faults, technical faults, environmental threats) and the possible consequences."),
-                security=LongText("Is the AI system certified for cybersecurity or is it compliant with specific security standards?"),
-                caveats=LongText("Additional concerns that were not covered in the previous sections.")
+                ethics=LongText("Ethical considerations regarding datasets and usage of model. Recommended mitigation measures.", is_simple=True),
+                fairness=LongText("Definition of fairness applied in setting up the AI system.", is_simple=True),
+                risks=LongText("Possible threats to the AI system (design faults, technical faults, environmental threats) and the possible consequences.", is_simple=True),
+                security=LongText("Is the AI system certified for cybersecurity or is it compliant with specific security standards?", is_simple=True),
+                caveats=LongText("Additional concerns that were not covered in the previous sections.", is_simple=True)
             ),
         ))
         self.connector = connector # used by the client - the server does something else and model cards stored there should never set this field
