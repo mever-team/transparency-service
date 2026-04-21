@@ -235,7 +235,7 @@ class ModelCard:
         return simple_fields
 
     def get_simple_fields(self):
-        return {k: v.get() for k,v in self.simple_fields.items()}
+        return self.simple_fields
 
     def set_simple_fields(self, simple_field_values: dict[str,str]):
         for k, v in simple_field_values.items():
