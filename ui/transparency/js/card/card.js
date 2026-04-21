@@ -54,7 +54,9 @@ $(document).ready(function () {
     const id = urlParams.get('id');
     const compareto = urlParams.get('compareto');
     const $menu = $('.menu');
+    $menu.css({visibility: 'hidden', display: 'block'});
     let menuOffsetTop = $menu.offset().top; // this will be updated, depending on history taking up space
+    $menu.css({visibility: '',display: 'none'});
     const pageUrl = encodeURIComponent(window.location.href);
     const pageTitle = encodeURIComponent(document.title);
     $('#pdf_desc').hide();
@@ -242,7 +244,7 @@ $(document).ready(function () {
         document.getElementById('card-locked').style.display = 'none';
         if (interval) clearInterval(interval);
 
-        function render() {
+        function _render() {
             if(!cardJson || !comparedJson) return;
             let is_logged_in = token&&cardJson.creator === loggedUser;
             if(is_logged_in) {
@@ -272,7 +274,7 @@ $(document).ready(function () {
                     Number(id),
                     historyContainer
                 );
-                menuOffsetTop = $menu.offset().top;
+
             }
 
 
@@ -307,96 +309,7 @@ $(document).ready(function () {
         }
 
 
-        function renderWhileRefine(){
-            const completed = {};
-            let doneMenus = [];
-            let firstpass = true;
-            function isEmpty(obj) {
-                for (const prop in obj) {
-                    if (Object.hasOwn(obj, prop)) {
-                    return false;
-                    }
-                }
-                return true;
-                }
-            const intervalId = setInterval(async () => {
-                $.ajax({
-                    url: "/transparency/job/" + id,
-                    method: "GET",
-                    headers: {"Authorization": "Bearer " + token},
-                    contentType: "application/json",
-                    dataType: "json",
-                    success: function (job) {
-                        if (isEmpty(job)) {
-                            clearInterval(intervalId);
-                            return;
-                        }
-                        // put loading spinners in UI
-                        if (firstpass){
-                            firstpass = false;
-                            const $loading_field = $("<div>").addClass('fieldLoader');
-                            const $loading_section = $("<span>").addClass('sectionLoader');
-                            $('span.field-value').html($loading_field).attr('contenteditable', 'false');
-                            console.log($('.menu .light'));
-                            $('.menu .light').hide();
-                            $('.menu div').prepend($loading_section);
-                        }
-                        // poll update
-                        for (const [section, fields] of Object.entries(job.data)) {
-                            if (!completed[section]) {completed[section] = [];}
-                            for (let [field, value] of Object.entries(fields)) {
-                                field = field.replaceAll('_', ' ');
-                                if (completed[section].includes(field)) {continue;}
-                                let matched = false;
-                                $('.contents .nacc li').each(function () {
-                                    const this_section = $(this).find('h2').first().text().trim().toLowerCase();
-                                    if (this_section === section) {
-                                        $(this).find('.field').each(function () {
-                                            const this_field = $(this).find('.field-name').text().trim().toLowerCase();
-                                            if (this_field === field) {
-                                            $(this)
-                                                .find('span.field-value')
-                                                .html(value)
-                                                .fadeOut(0, function () {
-                                                    $(this)
-                                                        .attr('contenteditable', 'true')
-                                                        .fadeIn(300);
-                                                });
-                                                matched = true;
-                                                completed[section].push(field);
-                                                return false; // break .each()
-                                            }
-                                        });
-                                        return false; // break outer .each()
-                                    }
-                                });
-                                // update menu
-                                $('.contents .nacc li').each(function () {
-                                    const this_section = $(this).find('h2').first().text().trim().toLowerCase();
-                                    if (($(this).find('.fieldLoader').length === 0) && !doneMenus.includes(this_section)) {
-                                        $('.menu div').each(function (){
-                                            if ($(this).html().toLowerCase().includes(this_section)) {
-                                                doneMenus.push(this_section);
-                                                $(this).find('.light').css('display', 'inline-block');
-                                                $(this).find('.sectionLoader').remove();
-                                            }
-                                        });
-                                    }
-                                });
-                                
-                                if (matched) {
-                                    continue;
-                                }
-                            }
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        clearInterval(intervalId);
-                        error_handler(xhr, status, error);
-                    }
-                });
-            }, 200);
-        }
+
 
         if(compareto) {
             $.ajax({
@@ -406,7 +319,7 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (jsonData) {
                     comparedJson = jsonData;
-                    render();
+                    _render();
                 },
                 error: function (xhr, status, error) {}
             });
@@ -420,18 +333,113 @@ $(document).ready(function () {
             dataType: "json",
             success: function (jsonData) {
                 cardJson = jsonData;
-                render();
-                renderSimple();
-                
-                if (token){
-                    renderWhileRefine();
-                }
+                _render();
+                _renderSimple();
             },
             error: error_handler
         });
     }
     normalRender();
-    function renderSimple(){
+    function _renderWhileRefine(){
+        const completed = {};
+        let doneMenus = [];
+        let firstpass = true;
+        function isEmpty(obj) {
+            for (const prop in obj) {
+                if (Object.hasOwn(obj, prop)) {
+                return false;
+                }
+            }
+            return true;
+        }
+        let refineStarted = false;
+        const intervalId = setInterval(async () => {
+            $.ajax({
+                url: "/transparency/job/" + id,
+                method: "GET",
+                headers: {"Authorization": "Bearer " + token},
+                contentType: "application/json",
+                dataType: "json",
+                success: function (job) {
+                    if (isEmpty(job)) {
+                        clearInterval(intervalId);
+                        if (refineStarted){
+                            _renderSimple();
+                        }
+                        return;
+                    }
+                    if (!refineStarted){
+                        $('#technical-view').trigger('click');
+                    }
+                    refineStarted = true;
+                    // put loading spinners in UI
+                    if (firstpass){
+                        firstpass = false;
+                        const $loading_field = $("<div>").addClass('fieldLoader');
+                        const $loading_section = $("<span>").addClass('sectionLoader');
+                        $('span.field-value').html($loading_field).attr('contenteditable', 'false');
+                        console.log($('.menu .light'));
+                        $('.menu .light').hide();
+                        $('.menu div').prepend($loading_section);
+                    }
+                    // poll update
+                    for (const [section, fields] of Object.entries(job.data)) {
+                        if (!completed[section]) {completed[section] = [];}
+                        for (let [field, value] of Object.entries(fields)) {
+                            field = field.replaceAll('_', ' ');
+                            if (completed[section].includes(field)) {continue;}
+                            let matched = false;
+                            $('.contents .nacc li').each(function () {
+                                const this_section = $(this).find('h2').first().text().trim().toLowerCase();
+                                if (this_section === section) {
+                                    $(this).find('.field').each(function () {
+                                        const this_field = $(this).find('.field-name').text().trim().toLowerCase();
+                                        if (this_field === field) {
+                                        $(this)
+                                            .find('span.field-value')
+                                            .html(value)
+                                            .fadeOut(0, function () {
+                                                $(this)
+                                                    .attr('contenteditable', 'true')
+                                                    .fadeIn(300);
+                                            });
+                                            matched = true;
+                                            completed[section].push(field);
+                                            return false; // break .each()
+                                        }
+                                    });
+                                    return false; // break outer .each()
+                                }
+                            });
+                            // update menu
+                            $('.contents .nacc li').each(function () {
+                                const this_section = $(this).find('h2').first().text().trim().toLowerCase();
+                                if (($(this).find('.fieldLoader').length === 0) && !doneMenus.includes(this_section)) {
+                                    $('.menu div').each(function (){
+                                        if ($(this).html().toLowerCase().includes(this_section)) {
+                                            doneMenus.push(this_section);
+                                            $(this).find('.light').css('display', 'inline-block');
+                                            $(this).find('.sectionLoader').remove();
+                                        }
+                                    });
+                                }
+                            });
+                            
+                            if (matched) {
+                                continue;
+                            }
+                        }
+                    }
+                },
+                error: function (xhr, status, error) {
+                    clearInterval(intervalId);
+                    normalRender();
+                    error_handler(xhr, status, error);
+                }
+            });
+        }, 200);
+    }
+    function _renderSimple(){
         $.ajax({
             url: "/transparency/card/simple/" + id,
             method: "GET",
@@ -451,6 +459,9 @@ $(document).ready(function () {
                     $('.menu div:first-child').addClass('active');
                 });
                 $('#simple-view').trigger('click');
+                if (token){
+                    _renderWhileRefine();
+                }
             },
             error: error_handler
         });
