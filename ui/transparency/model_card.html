@@ -92,7 +92,7 @@
             <p>This <strong>cannot be undone</strong>. Are you sure?</p>
             <div class="buttons">
                 <button id="confirm-delete-btn"><i class="fa-solid fa-trash"></i>&nbsp;Delete</button>
-                <button style="card-button button" id="cancel-delete-btn"><i class="fa-solid fa-cancel"></i>&nbsp;Cancel</button>
+                <button class="card-button button" id="cancel-delete-btn"><i class="fa-solid fa-cancel"></i>&nbsp;Cancel</button>
             </div>
         </div>
     </div>
@@ -151,7 +151,11 @@
                     <div><span class="light square"></span><span>Performance</span></div>
                     <div><span class="light square"></span><span>Safety</span></div>
                 </div>
-                <div class="contents">
+                <div class="contents simple">
+                    <div class="card_view">
+                        <div class="active" id="simple-view"><span>Show summary</span></div>
+                        <div id="technical-view"><span>Show full version</span></div>
+                    </div>
                     <div class="loading-overlay" id="loading">
                         <div class="spinner"></div>
                         <p>Loading...</p>
@@ -230,16 +234,16 @@
             </div>
         </div>
         <div id ="metrics-container" class="upload-container">
-            <div class="file-drop-area" id="dropArea">
+            <div class="file-drop-area" id="dropAreaMetrics">
                 <br><br>
                 <span class="fake-btn">Choose JSON</span>
                 <span class="file-msg">or drag here</span>
                 <input class="file-input" type="file" accept=".json">
             </div>
-            <ul class="file-list" id="fileList"></ul>
-            <div class="total-size" id="totalSize">Total size: 0 KB</div>
+            <ul class="file-list" id="fileListMetrics"></ul>
+            <div class="total-size" id="totalSizeMetrics">Total size: 0 KB</div>
             <div class="progress-bar-file">
-                <div class="progress-fill" id="progressFill"></div>
+                <div class="progress-fill" id="progressFillMetrics"></div>
             </div>
         </div>
         <br><br>

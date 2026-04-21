@@ -5,10 +5,11 @@ class Field:
     def get(self): raise Exception("Cannot get from abstract Field")
 
 class ShortText(Field):
-    def __init__(self, description: str="", technical_nature: bool=False):
+    def __init__(self, description: str="", technical_nature: bool=False, is_simple: bool=False):
         self.__contents = ""
         self.description = description
         self.technical_nature = technical_nature
+        self.is_simple = is_simple
     def set(self, value):
         if isinstance(value, Field): value = value.get()
         self.__contents = value
@@ -20,10 +21,11 @@ class ShortText(Field):
         return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "short text"}
 
 class LongText(Field):
-    def __init__(self, description: str="", technical_nature: bool=False):
+    def __init__(self, description: str="", technical_nature: bool=False, is_simple: bool=False):
         self.__contents = ""
         self.description = description
         self.technical_nature = technical_nature
+        self.is_simple = is_simple
     def set(self, value):
         if isinstance(value, Field): value = value.get()
         self.__contents = value
@@ -35,10 +37,11 @@ class LongText(Field):
         return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "long text"}
 
 class Options(Field):
-    def __init__(self, options: list[str], description: str=""):
+    def __init__(self, options: list[str], description: str="", is_simple: bool=False):
         self.__options = options  # leave as a list
         self.__contents = None
         self.description = description
+        self.is_simple = is_simple
     def set(self, value):
         if isinstance(value, Field): value = value.get()
         if not value: value = None
@@ -54,10 +57,11 @@ class Options(Field):
         return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "list:"+",".join(self.__options)}
     
 class Date(Field):
-    def __init__(self, description: str=""):
+    def __init__(self, description: str="", is_simple: bool=False):
         self.__contents = ""
         self.description = description
         self.__format = "%Y-%m-%d"
+        self.is_simple = is_simple
     def set(self, value):
         if isinstance(value, Field): value = value.get()
         try:
@@ -74,10 +78,11 @@ class Date(Field):
 
 # Ollama pattern issue: https://github.com/ollama/ollama/issues/10591
 class Pattern(Field):
-    def __init__(self, regex: str, description: str=""):
+    def __init__(self, regex: str, description: str="", is_simple: bool=False):
         self.__pattern = regex
         self.__contents = ''
         self.description = description
+        self.is_simple = is_simple
     def set(self, value):
         if isinstance(value, Field): value = value.get()
         self.__contents = value

@@ -56,7 +56,9 @@ $(document).ready(function () {
     const id = urlParams.get('id');
     const compareto = urlParams.get('compareto');
     const $menu = $('.menu');
+    $menu.css({visibility: 'hidden', display: 'block'});
     let menuOffsetTop = $menu.offset().top; // this will be updated, depending on history taking up space
+    $menu.css({visibility: '',display: 'none'});
     const pageUrl = encodeURIComponent(window.location.href);
     const pageTitle = encodeURIComponent(document.title);
     $('#pdf_desc').hide();
@@ -113,6 +115,28 @@ $(document).ready(function () {
         $('#metrics_desc').slideDown();
     });
 
+    $('#simple-view').click(function(){
+        $('#technical-view').removeClass('active');
+        $('#simple-view').addClass('active');
+        $menu.hide();
+        $('.contents').addClass('simple');
+        $('.nacc li').removeClass('active');
+        $('.nacc li#simpleSection').addClass('active');
+    })
+
+    
+    $('#technical-view').click(function(){
+        $('#technical-view').addClass('active');
+        $('#simple-view').removeClass('active');
+        $menu.show();
+        // $('.contents').css('margin-left', '190px')
+        $('.contents').removeClass('simple');
+        $('.nacc li').removeClass('active');
+        $('.nacc li').first().addClass('active');
+        $('.menu').find('div').removeClass('active');
+        $('.menu div:first-child').addClass('active');
+    })
+
     $(window).on('scroll', function () {
         if ($(window).scrollTop() > menuOffsetTop - 20) $menu.addClass('fixed');
         else $menu.removeClass('fixed');
@@ -130,12 +154,99 @@ $(document).ready(function () {
             error: error_handler
         });
     }
+    function renderSection(section, index, is_logged_in, no_title=false){
+        let baseSection = comparedJson&&comparedJson.data?comparedJson.data[index]:undefined;
+        let sectionTitle = section.name.replace(/_/g, " ").toUpperCase();
+        let $section = $("<section>");
+        if (!no_title) $section.append($("<h2>").text(sectionTitle));
+        if (!section.value.length) $section.append($("<p>").text("No data provided."));
+        section.value.forEach((field, fieldIndex) => {
+            let $field = $("<div>").addClass("field");
+
+            // field-name
+            let $fieldName = $("<span>")
+                .addClass("field-name")
+                .text(" "+field.name.replace(/_/g, " "));
+            
+
+
+            // info-tooltip
+            let $fieldInfo = $("<span>")
+                .addClass("info-tooltip")
+                .attr("data-tooltip", field.description)
+                .text("?");
+            $fieldInfo = $("<span>").addClass("field-info").append($fieldInfo).append($fieldName);
+            let $fieldValue;
+            
+            if (field.type.startsWith("list:") && is_logged_in) {
+                $fieldValue = $("<select>").addClass("field-value dropdown");
+                $fieldValue.append($("<option>").val("").text("—").prop({
+                    selected: true,disabled: true,hidden: true}));
+                const options = field.type.replace("list:", "").split(",");
+                let $currentGroup = null;
+                options.forEach(opt => {
+                    if (opt.startsWith("#")) {
+                        $currentGroup = $("<optgroup>").attr("label", opt.replace("#", ""));
+                        $fieldValue.append($currentGroup);
+                    } else {
+                        const $option = $("<option>").val(opt).text(opt);
+                        if (field.value === opt) $option.prop("selected", true);
+                        // Append to optgroup if it exists, otherwise directly to select
+                        if ($currentGroup) $currentGroup.append($option);
+                        else $fieldValue.append($option);
+                    }
+                });
+            } else if (field.type === 'date') {
+                $fieldValue = $("<input>", {type: "date", readonly: is_logged_in? false: true}).addClass("field-value").val(field.value || "");
+                $fieldValue.on("change", function () {field.value = $(this).val();});
+                if(is_logged_in) $fieldValue.attr("contenteditable", "true");
+                
+            } else {
+                $fieldValue = $("<span>") .addClass("field-value").html(field.value || "");
+                if(is_logged_in) $fieldValue.attr("contenteditable", "true");
+            }
+
+            if(is_logged_in) $fieldValue.addClass("editable");
+
+            // Editable field value
+            let val = String(field.value || "").trim();
+            if ((val  !== "") && (val  !== "<br>") && (val  !== "unknown")) {
+                $('.menu').find('div').eq(index).find('.light').removeClass('square');
+                $('.menu').find('div').eq(index).find('.light').addClass('arrow');
+            }
+
+            let $refineBtn = $("<button>")
+                .addClass("refine-field")
+                .text("refine field");
+            $field.append($fieldInfo).append($fieldValue);
+            // if (token && cardJson.creator===loggedUser){
+            //     $field.append($refineBtn);
+            // }
+            $section.append($field);
+
+            // compared value
+            if(baseSection) {
+                console.log(baseSection.value[fieldIndex]);
+                let $baseFieldValue = $("<span>")
+                        .addClass("field-value")
+                        .html(baseSection.value[fieldIndex].value || "");
+
+                let $fieldBase = $("<span>")
+                    .addClass("field-name")
+                    .text("Original");
+
+                $field.append($fieldBase);
+                $field.append($baseFieldValue);
+            }
+        });
+        return $section;
+    }
     function normalRender(interval=null){
         $('body').removeClass('no-overflow');
         document.getElementById('card-locked').style.display = 'none';
         if (interval) clearInterval(interval);
 
-        function render() {
+        function _render() {
             if(!cardJson || !comparedJson) return;
             let is_logged_in = token&&cardJson.creator === loggedUser;
             if(is_logged_in) {
@@ -166,7 +277,7 @@ $(document).ready(function () {
                     Number(id),
                     historyContainer
                 );
-                menuOffsetTop = $menu.offset().top;
+
             }
 
 
@@ -175,94 +286,8 @@ $(document).ready(function () {
             $ul.empty();
             $('#loading').hide();
             jsonData.data.forEach((section, index) => {
-                let baseSection = comparedJson&&comparedJson.data?comparedJson.data[index]:undefined;
-                let sectionTitle = section.name.replace(/_/g, " ").toUpperCase();
-                let $li = $("<li>").toggleClass("active", index === 0);
-                let $section = $("<section>");
-                $section.append($("<h2>").text(sectionTitle));
-                if (!section.value.length) $section.append($("<p>").text("No data provided."));
-                section.value.forEach((field, fieldIndex) => {
-                    let $field = $("<div>").addClass("field");
-
-                    // field-name
-                    let $fieldName = $("<span>")
-                        .addClass("field-name")
-                        .text(" "+field.name.replace(/_/g, " "));
-                    
-
-
-                    // info-tooltip
-                    let $fieldInfo = $("<span>")
-                        .addClass("info-tooltip")
-                        .attr("data-tooltip", field.description)
-                        .text("?");
-                    $fieldInfo = $("<span>").addClass("field-info").append($fieldInfo).append($fieldName);
-                    let $fieldValue;
-                    
-                    if (field.type.startsWith("list:") && is_logged_in) {
-                        $fieldValue = $("<select>").addClass("field-value dropdown");
-                        $fieldValue.append($("<option>").val("").text("—").prop({
-                            selected: true,disabled: true,hidden: true}));
-                        const options = field.type.replace("list:", "").split(",");
-                        let $currentGroup = null;
-                        options.forEach(opt => {
-                            if (opt.startsWith("#")) {
-                                $currentGroup = $("<optgroup>").attr("label", opt.replace("#", ""));
-                                $fieldValue.append($currentGroup);
-                            } else {
-                                const $option = $("<option>").val(opt).text(opt);
-                                if (field.value === opt) $option.prop("selected", true);
-                                // Append to optgroup if it exists, otherwise directly to select
-                                if ($currentGroup) $currentGroup.append($option);
-                                else $fieldValue.append($option);
-                            }
-                        });
-                    } else if (field.type === 'date') {
-                        $fieldValue = $("<input>", {type: "date", readonly: is_logged_in? false: true}).addClass("field-value").val(field.value || "");
-                        $fieldValue.on("change", function () {field.value = $(this).val();});
-                        if(is_logged_in) $fieldValue.attr("contenteditable", "true");
-                        
-                    } else {
-                        $fieldValue = $("<span>") .addClass("field-value").html(field.value || "");
-                        if(is_logged_in) $fieldValue.attr("contenteditable", "true");
-                    }
-
-                    if(is_logged_in) $fieldValue.addClass("editable");
-
-                    // Editable field value
-                    let val = String(field.value || "").trim();
-                    if ((val  !== "") && (val  !== "<br>") && (val  !== "unknown")) {
-                        $('.menu').find('div').eq(index).find('.light').removeClass('square');
-                        $('.menu').find('div').eq(index).find('.light').addClass('arrow');
-                    }
-
-                    let $refineBtn = $("<button>")
-                        .addClass("refine-field")
-                        .text("refine field");
-                    $field.append($fieldInfo).append($fieldValue);
-                    // if (token && cardJson.creator===loggedUser){
-                    //     $field.append($refineBtn);
-                    // }
-                    $section.append($field);
-
-                    // compared value
-                    if(baseSection) {
-                        console.log(baseSection.value[fieldIndex]);
-                        let $baseFieldValue = $("<span>")
-                                .addClass("field-value")
-                                .html(baseSection.value[fieldIndex].value || "");
-
-                        let $fieldBase = $("<span>")
-                            .addClass("field-name")
-                            .text("Original");
-
-                        $field.append($fieldBase);
-                        $field.append($baseFieldValue);
-                    }
-                });
-
-
-
+                let $li = $("<li>");
+                $section = renderSection(section, index, is_logged_in);
                 $li.append($("<div>").append($section));
                 $ul.append($li);
                 $('.menu').find('div').removeClass('active');
@@ -282,99 +307,12 @@ $(document).ready(function () {
                 el.setAttribute('autocapitalize', 'off');
                 el.setAttribute('translate', 'no');
             });
+
+
         }
 
 
-        function renderWhileRefine(){
-            const completed = {};
-            let doneMenus = [];
-            let firstpass = true;
-            function isEmpty(obj) {
-                for (const prop in obj) {
-                    if (Object.hasOwn(obj, prop)) {
-                    return false;
-                    }
-                }
-                return true;
-                }
-            const intervalId = setInterval(async () => {
-                $.ajax({
-                    url: "/transparency/job/" + id,
-                    method: "GET",
-                    headers: {"Authorization": "Bearer " + token},
-                    contentType: "application/json",
-                    dataType: "json",
-                    success: function (job) {
-                        if (isEmpty(job)) {
-                            clearInterval(intervalId);
-                            return;
-                        }
-                        // put loading spinners in UI
-                        if (firstpass){
-                            firstpass = false;
-                            const $loading_field = $("<div>").addClass('fieldLoader');
-                            const $loading_section = $("<span>").addClass('sectionLoader');
-                            $('span.field-value').html($loading_field).attr('contenteditable', 'false');
-                            console.log($('.menu .light'));
-                            $('.menu .light').hide();
-                            $('.menu div').prepend($loading_section);
-                        }
-                        // poll update
-                        for (const [section, fields] of Object.entries(job.data)) {
-                            if (!completed[section]) {completed[section] = [];}
-                            for (let [field, value] of Object.entries(fields)) {
-                                field = field.replaceAll('_', ' ');
-                                if (completed[section].includes(field)) {continue;}
-                                let matched = false;
-                                $('.contents .nacc li').each(function () {
-                                    const this_section = $(this).find('h2').first().text().trim().toLowerCase();
-                                    if (this_section === section) {
-                                        $(this).find('.field').each(function () {
-                                            const this_field = $(this).find('.field-name').text().trim().toLowerCase();
-                                            if (this_field === field) {
-                                            $(this)
-                                                .find('span.field-value')
-                                                .html(value)
-                                                .fadeOut(0, function () {
-                                                    $(this)
-                                                        .attr('contenteditable', 'true')
-                                                        .fadeIn(300);
-                                                });
-                                                matched = true;
-                                                completed[section].push(field);
-                                                return false; // break .each()
-                                            }
-                                        });
-                                        return false; // break outer .each()
-                                    }
-                                });
-                                // update menu
-                                $('.contents .nacc li').each(function () {
-                                    const this_section = $(this).find('h2').first().text().trim().toLowerCase();
-                                    if (($(this).find('.fieldLoader').length === 0) && !doneMenus.includes(this_section)) {
-                                        $('.menu div').each(function (){
-                                            if ($(this).html().toLowerCase().includes(this_section)) {
-                                                doneMenus.push(this_section);
-                                                $(this).find('.light').css('display', 'inline-block');
-                                                $(this).find('.sectionLoader').remove();
-                                            }
-                                        });
-                                    }
-                                });
-                                
-                                if (matched) {
-                                    continue;
-                                }
-                            }
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        clearInterval(intervalId);
-                        error_handler(xhr, status, error);
-                    }
-                });
-            }, 200);
-        }
+
 
         if(compareto) {
             $.ajax({
@@ -384,7 +322,7 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (jsonData) {
                     comparedJson = jsonData;
-                    render();
+                    _render();
                 },
                 error: function (xhr, status, error) {}
             });
@@ -398,15 +336,139 @@ $(document).ready(function () {
             dataType: "json",
             success: function (jsonData) {
                 cardJson = jsonData;
-                render();
-                if (token){
-                    renderWhileRefine();
-                }
+                _render();
+                _renderSimple();
             },
             error: error_handler
         });
     }
     normalRender();
+    function _renderWhileRefine(){
+        const completed = {};
+        let doneMenus = [];
+        let firstpass = true;
+        function isEmpty(obj) {
+            for (const prop in obj) {
+                if (Object.hasOwn(obj, prop)) {
+                return false;
+                }
+            }
+            return true;
+        }
+        let refineStarted = false;
+        const intervalId = setInterval(async () => {
+            $.ajax({
+                url: "/transparency/job/" + id,
+                method: "GET",
+                headers: {"Authorization": "Bearer " + token},
+                contentType: "application/json",
+                dataType: "json",
+                success: function (job) {
+                    if (isEmpty(job)) {
+                        clearInterval(intervalId);
+                        if (refineStarted){
+                            _renderSimple();
+                        }
+                        return;
+                    }
+                    if (!refineStarted){
+                        $('#technical-view').trigger('click');
+                    }
+                    refineStarted = true;
+                    // put loading spinners in UI
+                    if (firstpass){
+                        firstpass = false;
+                        const $loading_field = $("<div>").addClass('fieldLoader');
+                        const $loading_section = $("<span>").addClass('sectionLoader');
+                        $('span.field-value').html($loading_field).attr('contenteditable', 'false');
+                        console.log($('.menu .light'));
+                        $('.menu .light').hide();
+                        $('.menu div').prepend($loading_section);
+                    }
+                    // poll update
+                    for (const [section, fields] of Object.entries(job.data)) {
+                        if (!completed[section]) {completed[section] = [];}
+                        for (let [field, value] of Object.entries(fields)) {
+                            field = field.replaceAll('_', ' ');
+                            if (completed[section].includes(field)) {continue;}
+                            let matched = false;
+                            $('.contents .nacc li').each(function () {
+                                const this_section = $(this).find('h2').first().text().trim().toLowerCase();
+                                if (this_section === section) {
+                                    $(this).find('.field').each(function () {
+                                        const this_field = $(this).find('.field-name').text().trim().toLowerCase();
+                                        if (this_field === field) {
+                                        $(this)
+                                            .find('span.field-value')
+                                            .html(value)
+                                            .fadeOut(0, function () {
+                                                $(this)
+                                                    .attr('contenteditable', 'true')
+                                                    .fadeIn(300);
+                                            });
+                                            matched = true;
+                                            completed[section].push(field);
+                                            return false; // break .each()
+                                        }
+                                    });
+                                    return false; // break outer .each()
+                                }
+                            });
+                            // update menu
+                            $('.contents .nacc li').each(function () {
+                                const this_section = $(this).find('h2').first().text().trim().toLowerCase();
+                                if (($(this).find('.fieldLoader').length === 0) && !doneMenus.includes(this_section)) {
+                                    $('.menu div').each(function (){
+                                        if ($(this).html().toLowerCase().includes(this_section)) {
+                                            doneMenus.push(this_section);
+                                            $(this).find('.light').css('display', 'inline-block');
+                                            $(this).find('.sectionLoader').remove();
+                                        }
+                                    });
+                                }
+                            });
+                            
+                            if (matched) {
+                                continue;
+                            }
+                        }
+                    }
+                },
+                error: function (xhr, status, error) {
+                    clearInterval(intervalId);
+                    normalRender();
+                    error_handler(xhr, status, error);
+                }
+            });
+        }, 200);
+    }
+    function _renderSimple(){
+        $.ajax({
+            url: "/transparency/card/simple/" + id,
+            method: "GET",
+            contentType: "application/json",
+            dataType: "json",
+            success: function (jsonData) {
+                let is_logged_in = token&&cardJson.creator === loggedUser;
+                // fill in fields
+                const $ul = $(".nacc");
+                $ul.find("li#simpleSection").remove();
+                jsonData.data.forEach((section, index) => {
+                    let $li = $("<li>").attr('id', 'simpleSection').toggleClass("active", index === 0);
+                    $section = renderSection(section, index, false, true);
+                    $li.append($("<div>").append($section));
+                    $ul.append($li);
+                    $('.menu').find('div').removeClass('active');
+                    $('.menu div:first-child').addClass('active');
+                });
+                $('#simple-view').trigger('click');
+                if (token){
+                    _renderWhileRefine();
+                }
+            },
+            error: error_handler
+        });
+    }
     function checkLocked(interval) {
         $.ajax({
             url: "/transparency/card/" + id + "/locked",

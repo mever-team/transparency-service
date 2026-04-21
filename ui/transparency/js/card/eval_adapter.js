@@ -1,11 +1,11 @@
 $(function () {
     var uploaded_metrics;
     const $modal = $('#metrics-container');
-    const $dropArea = $modal.find('#dropArea');
+    const $dropArea = $modal.find('#dropAreaMetrics');
     const $fileInput = $modal.find('.file-input');
-    const $fileList = $modal.find('#fileList');
-    const $totalSize = $modal.find('#totalSize');
-    const $progressFill = $modal.find('#progressFill');
+    const $fileList = $modal.find('#fileListMetrics');
+    const $totalSize = $modal.find('#totalSizeMetrics');
+    const $progressFill = $modal.find('#progressFillMetrics');
     $(document).on('click', '.card-button#agent[data-type="metrics"]', request);
 
     function request (){

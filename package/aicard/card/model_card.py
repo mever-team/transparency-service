@@ -26,23 +26,23 @@ class ModelCard:
         object.__setattr__(self, "data", DotDict(
             title=ShortText(),
             overview=DotDict(
-                name=ShortText("Name of the model."),
-                description=LongText("Model purpose, capabilities, novelty and caveats"),
-                creator=ShortText("Person or organization developed the model."),
+                name=ShortText("Name of the model.", is_simple=True),
+                description=LongText("Model purpose, capabilities, novelty and caveats", is_simple=True),
+                creator=ShortText("Person or organization developed the model.", is_simple=True),
                 date=Date("Model development completion date."),
                 version=ShortText("Version of the model."),
-                type=Options(self._type_options,"Model architecture or algorithm type."),
-                task=Options(self._task_options, "Model task."),
+                type=Options(self._type_options,"Model architecture or algorithm type.", is_simple=True),
+                task=Options(self._task_options, "Model task.", is_simple=True),
                 license=ShortText("Licence and intellectual property (IP) information."),
                 home=ShortText("URL hosting the model."),
-                contact=ShortText("Author contact information."),
+                contact=ShortText("Author contact information.", is_simple=True),
                 citation=ShortText("How should the model be cited? Typically includes title, author, year, and publisher. May be a formatted citation or bibtex entries like @article.", technical_nature=True),
                 more=LongText("Additional model information not found above.")),
             use=DotDict(
-                use_cases=ShortText("Intended uses of the model."),
+                use_cases=ShortText("Intended uses of the model.", is_simple=True),
                 oversight=Options(["self-learning/autonomous", "human-in-the-loop", "human-on-the-loop", "human-in-command", "unknown"], "Defines the level of human control over the system."),
-                user_groups=ShortText("Intended users."),
-                out_of_scope_use=ShortText("Unintended and improper use of model."),
+                user_groups=ShortText("Intended users.", is_simple=True),
+                out_of_scope_use=ShortText("Unintended and improper use of model.", is_simple=True),
                 software=ShortText("Software requirements and dependencies?"),
                 instructions=ShortText("Use instructions.", technical_nature=True),
                 inputs_outputs=ShortText("Description of the model's inputs and outputs", technical_nature=True),
@@ -72,15 +72,16 @@ class ModelCard:
                 bias=LongText("Performance and bias across different groups (e.g. ethnicity, gender)"),
             ),
             safety=DotDict(
-                ethics=LongText("Ethical considerations regarding datasets and usage of model. Recommended mitigation measures."),
-                fairness=LongText("Definition of fairness applied in setting up the AI system."),
-                risks=LongText("Possible threats to the AI system (design faults, technical faults, environmental threats) and the possible consequences."),
-                security=LongText("Is the AI system certified for cybersecurity or is it compliant with specific security standards?"),
-                caveats=LongText("Additional concerns that were not covered in the previous sections.")
+                ethics=LongText("Ethical considerations regarding datasets and usage of model. Recommended mitigation measures.", is_simple=True),
+                fairness=LongText("Definition of fairness applied in setting up the AI system.", is_simple=True),
+                risks=LongText("Possible threats to the AI system (design faults, technical faults, environmental threats) and the possible consequences.", is_simple=True),
+                security=LongText("Is the AI system certified for cybersecurity or is it compliant with specific security standards?", is_simple=True),
+                caveats=LongText("Additional concerns that were not covered in the previous sections.", is_simple=True)
             ),
         ))
         self.connector = connector # used by the client - the server does something else and model cards stored there should never set this field
         #VersionControl.__init__(self)
+        self.simple_fields = self.__get_simple_fields() # TODO: consider making this a fixed declaration to save on compute
 
     def __enter__(self):
         assert self.connector, "You need a model card connector to use it as a context"
@@ -100,14 +101,14 @@ class ModelCard:
         return self
 
     def __getattr__(self, key):
-        if key in ["data", "connector"]: return object.__getattribute__(self, key)
+        if key in ["data", "connector", "simple_fields"]: return object.__getattribute__(self, key)
         if key in self.data:
             ret = self.data[key]
             return ret.get() if isinstance(ret, Field) else ret
         raise AttributeError
 
     def __setattr__(self, key, value):
-        if key in ["data", "connector"]: return object.__setattr__(self, key, value)
+        if key in ["data", "connector", "simple_fields"]: return object.__setattr__(self, key, value)
         if key in self.data: self.data[key].set(value)
         return object.__setattr__(self, key, value)
     
@@ -219,6 +220,28 @@ class ModelCard:
                     "unknown"
                     ]
 
+    def __get_simple_fields(self):
+        # used internally in the constructor, as simple fields do not change
+        simple_fields = dict()
+        for k, v in self.data.items():
+            if isinstance(v, dict):
+                for field_k, field_v in v.items():
+                    if hasattr(field_v, "is_simple") and field_v.is_simple:
+                        assert field_k not in simple_fields, "Duplicate simple field names in card definition (they must be unique across categories)"
+                        simple_fields[field_k] = field_v
+            elif hasattr(v, "is_simple") and v.is_simple:
+                assert k not in simple_fields, "Duplicate simple field names in card definition (they must be unique across categories)"
+                simple_fields[k] = v
+        return simple_fields
+
+    def get_simple_fields(self):
+        return self.simple_fields
+
+    def set_simple_fields(self, simple_field_values: dict[str,str]):
+        for k, v in simple_field_values.items():
+            assert k in self.simple_fields, "Not found simple field in card definition: "+str(k)
+            self.simple_fields[k].set(v)
+
     def is_stable(self):
         return (not self.connector) or json.dumps(self.connector.prototype.data) == json.dumps(self.data)
 
@@ -313,8 +336,7 @@ class ModelCard:
 
         # Compute 5-star rating
         quality = self.quality()
-        stars = int(round(quality * 5))
-        ret += "*completion*".ljust(20) + "⭐" * stars + "☆" * (5 - stars)
+        ret += "*"+str(int(round(quality*100)))+"% information completed*"
         ret += "\n"
 
         # Add fields
@@ -340,18 +362,7 @@ class ModelCard:
 
         # Compute 5-star rating
         quality = self.quality()
-        stars = int(round(quality * 5))
-        filled_star = "⭐"
-        empty_star = "☆"
-        star_html = filled_star * stars + empty_star * (5 - stars)
-
-        ret += (
-                f"<div>"
-                f"<b>completion</b>".ljust(20)
-                + star_html +
-                "</div>\n"
-        )
-
+        ret += "<div><i>"+str(int(round(quality*100)))+"% information completed</i></div>\n"
         for key, dotdict in card.data.items():
             if isinstance(dotdict, DotDict):
                 segment = ""
