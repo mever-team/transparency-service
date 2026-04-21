@@ -84,7 +84,7 @@
 ul.nacc {
     position: relative;
     list-style: none;
-    margin: 20px 0;
+    margin: 10px 0;
     padding: 0;
     transition: 0.5s all cubic-bezier(0.075, 0.82, 0.165, 1);
 }
@@ -541,6 +541,7 @@ section.buttons {
 .text-input::placeholder {color: #9aa6b2; opacity: 1;}
 
 .menu {
+    display: none;
     position: relative;
     top: 0;
     transition: top 0.3s;
@@ -554,16 +555,47 @@ section.buttons {
     z-index: 0;
 }
 
+.card_view {
+    display: flex;
+    text-align: center;
+    
+}
+.card_view div {
+    border: solid 1px rgb(97, 97, 97);
+    color: rgb(97, 97, 97);
+    margin: 1rem 0 0 0;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+}
+.card_view div:first-child {
+    border-top-left-radius: 60px;
+    border-bottom-left-radius: 60px;
+}
+
+.card_view div:last-child {
+    border-top-right-radius: 60px;
+    border-bottom-right-radius: 60px;
+}
+
+.card_view .active {
+    border-color: #64DB96;
+    color: #64DB96;
+}
+
 .contents {
     margin-left: 190px;
     position:relative;
     min-height: 400px;
 }
+.contents.simple {
+    margin-left: 0;
+}
 @media screen and (max-width: 768px) {
     .menu {display:flex; position: relative; width: 100%; margin: 0; float: none; flex-wrap: wrap; margin-top: 10px;}
-    .contents {margin-left: 0px;position: relative; min-height: 400px;}
+    .contents {margin-left: 0px;margin-top: 0;position: relative; min-height: 400px;}
     .menu.fixed {position: relative; width: 100%; margin: 0; margin-top: 10px;}
     .menu div {min-width: 33%; height:30px; padding-top:7px!important; margin:0px!important;}
+    .card_view{justify-content: center;}
 }
 
 #service-logo {text-align:left; font-size: 40px; min-width: 300px;}

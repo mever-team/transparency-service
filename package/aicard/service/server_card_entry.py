@@ -10,8 +10,9 @@ import traceback
 import re
 import time
 import numpy as np
+import contextlib
 
-class ModelCardEntry:
+class ModelCardEntry(contextlib.AbstractContextManager):
     def __init__(self, card: ModelCard, creator: str, conn):
         self.card = card
         self.creator = creator
@@ -59,7 +60,16 @@ class ModelCardEntry:
                     visited.add(v)
                     next_frontier.add(v)
             frontier = next_frontier
-        return list(edges)
+        nodes = set()
+        for u,v,msg in edges:
+            nodes.add(u)
+            nodes.add(v)
+        info = dict()
+        for node in nodes:
+            cursor.execute(f"""SELECT cards.user, cards.overview__version FROM cards WHERE cards.id=={node}""")
+            row = cursor.fetchone()
+            info[node] = row
+        return {"edges": list(edges), "info": info}
 
     def touch(self):
         self.last_accessed = time.time()
