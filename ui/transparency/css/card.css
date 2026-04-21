@@ -402,7 +402,7 @@ section.buttons {
 }
 
 #confirm-delete-btn {
-    background: #F44336;
+    background: #F44336!important;
     color: #1F1F1F;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
 }
