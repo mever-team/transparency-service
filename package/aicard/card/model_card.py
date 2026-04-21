@@ -336,8 +336,7 @@ class ModelCard:
 
         # Compute 5-star rating
         quality = self.quality()
-        stars = int(round(quality * 5))
-        ret += "*completion*".ljust(20) + "⭐" * stars + "☆" * (5 - stars)
+        ret += "*"+str(int(round(quality*100)))+"% information completed*"
         ret += "\n"
 
         # Add fields
@@ -363,18 +362,7 @@ class ModelCard:
 
         # Compute 5-star rating
         quality = self.quality()
-        stars = int(round(quality * 5))
-        filled_star = "⭐"
-        empty_star = "☆"
-        star_html = filled_star * stars + empty_star * (5 - stars)
-
-        ret += (
-                f"<div>"
-                f"<b>completion</b>".ljust(20)
-                + star_html +
-                "</div>\n"
-        )
-
+        ret += "<div><i>"+str(int(round(quality*100)))+"% information completed</i></div>\n"
         for key, dotdict in card.data.items():
             if isinstance(dotdict, DotDict):
                 segment = ""
