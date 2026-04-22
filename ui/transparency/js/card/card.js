@@ -18,6 +18,7 @@ function error_handler(xhr, status, error) {
 
 // Close confirmation modal
 document.getElementById('cancel-delete-btn').onclick = function () {document.getElementById('delete-confirm-screen').style.display = 'none';};
+document.getElementById('cancel-report-btn').onclick = function () {document.getElementById('report-confirm-screen').style.display = 'none';};
 document.getElementById('cancel-autocomplete-btn').onclick = function () {document.getElementById('modal-autocomplete-screen').style.display = 'none';};
 document.getElementById('cancel-refine-btn').onclick = function () {document.getElementById('modal-refine-screen').style.display = 'none';};
 
@@ -36,6 +37,7 @@ $(document).on('keydown', (e) => {
   if (e.key === 'Escape') {
     const modals = [
         'delete-confirm-screen',
+        'report-confirm-screen', // TODO: iterate through all these modals vias their common class selector instead
         'modal-autocomplete-screen',
         'modal-refine-screen',
         'popup-error-screen',
@@ -248,6 +250,7 @@ $(document).ready(function () {
             if(!cardJson || !comparedJson) return;
             let is_logged_in = token&&cardJson.creator === loggedUser;
             if(is_logged_in) {
+                $('#reportCard').hide();
                 $('#deleteCard').show();
                 $('#import-btn').show();
             }
@@ -492,6 +495,7 @@ $(document).ready(function () {
                     $('#share-options').hide();
                     $('#edit-options').hide();
                     $('#deleteCard').hide();
+                    $('#reportCard').show();
                     $('.example_button').css('pointer-events', 'none');
                     if(resp.error || error) error_handler(xhr, status, error);
                 } catch (e) { error_message(""); }
@@ -737,6 +741,7 @@ $('.contents').on('click', '.refine-field', async function () {
     $("#modal_autocomplete").click(function () {document.getElementById('modal-autocomplete-screen').style.display = 'flex';});
     $("#modal_refine").click(function () { document.getElementById('modal-refine-screen').style.display = 'flex';});
     $("#deleteCard").click(function () {document.getElementById('delete-confirm-screen').style.display = 'flex';});
+    $("#reportCard").click(function () {document.getElementById('report-confirm-screen').style.display = 'flex';});
     $(".delete-confirm-screen").click(function (e) { if ($(e.target).is(this)) $(this).hide();});
     document.getElementById('confirm-delete-btn').onclick = function () {
         document.getElementById('delete-confirm-screen').style.display = 'none';
@@ -748,6 +753,23 @@ $('.contents').on('click', '.refine-field', async function () {
                 const screen = document.getElementById('delete-success-screen');
                 screen.style.display = 'flex';
                 document.getElementById('close-success-btn').onclick = function () { screen.style.display = 'none'; }
+            },
+            error: error_handler
+        });
+    };
+    document.getElementById('confirm-report-btn').onclick = function () {
+        document.getElementById('report-confirm-screen').style.display = 'none';
+        $.ajax({
+            url: "/transparency/card/" + id + "/report", // report card id
+            method: "POST",
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify(document.getElementById("report-text").value),
+            headers: {"Authorization": "Bearer " + token},
+            success: function (response) {
+                const screen = document.getElementById('report-success-screen');
+                screen.style.display = 'flex';
+                document.getElementById('report-success-btn').onclick = function () { screen.style.display = 'none'; }
             },
             error: error_handler
         });
