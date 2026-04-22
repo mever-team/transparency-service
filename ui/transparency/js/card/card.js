@@ -660,6 +660,7 @@ $('.contents').on('click', '.refine-field', async function () {
                 }
                 $("#saveJson").find('.btn-text').hide();
                 $("#saveJson").find('.btn-confirmation').fadeIn();
+                _renderSimple(true);
 
                 // Restore after 2s
                 setTimeout(function () {
