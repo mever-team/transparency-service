@@ -1,5 +1,6 @@
 var cardJson;
 var comparedJson;
+var comparedJsonSimple;
 var menuOffsetTop=0;
 
 function error_message(message) {
@@ -154,7 +155,7 @@ $(document).ready(function () {
             error: error_handler
         });
     }
-    function renderSection(section, index, is_logged_in, no_title=false){
+    function renderSection(section, index, comparedJson, is_logged_in, no_title=false){
         let baseSection = comparedJson&&comparedJson.data?comparedJson.data[index]:undefined;
         let sectionTitle = section.name.replace(/_/g, " ").toUpperCase();
         let $section = $("<section>");
@@ -287,7 +288,7 @@ $(document).ready(function () {
             $('#loading').hide();
             jsonData.data.forEach((section, index) => {
                 let $li = $("<li>");
-                $section = renderSection(section, index, is_logged_in);
+                $section = renderSection(section, index, comparedJson, is_logged_in);
                 $li.append($("<div>").append($section));
                 $ul.append($li);
                 $('.menu').find('div').removeClass('active');
@@ -322,13 +323,27 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (jsonData) {
                     comparedJson = jsonData;
+                    $.ajax({
+                        url: "/transparency/card/simple/" + compareto,
+                        method: "GET",
+                        contentType: "application/json",
+                        dataType: "json",
+                        success: function (jsonData) {
+                            comparedJsonSimple = jsonData;
+                            _render();
+                        },
+                        error: function (xhr, status, error) {}
+                    });
                     _render();
                 },
                 error: function (xhr, status, error) {}
             });
         }
-        else
+        else{
             comparedJson = {}; // we use the existence of comparedJson as a mark for render()
+            comparedJsonSimple = {};
+        }
+
         $.ajax({
             url: "/transparency/card/" + id,
             method: "GET",
@@ -456,7 +471,7 @@ $(document).ready(function () {
                 $ul.find("li#simpleSection").remove();
                 jsonData.data.forEach((section, index) => {
                     let $li = $("<li>").attr('id', 'simpleSection');
-                    $section = renderSection(section, index, false, true);
+                    $section = renderSection(section, index, comparedJsonSimple, false, true);
                     $li.append($("<div>").append($section));
                     $ul.append($li);
                     if (isActive){
