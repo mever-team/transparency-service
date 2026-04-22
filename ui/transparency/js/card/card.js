@@ -138,6 +138,7 @@ $(document).ready(function () {
         $('.menu div:first-child').addClass('active');
     })
 
+
     $(window).on('scroll', function () {
         if ($(window).scrollTop() > menuOffsetTop - 20) $menu.addClass('fixed');
         else $menu.removeClass('fixed');
@@ -249,6 +250,9 @@ $(document).ready(function () {
 
         function _render() {
             if(!cardJson || !comparedJson) return;
+            if (token && cardJson.creator===loggedUser){
+                $('#technical-view').html('<span>Show full version and edit</span>')
+            }
             let is_logged_in = token&&cardJson.creator === loggedUser;
             if(is_logged_in) {
                 $('#reportCard').hide();
@@ -351,6 +355,7 @@ $(document).ready(function () {
             dataType: "json",
             success: function (jsonData) {
                 cardJson = jsonData;
+
                 _render();
                 _renderSimple();
             },
@@ -900,4 +905,5 @@ $('.contents').on('click', '.refine-field', async function () {
             });
         }
     });
+
 });
