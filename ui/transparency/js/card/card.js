@@ -364,14 +364,14 @@ $(document).ready(function () {
                     if (isEmpty(job)) {
                         clearInterval(intervalId);
                         if (refineStarted){
-                            _renderSimple();
+                            _renderSimple(true);
                         }
                         return;
                     }
                     if (!refineStarted){
                         $('#technical-view').trigger('click');
+                        refineStarted = true;
                     }
-                    refineStarted = true;
                     // put loading spinners in UI
                     if (firstpass){
                         firstpass = false;
@@ -439,7 +439,7 @@ $(document).ready(function () {
             });
         }, 200);
     }
-    function _renderSimple(){
+    function _renderSimple(fromRefine=false){
         $.ajax({
             url: "/transparency/card/simple/" + id,
             method: "GET",
@@ -449,17 +449,23 @@ $(document).ready(function () {
                 let is_logged_in = token&&cardJson.creator === loggedUser;
                 // fill in fields
                 const $ul = $(".nacc");
+                isActive = $ul.find("li#simpleSection").hasClass("active");
                 $ul.find("li#simpleSection").remove();
                 jsonData.data.forEach((section, index) => {
-                    let $li = $("<li>").attr('id', 'simpleSection').toggleClass("active", index === 0);
+                    let $li = $("<li>").attr('id', 'simpleSection');
                     $section = renderSection(section, index, false, true);
                     $li.append($("<div>").append($section));
                     $ul.append($li);
-                    $('.menu').find('div').removeClass('active');
-                    $('.menu div:first-child').addClass('active');
+                    if (isActive){
+                        $('#simple-view').trigger('click');
+                    }
+                    // $('.menu').find('div').removeClass('active');
+                    // $('.menu div:first-child').addClass('active');
                 });
-                $('#simple-view').trigger('click');
-                if (token){
+                if (!fromRefine){
+                    $('#simple-view').trigger('click');
+                }
+                if (token && !fromRefine){
                     _renderWhileRefine();
                 }
             },
