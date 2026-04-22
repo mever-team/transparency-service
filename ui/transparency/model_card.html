@@ -75,6 +75,7 @@
                         <span class="btn-confirmation"><i class="fa-solid fa-check"></i>&nbsp;Saved</span>
                     </div>
                     <div class="example_button" id="deleteCard" style="width: 100px; background-color:#1F1F1F;border: solid 1px #434343;color:#F44336; display:none"><i class="fa-solid fa-trash"></i>&nbsp;Delete</div>
+                    <div class="example_button" id="reportCard" style="width: 100px; background-color:#1F1F1F;border: solid 1px #434343;color:#F44336"><i class="fa-solid fa-bug"></i>&nbsp;Report</div>
                 </div>
             </div>
         </div>
@@ -91,7 +92,7 @@
             <p>This <strong>cannot be undone</strong>. Are you sure?</p>
             <div class="buttons">
                 <button id="confirm-delete-btn"><i class="fa-solid fa-trash"></i>&nbsp;Delete</button>
-                <button style="card-button button" id="cancel-delete-btn"><i class="fa-solid fa-cancel"></i>&nbsp;Cancel</button>
+                <button class="card-button button" id="cancel-delete-btn"><i class="fa-solid fa-cancel"></i>&nbsp;Cancel</button>
             </div>
         </div>
     </div>
@@ -100,6 +101,27 @@
             <h2>Card deleted</h2>
             <p>The model card has been deleted.</p>
             <a style="text-decoration: none;" href="index.html"><button id="close-success-btn">Home</button></a>
+        </div>
+    </div>
+    <div id="report-confirm-screen" class="delete-confirm-screen">
+        <div class="delete-confirm-content">
+            <h2>Report this card?</h2>
+            <p>Reports are <b>anonymous</b>: you will not be mentioned in the admin page, database, or system logs.
+            They are also <b>confidential</b> in that only the administrator and the card's owner can see them.</p>
+            <input type="text" class="text-input" placeholder="Why are you reporting this card?" id="report-text"/>
+            <br>
+            <br>
+            <div class="buttons">
+                <button id="confirm-report-btn" class="card-button button"><i class="fa-solid fa-bug"></i>&nbsp;Submit</button>
+                <button class="card-button button" id="cancel-report-btn"><i class="fa-solid fa-cancel"></i>&nbsp;Cancel</button>
+            </div>
+        </div>
+    </div>
+    <div id="report-success-screen" class="delete-success-screen">
+        <div class="delete-success-content">
+            <h2>Card reported</h2>
+            <p>The model card has been reported. Please wait five minutes before submitting another report.</p>
+            <a style="text-decoration: none;"><button id="report-success-btn">Close</button></a>
         </div>
     </div>
     <div id="popup-error-screen" class="delete-success-screen">
@@ -247,7 +269,6 @@
 
     </div>
 </div>
-
 
 <!-- JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
