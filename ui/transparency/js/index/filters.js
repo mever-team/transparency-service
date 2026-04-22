@@ -83,24 +83,20 @@ $(function () {
         },
 
         init_filters: function() {
-            this.filters.drafts = false; 
-            this.filters.user = ''; 
             this.filters.query = '';
         },
 
         bindEvents: function() { 
             this.$filters.on('click', '#new-filter', this.newFilter.bind(this));
-            this.$filters.on('click', '.remove-filter', this.removeFilter.bind(this))
-            this.$filters.on('click', '#edit-filter', this.editFilter.bind(this))
-            this.$modal.on('change', '#filter-select', this.dashboardRender.bind(this))
+            this.$filters.on('click', '.remove-filter', this.removeFilter.bind(this));
+            this.$filters.on('click', '#edit-filter', this.editFilter.bind(this));
+            this.$modal.on('change', '#filter-select', this.dashboardRender.bind(this));
             this.$topic.on("keyup", this.topicCallback.bind(this));
-            this.$modal.on('click', '.filter-done', this.done.bind(this))
-            this.$modal.on('click', '.filter-cancel', this.cancel.bind(this))
-            this.$filters.on('click', '#user-filter', this.toggleUserFilter.bind(this));
-            this.$filters.on('click', '#draft-filter', this.toggleDraftFilter.bind(this));
-            this.$modal.on('click', '.filter-dashboard[data-filter="task"]', this.filterTask.bind(this))
-            this.$modal.on('click', '.filter-dashboard[data-filter="type"]', this.filterType.bind(this))
-            this.$modal.on('input', '.filter-dashboard[data-filter="info"] .info-input', this.filterInfo.bind(this))
+            this.$modal.on('click', '.filter-done', this.done.bind(this));
+            this.$modal.on('click', '.filter-cancel', this.cancel.bind(this));
+            this.$modal.on('click', '.filter-dashboard[data-filter="task"]', this.filterTask.bind(this));
+            this.$modal.on('click', '.filter-dashboard[data-filter="type"]', this.filterType.bind(this));
+            this.$modal.on('input', '.filter-dashboard[data-filter="info"] .info-input', this.filterInfo.bind(this));
         },
 
 
@@ -213,36 +209,6 @@ $(function () {
             this.options[filter].active = false;
             this.request();
         },
-        toggleUserFilter: function () {
-                const username = $('#account-name').text().trim();
-                if (!username) return;
-                userFilterOn = !userFilterOn;
-                $('#user-filter').toggleClass('success', userFilterOn);
-                const now = Date.now();
-                if (now - this.lastUpdate < this.delay && !this.first) {
-                    clearTimeout(this.pending);
-                    this.pending = setTimeout(this.request.bind(this), this.delay);
-                    return;
-                }
-                this.lastUpdate = now;
-                this.filters.user = this.filters.user? '': $('#account-name').text();
-                this.request();
-            },
-        toggleDraftFilter: function () {
-                const username = $('#account-name').text().trim();
-                if (!username) return;
-                draftFilterOn = !draftFilterOn;
-                $('#draft-filter').toggleClass('success', draftFilterOn);
-                const now = Date.now();
-                if (now - this.lastUpdate < this.delay && !this.first) {
-                    clearTimeout(this.pending);
-                    this.pending = setTimeout(this.request.bind(this), this.delay);
-                    return;
-                }
-                this.lastUpdate = now;
-                this.filters.drafts = Boolean(this.filters.drafts ^ true);
-                this.request();
-            },
         topicCallback: function () {
                 const now = Date.now();
                 if (now - this.lastUpdate < this.delay && !this.first) {
@@ -340,16 +306,6 @@ $(function () {
         },
         filtersRender: function() {
             this.$filters.html("");
-            $('<p>')
-                .attr('id', 'user-filter')
-                .addClass('filter button secondary' + (token ? '' : ' hidden'))
-                .html('<div><i class="fa-solid fa-plus"></i>&nbsp;&nbsp;My cards only</div>')
-                .appendTo(this.$filters);
-            $('<p>')
-                .attr('id', 'draft-filter')
-                .addClass('filter button secondary')
-                .html('<div><i class="fa-solid fa-plus"></i>&nbsp;&nbsp;Show drafts</div>')
-                .appendTo(this.$filters);
             $('<p>')
                 .attr('id', 'new-filter')
                 .addClass('filter button secondary modal__trigger')

@@ -1,5 +1,6 @@
 var cardJson;
 var comparedJson;
+var comparedJsonSimple;
 var menuOffsetTop=0;
 
 function error_message(message) {
@@ -137,6 +138,7 @@ $(document).ready(function () {
         $('.menu div:first-child').addClass('active');
     })
 
+
     $(window).on('scroll', function () {
         if ($(window).scrollTop() > menuOffsetTop - 20) $menu.addClass('fixed');
         else $menu.removeClass('fixed');
@@ -154,7 +156,7 @@ $(document).ready(function () {
             error: error_handler
         });
     }
-    function renderSection(section, index, is_logged_in, no_title=false){
+    function renderSection(section, index, comparedJson, is_logged_in, no_title=false){
         let baseSection = comparedJson&&comparedJson.data?comparedJson.data[index]:undefined;
         let sectionTitle = section.name.replace(/_/g, " ").toUpperCase();
         let $section = $("<section>");
@@ -248,6 +250,9 @@ $(document).ready(function () {
 
         function _render() {
             if(!cardJson || !comparedJson) return;
+            if (token && cardJson.creator===loggedUser){
+                $('#technical-view').html('<span>Show full version and edit</span>')
+            }
             let is_logged_in = token&&cardJson.creator === loggedUser;
             if(is_logged_in) {
                 $('#reportCard').hide();
@@ -287,7 +292,7 @@ $(document).ready(function () {
             $('#loading').hide();
             jsonData.data.forEach((section, index) => {
                 let $li = $("<li>");
-                $section = renderSection(section, index, is_logged_in);
+                $section = renderSection(section, index, comparedJson, is_logged_in);
                 $li.append($("<div>").append($section));
                 $ul.append($li);
                 $('.menu').find('div').removeClass('active');
@@ -322,13 +327,27 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (jsonData) {
                     comparedJson = jsonData;
+                    $.ajax({
+                        url: "/transparency/card/simple/" + compareto,
+                        method: "GET",
+                        contentType: "application/json",
+                        dataType: "json",
+                        success: function (jsonData) {
+                            comparedJsonSimple = jsonData;
+                            _render();
+                        },
+                        error: function (xhr, status, error) {}
+                    });
                     _render();
                 },
                 error: function (xhr, status, error) {}
             });
         }
-        else
+        else{
             comparedJson = {}; // we use the existence of comparedJson as a mark for render()
+            comparedJsonSimple = {};
+        }
+
         $.ajax({
             url: "/transparency/card/" + id,
             method: "GET",
@@ -336,6 +355,7 @@ $(document).ready(function () {
             dataType: "json",
             success: function (jsonData) {
                 cardJson = jsonData;
+
                 _render();
                 _renderSimple();
             },
@@ -367,14 +387,14 @@ $(document).ready(function () {
                     if (isEmpty(job)) {
                         clearInterval(intervalId);
                         if (refineStarted){
-                            _renderSimple();
+                            _renderSimple(true);
                         }
                         return;
                     }
                     if (!refineStarted){
                         $('#technical-view').trigger('click');
+                        refineStarted = true;
                     }
-                    refineStarted = true;
                     // put loading spinners in UI
                     if (firstpass){
                         firstpass = false;
@@ -442,7 +462,7 @@ $(document).ready(function () {
             });
         }, 200);
     }
-    function _renderSimple(){
+    function _renderSimple(fromRefine=false){
         $.ajax({
             url: "/transparency/card/simple/" + id,
             method: "GET",
@@ -452,17 +472,23 @@ $(document).ready(function () {
                 let is_logged_in = token&&cardJson.creator === loggedUser;
                 // fill in fields
                 const $ul = $(".nacc");
+                isActive = $ul.find("li#simpleSection").hasClass("active");
                 $ul.find("li#simpleSection").remove();
                 jsonData.data.forEach((section, index) => {
-                    let $li = $("<li>").attr('id', 'simpleSection').toggleClass("active", index === 0);
-                    $section = renderSection(section, index, false, true);
+                    let $li = $("<li>").attr('id', 'simpleSection');
+                    $section = renderSection(section, index, comparedJsonSimple, false, true);
                     $li.append($("<div>").append($section));
                     $ul.append($li);
-                    $('.menu').find('div').removeClass('active');
-                    $('.menu div:first-child').addClass('active');
+                    if (isActive){
+                        $('#simple-view').trigger('click');
+                    }
+                    // $('.menu').find('div').removeClass('active');
+                    // $('.menu div:first-child').addClass('active');
                 });
-                $('#simple-view').trigger('click');
-                if (token){
+                if (!fromRefine){
+                    $('#simple-view').trigger('click');
+                }
+                if (token && !fromRefine){
                     _renderWhileRefine();
                 }
             },
@@ -654,6 +680,7 @@ $('.contents').on('click', '.refine-field', async function () {
                 }
                 $("#saveJson").find('.btn-text').hide();
                 $("#saveJson").find('.btn-confirmation').fadeIn();
+                _renderSimple(true);
 
                 // Restore after 2s
                 setTimeout(function () {
@@ -878,4 +905,5 @@ $('.contents').on('click', '.refine-field', async function () {
             });
         }
     });
+
 });
