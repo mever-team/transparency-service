@@ -874,7 +874,10 @@ $('.contents').on('click', '.refine-field', async function () {
                             contentType: "application/json",
                             dataType: "json",
                             headers: { "Authorization": "Bearer " + token},
-                            data: JSON.stringify($('#card-url').val()),
+                            data: JSON.stringify({
+                                type: "url",
+                                payload: $('#card-url').val()
+                            }),
                             success: function (response) {
                                 document.getElementById('modal-autocomplete-screen').style.display = 'none';
                                 interval = setInterval(function () {checkLocked(interval);}, 300);
@@ -891,7 +894,10 @@ $('.contents').on('click', '.refine-field', async function () {
                             headers: {
                                 "Authorization": "Bearer " + token
                             },
-                            data: JSON.stringify(uploaded_file),
+                            data: JSON.stringify({
+                                type: "html",
+                                payload: uploaded_file
+                            }),
                             dataType: "json",
                             contentType: "application/json",
                             success: function (response) {
