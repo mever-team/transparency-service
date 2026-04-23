@@ -69,6 +69,7 @@ $(document).ready(function () {
     $("#share-linkedin").attr("href", `https://www.linkedin.com/shareArticle?mini=true&url=${pageUrl}&title=${pageTitle}`);
     $("#share-whatsapp").attr("href", `https://wa.me/?text=${pageUrl}`);
     $("#share-telegram").attr("href", `https://t.me/share/url?url=${pageUrl}&text=${pageTitle}`);
+    $('#account-btn').click(() => { window.location.href = 'account.html'; });
 
     $('#pdf_text').click(function () {
         $('.card-button#agent').attr('data-type', 'pdf');

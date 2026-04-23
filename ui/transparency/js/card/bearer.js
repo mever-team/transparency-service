@@ -3,6 +3,7 @@ let pingTimer = null;
 let first_check = true;
 var loggedUser = "";
 var loggedUserNotifications = "";
+var loggedUserIsAdmin = false;
 
 document.cookie.split(";").forEach(cookie => {
     const [name, value] = cookie.trim().split("=");
@@ -29,6 +30,7 @@ function updateUsername() {
                 const expiresIn = response.expires_in || 3600;
                 document.cookie = "access_token=" + token + "; path=/; max-age=" + expiresIn + ";";
                 loggedUser = response.username;
+                loggedUserIsAdmin = response.admin;
                 loggedUserNotifications = response.notifications;
                 $('#account-name').text(loggedUser+(loggedUserNotifications||""));
                 clearTimeout(pingTimer);
@@ -43,6 +45,7 @@ function updateUsername() {
                             if (pingResp && pingResp.token) {
                                 token = pingResp.token;
                                 loggedUser = pingResp.username;
+                                loggedUserIsAdmin = response.admin;
                                 loggedUserNotifications = pingResp.loggedUserNotifications;
                                 document.cookie = "access_token=" + token + "; path=/; max-age=" + pingResp.expires_in + ";";
                                 updateUsername(); // Refresh UI and reschedule next ping
@@ -59,6 +62,7 @@ function updateUsername() {
                         error: function () {
                             token = "";
                             loggedUser = "";
+                            loggedUserIsAdmin = false;
                             loggedUserNotifications = "";
                             document.cookie = "access_token=; path=/; max-age=0;";
                             updateUsername();
@@ -70,6 +74,7 @@ function updateUsername() {
                 clearTimeout(pingTimer);
                 token = "";
                 loggedUser = "";
+                loggedUserIsAdmin = false;
                 loggedUserNotifications = "";
                 document.cookie = "access_token=; path=/; max-age=0;";
                 $('#account-name').text(loggedUser);
@@ -80,6 +85,7 @@ function updateUsername() {
             document.cookie = "access_token=; path=/; max-age=0;";
             token = "";
             loggedUser = "";
+            loggedUserIsAdmin = false;
             loggedUserNotifications = "";
             $('#account-name').text(loggedUser);
         }

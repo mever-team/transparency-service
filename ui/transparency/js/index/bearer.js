@@ -47,7 +47,7 @@ function updateUsername() {
                 $('#logout-btn').removeClass("hidden");
                 $('#account-btn').removeClass("hidden");
                 $('#user-filter').removeClass("hidden");
-                $('#account-name').text(response.username);
+                $('#account-name').text(response.username+(response.notifications||""));
 
                 clearTimeout(pingTimer);
 

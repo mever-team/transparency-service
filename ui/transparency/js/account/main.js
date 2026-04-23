@@ -36,7 +36,8 @@ $(function () {
                     <span class="username"><a href="/transparency/model_card.html?id=${card.id}">${card.name}&nbsp;</a></span>
                     <span class="card-delete-btn error button" data-card="${card.id}"><i class="fa-solid fa-trash"></i>&nbsp;Delete</span>
                 `
-                +(card.desc?`    <span class="unpublish-btn warning button" data-card="${card.id}"><i class="fa-solid fa-undo"></i>&nbsp;Unpublish: ${card.desc}</span>`:"<span class='placeholder'>[DRAFT]</span>")
+                +(card.desc?`<span class="unpublish-btn warning button" data-card="${card.id}"><i class="fa-solid fa-undo"></i>&nbsp;Unpublish: ${card.desc}</span>`:"<span class='placeholder'>[DRAFT]</span>")
+                +(loggedUserIsAdmin&&card.report_count?`<span class="resolve-btn success button" data-card="${card.id}"><i class="fa-solid fa-check"></i>&nbsp;Close reports</span>`:"")
                 +(card.report_count?`<span class="show-reports-btn error button" data-card="${card.id}" data-cardname="${card.name+' '+card.desc}">${card.report_count} reports</span>`:"")
                 +`</div>
             `);});
@@ -50,8 +51,8 @@ $(function () {
                     <span class="username"><a href="/transparency/model_card.html?id=${card.id}">${card.name}&nbsp;</a></span>
                     <span class="card-delete-btn error button" data-card="${card.id}"><i class="fa-solid fa-trash"></i>&nbsp;Delete</span>
                 `
-                +(card.desc?`    <span class="unpublish-btn warning button" data-card="${card.id}"><i class="fa-solid fa-undo"></i>&nbsp;Unpublish: ${card.desc}</span>`:"<span class='placeholder'>DRAFT</span>")
-                +`<span class="resolve-btn success button" data-card="${card.id}"><i class="fa-solid fa-check"></i>&nbsp;Close reports</span>`
+                +(card.desc?`<span class="unpublish-btn warning button" data-card="${card.id}"><i class="fa-solid fa-undo"></i>&nbsp;Unpublish: ${card.desc}</span>`:"<span class='placeholder'>DRAFT</span>")
+                +(loggedUserIsAdmin&&card.report_count?`<span class="resolve-btn success button" data-card="${card.id}"><i class="fa-solid fa-check"></i>&nbsp;Close reports</span>`:"")
                 +(card.report_count?`<span class="show-reports-btn error button" data-card="${card.id}" data-cardname="${card.name+' '+card.desc}">${card.report_count} reports</span>`:"")
                 +`</div>
             `);});
@@ -205,7 +206,7 @@ $(function () {
             data: JSON.stringify({value: "", message: "unpublished"}),
             headers: { "Authorization": "Bearer " + token },
             success: function (reports) {
-                console.log(reports);
+                //console.log(reports);
                 $('#report-card-name').text(card_name);
                 const $list = $('#report-list').empty();
                 reports.forEach(r => $list.append(`<div class="report-entry">${r}</div>`));

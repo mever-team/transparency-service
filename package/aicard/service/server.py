@@ -351,7 +351,7 @@ def serve(
                     runs = user2agent_use.get(user, 0)
                     notifications = ""
                     if runs: notifications += f" - {runs}/{max_agents_per_user} agents"
-                    return jsonify({"token": token, "expires_in": token_expiration_secs, "username": user, "notifications": notifications})
+                    return jsonify({"token": token, "expires_in": token_expiration_secs, "username": user, "notifications": notifications, "admin": users==admin_username})
 
         auth = request.headers.get("Authorization", "")
         if not auth.startswith("Bearer "): return ""
@@ -369,7 +369,7 @@ def serve(
             runs = user2agent_use.get(user, 0)
             notifications = ""
             if runs: notifications += f" - {runs}/{max_agents_per_user} agents"
-            return jsonify({"token": token, "expires_in": token_expiration_secs, "username": user, "notifications": notifications})
+            return jsonify({"token": token, "expires_in": token_expiration_secs, "username": user, "notifications": notifications, "admin": user==admin_username})
 
     @app.route(domain_prefix+"/login", methods=["POST"])
     def login_user():
