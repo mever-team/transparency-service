@@ -48,6 +48,7 @@ def serve(
     feature_extractor: SemanticMatcher|None = None,
     email_verification: EmailVerification|None = None,
     jobs_tracker: CardJobsTracker = CardJobsTracker(),
+    max_agents_per_user = 3,
 ):
     static = os.path.abspath(static)
     if env: config = dotenv_values(env)
@@ -76,7 +77,8 @@ def serve(
     report_lock = Lock()
     user2last_report = dict() # last report timestamps to impose report rate limits
     token2expiration = dict() # expiration of logged in sessions
-    token2user = dict()
+    token2user = dict() # TODO: user management is never cleared by gc - consider doing so if we have many users in the future
+    user2agent_use = dict() # count usage of agents per user
     verification_tokens = {}
     for assistant in assistants.values():
         assistant.start(logger)
@@ -345,7 +347,11 @@ def serve(
                 third_party_auth.register_token(token, username, email)
                 with auth_lock:
                     token2expiration[token] = time.monotonic()  # we allow always, so expire immediately
-                    return jsonify({"token": token, "expires_in": token_expiration_secs, "username": token2user.get(token, "unknown")})
+                    user = token2user.get(token, "unknown")
+                    runs = user2agent_use.get(user, 0)
+                    notifications = ""
+                    if runs: notifications += f" - {runs}/{max_agents_per_user} agents"
+                    return jsonify({"token": token, "expires_in": token_expiration_secs, "username": user, "notifications": notifications})
 
         auth = request.headers.get("Authorization", "")
         if not auth.startswith("Bearer "): return ""
@@ -359,7 +365,11 @@ def serve(
                 token2user.pop(token, None)
                 return ""
             token2expiration[token] = time.monotonic() + token_expiration_secs
-            return jsonify({"token": token, "expires_in": token_expiration_secs, "username": token2user.get(token, "unknown")})
+            user = token2user.get(token, "unknown")
+            runs = user2agent_use.get(user, 0)
+            notifications = ""
+            if runs: notifications += f" - {runs}/{max_agents_per_user} agents"
+            return jsonify({"token": token, "expires_in": token_expiration_secs, "username": user, "notifications": notifications})
 
     @app.route(domain_prefix+"/login", methods=["POST"])
     def login_user():
@@ -883,8 +893,12 @@ def serve(
     def autocomplete_card(card_id: int, assistant_type: str, token: str):
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
-        with auth_lock: creator = token2user.get(token, None)
-        if creator != card.creator: abort(403, "Only the card's creator can import information.")
+        with auth_lock:
+            creator = token2user.get(token, None)
+            if creator != card.creator: abort(403, "Only the card's creator can import information.")
+            runs = user2agent_use.get(creator, 0)
+            if runs>=max_agents_per_user: abort(403, f"You are running too many agents aleady ({max_agents_per_user}). Please wait for one to finish first.")
+            user2agent_use[creator] = runs+1
         if 'file' in request.files:
             uploaded_file = request.files['file']
             exists(uploaded_file.filename != "", "Empty file uploaded")
@@ -903,8 +917,12 @@ def serve(
     def autorefine_card(card_id: int, assistant_type: str, token: str):
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
-        with auth_lock: creator = token2user.get(token, None)
-        if creator!=card.creator: abort(403, "Only the card's creator can refine it in-place.")
+        with auth_lock:
+            creator = token2user.get(token, None)
+            if creator != card.creator: abort(403, "Only the card's creator can refine it in-place.")
+            runs = user2agent_use.get(creator, 0)
+            if runs>=max_agents_per_user: abort(403, f"You are running too many agents aleady ({max_agents_per_user}). Please wait for one to finish first.")
+            user2agent_use[creator] = runs+1
         status = card.autorefine(assistant, logger, jobs_tracker)
         logger.info(f"requested card {card_id} refinement from {assistant_type}", user=creator)
         return jsonify(status)
@@ -914,8 +932,12 @@ def serve(
     def autorefine_field(card_id: int, assistant_type: str, token: str):
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
-        with auth_lock: creator = token2user.get(token, None)
-        if creator!=card.creator: abort(403, "Only the card's creator can refine it in-place.")
+        with auth_lock:
+            creator = token2user.get(token, None)
+            if creator != card.creator: abort(403, "Only the card's creator can refine it in-place.")
+            runs = user2agent_use.get(creator, 0)
+            if runs >= max_agents_per_user: abort(403, f"You are running too many agents aleady ({max_agents_per_user}). Please wait for one to finish first.")
+            user2agent_use[creator] = runs + 1
         data = request.get_json()
         text = data.get('value', '')
         refined_stream = assistant.refine_field(text, logger)
