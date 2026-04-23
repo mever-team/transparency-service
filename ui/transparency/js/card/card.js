@@ -827,7 +827,7 @@ $('.contents').on('click', '.refine-field', async function () {
             });
             return;
         }
-        else if ($('.card-button').attr('data-type')==='pdf' || $('.card-button').attr('data-type')==='url') {
+        else if ($(this).attr('data-type')==='pdf' || $(this).attr('data-type')==='url') {
             let assistant = $(this).attr("id");
             $("#saveJson").find('.btn-confirmation').fadeOut();
             $.ajax({
