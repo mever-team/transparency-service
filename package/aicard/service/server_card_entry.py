@@ -142,7 +142,7 @@ class ModelCardEntry(contextlib.AbstractContextManager):
         self.lock.acquire()
         if self._is_completing:
             self.lock.release()
-            abort(409, description="An AI assistant is already working on the model card")
+            abort(403, description="An AI assistant is already working on the model card")
         self._is_completing = True
         self._completion_status = ["An AI assistant is working on the model card"]
         self._completion_start = time.time()
@@ -155,23 +155,24 @@ class ModelCardEntry(contextlib.AbstractContextManager):
             else: ret = "<br>".join(self._completion_status) + " (" + str(int(time.time() - self._completion_start)) + " sec)"
         return ret
 
-    def end_completion(self):
+    def end_completion(self, trigger_on_end=None):
         with self.lock:
             self._is_completing = False
             self._completion_status = None
             self._completion_start = time.time()
+            if trigger_on_end: trigger_on_end()
 
     def __enter__(self):
         self.lock.acquire()
         if self._is_completing:
             self.lock.release()
-            abort(409, description="An AI assistant is working on the model card")
+            abort(403, description="An AI assistant is working on the model card")
         return self.card
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.lock.release()
 
-    def __autocomplete(self, data: dict, assistant: Assistant, logger: Logger):
+    def __autocomplete(self, data: dict, assistant: Assistant, logger: Logger, trigger_on_end):
         try:
             assistant.complete(self.card, data, logger, self._completion_status)
             self.commit_card(on_thread=True, edit_message=assistant.alias + " import")  # on_thread=True because we are on a heavyweight path either way
@@ -179,9 +180,9 @@ class ModelCardEntry(contextlib.AbstractContextManager):
         except Exception as e:
             if not isinstance(e, Forbidden) and not isinstance(e, NotFound) and not isinstance(e, Unauthorized): traceback.print_exc()
             logger.error(f"aborted card{self.card_id} import with error {e}", user=assistant.alias)
-        self.end_completion()
+        self.end_completion(trigger_on_end)
 
-    def __autorefine(self, assistant: Assistant, logger: Logger, job_tracker: CardJobsTracker):
+    def __autorefine(self, assistant: Assistant, logger: Logger, job_tracker: CardJobsTracker, trigger_on_end):
         try:
             assistant.refine(self.card, self.card_id, logger, self._completion_status, job_tracker)
             self.commit_card(on_thread=True, edit_message=assistant.alias + " refinement")  # on_thread=True because we are on a heavyweight path either way
@@ -190,17 +191,17 @@ class ModelCardEntry(contextlib.AbstractContextManager):
             if not isinstance(e, Forbidden) and not isinstance(e, NotFound) and not isinstance(e,
                                                                                                Unauthorized): traceback.print_exc()
             logger.error(f"aborted card{self.card_id} refinement with error {e}", user=assistant.alias)
-        self.end_completion()
+        self.end_completion(trigger_on_end)
 
-    def autocomplete(self, data: dict, assistant: Assistant, logger: Logger):
+    def autocomplete(self, data: dict, assistant: Assistant, logger: Logger, trigger_on_end):
         self.start_completion()
-        self.__thread = Thread(target=self.__autocomplete, args=(data, assistant, logger))
+        self.__thread = Thread(target=self.__autocomplete, args=(data, assistant, logger, trigger_on_end))
         self.__thread.start()
         return "Autocompletion request was submitted successfully. Please wait while the assistant runs."
 
-    def autorefine(self, assistant: Assistant, logger: Logger, job_tracker: CardJobsTracker):
+    def autorefine(self, assistant: Assistant, logger: Logger, job_tracker: CardJobsTracker, trigger_on_end):
         self.start_completion()
-        self.__thread = Thread(target=self.__autorefine, args=(assistant, logger, job_tracker))
+        self.__thread = Thread(target=self.__autorefine, args=(assistant, logger, job_tracker, trigger_on_end))
         self.__thread.start()
         return "Refinement request was submitted successfully. Please wait while the assistant runs."
     

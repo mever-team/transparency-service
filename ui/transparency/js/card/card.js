@@ -69,6 +69,7 @@ $(document).ready(function () {
     $("#share-linkedin").attr("href", `https://www.linkedin.com/shareArticle?mini=true&url=${pageUrl}&title=${pageTitle}`);
     $("#share-whatsapp").attr("href", `https://wa.me/?text=${pageUrl}`);
     $("#share-telegram").attr("href", `https://t.me/share/url?url=${pageUrl}&text=${pageTitle}`);
+    $('#account-btn').click(() => { window.location.href = 'account.html'; });
 
     $('#pdf_text').click(function () {
         $('.card-button#agent').attr('data-type', 'pdf');
@@ -228,7 +229,7 @@ $(document).ready(function () {
 
             // compared value
             if(baseSection) {
-                console.log(baseSection.value[fieldIndex]);
+                //console.log(baseSection.value[fieldIndex]);
                 let $baseFieldValue = $("<span>")
                         .addClass("field-value")
                         .html(baseSection.value[fieldIndex].value || "");
@@ -401,7 +402,7 @@ $(document).ready(function () {
                         const $loading_field = $("<div>").addClass('fieldLoader');
                         const $loading_section = $("<span>").addClass('sectionLoader');
                         $('span.field-value').html($loading_field).attr('contenteditable', 'false');
-                        console.log($('.menu .light'));
+                        //console.log($('.menu .light'));
                         $('.menu .light').hide();
                         $('.menu div').prepend($loading_section);
                     }
@@ -460,7 +461,7 @@ $(document).ready(function () {
                     error_handler(xhr, status, error);
                 }
             });
-        }, 200);
+        }, 2000); // INCREASED THIS INTERVAL BECAUSE IT WAS TOO INTENSIVE
     }
     function _renderSimple(fromRefine=false){
         $.ajax({

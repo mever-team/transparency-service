@@ -24,19 +24,20 @@
             <div class="small-12 medium-12 large-12 columns">
                 <div class="header_wrapper" style="display:inline;float:left">
                     <div class="row-top">
-                    <div id="service-logo"><a href="index.html" style="color: #64DB96">Transparent AI</a></div>
-                    <div class="row-top-inner bigWidth" style="margin-top:-10px">
-                        <div id="model-quality"></div>
-                        <div>
-                            <div id="model-title" style="font-size:30px;color:#EEEEEE" class="model-title"></div>
+                        <div id="service-logo"><a href="index.html" style="color: #64DB96">Transparent AI</a></div>
+                        <div class="row-top-inner bigWidth" style="margin-top:-10px">
+                            <div id="model-quality"></div>
                             <div>
-                                <div id="model-pending" style="color:#F9AB49;font-size:16px"></div>
-                                <div id="model-description" style="color:#79CFDC;font-size:16px"></div>
+                                <div id="model-title" style="font-size:30px;color:#EEEEEE" class="model-title"></div>
+                                <div>
+                                    <div id="model-pending" style="color:#F9AB49;font-size:16px"></div>
+                                    <div id="model-description" style="color:#79CFDC;font-size:16px"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    </div>
                 </div>
+
 
                 <div style="float:right;margin-top:7px;margin-left:4px;position:relative;" id="share-options">
                     <div class="example_button" id="downloadCard"
@@ -57,6 +58,10 @@
                 </div>
 
                 <div style="display:none;float:right;margin-top:7px" id="edit-options">
+                    <div class="example_button" id="account-btn"
+                         style="float:left;background-color:#1F1F1F;border: solid 1px #434343;color:#EEEEEE;width:auto;padding-left:4px;padding-right:4px;">
+                        <span class="btn-text "><i class="fa-solid fa-user"></i>&nbsp;&nbsp;<span id="account-name">Account</span></span>
+                    </div>
                     <div style="float:right;margin-left:4px;position:relative;">
                         <div class="example_button" id="assistCard"
                              style="float:left;background-color:#1F1F1F;border: solid 1px #434343;color:#EEEEEE;width:auto;padding-left:4px;padding-right:4px;">
@@ -68,14 +73,15 @@
                             <div class="download-dropdown-item" id="cardClone">
                                 <span class="btn-text"><i class="fa-solid fa-copy"></i>&nbsp;Clone</span>
                             </div>
+                            <div class="download-dropdown-item" id="deleteCard" style="color:#F44336; display:none"><i class="fa-solid fa-trash"></i>&nbsp;Delete</div>
+                            <div class="download-dropdown-item" id="reportCard" style="color:#F44336"><i class="fa-solid fa-bug"></i>&nbsp;Report</div>
+
                         </div>
                     </div>
                     <div class="example_button" id="saveJson" style="background-color: #64DB96;width: 80px;display:none">
                         <span class="btn-text"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Save</span>
                         <span class="btn-confirmation"><i class="fa-solid fa-check"></i>&nbsp;Saved</span>
                     </div>
-                    <div class="example_button" id="deleteCard" style="width: 100px; background-color:#1F1F1F;border: solid 1px #434343;color:#F44336; display:none"><i class="fa-solid fa-trash"></i>&nbsp;Delete</div>
-                    <div class="example_button" id="reportCard" style="width: 100px; background-color:#1F1F1F;border: solid 1px #434343;color:#F44336"><i class="fa-solid fa-bug"></i>&nbsp;Report</div>
                 </div>
             </div>
         </div>
@@ -91,7 +97,7 @@
             <h2>Delete?</h2>
             <p>This <strong>cannot be undone</strong>. Are you sure?</p>
             <div class="buttons">
-                <button id="confirm-delete-btn"><i class="fa-solid fa-trash"></i>&nbsp;Delete</button>
+                <button class="card-button button" id="confirm-delete-btn"><i class="fa-solid fa-trash"></i>&nbsp;Delete</button>
                 <button class="card-button button" id="cancel-delete-btn"><i class="fa-solid fa-cancel"></i>&nbsp;Cancel</button>
             </div>
         </div>
