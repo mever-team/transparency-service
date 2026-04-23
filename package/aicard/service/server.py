@@ -888,6 +888,13 @@ def serve(
         logger.info("created a card", user=creator)
         return jsonify(card_id), 201
 
+    def trigger_on_agent_end(creator):
+        def trigger():
+            with auth_lock:
+                runs = user2agent_use.get(creator, 0)
+                user2agent_use[creator] = max(runs-1, 0) # defensive against bugs
+        return trigger
+
     @app.route(domain_prefix+'/assistant/<string:assistant_type>/complete/<int:card_id>', methods=['POST'])
     @users.require_auth(token2expiration, third_party_auth)
     def autocomplete_card(card_id: int, assistant_type: str, token: str):
@@ -908,7 +915,7 @@ def serve(
         else:
             json_data = {"data_type": "url", "url": request.get_json()}
             exists(isinstance(json_data['url'], str), "Import requires a url string")
-        status = card.autocomplete(json_data, assistant, logger)
+        status = card.autocomplete(json_data, assistant, logger, trigger_on_agent_end(creator))
         logger.info(f"requested card {card_id} imported from {assistant_type}", user=creator)
         return jsonify(status)
 
@@ -923,26 +930,30 @@ def serve(
             runs = user2agent_use.get(creator, 0)
             if runs>=max_agents_per_user: abort(403, f"You are running too many agents aleady ({max_agents_per_user}). Please wait for one to finish first.")
             user2agent_use[creator] = runs+1
-        status = card.autorefine(assistant, logger, jobs_tracker)
+        status = card.autorefine(assistant, logger, jobs_tracker, trigger_on_agent_end(creator))
         logger.info(f"requested card {card_id} refinement from {assistant_type}", user=creator)
         return jsonify(status)
-    
-    @app.route(domain_prefix+'/assistant/<string:assistant_type>/refinefield/<int:card_id>', methods=['POST'])
-    @users.require_auth(token2expiration, third_party_auth)
-    def autorefine_field(card_id: int, assistant_type: str, token: str):
-        assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
-        card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
-        with auth_lock:
-            creator = token2user.get(token, None)
-            if creator != card.creator: abort(403, "Only the card's creator can refine it in-place.")
-            runs = user2agent_use.get(creator, 0)
-            if runs >= max_agents_per_user: abort(403, f"You are running too many agents aleady ({max_agents_per_user}). Please wait for one to finish first.")
-            user2agent_use[creator] = runs + 1
-        data = request.get_json()
-        text = data.get('value', '')
-        refined_stream = assistant.refine_field(text, logger)
-        logger.info(f"requested field card {card_id} refinement from {assistant_type}", user=creator)
-        return Response(refined_stream, content_type="application/x-ndjson")
+
+    # TODO:
+    # It is unclear how to trigger an trigger_on_agent_end(creator) once the field is refined and thus this is
+    # disabled until needed or until such a callback is added. The UI does not seem to use this function right
+    # now, so the change is not breaking.
+    # @app.route(domain_prefix+'/assistant/<string:assistant_type>/refinefield/<int:card_id>', methods=['POST'])
+    # @users.require_auth(token2expiration, third_party_auth)
+    # def autorefine_field(card_id: int, assistant_type: str, token: str):
+    #     assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
+    #     card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
+    #     with auth_lock:
+    #         creator = token2user.get(token, None)
+    #         if creator != card.creator: abort(403, "Only the card's creator can refine it in-place.")
+    #         runs = user2agent_use.get(creator, 0)
+    #         if runs >= max_agents_per_user: abort(403, f"You are running too many agents aleady ({max_agents_per_user}). Please wait for one to finish first.")
+    #         user2agent_use[creator] = runs + 1
+    #     data = request.get_json()
+    #     text = data.get('value', '')
+    #     refined_stream = assistant.refine_field(text, logger, trigger_on_agent_end(creator))
+    #     logger.info(f"requested field card {card_id} refinement from {assistant_type}", user=creator)
+    #     return Response(refined_stream, content_type="application/x-ndjson")
     
     @app.route(domain_prefix+'/job/<int:card_id>', methods=['GET'])
     @users.require_auth(token2expiration, third_party_auth)
