@@ -49,7 +49,7 @@ $(document).ready(function () {
             const page = await pdfDoc.getPage(i);
             const content = await page.getTextContent();
             const items = content.items;
-            const paragraphGap = 12; // tweak this
+            const paragraphGap = 14; // tweak this
             const lineTolerance = 2;
             let lines = [];
             let currentLine = [];
