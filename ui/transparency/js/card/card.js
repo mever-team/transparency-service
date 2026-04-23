@@ -377,7 +377,7 @@ $(document).ready(function () {
             return true;
         }
         let refineStarted = false;
-        const intervalId = setInterval(async () => {
+        async function refineStatus(params) {
             $.ajax({
                 url: "/transparency/job/" + id,
                 method: "GET",
@@ -389,6 +389,7 @@ $(document).ready(function () {
                         clearInterval(intervalId);
                         if (refineStarted){
                             _renderSimple(true);
+                            window.location.href = window.location.href;
                         }
                         return;
                     }
@@ -402,6 +403,11 @@ $(document).ready(function () {
                         const $loading_field = $("<div>").addClass('fieldLoader');
                         const $loading_section = $("<span>").addClass('sectionLoader');
                         $('span.field-value').html($loading_field).attr('contenteditable', 'false');
+                        $('input.field-value').attr('contenteditable', 'false').attr('readonly', 'readonly');
+                        $('select.field-value').each(function () {
+                            const value = $(this).val(); // or .find('option:selected').text() if you want text
+                            $(this).replaceWith(`<span class="field-value">${value}</span>`);
+                        });
                         //console.log($('.menu .light'));
                         $('.menu .light').hide();
                         $('.menu div').prepend($loading_section);
@@ -424,7 +430,7 @@ $(document).ready(function () {
                                             .html(value)
                                             .fadeOut(0, function () {
                                                 $(this)
-                                                    .attr('contenteditable', 'true')
+                                                    // .attr('contenteditable', 'true')
                                                     .fadeIn(300);
                                             });
                                             matched = true;
@@ -461,7 +467,10 @@ $(document).ready(function () {
                     error_handler(xhr, status, error);
                 }
             });
-        }, 2000); // INCREASED THIS INTERVAL BECAUSE IT WAS TOO INTENSIVE
+        }
+        let intervalId = NaN;
+        refineStatus();
+        intervalId = setInterval(refineStatus, 2000); // INCREASED THIS INTERVAL BECAUSE IT WAS TOO INTENSIVE
     }
     function _renderSimple(fromRefine=false){
         $.ajax({
