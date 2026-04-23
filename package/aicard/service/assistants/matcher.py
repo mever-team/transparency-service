@@ -50,7 +50,8 @@ class SemanticMatcher(Assistant):
     def __init__(self,
                  model_name: str="BAAI/bge-small-en-v1.5", #"BAAI/bge-m3",
                  external_get_timeout_sec: float=1,
-                 matching_strictness: float=1):
+                 matching_strictness: float=1,
+                 max_special_character_density: float=0.05):
         super().__init__(
             alias="📚 Semantic organizer",
             description=(
@@ -64,6 +65,7 @@ class SemanticMatcher(Assistant):
         self.field_embeddings = None
         self.average_field_embeddings = 0
         self.max_noise_similarity = 0
+        self.max_special_character_density = max_special_character_density
         self.external_get_timeout_sec = external_get_timeout_sec
         self.matching_strictness = matching_strictness
 
@@ -211,7 +213,10 @@ class SemanticMatcher(Assistant):
             # - short-circuit option selection
             # - place short content in short fields only
             # - place technical content only when on LongText.technical_nature (also that content cannot have the textual-derived threshold)
-            is_technical = "<pre>" in content or "<math" in content or "<table" in content
+            is_technical = "<pre>" in content or "<math" in content or "<table" in content or "<image" in content or "<li" in content
+            special_character_density = sum(1 for c in content if c in "_{}.,+/*^%#$=-0123456789")/len(content)
+            if ("_" in content or "{" in content) and not is_technical: continue
+            if not is_technical and special_character_density>self.max_special_character_density: continue
             best_score = 0 if is_technical else self.max_noise_similarity*self.matching_strictness
             for cat, values in card.data.items():
                 if not isinstance(values, dict): continue
