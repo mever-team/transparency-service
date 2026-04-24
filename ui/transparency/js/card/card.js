@@ -874,7 +874,10 @@ $('.contents').on('click', '.refine-field', async function () {
                             contentType: "application/json",
                             dataType: "json",
                             headers: { "Authorization": "Bearer " + token},
-                            data: JSON.stringify($('#card-url').val()),
+                            data: JSON.stringify({
+                                type: "url",
+                                payload: $('#card-url').val()
+                            }),
                             success: function (response) {
                                 document.getElementById('modal-autocomplete-screen').style.display = 'none';
                                 interval = setInterval(function () {checkLocked(interval);}, 300);
@@ -885,17 +888,18 @@ $('.contents').on('click', '.refine-field', async function () {
                             }
                         });
                     } else {
-                        let formData = new FormData();
-                        formData.append("file", uploaded_file); // "file" is the field name your backend expects
                         $.ajax({
                             url: "/transparency/assistant/" + assistant + '/complete/' + id,
                             method: "POST",
                             headers: {
                                 "Authorization": "Bearer " + token
                             },
-                            data: formData,
-                            processData: false, // don't let jQuery process the data
-                            contentType: false, // don't set content-type header, let browser set it (multipart/form-data)
+                            data: JSON.stringify({
+                                type: "html",
+                                payload: uploaded_file
+                            }),
+                            dataType: "json",
+                            contentType: "application/json",
                             success: function (response) {
                                 document.getElementById('modal-autocomplete-screen').style.display = 'none';
                                 interval = setInterval(function () {checkLocked(interval);}, 300);
