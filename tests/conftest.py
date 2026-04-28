@@ -6,7 +6,7 @@ def client():
     return app.test_client()
 
 @pytest.fixture
-def auth_token(client):
+def admin_token(client):
     username = "admin"
     password = "admin"
     headers = { "Content-Type": "application/json", "Accept": "application/json" }

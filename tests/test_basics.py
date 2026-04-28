@@ -6,10 +6,10 @@ def test_handbook(client):
     response = client.get("transparency/handbook.html")
     assert response.status_code == 200
     
-def test_login(client):
-    username = "admin"
-    password = "admin"
-    headers = { "Content-Type": "application/json", "Accept": "application/json" }
-    data = { "username": username, "password": password }
-    response = client.post('transparency/login', headers=headers, json=data)
+def test_ping(client):
+    response = client.get("transparency/ping")
+    assert response.status_code == 200
+    
+def test_ping_admin(client, admin_token):
+    response = client.get("transparency/ping", headers={"Authorization": f"Bearer {admin_token}"})
     assert response.status_code == 200
