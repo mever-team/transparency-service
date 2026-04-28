@@ -19,12 +19,14 @@ def test_import_url(client, admin_token):
     while True:
         response = client.get(f"/transparency/card/{card_id}/locked", headers={"Authorization": f"Bearer {admin_token}"})
         data = response.get_json()
-        if data == "" or data is None:
+        if not data:
             break
         if time.time() - start > timeout:
             raise AssertionError(f"Assistant did not finish in time of pytest timeout: {timeout} secs")
         time.sleep(0.5)
     assert response.status_code == 200
+    response = client.delete(f"/transparency/card/{card_id}", headers={"Authorization": f"Bearer {admin_token}"})
+    assert response.status_code == 204
     
     
 def test_refine(client, admin_token):
@@ -51,4 +53,6 @@ def test_refine(client, admin_token):
             raise AssertionError(f"Assistant did not finish in time of pytest timeout: {timeout} secs")
         time.sleep(0.5)
     assert response.status_code == 200
+    response = client.delete(f"/transparency/card/{card_id}", headers={"Authorization": f"Bearer {admin_token}"})
+    assert response.status_code == 204
     
