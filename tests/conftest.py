@@ -1,8 +1,10 @@
 import pytest
+import time
 from ui.llama_server import app
 
 @pytest.fixture(scope="session")
 def client():
+    time.sleep(10) # wait for matcher
     return app.test_client()
 
 @pytest.fixture
