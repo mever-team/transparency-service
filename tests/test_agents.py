@@ -24,3 +24,30 @@ def test_import_url(client, auth_token):
             raise AssertionError(f"Assistant did not finish in time of pytest timeout: {timeout} secs")
         time.sleep(0.5)
     assert response.status_code == 200
+    
+    
+def test_refine(client, auth_token):
+    # 1. create card
+    response = client.post("/transparency/card", json={"title": ""}, headers={"Authorization": f"Bearer {auth_token}"})
+    assert response.status_code == 201
+    card_id = int(response.data.decode())
+    # 1. start refine
+    response = client.post(
+        f"/transparency/assistant/agent/refine/{card_id}", 
+        headers={"Authorization": f"Bearer {auth_token}"},
+    )
+    assert response.status_code == 200
+    # poll until finish
+    time.sleep(5) # Give time for Ollama 
+    timeout = 60
+    start = time.time()
+    while True:
+        response = client.get(f"/transparency/job/{card_id}", headers={"Authorization": f"Bearer {auth_token}"})
+        data = response.get_json()
+        if not data:
+            break
+        if time.time() - start > timeout:
+            raise AssertionError(f"Assistant did not finish in time of pytest timeout: {timeout} secs")
+        time.sleep(0.5)
+    assert response.status_code == 200
+    
