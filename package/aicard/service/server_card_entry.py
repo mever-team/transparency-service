@@ -230,7 +230,7 @@ class ModelCardEntry(contextlib.AbstractContextManager):
                     for category, values in self.card.data.items():
                         if not isinstance(values, dict): continue
                         for field, value in values.items():
-                            text_val = value.get().strip()
+                            text_val = value.get()
                             if not text_val or text_val=="unknown":
                                 enriched = "passage:" + category + "/" + field + ":\n\n"+value.description+"\n\nunknown"
                                 sentence = "Would have looked at " + field.lower().replace("_", " ") + " in " + category.lower().replace("_", " ") + ", but that is empty."
