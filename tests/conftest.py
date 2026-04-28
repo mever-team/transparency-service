@@ -4,9 +4,9 @@ from ui.llama_server import app
 
 @pytest.fixture(scope="session")
 def client():
-    app = app.test_client()
+    trai_app = app.test_client()
     time.sleep(10) # wait for matcher
-    return app
+    return trai_app
 
 @pytest.fixture
 def admin_token(client):
