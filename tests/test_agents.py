@@ -1,0 +1,26 @@
+import time
+def test_import_url(client, auth_token):
+    # 1. create card
+    url = 'https://arxiv.org/html/2402.19091v2'
+    response = client.post("/transparency/card", json={"title": ""}, headers={"Authorization": f"Bearer {auth_token}"})
+    assert response.status_code == 201
+    card_id = int(response.data.decode())
+    # 2. start assistant process
+    response = client.post(
+        f"/transparency/assistant/agent/complete/{card_id}", 
+        headers={"Authorization": f"Bearer {auth_token}"},
+        json=url,
+    )
+    assert response.status_code == 200
+    # 3. poll until finish
+    timeout = 30
+    start = time.time()
+    while True:
+        response = client.get(f"/transparency/card/{card_id}/locked", headers={"Authorization": f"Bearer {auth_token}"})
+        data = response.get_json()
+        if data == "" or data is None:
+            break
+        if time.time() - start > timeout:
+            raise AssertionError(f"Assistant did not finish in time of pytest timeout: {timeout} secs")
+        time.sleep(0.5)
+    assert response.status_code == 200

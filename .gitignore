@@ -15,3 +15,4 @@ package/build/
 package/aicard.egg-info
 eval_module/evaluation.egg-info
 .vscode/
+.coverage
