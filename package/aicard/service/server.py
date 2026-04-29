@@ -773,7 +773,9 @@ def serve(
     def get_card_field(card_id, field_name, data_name):
         with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
             field = exists(card.data.get(field_name, None), "Invalid field name. Candidates: " + ','.join(card.data.keys()))
-            data = exists(field.get(data_name, None), f"Invalid data name {data_name}. Candidates: " + ','.join(field.keys()))
+            # data = exists(field.get(data_name, None), f"Invalid data name {data_name}. Candidates: " + ','.join(field.keys()))
+            if data_name not in field.keys(): abort(404, description=f"Invalid data name {data_name}. Candidates: " + ','.join(field.keys()))
+            data = field.get(data_name)
             return jsonify(data)
 
     @app.route(domain_prefix+'/card/<int:card_id>/<string:field_name>/<string:data_name>', methods=['PUT'])
