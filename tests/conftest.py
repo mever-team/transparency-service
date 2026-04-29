@@ -1,6 +1,6 @@
 import pytest
 import time
-from ui.llama_server import app
+from ui.test_server import app
 
 @pytest.fixture(scope="session")
 def client():
@@ -17,3 +17,25 @@ def admin_token(client):
     response = client.post("transparency/login", headers=headers, json=data)
     assert response.status_code == 200
     return response.json["token"]
+
+@pytest.fixture
+def admin_card_id(client, admin_token):
+    response = client.post("/transparency/card", json={"title": ""}, headers={"Authorization": f"Bearer {admin_token}"})
+    assert response.status_code == 201
+    return int(response.data.decode())
+
+@pytest.fixture
+def user_token(client):
+    username = "pytest"
+    password = "pytest"
+    headers = { "Content-Type": "application/json", "Accept": "application/json" }
+    data = { "username": username, "password": password }
+    response = client.post("transparency/login", headers=headers, json=data)
+    assert response.status_code == 200
+    return response.json["token"]
+
+@pytest.fixture
+def user_card_id(client, user_token):
+    response = client.post("/transparency/card", json={"title": ""}, headers={"Authorization": f"Bearer {user_token}"})
+    assert response.status_code == 201
+    return int(response.data.decode())

@@ -7,7 +7,7 @@ def test_login(client):
     assert response.status_code == 200
     
 def test_user_register_delete(client, admin_token):
-    username = 'pytest'
+    username = 'pytest_user_register_delete'
     email = 'pytest@example.com'
     response = client.post('/transparency/register', json={"username": username, "password": "", 'email': email})
     assert response.status_code == 201
