@@ -97,7 +97,6 @@ def test_download_card(client, admin_card_id):
     card_id = admin_card_id
     response = client.get(f"/transparency/card/{card_id}/download/json")
     assert response.status_code == 200
-    # TODO: aborts with 500
     response = client.get(f"/transparency/card/{card_id}/download/markdown")
     assert response.status_code == 200
     response = client.get(f"/transparency/card/{card_id}/download/pdf")

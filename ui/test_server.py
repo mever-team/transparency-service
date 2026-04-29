@@ -25,15 +25,18 @@ prompter = Prompter(
     text_preprocessor=text_compression
 )
 agent = Combined(refine=prompter, complete=matcher)
-app, gc, monitor = serve(
-    {"agent": agent},
-    env="ui/.env",
-    feature_extractor=matcher,
-    email_verification=EmailVerification(env="ui/.env"),
-    root = None
-)
-
+def create_app(root):
+    app, gc, monitor = serve(
+        {"agent": agent},
+        env="ui/.env",
+        feature_extractor=matcher,
+        email_verification=EmailVerification(env="ui/.env"),
+        root=root
+    )
+    return app, gc, monitor
+    
 if __name__ == "__main__":
+    app, gc, monitor = create_app('db_test')
     Thread(target=gc, daemon=True).start()
     Thread(target=monitor, daemon=True).start()
     app.run(threaded=False)  # TODO: temporarily mandatory

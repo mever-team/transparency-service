@@ -224,7 +224,7 @@ class UserDB:
         conn.commit()
         atexit.register(conn.close)
         self.conn = conn
-        if not root:
+        if root == 'db_pytest':
             self.insert_user("users", "pytest", "", "pytest")
             logger.info("Test run detected. Initializing pytest user.\n * name: pytest\n * password: pytest")
         if not self.find_user("users", admin_name):
