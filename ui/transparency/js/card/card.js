@@ -228,7 +228,7 @@ $(document).ready(function () {
             $section.append($field);
 
             // compared value
-            if(baseSection) {
+            if(baseSection && (baseSection.value[fieldIndex].value)!==(section.value[fieldIndex].value)) {
                 //console.log(baseSection.value[fieldIndex]);
                 let $baseFieldValue = $("<span>")
                         .addClass("field-value")
@@ -236,7 +236,7 @@ $(document).ready(function () {
                 let $fieldBase = $("<span>")
                     .addClass("field-name")
                     .addClass("comparison")
-                    .text("comparison");
+                    .text("difference");
 
                 $field.append($fieldBase);
                 $field.append($baseFieldValue);
