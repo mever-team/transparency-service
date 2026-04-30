@@ -905,7 +905,6 @@ def serve(
             if creator != card.creator: abort(403, "Only the card's creator can import information.")
             runs = user2agent_use.get(creator, 0)
             if runs>=max_agents_per_user: abort(403, f"You are running too many agents aleady ({max_agents_per_user}). Please wait for one to finish first.")
-            user2agent_use[creator] = runs+1
         if 'file' in request.files:
             uploaded_file = request.files['file']
             exists(uploaded_file.filename != "", "Empty file uploaded")
@@ -913,9 +912,13 @@ def serve(
             file_bytes = uploaded_file.read()
             json_data = {"data_type": ext, "bytes": file_bytes}
         else:
-            json_data = {"data_type": "url", "url": request.get_json()}
-            exists(isinstance(json_data['url'], str), "Import requires a url string")
+            json_data = request.get_json()
+            exists(json_data.get("type", "")=="url", "Import got unexpected type")
+            exists(isinstance(json_data.get('payload', False), str), "Import requires a payload")
+            json_data = {"data_type": "url", "url": json_data["payload"]}
         status = card.autocomplete(json_data, assistant, logger, trigger_on_agent_end(creator))
+        with auth_lock:
+            user2agent_use[creator] = runs + 1
         logger.info(f"requested card {card_id} imported from {assistant_type}", user=creator)
         return jsonify(status)
 
