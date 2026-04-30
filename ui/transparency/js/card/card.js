@@ -233,10 +233,10 @@ $(document).ready(function () {
                 let $baseFieldValue = $("<span>")
                         .addClass("field-value")
                         .html(baseSection.value[fieldIndex].value || "");
-
                 let $fieldBase = $("<span>")
                     .addClass("field-name")
-                    .text("Original");
+                    .addClass("comparison")
+                    .text("comparison");
 
                 $field.append($fieldBase);
                 $field.append($baseFieldValue);
