@@ -57,9 +57,9 @@ $(document).ready(function () {
     const id = urlParams.get('id');
     const compareto = urlParams.get('compareto');
     const $menu = $('.menu');
-    $menu.css({visibility: 'hidden', display: 'block'});
-    let menuOffsetTop = $menu.offset().top; // this will be updated, depending on history taking up space
-    $menu.css({visibility: '',display: 'none'});
+    // $menu.css({visibility: 'hidden', display: 'block'});
+    // let menuOffsetTop = $menu.offset().top; // this will be updated, depending on history taking up space
+    // $menu.css({visibility: '',display: 'none'});
     const pageUrl = encodeURIComponent(window.location.href);
     const pageTitle = encodeURIComponent(document.title);
     $('#pdf_desc').hide();
@@ -120,7 +120,7 @@ $(document).ready(function () {
     $('#simple-view').click(function(){
         $('#technical-view').removeClass('active');
         $('#simple-view').addClass('active');
-        $menu.hide();
+        $menu.removeClass('active');
         $('.contents').addClass('simple');
         $('.nacc li').removeClass('active');
         $('.nacc li#simpleSection').addClass('active');
@@ -130,7 +130,7 @@ $(document).ready(function () {
     $('#technical-view').click(function(){
         $('#technical-view').addClass('active');
         $('#simple-view').removeClass('active');
-        $menu.show();
+        $menu.addClass('active');
         // $('.contents').css('margin-left', '190px')
         $('.contents').removeClass('simple');
         $('.nacc li').removeClass('active');
@@ -140,10 +140,10 @@ $(document).ready(function () {
     })
 
 
-    $(window).on('scroll', function () {
-        if ($(window).scrollTop() > menuOffsetTop - 20) $menu.addClass('fixed');
-        else $menu.removeClass('fixed');
-    });
+    // $(window).on('scroll', function () {
+    //     if ($(window).scrollTop() > menuOffsetTop - 20) $menu.addClass('fixed');
+    //     else $menu.removeClass('fixed');
+    // });
     // let interval = setInterval(function () {checkLocked(interval);}, 100); // do first run immediately
     let interval = null;
     function runRefinement(assistant, id) {
