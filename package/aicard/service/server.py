@@ -185,6 +185,7 @@ def serve(
     @users.require_auth(token2expiration, third_party_auth)
     def admin_dashboard(token: str):
         def fetch_cards(cursor, owner, WHERE="user=?"):
+            # TODO: return only fields relevant to the frontend here
             cursor.execute(f"""
                 SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, report_count
                 FROM cards
@@ -206,9 +207,12 @@ def serve(
                 overview_task = row[8]
                 overview_date = row[9]
                 report_count = row[10]
+                with card_cache_lock:
+                    card = card_cache.get(row[0], None)
+                is_working = bool(card and card.check_completion())
                 results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality,
                                 "description": overview, "type": overview_type, "task": overview_task,
-                                "date": overview_date, "report_count": report_count})
+                                "date": overview_date, "report_count": report_count, "working": is_working})
             return results
 
         with auth_lock: creator = token2user.get(token, "")
@@ -905,7 +909,6 @@ def serve(
             if creator != card.creator: abort(403, "Only the card's creator can import information.")
             runs = user2agent_use.get(creator, 0)
             if runs>=max_agents_per_user: abort(403, f"You are running too many agents aleady ({max_agents_per_user}). Please wait for one to finish first.")
-            user2agent_use[creator] = runs+1
         if 'file' in request.files:
             uploaded_file = request.files['file']
             exists(uploaded_file.filename != "", "Empty file uploaded")
@@ -913,9 +916,13 @@ def serve(
             file_bytes = uploaded_file.read()
             json_data = {"data_type": ext, "bytes": file_bytes}
         else:
-            json_data = {"data_type": "url", "url": request.get_json()}
-            exists(isinstance(json_data['url'], str), "Import requires a url string")
+            json_data = request.get_json()
+            exists(json_data.get("type", "")=="url", "Import got unexpected type")
+            exists(isinstance(json_data.get('payload', False), str), "Import requires a payload")
+            json_data = {"data_type": "url", "url": json_data["payload"]}
         status = card.autocomplete(json_data, assistant, logger, trigger_on_agent_end(creator))
+        with auth_lock:
+            user2agent_use[creator] = runs + 1
         logger.info(f"requested card {card_id} imported from {assistant_type}", user=creator)
         return jsonify(status)
 
