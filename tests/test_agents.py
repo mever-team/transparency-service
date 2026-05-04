@@ -7,7 +7,7 @@ def test_import_url(client, admin_token, admin_card_id):
     response = client.post(
         f"/transparency/assistant/agent/complete/{card_id}", 
         headers={"Authorization": f"Bearer {admin_token}"},
-        json=url,
+        json={"type": "url", "payload": url},
     )
     assert response.status_code == 200
     # 2. poll until finish

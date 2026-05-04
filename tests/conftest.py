@@ -6,9 +6,8 @@ from ui.test_server import create_app
 
 @pytest.fixture(scope="session")
 def client():
-    app, gc, monitor = create_app(None)
+    app, gc, monitor = create_app('db_pytest')
     trai_app = app.test_client()
-    time.sleep(5) # wait for matcher
     return trai_app
 
 @pytest.fixture(scope="session")
@@ -43,10 +42,10 @@ def user_card_id(client, user_token):
     assert response.status_code == 201
     return int(response.data.decode())
 
-# @pytest.fixture(scope="session", autouse=True)
-# def cleanup_folder():
-#     yield  # let all tests run
+@pytest.fixture(scope="session", autouse=True)
+def cleanup_folder():
+    yield  # let all tests run
 
-#     folder = "db_pytest"
-#     if os.path.exists(folder):
-#         shutil.rmtree(folder)
+    folder = "db_pytest"
+    if os.path.exists(folder):
+        shutil.rmtree(folder)
