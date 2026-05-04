@@ -86,6 +86,7 @@ ul.nacc {
     list-style: none;
     margin: 10px 0;
     padding: 0;
+    margin-top: 20px;
     transition: 0.5s all cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
@@ -545,12 +546,15 @@ section.buttons {
 
 .menu {
     display: none;
-    position: relative;
-    top: 0;
+    position: sticky;
+    top: 20px;
     transition: top 0.3s;
     width: 180px;
     margin: 20px 0;
     float: left;
+}
+.menu.active {
+    display: block;
 }
 .menu.fixed {
     position: fixed;
@@ -594,7 +598,7 @@ section.buttons {
     margin-left: 0;
 }
 @media screen and (max-width: 768px) {
-    .menu {display:flex; position: relative; width: 100%; margin: 0; float: none; flex-wrap: wrap; margin-top: 10px;}
+    .menu.active {display:flex; position: relative; width: 100%; margin: 0; float: none; flex-wrap: wrap; margin-top: 10px;}
     .contents {margin-left: 0px;margin-top: 0;position: relative; min-height: 400px;}
     .menu.fixed {position: relative; width: 100%; margin: 0; margin-top: 10px;}
     .menu div {min-width: 33%; height:30px; padding-top:7px!important; margin:0px!important;}
