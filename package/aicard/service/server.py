@@ -777,7 +777,9 @@ def serve(
     def get_card_field(card_id, field_name, data_name):
         with exists(find_card(card_id), "Model card does not exist or has been deleted.") as card:
             field = exists(card.data.get(field_name, None), "Invalid field name. Candidates: " + ','.join(card.data.keys()))
-            data = exists(field.get(data_name, None), f"Invalid data name {data_name}. Candidates: " + ','.join(field.keys()))
+            # data = exists(field.get(data_name, None), f"Invalid data name {data_name}. Candidates: " + ','.join(field.keys()))
+            if data_name not in field.keys(): abort(404, description=f"Invalid data name {data_name}. Candidates: " + ','.join(field.keys()))
+            data = field.get(data_name)
             return jsonify(data)
 
     @app.route(domain_prefix+'/card/<int:card_id>/<string:field_name>/<string:data_name>', methods=['PUT'])
@@ -803,7 +805,9 @@ def serve(
                     logger.warn(f"Forcefully unpublished card with report notifications {card_id}", user=admin_username)
                 else: abort(403, "Only the card's creator can edit it. Admins may also explicitly remove its version to unpublish.")
             field = exists(card.data.get(field_name, None), "Invalid field name. Candidates: " + ','.join(card.data.keys()))
-            data = exists(field.get(data_name, None), f"Invalid data name {data_name}. Candidates: " + ','.join(field.keys()))
+            # data = exists(field.get(data_name, None), f"Invalid data name {data_name}. Candidates: " + ','.join(field.keys()))
+            if data_name not in field.keys(): abort(404, description=f"Invalid data name {data_name}. Candidates: " + ','.join(field.keys()))
+            data = field.get(data_name)
             data.set(json_data.get("value", ""))
             found.commit_card(json_data.get("message", "Edited"))
             return jsonify(data.get())  # do not return json_data directly, as setting the value may format it
@@ -853,7 +857,7 @@ def serve(
             try:
                 assignable = converters.dynamic2dict(json_data, {"title"})
                 assert "simple" in assignable, "Invalid request: did not pack data into a 'simple' entry"
-                card.data.set_simple_fields(assignable["simple"])
+                card.set_simple_fields(assignable["simple"])
                 card.data.validate_integrity()
                 card_entry.commit_card()
             except AssertionError as e:
