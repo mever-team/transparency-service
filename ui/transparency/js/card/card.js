@@ -228,15 +228,15 @@ $(document).ready(function () {
             $section.append($field);
 
             // compared value
-            if(baseSection) {
+            if(baseSection && (baseSection.value[fieldIndex].value)!==(section.value[fieldIndex].value)) {
                 //console.log(baseSection.value[fieldIndex]);
                 let $baseFieldValue = $("<span>")
                         .addClass("field-value")
                         .html(baseSection.value[fieldIndex].value || "");
-
                 let $fieldBase = $("<span>")
                     .addClass("field-name")
-                    .text("Original");
+                    .addClass("comparison")
+                    .text("difference");
 
                 $field.append($fieldBase);
                 $field.append($baseFieldValue);

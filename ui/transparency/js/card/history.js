@@ -28,6 +28,18 @@ function compressHistory(historyEdges, hidden, nodeIds) {
 }
 
 function renderHistoryGraph(history, currentId, container) {
+    let compareMode = false;
+    const btn = document.createElement('button');
+    btn.className = 'compare-toggle-btn';
+    btn.textContent = 'select to compare: off';
+    btn.addEventListener('click', () => {
+        compareMode = !compareMode;
+        btn.classList.toggle('active', compareMode);
+        btn.textContent = compareMode?'select to compare: on':'select to compare: off'
+    });
+    container.appendChild(btn);
+
+
     let node_info = history.info;
     history = history.edges; // dict from node id to tuple (username, version)
     if (!history || history.length === 0) return;
@@ -174,7 +186,10 @@ function renderHistoryGraph(history, currentId, container) {
         }
         g.style.cursor = "pointer";
         g.addEventListener("click", () => {
-            window.location.href = `model_card.html?id=${id}`;
+            const url = compareMode
+                ? `model_card.html?id=${currentId}&compareto=${id}`
+                : `model_card.html?id=${id}`;
+            window.location.href = url;
         });
         svg.appendChild(g);
     });
