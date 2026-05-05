@@ -85,6 +85,7 @@ def test_update_card_simple(client, admin_token, admin_card_id):
     response = client.get(f"/transparency/card/simple/{card_id}")
     assert response.status_code == 200
     card_json = response.get_json()
+    card_json['title'] = ''
     response = client.put(f"/transparency/card/simple/{card_id}", json=card_json, headers={"Authorization": f"Bearer {admin_token}"})
     assert response.status_code == 200
     
