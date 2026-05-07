@@ -683,8 +683,9 @@ def serve(
 
     @app.route(domain_prefix+'/banner/<int:card_id>', methods=['GET'])
     def get_banner(card_id: int):
-        banner = f"""<iframe frameborder="0" class="trai-banner" src="{domain_prefix}/banner/raw/{card_id}" width="500" height="300">
-<a href="{domain_prefix}/model_card.html?id={card_id}" target="_blank">Trai model card.</a></iframe>"""
+        url = url_for("get_banner_raw", card_id=card_id, _external=True)
+        banner = f"""<iframe frameborder="0" src="{url}" width="500" height="300">
+<a href="{url}" target="_blank">Trai model card.</a></iframe>"""
         escaped_banner = banner.replace("<","&lt;").replace(">","&gt;")
         return f"""
         <div>
@@ -703,9 +704,11 @@ def serve(
         if creator: creator = "from "+creator
         creator = "- "+creator+"  uploaded by "+found_card.creator
         overview = card.overview.description
+        # TODO: the next sline is an utter hack - I don't know how to do it properly
+        url = url_for("get_banner_raw", card_id=card_id, _external=True).replace("/banner/raw/","/model_card.html?id=")
         if "<img" in overview: overview = ""
         if len(overview) > 120: overview = overview[:(120 - 3)] + "..."
-        return f"""<div style="background:#1f1f1f;color:#EEEEEE;padding:10px 10px;border-radius:8px"><a href="/transparency/model_card.html?id={card_id}" target="_blank"><b style="color:#79CFDC;font-size:1.2rem">{card.title} <span style="color:#F9AB49;float:right">{card.quality()*100:.0f}% info</span></b></a><br>{version} {creator}<br><p style="color:#7c7c7c">{overview}</p></div>"""
+        return f"""<div style="background:#1f1f1f;color:#EEEEEE;padding:10px 10px;border-radius:8px"><a href="{url}" target="_blank"><b style="color:#79CFDC;font-size:1.2rem">{card.title} <span style="color:#F9AB49;float:right">{card.quality()*100:.0f}% info</span></b></a><br>{version} {creator}<br><p style="color:#7c7c7c">{overview}</p></div>"""
 
     @app.route(domain_prefix+'/card/<int:card_id>', methods=['GET'])
     def get_card(card_id):
