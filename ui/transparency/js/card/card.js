@@ -64,6 +64,7 @@ $(document).ready(function () {
     const pageTitle = encodeURIComponent(document.title);
     $('#pdf_desc').hide();
     $('#metrics_desc').hide();
+    $("#share-banner").attr("href", `/transparency/banner/${id}`);
     $("#share-x").attr("href", `https://twitter.com/intent/tweet?url=${pageUrl}&text=${pageTitle}`);
     $("#share-facebook").attr("href", `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`);
     $("#share-linkedin").attr("href", `https://www.linkedin.com/shareArticle?mini=true&url=${pageUrl}&title=${pageTitle}`);

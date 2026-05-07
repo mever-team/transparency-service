@@ -29,16 +29,6 @@ function compressHistory(historyEdges, hidden, nodeIds) {
 
 function renderHistoryGraph(history, currentId, container) {
     let compareMode = false;
-    const btn = document.createElement('button');
-    btn.className = 'compare-toggle-btn';
-    btn.textContent = 'select to compare: off';
-    btn.addEventListener('click', () => {
-        compareMode = !compareMode;
-        btn.classList.toggle('active', compareMode);
-        btn.textContent = compareMode?'select to compare: on':'select to compare: off'
-    });
-    container.appendChild(btn);
-
 
     let node_info = history.info;
     history = history.edges; // dict from node id to tuple (username, version)
@@ -56,6 +46,16 @@ function renderHistoryGraph(history, currentId, container) {
     history = compactHistory;
     rootId = newRootId;
     if (history.length<2) return;
+
+    const btn = document.createElement('button');
+    btn.className = 'compare-toggle-btn';
+    btn.textContent = 'select to compare: off';
+    btn.addEventListener('click', () => {
+        compareMode = !compareMode;
+        btn.classList.toggle('active', compareMode);
+        btn.textContent = compareMode?'select to compare: on':'select to compare: off'
+    });
+    container.appendChild(btn);
 
     const X_SPACING = 200;
     const Y_SPACING = 35;

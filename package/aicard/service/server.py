@@ -681,6 +681,35 @@ def serve(
     def get_assistants(token: str):
         return jsonify([{"name": key, "desc": value.description} for key, value in assistants.items()])
 
+    @app.route(domain_prefix+'/banner/<int:card_id>', methods=['GET'])
+    def get_banner(card_id: int):
+        url = url_for("get_banner_raw", card_id=card_id, _external=True)
+        banner = f"""<iframe frameborder="0" src="{url}" width="500" height="300">
+<a href="{url}" target="_blank">Trai model card.</a></iframe>"""
+        escaped_banner = banner.replace("<","&lt;").replace(">","&gt;")
+        return f"""
+        <div>
+        {banner}
+        </div>
+        To display the above banner in your website, copy the following:<br>
+        <pre>{escaped_banner}</pre>
+        """
+    @app.route(domain_prefix+'/banner/raw/<int:card_id>', methods=['GET'])
+    def get_banner_raw(card_id: int):
+        found = find_card(card_id)
+        found_card = exists(found, "Model card does not exist, has been made private, or has been deleted.")
+        card = found_card.card
+        version = exists(card.overview.version, "Model card does not exist, has been made private, or has been deleted.")
+        creator = card.overview.creator
+        if creator: creator = "from "+creator
+        creator = "- "+creator+"  uploaded by "+found_card.creator
+        overview = card.overview.description
+        # TODO: the next sline is an utter hack - I don't know how to do it properly
+        url = url_for("get_banner_raw", card_id=card_id, _external=True).replace("/banner/raw/","/model_card.html?id=")
+        if "<img" in overview: overview = ""
+        if len(overview) > 120: overview = overview[:(120 - 3)] + "..."
+        return f"""<div style="background:#1f1f1f;color:#EEEEEE;padding:10px 10px;border-radius:8px"><a href="{url}" target="_blank"><b style="color:#79CFDC;font-size:1.2rem">{card.title} <span style="color:#F9AB49;float:right">{card.quality()*100:.0f}% info</span></b></a><br>{version} {creator}<br><p style="color:#7c7c7c">{overview}</p></div>"""
+
     @app.route(domain_prefix+'/card/<int:card_id>', methods=['GET'])
     def get_card(card_id):
         found = find_card(card_id)
