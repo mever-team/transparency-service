@@ -363,6 +363,7 @@ $(document).ready(function () {
             },
             error: error_handler
         });
+        render_emissions_flash();
     }
     normalRender();
     function _renderWhileRefine(){
@@ -387,6 +388,14 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (job) {
                     if (isEmpty(job)) {
+                        clearInterval(intervalId);
+                        if (refineStarted){
+                            _renderSimple(true);
+                            window.location.href = window.location.href;
+                        }
+                        return;
+                    }
+                    if (job.operation !== "refine") {
                         clearInterval(intervalId);
                         if (refineStarted){
                             _renderSimple(true);
@@ -921,37 +930,53 @@ $('.contents').on('click', '.refine-field', async function () {
         }
     });
 
-    if (token) {
-        $.ajax({
-            url: "/transparency/emissions/" + id + '/flash',
-            method: "GET",
-            contentType: "application/json",
-            dataType: "json",
-            headers: {"Authorization": "Bearer " + token},
-            success: function (response) {
-                let energy_consumed = response['energy_consumed'];
-                let emissions = response['emissions'];
-                if (energy_consumed && emissions) {
-                    energy_consumed = formatNumber(energy_consumed);
-                    emissions = formatNumber(emissions);
-                    const text = `Job finished with energy consumed ${energy_consumed} kWh and CO2 emissions ${emissions} kg`;
-                    showFlash(text);
-                }
+    function render_emissions_flash(){
+        setTimeout(() => {
+            if (token) {
+                $.ajax({
+                    url: "/transparency/emissions/" + id + '/flash',
+                    method: "GET",
+                    contentType: "application/json",
+                    dataType: "json",
+                    headers: {"Authorization": "Bearer " + token},
+                    success: function (response) {
+                        let energy_consumed = response['energy_consumed'];
+                        let emissions = response['emissions'];
 
-            },
-            error: error_handler
-        });
+                        if (energy_consumed && emissions) {
+                            energy_consumed = formatNumber(energy_consumed);
+                            emissions = formatNumber(emissions);
+
+                            const text = `Job finished with energy consumed ${energy_consumed} kWh and CO2 emissions ${emissions} kg`;
+
+                            showFlash(text);
+                        }
+                    },
+                    error: error_handler
+                });
+            }
+        }, 2000);
     }
 
     function showFlash(text) {
-        const flash = document.getElementById("flash");
+        const container = document.getElementById("flash-container");
+        const flash = document.createElement("div");
+        flash.className = "flash-message show";
         flash.innerHTML = `
-            <span class="close" onclick="hideFlash()">×</span>
+            <span class="close" onclick="this.parentElement.classList.remove('show');setTimeout(() => this.parentElement.remove(), 250);">×</span>
             ${text}
         `;
-        flash.classList.add("show");
+        container.appendChild(flash);
 
+        // setTimeout(() => {
+        //     flash.classList.remove("show");
+
+        //     setTimeout(() => {
+        //         flash.remove();
+        //     }, 250);
+        // }, 5000); // auto close after 5 sec
     }
+
     function formatNumber(x) {
         x = Number(x);
         const abs = Math.abs(x);
@@ -961,6 +986,3 @@ $('.contents').on('click', '.refine-field', async function () {
         return x.toFixed(2);
     }    
 });
-function hideFlash() {
-    document.getElementById("flash").classList.remove("show");
-}

@@ -953,7 +953,7 @@ def serve(
             exists(json_data.get("type", "")=="url", "Import got unexpected type")
             exists(isinstance(json_data.get('payload', False), str), "Import requires a payload")
             json_data = {"data_type": "url", "url": json_data["payload"]}
-        status = card.autocomplete(json_data, assistant, logger, trigger_on_agent_end(creator))
+        status = card.autocomplete(json_data, assistant, logger, jobs_tracker, trigger_on_agent_end(creator))
         with auth_lock:
             user2agent_use[creator] = runs + 1
         logger.info(f"requested card {card_id} imported from {assistant_type}", user=creator)

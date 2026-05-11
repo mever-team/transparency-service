@@ -97,7 +97,6 @@ class Prompter(Assistant):
         return refined_stream
     
     def refine(self, card: ModelCard, card_id: int, logger: Logger, user_messages: list[str], job_tracker: CardJobsTracker):
-
         job = Job(
             worker = 'prompter',
             operation = 'refine',

@@ -829,10 +829,19 @@ pre {font-size: 14px;background:inherit!important}
 
 
 /* flash */
-.flash-message {
+.flash-container {
     position: fixed;
     top: 20px;
     right: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    z-index: 9999;
+}
+
+.flash-message {
     max-width: 350px;
 
     background-color: #fff3cd;
@@ -851,17 +860,25 @@ pre {font-size: 14px;background:inherit!important}
     transform: translateY(-10px);
     transition: all 0.25s ease;
 
-    z-index: 9999;
+    animation: slideIn 0.25s ease;
+
+    position: relative; /* important */
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .flash-message.show {
     opacity: 1;
     transform: translateY(0);
-}
-
-.flash-message strong {
-    display: block;
-    margin-bottom: 4px;
 }
 
 .flash-message .close {
