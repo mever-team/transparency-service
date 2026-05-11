@@ -826,3 +826,49 @@ pre {font-size: 14px;background:inherit!important}
 
 .compare-toggle-btn {float:right;background:#1F1F1F;border:0;color:#EEEEEE;margin:5px 10px}
 .compare-toggle-btn.active {color:#79CFDC}
+
+
+/* flash */
+.flash-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    max-width: 350px;
+
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+
+    padding: 14px 18px;
+    border-radius: 8px;
+
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.25s ease;
+
+    z-index: 9999;
+}
+
+.flash-message.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.flash-message strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.flash-message .close {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #856404;
+}

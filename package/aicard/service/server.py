@@ -1,4 +1,6 @@
 import json
+import csv
+
 
 from aicard.card import ModelCard
 from aicard.service.converters import card2format
@@ -1003,6 +1005,44 @@ def serve(
         if status:
             return jsonify(status.to_dict())
         return jsonify({})
+    
+    @app.route(domain_prefix+'/emissions/<int:card_id>/last', methods=['GET'])
+    @users.require_auth(token2expiration, third_party_auth)
+    def get_emissions_last(card_id: int, token: str):
+        card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
+        with auth_lock: creator = token2user.get(token, None)
+        if creator!=card.creator: abort(403, "Only the card's creator can see the emissions.")
+        job = jobs_tracker.get_last(card_id)
+        job_id = job.id if job else None
+        if job_id:
+            filepath = f"./emissions/{job_id}.csv"
+            with open(filepath, newline="") as f:
+                reader = csv.DictReader(f)
+                rows = list(reader)
+        else:
+            rows=[{}]
+        emissions = rows[-1]
+        emissions_out = {k: emissions[k] for k in ["energy_consumed", "emissions"] if k in emissions}
+        return jsonify(emissions_out)
+    
+    @app.route(domain_prefix+'/emissions/<int:card_id>/flash', methods=['GET'])
+    @users.require_auth(token2expiration, third_party_auth)
+    def flash_emissions_last(card_id: int, token: str):
+        card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
+        with auth_lock: creator = token2user.get(token, None)
+        if creator!=card.creator: abort(403, "Only the card's creator can pop the emissions.")
+        job = jobs_tracker.pop_last(card_id)
+        job_id = job.id if job else None
+        if job_id:
+            filepath = f"./emissions/{job_id}.csv"
+            with open(filepath, newline="") as f:
+                reader = csv.DictReader(f)
+                rows = list(reader)
+        else:
+            rows=[{}]
+        emissions = rows[-1]
+        emissions_out = {k: emissions[k] for k in ["energy_consumed", "emissions"] if k in emissions}
+        return jsonify(emissions_out)
 
     @app.route(domain_prefix+"/card/<int:card_id>/download/<string:fformat>", methods=["GET"])
     def download_card(card_id, fformat):
@@ -1056,5 +1096,6 @@ def serve(
                 for card_id in to_delete: card_cache.pop(card_id, None)
             time.sleep(600)  # run every 10 minutes
 
+    pathlib.Path("emissions").mkdir(parents=True, exist_ok=True)
     logger.ok("Server is ready: http://127.0.0.1:5000"+domain_prefix)
     return app, gc, monitor

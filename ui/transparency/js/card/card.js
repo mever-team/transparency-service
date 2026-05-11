@@ -921,4 +921,46 @@ $('.contents').on('click', '.refine-field', async function () {
         }
     });
 
+    if (token) {
+        $.ajax({
+            url: "/transparency/emissions/" + id + '/flash',
+            method: "GET",
+            contentType: "application/json",
+            dataType: "json",
+            headers: {"Authorization": "Bearer " + token},
+            success: function (response) {
+                let energy_consumed = response['energy_consumed'];
+                let emissions = response['emissions'];
+                if (energy_consumed && emissions) {
+                    energy_consumed = formatNumber(energy_consumed);
+                    emissions = formatNumber(emissions);
+                    const text = `Job finished with energy consumed ${energy_consumed} kWh and CO2 emissions ${emissions} kg`;
+                    showFlash(text);
+                }
+
+            },
+            error: error_handler
+        });
+    }
+
+    function showFlash(text) {
+        const flash = document.getElementById("flash");
+        flash.innerHTML = `
+            <span class="close" onclick="hideFlash()">×</span>
+            ${text}
+        `;
+        flash.classList.add("show");
+
+    }
+    function formatNumber(x) {
+        x = Number(x);
+        const abs = Math.abs(x);
+        if (abs !== 0 && abs < 1e-3) {
+            return x.toExponential(3); 
+        }
+        return x.toFixed(2);
+    }    
 });
+function hideFlash() {
+    document.getElementById("flash").classList.remove("show");
+}

@@ -10,6 +10,7 @@ import requests
 import json
 import markdown2
 import time
+from codecarbon import EmissionsTracker
 
 from ...agents.extensions.embeddings import ImageClassifier
 from ...card.fields import LongText, Pattern
@@ -96,11 +97,15 @@ class Prompter(Assistant):
         return refined_stream
     
     def refine(self, card: ModelCard, card_id: int, logger: Logger, user_messages: list[str], job_tracker: CardJobsTracker):
+
         job = Job(
             worker = 'prompter',
             operation = 'refine',
             data={})
         job_tracker.set(card_id, job)
+        job_id = job_tracker.get(card_id).id
+        tracker = EmissionsTracker( project_name=job_id, output_file=f"./emissions/{job_id}.csv")
+        tracker.start()
         for category, values in card.data.items():
             if not isinstance(values, dict): continue
             job.data[category] = {}
@@ -115,6 +120,7 @@ class Prompter(Assistant):
                     card.data[category][field].set(text)
                 job.data[category][field] = text
                 job_tracker.set(card_id, job)
+        tracker.stop()
         job_tracker.delete(card_id)
         
         
