@@ -103,7 +103,7 @@ class Prompter(Assistant):
             data={})
         job_tracker.set(card_id, job)
         job_id = job_tracker.get(card_id).id
-        tracker = EmissionsTracker( project_name=job_id, save_to_file=False, log_level="WARNING")
+        tracker = EmissionsTracker( project_name=job_id, save_to_file=False, log_level="WARNING", tracking_mode="process")
         tracker.start()
         for category, values in card.data.items():
             if not isinstance(values, dict): continue
