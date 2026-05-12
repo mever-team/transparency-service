@@ -55,11 +55,13 @@ class CardJobsTracker():
     def pop_last(self, card_id: int):
         return self.__last_job.pop(card_id, None)
 
-    def delete(self, card_id: int, timer=5):
+    def delete(self, card_id: int, data: str="", timer=5):
         if card_id not in self.__jobs:
             if self.logger: self.logger.warn(f'No job for card {card_id}')
             return False
         job = self.get(card_id)
+        if data:
+            job.data = data
         self.set_last(card_id, job)
         def _delayed_delete():
             if self.__jobs.pop(card_id, None) is None:

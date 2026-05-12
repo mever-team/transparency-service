@@ -1013,16 +1013,10 @@ def serve(
         with auth_lock: creator = token2user.get(token, None)
         if creator!=card.creator: abort(403, "Only the card's creator can see the emissions.")
         job = jobs_tracker.get_last(card_id)
-        job_id = job.id if job else None
-        if job_id:
-            filepath = f"./emissions/{job_id}.csv"
-            with open(filepath, newline="") as f:
-                reader = csv.DictReader(f)
-                rows = list(reader)
+        if job.data:
+            emissions_out = {k: job.data[k] for k in ["energy_consumed", "emissions"] if k in job.data}
         else:
-            rows=[{}]
-        emissions = rows[-1]
-        emissions_out = {k: emissions[k] for k in ["energy_consumed", "emissions"] if k in emissions}
+            emissions_out = {}
         return jsonify(emissions_out)
     
     @app.route(domain_prefix+'/emissions/<int:card_id>/flash', methods=['GET'])
@@ -1032,16 +1026,10 @@ def serve(
         with auth_lock: creator = token2user.get(token, None)
         if creator!=card.creator: abort(403, "Only the card's creator can pop the emissions.")
         job = jobs_tracker.pop_last(card_id)
-        job_id = job.id if job else None
-        if job_id:
-            filepath = f"./emissions/{job_id}.csv"
-            with open(filepath, newline="") as f:
-                reader = csv.DictReader(f)
-                rows = list(reader)
+        if job:
+            emissions_out = {k: job.data[k] for k in ["energy_consumed", "emissions"] if k in job.data}
         else:
-            rows=[{}]
-        emissions = rows[-1]
-        emissions_out = {k: emissions[k] for k in ["energy_consumed", "emissions"] if k in emissions}
+            emissions_out = {}
         return jsonify(emissions_out)
 
     @app.route(domain_prefix+"/card/<int:card_id>/download/<string:fformat>", methods=["GET"])
@@ -1096,6 +1084,5 @@ def serve(
                 for card_id in to_delete: card_cache.pop(card_id, None)
             time.sleep(600)  # run every 10 minutes
 
-    pathlib.Path("emissions").mkdir(parents=True, exist_ok=True)
     logger.ok("Server is ready: http://127.0.0.1:5000"+domain_prefix)
     return app, gc, monitor

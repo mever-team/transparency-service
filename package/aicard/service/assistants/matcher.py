@@ -1,6 +1,7 @@
 import threading
 import re
 import torch
+import json
 import requests
 import numpy as np
 from .assistant import Assistant
@@ -129,7 +130,7 @@ class SemanticMatcher(Assistant):
             data={})
         job_tracker.set(card_id, job)
         job_id = job_tracker.get(card_id).id
-        tracker = EmissionsTracker( project_name=job_id, output_file=f"./emissions/{job_id}.csv", log_level="WARNING")
+        tracker = EmissionsTracker( project_name=job_id, save_to_file=False, log_level="WARNING")
         tracker.start()
         
         url = data['url']
@@ -262,8 +263,9 @@ class SemanticMatcher(Assistant):
         if not card.overview.date: card.overview.date = date.today().strftime("%Y-%m-%d")
         if not card.overview.home: card.overview.home = url
         user_messages[-1] =  f"<h2>{self.alias} import</h2> Saving..."
-        tracker.stop()
-        job_tracker.delete(card_id)
+        emissions = tracker.stop()
+        emissions_data = json.loads(tracker.final_emissions_data.toJSON())
+        job_tracker.delete(card_id, emissions_data)
 
     def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]):
         raise Exception("Semantic matcher cannot perform refinement - consider combining it with an LLM")
