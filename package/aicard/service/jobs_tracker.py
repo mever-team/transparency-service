@@ -10,8 +10,8 @@ class Job():
         self.worker = worker
         self.operation = operation
         self.data = data
-        self.start = 0
-        self.finish = 0
+        self.start = None
+        self.finish = None
         
     def __repr__(self):
         return f"worker={self.worker}, operation={self.operation}, data={self.data}"
@@ -118,15 +118,10 @@ class CardJobsTracker():
         return max(overlap, 0.0) # overlap duration (in seconds) between two jobs
     
     def flash_codecarbon(self, job_name):
-        # print(self.__jobs)
-        # print(self.__last_job)
-        # print(self.__to_flash_ids)
         if job_name not in self.__to_flash_ids:
             return {}
         emissions =  self.estimate_codecarbon(job_name)
-        # self.__last_job.pop(job_name)
         self.__to_flash_ids.remove(job_name)
-        # print(self.__jobs)
         return emissions
         
     def estimate_codecarbon(self, job_name):
@@ -134,16 +129,16 @@ class CardJobsTracker():
         if not job:
             job_active = self.get(job_name)
             # use this print for debug only because this blockes is used during client polling
-            if not job_active:
-                if self.logger: 
-                    self.logger.error(f"Job {job_name} dons't exist")
-                else:
-                    print(f"Job {job_name} dons't exist")
-            else:
-                if self.logger: 
-                    self.logger.error(f"Job {job_name} hasn't finished")
-                else:
-                    print(f"Job {job_name} hasn't finished")
+            # if not job_active:
+            #     if self.logger: 
+            #         self.logger.error(f"Job {job_name} dons't exist")
+            #     else:
+            #         print(f"Job {job_name} dons't exist")
+            # else:
+            #     if self.logger: 
+            #         self.logger.error(f"Job {job_name} hasn't finished")
+            #     else:
+            #         print(f"Job {job_name} hasn't finished")
                     
             return {}
         energy_consumed = job.data.get('energy_consumed', None)
@@ -165,9 +160,4 @@ class CardJobsTracker():
             time_overlay += self.interval_overlap(job, other_job)
         cumulated_time = execution_time + time_overlay
         percent_workload = execution_time / cumulated_time
-        # print('execution_time',execution_time)
-        # print('time_overlay',time_overlay)
-        # print('cumulated_time',cumulated_time)
-        # print('percent_workload',percent_workload)
-        # print('energy_consumed',energy_consumed)
         return {"emissions": emissions*percent_workload, "energy_consumed": energy_consumed*percent_workload}
