@@ -9,7 +9,7 @@ class GPT(Agent):
         "completion": "You are a helpful assistant that completes json fields of a model card."
     }
 
-    def __init__(self, model='gpt-3.5-turbo', max_tokens=4000, temperature=0.7, top_p=1):
+    def __init__(self, model='gpt-3.5-turbo', max_tokens=4000, temperature=0.7, top_p=1):  # pragma: no cover
         # gpt-3.5-turbo gpt-4
         self._model = model
         openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -18,7 +18,7 @@ class GPT(Agent):
         self.temperature = temperature
         self.top_p = top_p
 
-    def _run(self, content: str, task: str):
+    def _run(self, content: str, task: str):  # pragma: no cover
         assert isinstance(content, str), "content must be of type str"
         assert task in GPT.tasks, "Not supported task: "+task
         response = openai.chat.completions.create(
