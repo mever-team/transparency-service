@@ -944,10 +944,10 @@ $('.contents').on('click', '.refine-field', async function () {
                         let emissions = response['emissions'];
 
                         if (energy_consumed && emissions) {
-                            energy_consumed = formatNumber(energy_consumed);
-                            emissions = formatNumber(emissions);
+                            energy_consumed = formatKWh(energy_consumed);
+                            emissions = formatKg(emissions);
 
-                            const text = `Job finished with energy consumed ${energy_consumed} kWh and CO2 emissions ${emissions} kg`;
+                            const text = `Job finished with energy consumed ${energy_consumed} and CO2 emissions ${emissions}`;
 
                             showFlash(text);
                         }
@@ -977,12 +977,67 @@ $('.contents').on('click', '.refine-field', async function () {
         // }, 5000); // auto close after 5 sec
     }
 
-    function formatNumber(x) {
-        x = Number(x);
-        const abs = Math.abs(x);
-        if (abs !== 0 && abs < 1e-3) {
-            return x.toExponential(3); 
+    function formatKWh(kWh) {
+        const wh = kWh * 1000;
+        const units = [
+            { name: 'TWh', factor: 1e12 },
+            { name: 'GWh', factor: 1e9 },
+            { name: 'MWh', factor: 1e6 },
+            { name: 'kWh', factor: 1e3 },
+            { name: 'Wh',  factor: 1 },
+            { name: 'mWh', factor: 1e-3 },
+            { name: 'μWh', factor: 1e-6 },
+            { name: 'nWh', factor: 1e-9 },
+            { name: 'pWh', factor: 1e-12 }
+        ];
+
+        let bestUnit = units[units.length - 1]; // fallback to smallest
+        let bestValue = wh / bestUnit.factor;
+
+        for (const unit of units) {
+            const value = wh / unit.factor;
+            if (value >= 1 && value < 1000) {
+            bestUnit = unit;
+            bestValue = value;
+            break;
+            }
         }
-        return x.toFixed(2);
-    }    
+
+        const formattedNumber = (Math.abs(bestValue - Math.round(bestValue)) < 1e-10)
+            ? Math.round(bestValue).toString()
+            : bestValue.toFixed(2).replace(/\.?0+$/, '');
+
+        return `${formattedNumber} ${bestUnit.name}`;
+    }
+
+    function formatKg(kg) {
+        const grams = kg * 1000;
+        const units = [
+            { name: 'Mt',   factor: 1e12 },
+            { name: 'kt',   factor: 1e9 },
+            { name: 't',    factor: 1e6 },
+            { name: 'kg',   factor: 1e3 },
+            { name: 'g',    factor: 1 },
+            { name: 'mg',   factor: 1e-3 },
+            { name: 'μg',   factor: 1e-6 },
+            { name: 'ng',   factor: 1e-9 }
+        ];
+
+        let bestUnit = units[units.length - 1];
+        let bestValue = grams / bestUnit.factor;
+
+        for (const unit of units) {
+            const value = grams / unit.factor;
+            if (value >= 1 && value < 1000) {
+            bestUnit = unit;
+            bestValue = value;
+            break;
+            }
+    }
+
+    const formatted = (Math.abs(bestValue - Math.round(bestValue)) < 1e-10)
+        ? Math.round(bestValue).toString()
+        : bestValue.toFixed(2).replace(/\.?0+$/, '');
+    return `${formatted} ${bestUnit.name}`;
+    }
 });

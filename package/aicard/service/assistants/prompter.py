@@ -118,7 +118,7 @@ class Prompter(Assistant):
                         text += chunks['message']['content']
                     card.data[category][field].set(text)
                 job.data[category][field] = text
-                job_tracker.set(card_id, job)
+                job_tracker.update(card_id, job)
         emissions = tracker.stop()
         emissions_data = json.loads(tracker.final_emissions_data.toJSON())
         job_tracker.delete(card_id, emissions_data)
