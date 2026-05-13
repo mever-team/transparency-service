@@ -1,7 +1,6 @@
 import threading
 import re
 import torch
-import json
 import requests
 import numpy as np
 from .assistant import Assistant
@@ -12,10 +11,6 @@ from bs4 import BeautifulSoup, NavigableString, Comment
 from ...card.fields import Field, LongText, Options
 from datetime import date
 from transformers import AutoTokenizer, AutoModel
-from codecarbon import EmissionsTracker
-from aicard.service.jobs_tracker import CardJobsTracker, Job
-
-
 
 class SemanticMatcher(Assistant):
     _loader_thread: threading.Thread | None = None
@@ -118,20 +113,12 @@ class SemanticMatcher(Assistant):
             if self.field_embeddings is None:
                 raise Exception("Semantic Matcher is still starting")
 
-    def complete(self, card: ModelCard, card_id: int, data: dict, logger: Logger, user_messages: list[str], job_tracker: CardJobsTracker):
+    def complete(self, card: ModelCard, data: dict, logger: Logger, user_messages: list[str]):
         user_messages[-1] = (
             f"<h2>{self.alias} import</h2>"
             f"Retrieving document."
         )
         self._wait_until_ready()
-        job = Job(
-            worker = 'matcher',
-            operation = 'complete',
-            data={})
-        job_tracker.set(card_id, job)
-        job_id = job_tracker.get(card_id).id
-        tracker = EmissionsTracker( project_name=job_id, save_to_file=False, log_level="WARNING", tracking_mode="process")
-        tracker.start()
         
         url = data['url']
         logger.info("Submitted: " + str(url), user=self.alias)
@@ -263,9 +250,6 @@ class SemanticMatcher(Assistant):
         if not card.overview.date: card.overview.date = date.today().strftime("%Y-%m-%d")
         if not card.overview.home: card.overview.home = url
         user_messages[-1] =  f"<h2>{self.alias} import</h2> Saving..."
-        emissions = tracker.stop()
-        emissions_data = json.loads(tracker.final_emissions_data.toJSON())
-        job_tracker.delete(card_id, emissions_data)
 
     def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]):
         raise Exception("Semantic matcher cannot perform refinement - consider combining it with an LLM")
