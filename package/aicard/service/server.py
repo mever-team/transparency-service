@@ -34,7 +34,7 @@ def exists(condition:str|ModelCardEntry|Any|None, message: str):
     return condition
 
 def serve(
-    assistants: dict[str, Assistant],
+    assistants: dict[str, Assistant]=dict(),
     redirect_index: str|None = None,
     admin_username: str|None = None,
     admin_password: str|None = None,
@@ -43,6 +43,7 @@ def serve(
     report_spacing_secs: int = 60*5,
     root:str|None = "db", # None or "" initializes a non-persistent database for testing
     log_file:str|None = None, # None or "" uses the console for logging
+    silent:bool=False,
     static:str = "ui",
     domain_prefix:str="/transparency",
     third_party_realm: str|None = None,
@@ -51,6 +52,7 @@ def serve(
     email_verification: EmailVerification|None = None,
     jobs_tracker: CardJobsTracker = CardJobsTracker(),
     max_agents_per_user = 3,
+    monitor_window=1440,
 ):
     static = os.path.abspath(static)
     if env: config = dotenv_values(env)
@@ -63,7 +65,8 @@ def serve(
     if not third_party_client: third_party_client = config.get("THIRD_PARTY_CLIENT")
     assert admin_username, f"Admin username not found in {env} USER or arguments"
     assert admin_password, f"Admin password not found in {env} PASS or arguments"
-    assert redirect_index, f"Index route to redirect not found in {env} INDEX or arguments"
+    if not redirect_index: redirect_index = "index.html"
+    #assert redirect_index, f"Index route to redirect not found in {env} INDEX or arguments"
     import logging
 
     # disable flask logging
@@ -73,8 +76,8 @@ def serve(
 
     card_cache_lock = Lock()
     card_cache: dict[int, ModelCardEntry | None] = dict()
-    logger = Logger(log_file)
-    monitor = SystemMonitor(logger=logger) # immediately after logger
+    logger = Logger(log_file, silent=silent)
+    monitor = SystemMonitor(logger=logger, window=monitor_window) # immediately after logger
     auth_lock = Lock()
     report_lock = Lock()
     user2last_report = dict() # last report timestamps to impose report rate limits

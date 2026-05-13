@@ -9,7 +9,7 @@ refer to the implementation in package/service/server.py
 """
 
 from aicard.service import serve
-from aicard.service.assistants import SemanticMatcher, Prompter, Combined
+from aicard.service.assistants import SemanticMatcher, Prompter, Combined, WordNet
 from aicard.service.email import EmailVerification
 from aicard.agents import Ollama
 from aicard.agents.extensions.speedups import text_compression
@@ -27,11 +27,12 @@ prompter = Prompter(
 agent = Combined(refine=prompter, complete=matcher)
 def create_app(root):
     app, gc, monitor = serve(
-        {"agent": agent},
+        {"agent": agent, "wordnet": WordNet(), "prompter": prompter, "matcher": matcher},
         env="ui/.env",
         feature_extractor=matcher,
         email_verification=EmailVerification(env="ui/.env"),
-        root=root
+        root=root,
+        monitor_window=5
     )
     return app, gc, monitor
     

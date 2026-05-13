@@ -9,8 +9,9 @@ class Logger:
     ANSI_YELLOW = "\033[33m"
     ANSI_BLUE = "\033[34m"
     ANSI_RED = "\033[31m"
-    def __init__(self, log_file=None):
+    def __init__(self, log_file=None, silent:bool=False):
         self.log_file = log_file
+        self.silent = silent
         if log_file:
             os.makedirs(os.path.dirname(log_file), exist_ok=True)
             self.file = open(log_file, 'a', buffering=1, encoding="utf-8")  # line-buffered
@@ -23,6 +24,7 @@ class Logger:
         formatted = f"[{ts}] [{tag}] {message}"
         if self.file:
             self.file.write(formatted + '\n')
+        if self.silent: return
         if color: formatted = f"[{ts}] [{color}{tag}{self.ANSI_RESET}] {message}"
         print(formatted.encode("ascii", errors="ignore").decode())
 

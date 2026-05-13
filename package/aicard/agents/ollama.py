@@ -60,7 +60,7 @@ Output:
             name=None,
             description="Powered by Ollama.",
             timeout_secs=40
-        ):
+        ):  # pragma: no cover
         if name is None:
             name = "🦙 "+model.split(":")[0]
         self._description = description
@@ -77,7 +77,7 @@ Output:
         })
         assert test.status_code == 200, f"Failed to initialize model '{model}'\nResponse: {test.text}"
 
-    def abort(self):
+    def abort(self): # pragma: no cover
         """
         Abort the running Ollama model process.
         This function kills the process associated with the loaded model.
@@ -86,7 +86,7 @@ Output:
         try: os.system(f'ollama stop {self._model}')
         except Exception as e: raise Exception(f"Failed to abort model {self._model}: {e}")
 
-    def _run(self, content: str, task: str, **params):
+    def _run(self, content: str, task: str, **params):  # pragma: no cover
         assert isinstance(content, str), "Content must be of type str"
         assert task in Ollama.tasks, "Not supported task: "+task
         if not content:
