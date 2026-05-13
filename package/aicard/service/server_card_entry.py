@@ -172,9 +172,9 @@ class ModelCardEntry(contextlib.AbstractContextManager):
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.lock.release()
 
-    def __autocomplete(self, data: dict, assistant: Assistant, logger: Logger, trigger_on_end):
+    def __autocomplete(self, data: dict, assistant: Assistant, logger: Logger, job_tracker: CardJobsTracker, trigger_on_end):
         try:
-            assistant.complete(self.card, data, logger, self._completion_status)
+            assistant.complete(self.card, self.card_id, data, logger, self._completion_status, job_tracker)
             self.commit_card(on_thread=True, edit_message=assistant.alias + " import")  # on_thread=True because we are on a heavyweight path either way
             logger.info(f"ended card {self.card_id} import", user=assistant.alias)
         except Exception as e:
@@ -193,9 +193,9 @@ class ModelCardEntry(contextlib.AbstractContextManager):
             logger.error(f"aborted card{self.card_id} refinement with error {e}", user=assistant.alias)
         self.end_completion(trigger_on_end)
 
-    def autocomplete(self, data: dict, assistant: Assistant, logger: Logger, trigger_on_end):
+    def autocomplete(self, data: dict, assistant: Assistant, logger: Logger, job_tracker: CardJobsTracker, trigger_on_end):
         self.start_completion()
-        self.__thread = Thread(target=self.__autocomplete, args=(data, assistant, logger, trigger_on_end))
+        self.__thread = Thread(target=self.__autocomplete, args=(data, assistant, logger, job_tracker, trigger_on_end))
         self.__thread.start()
         return "Autocompletion request was submitted successfully. Please wait while the assistant runs."
 
