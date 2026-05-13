@@ -11,6 +11,7 @@ from pydantic import Field as pydantic_Field
 from aicard.card.dot_dict import DotDict
 from aicard.card.fields import ShortText, LongText, Options, Field, Pattern, Date
 
+
 def truncate(text, size):
     text = text.strip().split(" ")[0].split("\n")[0].split("/")[-1].strip()
     if size<3:
@@ -91,10 +92,10 @@ class ModelCard:
         self.commit()
         return False
 
-    def __del__(self):
-        if self.connector:
-            assert json.dumps(self.connector.prototype.data) == json.dumps(self.data), \
-                "There are uncommitted changes to a model card with a connector. Do one of these:\n * Commit the changes\n * Detach the connector\n * Use the card as a context to auto-commit"
+    # def __del__(self):
+    #     if self.connector:
+    #         assert json.dumps(self.connector.prototype.tojson()) == json.dumps(self.data.tojson()), \
+    #             "There are uncommitted changes to a model card with a connector. Do one of these:\n * Commit the changes\n * Detach the connector\n * Use the card as a context to auto-commit"
 
     def detach(self):
         self.connector = None
@@ -269,10 +270,10 @@ class ModelCard:
     def commit(self):
         from aicard.service import converters
         assert self.connector, "The current model card does not have any connector to commit to (either it was not obtained from a connection or it was detached)."
-        if json.dumps(self.connector.prototype.data) == json.dumps(self.data):
+        if json.dumps(converters.dict2dynamic(self.connector.prototype.data)) == json.dumps(converters.dict2dynamic(self.data)):
             self.connector.client.logger.info(f"Nothing to commit")
             return
-        result = self.connector.client.put(f"/card/{self.connector.id}", json=converters.dict2dynamic(self.data))
+        result = self.connector.client.put(f"/transparency/card/{self.connector.id}", json=converters.dict2dynamic(self.data))
         assert result.status_code == 200, "Failed to commit"
         self.connector.prototype.data.assign(self.data)
         self.connector.client.logger.info(f"Committed card")

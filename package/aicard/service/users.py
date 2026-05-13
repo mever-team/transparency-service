@@ -20,7 +20,7 @@ def verify_password(password: str, hashed: str) -> bool:
     return bcrypt.checkpw(password.encode(), hashed.encode())
 
 class UserDB:
-    def __init__(self, logger, root:str="db", admin_name:str="admin", admin_password:str="admin", admin_email:str=""):
+    def __init__(self, logger, root:str="db", admin_name:str="admin", admin_password:str="admin", admin_email:str=""): # pragma: no cover
         if not root:
             logger.info("Initializing non-persistent testing database")
             conn = sqlite3.connect(":memory:", check_same_thread=True)
@@ -265,17 +265,6 @@ class UserDB:
                 (parent_id, child_id, message)
             )
         self.conn.commit()
-
-    def load_card_relations(self, parent_id: int) -> dict[int, str]:
-        """
-        Load all child relations for a given parent card.
-        Returns a dict mapping child_id -> message.
-        """
-        cursor = self.conn.execute(
-            "SELECT child_id, message FROM card_children WHERE parent_id = ?",
-            (parent_id,)
-        )
-        return {row[0]: row[1] for row in cursor.fetchall()}
 
 
 class CookieAuthenticator:

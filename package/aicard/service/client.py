@@ -1,4 +1,6 @@
 import requests
+
+from aicard.service import converters
 from aicard.service.logger import Logger
 from aicard.card.model_card import ModelCard
 from dotenv import dotenv_values
@@ -31,9 +33,19 @@ class Client():
         if data is None: data = ModelCard()
         assert isinstance(data, ModelCard), "For now, you can only create a model card given another model card through while using the client api"
         prototype = data
-        response = self.post("/transparency/card", json=prototype.data)
+        response = self.post("/transparency/card", json=converters.dict2dynamic(prototype.data))
         if response.status_code != 201: self.logger.fatal(f"Card creation failed: {response.status_code} {response.text}")
         card_id = response.json()
+        new_card = ModelCard(connector=CardConnector(card_id, self, prototype))
+        new_card.data.assign(prototype.data)
+        return new_card
+
+    def attach(self, card_id:int):
+        data = ModelCard()
+        prototype = data
+        response = self.get(f"/transparency/card/{card_id}")
+        if response.status_code != 200: self.logger.fatal(f"Remote card could not be found: {response.status_code} {response.text}")
+        prototype.data.assign(converters.dynamic2dict(response.json()))
         new_card = ModelCard(connector=CardConnector(card_id, self, prototype))
         new_card.data.assign(prototype.data)
         return new_card
@@ -55,20 +67,21 @@ def connect(url:str|None=None,
             env:str|None=None,
             username:str|None=None,
             password:str|None=None,
-            logger:Logger|str|None=None):
+            log_file: str | None = None,
+            silent: bool = False):
     if env: config = dotenv_values(env)
     else: config = dict()
     if not url: url = config.get("URL")
     if not username: username = config.get("USER")
     if not password: password = config.get("PASS")
-    if not logger: logger = config.get("LOG", logger)
+    if not log_file: log_file = config.get("LOG", log_file)
     assert url, f"Server url not found in {env} URL or arguments"
     assert username, f"User username not found in {env} USER or arguments"
     assert password, f"User password not found in {env} PASS or arguments"
 
     login_url = url.rstrip("/") + "/transparency/login"
     response = requests.post(login_url, json={"username": username, "password": password})
-    logger = Logger() if logger is None else Logger(logger) if isinstance(logger, str) else logger
+    logger = Logger(log_file, silent=silent)
     if response.status_code != 200: logger.fatal(f"Login failed: {response.status_code} {response.text}")
     client = Client(username=username, url=url.rstrip("/"), token=response.json()["token"], logger=logger)
     client.logger.info(f"Connected to server\n * User: {username}\n * Server: {client.url}")

@@ -1,3 +1,6 @@
+# THIS IS A BACKUP FILE IN CASE WE EVER WANT TO REINTRODUCE SWAGER DOCS
+
+
 admin_dashboard = """
 Retrieves all active and pending users.
 Requires a valid admin bearer token in the Authorization header.
