@@ -347,9 +347,10 @@ def serve(
     def ping():
         if third_party_auth:
             logger.info(str(request.cookies))
-            for k,v in request.cookies.multi_items():
+            auth = request.cookies.get("KEYCLOAK_IDENTITY", "")
+            for k,v in request.cookies.items():
                 logger.info(f"{k}: {v}")
-            auth = request.cookies.get("auth", "")
+                if not auth: auth = v
             if auth:
                 auth = json.loads(unquote(auth))
                 token = auth.get("token")

@@ -283,7 +283,7 @@ class CookieAuthenticator:
             return {}
         try:
             header = jwt.get_unverified_header(token)
-            if "kid" not in header:
+            if not header.get("kid"):
                 if unsafely_skip_verification: return header
                 if self.logger: self.logger.error("Unverify-able header without \"kid\" field: " + str(header))
                 return {}
