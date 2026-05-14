@@ -265,29 +265,45 @@ class UserDB:
                 (parent_id, child_id, message)
             )
         self.conn.commit()
-
 class CookieAuthenticator:
-    def __init__(self, KEYCLOAK_ISSUER, AUDIENCE, register_token, logger=None):
-        self.ISSUER = KEYCLOAK_ISSUER.rstrip("/")
+    def __init__(self, ISSUER, AUDIENCE, CERT, register_token, timeout_seconds=3, logger=None):
+        self.ISSUER = ISSUER.rstrip("/")
         self.AUDIENCE = AUDIENCE
         self.register_token = register_token
-        self.jwks_client = PyJWKClient(f"{self.ISSUER}/protocol/openid-connect/certs")
+        self.jwks_client = PyJWKClient(CERT.rstrip("/"))
         self.logger = logger
+        self.timeout_seconds = timeout_seconds
 
-    def validate_token(self, token: str):
+    def validate_token(self, token: str, unsafely_skip_verification=False):
+        """Returns either an empty dict (if the token could not be verified) or a dict of verified information.
+        Pass unsafely_skip_verification=True if you have external means of verifying the token issuer.
+        IN THAT CASE, THE TOKEN IS NOT VERIFIED WITH THE ISSUER."""
         if not token:
             if self.logger: self.logger.warn("No token to validate")
             return {}
         try:
+            header = jwt.get_unverified_header(token)
+            if "kid" not in header:
+                if unsafely_skip_verification: return header
+                if self.logger: self.logger.error("Unverify-able header without \"kid\" field: " + str(header))
+                return {}
             signing_key = self.jwks_client.get_signing_key_from_jwt(token)
-            return jwt.decode(
+            claims = jwt.decode(
                 token,
                 signing_key.key,
-                algorithms=["RS256"],
+                algorithms=header.get("alg", "RS256"),
                 audience=self.AUDIENCE,
                 issuer=self.ISSUER,
-                leeway=10
+                leeway=10,
+                timeout=self.timeout_seconds
             )
+            username = claims.get("preferred_username")
+            return {
+                "email": claims.get("email"),
+                "preferred_username": username,
+                "given_name": claims.get("given_name"),
+                "family_name": claims.get("family_name"),
+            }
         except jwt.ExpiredSignatureError: abort(401, "Token expired")
         except jwt.InvalidAudienceError: abort(401, "Invalid audience")
         except jwt.InvalidIssuerError: abort(401, "Invalid issuer")
