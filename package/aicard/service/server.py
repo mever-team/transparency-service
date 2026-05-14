@@ -1,4 +1,6 @@
 import json
+import csv
+
 
 from aicard.card import ModelCard
 from aicard.service.converters import card2format
@@ -954,7 +956,7 @@ def serve(
             exists(json_data.get("type", "")=="url", "Import got unexpected type")
             exists(isinstance(json_data.get('payload', False), str), "Import requires a payload")
             json_data = {"data_type": "url", "url": json_data["payload"]}
-        status = card.autocomplete(json_data, assistant, logger, trigger_on_agent_end(creator))
+        status = card.autocomplete(json_data, assistant, logger, jobs_tracker, trigger_on_agent_end(creator))
         with auth_lock:
             user2agent_use[creator] = runs + 1
         logger.info(f"requested card {card_id} imported from {assistant_type}", user=creator)
@@ -1006,6 +1008,24 @@ def serve(
         if status:
             return jsonify(status.to_dict())
         return jsonify({})
+    
+    @app.route(domain_prefix+'/emissions/<int:card_id>/last', methods=['GET'])
+    @users.require_auth(token2expiration, third_party_auth)
+    def get_emissions_last(card_id: int, token: str):
+        card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
+        with auth_lock: creator = token2user.get(token, None)
+        if creator!=card.creator: abort(403, "Only the card's creator can see the emissions.")
+        emissions_out = jobs_tracker.flash_codecarbon(card_id)
+        return jsonify(emissions_out)
+    
+    @app.route(domain_prefix+'/emissions/<int:card_id>/flash', methods=['GET'])
+    @users.require_auth(token2expiration, third_party_auth)
+    def flash_emissions_last(card_id: int, token: str):
+        card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
+        with auth_lock: creator = token2user.get(token, None)
+        if creator!=card.creator: abort(403, "Only the card's creator can pop the emissions.")
+        emissions_out = jobs_tracker.flash_codecarbon(card_id)
+        return jsonify(emissions_out)
 
     @app.route(domain_prefix+"/card/<int:card_id>/download/<string:fformat>", methods=["GET"])
     def download_card(card_id, fformat):

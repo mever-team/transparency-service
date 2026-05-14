@@ -10,6 +10,7 @@ import requests
 import json
 import markdown2
 import time
+from codecarbon import EmissionsTracker
 
 from ...agents.extensions.embeddings import ImageClassifier
 from ...card.fields import LongText, Pattern
@@ -101,6 +102,9 @@ class Prompter(Assistant):
             operation = 'refine',
             data={})
         job_tracker.set(card_id, job)
+        job_id = job_tracker.get(card_id).id
+        tracker = EmissionsTracker( project_name=job_id, save_to_file=False, log_level="WARNING", tracking_mode="process")
+        tracker.start()
         for category, values in card.data.items():
             if not isinstance(values, dict): continue
             job.data[category] = {}
@@ -114,8 +118,10 @@ class Prompter(Assistant):
                         text += chunks['message']['content']
                     card.data[category][field].set(text)
                 job.data[category][field] = text
-                job_tracker.set(card_id, job)
-        job_tracker.delete(card_id)
+                job_tracker.update(card_id, job)
+        emissions = tracker.stop()
+        emissions_data = json.loads(tracker.final_emissions_data.toJSON())
+        job_tracker.delete(card_id, emissions_data)
         
         
     def _complete(self, text: str|list[str], task: str, card: ModelCard, logger: Logger, user_messages: list[str]):

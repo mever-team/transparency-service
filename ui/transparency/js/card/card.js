@@ -363,6 +363,7 @@ $(document).ready(function () {
             },
             error: error_handler
         });
+        render_emissions_flash();
     }
     normalRender();
     function _renderWhileRefine(){
@@ -387,6 +388,14 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (job) {
                     if (isEmpty(job)) {
+                        clearInterval(intervalId);
+                        if (refineStarted){
+                            _renderSimple(true);
+                            window.location.href = window.location.href;
+                        }
+                        return;
+                    }
+                    if (job.operation !== "refine") {
                         clearInterval(intervalId);
                         if (refineStarted){
                             _renderSimple(true);
@@ -921,4 +930,114 @@ $('.contents').on('click', '.refine-field', async function () {
         }
     });
 
+    function render_emissions_flash(){
+        setTimeout(() => {
+            if (token) {
+                $.ajax({
+                    url: "/transparency/emissions/" + id + '/flash',
+                    method: "GET",
+                    contentType: "application/json",
+                    dataType: "json",
+                    headers: {"Authorization": "Bearer " + token},
+                    success: function (response) {
+                        let energy_consumed = response['energy_consumed'];
+                        let emissions = response['emissions'];
+
+                        if (energy_consumed && emissions) {
+                            energy_consumed = formatKWh(energy_consumed);
+                            emissions = formatKg(emissions);
+
+                            const text = `Job finished with energy consumed ${energy_consumed} and CO2 emissions ${emissions}`;
+
+                            showFlash(text);
+                        }
+                    },
+                    error: error_handler
+                });
+            }
+        }, 2000);
+    }
+
+    function showFlash(text) {
+        const container = document.getElementById("flash-container");
+        const flash = document.createElement("div");
+        flash.className = "flash-message show";
+        flash.innerHTML = `
+            <span class="close" onclick="this.parentElement.classList.remove('show');setTimeout(() => this.parentElement.remove(), 250);">×</span>
+            ${text}
+        `;
+        container.appendChild(flash);
+
+        // setTimeout(() => {
+        //     flash.classList.remove("show");
+
+        //     setTimeout(() => {
+        //         flash.remove();
+        //     }, 250);
+        // }, 5000); // auto close after 5 sec
+    }
+
+    function formatKWh(kWh) {
+        const wh = kWh * 1000;
+        const units = [
+            { name: 'TWh', factor: 1e12 },
+            { name: 'GWh', factor: 1e9 },
+            { name: 'MWh', factor: 1e6 },
+            { name: 'kWh', factor: 1e3 },
+            { name: 'Wh',  factor: 1 },
+            { name: 'mWh', factor: 1e-3 },
+            { name: 'μWh', factor: 1e-6 },
+            { name: 'nWh', factor: 1e-9 },
+            { name: 'pWh', factor: 1e-12 }
+        ];
+
+        let bestUnit = units[units.length - 1]; // fallback to smallest
+        let bestValue = wh / bestUnit.factor;
+
+        for (const unit of units) {
+            const value = wh / unit.factor;
+            if (value >= 1 && value < 1000) {
+            bestUnit = unit;
+            bestValue = value;
+            break;
+            }
+        }
+
+        const formattedNumber = (Math.abs(bestValue - Math.round(bestValue)) < 1e-10)
+            ? Math.round(bestValue).toString()
+            : bestValue.toFixed(2).replace(/\.?0+$/, '');
+
+        return `${formattedNumber} ${bestUnit.name}`;
+    }
+
+    function formatKg(kg) {
+        const grams = kg * 1000;
+        const units = [
+            { name: 'Mt',   factor: 1e12 },
+            { name: 'kt',   factor: 1e9 },
+            { name: 't',    factor: 1e6 },
+            { name: 'kg',   factor: 1e3 },
+            { name: 'g',    factor: 1 },
+            { name: 'mg',   factor: 1e-3 },
+            { name: 'μg',   factor: 1e-6 },
+            { name: 'ng',   factor: 1e-9 }
+        ];
+
+        let bestUnit = units[units.length - 1];
+        let bestValue = grams / bestUnit.factor;
+
+        for (const unit of units) {
+            const value = grams / unit.factor;
+            if (value >= 1 && value < 1000) {
+            bestUnit = unit;
+            bestValue = value;
+            break;
+            }
+    }
+
+    const formatted = (Math.abs(bestValue - Math.round(bestValue)) < 1e-10)
+        ? Math.round(bestValue).toString()
+        : bestValue.toFixed(2).replace(/\.?0+$/, '');
+    return `${formatted} ${bestUnit.name}`;
+    }
 });
