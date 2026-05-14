@@ -1015,11 +1015,7 @@ def serve(
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
         with auth_lock: creator = token2user.get(token, None)
         if creator!=card.creator: abort(403, "Only the card's creator can see the emissions.")
-        job = jobs_tracker.get_last(card_id)
-        if job.data:
-            emissions_out = {k: job.data[k] for k in ["energy_consumed", "emissions"] if k in job.data}
-        else:
-            emissions_out = {}
+        emissions_out = jobs_tracker.flash_codecarbon(card_id)
         return jsonify(emissions_out)
     
     @app.route(domain_prefix+'/emissions/<int:card_id>/flash', methods=['GET'])
@@ -1028,11 +1024,7 @@ def serve(
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
         with auth_lock: creator = token2user.get(token, None)
         if creator!=card.creator: abort(403, "Only the card's creator can pop the emissions.")
-        job = jobs_tracker.pop_last(card_id)
-        if job:
-            emissions_out = {k: job.data[k] for k in ["energy_consumed", "emissions"] if k in job.data}
-        else:
-            emissions_out = {}
+        emissions_out = jobs_tracker.flash_codecarbon(card_id)
         return jsonify(emissions_out)
 
     @app.route(domain_prefix+"/card/<int:card_id>/download/<string:fformat>", methods=["GET"])
