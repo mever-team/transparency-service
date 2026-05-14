@@ -284,6 +284,26 @@ class CookieAuthenticator:
         try:
             header = jwt.get_unverified_header(token)
             if not header.get("kid"):
+                jwks = self.jwks_client.get_jwk_set()
+                for key in jwks.keys:
+                    try:
+                        claims = jwt.decode(
+                            token,
+                            key.key,
+                            algorithms=header.get("alg", "RS256"),
+                            audience=self.AUDIENCE,
+                            issuer=self.ISSUER,
+                            leeway=10,
+                            timeout=self.timeout_seconds
+                        )
+                        return {
+                            "email": claims.get("email"),
+                            "preferred_username": claims.get("preferred_username"),
+                            "given_name": claims.get("given_name"),
+                            "family_name": claims.get("family_name"),
+                        }
+                    except jwt.InvalidSignatureError:
+                        continue
                 if unsafely_skip_verification: return header
                 if self.logger: self.logger.error("Unverify-able header without \"kid\" field: " + str(header))
                 return {}
@@ -297,10 +317,9 @@ class CookieAuthenticator:
                 leeway=10,
                 timeout=self.timeout_seconds
             )
-            username = claims.get("preferred_username")
             return {
                 "email": claims.get("email"),
-                "preferred_username": username,
+                "preferred_username": claims.get("preferred_username"),
                 "given_name": claims.get("given_name"),
                 "family_name": claims.get("family_name"),
             }

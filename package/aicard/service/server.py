@@ -346,15 +346,12 @@ def serve(
     @app.route(domain_prefix+"/ping", methods=["GET"])
     def ping():
         if third_party_auth:
-            logger.info(str(request.cookies))
-            auth = request.cookies.get("KEYCLOAK_IDENTITY", "")
-            for k,v in request.cookies.items():
-                logger.info(f"{k}: {v}")
-                if not auth: auth = v
+            auth = request.cookies.get("auth", "")
             if auth:
                 auth = json.loads(unquote(auth))
                 token = auth.get("token")
                 payload = third_party_auth.validate_token(token)
+                logger.info(f"token: {token}, payload: {payload}")
                 if not payload: return ""
                 username = payload.get("username")
                 email = payload.get("email")
