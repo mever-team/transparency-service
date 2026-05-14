@@ -10,6 +10,8 @@ import sys
 import jwt
 from jwt import PyJWKClient
 
+from aicard.service.logger import Logger
+
 
 def hash_password(password: str) -> str:
     if not password: return password
@@ -265,77 +267,25 @@ class UserDB:
                 (parent_id, child_id, message)
             )
         self.conn.commit()
-class CookieAuthenticator:
-    def __init__(self, ISSUER, AUDIENCE, CERT, register_token, timeout_seconds=3, logger=None):
-        self.ISSUER = ISSUER.rstrip("/")
-        self.AUDIENCE = AUDIENCE
-        self.register_token = register_token
-        self.jwks_client = PyJWKClient(CERT.rstrip("/"))
-        self.logger = logger
-        self.timeout_seconds = timeout_seconds
 
-    def validate_token(self, token: str, unsafely_skip_verification=False):
-        """Returns either an empty dict (if the token could not be verified) or a dict of verified information.
-        Pass unsafely_skip_verification=True if you have external means of verifying the token issuer.
-        IN THAT CASE, THE TOKEN IS NOT VERIFIED WITH THE ISSUER."""
-        if not token:
-            if self.logger: self.logger.warn("No token to validate")
+class CookieAuthenticator:
+    def __init__(self, REALM, CLIENT_ID, ISSUER, register_token, logger=None):
+        self.ISSUER = ISSUER.rstrip("/")
+        self.register_token = register_token
+        self.logger = logger
+        from keycloak import KeycloakOpenID # local import to perhaps avoid installing if not needed
+        self.keycloak_openid = KeycloakOpenID(
+            server_url=ISSUER,
+            realm_name=REALM,
+            client_id=CLIENT_ID,
+        )
+        self.pubkey = f"-----BEGIN PUBLIC KEY-----\n{self.keycloak_openid.public_key()}\n-----END PUBLIC KEY-----"
+
+    def validate_token(self, token: str):
+        try: return self.keycloak_openid.decode_token(token, key=self.pubkey, validate=True)
+        except Exception as e:
+            if self.logger: self.logger.warn("Token verification failed: "+str(e))
             return {}
-        try:
-            header = jwt.get_unverified_header(token)
-            if not header.get("kid"):
-                jwks = self.jwks_client.get_jwk_set()
-                for key in jwks.keys:
-                    try:
-                        from cryptography.hazmat.primitives import serialization
-                        pem = key.key.public_bytes(
-                            encoding=serialization.Encoding.PEM,
-                            format=serialization.PublicFormat.SubjectPublicKeyInfo
-                        )
-                        claims = jwt.decode(
-                            token,
-                            pem,
-                            algorithms=["RS256"],
-                            audience=self.AUDIENCE,
-                            issuer=self.ISSUER,
-                            leeway=10,
-                            timeout=self.timeout_seconds
-                        )
-                        return {
-                            "email": claims.get("email"),
-                            "preferred_username": claims.get("preferred_username"),
-                            "given_name": claims.get("given_name"),
-                            "family_name": claims.get("family_name"),
-                        }
-                    except jwt.InvalidSignatureError as e:
-                        if self.logger: self.logger.info(str(e))
-                        continue
-                    except jwt.InvalidTokenError as e:
-                        if self.logger: self.logger.info(str(e))
-                        continue
-                if unsafely_skip_verification: return header
-                if self.logger: self.logger.error("Could not verify token without 'kid' in header")# without \"kid\" field: " + str(header))
-                return {}
-            signing_key = self.jwks_client.get_signing_key_from_jwt(token)
-            claims = jwt.decode(
-                token,
-                signing_key.key,
-                algorithms=["RS256"],
-                audience=self.AUDIENCE,
-                issuer=self.ISSUER,
-                leeway=10,
-                timeout=self.timeout_seconds
-            )
-            return {
-                "email": claims.get("email"),
-                "preferred_username": claims.get("preferred_username"),
-                "given_name": claims.get("given_name"),
-                "family_name": claims.get("family_name"),
-            }
-        except jwt.ExpiredSignatureError: abort(401, "Token expired")
-        except jwt.InvalidAudienceError: abort(401, "Invalid audience")
-        except jwt.InvalidIssuerError: abort(401, "Invalid issuer")
-        except jwt.InvalidTokenError: abort(401, "Invalid token")
 
 def require_auth(token2expiration: dict, third_party_authenticator: CookieAuthenticator|None=None):
     def decorator(f):
