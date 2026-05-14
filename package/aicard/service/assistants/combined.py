@@ -21,8 +21,8 @@ class Combined(Assistant):
         self._complete.start(logger)
         self._refine.start(logger)
 
-    def complete(self, card: ModelCard, url: str, logger: Logger, user_messages: list[str]):
-        ret = self._complete.complete(card, url, logger, user_messages)
+    def complete(self, card: ModelCard, card_id: int, url: str, logger: Logger, user_messages: list[str], job_tracker: CardJobsTracker):
+        ret = self._complete.complete(card, card_id, url, logger, user_messages, job_tracker)
         if not self._refine_immediately: return ret
         return self._refine.refine(card, logger, user_messages)
 
