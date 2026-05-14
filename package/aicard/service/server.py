@@ -48,6 +48,7 @@ def serve(
     domain_prefix:str="/transparency",
     third_party_realm: str|None = None,
     third_party_client: str|None = None,
+    third_party_cert: str|None = None,
     feature_extractor: SemanticMatcher|None = None,
     email_verification: EmailVerification|None = None,
     jobs_tracker: CardJobsTracker = CardJobsTracker(),
@@ -63,6 +64,7 @@ def serve(
     if not log_file: log_file = config.get("LOG", log_file)
     if not third_party_realm: third_party_realm = config.get("THIRD_PARTY_REALM")
     if not third_party_client: third_party_client = config.get("THIRD_PARTY_CLIENT")
+    if not third_party_cert: third_party_cert = config.get("THIRD_PARTY_CERT")
     assert admin_username, f"Admin username not found in {env} USER or arguments"
     assert admin_password, f"Admin password not found in {env} PASS or arguments"
     if not redirect_index: redirect_index = "index.html"
@@ -108,7 +110,7 @@ def serve(
             if (db_email or "").strip().lower() != normalized_email:
                 abort(403, description="Your username is occupied by another email account")
         with auth_lock: token2user[token] = db_username
-    third_party_auth = users.CookieAuthenticator(third_party_realm, third_party_client, register_third_party_token, logger) if third_party_realm and third_party_client else None
+    third_party_auth = users.CookieAuthenticator(third_party_realm, third_party_client, third_party_cert, register_third_party_token, logger=logger) if third_party_realm and third_party_client else None
 
     def find_card(card_id: int):
         assert isinstance(card_id, int), "Card identifier must be an integer"
