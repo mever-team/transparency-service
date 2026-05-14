@@ -287,10 +287,15 @@ class CookieAuthenticator:
                 jwks = self.jwks_client.get_jwk_set()
                 for key in jwks.keys:
                     try:
+                        from cryptography.hazmat.primitives import serialization
+                        pem = key.key.public_bytes(
+                            encoding=serialization.Encoding.PEM,
+                            format=serialization.PublicFormat.SubjectPublicKeyInfo
+                        )
                         claims = jwt.decode(
                             token,
-                            key.key,
-                            algorithms=header.get("alg", "RS256"),
+                            pem,
+                            algorithms=["RS256"],
                             audience=self.AUDIENCE,
                             issuer=self.ISSUER,
                             leeway=10,
@@ -302,16 +307,16 @@ class CookieAuthenticator:
                             "given_name": claims.get("given_name"),
                             "family_name": claims.get("family_name"),
                         }
-                    except jwt.InvalidSignatureError:
-                        continue
+                    except jwt.InvalidSignatureError: continue
+                    except jwt.InvalidTokenError: continue
                 if unsafely_skip_verification: return header
-                if self.logger: self.logger.error("Unverify-able header without \"kid\" field: " + str(header))
+                if self.logger: self.logger.error("Could not verify token without 'kid' in header")# without \"kid\" field: " + str(header))
                 return {}
             signing_key = self.jwks_client.get_signing_key_from_jwt(token)
             claims = jwt.decode(
                 token,
                 signing_key.key,
-                algorithms=header.get("alg", "RS256"),
+                algorithms=["RS256"],
                 audience=self.AUDIENCE,
                 issuer=self.ISSUER,
                 leeway=10,
