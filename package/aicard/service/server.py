@@ -346,6 +346,9 @@ def serve(
     @app.route(domain_prefix+"/ping", methods=["GET"])
     def ping():
         if third_party_auth:
+            logger.info(str(request.cookies))
+            for k,v in request.cookies.multi_items():
+                logger.info(f"{k}: {v}")
             auth = request.cookies.get("auth", "")
             if auth:
                 auth = json.loads(unquote(auth))
