@@ -307,8 +307,12 @@ class CookieAuthenticator:
                             "given_name": claims.get("given_name"),
                             "family_name": claims.get("family_name"),
                         }
-                    except jwt.InvalidSignatureError: continue
-                    except jwt.InvalidTokenError: continue
+                    except jwt.InvalidSignatureError as e:
+                        if self.logger: self.logger.info(str(e))
+                        continue
+                    except jwt.InvalidTokenError as e:
+                        if self.logger: self.logger.info(str(e))
+                        continue
                 if unsafely_skip_verification: return header
                 if self.logger: self.logger.error("Could not verify token without 'kid' in header")# without \"kid\" field: " + str(header))
                 return {}
