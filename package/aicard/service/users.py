@@ -1,5 +1,8 @@
+import json
 from functools import wraps
 from flask import request, abort, Response
+from jwcrypto import jwk, jwt, jws
+
 from aicard.card import ModelCard
 import sqlite3
 import bcrypt
@@ -7,10 +10,6 @@ import time
 import os
 import atexit
 import sys
-import jwt
-from jwt import PyJWKClient
-
-from aicard.service.logger import Logger
 
 
 def hash_password(password: str) -> str:
@@ -270,16 +269,19 @@ class UserDB:
 
 class CookieAuthenticator:
     def __init__(self, REALM, CLIENT_ID, ISSUER, register_token, logger=None):
-        self.ISSUER = ISSUER.rstrip("/")
         self.register_token = register_token
         self.logger = logger
         from keycloak import KeycloakOpenID # local import to perhaps avoid installing if not needed
         self.keycloak_openid = KeycloakOpenID(
-            server_url=ISSUER,
+            server_url=ISSUER.rstrip("/")+"/",
             realm_name=REALM,
             client_id=CLIENT_ID,
         )
-        self.pubkey = f"-----BEGIN PUBLIC KEY-----\n{self.keycloak_openid.public_key()}\n-----END PUBLIC KEY-----"
+        self.pubkey = jwk.JWK.from_pem((
+            "-----BEGIN PUBLIC KEY-----\n"
+            + self.keycloak_openid.public_key()
+            + "\n-----END PUBLIC KEY-----"
+        ).encode())
 
     def validate_token(self, token: str):
         try: return self.keycloak_openid.decode_token(token, key=self.pubkey, validate=True)
