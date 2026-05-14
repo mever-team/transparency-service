@@ -266,7 +266,6 @@ class UserDB:
             )
         self.conn.commit()
 
-
 class CookieAuthenticator:
     def __init__(self, KEYCLOAK_ISSUER, AUDIENCE, register_token, logger=None):
         self.ISSUER = KEYCLOAK_ISSUER.rstrip("/")
@@ -293,7 +292,6 @@ class CookieAuthenticator:
         except jwt.InvalidAudienceError: abort(401, "Invalid audience")
         except jwt.InvalidIssuerError: abort(401, "Invalid issuer")
         except jwt.InvalidTokenError: abort(401, "Invalid token")
-
 
 def require_auth(token2expiration: dict, third_party_authenticator: CookieAuthenticator|None=None):
     def decorator(f):
