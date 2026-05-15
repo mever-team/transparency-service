@@ -360,12 +360,13 @@ $(document).ready(function () {
 
                 _render();
                 _renderSimple();
+                if (token && cardJson.creator===loggedUser) {
+                    render_emissions_flash();
+                }
             },
             error: error_handler
         });
-        if (token && cardJson.creator===loggedUser) {
-            render_emissions_flash();
-        }
+
         
     }
     normalRender();
