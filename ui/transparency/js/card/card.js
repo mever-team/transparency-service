@@ -363,7 +363,10 @@ $(document).ready(function () {
             },
             error: error_handler
         });
-        render_emissions_flash();
+        if (token && cardJson.creator===loggedUser) {
+            render_emissions_flash();
+        }
+        
     }
     normalRender();
     function _renderWhileRefine(){
