@@ -48,6 +48,7 @@ def serve(
     domain_prefix:str="/transparency",
     third_party_realm: str|None = None,
     third_party_client: str|None = None,
+    third_party_url: str|None = None,
     feature_extractor: SemanticMatcher|None = None,
     email_verification: EmailVerification|None = None,
     jobs_tracker: CardJobsTracker = CardJobsTracker(),
@@ -63,6 +64,7 @@ def serve(
     if not log_file: log_file = config.get("LOG", log_file)
     if not third_party_realm: third_party_realm = config.get("THIRD_PARTY_REALM")
     if not third_party_client: third_party_client = config.get("THIRD_PARTY_CLIENT")
+    if not third_party_url: third_party_url = config.get("THIRD_PARTY_URL")
     assert admin_username, f"Admin username not found in {env} USER or arguments"
     assert admin_password, f"Admin password not found in {env} PASS or arguments"
     if not redirect_index: redirect_index = "index.html"
@@ -108,7 +110,7 @@ def serve(
             if (db_email or "").strip().lower() != normalized_email:
                 abort(403, description="Your username is occupied by another email account")
         with auth_lock: token2user[token] = db_username
-    third_party_auth = users.CookieAuthenticator(third_party_realm, third_party_client, register_third_party_token, logger) if third_party_realm and third_party_client else None
+    third_party_auth = users.CookieAuthenticator(third_party_realm, third_party_client, third_party_url, register_third_party_token, logger=logger) if third_party_realm and third_party_client else None
 
     def find_card(card_id: int):
         assert isinstance(card_id, int), "Card identifier must be an integer"
@@ -187,7 +189,7 @@ def serve(
         return redirect(domain_prefix+'/'+redirect_index, code=307)
 
     @app.route(domain_prefix+'/users', methods=['GET'])
-    @users.require_auth(token2expiration, third_party_auth)
+    @users.require_auth(token2expiration)
     def admin_dashboard(token: str):
         def fetch_cards(cursor, owner, WHERE="user=?"):
             # TODO: return only fields relevant to the frontend here
@@ -248,7 +250,7 @@ def serve(
         return jsonify({"deleted": username})
 
     @app.route(domain_prefix + "/update_password", methods=["POST"])
-    @users.require_auth(token2expiration, third_party_auth)
+    @users.require_auth(token2expiration)
     def update_password(token: str):
         data = request.get_json()
         new_password = data.get("password", "")
@@ -355,7 +357,7 @@ def serve(
                 if not username: abort(401, description="Invalid cookie payload")
                 third_party_auth.register_token(token, username, email)
                 with auth_lock:
-                    token2expiration[token] = time.monotonic()  # we allow always, so expire immediately
+                    token2expiration[token] = time.monotonic() + token_expiration_secs
                     user = token2user.get(token, "unknown")
                     runs = user2agent_use.get(user, 0)
                     notifications = ""
@@ -649,7 +651,7 @@ def serve(
         return jsonify({"id": question_id, "answer": answer, "isfinal": isdone})
 
     @app.route(domain_prefix+'/card/<int:card_id>/clone', methods=['POST'])
-    @users.require_auth(token2expiration, third_party_auth)
+    @users.require_auth(token2expiration)
     def clone_card(card_id, token: str):
         parent_id = card_id
         with auth_lock: creator = token2user.get(token, "")
@@ -682,7 +684,7 @@ def serve(
         return jsonify(card_id), 201
 
     @app.route(domain_prefix+'/assistants', methods=['GET'])
-    @users.require_auth(token2expiration, third_party_auth)
+    @users.require_auth(token2expiration)
     def get_assistants(token: str):
         return jsonify([{"name": key, "desc": value.description} for key, value in assistants.items()])
 
@@ -740,7 +742,7 @@ def serve(
             return jsonify(card.title)
 
     @app.route(domain_prefix+'/card/<int:card_id>/title', methods=['PUT'])
-    @users.require_auth(token2expiration, third_party_auth)
+    @users.require_auth(token2expiration)
     def set_card_title(card_id, token: str):
         with auth_lock: creator = token2user.get(token, None)
         found = find_card(card_id)
@@ -752,7 +754,7 @@ def serve(
             return jsonify(card.data['title'])
 
     @app.route(domain_prefix+'/card/<int:card_id>/report', methods=['POST'])
-    @users.require_auth(token2expiration, third_party_auth)
+    @users.require_auth(token2expiration)
     def report_card(card_id, token: str):
         with auth_lock: creator = token2user.get(token, None)
         found = find_card(card_id)
@@ -772,7 +774,7 @@ def serve(
             return jsonify(card.data['title'])
 
     @app.route(domain_prefix+'/reports/<int:card_id>', methods=['GET'])
-    @users.require_auth(token2expiration, third_party_auth)
+    @users.require_auth(token2expiration)
     def get_card_reports(card_id, token: str):
         with auth_lock: creator = token2user.get(token, None)
         found = find_card(card_id)
@@ -785,7 +787,7 @@ def serve(
         return jsonify(rows)
 
     @app.route(domain_prefix+'/reports/<int:card_id>', methods=['DELETE'])
-    @users.require_auth(token2expiration, third_party_auth)
+    @users.require_auth(token2expiration)
     def resolve_card_reports(card_id, token: str):
         with auth_lock: creator = token2user.get(token, None)
         if creator != admin_username: abort(403, "The card's creator cannot clear reports.")
@@ -816,7 +818,7 @@ def serve(
             return jsonify(data)
 
     @app.route(domain_prefix+'/card/<int:card_id>/<string:field_name>/<string:data_name>', methods=['PUT'])
-    @users.require_auth(token2expiration, third_party_auth)
+    @users.require_auth(token2expiration)
     def set_card_field(card_id, field_name, data_name, token: str):
         with auth_lock: creator = token2user.get(token, None)
         found = find_card(card_id)
@@ -845,7 +847,7 @@ def serve(
             return jsonify(data.get())  # do not return json_data directly, as setting the value may format it
 
     @app.route(domain_prefix+'/card/<int:card_id>', methods=['DELETE'])
-    @users.require_auth(token2expiration, third_party_auth)
+    @users.require_auth(token2expiration)
     def delete_card(card_id, token: str):
         with auth_lock: creator = token2user.get(token, None)
         card_entry = find_card(card_id)
@@ -859,7 +861,7 @@ def serve(
             return '', 204
 
     @app.route(domain_prefix+'/card/<int:card_id>', methods=['PUT'])
-    @users.require_auth(token2expiration, third_party_auth)
+    @users.require_auth(token2expiration)
     def update_card(card_id, token: str):
         card_entry = find_card(card_id)
         with auth_lock: creator = token2user.get(token, None)
@@ -878,7 +880,7 @@ def serve(
                            |{"description": card.summary(), "quality": card.quality(), "history": card_entry.history(), "creator": card_entry.creator})
 
     @app.route(domain_prefix + '/card/simple/<int:card_id>', methods=['PUT'])
-    @users.require_auth(token2expiration, third_party_auth)
+    @users.require_auth(token2expiration)
     def update_card_simple(card_id, token: str):
         card_entry = find_card(card_id)
         with auth_lock:
@@ -902,7 +904,7 @@ def serve(
                               "creator": card_entry.creator})
 
     @app.route(domain_prefix+'/card', methods=['POST'])
-    @users.require_auth(token2expiration, third_party_auth)
+    @users.require_auth(token2expiration)
     def create_card(token: str):
         json_data = request.get_json()
         with auth_lock: creator = token2user.get(token, "")
@@ -936,7 +938,7 @@ def serve(
         return trigger
 
     @app.route(domain_prefix+'/assistant/<string:assistant_type>/complete/<int:card_id>', methods=['POST'])
-    @users.require_auth(token2expiration, third_party_auth)
+    @users.require_auth(token2expiration)
     def autocomplete_card(card_id: int, assistant_type: str, token: str):
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
@@ -963,7 +965,7 @@ def serve(
         return jsonify(status)
 
     @app.route(domain_prefix+'/assistant/<string:assistant_type>/refine/<int:card_id>', methods=['POST'])
-    @users.require_auth(token2expiration, third_party_auth)
+    @users.require_auth(token2expiration)
     def autorefine_card(card_id: int, assistant_type: str, token: str):
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
@@ -982,7 +984,7 @@ def serve(
     # disabled until needed or until such a callback is added. The UI does not seem to use this function right
     # now, so the change is not breaking.
     # @app.route(domain_prefix+'/assistant/<string:assistant_type>/refinefield/<int:card_id>', methods=['POST'])
-    # @users.require_auth(token2expiration, third_party_auth)
+    # @users.require_auth(token2expiration)
     # def autorefine_field(card_id: int, assistant_type: str, token: str):
     #     assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
     #     card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
@@ -999,7 +1001,7 @@ def serve(
     #     return Response(refined_stream, content_type="application/x-ndjson")
     
     @app.route(domain_prefix+'/job/<int:card_id>', methods=['GET'])
-    @users.require_auth(token2expiration, third_party_auth)
+    @users.require_auth(token2expiration)
     def card_job(card_id: int, token: str):
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
         with auth_lock: creator = token2user.get(token, None)
@@ -1010,7 +1012,7 @@ def serve(
         return jsonify({})
     
     @app.route(domain_prefix+'/emissions/<int:card_id>/last', methods=['GET'])
-    @users.require_auth(token2expiration, third_party_auth)
+    @users.require_auth(token2expiration)
     def get_emissions_last(card_id: int, token: str):
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
         with auth_lock: creator = token2user.get(token, None)
@@ -1019,7 +1021,7 @@ def serve(
         return jsonify(emissions_out)
     
     @app.route(domain_prefix+'/emissions/<int:card_id>/flash', methods=['GET'])
-    @users.require_auth(token2expiration, third_party_auth)
+    @users.require_auth(token2expiration)
     def flash_emissions_last(card_id: int, token: str):
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
         with auth_lock: creator = token2user.get(token, None)
@@ -1034,7 +1036,7 @@ def serve(
         return Response(content, mimetype=mimetype, headers={"Content-Disposition": f"attachment; filename={filename}"})
 
     @app.route(domain_prefix+'/eval_adapter/<int:card_id>', methods=['POST'])
-    @users.require_auth(token2expiration, third_party_auth)
+    @users.require_auth(token2expiration)
     def eval_adapter_endpoint(card_id, token: str):
         card_entry = find_card(card_id)
         with auth_lock: creator = token2user.get(token, None)
