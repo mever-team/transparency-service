@@ -1044,4 +1044,12 @@ $('.contents').on('click', '.refine-field', async function () {
         : bestValue.toFixed(2).replace(/\.?0+$/, '');
     return `${formatted} ${bestUnit.name}`;
     }
+
+    // ignore text/html when pasting to a field
+    $(document).on("paste", ".field-value[contenteditable='true']", function (e) {
+        e.preventDefault();
+        const text = (e.originalEvent || e).clipboardData.getData("text/plain");
+        document.execCommand("insertText", false, text);
+    });
 });
+
