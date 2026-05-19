@@ -1,5 +1,8 @@
+import json
 from functools import wraps
 from flask import request, abort, Response
+from jwcrypto import jwk, jwt, jws
+
 from aicard.card import ModelCard
 import sqlite3
 import bcrypt
@@ -7,8 +10,6 @@ import time
 import os
 import atexit
 import sys
-import jwt
-from jwt import PyJWKClient
 
 
 def hash_password(password: str) -> str:
@@ -266,34 +267,27 @@ class UserDB:
             )
         self.conn.commit()
 
-
 class CookieAuthenticator:
-    def __init__(self, KEYCLOAK_ISSUER, AUDIENCE, register_token, logger=None):
-        self.ISSUER = KEYCLOAK_ISSUER.rstrip("/")
-        self.AUDIENCE = AUDIENCE
+    def __init__(self, REALM, CLIENT_ID, ISSUER, register_token, logger=None):
         self.register_token = register_token
-        self.jwks_client = PyJWKClient(f"{self.ISSUER}/protocol/openid-connect/certs")
         self.logger = logger
+        from keycloak import KeycloakOpenID # local import to perhaps avoid installing if not needed
+        self.keycloak_openid = KeycloakOpenID(
+            server_url=ISSUER.rstrip("/")+"/",
+            realm_name=REALM,
+            client_id=CLIENT_ID,
+        )
+        self.pubkey = jwk.JWK.from_pem((
+            "-----BEGIN PUBLIC KEY-----\n"
+            + self.keycloak_openid.public_key()
+            + "\n-----END PUBLIC KEY-----"
+        ).encode())
 
     def validate_token(self, token: str):
-        if not token:
-            if self.logger: self.logger.warn("No token to validate")
+        try: return self.keycloak_openid.decode_token(token, key=self.pubkey, validate=True)
+        except Exception as e:
+            if self.logger: self.logger.warn("Token verification failed: "+str(e))
             return {}
-        try:
-            signing_key = self.jwks_client.get_signing_key_from_jwt(token)
-            return jwt.decode(
-                token,
-                signing_key.key,
-                algorithms=["RS256"],
-                audience=self.AUDIENCE,
-                issuer=self.ISSUER,
-                leeway=10
-            )
-        except jwt.ExpiredSignatureError: abort(401, "Token expired")
-        except jwt.InvalidAudienceError: abort(401, "Invalid audience")
-        except jwt.InvalidIssuerError: abort(401, "Invalid issuer")
-        except jwt.InvalidTokenError: abort(401, "Invalid token")
-
 
 def require_auth(token2expiration: dict, third_party_authenticator: CookieAuthenticator|None=None):
     def decorator(f):
