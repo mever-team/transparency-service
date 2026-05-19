@@ -1,8 +1,12 @@
 from datetime import datetime
+import re
 
 class Field:
     def set(self, value: str): raise Exception("Cannot set to abstract Field")
     def get(self): raise Exception("Cannot get from abstract Field")
+
+def _clean_html(text: str):
+    return re.sub(r"<[^>]+>", "", text) if text else ""
 
 class ShortText(Field):
     def __init__(self, description: str="", technical_nature: bool=False, is_simple: bool=False):
@@ -12,13 +16,13 @@ class ShortText(Field):
         self.is_simple = is_simple
     def set(self, value):
         if isinstance(value, Field): value = value.get()
-        self.__contents = value
+        self.__contents = _clean_html(value)
     def get(self):
-        return self.__contents
+        return _clean_html(self.__contents)
     def __bool__(self):
         return bool(self.__contents)
     def __html__(self):
-        return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "short text"}
+        return {"value": _clean_html(self.__contents) if self.__contents else "", "description": self.description, "type": "short text"}
 
 class LongText(Field):
     def __init__(self, description: str="", technical_nature: bool=False, is_simple: bool=False):
