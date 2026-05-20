@@ -1,20 +1,16 @@
 import requests
-import html2text
-import aicard as aic
 import markdown2
+import aicard as aic
 from aicard.service.assistants import SemanticMatcher
 from tqdm import tqdm
 
+logger = aic.service.logger.Logger()
 matcher = SemanticMatcher(
     "sentence-transformers/all-mpnet-base-v2",
     external_get_timeout_sec=3,
     matching_strictness=0.5)
-matcher.start(aic.service.logger.Logger())
-matcher._wait_until_ready()
-
-_h2t = html2text.HTML2Text()
-_h2t.ignore_links = False
-_h2t.body_width = 0
+matcher.start(logger=logger)
+#matcher._wait_until_ready()
 
 def _md(text: str) -> str:
     if not text: return ""
@@ -125,12 +121,20 @@ def fetch_recent_hf_models(limit: int) -> list[str]:
     )
     resp.raise_for_status()
     return [m["id"] for m in resp.json()]
+
 # model_id = "google-bert/bert-base-uncased" # this is an example model id
+
 conn = aic.connect("http://127.0.0.1:5000", username="admin", password="admin")
-for model_id in tqdm(fetch_recent_hf_models(5000)):
+card_names = {card["name"] for card in conn.status()["cards"]}
+logger.info(f"bot has already registered {len(card_names)} cards")
+missing_models = [model for model in fetch_recent_hf_models(5000) if model.split("/")[-1] not in card_names]
+logger.info(f"bot found {len(missing_models)} new cards to import")
+
+for model_id in tqdm(missing_models):
     local_card = aic.ModelCard()
     hf_to_card(model_id, local_card)
-    if local_card.quality()<0.3:
-        print(f"Skipping {model_id} due to low quality")
-        continue
+    quality = local_card.quality()
+    if quality<0.3:
+        logger.warn(f"Created by not published {model_id} due to low quality {local_card.quality():.3f}")
+        local_card.overview.version = ""
     with conn.create() as card: card.merge(local_card)
