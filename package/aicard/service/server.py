@@ -192,9 +192,9 @@ def serve(
     @users.require_auth(token2expiration)
     def admin_dashboard(token: str):
         def fetch_cards(cursor, owner, WHERE="user=?"):
-            # TODO: return only fields relevant to the frontend here
+            # TODO: return only fields relevant to the frontend here (progress: removed overview)
             cursor.execute(f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, report_count
+                SELECT id, title, user, desc, quality, timestamp, overview__type, overview__task, overview__date, report_count
                 FROM cards
                 WHERE {WHERE}
                 """,
@@ -207,18 +207,15 @@ def serve(
                 added_ids.add(row[0])
                 quality = float(row[4]) if row[4] else 0
                 timestamp = int(row[5]) if row[5] else 0
-                overview = row[6]
-                if "<img" in overview: overview = ""
-                if len(overview) > 120: overview = overview[:(120 - 3)] + "..."
-                overview_type = row[7]
-                overview_task = row[8]
-                overview_date = row[9]
-                report_count = row[10]
+                overview_type = row[6]
+                overview_task = row[7]
+                overview_date = row[8]
+                report_count  = row[9]
                 with card_cache_lock:
                     card = card_cache.get(row[0], None)
                 is_working = bool(card and card.check_completion())
                 results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality,
-                                "description": overview, "type": overview_type, "task": overview_task,
+                                "type": overview_type, "task": overview_task,
                                 "date": overview_date, "report_count": report_count, "working": is_working})
             return results
 

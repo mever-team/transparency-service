@@ -31,9 +31,9 @@ $(function () {
         if (!response.cards || response.cards.length === 0) $cards.hide();
         else {
             $cards.append("<h2>Your cards at a glance</h2>");
-            response.cards.forEach(card => {$cards.append(`
+            response.cards.forEach((card, i) => {$cards.append(`
                 <div class="card" data-card="${card.id}">
-                    <span class="username"><a href="/transparency/model_card.html?id=${card.id}">${card.name}&nbsp;</a></span>`
+                    <span class="counter">${i + 1}.</span>&nbsp;<span class="username"><a href="/transparency/model_card.html?id=${card.id}">${card.name}&nbsp;</a></span>`
                 +(card.working?`<span>An agent is working on this</span>`:`<span class="card-delete-btn error button" data-card="${card.id}"><i class="fa-solid fa-trash"></i>&nbsp;Delete</span>`)
                 +(card.desc?`<span class="unpublish-btn warning button" data-card="${card.id}"><i class="fa-solid fa-undo"></i>&nbsp;Unpublish: ${card.desc}</span>`:"<span class='placeholder'>[DRAFT]</span>")
                 +(loggedUserIsAdmin&&card.report_count?`<span class="resolve-btn success button" data-card="${card.id}"><i class="fa-solid fa-check"></i>&nbsp;Close reports</span>`:"")

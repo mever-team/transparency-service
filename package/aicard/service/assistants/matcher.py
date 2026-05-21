@@ -81,29 +81,29 @@ class SemanticMatcher(Assistant):
             SemanticMatcher._started = True
         def _load():
             try:
-                logger.warn("preparing semantic matcher\n * will proceed asynchronously\n * may take a while the first time\n * agent tasks will wait on this", user="📚 Semantic Matcher")
-                device = "cpu"# "cuda" if torch.cuda.is_available() else "cpu"
-                self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
-                self.model = AutoModel.from_pretrained(self.model_name).to(device)
-                logger.ok(f"Loaded {self.model_name} on torch device: {device}", user="📚 Semantic Matcher")
-                self.model.eval()
-                field_embeddings = dict()
-                for cat, values in ModelCard().data.items():
-                    if not isinstance(values, dict): continue
-                    field_embeddings[cat] = self._get_embeddings("AI model card "+cat)
-                    for field, value in values.items():
-                        if isinstance(value, Options):
-                            for option in value.options():
-                                field_embeddings[cat+"__"+field+"__"+option] = self._get_embeddings("question: # AI model card "+cat+" "+field+" "+option+"\n"+value.description)
-                        field_embeddings[cat+"__"+field] = self._get_embeddings("question: # AI model card "+cat+" "+field+"\n"+value.description)
-                vals = list(field_embeddings.values())
-                sims = [self.embedding_similarity(vals[s1], vals[s2]) for s1 in range(len(vals)) for s2 in range(s1+1, len(vals))]
-                max_noise_similarity = min(sims)
-                logger.ok(f"loading complete" 
-                        f"\n * {len(field_embeddings)} card field semantic embeddings"
-                        f"\n * {max_noise_similarity:.3f} minimum matching (semantic similarity lesser than this is considered irrelevant)", user="📚 Semantic Matcher")
-
                 with SemanticMatcher._loader_lock:
+                    logger.warn("preparing semantic matcher\n * will proceed asynchronously\n * may take a while the first time\n * agent tasks will wait on this", user="📚 Semantic Matcher")
+                    device = "cpu"# "cuda" if torch.cuda.is_available() else "cpu"
+                    self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
+                    self.model = AutoModel.from_pretrained(self.model_name).to(device)
+                    logger.ok(f"Loaded {self.model_name} on torch device: {device}", user="📚 Semantic Matcher")
+                    self.model.eval()
+                    field_embeddings = dict()
+                    for cat, values in ModelCard().data.items():
+                        if not isinstance(values, dict): continue
+                        field_embeddings[cat] = self._get_embeddings("AI model card "+cat)
+                        for field, value in values.items():
+                            if isinstance(value, Options):
+                                for option in value.options():
+                                    field_embeddings[cat+"__"+field+"__"+option] = self._get_embeddings("question: # AI model card "+cat+" "+field+" "+option+"\n"+value.description)
+                            field_embeddings[cat+"__"+field] = self._get_embeddings("question: # AI model card "+cat+" "+field+"\n"+value.description)
+                    vals = list(field_embeddings.values())
+                    sims = [self.embedding_similarity(vals[s1], vals[s2]) for s1 in range(len(vals)) for s2 in range(s1+1, len(vals))]
+                    max_noise_similarity = min(sims)
+                    logger.ok(f"loading complete" 
+                            f"\n * {len(field_embeddings)} card field semantic embeddings"
+                            f"\n * {max_noise_similarity:.3f} minimum matching (semantic similarity lesser than this is considered irrelevant)", user="📚 Semantic Matcher")
+
                     self.field_embeddings = field_embeddings
                     self.max_noise_similarity = max_noise_similarity
             except Exception as e:
@@ -118,28 +118,8 @@ class SemanticMatcher(Assistant):
             if self.field_embeddings is None:
                 raise Exception("Semantic Matcher is still starting")
 
-    def complete(self, card: ModelCard, card_id: int, data: dict, logger: Logger, user_messages: list[str], job_tracker: CardJobsTracker):
-        user_messages[-1] = (
-            f"<h2>{self.alias} import</h2>"
-            f"Retrieving document."
-        )
-        self._wait_until_ready()
-        job = Job(
-            worker = 'matcher',
-            operation = 'complete',
-            data={})
-        job_tracker.set(card_id, job)
-        job_id = job_tracker.get(card_id).id
-        tracker = EmissionsTracker( project_name=job_id, save_to_file=False, log_level="WARNING", tracking_mode="process")
-        tracker.start()
-        
-        url = data['url']
-        logger.info("Submitted: " + str(url), user=self.alias)
-        parsed = urlparse(url)
-        if not parsed.scheme in ("http", "https") or not parsed.netloc: raise Exception("Invalid url format")
-        response = requests.get(url, timeout=self.external_get_timeout_sec)
-
-        soup = BeautifulSoup(response.text, "html.parser")
+    def complete_from_text(self, card: ModelCard, url:str, text:str, user_messages=["dummy message list"]):
+        soup = BeautifulSoup(text, "html.parser")
         for comment in soup.findAll(string=lambda text: isinstance(text, Comment)): comment.extract() # remove comments
         for tag in soup.find_all(href=True): tag["href"] = urljoin(url, tag["href"])
         for tag in soup.find_all(src=True): tag["src"] = urljoin(url, tag["src"])
@@ -262,6 +242,28 @@ class SemanticMatcher(Assistant):
         if not card.overview.creator: card.overview.creator = creator
         if not card.overview.date: card.overview.date = date.today().strftime("%Y-%m-%d")
         if not card.overview.home: card.overview.home = url
+
+    def complete(self, card: ModelCard, card_id: int, data: dict, logger: Logger, user_messages: list[str], job_tracker: CardJobsTracker):
+        user_messages[-1] = (
+            f"<h2>{self.alias} import</h2>"
+            f"Retrieving document."
+        )
+        self._wait_until_ready()
+        job = Job(
+            worker = 'matcher',
+            operation = 'complete',
+            data={})
+        job_tracker.set(card_id, job)
+        job_id = job_tracker.get(card_id).id
+        tracker = EmissionsTracker( project_name=job_id, save_to_file=False, log_level="WARNING", tracking_mode="process")
+        tracker.start()
+        
+        url = data['url']
+        logger.info("Submitted: " + str(url), user=self.alias)
+        parsed = urlparse(url)
+        if not parsed.scheme in ("http", "https") or not parsed.netloc: raise Exception("Invalid url format")
+        response = requests.get(url, timeout=self.external_get_timeout_sec)
+        self.complete_from_text(card, url, response.text)
         user_messages[-1] =  f"<h2>{self.alias} import</h2> Saving..."
         emissions = tracker.stop()
         emissions_data = json.loads(tracker.final_emissions_data.toJSON())

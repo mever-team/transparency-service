@@ -25,8 +25,14 @@ class Client():
 
     def search(self, query: str="Model Card", owned_only: bool=True, top: int=10):
         response = requests.post(self.url+"/transparency/cards", json={"query": query, "page_size": top, "creator": self.username if owned_only else ""})
-        if response.status_code != 200: self.logger.fatal(f"Card creation failed: {response.status_code} {response.text}")
+        if response.status_code != 200: self.logger.fatal(f"Card search failed: {response.status_code} {response.text}")
         results = response.json()["results"]
+        return results
+
+    def status(self):
+        response = self.get("/transparency/users")
+        if response.status_code != 200: self.logger.fatal(f"User status failed: {response.status_code} {response.text}")
+        results = response.json()
         return results
 
     def create(self, data=None):
