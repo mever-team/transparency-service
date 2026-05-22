@@ -687,7 +687,7 @@ def serve(
 
     @app.route(domain_prefix+'/banner/<int:card_id>', methods=['GET'])
     def get_banner(card_id: int):
-        url = url_for("get_banner_raw", card_id=card_id, _external=True)
+        url = url_for("get_banner_raw", card_id=card_id, _external=True, _scheme=request.scheme)
         banner = f"""<iframe frameborder="0" src="{url}" width="500" height="300">
 <a href="{url}" target="_blank">Trai model card.</a></iframe>"""
         escaped_banner = banner.replace("<","&lt;").replace(">","&gt;")
