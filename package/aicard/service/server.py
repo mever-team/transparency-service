@@ -347,7 +347,6 @@ def serve(
             payload = third_party_auth.validate_token( parts[1])
 
             if not payload: return ""
-            logger.info(str(payload))
             if not payload.get("email_verified"): return ""
             username = payload.get("preferred_username")
             email = payload.get("email")
