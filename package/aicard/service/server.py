@@ -46,8 +46,7 @@ def serve(
     silent:bool=False,
     static:str = "ui",
     domain_prefix:str="/transparency",
-    third_party_realm: str|None = None,
-    third_party_client: str|None = None,
+    third_party_audience: str|None = None,
     third_party_url: str|None = None,
     feature_extractor: SemanticMatcher|None = None,
     email_verification: EmailVerification|None = None,
@@ -62,8 +61,7 @@ def serve(
     if not admin_password: admin_password = config.get("PASS")
     if not redirect_index: redirect_index = config.get("INDEX")
     if not log_file: log_file = config.get("LOG", log_file)
-    if not third_party_realm: third_party_realm = config.get("THIRD_PARTY_REALM")
-    if not third_party_client: third_party_client = config.get("THIRD_PARTY_CLIENT")
+    if not third_party_audience: third_party_audience = config.get("THIRD_PARTY_AUDIENCE")
     if not third_party_url: third_party_url = config.get("THIRD_PARTY_URL")
     assert admin_username, f"Admin username not found in {env} USER or arguments"
     assert admin_password, f"Admin password not found in {env} PASS or arguments"
@@ -110,7 +108,7 @@ def serve(
             if (db_email or "").strip().lower() != normalized_email:
                 abort(403, description="Your username is occupied by another email account")
         with auth_lock: token2user[token] = db_username
-    third_party_auth = users.CookieAuthenticator(third_party_realm, third_party_client, third_party_url, register_third_party_token, logger=logger) if third_party_realm and third_party_client else None
+    third_party_auth = users.CookieAuthenticator(third_party_url, third_party_audience, register_third_party_token, logger=logger) if third_party_realm and third_party_client else None
 
     def find_card(card_id: int):
         assert isinstance(card_id, int), "Card identifier must be an integer"
@@ -347,10 +345,12 @@ def serve(
             if auth:
                 auth = json.loads(unquote(auth))
                 token = auth.get("token")
+                logger.info(str(token))
                 payload = third_party_auth.validate_token(token)
                 if not payload: return ""
                 username = payload.get("username")
                 email = payload.get("email")
+                logger.info(str(payload))
                 if not username: abort(401, description="Invalid cookie payload")
                 third_party_auth.register_token(token, username, email)
                 with auth_lock:

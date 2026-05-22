@@ -1,7 +1,6 @@
-import json
 from functools import wraps
 from flask import request, abort, Response
-from jwcrypto import jwk, jwt, jws
+import base64
 
 from aicard.card import ModelCard
 import sqlite3
@@ -267,27 +266,30 @@ class UserDB:
             )
         self.conn.commit()
 
+
+from jwt import PyJWKClient, PyJWKSet
+import jwt
+
+
 class CookieAuthenticator:
-    def __init__(self, REALM, CLIENT_ID, ISSUER, register_token, logger=None):
+    def __init__(self, third_party_url, third_party_audience, register_token, logger=None):
+        jwks_url = "https://faithkc.ilabhub.atc.gr/realms/shell-app/protocol/openid-connect/certs"
+        self.jwks_client = PyJWKClient(third_party_url, cache_keys=True)
+        self.audience = third_party_audience
         self.register_token = register_token
         self.logger = logger
-        from keycloak import KeycloakOpenID # local import to perhaps avoid installing if not needed
-        self.keycloak_openid = KeycloakOpenID(
-            server_url=ISSUER.rstrip("/")+"/",
-            realm_name=REALM,
-            client_id=CLIENT_ID,
-        )
-        self.pubkey = jwk.JWK.from_pem((
-            "-----BEGIN PUBLIC KEY-----\n"
-            + self.keycloak_openid.public_key()
-            + "\n-----END PUBLIC KEY-----"
-        ).encode())
 
-    def validate_token(self, token: str):
-        try: return self.keycloak_openid.decode_token(token, key=self.pubkey, validate=True)
+    def validate_token(self, token: str) -> dict:
+        try: signing_key = self.jwks_client.get_signing_key_from_jwt(token)
+        except:
+            jwks = self.jwks_client.fetch_data()
+            signing_key = next(k for k in PyJWKSet.from_dict(jwks).keys if k.public_key_use == "sig")
+        try:
+            header = jwt.get_unverified_header(token)
+            return jwt.decode(token, signing_key, algorithms=[header["alg"]], audience=self.audience)
         except Exception as e:
-            if self.logger: self.logger.warn("Token verification failed: "+str(e))
-            return {}
+            if self.logger: self.logger.warn(f"Token validation failed: {e}")
+        return {}
 
 def require_auth(token2expiration: dict, third_party_authenticator: CookieAuthenticator|None=None):
     def decorator(f):
