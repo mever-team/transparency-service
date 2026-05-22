@@ -168,6 +168,17 @@ ul.nacc .field-value[contenteditable="true"] {
     cursor: text;
     transition: border 0.2s, background 0.2s;
 }
+.medium-editor-element span {
+    background: transparent !important;
+}
+blockquote {
+    margin: 10px 0;
+    padding: 10px 15px;
+    border-left: 4px solid #ccc;
+    background: #f7f7f7;
+    color: #333;
+    font-style: italic;
+}
 
 ul.nacc .field-value[contenteditable="true"]:hover {
     background: #FAFAFA;

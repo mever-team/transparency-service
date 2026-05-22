@@ -2,6 +2,9 @@ var cardJson;
 var comparedJson;
 var comparedJsonSimple;
 var menuOffsetTop=0;
+// const editor = new MediumEditor('.editable');
+var editor;
+
 
 function error_message(message) {
     console.log(message);
@@ -363,6 +366,24 @@ $(document).ready(function () {
                 if (token && cardJson.creator===loggedUser) {
                     render_emissions_flash();
                 }
+                // editor = new MediumEditor('span.editable', {
+                //     placeholder: { text: '' },
+
+                //     toolbar: {
+                //         buttons: [
+                //             'bold',
+                //             'italic',
+                //             'underline',
+                //             'anchor',
+                //             'h2',
+                //             'h3',
+                //             'quote',
+                //             'orderedlist',
+                //             'unorderedlist'
+                //         ]
+                //     }
+                // });
+
             },
             error: error_handler
         });
