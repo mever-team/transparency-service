@@ -18,8 +18,7 @@ document.cookie.split(";").forEach(cookie => {
 
 let token_prefix = "Bearer"
 function initKeycloak() {
-    if (!token && window.Keycloak /*&& window.location.origin.startsWith('https://shell-ui-aicode.ilabhub.atc.gr')*/) {
-        console.log(window.location.origin);
+    if (!token && window.Keycloak && window.location.origin==='https://proxy-gateway-aicode.ilabhub.atc.gr') {
         const keycloak = new window.Keycloak({
             url: "https://faithkc.ilabhub.atc.gr",
             realm: "shell-app",

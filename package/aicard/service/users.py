@@ -288,7 +288,7 @@ class CookieAuthenticator:
             signing_key = next(k for k in PyJWKSet.from_dict(jwks).keys if k.public_key_use == "sig")
         try:
             header = jwt.get_unverified_header(token)
-            return jwt.decode(token, signing_key, algorithms=["RS256"], audience=self.audience)
+            return jwt.decode(token, signing_key, algorithms=["RS256"], audience="account")
         except Exception as e:
             if self.logger: self.logger.warn(f"Token validation failed: {e}")
         return {}

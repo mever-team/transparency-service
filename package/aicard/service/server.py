@@ -341,16 +341,16 @@ def serve(
     @app.route(domain_prefix+"/ping", methods=["GET"])
     def ping():
         auth = request.headers.get("Authorization", "")
-        logger.info(auth)
         if third_party_auth and auth.startswith("ThirdPartyBearer "):
             parts = auth.strip().split()
             if len(parts) != 2: return ""
             payload = third_party_auth.validate_token( parts[1])
 
             if not payload: return ""
-            username = payload.get("username")
-            email = payload.get("email")
             logger.info(str(payload))
+            if not payload.get("email_verified"): return ""
+            username = payload.get("preferred_username")
+            email = payload.get("email")
             if not username: abort(401, description="Invalid cookie payload")
             with auth_lock: token = secrets.token_urlsafe(32)
             third_party_auth.register_token(token, username, email)
