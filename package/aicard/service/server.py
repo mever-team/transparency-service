@@ -340,31 +340,31 @@ def serve(
 
     @app.route(domain_prefix+"/ping", methods=["GET"])
     def ping():
-        if third_party_auth:
-            auth = request.cookies.get("auth", "")
-            if auth:
-                auth = json.loads(unquote(auth))
-                token = auth.get("token")
-                logger.info(str(token))
-                payload = third_party_auth.validate_token(token)
-                if not payload: return ""
-                username = payload.get("username")
-                email = payload.get("email")
-                logger.info(str(payload))
-                if not username: abort(401, description="Invalid cookie payload")
-                third_party_auth.register_token(token, username, email)
-                with auth_lock:
-                    token2expiration[token] = time.monotonic() + token_expiration_secs
-                    user = token2user.get(token, "unknown")
-                    runs = user2agent_use.get(user, 0)
-                    notifications = ""
-                    if runs: notifications += f" - {runs}/{max_agents_per_user} agents"
-                    return jsonify({"token": token, "expires_in": token_expiration_secs, "username": user, "notifications": notifications, "admin": users==admin_username})
-
         auth = request.headers.get("Authorization", "")
+        logger.info(auth)
+        if third_party_auth and auth.startswith("ThirdPartyBearer "):
+            parts = auth.strip().split()
+            if len(parts) != 2: return ""
+            payload = third_party_auth.validate_token( parts[1])
+
+            if not payload: return ""
+            username = payload.get("username")
+            email = payload.get("email")
+            logger.info(str(payload))
+            if not username: abort(401, description="Invalid cookie payload")
+            with auth_lock: token = secrets.token_urlsafe(32)
+            third_party_auth.register_token(token, username, email)
+            with auth_lock:
+                token2expiration[token] = time.monotonic() + token_expiration_secs
+                user = token2user.get(token, "unknown")
+                runs = user2agent_use.get(user, 0)
+                notifications = ""
+                if runs: notifications += f" - {runs}/{max_agents_per_user} agents"
+                return jsonify({"token": token, "expires_in": token_expiration_secs, "username": user, "notifications": notifications, "admin": users==admin_username})
+
         if not auth.startswith("Bearer "): return ""
         parts = auth.strip().split()
-        if len(parts) != 2 or parts[0] != "Bearer": return ""
+        if len(parts) != 2: return ""
         with auth_lock:
             token = parts[1]
             expiry = token2expiration.get(token)

@@ -1,4 +1,6 @@
 from functools import wraps
+
+import requests
 from flask import request, abort, Response
 import base64
 
@@ -273,6 +275,7 @@ import jwt
 
 class CookieAuthenticator:
     def __init__(self, third_party_url, third_party_audience, register_token, logger=None):
+        #self.introspect_url = third_party_url.replace("/certs", "token/introspect")
         self.jwks_client = PyJWKClient(third_party_url, cache_keys=True)
         self.audience = third_party_audience
         self.register_token = register_token
@@ -285,7 +288,7 @@ class CookieAuthenticator:
             signing_key = next(k for k in PyJWKSet.from_dict(jwks).keys if k.public_key_use == "sig")
         try:
             header = jwt.get_unverified_header(token)
-            return jwt.decode(token, signing_key, algorithms=[header["alg"]], audience=self.audience)
+            return jwt.decode(token, signing_key, algorithms=["RS256"], audience=self.audience)
         except Exception as e:
             if self.logger: self.logger.warn(f"Token validation failed: {e}")
         return {}
