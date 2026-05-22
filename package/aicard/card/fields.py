@@ -9,11 +9,12 @@ def _clean_html(text: str):
     return re.sub(r"<[^>]+>", "", text) if text else ""
 
 class ShortText(Field):
-    def __init__(self, description: str="", technical_nature: bool=False, is_simple: bool=False):
+    def __init__(self, description: str="", technical_nature: bool=False, is_simple: bool=False, is_refinable: bool=False):
         self.__contents = ""
         self.description = description
         self.technical_nature = technical_nature
         self.is_simple = is_simple
+        self.is_refinable = is_refinable
     def set(self, value):
         if isinstance(value, Field): value = value.get()
         self.__contents = _clean_html(value)
@@ -25,11 +26,12 @@ class ShortText(Field):
         return {"value": _clean_html(self.__contents) if self.__contents else "", "description": self.description, "type": "short text"}
 
 class LongText(Field):
-    def __init__(self, description: str="", technical_nature: bool=False, is_simple: bool=False):
+    def __init__(self, description: str="", technical_nature: bool=False, is_simple: bool=False, is_refinable: bool=False):
         self.__contents = ""
         self.description = description
         self.technical_nature = technical_nature
         self.is_simple = is_simple
+        self.is_refinable = is_refinable
     def set(self, value):
         if isinstance(value, Field): value = value.get()
         self.__contents = value
@@ -46,6 +48,7 @@ class Options(Field):
         self.__contents = ""
         self.description = description
         self.is_simple = is_simple
+        self.is_refinable = False
     def set(self, value):
         if isinstance(value, Field): value = value.get()
         if not value: value = ""
@@ -66,6 +69,7 @@ class Date(Field):
         self.description = description
         self.__format = "%Y-%m-%d"
         self.is_simple = is_simple
+        self.is_refinable = False
     def set(self, value):
         if isinstance(value, Field): value = value.get()
         try:
@@ -87,6 +91,7 @@ class Pattern(Field):
         self.__contents = ''
         self.description = description
         self.is_simple = is_simple
+        self.is_refinable = False
     def set(self, value):
         if isinstance(value, Field): value = value.get()
         self.__contents = value

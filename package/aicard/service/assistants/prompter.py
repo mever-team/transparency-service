@@ -109,7 +109,7 @@ class Prompter(Assistant):
             if not isinstance(values, dict): continue
             job.data[category] = {}
             for field, value in values.items():
-                if not isinstance(value, LongText): 
+                if not value.is_refinable: 
                     text = value.get()
                 else:
                     text = ''
