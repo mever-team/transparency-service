@@ -1,5 +1,3 @@
-import { default as Keycloak } from 'https://cdn.jsdelivr.net/npm/keycloak-js@26.2.4/+esm';
-
 let token = "";
 let pingTimer = null;
 
@@ -20,7 +18,7 @@ document.cookie.split(";").forEach(cookie => {
 
 let token_prefix = "Bearer"
 if(!token && window.location.origin.startsWith('https://shell-ui-aicode.ilabhub.atc.gr')) {
-    const keycloak = new Keycloak({
+    const keycloak = new window.Keycloak({
       url: "https://faithkc.ilabhub.atc.gr",
       realm: "shell-app",
       clientId: "shell-ui-proxy"
@@ -42,7 +40,7 @@ if(!token && window.location.origin.startsWith('https://shell-ui-aicode.ilabhub.
         }
         updateUsername();
     }
-    await keycloak_auth();
+    keycloak_auth();
 }
 else updateUsername();
 

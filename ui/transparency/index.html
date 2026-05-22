@@ -136,12 +136,11 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://unpkg.com/mustache@4.2.0/mustache.min.js"></script>
 <script type="module">
-    import './js/index/bearer.js';
-    import './js/index/filters.js';
-    import './js/index/main.js';
+    import { default as Keycloak } from 'https://cdn.jsdelivr.net/npm/keycloak-js@26.2.4/+esm';
+    window.Keycloak = Keycloak
 </script>
-<!--<script src="js/index/bearer.js"></script>-->
-<!--<script src="js/index/filters.js"></script>-->
-<!--<script src="js/index/main.js"></script>-->
+<script src="js/index/bearer.js"></script>
+<script src="js/index/filters.js"></script>
+<script src="js/index/main.js"></script>
 </body>
 </html>
