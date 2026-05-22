@@ -273,7 +273,6 @@ import jwt
 
 class CookieAuthenticator:
     def __init__(self, third_party_url, third_party_audience, register_token, logger=None):
-        jwks_url = "https://faithkc.ilabhub.atc.gr/realms/shell-app/protocol/openid-connect/certs"
         self.jwks_client = PyJWKClient(third_party_url, cache_keys=True)
         self.audience = third_party_audience
         self.register_token = register_token

@@ -108,7 +108,7 @@ def serve(
             if (db_email or "").strip().lower() != normalized_email:
                 abort(403, description="Your username is occupied by another email account")
         with auth_lock: token2user[token] = db_username
-    third_party_auth = users.CookieAuthenticator(third_party_url, third_party_audience, register_third_party_token, logger=logger) if third_party_realm and third_party_client else None
+    third_party_auth = users.CookieAuthenticator(third_party_url, third_party_audience, register_third_party_token, logger=logger) if third_party_url and third_party_audience else None
 
     def find_card(card_id: int):
         assert isinstance(card_id, int), "Card identifier must be an integer"
