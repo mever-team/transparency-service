@@ -138,6 +138,7 @@
 <script type="module">
     import { default as Keycloak } from 'https://cdn.jsdelivr.net/npm/keycloak-js@26.2.4/+esm';
     window.Keycloak = Keycloak
+    window.dispatchEvent(new Event('keycloak-check-done'));
 </script>
 <script src="js/index/bearer.js"></script>
 <script src="js/index/filters.js"></script>
