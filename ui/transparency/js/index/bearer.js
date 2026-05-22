@@ -16,7 +16,36 @@ document.cookie.split(";").forEach(cookie => {
     if (name === "access_token") token = value;
 });
 
-updateUsername();
+let token_prefix = "Bearer"
+function initKeycloak() {
+    if (!token && window.Keycloak && window.location.origin==='https://proxy-gateway-aicode.ilabhub.atc.gr') {
+        const keycloak = new window.Keycloak({
+            url: "https://faithkc.ilabhub.atc.gr",
+            realm: "shell-app",
+            clientId: "shell-ui-proxy"
+        });
+        const keycloak_auth = async () => {
+            try {
+                const authenticated = await keycloak.init({
+                    onLoad: "check-sso",
+                    pkceMethod: "S256",
+                    checkLoginIframe: false,
+                });
+                if (authenticated) {
+                    token_prefix = "ThirdPartyBearer";
+                    token = keycloak.token;
+                }
+            } catch (e) {
+                console.log("Keycloak init skipped:", e);
+            }
+            updateUsername();
+        }
+        keycloak_auth();
+    } else updateUsername();
+}
+
+if (window.Keycloak) initKeycloak();
+else window.addEventListener('keycloak-check-done', initKeycloak, { once: true });
 
 function updateUsername() {
 //    TODO: THIS SECTION IS DISABLED BECAUSE WE NEED TO PING BASED ON COOKIES BUT FIND A WAY TO RE-ENABLE IT MAYBE
@@ -35,7 +64,7 @@ function updateUsername() {
     $.ajax({
         url: "/transparency/ping",
         method: "GET",
-        headers: { "Authorization": "Bearer " + token },
+        headers: { "Authorization": token_prefix+" " + token },
         success: function (response) {
             if (response && response.token) {
                 token = response.token;

@@ -46,8 +46,7 @@ def serve(
     silent:bool=False,
     static:str = "ui",
     domain_prefix:str="/transparency",
-    third_party_realm: str|None = None,
-    third_party_client: str|None = None,
+    third_party_audience: str|None = None,
     third_party_url: str|None = None,
     feature_extractor: SemanticMatcher|None = None,
     email_verification: EmailVerification|None = None,
@@ -62,8 +61,7 @@ def serve(
     if not admin_password: admin_password = config.get("PASS")
     if not redirect_index: redirect_index = config.get("INDEX")
     if not log_file: log_file = config.get("LOG", log_file)
-    if not third_party_realm: third_party_realm = config.get("THIRD_PARTY_REALM")
-    if not third_party_client: third_party_client = config.get("THIRD_PARTY_CLIENT")
+    if not third_party_audience: third_party_audience = config.get("THIRD_PARTY_AUDIENCE")
     if not third_party_url: third_party_url = config.get("THIRD_PARTY_URL")
     assert admin_username, f"Admin username not found in {env} USER or arguments"
     assert admin_password, f"Admin password not found in {env} PASS or arguments"
@@ -110,7 +108,7 @@ def serve(
             if (db_email or "").strip().lower() != normalized_email:
                 abort(403, description="Your username is occupied by another email account")
         with auth_lock: token2user[token] = db_username
-    third_party_auth = users.CookieAuthenticator(third_party_realm, third_party_client, third_party_url, register_third_party_token, logger=logger) if third_party_realm and third_party_client else None
+    third_party_auth = users.CookieAuthenticator(third_party_url, third_party_audience, register_third_party_token, logger=logger) if third_party_url and third_party_audience else None
 
     def find_card(card_id: int):
         assert isinstance(card_id, int), "Card identifier must be an integer"
@@ -342,29 +340,30 @@ def serve(
 
     @app.route(domain_prefix+"/ping", methods=["GET"])
     def ping():
-        if third_party_auth:
-            auth = request.cookies.get("auth", "")
-            if auth:
-                auth = json.loads(unquote(auth))
-                token = auth.get("token")
-                payload = third_party_auth.validate_token(token)
-                if not payload: return ""
-                username = payload.get("username")
-                email = payload.get("email")
-                if not username: abort(401, description="Invalid cookie payload")
-                third_party_auth.register_token(token, username, email)
-                with auth_lock:
-                    token2expiration[token] = time.monotonic() + token_expiration_secs
-                    user = token2user.get(token, "unknown")
-                    runs = user2agent_use.get(user, 0)
-                    notifications = ""
-                    if runs: notifications += f" - {runs}/{max_agents_per_user} agents"
-                    return jsonify({"token": token, "expires_in": token_expiration_secs, "username": user, "notifications": notifications, "admin": users==admin_username})
-
         auth = request.headers.get("Authorization", "")
+        if third_party_auth and auth.startswith("ThirdPartyBearer "):
+            parts = auth.strip().split()
+            if len(parts) != 2: return ""
+            payload = third_party_auth.validate_token( parts[1])
+
+            if not payload: return ""
+            if not payload.get("email_verified"): return ""
+            username = payload.get("preferred_username")
+            email = payload.get("email")
+            if not username: abort(401, description="Invalid cookie payload")
+            with auth_lock: token = secrets.token_urlsafe(32)
+            third_party_auth.register_token(token, username, email)
+            with auth_lock:
+                token2expiration[token] = time.monotonic() + token_expiration_secs
+                user = token2user.get(token, "unknown")
+                runs = user2agent_use.get(user, 0)
+                notifications = ""
+                if runs: notifications += f" - {runs}/{max_agents_per_user} agents"
+                return jsonify({"token": token, "expires_in": token_expiration_secs, "username": user, "notifications": notifications, "admin": users==admin_username})
+
         if not auth.startswith("Bearer "): return ""
         parts = auth.strip().split()
-        if len(parts) != 2 or parts[0] != "Bearer": return ""
+        if len(parts) != 2: return ""
         with auth_lock:
             token = parts[1]
             expiry = token2expiration.get(token)
@@ -687,7 +686,7 @@ def serve(
 
     @app.route(domain_prefix+'/banner/<int:card_id>', methods=['GET'])
     def get_banner(card_id: int):
-        url = url_for("get_banner_raw", card_id=card_id, _external=True)
+        url = url_for("get_banner_raw", card_id=card_id, _external=True, _scheme=request.scheme)
         banner = f"""<iframe frameborder="0" src="{url}" width="500" height="300">
 <a href="{url}" target="_blank">Trai model card.</a></iframe>"""
         escaped_banner = banner.replace("<","&lt;").replace(">","&gt;")
