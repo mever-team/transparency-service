@@ -35,10 +35,23 @@ You can state that the result is a bug, that it could be or look different/have 
 ## How to submit a pull request (PR)
 
 Fork this repository's `dev` branch, create a branch for your changes and, 
-once you have pushed new code, create a PR against the `dev` branch again.
+once you have pushed new code, create a PR towards this repository's 
+`dev` branch again. 
 
-Make sure that the PR describes the new or changed
-functionality appropriately. It is preferred to have 
+Instructions to bootstrap development should look something like this:
+
+```commandline
+cd transparency-service
+git checkout -b MYFEATURE
+python -m venv .venv
+source .venv/bin/activate
+pip install -e package
+python -m examples.demo
+```
+
+Make sure that the PR's description explains new or changed
+functionality to the degree that a code reviewer can understand
+them. It is preferred to have 
 created an issue beforehand (see above) that clearly 
 indicates your intent to provide a contribution. Then,
 preliminary and code design can be aligned via discussion
