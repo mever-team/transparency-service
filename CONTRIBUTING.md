@@ -1,56 +1,71 @@
-# Maintainer docs
+# Contributor Guidelines
 
-The structure can be changed but this is a convenient starting point to start building the Model Card. This json is stored in the instance variable self.json. Moreover, several more instance variable are created during the __init__ (self) method analyzed bellow.
+You can contribute to this project by creating 
+[issues](https://github.com/mever-team/transparency-service/issues) 
+that include both bugs and enhancements, or submitting new code 
+in the form of a pull request.
 
-- `self.json` This is the json as discussed above which stores the whole Model Card
-- `self.markdown_string` This is the markdown automatically created from self.json by using a class method
-- `self.html_string` This is the html automatically created from self.markdown_string by using a class method
-- `self.pdf_chunks_for_llm` This is a list that stores big text in chunks in order to be used as inputs in an llm. This helps to automatically populate parts of the Model Card using an llm based on the input. This variable is handled by the class methods and it should usually not be a concern when using the SDK
-- `self.bar_plot_data` This variable stores data for several bar plots when creating the plot with a method.  e.g. `“plot1”: {"bars": [(name_of_the_bar, value), …], "xlabel": “…”, "ylabel": “…”}`
-- `self.acc_data` This variable stores the accuracy of a several models and sets, e.g. `“model1”: {“set1”: 94, “set2” 83, …}`
-- `self.ap_data` This variable stores the average precision of a several models and sets , e.g. `“model1”: {“set1”: 100, “set2” 98, …}`
+## How to create an issue
 
-Automatic field population
-We provide several tools to automatically populate parts of the Model Card. Below we present several methods to help you in this maner. 
-### `self.create_openai_overview(self, input)` 
-This method uses an openai model to create an overview based on the input. The input is a string which can contain any information about the model. The openai is provided with: `"role": "system", "content": "You are a helpful assistant to create an overview for a model card. Your output will be the text that i will directly use for the Overview section of my model card. Keep the text simple and profesional."` After this process, the overview of the model card self.json['Model Details']['Overview'] is populated directly from the openai output.
+- Make sure that the issue title properly summarizes what is requested from this project.
+- Clearly point to where something is found by uploading screen snippets or instructions of how to induce some behavior.
+- Contrast current vs expected behavior.
 
-### `self.create_openai_json(self, pdf_path)`
-This method tries to populate the whole josn self.json based on a pdf file. The intended use if for models that are already well documented e.g. published models which do not provide a Model Card yet. The instructions for this are long and are not presented in this document. You can find the instruction in input_for_create_openai_create_openai_json.txt. After using this method the whole model card should be populated based on the pdf provided. The pdf is split into chunks to make it possible for the openai model to read it.
+You can use a free text format similar to #27 , 
+or make it more concrete using this template:
 
-### `improve_json_with_openai(self, text_file_path)`
-TODO
+```text
+**Title:**
+your issue title
 
-### `plit_pdf_to_chunks(self, pdf_path, max_characters=4000)` 
-not relevant for this doc. Should remove
+**About:**
+Summarize what you are proposing in one or two sentences. 
+This is a good point to mention -if you want- why you think this issue is important.
 
-- `git_get_license(self, owner, repo)` 
-Provided by the github repository, populate the `self.json['Model Details']['License']`
+**Replicate:**
+Describe how to reach a specific state for which you want to talk.
 
-### `get_git_info(self, owner, repo)`
+**Current:**
+Perceived existing behavior.
 
-Provided the github repository, populate the: 
-
-```python
-self. json ['Model Details']['License'] 
-self. json ['Model Details']['Version'] 
-self. json ['Model Details']['Name'] 
-self. json ['Model Details']['References']['github']
+**Proposal:** 
+You can state that the result is a bug, that it could be or look different/have more options (describe them), or that related functionality is missing.
 ```
 
+## How to submit a pull request (PR)
 
-## Metrics and Plots
-The SDK has a built-in function to handle metrics and plots and insert them into the Model Card. 
-- `self.generate_ap_data(self, y_true, y_pred, model, data_set)`
-Create and store average precision from y_true, y_pred in self.data[‘ap’]. model and data_set are the name of the model and data set respectively and are used internally to manage and identify the data that are created. 
-- `self.generate_acc_data(self, y_true, y_pred, model, data_set)`
-Create and store average precision from y_true, y_pred in self.data[‘acc’].
-- `self.init_bar_plot(self, title, xlabel = " ", ylabel = " ")`
-- 
-Initialize a bar plot with a given title and x,y labels.
-- `self.fill_bar_plot_from_data(self, plot_title, model, data)`
-- `self.append_bar_to_plot(self, title, name_of_the_bar, value)`
-- `self.add_plot_to(self, title, destination)`
-- `self.show_plot(self, title)`
+Fork this repository's `dev` branch, create a branch for your changes and, 
+once you have pushed new code, create a PR against the `dev` branch again.
 
+Make sure that the PR describes the new or changed
+functionality appropriately. It is preferred to have 
+created an issue beforehand (see above) that clearly 
+indicates your intent to provide a contribution. Then,
+preliminary and code design can be aligned via discussion
+in that issue.
 
+## LLM policy
+
+LLM-generated code is easy to spot, especially if it has not
+been touched up. It is also bound to create unforeseen effects if
+not properly controlled. We ask contributors to methodically go 
+through such outputs and properly review them. Even useful PRs may 
+be rejected outright if they create code significantly misaligned
+with this repository, indicating that there has been little user 
+oversight.
+
+Problematic patterns include: too many changes without justification, 
+perfunctory changes/refactors (the maintainers
+are responsible for such activities), lack of early returns/asserts
+in case of failure, excessive nesting, useless comments, 
+security concerns -this is a broader trust issue-, 
+
+Bot contributors will be outright banned.
+
+## Code of conduct (for humans)
+
+We adhere to the [contributor covenant](https://www.contributor-covenant.org/).
+If you encounter restricted behaviors like harassment or character attacks,
+you may reach out via email to the maintainers whose contact information is 
+listed in this repository's [README](README.md) 
+(add all maintainers as recepients of your report).
