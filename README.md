@@ -1,6 +1,6 @@
 # AI Card
 
-*A model card catalogue. Host it or use the public version. Create and access cards from the browser or your experiment tracking code.*
+*A model card catalogue. Host it yourself, or browse the public database. Create and access cards from the browser or your experiment tracking code.*
 
 ![screenshot](ui/transparency/img/handbook/readers2.webp)
 
@@ -24,9 +24,10 @@ with conn.create() as card:
 ## 🔥 Features
 
 - Browse model cards.
-- Lightweight deterministic question-answering.
-- Use LLMs to help refine your model cards.
-- Integrate into your experimental pipeline.
+- See missing information that would help non-experts.
+- Lightweight deterministic question-answering. Example: "Is this model safe for usage by minors?"
+- Ollama integration to let help from LLMs in refining the cards.
+- Automate card upload from your existing model testing pipeline.
 
 ## 🔗 Material
 
@@ -37,5 +38,27 @@ with conn.create() as card:
 
 ## 📜 About
 
-**License:** Apache 2.0<br>
-**Maintainers:** TBD
+**Maintainers**<br>
+Emmanouil Krasanakis - maniospas@iti.gr<br>
+Giorgos Nikoulis - gnikoul@iti.gr<br>
+Lazaros Apostolidis - laaposto@iti.gr
+
+
+**License**<br>
+Apache 2.0
+
+```
+Copyright 2025-2026 mever.gr
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+or implied. See the License for the specific language governing
+permissions and limitations under the License.
+```

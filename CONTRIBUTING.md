@@ -1,14 +1,19 @@
-# Contributor Guidelines
+# Contributor guidelines
 
 You can contribute to this project by creating 
 [issues](https://github.com/mever-team/transparency-service/issues) 
 that include both bugs and enhancements, or submitting new code 
-in the form of a pull request.
+in the form of a pull request. These guidelines cover:
+
+[How to create an issue](#how-to-create-an-issue)<br>
+[How to submit a pull request (PR)](#how-to-submit-a-pull-request-pr)<br>
+[LLM coding policy](#llm-coding-policy)<br>
+[Code of conduct](#code-of-conduct)
 
 ## How to create an issue
 
 - Make sure that the issue title properly summarizes what is requested from this project.
-- Clearly point to where something is found by uploading screen snippets or instructions of how to induce some behavior.
+- Make a complete point, for example by uploading screen snippets or instructions of how to induce some behavior.
 - Contrast current vs expected behavior.
 
 You can use a free text format similar to #27 , 
@@ -57,7 +62,7 @@ indicates your intent to provide a contribution. Then,
 preliminary and code design can be aligned via discussion
 in that issue.
 
-## LLM policy
+## LLM coding policy
 
 LLM-generated code is easy to spot, especially if it has not
 been touched up. It is also bound to create unforeseen effects if
@@ -67,18 +72,27 @@ be rejected outright if they create code significantly misaligned
 with this repository, indicating that there has been little user 
 oversight.
 
-Problematic patterns include: too many changes without justification, 
+Problematic patterns include but are not limited to: 
+too many changes without justifiable need, 
 perfunctory changes/refactors (the maintainers
-are responsible for such activities), lack of early returns/asserts
-in case of failure, excessive nesting, useless comments, 
-security concerns -this is a broader trust issue-, 
+are responsible for such activities), lack of early returns or of asserts
+in case of failed preconditions, excessive nesting, useless comments
+describing the "what" but not "why", excessive helper functions,
+excessively verbose variable and function names, and broader security 
+concerns. For Python code, in particular, docstrings for trivially 
+obvious functions are forbidden.
 
-Bot contributors will be outright banned.
+Of course, nobody is perfect, and this is taken into account. The
+above list is just so that we can have a frame of discussion.
 
-## Code of conduct (for humans)
+That said, autonomous bot contributors will be outright banned, 
+unless their usage has been agreed to beforehand.
+
+## Code of conduct
 
 We adhere to the [contributor covenant](https://www.contributor-covenant.org/).
 If you encounter restricted behaviors like harassment or character attacks,
 you may reach out via email to the maintainers whose contact information is 
 listed in this repository's [README](README.md) 
-(add all maintainers as recepients of your report).
+(add all maintainers as email recepients). You will remain anonymous,
+regardless of the action taken.
