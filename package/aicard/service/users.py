@@ -1,16 +1,18 @@
 from functools import wraps
 
 import requests
-from flask import request, abort, Response
 import base64
-
-from aicard.card import ModelCard
 import sqlite3
 import bcrypt
 import time
 import os
 import atexit
 import sys
+import jwt
+from jwt import PyJWKClient, PyJWKSet
+from flask import request, abort, Response
+from aicard.card import ModelCard
+
 
 
 def hash_password(password: str) -> str:
@@ -233,8 +235,12 @@ class UserDB:
             self.insert_user("users", admin_name, admin_email, admin_password)
             logger.info("First time run detected.")
             logger.ok(f"Created database and administrator user with default credentials.\n * name: {admin_name}\n * password: {admin_password}")
-            logger.warn("REMEMBER TO CHANGE THE DEFAULT ADMINISTRATOR PASSWORD")
-        else: logger.ok("Database loaded.")
+            if admin_password=="admin": logger.warn("REMEMBER TO CHANGE THE DEFAULT ADMINISTRATOR PASSWORD")
+        else:
+            new_hash = hash_password(admin_password)
+            self.conn.execute("UPDATE users SET password=? WHERE username=?", (new_hash, admin_name))
+            logger.ok("Database loaded.")
+            if admin_password=="admin": logger.warn("REMEMBER TO CHANGE THE DEFAULT ADMINISTRATOR PASSWORD")
 
     def find_user(self, table: str, username: str):
         cursor = self.conn.execute(
@@ -267,10 +273,6 @@ class UserDB:
                 (parent_id, child_id, message)
             )
         self.conn.commit()
-
-
-from jwt import PyJWKClient, PyJWKSet
-import jwt
 
 
 class CookieAuthenticator:

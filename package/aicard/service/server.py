@@ -386,7 +386,8 @@ def serve(
         if not username: abort(401, description="Invalid credentials - missing username")
         if not password: abort(401, description="Invalid credentials - missing password")
         with auth_lock:
-            if username == admin_username and password == admin_password:
+            if username == admin_username:
+                if password != admin_password: abort(401, description=f"Invalid credentials - wrong username {username} or password")
                 token = secrets.token_urlsafe(32)
                 token2expiration[token] = time.monotonic() + token_expiration_secs
                 token2user[token] = username
@@ -847,7 +848,7 @@ def serve(
     def delete_card(card_id, token: str):
         with auth_lock: creator = token2user.get(token, None)
         card_entry = find_card(card_id)
-        if creator != card_entry.creator and creator!=admin_username: abort(403, "Only the card's creator or an amin can delete it.")
+        if creator != card_entry.creator and creator!=admin_username: abort(403, "Only the card's creator or an admin can delete it.")
         with exists(card_entry, "Model card does not exist or has been deleted.") as card:
             cursor = conn.conn.cursor()
             cursor.execute("DELETE FROM cards WHERE id = ?", (card_id,))
