@@ -831,22 +831,12 @@ $('.contents').on('click', '.refine-field', async function () {
             const assistant = $(this).attr("id");
             document.getElementById('modal-refine-screen').style.display = 'none';
             $.ajax({
-                url: "/transparency/card/" + id,
-                method: "PUT",
-                contentType: "application/json",
-                dataType: "json",
-                data: JSON.stringify(cardJson.data.filter(s => s.name !== "history")),
+                url: "/transparency/card/" + id + "/clone",
+                method: "POST",
                 headers: { "Authorization": "Bearer " + token },
-                success: function () {
-                    $.ajax({
-                        url: "/transparency/card/" + id + "/clone",
-                        method: "POST",
-                        headers: { "Authorization": "Bearer " + token },
-                        success: function (newId) {
-                            runRefinement('agent', newId);
-                            window.open("model_card.html?id=" + newId, "_blank");
-                        }
-                    });
+                success: function (newId) {
+                    runRefinement('agent', newId);
+                    window.open("model_card.html?id=" + newId, "_blank");
                 }
             });
             return;
