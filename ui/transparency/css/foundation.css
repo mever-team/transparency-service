@@ -1,3 +1,7 @@
+body.in-iframe [data-hide-in-iframe] {
+  display: none;
+}
+
 meta.foundation-version {
     font-family: "/5.5.0/";
 }
