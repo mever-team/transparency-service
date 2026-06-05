@@ -1,15 +1,18 @@
-import json
 from functools import wraps
-from flask import request, abort, Response
-from jwcrypto import jwk, jwt, jws
 
-from aicard.card import ModelCard
+import requests
+import base64
 import sqlite3
 import bcrypt
 import time
 import os
 import atexit
 import sys
+import jwt
+from jwt import PyJWKClient, PyJWKSet
+from flask import request, abort, Response
+from aicard.card import ModelCard
+
 
 
 def hash_password(password: str) -> str:
@@ -232,8 +235,12 @@ class UserDB:
             self.insert_user("users", admin_name, admin_email, admin_password)
             logger.info("First time run detected.")
             logger.ok(f"Created database and administrator user with default credentials.\n * name: {admin_name}\n * password: {admin_password}")
-            logger.warn("REMEMBER TO CHANGE THE DEFAULT ADMINISTRATOR PASSWORD")
-        else: logger.ok("Database loaded.")
+            if admin_password=="admin": logger.warn("REMEMBER TO CHANGE THE DEFAULT ADMINISTRATOR PASSWORD")
+        else:
+            new_hash = hash_password(admin_password)
+            self.conn.execute("UPDATE users SET password=? WHERE username=?", (new_hash, admin_name))
+            logger.ok("Database loaded.")
+            if admin_password=="admin": logger.warn("REMEMBER TO CHANGE THE DEFAULT ADMINISTRATOR PASSWORD")
 
     def find_user(self, table: str, username: str):
         cursor = self.conn.execute(
@@ -267,27 +274,26 @@ class UserDB:
             )
         self.conn.commit()
 
+
 class CookieAuthenticator:
-    def __init__(self, REALM, CLIENT_ID, ISSUER, register_token, logger=None):
+    def __init__(self, third_party_url, third_party_audience, register_token, logger=None):
+        #self.introspect_url = third_party_url.replace("/certs", "token/introspect")
+        self.jwks_client = PyJWKClient(third_party_url, cache_keys=True)
+        self.audience = third_party_audience
         self.register_token = register_token
         self.logger = logger
-        from keycloak import KeycloakOpenID # local import to perhaps avoid installing if not needed
-        self.keycloak_openid = KeycloakOpenID(
-            server_url=ISSUER.rstrip("/")+"/",
-            realm_name=REALM,
-            client_id=CLIENT_ID,
-        )
-        self.pubkey = jwk.JWK.from_pem((
-            "-----BEGIN PUBLIC KEY-----\n"
-            + self.keycloak_openid.public_key()
-            + "\n-----END PUBLIC KEY-----"
-        ).encode())
 
-    def validate_token(self, token: str):
-        try: return self.keycloak_openid.decode_token(token, key=self.pubkey, validate=True)
+    def validate_token(self, token: str) -> dict:
+        try: signing_key = self.jwks_client.get_signing_key_from_jwt(token)
+        except:
+            jwks = self.jwks_client.fetch_data()
+            signing_key = next(k for k in PyJWKSet.from_dict(jwks).keys if k.public_key_use == "sig")
+        try:
+            header = jwt.get_unverified_header(token)
+            return jwt.decode(token, signing_key, algorithms=["RS256"], audience="account")
         except Exception as e:
-            if self.logger: self.logger.warn("Token verification failed: "+str(e))
-            return {}
+            if self.logger: self.logger.warn(f"Token validation failed: {e}")
+        return {}
 
 def require_auth(token2expiration: dict, third_party_authenticator: CookieAuthenticator|None=None):
     def decorator(f):
