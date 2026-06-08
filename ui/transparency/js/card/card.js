@@ -13,7 +13,7 @@ function initConverters() {
             headingStyle: 'atx',
             codeBlockStyle: 'fenced'
         });
-        turndownService.keep(['kbd', 'sub', 'sup', 'u', 'ins']);
+        turndownService.keep(['sub', 'sup', 'u', 'ins']);
     }
     if (typeof marked !== 'undefined' && !markedInstance) {
         markedInstance = marked;
@@ -238,9 +238,6 @@ $(document).ready(function () {
                 if(is_logged_in) $fieldValue.attr("contenteditable", "true");
                 
             } else {
-                // $fieldValue = $("<span>") .addClass("field-value").html(field.value || "");
-                // if(is_logged_in) $fieldValue.attr("contenteditable", "true");
-
                 let displayHtml = field.value || "";
                 if (!field.type.startsWith("list:") && field.type !== 'date') {
                     displayHtml = markdownToHtml(displayHtml);
@@ -648,14 +645,11 @@ $(document).ready(function () {
             let field = section.value.find(f => f.name === fieldName);
             $("#saveJson").fadeIn();
             if (field) {
-                // if(field.type.startsWith("list:")) field.value = $(this).find(":selected").val();
-                // else field.value = $(this).html();
                 if(field.type.startsWith("list:")) {
                     field.value = $(this).find(":selected").val();
                 } else if(field.type === 'date') {
                     field.value = $(this).val();
                 } else {
-                    // Convert HTML to Markdown for storage
                     field.value = htmlToMarkdown($(this).html());
                 }
             }
