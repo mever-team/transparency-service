@@ -214,25 +214,96 @@ $(document).ready(function () {
             $fieldInfo = $("<span>").addClass("field-info").append($fieldInfo).append($fieldName);
             let $fieldValue;
             
-            if (field.type.startsWith("list:") && is_logged_in) {
-                $fieldValue = $("<select>").addClass("field-value dropdown");
-                $fieldValue.append($("<option>").val("").text("—").prop({
-                    selected: true,disabled: true,hidden: true}));
-                const options = field.type.replace("list:", "").split(",");
-                let $currentGroup = null;
-                options.forEach(opt => {
-                    if (opt.startsWith("#")) {
-                        $currentGroup = $("<optgroup>").attr("label", opt.replace("#", ""));
-                        $fieldValue.append($currentGroup);
-                    } else {
-                        const $option = $("<option>").val(opt).text(opt);
-                        if (field.value === opt) $option.prop("selected", true);
-                        // Append to optgroup if it exists, otherwise directly to select
-                        if ($currentGroup) $currentGroup.append($option);
-                        else $fieldValue.append($option);
-                    }
+        if (field.type.startsWith("list:") && is_logged_in) {
+            // Parse the raw list
+            const rawOptions = field.type.replace("list:", "").split(",");
+            const groups = []; // { label: "GroupName", options: [...] }
+            let currentGroup = null;
+            
+            rawOptions.forEach(opt => {
+                if (opt.startsWith("#")) {
+                    currentGroup = { label: opt.replace("#", ""), options: [] };
+                    groups.push(currentGroup);
+                } else if (currentGroup) {
+                    currentGroup.options.push(opt);
+                } else {
+                    if (!groups[0]) groups.push({ label: "Options", options: [] });
+                    groups[0].options.push(opt);
+                }
+            });
+
+            // Flatten for search but keep group context for rendering
+            const allOptions = groups.flatMap(g => g.options);
+            
+            // Create wrapper and input
+            const $wrapper = $("<div>").addClass("autocomplete-wrapper");
+            const $input = $("<input>").addClass("autocomplete-input editable").attr({
+                type: "text",
+                value: field.value || "",
+                placeholder: "Type or select from list"
+            });
+            const $suggestions = $("<div>").addClass("autocomplete-suggestions").hide();
+            
+            $wrapper.append($input, $suggestions);
+            $fieldValue = $wrapper;
+
+            // Update suggestions with groups
+            function updateSuggestions(filterText) {
+                const filter = filterText.toLowerCase().trim();
+                $suggestions.empty();
+                
+                let hasMatches = false;
+                
+                groups.forEach(group => {
+                    const matchedOptions = group.options.filter(opt => 
+                        filter === "" || opt.toLowerCase().includes(filter)
+                    );
+                    if (matchedOptions.length === 0) return;
+                    hasMatches = true;
+                    
+                    const $groupHeader = $("<div>")
+                        .addClass("autocomplete-group-header")
+                        .text(group.label);
+                    $suggestions.append($groupHeader);
+                    
+                    matchedOptions.forEach(opt => {
+                        const $sug = $("<div>")
+                            .addClass("autocomplete-suggestion")
+                            .text(opt)
+                            .attr("data-value", opt);
+                        $sug.on("click", function() {
+                            $input.val(opt);
+                            field.value = opt;
+                            $suggestions.hide();
+                            $("#saveJson").fadeIn();
+                        });
+                        $suggestions.append($sug);
+                    });
                 });
-            } else if (field.type === 'date') {
+                
+                if (!hasMatches) {
+                    $suggestions.hide();
+                } else {
+                    $suggestions.show();
+                }
+            }
+
+            // Show suggestions on focus/input
+            $input.on("focus", function() { updateSuggestions($input.val()); });
+            $input.on("input", function() {
+                updateSuggestions($input.val());
+                field.value = $input.val();
+                $("#saveJson").fadeIn();
+            });
+
+            // Hide suggestions when clicking outside
+            $(document).on("click", function(e) {
+                if (!$wrapper.is(e.target) && !$wrapper.has(e.target).length) {
+                    $suggestions.hide();
+                }
+            });
+
+        } else if (field.type === 'date') {
                 $fieldValue = $("<input>", {type: "date", readonly: is_logged_in? false: true}).addClass("field-value").val(field.value || "");
                 $fieldValue.on("change", function () {field.value = $(this).val();});
                 if(is_logged_in) $fieldValue.attr("contenteditable", "true");
@@ -636,10 +707,13 @@ $(document).ready(function () {
         });
 
     $(".nacc").on("input", ".editable", function () {
-        const fieldName = $(this).siblings(".field-info").contents()[1].outerText.replace(":", "").trim().toLowerCase().replace(/ /g, "_");
-        const sectionName = $(this).closest("section").find("h2").contents().filter((_, el) => el.nodeType === 3).text().toLowerCase().replace(/ /g, "_");
+        const $this = $(this);
+        
+        if ($this.hasClass("autocomplete-input")) return;
+        
+        const fieldName = $this.siblings(".field-info").contents()[1].outerText.replace(":", "").trim().toLowerCase().replace(/ /g, "_");
+        const sectionName = $this.closest("section").find("h2").contents().filter((_, el) => el.nodeType === 3).text().toLowerCase().replace(/ /g, "_");
 
-        // Find section + field in jsonData and update value
         let section = cardJson.data.find(s => s.name === sectionName);
         if (section) {
             let field = section.value.find(f => f.name === fieldName);
