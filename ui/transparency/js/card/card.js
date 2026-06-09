@@ -2,6 +2,38 @@ var cardJson;
 var comparedJson;
 var comparedJsonSimple;
 var menuOffsetTop=0;
+var editor;
+let turndownService = null;
+let markedInstance = null;
+
+
+function initConverters() {
+    if (typeof TurndownService !== 'undefined' && !turndownService) {
+        turndownService = new TurndownService({
+            headingStyle: 'atx',
+            codeBlockStyle: 'fenced'
+        });
+        turndownService.keep(['sub', 'sup', 'u', 'ins']);
+    }
+    if (typeof marked !== 'undefined' && !markedInstance) {
+        markedInstance = marked;
+        markedInstance.setOptions({ breaks: true, gfm: true });
+    }
+}
+
+function htmlToMarkdown(html) {
+    initConverters();
+    if (!turndownService) return html;
+    if (!html || typeof html !== 'string') return '';
+    return turndownService.turndown(html);
+}
+
+function markdownToHtml(md) {
+    initConverters();
+    if (!markedInstance) return md;
+    if (!md || typeof md !== 'string') return '';
+    return markedInstance.parse(md);
+}
 
 function error_message(message) {
     console.log(message);
@@ -277,7 +309,11 @@ $(document).ready(function () {
                 if(is_logged_in) $fieldValue.attr("contenteditable", "true");
                 
             } else {
-                $fieldValue = $("<span>") .addClass("field-value").html(field.value || "");
+                let displayHtml = field.value || "";
+                if (!field.type.startsWith("list:") && field.type !== 'date') {
+                    displayHtml = markdownToHtml(displayHtml);
+                }
+                $fieldValue = $("<span>").addClass("field-value").html(displayHtml);
                 if(is_logged_in) $fieldValue.attr("contenteditable", "true");
             }
 
@@ -434,6 +470,26 @@ $(document).ready(function () {
                 if (token && cardJson.creator===loggedUser) {
                     render_emissions_flash();
                 }
+                editor = new MediumEditor('span.editable', {
+                    placeholder: false,
+
+                    toolbar: {
+                        buttons: [
+                            'bold',
+                            'italic',
+                            'underline',
+                            'anchor',
+                            // 'h2',
+                            // 'h3',
+                            'quote',
+                            'orderedlist',
+                            'unorderedlist'
+                        ],
+                        static: true,
+                        updateOnEmptySelection: true
+                    }
+                });
+
             },
             error: error_handler
         });
@@ -663,10 +719,12 @@ $(document).ready(function () {
             let field = section.value.find(f => f.name === fieldName);
             $("#saveJson").fadeIn();
             if (field) {
-                if (field.type.startsWith("list:")) {
-                    if ($this.is("select")) field.value = $this.find(":selected").val();
+                if(field.type.startsWith("list:")) {
+                    field.value = $(this).find(":selected").val();
+                } else if(field.type === 'date') {
+                    field.value = $(this).val();
                 } else {
-                    field.value = $this.html();
+                    field.value = htmlToMarkdown($(this).html());
                 }
             }
         }
@@ -731,6 +789,20 @@ $('.contents').on('click', '.refine-field', async function () {
 
     $("#saveJson").click(function () {
         $("#saveJson").fadeOut();
+        $('.field-value.editable').each(function () {
+            const $fieldValue = $(this);
+            const fieldName = $fieldValue.siblings(".field-info").contents()[1]?.outerText.replace(":", "").trim().toLowerCase().replace(/ /g, "_");
+            const sectionName = $fieldValue.closest("section").find("h2").contents().filter((_, el) => el.nodeType === 3).text().toLowerCase().replace(/ /g, "_");
+            if (!fieldName || !sectionName) return;
+
+            let section = cardJson.data.find(s => s.name === sectionName);
+            if (section) {
+                let field = section.value.find(f => f.name === fieldName);
+                if (field && !field.type.startsWith("list:") && field.type !== 'date') {
+                    field.value = htmlToMarkdown($fieldValue.html());
+                }
+            }
+        });
         $.ajax({
             url: "/transparency/card/" + id,
             method: "PUT",

@@ -34,13 +34,13 @@ class LongText(Field):
         self.is_refinable = is_refinable
     def set(self, value):
         if isinstance(value, Field): value = value.get()
-        self.__contents = value
+        self.__contents = _clean_html(value)
     def get(self):
-        return self.__contents
+        return _clean_html(self.__contents)
     def __bool__(self):
         return bool(self.__contents)
     def __html__(self):
-        return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "long text"}
+        return {"value": _clean_html(self.__contents) if self.__contents else "", "description": self.description, "type": "long text"}
 
 class Options(Field):
     def __init__(self, options: list[str], description: str="", is_simple: bool=False):
