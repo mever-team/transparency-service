@@ -267,9 +267,20 @@ $(document).ready(function () {
                     $suggestions.append($groupHeader);
                     
                     matchedOptions.forEach(opt => {
+                        let displayHtml = opt;
+                        const filterLower = filterText.toLowerCase().trim();
+                        if (filterLower !== "") {
+                            const index = opt.toLowerCase().indexOf(filterLower);
+                            if (index !== -1) {
+                                const before = opt.slice(0, index);
+                                const match = opt.slice(index, index + filterLower.length);
+                                const after = opt.slice(index + filterLower.length);
+                                displayHtml = before + "<strong>" + match + "</strong>" + after;
+                            }
+                        }
                         const $sug = $("<div>")
                             .addClass("autocomplete-suggestion")
-                            .text(opt)
+                            .html(displayHtml)
                             .attr("data-value", opt);
                         $sug.on("click", function() {
                             $input.val(opt);
@@ -490,6 +501,17 @@ $(document).ready(function () {
                     }
                 });
 
+                editor.subscribe('showToolbar', function() {
+                    var $toolbar = $('.medium-editor-toolbar');
+                    if ($toolbar.length && !$toolbar.find('.undo-hint').length) {
+                        $('<div class="undo-hint">⌨️ Ctrl+Z to undo</div>')
+                            .prependTo($toolbar);
+                    }
+                });
+
+                editor.subscribe('hideToolbar', function() {
+                    $('.medium-editor-toolbar .undo-hint').remove();
+                });
             },
             error: error_handler
         });

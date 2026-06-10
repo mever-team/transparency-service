@@ -959,3 +959,12 @@ pre {font-size: 14px;background:inherit!important}
 .autocomplete-group-header:first-child {
     border-top: none;
 }
+
+.medium-editor-toolbar .undo-hint {
+    font-size: 12px;
+    padding: 4px 8px;
+    text-align: center;
+    background: #f5f5f5;
+    border-bottom: 1px solid #ccc;
+    border-radius: 4px 4px 0 0;
+}
