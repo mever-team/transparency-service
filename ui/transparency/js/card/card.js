@@ -712,7 +712,7 @@ $(document).ready(function () {
         if ($this.hasClass("autocomplete-input")) return;
         
         const fieldName = $this.siblings(".field-info").contents()[1].outerText.replace(":", "").trim().toLowerCase().replace(/ /g, "_");
-        const sectionName = $this.closest("section").find("h2").contents().filter((_, el) => el.nodeType === 3).text().toLowerCase().replace(/ /g, "_");
+        const sectionName = $this.closest("section").find("h2").first().contents().filter((_, el) => el.nodeType === 3).text().toLowerCase().replace(/ /g, "_");
 
         let section = cardJson.data.find(s => s.name === sectionName);
         if (section) {
