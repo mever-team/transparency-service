@@ -5,7 +5,7 @@
                 <div>
                     <svg class="quality-circle" viewBox="0 0 36 36">
                     <circle cx="18" cy="18" r="18"
-                            fill="none" stroke="#434343" stroke-width="3"/>
+                            fill="none" stroke="var(--bg1-tertiary)" stroke-width="3"/>
 
                     <circle cx="18" cy="18" r="18"
                             fill="none"
@@ -20,7 +20,7 @@
                 </div>
 
                 <div>
-                    <span style="display:block;color:#EEE">{{{name}}}</span>
+                    <span style="display:block;color:var(--text1-primary)">{{{name}}}</span>
 
                     {{#isDraft}}
                     <span style="font-size:13px;color:#F9AB49">
@@ -28,19 +28,19 @@
                     </span>
                     {{/isDraft}}
 
-                    <span style="font-size:13px;color:#79CFDC">
+                    <span style="font-size:13px;color:var(--text-info)">
                     {{creatorText}}
                     </span>
 
                     {{#hasType}}
-                    <span style="font-size:13px;color:#79CFDC">
+                    <span style="font-size:13px;color:var(--text-info)">
                     --- {{type}}{{task}}
                     </span>
                     {{/hasType}}
                 </div>
             </div>
 
-            <div style="font-size:13px;color:#C8C8C8;margin-top:7px;text-align:left">
+            <div style="font-size:13px;color: color-mix(in srgb, var(--text1-primary) 70%, transparent);margin-top:7px;text-align:left">
                 {{description}}
             </div>
         </a>    

@@ -46,9 +46,13 @@
     --yellow-primary: var(--aicode-warning);
     --brightness-filter: 1.5; 
     --fonts: Manrope, "Public Sans", sans-serif;
+    --filters-caption-border: none !important;
+    --a-color: var(--aicode-info-dark);
+}
 
+.dark-theme{
     /* dark */
-    /* --bg1-primary: var(--aicode-primary);
+    --bg1-primary: var(--aicode-primary);
     --bg1-secondary: #252525;
     --bg1-tertiary: #434343;
     --bg2-primary: var(--aicode-surface);
@@ -59,7 +63,7 @@
     --green-primary: var(--aicode-secondary); 
     --yellow-primary: var(--aicode-warning-light);
     --brightness-filter: 1.5;
-    --fonts: 'Nunito', sans-serif; */
-
-
+    --fonts: Hero_font, "Noto Emoji", sans-serif;
+    --filters-caption-border: none !important;
+    --a-color: var(--aicode-info);
 }

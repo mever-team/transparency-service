@@ -33,7 +33,7 @@ h2::after {
   margin: 0.5em auto 0;
 }
 .handbook_body h3 {
-    color: #64DB96;
+    color: var(--green-primary);
 }
 
 /* Menu */
@@ -55,7 +55,7 @@ h2::after {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #1f1f1f;
+    background: var(--aicode-primary);
     position: absolute;
     right: -1rem;
     top: 20%;
@@ -80,7 +80,7 @@ h2::after {
 .menu_item2 {
     padding: 0.2rem 0 0.2rem 2rem;
 }
-.menu_item1.active, .menu_item2.active {color: #64DB96;}
+.menu_item1.active, .menu_item2.active {color: var(--green-primary);}
 
 table.handbook-table {background-color: #363636;border: 0.1rem solid #b9e6ed;}
 table.handbook-table td, table.handbook-table th {padding: 0.5rem;}

@@ -9,6 +9,7 @@
     <meta name="author" content="mever">
     <link rel="shortcut icon" href="img/favicon.png"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/themes.css">
     <link rel="stylesheet" href="css/foundation.css"/>
     <link rel="stylesheet" href="css/normalize.css"/>
     <link rel="stylesheet" href="css/card.css"/>
@@ -23,20 +24,21 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
+<script src="js/themes.js"></script>
 <main>
     <section class="header">
         <div class="row bigWidth">
             <div class="small-12 medium-12 large-12 columns">
                 <div class="header_wrapper" style="display:inline;float:left">
                     <div class="row-top">
-                        <div id="service-logo"><a href="index.html" style="color: #64DB96">Transparent AI</a></div>
+                        <div id="service-logo"><a href="index.html" style="color: var(--green-primary)">Transparent AI</a></div>
                         <div class="row-top-inner bigWidth" style="margin-top:-10px">
                             <div id="model-quality"></div>
                             <div>
-                                <div id="model-title" style="font-size:30px;color:#EEEEEE" class="model-title"></div>
+                                <div id="model-title" style="font-size:30px;color: var(--text1-primary)" class="model-title"></div>
                                 <div>
                                     <div id="model-pending" style="color:#F9AB49;font-size:16px"></div>
-                                    <div id="model-description" style="color:#79CFDC;font-size:16px"></div>
+                                    <div id="model-description" style="color:var(--text-info);font-size:16px"></div>
                                 </div>
                             </div>
                         </div>
@@ -46,7 +48,7 @@
 
                 <div style="float:right;margin-top:7px;margin-left:4px;position:relative;" id="share-options">
                     <div class="example_button" id="downloadCard"
-                         style="float:left;background-color:#1F1F1F;border: solid 1px #434343;color:#EEEEEE;width:auto;padding-left:4px;padding-right:4px;">
+                         style="float:left;background: var(--aicode-primary);border: solid 1px #434343;color: var(--text1-primary);width:auto;padding-left:4px;padding-right:4px;">
                         <span class="btn-text"><i class="fa-solid fa-bullhorn"></i>&nbsp;&nbsp;Share ▾</span>
                     </div>
                     <div id="downloadDropdown" class="download-dropdown-menu" style="display:none;">
@@ -65,12 +67,12 @@
 
                 <div style="display:none;float:right;margin-top:7px" id="edit-options">
                     <div class="example_button" id="account-btn"
-                         style="float:left;background-color:#1F1F1F;border: solid 1px #434343;color:#EEEEEE;width:auto;padding-left:4px;padding-right:4px;">
+                         style="float:left;background: var(--aicode-primary);border: solid 1px #434343;color: var(--text1-primary);width:auto;padding-left:4px;padding-right:4px;">
                         <span class="btn-text "><i class="fa-solid fa-user"></i>&nbsp;&nbsp;<span id="account-name">Account</span></span>
                     </div>
                     <div style="float:right;margin-left:4px;position:relative;">
                         <div class="example_button" id="assistCard"
-                             style="float:left;background-color:#1F1F1F;border: solid 1px #434343;color:#EEEEEE;width:auto;padding-left:4px;padding-right:4px;">
+                             style="float:left;background: var(--aicode-primary);border: solid 1px #434343;color: var(--text1-primary);width:auto;padding-left:4px;padding-right:4px;">
                             <span class="btn-text"><i class="fa-solid fa-robot"></i>&nbsp;Actions ▾</span>
                         </div>
                         <div id="assistDropdown" class="download-dropdown-menu" style="display:none;">
@@ -84,7 +86,7 @@
 
                         </div>
                     </div>
-                    <div class="example_button" id="saveJson" style="background-color: #64DB96;width: 80px;display:none">
+                    <div class="example_button" id="saveJson" style="background-color: var(--green-primary);width: 80px;display:none">
                         <span class="btn-text"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Save</span>
                         <span class="btn-confirmation"><i class="fa-solid fa-check"></i>&nbsp;Saved</span>
                     </div>
@@ -96,7 +98,7 @@
     <div id="card-locked" class="card-lock">
         <div class="card-lock-content" id="lock-msg">
             <div id="lock-msg-text"></div>
-            <a style="text-decoration: none;color: #1F1F1F;" href="index.html"><button class="home_url">Home</button></a>
+            <a style="text-decoration: none;color: var(--text2-primary);" href="index.html"><button class="home_url">Home</button></a>
         </div>
     </div>
     <div id="delete-confirm-screen" class="delete-confirm-screen">
@@ -146,7 +148,7 @@
                     Then, either refresh this page or restart from home.
                 </span>
             </div>
-            <a style="text-decoration: none;color: #1F1F1F;" href="index.html"><button id="close-error-btn">Home</button></a>
+            <a style="text-decoration: none;color: var(--text2-primary);" href="index.html"><button id="close-error-btn">Home</button></a>
         </div>
     </div>
 
@@ -182,8 +184,8 @@
 
 <section class="footer_section">
     <div class="row bigWidth footer_section_icons">
-        <img class="footer_section_logo" src="img/logo.png">
-        <img class="footer_section_eu" src="img/logo_FoundedbyEU.png">
+        <img class="footer_section_logo" src="img/logo_og.png">
+        <img class="footer_section_eu" src="img/logo_FoundedbyEU_black.png">
     </div>
     <div class="row bigWidth footer_section_text">
         Empowering media professionals against disinformation.
@@ -284,6 +286,7 @@
 </div>
 
 <!-- JS -->
+<script src="js/themes.js"></script>
 <script src="./js/shellui.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-editor/5.23.3/js/medium-editor.min.js"></script>
