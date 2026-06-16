@@ -1,0 +1,65 @@
+:root{
+    --aicode-surface: #EEEEEE;
+    --aicode-surface-light: #FAFAFA;
+    --aicode-surface-dark: #7C7C7C;
+
+    --aicode-primary: #1f1f1f;
+    --aicode-primary-light: #8b8b8b;
+    --aicode-primary-dark: #151515;
+
+    --aicode-secondary: #64db96;
+    --aicode-secondary-light: #aeecc8;
+    --aicode-secondary-dark: #449566;
+
+    --aicode-tertiary: #155e34;
+    --aicode-tertiary-light: #85ab95;
+    --aicode-tertiary-dark: #0e4023;
+
+    --aicode-error: #f44336;
+    --aicode-error-light: #f87f76;
+    --aicode-error-dark: #a62e25;
+
+    --aicode-warning: #f9a849;
+    --aicode-warning-light: #FBC483;
+    --aicode-warning-dark: #a97232;
+
+    --aicode-success: #6cc068;
+    --aicode-success-light: #9bd498;
+    --aicode-success-dark: #498347;
+
+    --aicode-info: #79cfdc;
+    --aicode-info-light: #a4dee7;
+    --aicode-info-dark: #528d96;
+}
+
+:root{
+    /* light */
+    --bg1-primary: var(--aicode-surface);
+    --bg1-secondary: #e9e9e9;
+    --bg1-tertiary: #d1d1d1;
+    --bg2-primary: var(--aicode-surface); 
+    --text1-primary: var(--aicode-primary);
+    --text1-secondary: #252525;
+    --text2-primary: var(--aicode-primary);
+    --text-info: var(--aicode-info-dark);
+    --green-primary: var(--aicode-tertiary);
+    --yellow-primary: var(--aicode-warning);
+    --brightness-filter: 1.5; 
+    --fonts: Manrope, "Public Sans", sans-serif;
+
+    /* dark */
+    /* --bg1-primary: var(--aicode-primary);
+    --bg1-secondary: #252525;
+    --bg1-tertiary: #434343;
+    --bg2-primary: var(--aicode-surface);
+    --text1-primary: var(--aicode-surface);
+    --text1-secondary: #dcdcdc;
+    --text2-primary: var(--aicode-primary);
+    --text-info: var(--aicode-info);
+    --green-primary: var(--aicode-secondary); 
+    --yellow-primary: var(--aicode-warning-light);
+    --brightness-filter: 1.5;
+    --fonts: 'Nunito', sans-serif; */
+
+
+}
