@@ -729,6 +729,7 @@ $(document).ready(function () {
         });
 
     $(".nacc").on("input", ".editable", function () {
+
         const $this = $(this);
         
         if ($this.hasClass("autocomplete-input")) return;
@@ -742,7 +743,8 @@ $(document).ready(function () {
             $("#saveJson").fadeIn();
             if (field) {
                 if(field.type.startsWith("list:")) {
-                    field.value = $(this).find(":selected").val();
+                    // this has its own listener
+                    return;
                 } else if(field.type === 'date') {
                     field.value = $(this).val();
                 } else {
@@ -811,7 +813,7 @@ $('.contents').on('click', '.refine-field', async function () {
 
     $("#saveJson").click(function () {
         $("#saveJson").fadeOut();
-        $('.field-value.editable').each(function () {
+        $('.editable').each(function () {
             const $fieldValue = $(this);
             const fieldName = $fieldValue.siblings(".field-info").contents()[1]?.outerText.replace(":", "").trim().toLowerCase().replace(/ /g, "_");
             const sectionName = $fieldValue.closest("section").find("h2").contents().filter((_, el) => el.nodeType === 3).text().toLowerCase().replace(/ /g, "_");

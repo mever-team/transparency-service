@@ -51,16 +51,15 @@ class Options(Field):
         self.is_refinable = False
     def set(self, value):
         if isinstance(value, Field): value = value.get()
-        if not value: value = ""
-        self.__contents = value
+        self.__contents = _clean_html(value)
     def options(self):
         return self.__options
     def get(self):
-        return self.__contents
+        return _clean_html(self.__contents)
     def __bool__(self):
         return bool(self.__contents)
     def __html__(self):
-        return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "list:"+",".join(self.__options)}
+        return {"value": _clean_html(self.__contents) if self.__contents else "", "description": self.description, "type": "list:"+",".join(self.__options)}
     
 class Date(Field):
     def __init__(self, description: str="", is_simple: bool=False):
