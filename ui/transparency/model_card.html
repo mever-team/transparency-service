@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/medium-editor/5.23.3/css/themes/default.min.css">
     <script src="https://cdn.jsdelivr.net/npm/turndown@7.1.2/dist/turndown.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 </head>
 <body>
 <script src="js/themes.js"></script>
@@ -37,7 +38,7 @@
                             <div>
                                 <div id="model-title" style="font-size:30px;color: var(--text1-primary)" class="model-title"></div>
                                 <div>
-                                    <div id="model-pending" style="color:#F9AB49;font-size:16px"></div>
+                                    <div id="model-pending" style="color:var(--yellow-primary);font-size:16px"></div>
                                     <div id="model-description" style="color:var(--text-info);font-size:16px"></div>
                                 </div>
                             </div>
@@ -48,7 +49,7 @@
 
                 <div style="float:right;margin-top:7px;margin-left:4px;position:relative;" id="share-options">
                     <div class="example_button" id="downloadCard"
-                         style="float:left;background: var(--aicode-primary);border: solid 1px #434343;color: var(--text1-primary);width:auto;padding-left:4px;padding-right:4px;">
+                         style="float:left;background: var(--bg1-primary);border: solid 1px #434343;color: var(--text1-primary);width:auto;padding-left:4px;padding-right:4px;">
                         <span class="btn-text"><i class="fa-solid fa-bullhorn"></i>&nbsp;&nbsp;Share ▾</span>
                     </div>
                     <div id="downloadDropdown" class="download-dropdown-menu" style="display:none;">
@@ -67,12 +68,12 @@
 
                 <div style="display:none;float:right;margin-top:7px" id="edit-options">
                     <div class="example_button" id="account-btn"
-                         style="float:left;background: var(--aicode-primary);border: solid 1px #434343;color: var(--text1-primary);width:auto;padding-left:4px;padding-right:4px;">
+                         style="float:left;background: var(--bg1-primary);border: solid 1px #434343;color: var(--text1-primary);width:auto;padding-left:4px;padding-right:4px;">
                         <span class="btn-text "><i class="fa-solid fa-user"></i>&nbsp;&nbsp;<span id="account-name">Account</span></span>
                     </div>
                     <div style="float:right;margin-left:4px;position:relative;">
                         <div class="example_button" id="assistCard"
-                             style="float:left;background: var(--aicode-primary);border: solid 1px #434343;color: var(--text1-primary);width:auto;padding-left:4px;padding-right:4px;">
+                             style="float:left;background: var(--bg1-primary);border: solid 1px #434343;color: var(--text1-primary);width:auto;padding-left:4px;padding-right:4px;">
                             <span class="btn-text"><i class="fa-solid fa-robot"></i>&nbsp;Actions ▾</span>
                         </div>
                         <div id="assistDropdown" class="download-dropdown-menu" style="display:none;">
@@ -81,8 +82,8 @@
                             <div class="download-dropdown-item" id="cardClone">
                                 <span class="btn-text"><i class="fa-solid fa-copy"></i>&nbsp;Clone</span>
                             </div>
-                            <div class="download-dropdown-item" id="deleteCard" style="color:#F44336; display:none"><i class="fa-solid fa-trash"></i>&nbsp;Delete</div>
-                            <div class="download-dropdown-item" id="reportCard" style="color:#F44336"><i class="fa-solid fa-bug"></i>&nbsp;Report</div>
+                            <div class="download-dropdown-item" id="deleteCard" style="color:var(--red-primary); display:none"><i class="fa-solid fa-trash"></i>&nbsp;Delete</div>
+                            <div class="download-dropdown-item" id="reportCard" style="color:var(--red-primary)"><i class="fa-solid fa-bug"></i>&nbsp;Report</div>
 
                         </div>
                     </div>
@@ -154,7 +155,7 @@
 
     <section class="search_section">
         <div class="naccs">
-            <div class="row bigWidth" style="border:1px dashed #EEEEEE;border-radius:12px">
+            <div class="row bigWidth" style="border:1px dashed var(--text1-primary);border-radius:12px">
                 <span id="history-dropdown" ></span>
             </div>
             <div class="row bigWidth">
@@ -288,7 +289,6 @@
 <!-- JS -->
 <script src="js/themes.js"></script>
 <script src="./js/shellui.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-editor/5.23.3/js/medium-editor.min.js"></script>
 <script src="js/card/file_upload.js"></script>
 <script src="js/card/bearer.js"></script>

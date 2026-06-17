@@ -17,7 +17,7 @@
 
     --aicode-error: #f44336;
     --aicode-error-light: #f87f76;
-    --aicode-error-dark: #a62e25;
+    --aicode-error-dark: #cd382d;
 
     --aicode-warning: #f9a849;
     --aicode-warning-light: #FBC483;
@@ -42,12 +42,14 @@
     --text1-secondary: #252525;
     --text2-primary: var(--aicode-primary);
     --text-info: var(--aicode-info-dark);
+    --text-info-light: var(--aicode-info);
     --green-primary: var(--aicode-tertiary);
-    --yellow-primary: var(--aicode-warning);
+    --yellow-primary: var(--aicode-warning-dark);
     --brightness-filter: 1.5; 
     --fonts: Manrope, "Public Sans", sans-serif;
     --filters-caption-border: none !important;
     --a-color: var(--aicode-info-dark);
+    --red-primary: var(--aicode-error-dark);
 }
 
 .dark-theme{
@@ -60,10 +62,12 @@
     --text1-secondary: #dcdcdc;
     --text2-primary: var(--aicode-primary);
     --text-info: var(--aicode-info);
+    --text-info-light: var(--aicode-info-light);
     --green-primary: var(--aicode-secondary); 
     --yellow-primary: var(--aicode-warning-light);
     --brightness-filter: 1.5;
     --fonts: Hero_font, "Noto Emoji", sans-serif;
     --filters-caption-border: none !important;
     --a-color: var(--aicode-info);
+    --red-primary: var(--aicode-error);
 }

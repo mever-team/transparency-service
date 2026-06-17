@@ -712,7 +712,7 @@ def serve(
         url = url_for("get_banner_raw", card_id=card_id, _external=True).replace("/banner/raw/","/model_card.html?id=")
         if "<img" in overview: overview = ""
         if len(overview) > 120: overview = overview[:(120 - 3)] + "..."
-        return f"""<div style="background: var(--aicode-primary);color: var(--text1-primary);padding:10px 10px;border-radius:8px"><a href="{url}" target="_blank"><b style="color:#79CFDC;font-size:1.2rem">{card.title} <span style="color:#F9AB49;float:right">{card.quality()*100:.0f}% info</span></b></a><br>{version} {creator}<br><p style="color:#7c7c7c">{overview}</p></div>"""
+        return f"""<div style="background: var(--aicode-primary);color: var(--text1-primary);padding:10px 10px;border-radius:8px"><a href="{url}" target="_blank"><b style="color:#79CFDC;font-size:1.2rem">{card.title} <span style="color:var(--yellow-primary);float:right">{card.quality()*100:.0f}% info</span></b></a><br>{version} {creator}<br><p style="color:#7c7c7c">{overview}</p></div>"""
 
     @app.route(domain_prefix+'/card/<int:card_id>', methods=['GET'])
     def get_card(card_id):

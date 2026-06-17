@@ -23,7 +23,7 @@
     padding: 15px 20px 15px 40px;
     margin-bottom: 10px;
     color: var(--text1-primary);
-    background: var(--aicode-primary);
+    background: var(--bg1-primary);
     border: solid 1px #434343;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     cursor: pointer;
@@ -33,7 +33,7 @@
     transition: 1s all cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 .naccs .menu div:hover {box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); opacity: 1;}
-.naccs .menu div span.light {height: 10px; width: 10px; position: absolute; top: 18px; left: 15px; background-color: #F9AB49; border-radius: 100%;}
+.naccs .menu div span.light {height: 10px; width: 10px; position: absolute; top: 18px; left: 15px; background-color: var(--yellow-primary); border-radius: 100%;}
 .naccs .menu div.active span.light {
     background-color: var(--green-primary) !important;
     left: 0 !important;
@@ -65,7 +65,7 @@
     width: 10px;
     height: 5px;
     margin-right: -12px;
-    background: #F44336;
+    background: var(--red-primary);
     transition: cubic-bezier(0.075, 0.82, 0.165, 1);
     position: relative;
     top: -2px;
@@ -151,7 +151,7 @@ ul.nacc .field-name {
     word-break: break-word;
 }
 ul.nacc .field-name.comparison {
-    margin-left: 30px;  color: #F44336
+    margin-left: 30px;  color: var(--red-primary)
 }
 
 /* Editable values */
@@ -242,7 +242,7 @@ ul.nacc .field-value li {
 }
 
 .example_button {
-    background: #F9AB49;
+    background: var(--yellow-primary);
     cursor: pointer;
     text-align: center;
     font-weight: 700;
@@ -283,7 +283,7 @@ ul.nacc .field-value li {
     position: absolute;
     top: 60px;
     right: 0;
-    background: var(--aicode-primary);
+    background: var(--bg1-primary);
     border: 1px solid #434343;
     border-radius: 4px;
     min-width: 135px;
@@ -310,11 +310,11 @@ ul.nacc .field-value li {
 
 
 .download-dropdown-item:hover {
-    background-color: #3B3B3B;
+    background-color: var(--bg1-tertiary);
 }
 
 .share-btn:hover {
-    background-color: #3B3B3B;
+    background-color: var(--bg1-tertiary);
 }
 
 
@@ -366,7 +366,7 @@ section.buttons {
 /* Modal content */
 .delete-confirm-content,
 .delete-success-content,.card-lock-content {
-    background: var(--aicode-primary);
+    background: var(--bg1-primary);
     border-radius: 12px;
     padding: 1rem 3rem;
     padding-bottom:2rem;
@@ -383,12 +383,12 @@ section.buttons {
 
 /* Titles */
 .delete-confirm-content h2 {
-    color: #F44336;
+    color: var(--red-primary);
     margin-bottom: 1rem;
 }
 
 .delete-success-content h2 {
-    color: #F44336;
+    color: var(--red-primary);
     margin-bottom: 1rem;
 }
 
@@ -417,7 +417,7 @@ section.buttons {
 }
 
 #confirm-delete-btn {
-    background: #F44336!important;
+    background: var(--red-primary)!important;
     color: var(--text2-primary);
     transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
 }
@@ -598,6 +598,8 @@ section.buttons {
 .card_view .active {
     border-color: var(--green-primary);
     color: var(--green-primary);
+    font-weight: bold;
+    border-width: 2px;
 }
 
 .contents {
@@ -683,7 +685,7 @@ section.buttons {
 
 .demo-close svg {
     width: 24px;
-    fill: #F9AB49;
+    fill: var(--yellow-primary);
     pointer-events: none;
     vertical-align: top;
     padding: 5px;
@@ -702,7 +704,7 @@ section.buttons {
 #pdf_text.active,
 #url_text.active,
 #metrics_text.active {
-    color: var(--text2-primary);
+    color: var(--bg1-primary);
     border-color: var(--green-primary);
     background-color: var(--green-primary);
 
@@ -745,7 +747,7 @@ section.buttons {
 
 .fake-btn {
     background-color: var(--green-primary);
-    color: var(--text2-primary);
+    color: var(--bg1-primary);
     padding: 8px 15px;
     border-radius: 6px;
     font-weight: bold;
@@ -826,8 +828,8 @@ section.buttons {
 
 .history-graph text.edge-label {fill: #eeeeee;font-size: 11px; pointer-events: none;}
 .history-graph text.self-label {fill: #eeeeee;font-size: 11px;font-style: italic;}
-.history-graph g.node text {fill: #eeeeee;font-size: 12px;pointer-events: none;}
-.node-current {fill: #79CFDC;stroke: #4FB3C1;stroke-width: 2px;filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));opacity: 1;}
+.history-graph g.node text {fill: var(--text1-primary);font-size: 12px;pointer-events: none;}
+.node-current {fill: var(--text-info-light);stroke: var(--text-info);stroke-width: 2px;filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));opacity: 1;}
 .node-related {fill: #C8C8C8;stroke: #A8A8A8;stroke-width: 2px;}
 .node-related:hover {filter: brightness(1.2);}
 .node-related{transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;}
@@ -835,8 +837,8 @@ section.buttons {
 
 pre {font-size: 14px;background:inherit!important}
 
-.compare-toggle-btn {float:right;background: var(--aicode-primary);border:0;color: var(--text1-primary);margin:5px 10px}
-.compare-toggle-btn.active {color:#79CFDC}
+.compare-toggle-btn {float:right;background: var(--gb1-primary);border:0;color: var(--text1-primary);margin:5px 10px}
+.compare-toggle-btn.active {color:var(--text-info)}
 
 
 /* flash */

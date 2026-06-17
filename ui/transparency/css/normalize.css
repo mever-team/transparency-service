@@ -73,10 +73,10 @@ html, body {height: 100%; margin: 0; display: flex; flex-direction: column;}
 }
 .button:hover {filter: brightness(var(--brightness-filter));}
 a:hover {filter: brightness(var(--brightness-filter));}
-.warning.button, .warning.title {color: #F9AB49;}
+.warning.button, .warning.title {color: var(--yellow-primary);}
 .success.button, .success.title {color: var(--green-primary);}
 .secondary {color: #C8C8C8}
-.error {color:#F44336}
+.error {color:var(--red-primary)}
 .hidden {display: none;}
 #service-logo {color: var(--green-primary);float: left;text-align:center;font-size: 40px;margin-bottom: 10px;}
 
