@@ -797,9 +797,9 @@ section.buttons {
     border-radius: 10%;
     padding: 1%;
     margin-bottom: 16px;
-    color: white;
-    background: var(--aicode-primary);
-    border: 1px solid white;
+    color: var(--text1-primary);
+    background: var(--bg1-primary);
+    border: 1px solid var(--text1-primary);
 }
 
 .info-tooltip::after {
@@ -808,8 +808,8 @@ section.buttons {
     bottom: 125%;
     left: 50%;
     transform: translateX(-8%);
-    background-color: #333;
-    color: #fff;
+    background-color: var(--bg1-tertiary);
+    color: var(--text1-primary);
     padding: 8px 10px;
     border-radius: 6px;
     white-space: pre-line;        /* allow wrapping */
