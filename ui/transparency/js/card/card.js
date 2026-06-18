@@ -544,7 +544,15 @@ $(document).ready(function () {
                         const $loading_field = $("<div>").addClass('fieldLoader');
                         const $loading_section = $("<span>").addClass('sectionLoader');
                         $('span.field-value').html($loading_field).attr('contenteditable', 'false');
-                        $('input.field-value').attr('contenteditable', 'false').attr('readonly', 'readonly');
+                        $('.autocomplete-wrapper').each(function () {
+                            const $input = $(this).find('.autocomplete-input');
+                            const value = $input.val() || '';
+                            $(this).replaceWith(`<span class="field-value">${value}</span>`);
+                        });
+                        $('input.field-value').each(function () {
+                            const value = $(this).val() || '';
+                            $(this).replaceWith(`<span class="field-value">${value}</span>`);
+                        });
                         $('select.field-value').each(function () {
                             const value = $(this).val(); // or .find('option:selected').text() if you want text
                             $(this).replaceWith(`<span class="field-value">${value}</span>`);
