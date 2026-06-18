@@ -427,6 +427,7 @@ section.buttons {
 }
 #close-success-btn, #close-error-btn, .home_url {
     position: relative;
+    color: var(--bg-primary);
     background: var(--text-info);
     cursor: pointer;
     text-align: center;
