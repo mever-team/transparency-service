@@ -104,7 +104,7 @@ a:hover {filter: brightness(var(--brightness-filter));}
         var(--green-primary) 50%,
         transparent 80%
         ),
-        #444;
+        var(--bg1-tertiary);
     background-size: 200% 100%;
     animation: animloader 1s linear infinite;
 }
@@ -117,8 +117,8 @@ a:hover {filter: brightness(var(--brightness-filter));}
     display: inline-block;
     width: 15px;
     height: 15px;
-    /* background: var(--bg1-primary); */
-    background: #393939;
+    background: var(--bg1-tertiary);
+    /* background: #393939; */
     border-radius: 50%;
     position: relative;
     margin: 0 5px 0 -15px;
