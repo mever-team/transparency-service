@@ -243,7 +243,7 @@ $(function () {
                             const task = it.task ? " for " + it.task.toLowerCase() : "";
                             this.$tbody.append(this.templates.cardRow.render(it, name, type, task));
                         });
-                    else this.$tbody.append(`<tr><td colspan="3" style="text-align:center;color: var(--text1-primary);font-weight:bold;font-size:22px;">No matching results</td></tr>`);
+                    else this.$tbody.append(`<tr><td colspan="3" style="text-align:center;color: var(--text-primary);font-weight:bold;font-size:22px;">No matching results</td></tr>`);
                     $("#resultsTable").show();
                     this.first = false;
                 },

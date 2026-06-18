@@ -22,8 +22,8 @@
 .naccs .menu div {
     padding: 15px 20px 15px 40px;
     margin-bottom: 10px;
-    color: var(--text1-primary);
-    background: var(--bg1-primary);
+    color: var(--text-primary);
+    background: var(--button-primary);
     border: solid 1px #434343;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     cursor: pointer;
@@ -111,7 +111,7 @@ ul.nacc > li p {margin: 0;}
 
 /* Section container */
 ul.nacc li section {
-    background: var(--bg2-primary);
+    background: var(--bg-light);
     border: 1px solid #1f1f1f;
     border-radius: 8px;
     margin-bottom: 2rem;
@@ -123,8 +123,8 @@ ul.nacc li h2 {
     margin: 0 0 1.2rem 0;
     font-size: 1.3rem;
     font-weight: 700;
-    color: var(--text2-primary);
-    border-bottom: 2px solid #f0f0f0;
+    color: var(--text-primary2);
+    /* border-bottom: 2px solid #f0f0f0; */
     padding-bottom: 0.5rem;
 }
 
@@ -135,7 +135,7 @@ ul.nacc .field {
     gap: 1rem;
     align-items: start;
     padding: 0.8rem 0;
-    border-bottom: 1px solid #f0f0f0;
+    /* border-bottom: 1px solid #f0f0f0; */
 }
 
 ul.nacc .field:last-child {
@@ -145,7 +145,7 @@ ul.nacc .field:last-child {
 /* Field labels */
 ul.nacc .field-name {
     font-weight: 600;
-    color: var(--text2-primary);
+    color: var(--text-primary2);
     text-transform: capitalize;
     padding-top: 4px;
     word-break: break-word;
@@ -155,7 +155,7 @@ ul.nacc .field-name.comparison {
 }
 
 /* Editable values */
-ul.nacc .field-value[type="date"], ul.nacc .field-value[type="date"]:focus {border: none; outline: none; background-color: #eee;}
+ul.nacc .field-value[type="date"], ul.nacc .field-value[type="date"]:focus {border: none; outline: none; background-color: var(--bg-light);}
 
 ul.nacc .field-value[contenteditable="true"] {
     display: block;
@@ -163,7 +163,7 @@ ul.nacc .field-value[contenteditable="true"] {
     border-radius: 6px;
     padding: 6px 10px;
     min-height: 32px;
-    background: var(--bg2-primary);
+    background: var(--bg-light);
     line-height: 1.4;
     cursor: text;
     transition: border 0.2s, background 0.2s;
@@ -181,14 +181,14 @@ blockquote {
 }
 
 ul.nacc .field-value[contenteditable="true"]:hover {
-    background: #FAFAFA;
-    border-color: var(--text2-primary);
+    /* background: #FAFAFA; */
+    border-color: var(--text-primary2);
 }
 
 ul.nacc .field-value[contenteditable="true"]:focus {
     outline: none;
     border: 1px solid #1F1F1F;
-    background: #FAFAFA;
+    /* background: #FAFAFA; */
 }
 
 /* Links */
@@ -211,7 +211,7 @@ ul.nacc .field-value li {
     font-size: 14px;
     border: 1px solid #7C7C7C;
     border-radius: 6px;
-    background: var(--bg2-primary);
+    background: var(--bg-light);
     cursor: pointer;
 }
 
@@ -231,7 +231,7 @@ ul.nacc .field-value li {
 .page-title .model-title {
     font-size: 30px;
     font-weight: 700;
-    color: var(--text2-primary);
+    color: var(--text-primary2);
     text-align: center;
     display:inline;
 }
@@ -252,7 +252,7 @@ ul.nacc .field-value li {
     width: 91px;
     display: inline-block;
     margin: 13px 0px 0;
-    color: var(--text2-primary);
+    color: var(--text-primary2);
     border: 1px solid #1F1F1F;
     height: 40px;
 }
@@ -283,7 +283,7 @@ ul.nacc .field-value li {
     position: absolute;
     top: 60px;
     right: 0;
-    background: var(--bg1-primary);
+    background: var(--button-primary);
     border: 1px solid #434343;
     border-radius: 4px;
     min-width: 135px;
@@ -291,30 +291,30 @@ ul.nacc .field-value li {
 }
 
 .download-dropdown-item {
-    color: var(--text1-primary);
+    color: var(--text-primary);
     padding: 8px 12px;
     cursor: pointer;
 }
 
 .share-btn {
-    color: var(--text1-primary)!important;
+    color: var(--text-primary)!important;
     text-decoration:none;
     padding: 8px 12px;
     cursor: pointer;
 }
 
 .share-btn a {
-    color: var(--text1-primary)!important;
+    color: var(--text-primary)!important;
     text-decoration:none;
 }
 
 
 .download-dropdown-item:hover {
-    background-color: var(--bg1-tertiary);
+    background-color: var(--bg-tertiary);
 }
 
 .share-btn:hover {
-    background-color: var(--bg1-tertiary);
+    background-color: var(--bg-tertiary);
 }
 
 
@@ -333,7 +333,7 @@ ul.nacc .field-value li {
 
 .btn-confirmation {
     display: none;
-    color: var(--text2-primary);
+    color: var(--text-primary2);
     font-weight: bold;
 }
 
@@ -366,7 +366,7 @@ section.buttons {
 /* Modal content */
 .delete-confirm-content,
 .delete-success-content,.card-lock-content {
-    background: var(--bg1-primary);
+    background: var(--bg-primary);
     border-radius: 12px;
     padding: 1rem 3rem;
     padding-bottom:2rem;
@@ -374,7 +374,7 @@ section.buttons {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
     max-width: 400px;
     width: 90%;
-    color: var(--text1-primary);
+    color: var(--text-primary);
 }
 .card-lock-content{
     min-height: 200px;
@@ -418,7 +418,7 @@ section.buttons {
 
 #confirm-delete-btn {
     background: var(--red-primary)!important;
-    color: var(--text2-primary);
+    color: var(--text-primary2);
     transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
 }
 
@@ -452,11 +452,11 @@ section.buttons {
     position: relative; /* anchor for tooltip */
     border-radius: 10px;
     padding: 7px 10px;
-    background: inherit!important;
+    background: var(--button-primary)!important;
     width: 100%!important;
     margin-bottom: 10px;
     text-align: center;
-    color: var(--text1-primary);
+    color: var(--text-primary);
     margin-left: 0px!important;
 }
 
@@ -467,7 +467,7 @@ section.buttons {
 
 .quality-text {
   font-size: 12px;
-  fill: var(--text1-primary);
+  fill: var(--text-primary);
   text-anchor: middle;
   dominant-baseline: middle;
 }
@@ -500,7 +500,7 @@ section.buttons {
     z-index: 999;
     font-size: 14px;
     line-height: 1.5;
-    color: var(--text2-primary);
+    color: var(--text-primary2);
     animation: fadeIn 0.25s ease;
     pointer-events: none;
 }
@@ -542,8 +542,8 @@ section.buttons {
     padding: 8px 7px;
     font-size: 15px;
     line-height: 6px;
-    color: var(--text2-primary);
-    background: var(--bg2-primary);
+    color: var(--text-primary2);
+    background: var(--bg-light);
     border: 1px solid transparent;
     border-radius: 8px;
     outline: none;
@@ -577,7 +577,6 @@ section.buttons {
 .card_view {
     display: flex;
     text-align: center;
-    
 }
 .card_view div {
     border: solid 1px rgb(97, 97, 97);
@@ -585,6 +584,7 @@ section.buttons {
     margin: 1rem 0 0 0;
     padding: 0.25rem 0.5rem;
     cursor: pointer;
+    background-color: var(--button-primary);
 }
 .card_view div:first-child {
     border-top-left-radius: 60px;
@@ -656,7 +656,7 @@ section.buttons {
     will-change: transform, opacity;
     position: relative;
     background: var(--aicode-primary);
-    color: var(--text1-primary);
+    color: var(--text-primary);
     background-clip: padding-box;
     box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
     opacity: 0;
@@ -693,7 +693,7 @@ section.buttons {
 }
 
 #pdf_text,#url_text,#metrics_text {
-    color: var(--text1-primary);
+    color: var(--text-primary);
     text-align: right;
     margin: 7px 0 7px;
     font-size: 14px;
@@ -705,7 +705,7 @@ section.buttons {
 #pdf_text.active,
 #url_text.active,
 #metrics_text.active {
-    color: var(--bg1-primary);
+    color: var(--bg-primary);
     border-color: var(--green-primary);
     background-color: var(--green-primary);
 
@@ -725,7 +725,7 @@ section.buttons {
 } */
 
 .upload-container {
-    color: var(--text1-primary);
+    color: var(--text-primary);
     padding: 0px;
     text-align: center;
     border: 0px solid #434343;
@@ -748,7 +748,7 @@ section.buttons {
 
 .fake-btn {
     background-color: var(--green-primary);
-    color: var(--bg1-primary);
+    color: var(--bg-primary);
     padding: 8px 15px;
     border-radius: 6px;
     font-weight: bold;
@@ -763,7 +763,7 @@ section.buttons {
 .file-list li .icon {font-size: 18px;}
 .total-size {margin-top: 10px;font-size: 14px;}
 .import_options {text-align:left;margin-bottom:0px;}
-.progress-bar-file {width: 100%;height: 12px;background: var(--bg1-tertiary);border-radius: 10px;margin-top: 10px;overflow: hidden;}
+.progress-bar-file {width: 100%;height: 12px;background: var(--bg-tertiary);border-radius: 10px;margin-top: 10px;overflow: hidden;}
 .progress-fill {height: 100%;background: var(--green-primary);width: 0%;transition: width 0.5s ease;}
 .no-overflow {overflow:hidden;}
 #cover{
@@ -784,7 +784,7 @@ section.buttons {
     line-height: 22px;
     border-radius: 50%;
     background-color: #A2A2A2;
-    color: var(--text2-primary);
+    color: var(--text-primary2);
     text-align: center;
     font-size: 12px;
     font-weight: bold;
@@ -798,9 +798,9 @@ section.buttons {
     border-radius: 10%;
     padding: 1%;
     margin-bottom: 16px;
-    color: var(--text1-primary);
-    background: var(--bg1-primary);
-    border: 1px solid var(--text1-primary);
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    border: 1px solid var(--text-primary);
 }
 
 .info-tooltip::after {
@@ -809,8 +809,8 @@ section.buttons {
     bottom: 125%;
     left: 50%;
     transform: translateX(-8%);
-    background-color: var(--bg1-tertiary);
-    color: var(--text1-primary);
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
     padding: 8px 10px;
     border-radius: 6px;
     white-space: pre-line;        /* allow wrapping */
@@ -829,7 +829,7 @@ section.buttons {
 
 .history-graph text.edge-label {fill: #eeeeee;font-size: 11px; pointer-events: none;}
 .history-graph text.self-label {fill: #eeeeee;font-size: 11px;font-style: italic;}
-.history-graph g.node text {fill: var(--text1-primary);font-size: 12px;pointer-events: none;}
+.history-graph g.node text {fill: var(--text-primary);font-size: 12px;pointer-events: none;}
 .node-current {fill: var(--text-info-light);stroke: var(--text-info);stroke-width: 2px;filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));opacity: 1;}
 .node-related {fill: #C8C8C8;stroke: #A8A8A8;stroke-width: 2px;}
 .node-related:hover {filter: brightness(1.2);}
@@ -838,7 +838,7 @@ section.buttons {
 
 pre {font-size: 14px;background:inherit!important}
 
-.compare-toggle-btn {float:right;background: var(--gb1-primary);border:0;color: var(--text1-primary);margin:5px 10px}
+.compare-toggle-btn {float:right;background: var(--gb1-primary);border:0;color: var(--text-primary);margin:5px 10px}
 .compare-toggle-btn.active {color:var(--text-info)}
 
 
@@ -914,12 +914,12 @@ pre {font-size: 14px;background:inherit!important}
     padding: 6px 10px;
     border: 1px solid #7C7C7C;
     border-radius: 6px;
-    background: var(--bg2-primary);
+    background: var(--bg-light);
     outline: none;
     box-sizing: border-box;
 }
 .autocomplete-input:focus {
-    border-color: var(--text2-primary);
+    border-color: var(--text-primary2);
     background: #FAFAFA;
 }
 .autocomplete-suggestions {
@@ -927,7 +927,7 @@ pre {font-size: 14px;background:inherit!important}
     top: 100%;
     left: 0;
     right: 0;
-    background: var(--bg2-primary);
+    background: var(--bg-light);
     border: 1px solid #7C7C7C;
     border-top: none;
     border-radius: 0 0 6px 6px;
@@ -939,11 +939,11 @@ pre {font-size: 14px;background:inherit!important}
 .autocomplete-suggestion {
     padding: 6px 10px;
     cursor: pointer;
-    color: var(--text2-primary);
+    color: var(--text-primary2);
 }
 .autocomplete-suggestion.selected {
     background: var(--green-primary);
-    color: var(--text2-primary);
+    color: var(--text-primary2);
 }
 .autocomplete-suggestion:hover {
     background: #e3e3e3;
@@ -953,7 +953,7 @@ pre {font-size: 14px;background:inherit!important}
     padding: 6px 10px;
     font-weight: bold;
     background-color: #e0e0e0;
-    color: var(--text2-primary);
+    color: var(--text-primary2);
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     cursor: default;

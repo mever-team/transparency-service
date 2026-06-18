@@ -1,4 +1,4 @@
-.handbook_section {color: var(--text1-primary); display: flex;line-height: 20px!important;}
+.handbook_section {color: var(--text-primary); display: flex;line-height: 20px!important;}
 .handbook_section img {
     display: block;
     width: 95%;
@@ -41,7 +41,7 @@ h2::after {
     position: sticky;
     top: 0;
     padding-top: 1rem;
-    border-right: 0.1rem solid var(--text1-primary);
+    border-right: 0.1rem solid var(--text-primary);
     user-select: none;
     -moz-user-select: none; /* Firefox */
     /* background-image: linear-gradient(to top, var(--green-primary) 0%, #00000000 25%); */
@@ -54,15 +54,15 @@ h2::after {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: var(--bg1-primary);
+    background: var(--bg-primary);
     position: absolute;
     right: -1rem;
     top: 20%;
     width: 1rem;
     height: 2.5rem;
-    border-right: 0.1rem solid var(--text1-primary);
-    border-top: 0.1rem solid var(--text1-primary);
-    border-bottom: 0.1rem solid var(--text1-primary);
+    border-right: 0.1rem solid var(--text-primary);
+    border-top: 0.1rem solid var(--text-primary);
+    border-bottom: 0.1rem solid var(--text-primary);
     border-top-right-radius: 0.3rem;
     border-bottom-right-radius: 0.3rem;
     cursor: pointer;
@@ -73,17 +73,17 @@ h2::after {
 .menu_item1 {
     margin: .4rem 0.5rem;
     padding: .3rem .5rem;
-    border-top: 1px solid var(--text1-primary);
-    border-bottom: 1px solid var(--text1-primary);
+    border-top: 1px solid var(--text-primary);
+    border-bottom: 1px solid var(--text-primary);
 }
 .menu_item2 {
     padding: 0.2rem 0 0.2rem 2rem;
 }
 .menu_item1.active, .menu_item2.active { color: var(--green-primary); font-weight: bold;}
 
-table.handbook-table {background-color: var(--bg1-primary);border: 0.1rem solid var(--text-info);}
+table.handbook-table {background-color: var(--bg-primary);border: 0.1rem solid var(--text-info);}
 table.handbook-table td, table.handbook-table th {padding: 0.5rem;}
-table.handbook-table tr:nth-child(even) {background: var(--bg1-tertiary);}
+table.handbook-table tr:nth-child(even) {background: var(--bg-tertiary);}
 table.handbook-table thead {background: #244f36;}
 table.handbook-table thead th {
   font-size: 15px;
