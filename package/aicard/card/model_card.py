@@ -70,6 +70,7 @@ class ModelCard:
                 metrics=LongText("Benchmark results for any performance metrics.", technical_nature=True),
                 thresholds=LongText("If decision thresholds are used, what are they, and why were those parameters chosen?"),
                 methodology=LongText("Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method.", is_refinable=True),
+                environmental_impact=LongText("Report of energy consumption, CO2 emissions or any other environmental impact.", technical_nature=True),
                 bias=LongText("Performance and bias across different groups (e.g. ethnicity, gender)", is_refinable=True),
             ),
             safety=DotDict(
