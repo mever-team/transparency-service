@@ -205,6 +205,7 @@ $(function () {
             const $el = $(event.target).closest('p');
             const filter = $el.attr('data-filter');
             delete this.filters[filter];
+            $el.next('br').remove();
             $el.remove();
             this.options[filter].active = false;
             this.request();
@@ -242,7 +243,7 @@ $(function () {
                             const task = it.task ? " for " + it.task.toLowerCase() : "";
                             this.$tbody.append(this.templates.cardRow.render(it, name, type, task));
                         });
-                    else this.$tbody.append(`<tr><td colspan="3" style="text-align:center;color:#EEEEEE;font-weight:bold;font-size:22px;">No matching results</td></tr>`);
+                    else this.$tbody.append(`<tr><td colspan="3" style="text-align:center;color: var(--text-primary);font-weight:bold;font-size:22px;">No matching results</td></tr>`);
                     $("#resultsTable").show();
                     this.first = false;
                 },
@@ -284,8 +285,8 @@ $(function () {
         cardRowRender: function (it, name, type, task) {
             const percent = Math.round(it.quality * 100);
             const qualityColor =
-                it.quality > 0.7 ? '#6CC06B' :
-                it.quality > 0.4 ? '#FBC483' :
+                it.quality > 0.7 ? 'var(--green-primary)' :
+                it.quality > 0.4 ? 'var(--yellow-primary)' :
                 '#F87F76';
             const view = {
                 id: it.id,
@@ -308,7 +309,7 @@ $(function () {
             this.$filters.html("");
             $('<p>')
                 .attr('id', 'new-filter')
-                .addClass('filter button secondary modal__trigger')
+                .addClass('filter button modal__trigger')
                 .attr('data-modal', '#filters')
                 .html('<div><i class="fa-solid fa-plus"></i>&nbsp;&nbsp;New Filter</div>')
                 .appendTo(this.$filters);
@@ -393,6 +394,8 @@ $(function () {
                 .attr('id', 'edit-filter')
                 .addClass('filter button secondary success')
             this.$filters.children('p').eq(-1).before(newP);
+            this.$filters.children('p').eq(-1).before(newP, $('<br>'));
+
         },
 
         loadTemplates: async function(templates) {

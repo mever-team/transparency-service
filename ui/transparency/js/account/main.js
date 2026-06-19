@@ -271,4 +271,17 @@ $(function () {
         if (e.target.id === 'report-modal-screen' || $(e.target).hasClass('close‑modal'))
             document.getElementById('report-modal-screen').style.display = 'none';
     });
+    isDark = localStorage.getItem("isDark") === "true";
+    if (isDark) {
+        $("#DarkThemeToggle").prop("checked", true);
+    }
+    $('#DarkThemeToggle').on("change", function () {
+        if ($(this).is(":checked")) {
+            localStorage.setItem('isDark', true);
+            setDarkTheme(true);
+        } else {
+            localStorage.setItem('isDark', false);
+            setDarkTheme(false);
+        }
+    });
 });

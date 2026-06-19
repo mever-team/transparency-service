@@ -11,12 +11,14 @@
     <style>.hidden { display:none!important; }</style>
     <link rel="shortcut icon" href="img/favicon.png"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/themes.css">
     <link rel="stylesheet" href="css/foundation.css"/>
     <link rel="stylesheet" href="css/normalize.css"/>
     <link rel="stylesheet" href="css/index.css"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 </head>
 <body>
-
+<script src="js/themes.js"></script>
 <section class="header">
     <div class="row bigWidth">
         <div class="small-12 medium-12 large-12 columns">
@@ -60,8 +62,8 @@
 
 <section class="footer_section">
     <div class="row bigWidth footer_section_icons">
-        <img class="footer_section_logo" src="img/logo.png">
-        <img class="footer_section_eu" src="img/logo_FoundedbyEU.png">
+        <img class="footer_section_logo" src="img/logo_og.png">
+        <img class="footer_section_eu" src="img/logo_FoundedbyEU_black.png">
     </div>
     <div class="row bigWidth footer_section_text">
         Empowering media professionals against disinformation.
@@ -133,13 +135,13 @@
 <div id="filters" class="modal modal__bg"></div>
 <div id="edit-filter" class="modal modal__bg"></div>
 <!-- JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://unpkg.com/mustache@4.2.0/mustache.min.js"></script>
 <script type="module">
     import { default as Keycloak } from 'https://cdn.jsdelivr.net/npm/keycloak-js@26.2.4/+esm';
     window.Keycloak = Keycloak
     window.dispatchEvent(new Event('keycloak-check-done'));
 </script>
+<script src="js/themes.js"></script>
 <script src="./js/shellui.js"></script>
 <script src="js/index/bearer.js"></script>
 <script src="js/index/filters.js"></script>

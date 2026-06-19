@@ -10,13 +10,13 @@
 
 .user { border:1px solid #434343;padding:10px 15px;color:#7C7C7C; margin-bottom:5px}
 .card { border:1px solid #434343;padding:10px 15px;color:#7C7C7C; margin-bottom:5px}
-.username {font-size:16px;color:#79CFDC}
-.registered-label {float: right;color:#64DB96}
+.username {font-size:16px;color:var(--text-info)}
+.registered-label {float: right;color:var(--green-primary)}
 .user .button {float: right!important; margin-top:-5px!important;margin-left:10px!important;}
 .card .button, .card .placeholder {float: right!important; margin-top:-5px!important;margin-left:10px!important;}
 .card .placeholder {padding-top: 5px}
 .greet {padding: 7px;}
-h2 {color:#EEEEEE;margin-top:40px}
+h2 {color: var(--text-primary);margin-top:40px}
 
 .report-entry {
     margin: 10px;

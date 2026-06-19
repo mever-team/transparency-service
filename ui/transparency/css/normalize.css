@@ -44,25 +44,26 @@ table {border-collapse: collapse;border-spacing: 0;}
 
 
 @font-face {font-family: Hero_font;src: url('../fonts/Hero.otf');}
-body {font-family: Hero_font, "Noto Emoji", sans-serif;}
+body {font-family: var(--fonts);}
 html, body {height: 100%; margin: 0; display: flex; flex-direction: column;}
 
-.footer_section {background: #252525;color: #dcdcdc;overflow-x: hidden;padding-bottom: 30px; padding-top: 30px;flex: 0 0 auto;}
+.footer_section {background: var(--bg-secondary);color: var(--text-secondary);overflow-x: hidden;padding-bottom: 30px; padding-top: 30px;flex: 0 0 auto;}
 .footer_title {font-size: 16px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid #444; color: #fff; margin-top: 40px;}
 .footer_section_icons {margin-bottom:5px;}
 .footer_section_entry {display: table-row;}
-.footer_section_logo {width: 80px;}
+.footer_section_logo {width: 80px; background: var(--aicode-logo) center/contain no-repeat;}
 .footer_section_eu {width: 200px;}
 .footer_section_text {font-size:10px!important}
 
-.header_section {position: relative;background: #1F1F1F;border-bottom: 1px solid rgba(141, 153, 174, 0.5);flex: 0 0 auto;}
+.header_section {position: relative;background: var(--bg-primary);border-bottom: 1px solid rgba(141, 153, 174, 0.5);flex: 0 0 auto;}
 .header_wrapper {padding: 25px 0;}
-.header_wrapper h2 {position: relative;color: #EEEEEE;display: inline-block;font-size: 30px; margin: 0 30px 0 15px;}
-.header_wrapper p {display: inline-block;line-height: 30px;margin: 0;color: #EEEEEE;position: relative;top: -2px;cursor: pointer;float: right;}
+.header_wrapper h2 {position: relative;color: var(--text-primary);display: inline-block;font-size: 30px; margin: 0 30px 0 15px;}
+.header_wrapper p {display: inline-block;line-height: 30px;margin: 0;color: var(--text-primary);position: relative;top: -2px;cursor: pointer;float: right;}
 
 .button {
-    background: inherit;
-    color: #EEEEEE;
+    /* font-weight: bold; */
+    background: var(--button-primary);
+    color: var(--text-primary);
     margin-left:5px!important;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
     border: 1px solid #434343!important;
@@ -71,23 +72,23 @@ html, body {height: 100%; margin: 0; display: flex; flex-direction: column;}
     border-radius: 10px;
     filter: brightness(1);
 }
-.button:hover {filter: brightness(1.2);}
-a:hover {filter: brightness(1.2);}
-.warning.button, .warning.title {color: #F9AB49;}
-.success.button, .success.title {color: #64DB96;}
+.button:hover {filter: brightness(var(--brightness-filter));}
+a:hover {filter: brightness(var(--brightness-filter));}
+.warning.button, .warning.title {color: var(--yellow-primary);}
+.success.button, .success.title {color: var(--green-primary);}
 .secondary {color: #C8C8C8}
-.error {color:#F44336}
+.error {color:var(--red-primary)}
 .hidden {display: none;}
-#service-logo {color: #64DB96;float: left;text-align:center;font-size: 40px;margin-bottom: 10px;}
+#service-logo {color: var(--green-primary);float: left;text-align:center;font-size: 40px;margin-bottom: 10px;}
 
 @media (max-width: 600px) {
   #service-title {font-size: 2.5rem; line-height: 2.5rem;}
   #service-logo {font-size: 35px; width:100%;}
 }
 
-.loading-overlay {margin-top:50px;display: flex; justify-content: center; align-items: center; z-index: 9999; font-family: sans-serif; color: #1F1F1F;}
-.spinner {border: 4px solid #f3f3f3; border-top: 4px solid #64DB96; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px; margin-top: 9px;}
-.spinnerDark {border: 4px solid #b7b7b7; border-top: 4px solid #64DB96; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px; margin-top: 9px;}
+.loading-overlay {margin-top:50px;display: flex; justify-content: center; align-items: center; z-index: 9999; font-family: sans-serif; color: var(--text-primary2);}
+.spinner {border: 4px solid #f3f3f3; border-top: 4px solid var(--green-primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px; margin-top: 9px;}
+.spinnerDark {border: 4px solid #b7b7b7; border-top: 4px solid var(--green-primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px; margin-top: 9px;}
 #loading p {margin-left: 20px; font-weight: bold; font-size: 22px;}
 @keyframes spin {
     0%   { transform: rotate(0deg); }
@@ -101,10 +102,10 @@ a:hover {filter: brightness(1.2);}
     background: linear-gradient(
         100deg,
         transparent,
-        #64DB96 50%,
+        var(--green-primary) 50%,
         transparent 80%
         ),
-        #444;
+        var(--bg-tertiary);
     background-size: 200% 100%;
     animation: animloader 1s linear infinite;
 }
@@ -117,8 +118,8 @@ a:hover {filter: brightness(1.2);}
     display: inline-block;
     width: 15px;
     height: 15px;
-    /* background: #1f1f1f; */
-    background: #393939;
+    background: var(--bg-tertiary);
+    /* background: #393939; */
     border-radius: 50%;
     position: relative;
     margin: 0 5px 0 -15px;
@@ -131,7 +132,7 @@ a:hover {filter: brightness(1.2);}
     inset: 2px;
     border-radius: 50%;
     border: 2px solid transparent;
-    border-top-color: #64DB96;
+    border-top-color: var(--green-primary);
 }
 @keyframes skLinRotate {
     95% ,100% { transform: rotate(840deg) }
@@ -140,10 +141,10 @@ a:hover {filter: brightness(1.2);}
 
 .popup {display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px);-webkit-backdrop-filter: blur(8px);z-index: 2000; justify-content: center; align-items: center;}
 .popup.show {display: flex;}
-.popup_content .button {padding: 15px 15px!important;font-size: 1.2em!important;width: 125px!important;background: #1f1f1f;}
+.popup_content .button {padding: 15px 15px!important;font-size: 1.2em!important;width: 125px!important;background: var(--bg-primary);}
 .popup_content .title {margin-bottom:20px;}
 .popup_content {
-    background: #1f1f1f;
+    background: var(--bg-primary);
     border-radius: 12px;
     padding: 1rem 3rem;
     padding-bottom:2rem;
@@ -151,9 +152,9 @@ a:hover {filter: brightness(1.2);}
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
     max-width: 400px;
     width: 90%;
-    color: #EEEEEE;
+    color: var(--text-primary);
 }
 .popup_content input {width: 90%; border-radius:5px; padding:5px; margin-top:5px;}
 
-a {color:#79CFDC}
+a {color:var(--a-color)}
 .learn-more,.learn-more{text-align: left;padding-top: 0.5rem;}
