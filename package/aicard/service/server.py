@@ -25,6 +25,7 @@ import time
 import re
 import pathlib
 from typing import Any
+from email_validator import validate_email, EmailNotValidError
 
 
 def exists(condition:str|ModelCardEntry|Any|None, message: str):
@@ -305,6 +306,10 @@ def serve(
             if password: return "This server uses email-based login. For safety, passwords can only be set after logging in.", 409
             token = secrets.token_urlsafe(32)
             with auth_lock: verification_tokens[token] = (username, time.monotonic() + token_expiration_secs)
+            try:
+                validate_email(email, check_deliverability=False)
+            except EmailNotValidError as e:
+                return "The email you provided is not a valid email address.", 404
             if not email_verification.send_email(
                 email,
                 "Email verification for Trustworthy AI (TrAI)",
