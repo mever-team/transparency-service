@@ -27,36 +27,113 @@ var CodeBlockButton = MediumEditor.Extension.extend({
         this.action();
     },
 
+    checkState: function (node) {
+        var sel = window.getSelection();
+        if (!sel.rangeCount) {
+            this.button.classList.remove('medium-editor-button-active');
+            return false;
+        }
+
+        var range = sel.getRangeAt(0);
+        var container = range.commonAncestorContainer;
+        // If it's a text node, get its parent element
+        var el = container.nodeType === 3 ? container.parentElement : container;
+        var inside = !!el.closest('pre code');
+
+        this.button.classList.toggle('medium-editor-button-active', inside);
+        return inside;
+    },
+
+    // Toggle behavior
     action: function () {
         var editor = this.base;
         var selection = window.getSelection();
         if (!selection || selection.rangeCount === 0) return;
 
         var range = selection.getRangeAt(0);
-        var pre = document.createElement('pre');
-        var code = document.createElement('code');
+        var container = range.commonAncestorContainer;
+        var el = container.nodeType === 3 ? container.parentElement : container;
+        var preElement = el.closest('pre');
 
-        if (range.collapsed) {
-            code.textContent = '';
+        if (preElement) {
+            // toggle off
+            var outerPre = preElement;
+            while (outerPre.parentElement && outerPre.parentElement.closest('pre')) {
+                outerPre = outerPre.parentElement.closest('pre');
+            }
+
+            var tempDiv = document.createElement('div');
+            tempDiv.innerHTML = outerPre.innerHTML.replaceAll('<br>', '\n');
+            var text = tempDiv.textContent;
+            var html = text.replaceAll('\n', '<br>');
+            
+            // Replace the outerPre with a text node
+            var parent = outerPre.parentNode;
+            var tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            while (tempDiv.firstChild) {
+                parent.insertBefore(tempDiv.firstChild, outerPre);
+            }
+            parent.removeChild(outerPre);
+
+            // Place cursor at the end of the inserted content
+            var lastChild = parent.lastChild;
+            if (lastChild) {
+                var newRange = document.createRange();
+                if (lastChild.nodeType === 3) {
+                    newRange.setStart(lastChild, lastChild.length);
+                } else if (lastChild.nodeType === 1) {
+                    // If it's an element, place at the end of its last child or itself
+                    var lastNode = lastChild.lastChild || lastChild;
+                    newRange.setStart(lastNode, lastNode.length || 0);
+                } else {
+                    newRange.setStart(parent, parent.childNodes.length);
+                }
+                newRange.collapse(true);
+                selection.removeAllRanges();
+                selection.addRange(newRange);
+            }
+
         } else {
-            var fragment = range.extractContents();
-            code.appendChild(fragment);
+            // toggle on
+            var pre = document.createElement('pre');
+            var code = document.createElement('code');
+
+            var emptyCode = false;
+            if (range.collapsed) {
+                code.textContent = 'Write your code here';
+                emptyCode = true;
+            } else {
+                var fragment = range.extractContents();
+                code.appendChild(fragment);
+            }
+
+            pre.appendChild(code);
+            range.insertNode(pre);
+
+            // selects placeholder
+            if (emptyCode) {
+                var newRange = document.createRange();
+                newRange.selectNodeContents(code.firstChild); 
+                selection.removeAllRanges();
+                selection.addRange(newRange);
+            } else {
+                // fallback: cursor at end
+                var newRange = document.createRange();
+                newRange.setStart(code, code.childNodes.length);
+                newRange.collapse(true);
+                selection.removeAllRanges();
+                selection.addRange(newRange);
+            }
+
         }
 
-        pre.appendChild(code);
-        range.insertNode(pre);
-
-        var newRange = document.createRange();
-        newRange.setStart(code, code.childNodes.length);
-        newRange.collapse(true);
-        selection.removeAllRanges();
-        selection.addRange(newRange);
-
+        // Notify the editor that content changed
         var editable = editor.elements[0];
         if (editable) {
             $(editable).trigger('input');
         }
-
+        this.checkState();
     }
 });
 
@@ -85,8 +162,9 @@ function htmlToMarkdown(html) {
 
     // That assumes all pre are pre code. this is the case for our content
     container.querySelectorAll('pre').forEach(pre => {
-        pre.innerHTML = pre.innerHTML.replaceAll('<p>', '\n') // This is weird but it's the only consistent solution I found.
-        const rawText = pre.textContent;
+        var tempPre = document.createElement('pre');
+        tempPre.innerHTML = pre.innerHTML.replaceAll('<p>', '\n').replaceAll('<br>','\n'); // This is weird but it's the only consistent solution I found.;
+        const rawText = tempPre.textContent.trim();
         pre.innerHTML = '';
         const code = document.createElement('code');
         code.textContent = rawText;

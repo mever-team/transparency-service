@@ -975,6 +975,7 @@ pre {font-size: 14px;background:inherit!important}
 
 pre,code {
     background: var(--bg-secondary)!important;
-    border-radius: 20px;
     white-space: pre-wrap;
+    min-width: 1rem;
+    min-height: 1rem;
 }
