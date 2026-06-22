@@ -95,6 +95,9 @@ class ModelCardEntry(contextlib.AbstractContextManager):
 
         timestamp = int(time.time())
         columns = list(flattened.keys())
+        # print("Card columns:", columns)
+        # db_columns = [row[1] for row in self.conn.conn.execute("PRAGMA table_info(cards)").fetchall()]
+        # print("DB columns:", db_columns)
         values = [flattened[key] for key in columns] + [desc, self.card.title, quality, timestamp]
         columns += ["desc", "title", "quality",
                     "timestamp"]  # do this after values uses columns, because its a db, not card field
@@ -132,11 +135,22 @@ class ModelCardEntry(contextlib.AbstractContextManager):
                 tmp_conn.execute(query, values + [self.card_id])
                 tmp_conn.commit()
         else:
-            if edit_message: self.conn.create_card_relation(parent_id=self.card_id, child_id=self.card_id,
-                                                            message=edit_message)
+            if edit_message: self.conn.create_card_relation(parent_id=self.card_id, child_id=self.card_id, message=edit_message)
             with self.conn.conn:
                 cursor = self.conn.conn.cursor()
-                cursor.execute(query, values + [self.card_id])
+                try:
+                    cursor.execute(query, values + [self.card_id])
+                except Exception: # TODO: this is a temporary solution to invalid existing states after db migrations
+                    existing_row = self.conn.conn.execute("SELECT * FROM cards WHERE id = ?",  (self.card_id,)).fetchone()
+                    db_cols = [row[1] for row in self.conn.conn.execute("PRAGMA table_info(cards)").fetchall()]
+                    existing = dict(zip(db_cols, existing_row))
+                    existing.update(dict(zip(columns, values)))
+                    replace_query = f'''
+                        INSERT OR REPLACE INTO cards ({", ".join(f'"{col}"' for col in db_cols)})
+                        VALUES ({", ".join("?" for _ in db_cols)})
+                    '''
+                    replace_values = [existing[col] for col in db_cols]
+                    cursor.execute(replace_query, replace_values)
 
     def start_completion(self):
         self.lock.acquire()

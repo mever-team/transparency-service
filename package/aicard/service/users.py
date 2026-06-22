@@ -23,6 +23,82 @@ def verify_password(password: str, hashed: str) -> bool:
     if not password or not hashed: return False
     return bcrypt.checkpw(password.encode(), hashed.encode())
 
+import sqlite3
+import shutil
+import subprocess
+import os
+import atexit
+import sys
+import time
+import re
+import base64
+
+import requests
+import bcrypt
+import jwt
+from jwt import PyJWKClient, PyJWKSet
+from flask import request, abort, Response
+from functools import wraps
+from aicard.card import ModelCard
+
+
+def hash_password(password: str) -> str:
+    if not password: return password
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+
+def verify_password(password: str, hashed: str) -> bool:
+    if not password or not hashed: return False
+    return bcrypt.checkpw(password.encode(), hashed.encode())
+
+def _ensure_db_integrity(db_path: str, logger):
+    from pathlib import Path
+    p = Path(db_path)
+    if not p.exists(): return
+    healthy = False
+    try:
+        with sqlite3.connect(str(p), timeout=5) as probe:
+            probe.execute("PRAGMA journal_mode=WAL")
+            result = probe.execute("PRAGMA integrity_check").fetchone()
+            healthy = result and result[0] == "ok"
+            if not healthy:
+                logger.warn(f"Integrity check returned: {result[0] if result else 'no result'}")
+    except sqlite3.DatabaseError as e:
+        logger.warn(f"Could not open database for integrity check: {e}")
+    if healthy:
+        logger.ok(f"Database found and healthy: {db_path}")
+        return
+    backup = p.with_suffix(".corrupted.bak")
+    shutil.copy2(str(p), str(backup))
+    logger.warn(f"Corrupted database backed up to: {backup}")
+    if not shutil.which("sqlite3"):
+        raise RuntimeError(
+            "sqlite3 CLI not found — cannot attempt recovery. "
+            f"Corrupted database backed up at {backup}."
+        )
+    recovered = p.with_suffix(".recovered.db")
+    try:
+        recover_sql = subprocess.run(
+            ["sqlite3", str(p), ".recover"],
+            capture_output=True, text=True
+        )
+        if not recover_sql.stdout.strip():
+            raise RuntimeError( f"sqlite3 .recover produced no output. stderr: {recover_sql.stderr}")
+        result = subprocess.run(["sqlite3", str(recovered)], input=recover_sql.stdout, capture_output=True, text=True)
+        if result.returncode != 0:
+            raise RuntimeError(f"Failed to import recovered SQL: {result.stderr}")
+    except Exception as e:
+        raise RuntimeError(f"[DB] Recovery failed. Corrupted database saved at {backup}. Error: {e}")
+    try:
+        with sqlite3.connect(str(recovered), timeout=5) as probe:
+            result = probe.execute("PRAGMA integrity_check").fetchone()
+            if not result or result[0] != "ok":
+                raise RuntimeError(f"Recovered database failed integrity check: {result}")
+    except sqlite3.DatabaseError as e:
+        raise RuntimeError(f"[DB] Recovered database is unreadable: {e}")
+    os.replace(str(recovered), str(p))
+    logger.info(f"Recovery successful. Original backed up at {backup}.")
+
+
 class UserDB:
     def __init__(self, logger, root:str="db", admin_name:str="admin", admin_password:str="admin", admin_email:str=""): # pragma: no cover
         if not root:
@@ -32,6 +108,7 @@ class UserDB:
         else:
             os.makedirs(root, exist_ok=True)
             self.db_path = os.path.join(root, "auth.db")
+            _ensure_db_integrity(self.db_path, logger)
             conn = sqlite3.connect(self.db_path, check_same_thread=True)
         conn.execute("PRAGMA foreign_keys = ON")
         conn.execute("PRAGMA journal_mode=WAL;")
@@ -241,6 +318,8 @@ class UserDB:
             self.conn.execute("UPDATE users SET password=? WHERE username=?", (new_hash, admin_name))
             logger.ok("Database loaded.")
             if admin_password=="admin": logger.warn("REMEMBER TO CHANGE THE DEFAULT ADMINISTRATOR PASSWORD")
+
+
 
     def find_user(self, table: str, username: str):
         cursor = self.conn.execute(
