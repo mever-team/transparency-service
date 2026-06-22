@@ -25,3 +25,4 @@ psutil
 codecarbon
 python-keycloak
 jwcrypto
+email-validator
