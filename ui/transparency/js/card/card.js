@@ -7,6 +7,59 @@ let turndownService = null;
 let markedInstance = null;
 
 
+// Custom MediumEditor extension for inserting code blocks
+var CodeBlockButton = MediumEditor.Extension.extend({
+    name: 'codeblock',
+
+    init: function () {
+        this.button = document.createElement('button');
+        this.button.classList.add('medium-editor-action');
+        this.button.innerHTML = '&lt;/&gt;';
+        this.button.title = 'Code Block';
+        this.button.onclick = this.handleClick.bind(this);
+    },
+
+    getButton: function () {
+        return this.button;
+    },
+
+    handleClick: function (event) {
+        this.action();
+    },
+
+    action: function () {
+        var editor = this.base;
+        var selection = window.getSelection();
+        if (!selection || selection.rangeCount === 0) return;
+
+        var range = selection.getRangeAt(0);
+        var pre = document.createElement('pre');
+        var code = document.createElement('code');
+
+        if (range.collapsed) {
+            code.textContent = '';
+        } else {
+            var fragment = range.extractContents();
+            code.appendChild(fragment);
+        }
+
+        pre.appendChild(code);
+        range.insertNode(pre);
+
+        var newRange = document.createRange();
+        newRange.setStart(code, code.childNodes.length);
+        newRange.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(newRange);
+
+        var editable = editor.elements[0];
+        if (editable) {
+            $(editable).trigger('input');
+        }
+
+    }
+});
+
 function initConverters() {
     if (typeof TurndownService !== 'undefined' && !turndownService) {
         turndownService = new TurndownService({
@@ -23,9 +76,25 @@ function initConverters() {
 
 function htmlToMarkdown(html) {
     initConverters();
+
     if (!turndownService) return html;
     if (!html || typeof html !== 'string') return '';
-    return turndownService.turndown(html);
+
+    const container = document.createElement('div');
+    container.innerHTML = html;
+
+    // That assumes all pre are pre code. this is the case for our content
+    container.querySelectorAll('pre').forEach(pre => {
+        pre.innerHTML = pre.innerHTML.replaceAll('<p>', '\n') // This is weird but it's the only consistent solution I found.
+        const rawText = pre.textContent;
+        pre.innerHTML = '';
+        const code = document.createElement('code');
+        code.textContent = rawText;
+        pre.appendChild(code);
+    });
+
+    console.log(container.innerHTML);
+    return turndownService.turndown(container.innerHTML);
 }
 
 function markdownToHtml(md) {
@@ -425,7 +494,7 @@ $(document).ready(function () {
                 document.getElementById('modal-autocomplete-screen').style.display = 'flex';
             }
             // render syntax highlighting and remove autocorrect
-            document.querySelectorAll('pre').forEach((block) => {hljs.highlightElement(block);});
+            document.querySelectorAll('pre code').forEach((block) => {hljs.highlightElement(block);});
             document.querySelectorAll('pre, pre code').forEach(el => {
                 el.setAttribute('spellcheck', 'false');
                 el.setAttribute('autocorrect', 'off');
@@ -494,10 +563,14 @@ $(document).ready(function () {
                             // 'h3',
                             'quote',
                             'orderedlist',
-                            'unorderedlist'
+                            'unorderedlist',
+                            'codeblock'
                         ],
                         static: true,
                         updateOnEmptySelection: true
+                    }, 
+                    extensions: {
+                        codeblock: new CodeBlockButton()
                     }
                 });
 
@@ -831,7 +904,9 @@ $('.contents').on('click', '.refine-field', async function () {
             if (section) {
                 let field = section.value.find(f => f.name === fieldName);
                 if (field && !field.type.startsWith("list:") && field.type !== 'date') {
+                    // console.log(field.value);
                     field.value = htmlToMarkdown($fieldValue.html());
+                    // console.log(field.value);
                 }
             }
         });

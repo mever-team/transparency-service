@@ -972,3 +972,9 @@ pre {font-size: 14px;background:inherit!important}
     border-bottom: 1px solid #ccc;
     border-radius: 4px 4px 0 0;
 }
+
+pre,code {
+    background: var(--bg-secondary)!important;
+    border-radius: 20px;
+    white-space: pre-wrap;
+}
