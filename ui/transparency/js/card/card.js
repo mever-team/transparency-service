@@ -6,7 +6,6 @@ var editor;
 let turndownService = null;
 let markedInstance = null;
 
-
 // Custom MediumEditor extension for inserting code blocks
 var CodeBlockButton = MediumEditor.Extension.extend({
     name: 'codeblock',
@@ -57,73 +56,76 @@ var CodeBlockButton = MediumEditor.Extension.extend({
 
         if (preElement) {
             // toggle off
+            // with this method the ctrl+z doens't work. The commented out bellow is an attempt to make it work
+            // but i didn't find any consistent way to do it.
             var outerPre = preElement;
             while (outerPre.parentElement && outerPre.parentElement.closest('pre')) {
                 outerPre = outerPre.parentElement.closest('pre');
             }
-
-            var tempDiv = document.createElement('div');
-            tempDiv.innerHTML = outerPre.innerHTML.replaceAll('<br>', '\n');
-            var text = tempDiv.textContent;
-            var html = text.replaceAll('\n', '<br>');
             
-            // Replace the outerPre with a text node
-            var parent = outerPre.parentNode;
-            var tempDiv = document.createElement('div');
-            tempDiv.innerHTML = html;
-            while (tempDiv.firstChild) {
-                parent.insertBefore(tempDiv.firstChild, outerPre);
-            }
-            parent.removeChild(outerPre);
+            const outerPreStr = outerPre.outerHTML;
+            const outerPreText = outerPre.textContent.replaceAll('\n', '<br>');
+            const parent = outerPre.parentNode;
 
-            // Place cursor at the end of the inserted content
-            var lastChild = parent.lastChild;
-            if (lastChild) {
-                var newRange = document.createRange();
-                if (lastChild.nodeType === 3) {
-                    newRange.setStart(lastChild, lastChild.length);
-                } else if (lastChild.nodeType === 1) {
-                    // If it's an element, place at the end of its last child or itself
-                    var lastNode = lastChild.lastChild || lastChild;
-                    newRange.setStart(lastNode, lastNode.length || 0);
-                } else {
-                    newRange.setStart(parent, parent.childNodes.length);
-                }
-                newRange.collapse(true);
-                selection.removeAllRanges();
-                selection.addRange(newRange);
-            }
+            outerPre.outerHTML = outerPreText;
+
+
+            // const selection = window.getSelection();
+            // const range = document.createRange();
+            // range.selectNode(outerPre);
+            // // range.collapse(true);
+            // selection.removeAllRanges();
+            // selection.addRange(range);
+            // document.execCommand('delete');
+            // const Nchar = outerPreText.length;
+            // console.log(Nchar);
+            // for (let i = 0; i < Nchar+2; i++) {
+                // document.execCommand('forwardDelete');
+            // }
+            // document.execCommand('insertHTML',false, `<br>${outerPreText}`);
+
+            // editor.pasteHTML(outerPreText);
 
         } else {
             // toggle on
-            var pre = document.createElement('pre');
-            var code = document.createElement('code');
-
-            var emptyCode = false;
-            if (range.collapsed) {
-                code.textContent = 'Write your code here';
-                emptyCode = true;
-            } else {
-                var fragment = range.extractContents();
-                code.appendChild(fragment);
+            var selectedHtml = '';
+            if (!range.collapsed) {
+                var fragment = range.cloneContents();
+                var tempDiv = document.createElement('div');
+                tempDiv.appendChild(fragment);
+                selectedHtml = tempDiv.innerHTML;
             }
 
-            pre.appendChild(code);
-            range.insertNode(pre);
+            var codeContent = selectedHtml || 'Write your code here';
+            var id = 'code-' + Date.now();
+            var codeHtml = `<br><pre data-id="${id}"><code> ${codeContent} </code></pre><br>`;
 
-            // selects placeholder
-            if (emptyCode) {
-                var newRange = document.createRange();
-                newRange.selectNodeContents(code.firstChild); 
-                selection.removeAllRanges();
-                selection.addRange(newRange);
+            editor.pasteHTML(codeHtml);
+
+            // select placeholder 
+            if (!selectedHtml) {
+                var editable = editor.elements[0];
+                var pre = editable.querySelector(`pre[data-id="${id}"]`);
+                if (pre) {
+                    var code = pre.querySelector('code');
+                    if (code && code.firstChild) {
+                        var newRange = document.createRange();
+                        newRange.selectNodeContents(code.firstChild);
+                        selection.removeAllRanges();
+                        selection.addRange(newRange);
+                    }
+                }
             } else {
-                // fallback: cursor at end
-                var newRange = document.createRange();
-                newRange.setStart(code, code.childNodes.length);
-                newRange.collapse(true);
-                selection.removeAllRanges();
-                selection.addRange(newRange);
+                // or place cursor at the end
+                var editable = editor.elements[0];
+                var pre = editable.querySelector(`pre[data-id="${id}"]`);
+                if (pre) {
+                    var newRange = document.createRange();
+                    newRange.selectNodeContents(pre);
+                    newRange.collapse(false);
+                    selection.removeAllRanges();
+                    selection.addRange(newRange);
+                }
             }
 
         }
@@ -132,6 +134,7 @@ var CodeBlockButton = MediumEditor.Extension.extend({
         var editable = editor.elements[0];
         if (editable) {
             $(editable).trigger('input');
+            $(editable).trigger('editableInput');
         }
         this.checkState();
     }
@@ -171,7 +174,6 @@ function htmlToMarkdown(html) {
         pre.appendChild(code);
     });
 
-    console.log(container.innerHTML);
     return turndownService.turndown(container.innerHTML);
 }
 
