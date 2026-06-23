@@ -7,6 +7,28 @@ let turndownService = null;
 let markedInstance = null;
 
 // Custom MediumEditor extension for inserting code blocks
+function getHighestPreFromNode(node) {
+    let current = node;
+    let highestPre = null;
+
+    while (current) {
+        if (current.nodeType === 1 && current.tagName === "PRE") {
+        highestPre = current;
+        }
+        current = current.parentNode;
+    }
+
+    return highestPre;
+}
+function getHighestPreFromCursor() {
+    const selection = window.getSelection();
+    if (!selection.rangeCount) return null;
+    let node = selection.anchorNode;
+    if (node.nodeType === 3) {
+        node = node.parentElement;
+    }
+    return getHighestPreFromNode(node);
+}
 var CodeBlockButton = MediumEditor.Extension.extend({
     name: 'codeblock',
 
@@ -55,79 +77,16 @@ var CodeBlockButton = MediumEditor.Extension.extend({
         var preElement = el.closest('pre');
 
         if (preElement) {
-            // toggle off
-            // with this method the ctrl+z doens't work. The commented out bellow is an attempt to make it work
-            // but i didn't find any consistent way to do it.
-            var outerPre = preElement;
-            while (outerPre.parentElement && outerPre.parentElement.closest('pre')) {
-                outerPre = outerPre.parentElement.closest('pre');
-            }
+            const parentPre = getHighestPreFromCursor();
+            const range = document.createRange();
+            range.selectNodeContents(parentPre);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            document.execCommand('formatBlock', false, 'div');
             
-            const outerPreStr = outerPre.outerHTML;
-            const outerPreText = outerPre.textContent.replaceAll('\n', '<br>');
-            const parent = outerPre.parentNode;
-
-            outerPre.outerHTML = outerPreText;
-
-
-            // const selection = window.getSelection();
-            // const range = document.createRange();
-            // range.selectNode(outerPre);
-            // // range.collapse(true);
-            // selection.removeAllRanges();
-            // selection.addRange(range);
-            // document.execCommand('delete');
-            // const Nchar = outerPreText.length;
-            // console.log(Nchar);
-            // for (let i = 0; i < Nchar+2; i++) {
-                // document.execCommand('forwardDelete');
-            // }
-            // document.execCommand('insertHTML',false, `<br>${outerPreText}`);
-
-            // editor.pasteHTML(outerPreText);
-
         } else {
-            // toggle on
-            var selectedHtml = '';
-            if (!range.collapsed) {
-                var fragment = range.cloneContents();
-                var tempDiv = document.createElement('div');
-                tempDiv.appendChild(fragment);
-                selectedHtml = tempDiv.innerHTML;
-            }
-
-            var codeContent = selectedHtml || 'Write your code here';
-            var id = 'code-' + Date.now();
-            var codeHtml = `<br><pre data-id="${id}"><code> ${codeContent} </code></pre><br>`;
-
-            editor.pasteHTML(codeHtml);
-
-            // select placeholder 
-            if (!selectedHtml) {
-                var editable = editor.elements[0];
-                var pre = editable.querySelector(`pre[data-id="${id}"]`);
-                if (pre) {
-                    var code = pre.querySelector('code');
-                    if (code && code.firstChild) {
-                        var newRange = document.createRange();
-                        newRange.selectNodeContents(code.firstChild);
-                        selection.removeAllRanges();
-                        selection.addRange(newRange);
-                    }
-                }
-            } else {
-                // or place cursor at the end
-                var editable = editor.elements[0];
-                var pre = editable.querySelector(`pre[data-id="${id}"]`);
-                if (pre) {
-                    var newRange = document.createRange();
-                    newRange.selectNodeContents(pre);
-                    newRange.collapse(false);
-                    selection.removeAllRanges();
-                    selection.addRange(newRange);
-                }
-            }
-
+            document.execCommand('formatBlock', false, 'pre');
         }
 
         // Notify the editor that content changed
@@ -141,16 +100,55 @@ var CodeBlockButton = MediumEditor.Extension.extend({
 });
 
 function initConverters() {
+    function getPreText(node) {
+        let text = '';
+        for (const child of node.childNodes) {
+            if (child.nodeType === Node.TEXT_NODE) {
+                text += child.textContent;
+            } else if (child.nodeType === Node.ELEMENT_NODE) {
+                if (child.tagName === 'BR') {
+                    text += '\n';
+                } else {
+                    text += getPreText(child);
+                }
+            }
+        }
+        return text;
+    }
+
+    // ---------- Turndown ----------
     if (typeof TurndownService !== 'undefined' && !turndownService) {
         turndownService = new TurndownService({
             headingStyle: 'atx',
             codeBlockStyle: 'fenced'
         });
         turndownService.keep(['sub', 'sup', 'u', 'ins']);
+
+        // Custom rule for <pre>
+        turndownService.addRule('pre', {
+            filter: 'pre',
+            replacement: function(content, node) {
+                const codeText = getPreText(node);
+                return '```\n' + codeText + '\n```';
+            }
+        });
     }
+
+    // ---------- Marked ----------
     if (typeof marked !== 'undefined' && !markedInstance) {
         markedInstance = marked;
         markedInstance.setOptions({ breaks: true, gfm: true });
+
+        // Renderer to output plain <pre>
+        const renderer = {
+            code(token) {
+                const codeText = (token.text || token);
+                const language = token.lang || '';
+                const langAttr = language ? ` class="language-${language}"` : '';
+                return `<pre${langAttr}>${codeText}</pre>`;
+            }
+        };
+        markedInstance.use({ renderer });
     }
 }
 
@@ -162,17 +160,6 @@ function htmlToMarkdown(html) {
 
     const container = document.createElement('div');
     container.innerHTML = html;
-
-    // That assumes all pre are pre code. this is the case for our content
-    container.querySelectorAll('pre').forEach(pre => {
-        var tempPre = document.createElement('pre');
-        tempPre.innerHTML = pre.innerHTML.replaceAll('<p>', '\n').replaceAll('<br>','\n'); // This is weird but it's the only consistent solution I found.;
-        const rawText = tempPre.textContent.trim();
-        pre.innerHTML = '';
-        const code = document.createElement('code');
-        code.textContent = rawText;
-        pre.appendChild(code);
-    });
 
     return turndownService.turndown(container.innerHTML);
 }
@@ -574,8 +561,8 @@ $(document).ready(function () {
                 document.getElementById('modal-autocomplete-screen').style.display = 'flex';
             }
             // render syntax highlighting and remove autocorrect
-            document.querySelectorAll('pre code').forEach((block) => {hljs.highlightElement(block);});
-            document.querySelectorAll('pre, pre code').forEach(el => {
+            document.querySelectorAll('pre').forEach((block) => {hljs.highlightElement(block);});
+            document.querySelectorAll('pre').forEach(el => {
                 el.setAttribute('spellcheck', 'false');
                 el.setAttribute('autocorrect', 'off');
                 el.setAttribute('autocapitalize', 'off');

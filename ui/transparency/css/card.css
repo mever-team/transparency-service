@@ -979,3 +979,7 @@ pre,code {
     min-width: 1rem;
     min-height: 1rem;
 }
+
+span[class*="hljs-"]:not(pre span[class*="hljs-"]) {
+  color: #30323D !important;
+}
