@@ -974,10 +974,11 @@ pre {font-size: 14px;background:inherit!important}
 }
 
 pre,code {
-    background: var(--bg-secondary)!important;
+    background: var(--aicode-surface-light)!important;
     white-space: pre-wrap;
     min-width: 1rem;
     min-height: 1rem;
+    padding: 1rem;
 }
 
 span[class*="hljs-"]:not(pre span[class*="hljs-"]) {
