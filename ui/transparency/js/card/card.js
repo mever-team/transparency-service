@@ -57,11 +57,25 @@ var CodeBlockButton = MediumEditor.Extension.extend({
 
         var range = sel.getRangeAt(0);
         var container = range.commonAncestorContainer;
-        // If it's a text node, get its parent element
         var el = container.nodeType === 3 ? container.parentElement : container;
-        var inside = !!el.closest('pre code');
+        var inside = !!el.closest('pre');
 
         this.button.classList.toggle('medium-editor-button-active', inside);
+
+        // disable other buttons
+        var toolbar = this.base.getExtensionByName('toolbar');
+        if (toolbar && toolbar.getToolbarElement) {
+            var buttons = toolbar.getToolbarElement().querySelectorAll('button');
+
+            buttons.forEach((btn) => {
+                if (btn === this.button) {
+                    btn.disabled = false;
+                } else {
+                    btn.disabled = inside;
+                }
+                console.log(btn);
+            });
+        }
         return inside;
     },
 
@@ -87,6 +101,19 @@ var CodeBlockButton = MediumEditor.Extension.extend({
             
         } else {
             document.execCommand('formatBlock', false, 'pre');
+            if (selection.rangeCount > 0) {
+                let node = selection.getRangeAt(0).startContainer;
+                if (node.nodeType === Node.TEXT_NODE) {
+                    node = node.parentElement;
+                }
+                preElement = node.closest('pre');
+            }
+            preElement.innerHTML = preElement.innerHTML.replaceAll("<br>", "\n");
+            hljs.highlightElement(preElement);
+            preElement.setAttribute('spellcheck', 'false');
+            preElement.setAttribute('autocorrect', 'off');
+            preElement.setAttribute('autocapitalize', 'off');
+            preElement.setAttribute('translate', 'no');
         }
 
         // Notify the editor that content changed
