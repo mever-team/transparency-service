@@ -972,3 +972,20 @@ pre {font-size: 14px;background:inherit!important}
     border-bottom: 1px solid #ccc;
     border-radius: 4px 4px 0 0;
 }
+
+pre,code {
+    background: var(--aicode-surface-light)!important;
+    white-space: pre-wrap;
+    min-width: 1rem;
+    min-height: 1rem;
+    padding: 1rem;
+}
+
+span[class*="hljs-"]:not(pre span[class*="hljs-"]) {
+  color: #30323D !important;
+}
+
+.medium-editor-toolbar button:disabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
