@@ -33,7 +33,6 @@
 }
 
 :root{
-    /* light */
     --bg-primary: var(--aicode-surface);
     --bg-light: white;
     --bg-secondary: #e9e9e9;
@@ -55,7 +54,6 @@
 }
 
 .dark-theme{
-    /* dark */
     --bg-primary: var(--aicode-primary);
     --bg-light: var(--aicode-surface);
     --bg-secondary: #252525;
@@ -74,4 +72,25 @@
     --a-color: var(--aicode-info);
     --red-primary: var(--aicode-error);
     --button-primary: var(--aicode-primary);
+}
+
+.ocean-theme{
+    --bg-primary: #0f172a;
+    --bg-light: #eeeeee;
+    --bg-secondary: #334155;
+    --bg-tertiary: #475569;
+    --bg-primary2: #e2e8f0;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-primary2: #0f172a;
+    --text-info: #38bdf8;
+    --text-info-light: #7dd3fc;
+    --green-primary: #06b6d4;
+    --yellow-primary: #fbbf24;
+    --brightness-filter: 1.4;
+    --fonts: Manrope, "Public Sans", sans-serif;
+    --filters-caption-border: none !important;
+    --a-color: #38bdf8;
+    --red-primary: #ef4444;
+    --button-primary: #1e293b;
 }

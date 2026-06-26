@@ -37,8 +37,15 @@
             <div id="resources"><canvas id="metrics-chart" style="max-height: 300px;"></canvas></div>
             <div id="pending-users"></div>
             <div id="registered-users"></div>
-            <input type="checkbox" id="DarkThemeToggle" name="DarkThemeToggle" value="Dark">
-            <label for="DarkThemeToggle" style="color: var(--text-primary);"> Dark Theme</label><br>
+            <div id="theme-selector-container">
+                <h2>Themes</h2>
+                <select name="themes" id="theme-selector">
+                    <option value="light-theme" selected="selected">Light</option>
+                    <option value="dark-theme">Dark</option>
+                    <option value="ocean-theme">Ocean</option>
+                </select>
+            </div>
+
             <div id="cards"></div>
             <div id="reported"></div>
         </div>
