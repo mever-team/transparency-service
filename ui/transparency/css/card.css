@@ -621,7 +621,7 @@ section.buttons {
 }
 
 #service-logo {text-align:left; font-size: 40px; min-width: 300px;}
-.row-top, .row-top-inner { display: flex; align-items: center; align-text: center; gap: 16px;}
+.row-top, .row-top-inner { display: flex; align-items: center; text-align: center; gap: 16px;}
 @media (max-width: 1000px) {
   #service-logo {font-size: 35px; width:100%; margin-left: 5px; margin-top: -10px;}
   row-top-inner {width:100%;}
