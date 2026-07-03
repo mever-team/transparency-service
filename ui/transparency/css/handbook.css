@@ -69,7 +69,13 @@ h2::after {
     visibility: visible !important;
 }
 
-.menu_item1, .menu_item2 {cursor: pointer;}
+.menu_item1, .menu_item2 {
+    border: none;
+    cursor: pointer;
+    background-color: inherit;
+    color: var(--text-primary);
+    display: block;
+}
 .menu_item1 {
     margin: .4rem 0.5rem;
     padding: .3rem .5rem;
