@@ -13,12 +13,16 @@ function setTheme(theme) {
 
     switch(theme) {
         case "dark-theme":
-            $('.footer_section_logo').attr('src', 'img/logo_dark.png');
-            $('.footer_section_eu').attr('src', 'img/logo_FoundedbyEU_dark.png');
-            break;
-        default:
             $('.footer_section_logo').attr('src', 'img/logo.png');
             $('.footer_section_eu').attr('src', 'img/logo_FoundedbyEU.png');
+            break;
+        case "ocean-theme":
+            $('.footer_section_logo').attr('src', 'img/logo.png');
+            $('.footer_section_eu').attr('src', 'img/logo_FoundedbyEU.png');
+            break;
+        default:
+            $('.footer_section_logo').attr('src', 'img/logo_og.png');
+            $('.footer_section_eu').attr('src', 'img/logo_FoundedbyEU_black.png');
     }
 
     localStorage.setItem("theme", theme);
