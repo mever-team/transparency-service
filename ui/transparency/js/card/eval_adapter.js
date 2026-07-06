@@ -19,7 +19,7 @@ $(function () {
             headers: {"Authorization": "Bearer " + token},
             data: JSON.stringify(uploaded_metrics),
             success: function(response) {
-                window.location.href = window.location.href;
+                window.location.reload();
             },
             error: function(xhr, status, error) {
                 $modal.css('display','none');

@@ -57,7 +57,7 @@ $(function () {
                 +`</div>
             `);});
         }
-        const $resources = $("#resources");``
+        const $resources = $("#resources");
         if (response.resources) {
             $resources.show();
             const r = response.resources;

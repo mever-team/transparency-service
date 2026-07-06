@@ -711,7 +711,7 @@ $(document).ready(function () {
                         clearInterval(intervalId);
                         if (refineStarted){
                             _renderSimple(true);
-                            window.location.href = window.location.href;
+                            window.location.reload();
                         }
                         return;
                     }
@@ -719,7 +719,7 @@ $(document).ready(function () {
                         clearInterval(intervalId);
                         if (refineStarted){
                             _renderSimple(true);
-                            window.location.href = window.location.href;
+                            window.location.reload();
                         }
                         return;
                     }
