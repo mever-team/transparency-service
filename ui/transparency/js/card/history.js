@@ -28,6 +28,7 @@ function compressHistory(historyEdges, hidden, nodeIds) {
 }
 
 function renderHistoryGraph(history, currentId, container) {
+    console.log(history);
     let compareMode = false;
 
     let node_info = history.info;
