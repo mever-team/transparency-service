@@ -14,16 +14,19 @@ def test_local_card_creation(client):
     assert new_card.overview.version == "3.2"
     assert "text generation" in str(new_card) # check that string conversion works correctly too
 
+def start_server():
+    import aicard as aic
+    app, gc, monitor = aic.service.serve(root="", admin_username="admin", admin_password="admin", silent=True)
+    app.run(threaded=False)
+
 def test_remote_card_creation():
     # try local card attached to an actually spawned server
+    # (server spawning in different function because linux python does not fork anymore in new processes by default)
     import aicard as aic
     import multiprocessing
     import time
-    def start_server():
-        app, gc, monitor = aic.service.serve(root="", admin_username="admin", admin_password="admin", silent=True)
-        app.run(threaded=False)
     multiprocessing.Process(target=start_server, daemon=True).start()
-    time.sleep(2)
+    time.sleep(10) # apparently 2 seconds are not enough for pytest
     conn = aic.connect("http://127.0.0.1:5000", username="admin", password="admin", silent=True)
     with conn.create() as card:
         card.title = "my new card"

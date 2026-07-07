@@ -33,14 +33,7 @@ class SemanticMatcher(Assistant):
             token_embeddings = model_output.last_hidden_state
             mask = attention_mask.unsqueeze(-1).expand(token_embeddings.size()).float()
             return (token_embeddings * mask).sum(1) / mask.sum(1)
-
-        encoded = self.tokenizer(
-            text,
-            padding=True,
-            truncation=True,
-            return_tensors="pt"
-        )
-
+        encoded = self.tokenizer(text, padding=True, truncation=True, return_tensors="pt")
         with torch.no_grad():
             model_output = self.model(**encoded)
         token_embeddings = model_output.last_hidden_state
@@ -269,5 +262,5 @@ class SemanticMatcher(Assistant):
         emissions_data = json.loads(tracker.final_emissions_data.toJSON())
         job_tracker.delete(card_id, emissions_data)
 
-    def refine(self, card: ModelCard, logger: Logger, user_messages: list[str]):
+    def refine(self, *args, **kwargs):
         raise Exception("Semantic matcher cannot perform refinement - consider combining it with an LLM")

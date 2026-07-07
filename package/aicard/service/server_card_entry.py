@@ -202,8 +202,7 @@ class ModelCardEntry(contextlib.AbstractContextManager):
             self.commit_card(on_thread=True, edit_message=assistant.alias + " refinement")  # on_thread=True because we are on a heavyweight path either way
             logger.info(f"ended card {self.card_id} refinement", user=assistant.alias)
         except Exception as e:
-            if not isinstance(e, Forbidden) and not isinstance(e, NotFound) and not isinstance(e,
-                                                                                               Unauthorized): traceback.print_exc()
+            if not isinstance(e, Forbidden) and not isinstance(e, NotFound) and not isinstance(e, Unauthorized): traceback.print_exc()
             logger.error(f"aborted card{self.card_id} refinement with error {e}", user=assistant.alias)
         self.end_completion(trigger_on_end)
 
