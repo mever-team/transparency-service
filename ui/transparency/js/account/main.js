@@ -3,6 +3,7 @@ $(function () {
 
     function update_resources(response) {
         const $pending = $("#pending-users").empty();
+        const $registered = $("#registered-users").empty();
         if (response.pending.length === 0) $pending.hide();
         else {
             $registered.append("<h2>Pending approval (did not register via email)</h2>");
@@ -14,7 +15,6 @@ $(function () {
                 </div>
             `);});
         }
-        const $registered = $("#registered-users").empty();
         if (response.users.length === 0) $registered.hide();
         else {
             if(response.users.length>1) $registered.append("<h2>Registered users</h2>");
