@@ -18,3 +18,5 @@ eval_module/evaluation.egg-info
 .coverage
 emissions/
 htmlcov
+node_modules/
+coverage

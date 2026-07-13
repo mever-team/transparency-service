@@ -23,6 +23,7 @@ function setTheme(theme) {
         default:
             $('.footer_section_logo').attr('src', 'img/logo_og.png');
             $('.footer_section_eu').attr('src', 'img/logo_FoundedbyEU_black.png');
+            theme = 'light-theme';
     }
 
     localStorage.setItem("theme", theme);
