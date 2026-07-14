@@ -20,3 +20,4 @@ emissions/
 htmlcov
 node_modules/
 coverage
+coverage.xml
