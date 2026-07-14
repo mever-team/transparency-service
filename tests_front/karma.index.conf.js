@@ -32,7 +32,8 @@ module.exports = function(config) {
       },
 
       'tests_front/spec/themesSpec.js',
-      'tests_front/spec/filtersSpec.js'
+      'tests_front/spec/index/filtersSpec.js',
+      'tests_front/spec/index/mainSpec.js'
     ],
     proxies: { 
       // '/js/': 'http://localhost:5000/transparency/js/', 

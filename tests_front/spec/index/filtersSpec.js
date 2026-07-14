@@ -1,4 +1,3 @@
-let loaded = [];
 describe('Testing filters...', function() {
     beforeEach(async function () {
         await loadPage('/base/ui/transparency/index.html');
