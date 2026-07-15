@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -e ./package
-          pip install pytest pytest-cov
+          pip install pytest pytest-cov pytest-timeout
       - name: Create .env file
         run: |
           cat > ui/.env <<EOF
