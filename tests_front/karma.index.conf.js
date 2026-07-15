@@ -31,9 +31,12 @@ module.exports = function(config) {
         served: true
       },
 
-      'tests_front/spec/themesSpec.js',
-      'tests_front/spec/index/filtersSpec.js',
-      'tests_front/spec/index/mainSpec.js'
+      // 'tests_front/spec/account/mainSpec.js',
+      // 'tests_front/spec/themesSpec.js',
+      // 'tests_front/spec/handbook/mainSpec.js',
+      // 'tests_front/spec/index/mainSpec.js',
+      // 'tests_front/spec/index/filtersSpec.js',
+      'tests_front/spec/card/cardSpec.js',
     ],
     proxies: { 
       // '/js/': 'http://localhost:5000/transparency/js/', 

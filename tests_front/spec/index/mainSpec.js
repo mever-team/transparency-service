@@ -40,7 +40,7 @@ describe('Testing index main.js...', function() {
         $('#username').val('karma');
         $('#email').val('karma@example.com');
         $('#login-confirm-btn').trigger('click');
-        await new Promise(resolve => setTimeout(resolve, 1000));// wait for trai
+        await new Promise(resolve => setTimeout(resolve, 2000));// wait for trai
         expect($('#login-success').text()).toBe('An email was sent to your account with a login link. Check your spam folder.');
     });
 

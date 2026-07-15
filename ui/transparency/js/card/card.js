@@ -249,7 +249,7 @@ $(document).on('keydown', (e) => {
 
 $(document).ready(function () {
     const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
+    const id = urlParams.get('id') || karmaTestCardId;
     const compareto = urlParams.get('compareto');
     const $menu = $('.menu');
     // $menu.css({visibility: 'hidden', display: 'block'});

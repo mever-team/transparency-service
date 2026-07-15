@@ -1,5 +1,6 @@
 let token = "";
 let pingTimer = null;
+var loggedUserIsAdmin = false;
 
 // incoming token from registration verification redirect
 const params = new URLSearchParams(window.location.search);
