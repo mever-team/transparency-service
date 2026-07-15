@@ -62,10 +62,16 @@ module.exports = function(config) {
     },
 
     browsers: [
-      'ChromeHeadless'
+      'ChromeHeadlessNoSandbox'
+      // 'ChromeHeadless'
       // 'Chrome'
     ],
-
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox']
+      }
+    },
     singleRun: true,
 
     // autoWatch: true
