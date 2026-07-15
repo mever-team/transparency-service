@@ -3,7 +3,7 @@ describe('Testing index main.js...', function() {
         await loadPage('/base/ui/transparency/index.html');
     });
 
-    it('login', async function() {
+    it('login logout', async function() {
         $('#login-btn').trigger('click');
         expect($('#login').hasClass('show')).toBe(true);
         /* Check email slide */
@@ -25,6 +25,9 @@ describe('Testing index main.js...', function() {
             keyCode: 13,
             which: 13
         }));
+        await new Promise(resolve => setTimeout(resolve, 1000));// wait for trai
+        expect($('#account-name').text()).toBe('admin');
+        $('#logout-btn').trigger('click');
         await new Promise(resolve => setTimeout(resolve, 1000));// wait for trai
         expect($('#account-name').text()).toBe('admin');
     });
