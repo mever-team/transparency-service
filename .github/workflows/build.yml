@@ -22,7 +22,16 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -e ./package
-          pip install pytest pytest-cov
+          pip install pytest pytest-cov pytest-timeout
+      - name: Create .env file
+        run: |
+          cat > ui/.env <<EOF
+          USER=admin
+          PASS=admin
+          INDEX=index.html
+          EOF
+      - name: Create database directory
+        run: mkdir -p db_pytest
       - name: Run tests with coverage
         run: pytest
       - name: Verify coverage file exists

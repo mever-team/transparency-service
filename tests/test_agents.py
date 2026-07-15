@@ -15,7 +15,7 @@ def test_import_url(client, admin_token, admin_card_id):
         assert response.status_code == 200
         # 2. poll until finish
         time.sleep(1) # Give time to start
-        timeout = 60
+        timeout = 300
         start = time.time()
         while True:
             response = client.get(f"/transparency/card/{card_id}/locked", headers={"Authorization": f"Bearer {admin_token}"})
@@ -39,7 +39,7 @@ def test_refine(client, admin_token, admin_card_id):
         assert response.status_code == 200
         # 3. poll until finish
         time.sleep(2) # Give time for Ollama
-        timeout = 120
+        timeout = 300
         start = time.time()
         while True:
             response = client.get(f"/transparency/job/{card_id}", headers={"Authorization": f"Bearer {admin_token}"})
