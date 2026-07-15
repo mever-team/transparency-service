@@ -31,7 +31,7 @@ jobs:
           INDEX=index.html
           EOF
       - name: Create database directory
-        run: mkdir -p db
+        run: mkdir -p db_pytest
       - name: Run tests with coverage
         run: pytest
       - name: Verify coverage file exists
