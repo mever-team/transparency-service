@@ -52,7 +52,7 @@ jobs:
           fi
       - name: Start transparency server
         run: |
-          python -m ui.full_server > server.log 2>&1 &
+          python -m ui.no_ollama_server > server.log 2>&1 &
           echo $! > server.pid
       - name: Wait for server
         run: |
