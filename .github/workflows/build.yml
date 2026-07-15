@@ -23,6 +23,13 @@ jobs:
         run: |
           pip install -e ./package
           pip install pytest pytest-cov
+      - name: Create .env file
+        run: |
+          cat > ui/.env <<EOF
+          USER=admin
+          PASS=admin
+          INDEX=index.html
+          EOF
       - name: Run tests with coverage
         run: pytest
       - name: Verify coverage file exists
