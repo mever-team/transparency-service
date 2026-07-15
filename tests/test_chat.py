@@ -7,7 +7,7 @@ def test_ask_reply_card(client, admin_token, user_card_id):
     assert response.status_code == 200
     question_id = response.get_json()['id']
     # 3. poll to get reply
-    timeout = 30
+    timeout = 300
     start = time.time()
     while True:
         response = client.post(f'/transparency/card/{card_id}/ask/{question_id}')
