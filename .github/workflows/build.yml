@@ -70,7 +70,7 @@ jobs:
           exit 1
       - name: Run Karma frontend tests
         run: |
-          karma start tests_front/karma.index.conf.js
+          npx karma start tests_front/karma.index.conf.js
       - name: Verify lcov.info file exists
         run: |
           ls -R coverage
