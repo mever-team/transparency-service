@@ -30,6 +30,8 @@ jobs:
           PASS=admin
           INDEX=index.html
           EOF
+      - name: Create database directory
+        run: mkdir -p db
       - name: Run tests with coverage
         run: pytest
       - name: Verify coverage file exists
