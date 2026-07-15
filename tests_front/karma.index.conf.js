@@ -56,17 +56,25 @@ module.exports = function(config) {
 
     coverageReporter: {
       dir: 'coverage/',
+      subdir: '.',
       reporters: [
         {type: 'html'},
-        {type: 'text-summary'}
+        {type: 'text-summary'},
+        { type: 'lcovonly' }
       ]
     },
 
     browsers: [
-      'ChromeHeadless'
+      'ChromeHeadlessNoSandbox'
+      // 'ChromeHeadless'
       // 'Chrome'
     ],
-
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox']
+      }
+    },
     singleRun: true,
 
     // autoWatch: true
