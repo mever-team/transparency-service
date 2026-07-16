@@ -10,7 +10,6 @@ module.exports = function () {
     js = js.replaceAll('window.open', "//window.open");
     js = js.replaceAll("urlParams.get('id')", "karmaTestCardId");
     js = js.replaceAll('urlParams.get("id")', "karmaTestCardId");
-
     done(js);
   };
 };

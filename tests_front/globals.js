@@ -25,6 +25,7 @@ async function loadPage(url, asAdmin=false){
 
     html = html.replaceAll('"js/','"/base/ui/transparency/js/');
     html = html.replaceAll("'js/","'/base/ui/transparency/js/");
+    html = html.replace(/<script\b[^>]*\bsrc\s*=\s*["'][^"']*jquery[^"']*["'][^>]*>\s*<\/script>/gi,""); // run only the Karma jquery instance
 
     const doc = new DOMParser().parseFromString(html, 'text/html');
 
@@ -78,8 +79,10 @@ async function loadPage(url, asAdmin=false){
         }
     }
 
-    // make sure all js executes
-    await new Promise(resolve => setTimeout(resolve, 10000));
+    // wait for all ajax to finish
+    while($.active !== 0){
+        await new Promise(resolve => setTimeout(resolve, 500))
+    }
 }
 
 async function createCard(username, password) {
@@ -113,9 +116,18 @@ async function createCard(username, password) {
     return cardId;
 }
 
+const activeRequests = new Map();
 function detachListeners()
 {
     $("*").off();
     $(document).off();
     $(window).off();
+    $(document).on("ajaxSend", function(event, jqXHR, settings) {
+        activeRequests.set(jqXHR, {url: settings.url,started: Date.now()});
+    });
+    $(document).on("ajaxComplete.debug", function(event, jqXHR, settings) {
+        activeRequests.delete(jqXHR);
+    });
+
 }
+

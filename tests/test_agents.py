@@ -4,7 +4,7 @@ import json
 
 def test_import_url(client, admin_token, admin_card_id):
     for agent in ["agent", "wordnet", "prompter", "matcher"]:
-        url = 'https://arxiv.org/html/2402.19091v2'
+        url = 'http://localhost:5000'
         card_id = admin_card_id
         # 1. start assistant process
         response = client.post(

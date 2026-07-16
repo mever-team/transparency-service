@@ -2,11 +2,8 @@ describe('Testing card.js...', function() {
     beforeEach(async function () {
         /* create a card */
         karmaTestCardId = await createCard('admin', 'admin');
-        let url = '/base/ui/transparency/model_card.html'
+        let url = '/base/ui/transparency/model_card.html';
         await loadPage(url, asAdmin = true);
-    });
-    afterEach(function(){
-        detachListeners();
     });
 
 
@@ -116,7 +113,7 @@ describe('Testing card.js...', function() {
 
 
     it('Testing import', async function(){
-        let importURL = 'https://arxiv.org/abs/2402.19091'
+        let importURL = 'http://localhost:5000'
         $('#import-btn').trigger('click');
         expect($('.quality-text').html().trim()).toBe('0%');
         $('#card-url').val(importURL);
@@ -172,7 +169,7 @@ describe('Testing card.js...', function() {
     it('Testing delete', async function(){
         expect($('#delete-success-screen').is(':visible')).toBe(false);
         $('#confirm-delete-btn').trigger('click');
-        await new Promise(resolve => setTimeout(resolve, 1000)) // wait for trai
+        await new Promise(resolve => setTimeout(resolve, 2000)) // wait for trai
         expect($('#delete-success-screen').is(':visible')).toBe(true);
     });
     it('save and reload', async function(){
