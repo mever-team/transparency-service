@@ -9,7 +9,7 @@ $(document).ready(function () {
     const scrollHandler = (event) => {
         getActiveMenuItem();
     };
-    document.addEventListener("scroll", scrollHandler);
+    $(document).on("scroll", scrollHandler);
 
     window.cleanupHandbookScrollHandler = () => {
             document.removeEventListener("scroll", scrollHandler);

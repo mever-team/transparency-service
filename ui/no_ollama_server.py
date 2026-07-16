@@ -65,7 +65,8 @@ app, gc, monitor = serve(
     {"agent": agent},
     env="ui/.env",
     feature_extractor=matcher,
-    email_verification=EmailVerification(env="ui/.env")
+    email_verification=EmailVerification(env="ui/.env"), 
+    max_agents_per_user = 99
 )
 
 if __name__ == "__main__":

@@ -1,6 +1,8 @@
 let loadedJS = [];
 const loadOnce = ['shellui.js', 'bearer.js']
+let karmaTestCardId = undefined;
 async function loadPage(url, asAdmin=false){
+    detachListeners();
     let thisToken = '';
     if (asAdmin) {
          await $.ajax({
@@ -21,14 +23,8 @@ async function loadPage(url, asAdmin=false){
     const response = await fetch(url, {headers: {'Authorization': `Bearer ${thisToken}`}});
     let html = await response.text();
 
-    html = html.replaceAll(
-        '"js/',
-        '"/base/ui/transparency/js/'
-    );
-    html = html.replaceAll(
-        "'js/",
-        "'/base/ui/transparency/js/"
-    );
+    html = html.replaceAll('"js/','"/base/ui/transparency/js/');
+    html = html.replaceAll("'js/","'/base/ui/transparency/js/");
 
     const doc = new DOMParser().parseFromString(html, 'text/html');
 
@@ -82,7 +78,8 @@ async function loadPage(url, asAdmin=false){
         }
     }
 
-    await new Promise(resolve => setTimeout(resolve, 5000));
+    // make sure all js executes
+    await new Promise(resolve => setTimeout(resolve, 10000));
 }
 
 async function createCard(username, password) {
@@ -114,4 +111,11 @@ async function createCard(username, password) {
     });
 
     return cardId;
+}
+
+function detachListeners()
+{
+    $("*").off();
+    $(document).off();
+    $(window).off();
 }

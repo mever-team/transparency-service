@@ -10,6 +10,7 @@ describe('Testing handbook...', function() {
     it('Testing scrolls and hide/show menu', async function(){
         handbookBodyElement = document.getElementById("handbookBody");
         const bodyIds = Array.from(handbookBodyElement.querySelectorAll('[id]')).map(el => el.id);
+        await window.scrollTo(0, 0);
         expect(window.scrollY).toBe(0);
         handbookGoTo(bodyIds[1]);
         await new Promise(resolve => setTimeout(resolve, 1000)); // wait for smooth scroll
