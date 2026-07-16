@@ -31,9 +31,14 @@ module.exports = function(config) {
         served: true
       },
 
+      'tests_front/spec/account/mainSpec.js',
       'tests_front/spec/themesSpec.js',
+      'tests_front/spec/handbook/mainSpec.js',
+      'tests_front/spec/index/mainSpec.js',
       'tests_front/spec/index/filtersSpec.js',
-      'tests_front/spec/index/mainSpec.js'
+      'tests_front/spec/card/cardSpec.js',
+      'tests_front/spec/card/chatSpec.js',
+      'tests_front/spec/card/eval_adapterSpec.js',
     ],
     proxies: { 
       // '/js/': 'http://localhost:5000/transparency/js/', 
@@ -42,12 +47,22 @@ module.exports = function(config) {
       '/templates/': 'http://localhost:5000/transparency/templates/',
       '/transparency/': 'http://localhost:5000/transparency/' 
     },
+    plugins: [
+      'karma-spec-reporter',
+      'karma-*',
+      { 'preprocessor:transform': ['factory', require('./karma-transform')] },
+    ],
+    specReporter: {
+      suppressPassed: false,
+      suppressFailed: false,
+      suppressSkipped: false
+    },
     preprocessors: {
-      'ui/transparency/js/**/*.js': ['coverage']
+      'ui/transparency/js/**/*.js': ['transform', 'coverage']
     },
 
     reporters: [
-      'progress',
+      'spec',
       'coverage'
     ],
 

@@ -6,8 +6,14 @@ $(document).ready(function () {
     handbookBodyElement = document.getElementById("handbookBody");
     const bodyIds = Array.from(handbookBodyElement.querySelectorAll('[id]')).map(el => el.id);
     let previousActiveId = bodyIds[0];
+    const scrollHandler = (event) => {
+        getActiveMenuItem();
+    };
+    $(document).on("scroll", scrollHandler);
 
-    document.addEventListener("scroll", (event) => { getActiveMenuItem(); });
+    window.cleanupHandbookScrollHandler = () => {
+            document.removeEventListener("scroll", scrollHandler);
+    };
 
     function getActiveMenuItem() {
         for (let i=bodyIds.length-1; i>-1; i--){

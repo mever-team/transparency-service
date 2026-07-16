@@ -1,4 +1,4 @@
-describe('Testing filters...', function() {
+describe('Testing filters.js...', function() {
     beforeEach(async function () {
         await loadPage('/base/ui/transparency/index.html');
     });

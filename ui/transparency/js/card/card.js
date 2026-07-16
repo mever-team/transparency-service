@@ -1,253 +1,253 @@
-var cardJson;
-var comparedJson;
-var comparedJsonSimple;
-var menuOffsetTop=0;
-var editor;
-let turndownService = null;
-let markedInstance = null;
+$(document).ready(function () {
+    let cardJson;
+    let comparedJson;
+    let comparedJsonSimple;
+    let menuOffsetTop=0;
+    let editor;
+    let turndownService = null;
+    let markedInstance = null;
 
-// Custom MediumEditor extension for inserting code blocks
-function getHighestPreFromNode(node) {
-    let current = node;
-    let highestPre = null;
+    // Custom MediumEditor extension for inserting code blocks
+    function getHighestPreFromNode(node) {
+        let current = node;
+        let highestPre = null;
 
-    while (current) {
-        if (current.nodeType === 1 && current.tagName === "PRE") {
-        highestPre = current;
-        }
-        current = current.parentNode;
-    }
-
-    return highestPre;
-}
-function getHighestPreFromCursor() {
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return null;
-    let node = selection.anchorNode;
-    if (node.nodeType === 3) {
-        node = node.parentElement;
-    }
-    return getHighestPreFromNode(node);
-}
-var CodeBlockButton = MediumEditor.Extension.extend({
-    name: 'codeblock',
-
-    init: function () {
-        this.button = document.createElement('button');
-        this.button.classList.add('medium-editor-action');
-        this.button.innerHTML = '&lt;/&gt;';
-        this.button.title = 'Code Block';
-        this.button.onclick = this.handleClick.bind(this);
-    },
-
-    getButton: function () {
-        return this.button;
-    },
-
-    handleClick: function (event) {
-        this.action();
-    },
-
-    checkState: function (node) {
-        var sel = window.getSelection();
-        if (!sel.rangeCount) {
-            this.button.classList.remove('medium-editor-button-active');
-            return false;
+        while (current) {
+            if (current.nodeType === 1 && current.tagName === "PRE") {
+            highestPre = current;
+            }
+            current = current.parentNode;
         }
 
-        var range = sel.getRangeAt(0);
-        var container = range.commonAncestorContainer;
-        var el = container.nodeType === 3 ? container.parentElement : container;
-        var inside = !!el.closest('pre');
+        return highestPre;
+    }
+    function getHighestPreFromCursor() {
+        const selection = window.getSelection();
+        if (!selection.rangeCount) return null;
+        let node = selection.anchorNode;
+        if (node.nodeType === 3) {
+            node = node.parentElement;
+        }
+        return getHighestPreFromNode(node);
+    }
+    var CodeBlockButton = MediumEditor.Extension.extend({
+        name: 'codeblock',
 
-        this.button.classList.toggle('medium-editor-button-active', inside);
+        init: function () {
+            this.button = document.createElement('button');
+            this.button.classList.add('medium-editor-action');
+            this.button.innerHTML = '&lt;/&gt;';
+            this.button.title = 'Code Block';
+            this.button.onclick = this.handleClick.bind(this);
+        },
 
-        // disable other buttons
-        var toolbar = this.base.getExtensionByName('toolbar');
-        if (toolbar && toolbar.getToolbarElement) {
-            var buttons = toolbar.getToolbarElement().querySelectorAll('button');
+        getButton: function () {
+            return this.button;
+        },
 
-            buttons.forEach((btn) => {
-                if (btn === this.button) {
-                    btn.disabled = false;
-                } else {
-                    btn.disabled = inside;
+        handleClick: function (event) {
+            this.action();
+        },
+
+        checkState: function (node) {
+            var sel = window.getSelection();
+            if (!sel.rangeCount) {
+                this.button.classList.remove('medium-editor-button-active');
+                return false;
+            }
+
+            var range = sel.getRangeAt(0);
+            var container = range.commonAncestorContainer;
+            var el = container.nodeType === 3 ? container.parentElement : container;
+            var inside = !!el.closest('pre');
+
+            this.button.classList.toggle('medium-editor-button-active', inside);
+
+            // disable other buttons
+            var toolbar = this.base.getExtensionByName('toolbar');
+            if (toolbar && toolbar.getToolbarElement) {
+                var buttons = toolbar.getToolbarElement().querySelectorAll('button');
+
+                buttons.forEach((btn) => {
+                    if (btn === this.button) {
+                        btn.disabled = false;
+                    } else {
+                        btn.disabled = inside;
+                    }
+                    // console.log(btn);
+                });
+            }
+            return inside;
+        },
+
+        // Toggle behavior
+        action: function () {
+            var editor = this.base;
+            var selection = window.getSelection();
+            if (!selection || selection.rangeCount === 0) return;
+
+            var range = selection.getRangeAt(0);
+            var container = range.commonAncestorContainer;
+            var el = container.nodeType === 3 ? container.parentElement : container;
+            var preElement = el.closest('pre');
+
+            if (preElement) {
+                const parentPre = getHighestPreFromCursor();
+                const range = document.createRange();
+                range.selectNodeContents(parentPre);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                document.execCommand('formatBlock', false, 'div');
+                
+            } else {
+                document.execCommand('formatBlock', false, 'pre');
+                if (selection.rangeCount > 0) {
+                    let node = selection.getRangeAt(0).startContainer;
+                    if (node.nodeType === Node.TEXT_NODE) {
+                        node = node.parentElement;
+                    }
+                    preElement = node.closest('pre');
                 }
-                console.log(btn);
+                preElement.innerHTML = preElement.innerHTML.replaceAll("<br>", "\n");
+                hljs.highlightElement(preElement);
+                preElement.setAttribute('spellcheck', 'false');
+                preElement.setAttribute('autocorrect', 'off');
+                preElement.setAttribute('autocapitalize', 'off');
+                preElement.setAttribute('translate', 'no');
+            }
+
+            // Notify the editor that content changed
+            var editable = editor.elements[0];
+            if (editable) {
+                $(editable).trigger('input');
+                $(editable).trigger('editableInput');
+            }
+            this.checkState();
+        }
+    });
+
+    function initConverters() {
+        function getPreText(node) {
+            let text = '';
+            for (const child of node.childNodes) {
+                if (child.nodeType === Node.TEXT_NODE) {
+                    text += child.textContent;
+                } else if (child.nodeType === Node.ELEMENT_NODE) {
+                    if (child.tagName === 'BR') {
+                        text += '\n';
+                    } else {
+                        text += getPreText(child);
+                    }
+                }
+            }
+            return text;
+        }
+
+        // ---------- Turndown ----------
+        if (typeof TurndownService !== 'undefined' && !turndownService) {
+            turndownService = new TurndownService({
+                headingStyle: 'atx',
+                codeBlockStyle: 'fenced'
+            });
+            turndownService.keep(['sub', 'sup', 'u', 'ins']);
+
+            // Custom rule for <pre>
+            turndownService.addRule('pre', {
+                filter: 'pre',
+                replacement: function(content, node) {
+                    const codeText = getPreText(node);
+                    return '```\n' + codeText + '\n```';
+                }
             });
         }
-        return inside;
-    },
 
-    // Toggle behavior
-    action: function () {
-        var editor = this.base;
-        var selection = window.getSelection();
-        if (!selection || selection.rangeCount === 0) return;
+        // ---------- Marked ----------
+        if (typeof marked !== 'undefined' && !markedInstance) {
+            markedInstance = marked;
+            markedInstance.setOptions({ breaks: true, gfm: true });
 
-        var range = selection.getRangeAt(0);
-        var container = range.commonAncestorContainer;
-        var el = container.nodeType === 3 ? container.parentElement : container;
-        var preElement = el.closest('pre');
-
-        if (preElement) {
-            const parentPre = getHighestPreFromCursor();
-            const range = document.createRange();
-            range.selectNodeContents(parentPre);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            document.execCommand('formatBlock', false, 'div');
-            
-        } else {
-            document.execCommand('formatBlock', false, 'pre');
-            if (selection.rangeCount > 0) {
-                let node = selection.getRangeAt(0).startContainer;
-                if (node.nodeType === Node.TEXT_NODE) {
-                    node = node.parentElement;
+            // Renderer to output plain <pre>
+            const renderer = {
+                code(token) {
+                    const codeText = (token.text || token);
+                    const language = token.lang || '';
+                    const langAttr = language ? ` class="language-${language}"` : '';
+                    return `<pre${langAttr}>${codeText}</pre>`;
                 }
-                preElement = node.closest('pre');
-            }
-            preElement.innerHTML = preElement.innerHTML.replaceAll("<br>", "\n");
-            hljs.highlightElement(preElement);
-            preElement.setAttribute('spellcheck', 'false');
-            preElement.setAttribute('autocorrect', 'off');
-            preElement.setAttribute('autocapitalize', 'off');
-            preElement.setAttribute('translate', 'no');
+            };
+            markedInstance.use({ renderer });
         }
+    }
 
-        // Notify the editor that content changed
-        var editable = editor.elements[0];
-        if (editable) {
-            $(editable).trigger('input');
-            $(editable).trigger('editableInput');
+    function htmlToMarkdown(html) {
+        initConverters();
+
+        if (!turndownService) return html;
+        if (!html || typeof html !== 'string') return '';
+
+        const container = document.createElement('div');
+        container.innerHTML = html;
+
+        return turndownService.turndown(container.innerHTML);
+    }
+
+    function markdownToHtml(md) {
+        initConverters();
+        if (!markedInstance) return md;
+        if (!md || typeof md !== 'string') return '';
+        return markedInstance.parse(md);
+    }
+
+    function error_message(message) {
+        console.log(message);
+        document.getElementById('popup-error-screen').style.display = 'flex';
+        if(message) document.getElementById('error-message').innerHTML = message;
+    }
+
+    function error_handler(xhr, status, error) {
+        try {
+            const resp = JSON.parse(xhr.responseText);
+            error_message(resp.error || error);
         }
-        this.checkState();
+        catch(e) { error_message(""); }
     }
-});
 
-function initConverters() {
-    function getPreText(node) {
-        let text = '';
-        for (const child of node.childNodes) {
-            if (child.nodeType === Node.TEXT_NODE) {
-                text += child.textContent;
-            } else if (child.nodeType === Node.ELEMENT_NODE) {
-                if (child.tagName === 'BR') {
-                    text += '\n';
-                } else {
-                    text += getPreText(child);
-                }
-            }
+    // Close confirmation modal
+    document.getElementById('cancel-delete-btn').onclick = function () {document.getElementById('delete-confirm-screen').style.display = 'none';};
+    document.getElementById('cancel-report-btn').onclick = function () {document.getElementById('report-confirm-screen').style.display = 'none';};
+    document.getElementById('cancel-autocomplete-btn').onclick = function () {document.getElementById('modal-autocomplete-screen').style.display = 'none';};
+    document.getElementById('cancel-refine-btn').onclick = function () {document.getElementById('modal-refine-screen').style.display = 'none';};
+
+    $(document).on("click", ".naccs .menu div", function () {
+        let numberIndex = $(this).index();
+        if (!$(this).is("active")) {
+            $(".naccs .menu div").removeClass("active");
+            $(".naccs ul li").removeClass("active");
+            $(".naccs ul").children("li").eq(numberIndex).addClass("active");
+            $(this).addClass("active");
         }
-        return text;
-    }
-
-    // ---------- Turndown ----------
-    if (typeof TurndownService !== 'undefined' && !turndownService) {
-        turndownService = new TurndownService({
-            headingStyle: 'atx',
-            codeBlockStyle: 'fenced'
-        });
-        turndownService.keep(['sub', 'sup', 'u', 'ins']);
-
-        // Custom rule for <pre>
-        turndownService.addRule('pre', {
-            filter: 'pre',
-            replacement: function(content, node) {
-                const codeText = getPreText(node);
-                return '```\n' + codeText + '\n```';
-            }
-        });
-    }
-
-    // ---------- Marked ----------
-    if (typeof marked !== 'undefined' && !markedInstance) {
-        markedInstance = marked;
-        markedInstance.setOptions({ breaks: true, gfm: true });
-
-        // Renderer to output plain <pre>
-        const renderer = {
-            code(token) {
-                const codeText = (token.text || token);
-                const language = token.lang || '';
-                const langAttr = language ? ` class="language-${language}"` : '';
-                return `<pre${langAttr}>${codeText}</pre>`;
-            }
-        };
-        markedInstance.use({ renderer });
-    }
-}
-
-function htmlToMarkdown(html) {
-    initConverters();
-
-    if (!turndownService) return html;
-    if (!html || typeof html !== 'string') return '';
-
-    const container = document.createElement('div');
-    container.innerHTML = html;
-
-    return turndownService.turndown(container.innerHTML);
-}
-
-function markdownToHtml(md) {
-    initConverters();
-    if (!markedInstance) return md;
-    if (!md || typeof md !== 'string') return '';
-    return markedInstance.parse(md);
-}
-
-function error_message(message) {
-    console.log(message);
-    document.getElementById('popup-error-screen').style.display = 'flex';
-    if(message) document.getElementById('error-message').innerHTML = message;
-}
-
-function error_handler(xhr, status, error) {
-    try {
-        const resp = JSON.parse(xhr.responseText);
-        error_message(resp.error || error);
-    }
-    catch(e) { error_message(""); }
-}
-
-// Close confirmation modal
-document.getElementById('cancel-delete-btn').onclick = function () {document.getElementById('delete-confirm-screen').style.display = 'none';};
-document.getElementById('cancel-report-btn').onclick = function () {document.getElementById('report-confirm-screen').style.display = 'none';};
-document.getElementById('cancel-autocomplete-btn').onclick = function () {document.getElementById('modal-autocomplete-screen').style.display = 'none';};
-document.getElementById('cancel-refine-btn').onclick = function () {document.getElementById('modal-refine-screen').style.display = 'none';};
-
-$(document).on("click", ".naccs .menu div", function () {
-    let numberIndex = $(this).index();
-    if (!$(this).is("active")) {
-        $(".naccs .menu div").removeClass("active");
-        $(".naccs ul li").removeClass("active");
-        $(".naccs ul").children("li").eq(numberIndex).addClass("active");
-        $(this).addClass("active");
-    }
-});
-
-
-$(document).on('keydown', (e) => {
-  if (e.key === 'Escape') {
-    const modals = [
-        'delete-confirm-screen',
-        'report-confirm-screen', // TODO: iterate through all these modals vias their common class selector instead
-        'modal-autocomplete-screen',
-        'modal-refine-screen',
-        'popup-error-screen',
-        'delete-success-screen',
-        'card-locked'
-    ];
-    modals.forEach(id => {
-        const el = document.getElementById(id);
-        if (el && el.style.display === 'flex') el.style.display = 'none';
     });
-  }
-});
 
-$(document).ready(function () {
+
+    $(document).on('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const modals = [
+            'delete-confirm-screen',
+            'report-confirm-screen', // TODO: iterate through all these modals vias their common class selector instead
+            'modal-autocomplete-screen',
+            'modal-refine-screen',
+            'popup-error-screen',
+            'delete-success-screen',
+            'card-locked'
+        ];
+        modals.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && el.style.display === 'flex') el.style.display = 'none';
+        });
+    }
+    });
+
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
     const compareto = urlParams.get('compareto');
@@ -1072,7 +1072,7 @@ $('.contents').on('click', '.refine-field', async function () {
     const downloadBtn = document.getElementById("downloadCard");
     const downloadMenu = document.getElementById("downloadDropdown");
 
-    downloadBtn.addEventListener("click", function() {
+    $(downloadBtn).on("click", function() {
         const isOpen = downloadMenu.style.display === "block";
         downloadMenu.style.display = isOpen ? "none" : "block";
         if(isOpen) return;
@@ -1082,10 +1082,10 @@ $('.contents').on('click', '.refine-field', async function () {
             downloadMenu.style.display = "none";
             document.removeEventListener("click", closeMenu);
         }
-        document.addEventListener("click", closeMenu);
+        $(document).on("click", closeMenu);
     });
 
-    downloadMenu.addEventListener("click", e => {
+    $(downloadMenu).on("click", e => {
         downloadMenu.style.display = "none";
         const item = e.target.closest(".download-dropdown-item");
         const format = item.getAttribute("data-format");
@@ -1100,7 +1100,7 @@ $('.contents').on('click', '.refine-field', async function () {
 
     const assistBtn = document.getElementById("assistCard");
     const assistMenu = document.getElementById("assistDropdown");
-    assistBtn.addEventListener("click", function() {
+    $(assistBtn).on("click", function() {
         const isOpen = assistMenu.style.display === "block";
         assistMenu.style.display = isOpen ? "none" : "block";
         if(isOpen) return;
@@ -1110,9 +1110,9 @@ $('.contents').on('click', '.refine-field', async function () {
             assistMenu.style.display = "none";
             document.removeEventListener("click", closeMenu);
         };
-        document.addEventListener("click", closeMenu);
+        $(document).on("click", closeMenu);
     });
-    assistMenu.addEventListener("click", function(e) {
+    $(assistMenu).on("click", function(e) {
         const item = e.target.closest(".download-dropdown-item, .modal_autocomplete, .modal_refine");
         if(!item) return;
         assistMenu.style.display = "none";
@@ -1222,6 +1222,7 @@ $('.contents').on('click', '.refine-field', async function () {
                     });
 
                     if ($('#card-url').is(":visible")) {
+
                         $.ajax({
                             url: "/transparency/assistant/" + assistant + '/complete/' + id,
                             method: "POST",

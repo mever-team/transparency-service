@@ -28,7 +28,7 @@ function compressHistory(historyEdges, hidden, nodeIds) {
 }
 
 function renderHistoryGraph(history, currentId, container) {
-    console.log(history);
+    //console.log(history);
     let compareMode = false;
 
     let node_info = history.info;
@@ -51,7 +51,7 @@ function renderHistoryGraph(history, currentId, container) {
     const btn = document.createElement('button');
     btn.className = 'compare-toggle-btn';
     btn.textContent = 'select to compare: off';
-    btn.addEventListener('click', () => {
+    $(btn).on('click', () => {
         compareMode = !compareMode;
         btn.classList.toggle('active', compareMode);
         btn.textContent = compareMode?'select to compare: on':'select to compare: off'
@@ -186,7 +186,7 @@ function renderHistoryGraph(history, currentId, container) {
             g.appendChild(label);
         }
         g.style.cursor = "pointer";
-        g.addEventListener("click", () => {
+        $(g).on("click", () => {
             const url = compareMode
                 ? `model_card.html?id=${currentId}&compareto=${id}`
                 : `model_card.html?id=${id}`;

@@ -28,10 +28,6 @@ $(function () {
         });
     }
 
-    function openMetricsModal () {
-        $modal.css('display','flex');
-    }
-
     function formatSize(bytes) {
         return (bytes / 1024).toFixed(1) + ' KB';
     }

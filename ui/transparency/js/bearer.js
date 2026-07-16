@@ -7,34 +7,77 @@ var loggedUserIsAdmin = false;
 
 document.cookie.split(";").forEach(cookie => {
     const [name, value] = cookie.trim().split("=");
-    if(name === "access_token")
-        token = value;
+    if (name === "access_token") token = value;
 });
+
+
+// incoming token from registration verification redirect
+const params = new URLSearchParams(window.location.search);
+const incomingBearer = params.get("token");
+const incomingExpiry = params.get("expires_in");
+if (incomingBearer) {
+    document.cookie = "access_token=" + incomingBearer + "; path=/; max-age=" + (incomingExpiry || 3600) + ";";
+    const clean = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, document.title, clean);
+}
+
+let token_prefix = "Bearer"
+function initKeycloak() {
+    if (!token && window.Keycloak && window.location.origin==='https://proxy-gateway-aicode.ilabhub.atc.gr') {
+        const keycloak = new window.Keycloak({
+            url: "https://faithkc.ilabhub.atc.gr",
+            realm: "shell-app",
+            clientId: "shell-ui-proxy"
+        });
+        const keycloak_auth = async () => {
+            try {
+                const authenticated = await keycloak.init({
+                    onLoad: "check-sso",
+                    pkceMethod: "S256",
+                    checkLoginIframe: false,
+                });
+                if (authenticated) {
+                    token_prefix = "ThirdPartyBearer";
+                    token = keycloak.token;
+                }
+            } catch (e) {
+                console.log("Keycloak init skipped:", e);
+            }
+            updateUsername();
+        }
+        keycloak_auth();
+    } else updateUsername();
+}
+
+if (window.Keycloak) initKeycloak();
+else window.addEventListener('keycloak-check-done', initKeycloak, { once: true });
 
 updateUsername();
 
 function updateUsername() {
-//    TODO: THIS SECTION IS DISABLED BECAUSE WE NEED TO PING BASED ON COOKIES BUT FIND A WAY TO RE-ENABLE IT MAYBE
-//    OTHERWISE WE GET THE AJAX RESPONSE TO DISABLE THE PING TIMER
-//    if (!token) {
-//        clearTimeout(pingTimer);
-//        return;
-//    }
     $.ajax({
         url: "/transparency/ping",
         method: "GET",
-        headers: { "Authorization": "Bearer " + token },
+        headers: { "Authorization": token_prefix+" " + token },
         success: function (response) {
             if (response && response.token) {
                 token = response.token;
                 const expiresIn = response.expires_in || 3600;
                 document.cookie = "access_token=" + token + "; path=/; max-age=" + expiresIn + ";";
+
+                $('#new_card').removeClass("hidden");
+                $('#login-btn').addClass("hidden");
+                $('#logout-btn').removeClass("hidden");
+                $('#account-btn').removeClass("hidden");
+                $('#user-filter').removeClass("hidden");
+                $('#account-name').text(response.username+(response.notifications||""));
+                
                 loggedUser = response.username;
                 loggedUserIsAdmin = response.admin;
                 loggedUserNotifications = response.notifications;
                 $('#account-name').text(loggedUser+(loggedUserNotifications||""));
+                
                 clearTimeout(pingTimer);
-                // Schedule the next ping at half the expiration time
                 const halfLife = (expiresIn * 1000) / 2;
                 pingTimer = setTimeout(() => {
                     $.ajax({
@@ -78,6 +121,12 @@ function updateUsername() {
                 loggedUserNotifications = "";
                 document.cookie = "access_token=; path=/; max-age=0;";
                 $('#account-name').text(loggedUser);
+
+                $('#new_card').addClass("hidden");
+                $('#login-btn').removeClass("hidden");
+                $('#logout-btn').addClass("hidden");
+                $('#account-btn').addClass("hidden");
+                $('#login-name').text("");
             }
         },
         error: function () {
@@ -88,6 +137,19 @@ function updateUsername() {
             loggedUserIsAdmin = false;
             loggedUserNotifications = "";
             $('#account-name').text(loggedUser);
+
+            $('#new_card').addClass("hidden");
+            $('#login-btn').removeClass("hidden");
+            $('#logout-btn').addClass("hidden");
+            $('#account-btn').addClass("hidden");
+            $('#login-name').text("");
         }
     });
 }
+
+$('#logout-btn').on('click', ()=>{
+    clearTimeout(pingTimer);
+    token = "";
+    document.cookie = "access_token=; path=/; max-age=0;";
+    updateUsername();
+});
