@@ -1,6 +1,30 @@
-[![Build](https://github.com/mever-team/transparency-service/actions/workflows/build.yml/badge.svg?branch=dev)](https://github.com/mever-team/transparency-service/actions/workflows/build.yml) 
-![License](https://img.shields.io/badge/license-Apache--2.0-blue)
 # AI Card
+<div align="center">
+
+**Build and License**
+
+[![Build](https://github.com/mever-team/transparency-service/actions/workflows/build.yml/badge.svg?branch=dev)](https://github.com/mever-team/transparency-service/actions/workflows/build.yml)
+![License](https://img.shields.io/badge/License-Apache--2.0-007EC6?style=flat&logo=apache&logoColor=white)
+
+**Software Stack**
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
+![Flask](https://img.shields.io/badge/Flask-000000?style=flat&logo=flask&logoColor=white)
+![jQuery](https://img.shields.io/badge/jQuery-0769AD?style=flat&logo=jquery&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
+![CSS](https://img.shields.io/badge/CSS-563d7c?&style=flat&logo=css3&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?style=flat&logo=sqlite&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)
+
+
+**Machine Learning**
+
+![PyTorch](https://img.shields.io/badge/PyTorch-black?style=flat&logo=pytorch)
+![Transformers](https://img.shields.io/badge/Transformers-0E1422?style=flat&logo=huggingface)
+![Ollama](https://img.shields.io/badge/Ollama-white?style=flat&logo=ollama&logoColor=black)
+
+</div>
 
 *A model card catalogue. Host it yourself, or browse the public database. Create and access cards from the browser or your experiment tracking code.*
 
