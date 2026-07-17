@@ -13,9 +13,6 @@ describe('Testing eval_adapter.js...', function() {
         let url = '/base/ui/transparency/model_card.html';
         await loadPage(url, asAdmin = true);
     });
-    afterAll(function(){
-        $(document).off("click", ".card-button");
-    });
 
     it('Sending request', async function(){
         /* Fake a drop file event */
@@ -28,7 +25,7 @@ describe('Testing eval_adapter.js...', function() {
             dataTransfer: dataTransfer
         });
         $('#dropAreaMetrics')[0].dispatchEvent(dropEvent);
-        await new Promise(resolve => setTimeout(resolve, 2000)); // wait for fake slide to fill
+        await wait4animations();
         expect($('#progressFillMetrics')[0].outerHTML.includes('width: 100%;')).toBe(true);
 
         /* make the request */

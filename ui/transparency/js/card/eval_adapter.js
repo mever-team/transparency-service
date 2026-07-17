@@ -45,14 +45,16 @@ $(function () {
     }
 
     function simulateUploadProgress() {
-        let progress = 0;
-        $progressFill.width('0%');
-        const interval = setInterval(() => {
-            progress += 10;
-            $progressFill.width(progress + '%');
-            if (progress >= 100)
-                clearInterval(interval);
-        }, 10);
+        $progressFill
+            .stop(true, true)
+            .css("width", "0%")
+            .animate(
+                { width: "100%" },
+                {
+                    duration: 100,
+                    easing: "linear"
+                }
+            );
     }
 
     $fileInput.on('change', function () {

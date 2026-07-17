@@ -5,9 +5,6 @@ describe('Testing chat.js...', function() {
         let url = '/base/ui/transparency/model_card.html';
         await loadPage(url, asAdmin = true);
     });
-    afterAll(function(){
-        $(document).off("click", ".card-button");
-    });
 
     it('Testing chat Open and close with buttons', function(){
         expect($("#ai-chat-overlay").hasClass('active')).toBe(false);
@@ -32,7 +29,7 @@ describe('Testing chat.js...', function() {
             keyCode: 13,
             which: 13
         }));
-        await new Promise(resolve => setTimeout(resolve, 2000)); // wait for trai and poll to run once
+        await wait4ajax();
         expect($('.ai-msg.assistant').length).not.toBe(0);
         expect($('.ai-msg.user').length).not.toBe(0);
     });

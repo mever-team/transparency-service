@@ -76,17 +76,17 @@ describe('Testing card.js...', function() {
         /* import modal layout */
         $('#import-btn').trigger('click');
         $('#pdf_text').trigger('click');
-        await new Promise(resolve => setTimeout(resolve, 1000)) // wait for jquery slide
+        await wait4animations();
         expect($('#pdf_desc').is(':visible')).toBe(true);
         expect($('#url_desc').is(':visible')).toBe(false);
         expect($('#metrics_desc').is(':visible')).toBe(false);
         $('#url_text').trigger('click');
-        await new Promise(resolve => setTimeout(resolve, 1000)) // wait for jquery slide
+        await wait4animations();
         expect($('#url_desc').is(':visible')).toBe(true);
         expect($('#pdf_desc').is(':visible')).toBe(false);
         expect($('#metrics_desc').is(':visible')).toBe(false);
         $('#metrics_text').trigger('click');
-        await new Promise(resolve => setTimeout(resolve, 1000)) // wait for jquery slide
+        await wait4animations();
         expect($('#metrics_desc').is(':visible')).toBe(true);
         expect($('#pdf_desc').is(':visible')).toBe(false);
         expect($('#url_desc').is(':visible')).toBe(false);
@@ -103,7 +103,7 @@ describe('Testing card.js...', function() {
     it('Testing clone card', async function(){
         expect($('#history-dropdown').html()).toBe('');
         $('#cardClone').trigger('click');
-        await new Promise(resolve => setTimeout(resolve, 2000)); // wait for trai
+        await wait4ajax();
         /* Manual redirect */
         karmaTestCardId += 1;
         let url = '/base/ui/transparency/model_card.html'
@@ -154,7 +154,7 @@ describe('Testing card.js...', function() {
                 expect($('#history-dropdown').html()).not.toBe('');
                  break;
             }
-            await new Promise(resolve => setTimeout(resolve, 1000)); // wait for trai to import
+            await new Promise(resolve => setTimeout(resolve, 1000)); // wait for trai to refine
             let url = '/base/ui/transparency/model_card.html'
             await loadPage(url, asAdmin = true);
             if ($('#history-dropdown').html() !== '') {
@@ -169,13 +169,13 @@ describe('Testing card.js...', function() {
     it('Testing delete', async function(){
         expect($('#delete-success-screen').is(':visible')).toBe(false);
         $('#confirm-delete-btn').trigger('click');
-        await new Promise(resolve => setTimeout(resolve, 2000)) // wait for trai
+        await wait4ajax();
         expect($('#delete-success-screen').is(':visible')).toBe(true);
     });
     it('save and reload', async function(){
         $('.contents').find('.field-value').first().text('karma-test');
         $('#saveJson').trigger('click');
-        await new Promise(resolve => setTimeout(resolve, 1000)) // wait for trai
+        await wait4ajax();
         /* Manual reload */
         let url = '/base/ui/transparency/model_card.html'
         await loadPage(url, asAdmin = true);

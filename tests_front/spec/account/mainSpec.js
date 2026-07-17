@@ -2,10 +2,6 @@ describe('Testing account.html...', function() {
     beforeAll(async function () {
         await loadPage('/base/ui/transparency/account.html', asAdmin = true);
     });
-    // afterAll(function() {
-    //     document.cookie = "access_token=; path=/; max-age=0;"
-    //     token = '';
-    // });
 
 
     it('Testing change theme', async function(){
@@ -20,7 +16,7 @@ describe('Testing account.html...', function() {
         $('#password').val('badpwd');
         $('#password-verify').val('badpwd');
         $('#confirm-password-btn').trigger('click');
-        await new Promise(resolve => setTimeout(resolve, 1000)); // wait for trai
+        await wait4ajax();
         expect($('#password-error').text()).toBe('Administrator password cannot be modified via API');
 
         /* Do not match */

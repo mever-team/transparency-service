@@ -80,9 +80,7 @@ async function loadPage(url, asAdmin=false){
     }
 
     // wait for all ajax to finish
-    while($.active !== 0){
-        await new Promise(resolve => setTimeout(resolve, 500))
-    }
+    await wait4ajax();
 }
 
 async function createCard(username, password) {
@@ -131,3 +129,16 @@ function detachListeners()
 
 }
 
+async function wait4ajax()
+{
+    while($.active !== 0){
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
+}
+
+async function wait4animations()
+{
+    while($(":animated").length !== 0){// wait for jquery animations
+        await new Promise(resolve => setTimeout(resolve, 100));
+    }
+}

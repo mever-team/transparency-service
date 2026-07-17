@@ -8,11 +8,11 @@ describe('Testing index main.js...', function() {
         expect($('#login').hasClass('show')).toBe(true);
         /* Check email slide */
         $('#login_password').trigger('click');
-        await new Promise(resolve => setTimeout(resolve, 1000));// wait for jquery slide
+        await wait4animations();
         expect($('#password_label').is(':visible')).toBe(false);
         expect($('#email_label').is(':visible')).toBe(true);
         $('#login_email').trigger('click');
-        await new Promise(resolve => setTimeout(resolve, 1000));// wait for jquery slide
+        await wait4animations();
         expect($('#password_label').is(':visible')).toBe(true);
         expect($('#email_label').is(':visible')).toBe(false);
         /* login */
@@ -25,22 +25,22 @@ describe('Testing index main.js...', function() {
             keyCode: 13,
             which: 13
         }));
-        await new Promise(resolve => setTimeout(resolve, 1000));// wait for trai
+        await wait4ajax();
         expect($('#account-name').text()).toBe('admin');
         $('#logout-btn').trigger('click');
-        await new Promise(resolve => setTimeout(resolve, 1000));// wait for trai
+        await wait4ajax();
         expect($('#account-name').text()).toBe('admin');
     });
 
     it('register', async function() {
         $('#login_password').trigger('click');
-        await new Promise(resolve => setTimeout(resolve, 1000));// wait for jquery slide
+        await wait4animations();
         expect($('#password_label').is(':visible')).toBe(false);
         expect($('#email_label').is(':visible')).toBe(true);
         $('#username').val('karma');
         $('#email').val('karma@example.com');
         $('#login-confirm-btn').trigger('click');
-        await new Promise(resolve => setTimeout(resolve, 2000));// wait for trai
+        await wait4ajax();
         expect($('#login-success').text()).toBe('An email was sent to your account with a login link. Check your spam folder.');
     });
 
