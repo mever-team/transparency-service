@@ -1,5 +1,5 @@
 var uploaded_file;
-$(document).ready(function () {
+$(function() {
     const $dropArea = $('#dropArea');
     const $fileInput = $('.file-input');
     const $fileList = $('#fileList');

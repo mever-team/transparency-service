@@ -41,6 +41,7 @@ describe('Testing index main.js...', function() {
         $('#email').val('karma@example.com');
         $('#login-confirm-btn').trigger('click');
         await wait4ajax();
+        await new Promise(r=>setTimeout(r,1000)); // hard wait beacause idk. Must be a race condition
         expect($('#login-success').text()).toBe('An email was sent to your account with a login link. Check your spam folder.');
     });
 

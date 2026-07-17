@@ -10,6 +10,7 @@ refer to the implementation in package/service/server.py
 import requests
 import json
 from requests.models import Response
+from flask import jsonify
 
 # MONKEY PATCH THE COMMUNICATION LAYER WITH OLLAMA
 _original_get = requests.get
@@ -68,6 +69,9 @@ app, gc, monitor = serve(
     email_verification=EmailVerification(env="ui/.env"), 
     max_agents_per_user = 99
 )
+
+# monkey patch for karma. Karma sometimes hangs with consecutive responces to the same endpoint 
+app.view_functions["get_card_locked_status"] = lambda card_id: jsonify("")
 
 if __name__ == "__main__":
     Thread(target=gc, daemon=True).start()

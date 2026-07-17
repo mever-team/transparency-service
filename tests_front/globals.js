@@ -25,7 +25,7 @@ async function loadPage(url, asAdmin=false){
 
     html = html.replaceAll('"js/','"/base/ui/transparency/js/');
     html = html.replaceAll("'js/","'/base/ui/transparency/js/");
-    html = html.replace(/<script\b[^>]*\bsrc\s*=\s*["'][^"']*jquery[^"']*["'][^>]*>\s*<\/script>/gi,""); // run only the Karma jquery instance
+    html = html.replace(/<script\b[^>]*\bsrc\s*=\s*["'][^"']*jquery[^"']*["'][^>]*>\s*<\/script>/gi,"/* no jquery*/"); // run only the Karma jquery instance
 
     const doc = new DOMParser().parseFromString(html, 'text/html');
 
@@ -121,9 +121,11 @@ function detachListeners()
     $(document).off();
     $(window).off();
     $(document).on("ajaxSend", function(event, jqXHR, settings) {
+        // console.log('ajaxSend: ' + settings.url);
         activeRequests.set(jqXHR, {url: settings.url,started: Date.now()});
     });
-    $(document).on("ajaxComplete.debug", function(event, jqXHR, settings) {
+    $(document).on("ajaxComplete", function(event, jqXHR, settings) {
+        // console.log('ajaxComplete: ' + settings.url);
         activeRequests.delete(jqXHR);
     });
 
@@ -131,7 +133,8 @@ function detachListeners()
 
 async function wait4ajax()
 {
-    while($.active !== 0){
+    while($.active !== 0 || pendingReady !== 0){
+        // console.log('$.active: ' + $.active + ' pendingReady: ' + pendingReady);
         await new Promise(resolve => setTimeout(resolve, 500));
     }
 }
@@ -142,3 +145,29 @@ async function wait4animations()
         await new Promise(resolve => setTimeout(resolve, 100));
     }
 }
+
+async function registerUser(username, email) {
+    await loadPage('/base/ui/transparency/index.html');
+    $('#login_password').trigger('click');
+    await wait4animations();
+    $('#username').val(username);
+    $('#email').val(email);
+    $('#login-confirm-btn').trigger('click');
+    await wait4ajax();
+}
+
+// monkey patch
+// track active $(function () {
+let pendingReady = 0;
+const oldReady = $.fn.ready;
+$.fn.ready = function(fn) {
+    pendingReady++;
+
+    return oldReady.call(this, function() {
+        try {
+            fn();
+        } finally {
+            pendingReady--;
+        }
+    });
+};

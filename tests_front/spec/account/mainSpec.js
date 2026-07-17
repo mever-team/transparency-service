@@ -1,5 +1,5 @@
 describe('Testing account.html...', function() {
-    beforeAll(async function () {
+    beforeEach(async function () {
         await loadPage('/base/ui/transparency/account.html', asAdmin = true);
     });
 
@@ -9,6 +9,26 @@ describe('Testing account.html...', function() {
         expect($('body').hasClass('dark-theme')).toBe(false);
         $('#theme-selector').val('dark-theme').change();
         expect($('body').hasClass('dark-theme')).toBe(true);
+    });
+
+    it('Testing accept reject pending user', async function(){
+        await registerUser('karma-accept', 'karma-accept@example.com');
+        await registerUser('karma-reject', 'karma-reject@example.com');
+        await loadPage('/base/ui/transparency/account.html', asAdmin = true);
+        expect($('#pending-users .pending-btn[data-username="karma-accept"]').length).toBe(1);
+        $('#pending-users .pending-btn[data-username="karma-accept"]').trigger('click');
+        await wait4ajax();
+        expect($('#pending-users .delete-btn[data-username="karma-reject"]').length).toBe(1);
+        spyOn(window, 'confirm').and.returnValue(true);
+        $('#pending-users .delete-btn[data-username="karma-reject"]').trigger('click');
+        await wait4ajax();
+        await loadPage('/base/ui/transparency/account.html', asAdmin = true);
+        expect($('#registered-users .delete-btn[data-username="karma-accept"]').length).toBe(1);
+        expect($('#registered-users .delete-btn[data-username="karma-reject"]').length).toBe(0);
+        $('#registered-users .delete-btn[data-username="karma-accept"]').trigger('click');
+        await wait4ajax();
+        await loadPage('/base/ui/transparency/account.html', asAdmin = true);
+        expect($('#registered-users .delete-btn[data-username="karma-accept"]').length).toBe(0);
     });
 
     it('Testing change password', async function(){

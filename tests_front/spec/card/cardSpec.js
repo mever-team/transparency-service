@@ -138,6 +138,7 @@ describe('Testing card.js...', function() {
             currentTry+=1;
         }
         expect($('.quality-text').text().trim()).not.toBe('0%');
+        await wait4ajax(); // wait for all polling to finish
     });
 
     it('Testing refine', async function(){
