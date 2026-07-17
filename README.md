@@ -1,3 +1,6 @@
+[![Build](https://github.com/mever-team/transparency-service/actions/workflows/build.yml/badge.svg?branch=dev)](https://github.com/mever-team/transparency-service/actions/workflows/build.yml) 
+![Python](https://img.shields.io/badge/python-3.11-blue) 
+![License](https://img.shields.io/badge/license-Apache--2.0-blue)
 # AI Card
 
 *A model card catalogue. Host it yourself, or browse the public database. Create and access cards from the browser or your experiment tracking code.*
