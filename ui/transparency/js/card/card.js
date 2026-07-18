@@ -361,7 +361,7 @@ $(function() {
         if (!no_title) $section.append($("<h2>").text(sectionTitle));
         if (!section.value.length) $section.append($("<p>").text("No data provided."));
         section.value.forEach((field, fieldIndex) => {
-            let $field = $("<div>").addClass("field");
+            let $field = $("<div>").addClass("field").attr('data-name', field.name.replace(/_/g, " "));
 
             // field-name
             let $fieldName = $("<span>")
