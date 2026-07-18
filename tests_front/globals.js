@@ -155,7 +155,6 @@ async function registerUser(username, email) {
     $('#login-confirm-btn').trigger('click');
     await wait4ajax();
 }
-
 // monkey patch
 // track active $(function () {
 let pendingReady = 0;
@@ -171,3 +170,19 @@ $.fn.ready = function(fn) {
         }
     });
 };
+
+
+// window.addEventListener('error', function (event) {
+//     console.error(
+//         'UNCAUGHT ERROR:',
+//         event.message,
+//         '\nFILE:',
+//         event.filename,
+//         '\nLINE:',
+//         event.lineno,
+//         '\nCOLUMN:',
+//         event.colno,
+//         '\nSTACK:',
+//         event.error && event.error.stack
+//     );
+// });

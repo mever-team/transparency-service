@@ -70,9 +70,6 @@ app, gc, monitor = serve(
     max_agents_per_user = 99
 )
 
-# monkey patch for karma. Karma sometimes hangs with consecutive responces to the same endpoint 
-app.view_functions["get_card_locked_status"] = lambda card_id: jsonify("")
-
 if __name__ == "__main__":
     Thread(target=gc, daemon=True).start()
     Thread(target=monitor, daemon=True).start()

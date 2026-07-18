@@ -4,6 +4,7 @@ module.exports = function(config) {
 
     /* https://github.com/karma-runner/karma-jasmine/pull/211 */
     client: {
+      captureConsole: true,
       jasmine: {
         random: true,
         seed: '4321',
@@ -88,7 +89,7 @@ module.exports = function(config) {
       }
     },
     singleRun: true,
-
+    // logLevel: config.LOG_DEBUG,
     // autoWatch: true
   });
 };
