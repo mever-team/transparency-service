@@ -102,13 +102,7 @@ $(function() {
                 
             } else {
                 document.execCommand('formatBlock', false, 'pre');
-                if (selection.rangeCount > 0) {
-                    let node = selection.getRangeAt(0).startContainer;
-                    if (node.nodeType === Node.TEXT_NODE) {
-                        node = node.parentElement;
-                    }
-                    preElement = node.closest('pre');
-                }
+                preElement = window.getSelection().focusNode.parentNode;
                 preElement.innerHTML = preElement.innerHTML.replaceAll("<br>", "\n");
                 hljs.highlightElement(preElement);
                 preElement.setAttribute('spellcheck', 'false');
@@ -910,7 +904,7 @@ $(function() {
         
         if ($this.hasClass("autocomplete-input")) return;
         
-        const fieldName = $this.siblings(".field-info").contents()[1].outerText.replace(":", "").trim().toLowerCase().replace(/ /g, "_");
+        const fieldName = $this.siblings(".field-info").text().replace("?", "").trim().toLowerCase().replace(/ /g, "_");
         const sectionName = $this.closest("section").find("h2").first().contents().filter((_, el) => el.nodeType === 3).text().toLowerCase().replace(/ /g, "_");
 
         let section = cardJson.data.find(s => s.name === sectionName);

@@ -228,11 +228,26 @@ describe('Testing card.js...', function() {
         // $('.medium-editor-action[data-action="insertunorderedlist"]').trigger('click');
         // expect($('.medium-editor-action[data-action="insertunorderedlist"]').hasClass('medium-editor-button-active')).toBe(false);
         /* Code Block */
-        // expect($('.medium-editor-action[title="Code Block"]').hasClass('medium-editor-button-active')).toBe(false);
-        // $('.medium-editor-action[title="Code Block"]').trigger('click');
-        // expect($('.medium-editor-action[title="Code Block"]').hasClass('medium-editor-button-active')).toBe(true);
-        // $('.medium-editor-action[title="Code Block"]').trigger('click');
-        // expect($('.medium-editor-action[title="Code Block"]').hasClass('medium-editor-button-active')).toBe(false);
+        // $('.contents').find('.field-value').first().focus();
+        $('.field[data-name="name"] .field-value').html('<div>karma-test</div>');
+        placeCaretInside($('.field[data-name="name"] .field-value div')[0]);
+        $('.contents').find('.field-value').first().trigger('click');
+        expect($('.medium-editor-action[title="Code Block"]').hasClass('medium-editor-button-active')).toBe(false);
+        $('.medium-editor-action[title="Code Block"]').trigger('click');
+        expect($('.medium-editor-action[title="Code Block"]').hasClass('medium-editor-button-active')).toBe(true);
+        $('.medium-editor-action[title="Code Block"]').trigger('click');
+        expect($('.medium-editor-action[title="Code Block"]').hasClass('medium-editor-button-active')).toBe(false);
     });
 
 });
+
+function placeCaretInside(element) {
+    const range = document.createRange();
+    const selection = window.getSelection();
+
+    range.selectNodeContents(element); // select all contents
+    // range.collapse(true); // collapse to the start
+
+    selection.removeAllRanges();
+    selection.addRange(range);
+}
