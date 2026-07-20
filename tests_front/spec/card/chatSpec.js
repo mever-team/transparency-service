@@ -3,7 +3,7 @@ describe('Testing chat.js...', function() {
         /* create a card */
         karmaTestCardId = await createCard('admin', 'admin');
         let url = '/base/ui/transparency/model_card.html';
-        await loadPage(url, asAdmin = true);
+        await loadPage(url, username = 'admin', password = 'admin');
     });
 
     it('Testing chat Open and close with buttons', function(){

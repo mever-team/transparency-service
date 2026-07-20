@@ -7,6 +7,7 @@ examples in tests/server.py (also contains full structure of a model card)
 .venv serves index.html at http://127.0.0.1:5000
 refer to the implementation in package/service/server.py
 """
+import os, shutil, signal, sys
 import requests
 import json
 from requests.models import Response
@@ -67,9 +68,18 @@ app, gc, monitor = serve(
     env="ui/.env",
     feature_extractor=matcher,
     email_verification=EmailVerification(env="ui/.env"), 
-    max_agents_per_user = 99
+    max_agents_per_user = 99,
+    root='db_pytest'
 )
 
+def cleanup_folder(signal, frame):
+    folder = "db_pytest"
+    if os.path.exists(folder):
+        shutil.rmtree(folder)
+    sys.exit(0)
+signal.signal(signal.SIGINT, cleanup_folder)
+
+        
 if __name__ == "__main__":
     Thread(target=gc, daemon=True).start()
     Thread(target=monitor, daemon=True).start()

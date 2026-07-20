@@ -1,18 +1,19 @@
 let loadedJS = [];
 const loadOnce = ['shellui.js', 'bearer.js']
 let karmaTestCardId = undefined;
-async function loadPage(url, asAdmin=false){
+async function loadPage(url, username = null, password = null){
     detachListeners();
     let thisToken = '';
-    if (asAdmin) {
+    if (username && password) {
          await $.ajax({
             url: '/transparency/login',
             method: 'POST',
             contentType: 'application/json',
             dataType: 'json',
-            data: JSON.stringify({username: 'admin', password: 'admin'}),
+            data: JSON.stringify({username: username, password: password}),
             success: function (response) {
                 document.cookie="access_token="+response.token+"; path=/;"
+                token = response.token;
                 thisToken = response.token;
             },
             error: function (xhr) {
@@ -79,7 +80,10 @@ async function loadPage(url, asAdmin=false){
         }
     }
 
+
     // wait for all ajax to finish
+    await wait4ajax();
+    updateUsername();
     await wait4ajax();
 }
 
@@ -91,12 +95,12 @@ async function createCard(username, password) {
         method: 'POST',
         contentType: 'application/json',
         dataType: 'json',
-        data: JSON.stringify({username: 'admin', password: 'admin'}),
+        data: JSON.stringify({username: username, password: password}),
         success: function (response) {
             token = response.token;
         },
         error: function (xhr) {
-            console.log(`Failed to login as ${username} from Karma`)
+            console.log(`Failed to login as username: ${username}, password: ${password} from Karma`)
         }
     });
     // create card

@@ -102,7 +102,14 @@ $(function() {
                 
             } else {
                 document.execCommand('formatBlock', false, 'pre');
-                preElement = window.getSelection().focusNode.parentNode;
+                // preElement = window.getSelection().focusNode.parentNode;
+                if (selection.rangeCount > 0) {
+                    let node = selection.getRangeAt(0).startContainer;
+                    if (node.nodeType === Node.TEXT_NODE) {
+                        node = node.parentElement;
+                    }
+                    preElement = node.closest('pre');
+                }
                 preElement.innerHTML = preElement.innerHTML.replaceAll("<br>", "\n");
                 hljs.highlightElement(preElement);
                 preElement.setAttribute('spellcheck', 'false');

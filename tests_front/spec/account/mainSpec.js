@@ -1,6 +1,6 @@
 describe('Testing account.html...', function() {
     beforeEach(async function () {
-        await loadPage('/base/ui/transparency/account.html', asAdmin = true);
+        await loadPage('/base/ui/transparency/account.html', username = 'admin', password = 'admin');
     });
 
 
@@ -14,7 +14,7 @@ describe('Testing account.html...', function() {
     it('Testing accept reject pending user', async function(){
         await registerUser('karma-accept', 'karma-accept@example.com');
         await registerUser('karma-reject', 'karma-reject@example.com');
-        await loadPage('/base/ui/transparency/account.html', asAdmin = true);
+        await loadPage('/base/ui/transparency/account.html', username = 'admin', password = 'admin');
         expect($('#pending-users .pending-btn[data-username="karma-accept"]').length).toBe(1);
         $('#pending-users .pending-btn[data-username="karma-accept"]').trigger('click');
         await wait4ajax();
@@ -22,12 +22,12 @@ describe('Testing account.html...', function() {
         spyOn(window, 'confirm').and.returnValue(true);
         $('#pending-users .delete-btn[data-username="karma-reject"]').trigger('click');
         await wait4ajax();
-        await loadPage('/base/ui/transparency/account.html', asAdmin = true);
+        await loadPage('/base/ui/transparency/account.html', username = 'admin', password = 'admin');
         expect($('#registered-users .delete-btn[data-username="karma-accept"]').length).toBe(1);
         expect($('#registered-users .delete-btn[data-username="karma-reject"]').length).toBe(0);
         $('#registered-users .delete-btn[data-username="karma-accept"]').trigger('click');
         await wait4ajax();
-        await loadPage('/base/ui/transparency/account.html', asAdmin = true);
+        await loadPage('/base/ui/transparency/account.html', username = 'admin', password = 'admin');
         expect($('#registered-users .delete-btn[data-username="karma-accept"]').length).toBe(0);
     });
 
@@ -50,6 +50,30 @@ describe('Testing account.html...', function() {
         $('#password-verify').val('');
         $('#confirm-password-btn').trigger('click');
         expect($('#password-error').text()).toBe('Provide a new password.');
+
+        /* change pytest password */
+        await loadPage('/base/ui/transparency/account.html', username = 'pytest', password = 'pytest');
+        expect($('#password-modal-screen').is(':visible')).toBe(false);
+        $('#password-open-btn').trigger('click');
+        expect($('#password-modal-screen').is(':visible')).toBe(true);
+        $('#password-modal-screen #cancel-password-btn').trigger('click');
+        expect($('#password-modal-screen').is(':visible')).toBe(false);
+        $('#password-open-btn').trigger('click');
+        expect($('#password-modal-screen').is(':visible')).toBe(true);
+        $('#password').val('pytest2');
+        $('#password-verify').val('pytest2');
+        $('#confirm-password-btn').trigger('click');
+        await wait4ajax();
+        //try to login
+        await loadPage('/base/ui/transparency/account.html', username = 'pytest', password = 'pytest2');
+        expect($('#account-name').text()).toBe('pytest')
+        // change password back to normal
+        await loadPage('/base/ui/transparency/account.html', username = 'pytest', password = 'pytest2');
+        $('#password').val('pytest');
+        $('#password-verify').val('pytest');
+        $('#confirm-password-btn').trigger('click');
+        await loadPage('/base/ui/transparency/account.html', username = 'pytest', password = 'pytest');
+        expect($('#account-name').text()).toBe('pytest');
     });
 
     it('Testing modals', async function(){

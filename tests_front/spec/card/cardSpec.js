@@ -3,7 +3,7 @@ describe('Testing card.js...', function() {
         /* create a card */
         karmaTestCardId = await createCard('admin', 'admin');
         let url = '/base/ui/transparency/model_card.html';
-        await loadPage(url, asAdmin = true);
+        await loadPage(url, username = 'admin', password = 'admin');
     });
 
 
@@ -92,11 +92,22 @@ describe('Testing card.js...', function() {
         expect($('#url_desc').is(':visible')).toBe(false);
 
         /* Option fields suggetions */
-        expect($('.contents input').eq(1).closest('div').find('.autocomplete-suggestions').is(':visible')).toBe(false);
+        expect($('.field[data-name="task"]').find('.autocomplete-suggestions').is(':visible')).toBe(false);
         $('#technical-view').trigger('click');
-        $('.contents input').eq(1).focus();
-        $('.contents input').eq(1).trigger('focus');
-        expect($('.contents input').eq(1).closest('div').find('.autocomplete-suggestions').is(':visible')).toBe(true);
+        $('.field[data-name="task"] input').focus();
+        $('.field[data-name="task"] input').trigger('focus');
+        expect($('.field[data-name="task"]').find('.autocomplete-suggestions').is(':visible')).toBe(true);
+        $('.field[data-name="task"] input').val('translation');
+        $('.field[data-name="task"] input').trigger('input');
+        expect($('.field[data-name="task"]').find('.autocomplete-suggestions').html().includes('<strong>Translation</strong>')).toBe(true);
+        $('.field[data-name="task"] input').val('');
+        expect($('.field[data-name="task"] input').val()).toBe('');
+        $('.field[data-name="task"]').find('.autocomplete-suggestion[data-value="Translation"]').trigger('click');
+        expect($('.field[data-name="task"] input').val()).toBe('Translation');
+        $('.field[data-name="task"] input').val('afadsfdasdfasdfsa');
+        $('.field[data-name="task"] input').trigger('input');
+        expect($('.field[data-name="task"]').find('.autocomplete-suggestions').is(':visible')).toBe(false);
+
 
     });
 
@@ -107,7 +118,7 @@ describe('Testing card.js...', function() {
         /* Manual redirect */
         karmaTestCardId += 1;
         let url = '/base/ui/transparency/model_card.html'
-        await loadPage(url, asAdmin = true);
+        await loadPage(url, username = 'admin', password = 'admin');
         expect($('#history-dropdown').html()).not.toBe('');
     });
 
@@ -130,7 +141,7 @@ describe('Testing card.js...', function() {
             }
             await new Promise(resolve => setTimeout(resolve, 5000)); // wait for trai to import
             let url = '/base/ui/transparency/model_card.html'
-            await loadPage(url, asAdmin = true);
+            await loadPage(url, username = 'admin', password = 'admin');
             if ($('.quality-text').text().trim() !== '0%') {
                 break;
                 assistantRuning = false;
@@ -157,7 +168,7 @@ describe('Testing card.js...', function() {
             }
             await new Promise(resolve => setTimeout(resolve, 1000)); // wait for trai to refine
             let url = '/base/ui/transparency/model_card.html'
-            await loadPage(url, asAdmin = true);
+            await loadPage(url, username = 'admin', password = 'admin');
             if ($('#history-dropdown').html() !== '') {
                 break;
                 assistantRuning = false;
@@ -179,7 +190,7 @@ describe('Testing card.js...', function() {
         await wait4ajax();
         /* Manual reload */
         let url = '/base/ui/transparency/model_card.html'
-        await loadPage(url, asAdmin = true);
+        await loadPage(url, username = 'admin', password = 'admin');
         expect($('.contents').find('.field-value').first().text().trim()).toBe('karma-test');
     });
     it('Testing mediumeditor', function(){
@@ -238,6 +249,94 @@ describe('Testing card.js...', function() {
         $('.medium-editor-action[title="Code Block"]').trigger('click');
         expect($('.medium-editor-action[title="Code Block"]').hasClass('medium-editor-button-active')).toBe(false);
     });
+
+    it('Report card', async function(){
+        /* pytest create a card1 admin reports it */
+        karmaTestCardId = await createCard('pytest', 'pytest');
+        const card1Id = karmaTestCardId
+        let url = '/base/ui/transparency/model_card.html';
+        await loadPage(url, username = 'admin', password = 'admin');
+        expect($('#report-confirm-screen').is(':visible')).toBe(false);
+        $('#reportCard').trigger('click');
+        expect($('#report-confirm-screen').is(':visible')).toBe(true);
+        $('#report-confirm-screen input').val('karma-report');
+        $('#confirm-report-btn').trigger('click');
+        await wait4ajax();
+        expect($('#report-success-screen').is(':visible')).toBe(true);
+        $('#report-success-screen #report-success-btn').trigger('click');
+        expect($('#report-success-screen').is(':visible')).toBe(false);
+        /* pytest create a card2 admin reports it */
+        karmaTestCardId = await createCard('pytest', 'pytest');
+        const card2Id = karmaTestCardId
+        await loadPage(url, username = 'admin', password = 'admin');
+        expect($('#report-confirm-screen').is(':visible')).toBe(false);
+        $('#reportCard').trigger('click');
+        expect($('#report-confirm-screen').is(':visible')).toBe(true);
+        $('#report-confirm-screen input').val('karma-report');
+        $('#confirm-report-btn').trigger('click');
+        await wait4ajax();
+        expect($('#report-success-screen').is(':visible')).toBe(true);
+        $('#report-success-screen #report-success-btn').trigger('click');
+        expect($('#report-success-screen').is(':visible')).toBe(false);
+        /* pytest create a card3 admin reports it */
+        karmaTestCardId = await createCard('pytest', 'pytest');
+        const card3Id = karmaTestCardId
+        await loadPage(url, username = 'pytest', password = 'pytest');
+        $('.field[data-name="name"] .field-value').text('karma-test');
+        $('.field[data-name="version"] .field-value').text('karma-test');
+        $('.field[data-name="version"] .field-value').trigger('input');
+        $('#saveJson').trigger('click');
+        await loadPage(url, username = 'admin', password = 'admin');
+        expect($('#report-confirm-screen').is(':visible')).toBe(false);
+        $('#reportCard').trigger('click');
+        expect($('#report-confirm-screen').is(':visible')).toBe(true);
+        $('#report-confirm-screen input').val('karma-report');
+        $('#confirm-report-btn').trigger('click');
+        await wait4ajax();
+        expect($('#report-success-screen').is(':visible')).toBe(true);
+        $('#report-success-screen #report-success-btn').trigger('click');
+        expect($('#report-success-screen').is(':visible')).toBe(false);
+        /* accept card1 delete card2 unpublish reports */
+        url = '/base/ui/transparency/account.html';
+        await loadPage(url, username = 'admin', password = 'admin');
+        // modal layout
+        expect($(`#reported .card[data-card=${card1Id}]`).length).toBe(1);
+        expect($(`#reported .card[data-card=${card2Id}]`).length).toBe(1);
+        expect($(`#reported .card[data-card=${card3Id}]`).length).toBe(1);
+        expect($('#report-modal-screen').is(':visible')).toBe(false);
+        $(`#reported .card[data-card=${card2Id}] .show-reports-btn`).trigger('click');
+        await wait4ajax();
+        expect($('#report-modal-screen').is(':visible')).toBe(true);
+        expect($('#report-modal-screen .report-entry').text()).toBe('karma-report');
+        $('#report-modal-screen #cancel-report-btn').trigger('click');
+        expect($('#report-modal-screen').is(':visible')).toBe(false);
+        // reject card1 reports
+        $(`#reported .card[data-card=${card1Id}] .resolve-btn`).trigger('click');
+        await wait4ajax();
+        await loadPage(url, username = 'admin', password = 'admin');
+        expect($(`#reported .card[data-card=${card1Id}]`).length).toBe(0);
+        // delete card2
+        $(`#reported .card[data-card=${card2Id}] .card-delete-btn`).trigger('click');
+        await wait4ajax();
+        await loadPage(url, username = 'admin', password = 'admin');
+        expect($(`#reported .card[data-card=${card2Id}]`).length).toBe(0);
+        karmaTestCardId = card2Id;
+        url = '/base/ui/transparency/model_card.html'
+        await loadPage(url, username = 'admin', password = 'admin');
+        expect($('#popup-error-screen #error-message').text()).toBe('Model card does not exist or has been deleted.');
+        // unpublish card3
+        url = '/base/ui/transparency/account.html';
+        await loadPage(url, username = 'admin', password = 'admin');
+        $(`#reported .card[data-card=${card3Id}] .unpublish-btn`).trigger('click');
+        await wait4ajax();
+        await loadPage(url, username = 'admin', password = 'admin');
+        expect($(`#reported .card[data-card=${card3Id}]`).length).toBe(1);
+        expect($(`#reported .card[data-card=${card3Id}] .unpublish-btn`).length).toBe(0);
+        karmaTestCardId = card3Id;
+        await loadPage(url, username = 'admin', password = 'admin');
+        expect($('.field[data-name="version"] .field-value').text()).toBe('');
+    });
+
 
 });
 

@@ -11,7 +11,7 @@ describe('Testing eval_adapter.js...', function() {
         );
         karmaTestCardId = await createCard('admin', 'admin');
         let url = '/base/ui/transparency/model_card.html';
-        await loadPage(url, asAdmin = true);
+        await loadPage(url, username = 'admin', password = 'admin');
     });
 
     it('Sending request', async function(){
