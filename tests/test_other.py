@@ -55,7 +55,6 @@ def test_ImageClassifier():
     assert not(img_classifier.classify_images([path])[0][0] is None)
     
 def test_pdf_to_chunks():
-    # convert a file into a pdf bytes to test
     path = 'tests/data/2402.19091v2.pdf'
     assert bool(pdf_to_chunks(pdf_path=path))
     assert bool(pdf_to_chunks(pdf_path=path, char_per_chunk=1000))
