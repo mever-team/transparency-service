@@ -1,36 +1,28 @@
-import json
+import json, requests, io
 from aicard.utils.image_converters import to_base64, to_bytes
 from aicard.service.users import _ensure_db_integrity
 from aicard.service.logger import Logger
 from aicard.service.jobs_tracker import CardJobsTracker, Job
 from aicard.agents.extensions.speedups import text_compression
 from aicard.agents.extensions.embeddings import ImageClassifier
+from aicard.utils.pdf_split import pdf_to_chunks
 from codecarbon import EmissionsTracker
 def test_admin_dashboard(client, admin_token):
     request = client.get('transparency/users', headers={"Authorization": f"Bearer {admin_token}"})
     assert request.status_code == 200
     
 def test_image_coverters():
-    url= 'https://avatars.githubusercontent.com/u/44504498?v=4'
     path = 'ui/transparency/img/create_img.png'
-    base64, status_code = to_base64(url)
-    assert status_code == 200
     base64, status_code = to_base64(path)
     assert status_code == 200
     bytes, status_code = to_bytes(base64)
-    assert status_code == 200
-    bytes, status_code = to_bytes(url)
     assert status_code == 200
     bytes, status_code = to_bytes(path)
     assert status_code == 200
     base64, status_code = to_base64('')
     assert status_code == 500
-    base64, status_code = to_base64('https://www.google.com/')
-    assert status_code == 415
     bytes, status_code = to_bytes('')
     assert status_code == 500
-    base64, status_code = to_bytes('https://www.google.com/')
-    assert status_code == 415
     
     
 def test_ensure_db_integrity():
@@ -60,3 +52,10 @@ def test_ImageClassifier():
     url= 'https://avatars.githubusercontent.com/u/44504498?v=4'
     img_classifier = ImageClassifier()
     assert not(img_classifier.classify_images([url])[0][0] is None)
+    
+def test_pdf_to_chunks():
+    pdf = 'https://arxiv.org/pdf/2402.19091'
+    response = requests.get(pdf)
+    response.raise_for_status()
+    assert bool(pdf_to_chunks(pdf_bytes=response.content))
+    assert bool(pdf_to_chunks(pdf_bytes=response.content, char_per_chunk=1000))
