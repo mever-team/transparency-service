@@ -1,4 +1,5 @@
 import json, requests, io
+from pathlib import Path
 from aicard.utils.image_converters import to_base64, to_bytes
 from aicard.service.users import _ensure_db_integrity
 from aicard.service.logger import Logger
@@ -49,13 +50,12 @@ def test_text_compression():
     # there is no status return
     
 def test_ImageClassifier():
-    url= 'https://avatars.githubusercontent.com/u/44504498?v=4'
+    path = 'ui/transparency/img/create_img.png'
     img_classifier = ImageClassifier()
-    assert not(img_classifier.classify_images([url])[0][0] is None)
+    assert not(img_classifier.classify_images([path])[0][0] is None)
     
 def test_pdf_to_chunks():
-    pdf = 'https://arxiv.org/pdf/2402.19091'
-    response = requests.get(pdf)
-    response.raise_for_status()
-    assert bool(pdf_to_chunks(pdf_bytes=response.content))
-    assert bool(pdf_to_chunks(pdf_bytes=response.content, char_per_chunk=1000))
+    # convert a file into a pdf bytes to test
+    path = 'tests/data/2402.19091v2.pdf'
+    assert bool(pdf_to_chunks(pdf_path=path))
+    assert bool(pdf_to_chunks(pdf_path=path, char_per_chunk=1000))
