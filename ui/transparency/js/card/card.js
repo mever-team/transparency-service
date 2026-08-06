@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function() {
     let cardJson;
     let comparedJson;
     let comparedJsonSimple;
@@ -102,6 +102,7 @@ $(document).ready(function () {
                 
             } else {
                 document.execCommand('formatBlock', false, 'pre');
+                // preElement = window.getSelection().focusNode.parentNode;
                 if (selection.rangeCount > 0) {
                     let node = selection.getRangeAt(0).startContainer;
                     if (node.nodeType === Node.TEXT_NODE) {
@@ -201,8 +202,8 @@ $(document).ready(function () {
 
     function error_message(message) {
         console.log(message);
-        document.getElementById('popup-error-screen').style.display = 'flex';
-        if(message) document.getElementById('error-message').innerHTML = message;
+        $('#popup-error-screen').css('display' , 'flex');
+        if(message) $('#error-message').html(message);
     }
 
     function error_handler(xhr, status, error) {
@@ -214,10 +215,10 @@ $(document).ready(function () {
     }
 
     // Close confirmation modal
-    document.getElementById('cancel-delete-btn').onclick = function () {document.getElementById('delete-confirm-screen').style.display = 'none';};
-    document.getElementById('cancel-report-btn').onclick = function () {document.getElementById('report-confirm-screen').style.display = 'none';};
-    document.getElementById('cancel-autocomplete-btn').onclick = function () {document.getElementById('modal-autocomplete-screen').style.display = 'none';};
-    document.getElementById('cancel-refine-btn').onclick = function () {document.getElementById('modal-refine-screen').style.display = 'none';};
+    $('#cancel-delete-btn').on('click', function () {$('#delete-confirm-screen').css('display' , 'none')});
+    $('#cancel-report-btn').on('click', function () {$('#report-confirm-screen').css('display' , 'none')});
+    $('#cancel-autocomplete-btn').on('click', function () {$('#modal-autocomplete-screen').css('display' , 'none')});
+    $('#cancel-refine-btn').on('click', function () {$('#modal-refine-screen').css('display' , 'none')});
 
     $(document).on("click", ".naccs .menu div", function () {
         let numberIndex = $(this).index();
@@ -239,11 +240,12 @@ $(document).ready(function () {
             'modal-refine-screen',
             'popup-error-screen',
             'delete-success-screen',
-            'card-locked'
+            'card-locked',
+            'modal-autocomplete-screen',
         ];
         modals.forEach(id => {
-            const el = document.getElementById(id);
-            if (el && el.style.display === 'flex') el.style.display = 'none';
+            const $el = $(`#${id}`);
+            if ($el.length && $el.is(':visible')) $el.hide();
         });
     }
     });
@@ -360,7 +362,7 @@ $(document).ready(function () {
         if (!no_title) $section.append($("<h2>").text(sectionTitle));
         if (!section.value.length) $section.append($("<p>").text("No data provided."));
         section.value.forEach((field, fieldIndex) => {
-            let $field = $("<div>").addClass("field");
+            let $field = $("<div>").addClass("field").attr('data-name', field.name.replace(/_/g, " "));
 
             // field-name
             let $fieldName = $("<span>")
@@ -528,7 +530,7 @@ $(document).ready(function () {
     }
     function normalRender(interval=null){
         $('body').removeClass('no-overflow');
-        document.getElementById('card-locked').style.display = 'none';
+        $('#card-locked').css('display' , 'none');
         if (interval) clearInterval(interval);
 
         function _render() {
@@ -557,13 +559,13 @@ $(document).ready(function () {
                 </svg>
             `);
 
-            const historyContainer = document.getElementById("history-dropdown");
-            historyContainer.innerHTML = ""; // clear previous content
+            const $historyContainer = $("#history-dropdown");
+            $historyContainer.html(""); // clear previous content
             if (jsonData.history) {
                 renderHistoryGraph(
                     jsonData.history,
                     Number(id),
-                    historyContainer
+                    $historyContainer[0]
                 );
 
             }
@@ -585,7 +587,7 @@ $(document).ready(function () {
 
             if (!($('.light.arrow').length > 0)&& is_logged_in) {
                 // TODO: we have the option of just opening the import, which may be more practical
-                document.getElementById('modal-autocomplete-screen').style.display = 'flex';
+                $('#modal-autocomplete-screen').css('display' , 'flex');
             }
             // render syntax highlighting and remove autocorrect
             document.querySelectorAll('pre').forEach((block) => {hljs.highlightElement(block);});
@@ -851,7 +853,7 @@ $(document).ready(function () {
             dataType: "json",
             success: function (jsonData) {
                 if (jsonData !== "") {
-                    document.getElementById('card-locked').style.display = 'flex';
+                    $('#card-locked').css('display','flex');
                     $('#lock-msg-text').html(jsonData);
                     $('body').addClass('no-overflow');
                     $('#loading').hide();
@@ -909,7 +911,7 @@ $(document).ready(function () {
         
         if ($this.hasClass("autocomplete-input")) return;
         
-        const fieldName = $this.siblings(".field-info").contents()[1].outerText.replace(":", "").trim().toLowerCase().replace(/ /g, "_");
+        const fieldName = $this.siblings(".field-info").text().replace("?", "").trim().toLowerCase().replace(/ /g, "_");
         const sectionName = $this.closest("section").find("h2").first().contents().filter((_, el) => el.nodeType === 3).text().toLowerCase().replace(/ /g, "_");
 
         let section = cardJson.data.find(s => s.name === sectionName);
@@ -1043,13 +1045,13 @@ $('.contents').on('click', '.refine-field', async function () {
                       <text x="18" y="24" class="quality-text">info</text>
                     </svg>
                 `);
-                const historyContainer = document.getElementById("history-dropdown");
-                historyContainer.innerHTML = ""; // clear previous content
+                const $historyContainer = $("#history-dropdown");
+                $historyContainer.html(''); // clear previous content
                 if (response.history) {
                     renderHistoryGraph(
                         response.history,
                         Number(id),
-                        historyContainer
+                        $historyContainer[0]
                     );
                 }
                 $("#saveJson").find('.btn-text').hide();
@@ -1116,8 +1118,8 @@ $('.contents').on('click', '.refine-field', async function () {
         const item = e.target.closest(".download-dropdown-item, .modal_autocomplete, .modal_refine");
         if(!item) return;
         assistMenu.style.display = "none";
-        if(item.classList.contains("modal_autocomplete")) document.getElementById('modal-autocomplete-screen').style.display = 'flex';
-        else if(item.classList.contains("modal_refine")) document.getElementById('modal-refine-screen').style.display = 'flex';
+        if(item.classList.contains("modal_autocomplete")) $('#modal-autocomplete-screen').css('display' , 'flex');
+        else if(item.classList.contains("modal_refine")) $('#modal-refine-screen').css('display' , 'flex');
     });
 
     $("#cardClone").click(function () {
@@ -1139,47 +1141,47 @@ $('.contents').on('click', '.refine-field', async function () {
         });
     });
 
-    $("#modal_autocomplete").click(function () {document.getElementById('modal-autocomplete-screen').style.display = 'flex';});
-    $("#modal_refine").click(function () { document.getElementById('modal-refine-screen').style.display = 'flex';});
-    $("#deleteCard").click(function () {document.getElementById('delete-confirm-screen').style.display = 'flex';});
-    $("#reportCard").click(function () {document.getElementById('report-confirm-screen').style.display = 'flex';});
+    $("#modal_autocomplete").click(function () {$('#modal-autocomplete-screen').css('display' , 'flex');});
+    $("#modal_refine").click(function () { $('#modal-refine-screen').css('display' , 'flex');});
+    $("#deleteCard").click(function () {$('#delete-confirm-screen').css('display' , 'flex');});
+    $("#reportCard").click(function () {$('#report-confirm-screen').css('display' , 'flex');});
     $(".delete-confirm-screen").click(function (e) { if ($(e.target).is(this)) $(this).hide();});
-    document.getElementById('confirm-delete-btn').onclick = function () {
-        document.getElementById('delete-confirm-screen').style.display = 'none';
+    $('#confirm-delete-btn').on('click' , function () {
+        $('#delete-confirm-screen').css('display' , 'none');
         $.ajax({
             url: "/transparency/card/" + id, // replace id
             method: "DELETE",
             headers: {"Authorization": "Bearer " + token},
             success: function (response) {
-                const screen = document.getElementById('delete-success-screen');
-                screen.style.display = 'flex';
-                document.getElementById('close-success-btn').onclick = function () { screen.style.display = 'none'; }
+                const screen = $('#delete-success-screen');
+                screen.css('display' , 'flex');
+                $('#close-success-btn').on('click', function () { screen.css('display' , 'none')});
             },
             error: error_handler
         });
-    };
-    document.getElementById('confirm-report-btn').onclick = function () {
-        document.getElementById('report-confirm-screen').style.display = 'none';
+    });
+    $('#confirm-report-btn').on('click', function () {
+        $('#report-confirm-screen').css('display', 'none');
         $.ajax({
             url: "/transparency/card/" + id + "/report", // report card id
             method: "POST",
             contentType: "application/json",
             dataType: "json",
-            data: JSON.stringify(document.getElementById("report-text").value),
+            data: JSON.stringify($("#report-text").val()),
             headers: {"Authorization": "Bearer " + token},
             success: function (response) {
-                const screen = document.getElementById('report-success-screen');
-                screen.style.display = 'flex';
-                document.getElementById('report-success-btn').onclick = function () { screen.style.display = 'none'; }
+                const screen = $('#report-success-screen');
+                screen.css('display' , 'flex');
+                $('#report-success-btn').on('click', function () { screen.css('display', 'none')});
             },
             error: error_handler
         });
-    };
+    });
 
     $(document).on("click", ".card-button", function () {
         if ($(this).parents('#modal-refine-screen').length) {
             const assistant = $(this).attr("id");
-            document.getElementById('modal-refine-screen').style.display = 'none';
+            $('#modal-refine-screen').css('display' , 'none');
             $.ajax({
                 url: "/transparency/card/" + id + "/clone",
                 method: "POST",
@@ -1234,11 +1236,11 @@ $('.contents').on('click', '.refine-field', async function () {
                                 payload: $('#card-url').val()
                             }),
                             success: function (response) {
-                                document.getElementById('modal-autocomplete-screen').style.display = 'none';
+                                $('#modal-autocomplete-screen').hide();
                                 interval = setInterval(function () {checkLocked(interval);}, 300);
                             },
                             error: function (xhr, status, error) {
-                                document.getElementById('modal-autocomplete-screen').style.display = 'none';
+                                $('#modal-autocomplete-screen').hide();
                                 error_handler(xhr, status, error);
                             }
                         });
@@ -1256,19 +1258,19 @@ $('.contents').on('click', '.refine-field', async function () {
                             dataType: "json",
                             contentType: "application/json",
                             success: function (response) {
-                                document.getElementById('modal-autocomplete-screen').style.display = 'none';
+                                $('#modal-autocomplete-screen').hide();
                                 interval = setInterval(function () {checkLocked(interval);}, 300);
                                 //alert(response)
                             },
                             error: function (xhr, status, error) {
-                                document.getElementById('modal-autocomplete-screen').style.display = 'none';
+                                $('#modal-autocomplete-screen').hide();
                                 error_handler(xhr, status, error);
                             }
                         });
                     }
                 },
                 error: function (xhr, status, error) {
-                    document.getElementById('modal-autocomplete-screen').style.display = 'none';
+                    $('#modal-autocomplete-screen').hide();
                     error_handler(xhr, status, error);
                 }
             });
@@ -1304,14 +1306,15 @@ $('.contents').on('click', '.refine-field', async function () {
     }
 
     function showFlash(text) {
-        const container = document.getElementById("flash-container");
-        const flash = document.createElement("div");
-        flash.className = "flash-message show";
-        flash.innerHTML = `
-            <span class="close" onclick="this.parentElement.classList.remove('show');setTimeout(() => this.parentElement.remove(), 250);">×</span>
-            ${text}
-        `;
-        container.appendChild(flash);
+        const $container = $("#flash-container");
+        const $flash = $("<div>")
+            .addClass("flash-message show")
+            .html(`
+                <span class="close" onclick="this.parentElement.classList.remove('show');setTimeout(() => this.parentElement.remove(), 250);">×</span>
+                ${text}
+            `);
+
+        $container.append($flash);
 
         // setTimeout(() => {
         //     flash.classList.remove("show");

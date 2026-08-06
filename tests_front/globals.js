@@ -1,18 +1,19 @@
 let loadedJS = [];
 const loadOnce = ['shellui.js', 'bearer.js']
 let karmaTestCardId = undefined;
-async function loadPage(url, asAdmin=false){
+async function loadPage(url, username = null, password = null){
     detachListeners();
     let thisToken = '';
-    if (asAdmin) {
+    if (username && password) {
          await $.ajax({
             url: '/transparency/login',
             method: 'POST',
             contentType: 'application/json',
             dataType: 'json',
-            data: JSON.stringify({username: 'admin', password: 'admin'}),
+            data: JSON.stringify({username: username, password: password}),
             success: function (response) {
                 document.cookie="access_token="+response.token+"; path=/;"
+                token = response.token;
                 thisToken = response.token;
             },
             error: function (xhr) {
@@ -25,7 +26,7 @@ async function loadPage(url, asAdmin=false){
 
     html = html.replaceAll('"js/','"/base/ui/transparency/js/');
     html = html.replaceAll("'js/","'/base/ui/transparency/js/");
-    html = html.replace(/<script\b[^>]*\bsrc\s*=\s*["'][^"']*jquery[^"']*["'][^>]*>\s*<\/script>/gi,""); // run only the Karma jquery instance
+    html = html.replace(/<script\b[^>]*\bsrc\s*=\s*["'][^"']*jquery[^"']*["'][^>]*>\s*<\/script>/gi,"/* no jquery*/"); // run only the Karma jquery instance
 
     const doc = new DOMParser().parseFromString(html, 'text/html');
 
@@ -79,7 +80,10 @@ async function loadPage(url, asAdmin=false){
         }
     }
 
+
     // wait for all ajax to finish
+    await wait4ajax();
+    updateUsername();
     await wait4ajax();
 }
 
@@ -91,12 +95,12 @@ async function createCard(username, password) {
         method: 'POST',
         contentType: 'application/json',
         dataType: 'json',
-        data: JSON.stringify({username: 'admin', password: 'admin'}),
+        data: JSON.stringify({username: username, password: password}),
         success: function (response) {
             token = response.token;
         },
         error: function (xhr) {
-            console.log(`Failed to login as ${username} from Karma`)
+            console.log(`Failed to login as username: ${username}, password: ${password} from Karma`)
         }
     });
     // create card
@@ -121,9 +125,11 @@ function detachListeners()
     $(document).off();
     $(window).off();
     $(document).on("ajaxSend", function(event, jqXHR, settings) {
+        // console.log('ajaxSend: ' + settings.url);
         activeRequests.set(jqXHR, {url: settings.url,started: Date.now()});
     });
-    $(document).on("ajaxComplete.debug", function(event, jqXHR, settings) {
+    $(document).on("ajaxComplete", function(event, jqXHR, settings) {
+        // console.log('ajaxComplete: ' + settings.url);
         activeRequests.delete(jqXHR);
     });
 
@@ -131,7 +137,8 @@ function detachListeners()
 
 async function wait4ajax()
 {
-    while($.active !== 0){
+    while($.active !== 0 || pendingReady !== 0){
+        // console.log('$.active: ' + $.active + ' pendingReady: ' + pendingReady);
         await new Promise(resolve => setTimeout(resolve, 500));
     }
 }
@@ -142,3 +149,44 @@ async function wait4animations()
         await new Promise(resolve => setTimeout(resolve, 100));
     }
 }
+
+async function registerUser(username, email) {
+    await loadPage('/base/ui/transparency/index.html');
+    $('#login_password').trigger('click');
+    await wait4animations();
+    $('#username').val(username);
+    $('#email').val(email);
+    $('#login-confirm-btn').trigger('click');
+    await wait4ajax();
+}
+// monkey patch
+// track active $(function () {
+let pendingReady = 0;
+const oldReady = $.fn.ready;
+$.fn.ready = function(fn) {
+    pendingReady++;
+
+    return oldReady.call(this, function() {
+        try {
+            fn();
+        } finally {
+            pendingReady--;
+        }
+    });
+};
+
+
+// window.addEventListener('error', function (event) {
+//     console.error(
+//         'UNCAUGHT ERROR:',
+//         event.message,
+//         '\nFILE:',
+//         event.filename,
+//         '\nLINE:',
+//         event.lineno,
+//         '\nCOLUMN:',
+//         event.colno,
+//         '\nSTACK:',
+//         event.error && event.error.stack
+//     );
+// });

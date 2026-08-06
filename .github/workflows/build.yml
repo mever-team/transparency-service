@@ -59,7 +59,7 @@ jobs:
             if [ -f server.pid ]; then
               kill $(cat server.pid) || true
             fi
-            python -m ui.no_ollama_server > server.log 2>&1 &
+            python -m ui.karma_server > server.log 2>&1 &
             echo $! > server.pid
 
             server_ready=false

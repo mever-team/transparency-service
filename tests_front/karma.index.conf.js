@@ -4,6 +4,7 @@ module.exports = function(config) {
 
     /* https://github.com/karma-runner/karma-jasmine/pull/211 */
     client: {
+      captureConsole: true,
       jasmine: {
         random: true,
         seed: '4321',
@@ -58,7 +59,15 @@ module.exports = function(config) {
       suppressSkipped: false
     },
     preprocessors: {
-      'ui/transparency/js/**/*.js': ['transform', 'coverage']
+      'ui/transparency/js/*.js': ['transform', 'coverage'],
+      'ui/transparency/js/account/*.js': ['transform', 'coverage'],
+      'ui/transparency/js/handbook/*.js': ['transform', 'coverage'],
+      'ui/transparency/js/index/*.js': ['transform', 'coverage'],
+      'ui/transparency/js/card/card.js': ['transform', 'coverage'],
+      'ui/transparency/js/card/chat.js': ['transform', 'coverage'],
+      'ui/transparency/js/card/eval_adapter.js': ['transform', 'coverage'],
+      'ui/transparency/js/card/file_upload.js': ['transform'],
+      'ui/transparency/js/card/history.js': ['transform', 'coverage'],
     },
 
     reporters: [
@@ -88,7 +97,7 @@ module.exports = function(config) {
       }
     },
     singleRun: true,
-
+    // logLevel: config.LOG_DEBUG,
     // autoWatch: true
   });
 };
