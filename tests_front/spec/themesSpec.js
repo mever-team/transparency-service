@@ -1,6 +1,6 @@
 describe('Testing themes...', function() {
     beforeAll(async function () {
-        await loadPage('/base/ui/transparency/index.html');
+        await loadPage('/base/ui/transparency/account.html');
     });
 
 

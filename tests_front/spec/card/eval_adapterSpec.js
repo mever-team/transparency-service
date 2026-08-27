@@ -11,10 +11,14 @@ describe('Testing eval_adapter.js...', function() {
         );
         karmaTestCardId = await createCard('admin', 'admin');
         let url = '/base/ui/transparency/model_card.html';
-        await loadPage(url, asAdmin = true);
+        await loadPage(url, username = 'admin', password = 'admin');
     });
 
     it('Sending request', async function(){
+        /* Open the modal */
+        $('#import-btn').trigger('click');
+        $('#metrics_text').trigger('click');
+        expect($('#metrics_desc').is(':visible')).toBe(true);
         /* Fake a drop file event */
         expect($('#progressFillMetrics')[0].outerHTML.includes('width: 100%;')).toBe(false);
         const dataTransfer = new DataTransfer();
@@ -25,11 +29,22 @@ describe('Testing eval_adapter.js...', function() {
             dataTransfer: dataTransfer
         });
         $('#dropAreaMetrics')[0].dispatchEvent(dropEvent);
+        $('#metrics-container').find('.file-input').trigger('change');
         await wait4animations();
         expect($('#progressFillMetrics')[0].outerHTML.includes('width: 100%;')).toBe(true);
 
+        /* layout */
+        $dropArea = $('#metrics-container').find('#dropAreaMetrics')
+        $dropArea.trigger('dragover');
+        expect($dropArea.hasClass('hover')).toBe(true);
+        $dropArea.trigger('dragleave');
+        expect($dropArea.hasClass('hover')).toBe(false);
         /* make the request */
-        
+        $('#modal-autocomplete-screen .card-button#agent[data-type="metrics"]').trigger('click');
+        await wait4ajax();
+        let url = '/base/ui/transparency/model_card.html';
+        await loadPage(url);
+        expect($('.field[data-nam="metrics"] .field-value').html()).not.toBe('');
     });
 
 })
