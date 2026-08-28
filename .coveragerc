@@ -1,0 +1,5 @@
+[run]
+# omit Ollama server calls
+omit =
+    package/aicard/agents/mini/info_extractors.py
+    package/aicard/service/assistants/prompter.py
