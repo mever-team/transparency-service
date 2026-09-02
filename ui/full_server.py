@@ -12,8 +12,12 @@ from aicard.service import serve
 from aicard.service.assistants import SemanticMatcher, Prompter, Combined
 from aicard.service.email import EmailVerification
 from aicard.agents import Ollama
+from aicard.agents import Claude
 from aicard.agents.extensions.speedups import text_compression
 from threading import Thread
+from dotenv import load_dotenv
+
+load_dotenv()
 
 matcher = SemanticMatcher(
     "sentence-transformers/all-mpnet-base-v2",
@@ -24,7 +28,11 @@ prompter = Prompter(
     description="Mistral is used as the base model.",
     text_preprocessor=text_compression
 )
-agent = Combined(refine=prompter, complete=matcher)
+claude_prompter = Prompter(
+    Claude(model = "claude-fable-5", name="🌬️ Claude", timeout_secs=60),
+    description="claude-fable-5 is used as the base model.",
+)
+agent = Combined(refine=prompter, complete=claude_prompter)
 app, gc, monitor = serve(
     {"agent": agent},
     env="ui/.env",

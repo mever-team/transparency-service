@@ -26,3 +26,5 @@ codecarbon
 python-keycloak
 jwcrypto
 email-validator
+anthropic
+json-repair

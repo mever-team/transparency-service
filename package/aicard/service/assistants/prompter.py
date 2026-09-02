@@ -11,10 +11,13 @@ import json
 import markdown2
 import time
 from codecarbon import EmissionsTracker
+from json_repair import repair_json
 
 from ...agents.extensions.embeddings import ImageClassifier
 from ...card.fields import LongText, Pattern
 from ...utils.pdf_split import pdf_to_chunks
+from ..converters import dynamic2dict
+
 
 
 class Prompter(Assistant):
@@ -41,28 +44,30 @@ class Prompter(Assistant):
         self.image_classifier = image_classifier
         self.text_preprocessor = text_preprocessor
 
-    def complete(self, card: ModelCard, data: dict, logger: Logger, user_messages: list[str]):
+    def complete(self, card: ModelCard, card_id: int, data: dict, logger: Logger, user_messages: list[str], job_tracker: CardJobsTracker):
         if data['data_type'] == 'url':
+            # url = data['url']
+            # logger.info("Submitted: " + str(url), user=self.alias)
+            # user_messages.clear()
+            # user_messages.append(f"<h2>{self.alias} import</h2>Retrieving data")
+
+            # parsed = urlparse(url)
+            # if not parsed.scheme in ("http", "https") or not parsed.netloc: raise Exception("Invalid url format")
+            # response = requests.get(url, timeout=self.external_get_timeout_sec)
+            # text = response.text
+
+            # soup = BeautifulSoup(text, "html.parser")
+            # for tag in soup.find_all(href=True): tag["href"] = urljoin(url, tag["href"])
+            # for tag in soup.find_all(src=True): tag["src"] = urljoin(url, tag["src"])
+
+            # text = soup.get_text(strip=True)
             url = data['url']
-            logger.info("Submitted: " + str(url), user=self.alias)
-            user_messages.clear()
-            user_messages.append(f"<h2>{self.alias} import</h2>Retrieving data")
-
-            parsed = urlparse(url)
-            if not parsed.scheme in ("http", "https") or not parsed.netloc: raise Exception("Invalid url format")
-            response = requests.get(url, timeout=self.external_get_timeout_sec)
-            text = response.text
-
-            soup = BeautifulSoup(text, "html.parser")
-            for tag in soup.find_all(href=True): tag["href"] = urljoin(url, tag["href"])
-            for tag in soup.find_all(src=True): tag["src"] = urljoin(url, tag["src"])
-
-            text = soup.get_text(strip=True)
+            text = url
         elif data['data_type'] == '.pdf':
             pdf_bytes = data['bytes']
-            text = pdf_to_chunks(pdf_bytes = pdf_bytes, char_per_chunk = 30000)
+            text = pdf_to_chunks(pdf_bytes = pdf_bytes)
             
-        self._complete(text, "import", card, logger, user_messages)
+        self._complete(text, "completion", card, logger, user_messages)
         progress_html = (
             f"<progress value='{100}' max='100' "
             f"style='width: 300px; height: 20px; "
@@ -125,35 +130,50 @@ class Prompter(Assistant):
         
         
     def _complete(self, text: str|list[str], task: str, card: ModelCard, logger: Logger, user_messages: list[str]):
-        if not isinstance(text, list):
-            text = [text]
-        if self.text_preprocessor:
-            text = [self.text_preprocessor(t) for t in text]
-        output_formats = card.json_schema_per_category()
+        # if not isinstance(text, list):
+        #     text = [text]
+        # if self.text_preprocessor:
+            # text = [self.text_preprocessor(t) for t in text]
+        # output_formats = card.json_schema_per_category()
         # Extra parameterization
 
-        output_formats['overview']['properties']['description']['minLength'] = 500
-        output_formats['overview']['properties']['description']['description'] = "An overview of the model. The reader should have a good idea of what the model is, the purpose, novelty, capabilities, and caveats after reading this."
+        # output_formats['overview']['properties']['description']['minLength'] = 500
+        # output_formats['overview']['properties']['description']['description'] = "An overview of the model. The reader should have a good idea of what the model is, the purpose, novelty, capabilities, and caveats after reading this."
 
-        output_formats['training']['properties']['training_set_purpose'] = output_formats['training']['properties'].pop('motivation')
-        output_formats['evaluation']['properties']['eval_set_purpose'] = output_formats['evaluation']['properties'].pop('motivation')
-        output_formats['performance']['properties']['performance_insights'] = output_formats['performance']['properties'].pop('analysis')
-        output_formats['performance']['properties']['eval_test_metrics'] = output_formats['performance']['properties'].pop('metrics')
+        # output_formats['training']['properties']['training_set_purpose'] = output_formats['training']['properties'].pop('motivation')
+        # output_formats['evaluation']['properties']['eval_set_purpose'] = output_formats['evaluation']['properties'].pop('motivation')
+        # output_formats['performance']['properties']['performance_insights'] = output_formats['performance']['properties'].pop('analysis')
+        # output_formats['performance']['properties']['eval_test_metrics'] = output_formats['performance']['properties'].pop('metrics')
 
-        output_formats['training']['properties']['training_set_purpose']['title'] = 'training_set_purpose'
-        output_formats['evaluation']['properties']['eval_set_purpose']['title'] = 'eval_set_purpose'
-        output_formats['performance']['properties']['performance_insights']['title'] = 'performance_insights'
-        output_formats['performance']['properties']['eval_test_metrics']['title'] = 'eval_test_metrics'
+        # output_formats['training']['properties']['training_set_purpose']['title'] = 'training_set_purpose'
+        # output_formats['evaluation']['properties']['eval_set_purpose']['title'] = 'eval_set_purpose'
+        # output_formats['performance']['properties']['performance_insights']['title'] = 'performance_insights'
+        # output_formats['performance']['properties']['eval_test_metrics']['title'] = 'eval_test_metrics'
 
-        output_formats['performance']['properties']['performance_insights']['minLength'] = 200
+        # output_formats['performance']['properties']['performance_insights']['minLength'] = 200
 
-        output_formats['overview']['required'] = ['name', 'description', 'author']
-        output_formats['use']['required'] = ['use_cases','user_groups']
-        output_formats['performance']['required'] = ['performance_insights']
+        # output_formats['overview']['required'] = ['name', 'description', 'author']
+        # output_formats['use']['required'] = ['use_cases','user_groups']
+        # output_formats['performance']['required'] = ['performance_insights']
 
-        for category, values in output_formats.items():
-            if 'more' in values['properties']:
-                values['properties'].pop('more')
+        # for category, values in output_formats.items():
+        #     if 'more' in values['properties']:
+        #         values['properties'].pop('more')
+
+        md_claude_schema = card.to_claude_schema()
+        params = {"format":{"type": "json_schema", "schema": md_claude_schema}}
+        answer = self.agent.completion(text, **params)
+        new_md = repair_json(answer, return_objects=True)
+        for categoty_name, fields in new_md.items():
+            if not isinstance(fields, dict): continue
+            for field_name, field_value in fields.items():
+                if field_name not in card.data.get(categoty_name, {}): continue
+                card.data[categoty_name][field_name].set(field_value)
+                
+        print('all good here')
+        print(answer)
+        print(new_md)
+        return
 
         count_categories = 0
         for category, values in card.data.items():

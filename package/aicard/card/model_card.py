@@ -397,6 +397,29 @@ class ModelCard:
             fields[category] = (sub_model, ...)
         pydantic_model = create_model('card', **fields)
         return pydantic_model
+    
+    def to_claude_schema(self):
+        def convert(value):
+            if isinstance(value, dict):
+                properties = {key: convert(field) for key, field in value.items()}
+                return {
+                    "type": "object",
+                    "properties": properties,
+                    "required": list(properties.keys()),
+                    "additionalProperties": False,
+                }
+            if isinstance(value, Options):
+                return {
+                    "type": "string",
+                    "enum": value.options(),
+                }
+            if isinstance(value, Date):
+                return {
+                    "type": "string",
+                    "format": "date",
+                }
+            return {"type": "string"}
+        return convert(self.data)
 
     def json_schema(self):
         schema = self.to_pydantic().model_json_schema()
