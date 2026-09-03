@@ -3,7 +3,7 @@ import json
 
 
 def test_import_url(client, admin_token, admin_card_id):
-    for agent in ["agent", "wordnet", "prompter", "matcher"]:
+    for agent in ["matcher", "ollama"]:
         url = 'http://localhost:5000'
         card_id = admin_card_id
         # 1. start assistant process
@@ -29,7 +29,7 @@ def test_import_url(client, admin_token, admin_card_id):
     
     
 def test_refine(client, admin_token, admin_card_id):
-    for agent in ["agent", "wordnet", "prompter", "matcher"]:
+    for agent in ["ollama"]:
         card_id = admin_card_id
         # 2. start refine
         response = client.post(

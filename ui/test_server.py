@@ -19,15 +19,15 @@ matcher = SemanticMatcher(
     "sentence-transformers/all-mpnet-base-v2",
     external_get_timeout_sec=3,
     matching_strictness=0.5)
-prompter = Prompter(
+ollama_prompter = Prompter(
     Ollama("mistral:latest", name="🌬️ Mistral", timeout_secs=45),
     description="Mistral is used as the base model.",
     text_preprocessor=text_compression
 )
-agent = Combined(refine=prompter, complete=matcher)
 def create_app(root):
     app, gc, monitor = serve(
-        {"agent": agent, "wordnet": WordNet(), "prompter": prompter, "matcher": matcher},
+        {'matcher': {'agent': matcher, 'tasks': ['import']},
+        'ollama': {'agent': ollama_prompter, 'tasks': ['refine']}},
         env="ui/.env",
         feature_extractor=matcher,
         email_verification=EmailVerification(env="ui/.env"),
