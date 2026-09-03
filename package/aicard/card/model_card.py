@@ -412,13 +412,17 @@ class ModelCard:
                 return {
                     "type": "string",
                     "enum": value.options(),
+                    "description": value.description
                 }
             if isinstance(value, Date):
                 return {
                     "type": "string",
                     "format": "date",
+                    "description": value.description
                 }
-            return {"type": "string"}
+            return {
+                "type": "string",
+                "description": value.description}
         return convert(self.data)
 
     def json_schema(self):
