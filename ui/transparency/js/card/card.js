@@ -885,22 +885,27 @@ $(function() {
             method: "GET",
             headers: {"Authorization": "Bearer " + token},
             success: function (response) {
-                $(".assistants_wrapper").each(function () {
-                    const $container = $(this);
-                    $.each(response, function (index, item) {
-                        const $tempDiv = $("<div>").html(item.desc);
-                        const title = $tempDiv.find("h1").prop("outerHTML") || "";
-                        $tempDiv.find("h1").remove();
-                        const description = $.trim($tempDiv.text());
-                        const $card = $("<button>", {
-                            id: item.name,
-                            class: "card-button button",
-                            attr: {"data-type": "url"},
-                            html: `<div class="desc">${title}</div>`//+`<div class="tooltip">${description}</div>`
-                        });
-                        $container.append($card);
-                    });
-                });
+                for ( agent of response ){
+                    const agent_tasks = agent.tasks;
+                    const agent_name = agent.name;
+                    const agent_desc = agent.desc;
+                    if ( agent_tasks.includes('import') ){
+                        const $tmpBtn = $('<button>')
+                                        .html(`<div class="desc">${agent_name}</div>`)
+                                        .addClass('card-button button')
+                                        .attr('id', agent_name)
+                                        .attr('data-type', 'url')
+                        $('#modal-autocomplete-screen .assistants_wrapper').append($tmpBtn)
+                    }
+                    else if ( agent_tasks.includes('refine') ){
+                        const $tmpBtn = $('<button>')
+                                        .html(`<div class="desc">${agent_name}</div>`)
+                                        .addClass('card-button button')
+                                        .attr('id', agent_name)
+                                        .attr('data-type', 'url')
+                        $('#modal-refine-screen .assistants_wrapper').append($tmpBtn)
+                    }
+                }
             },
             error: error_handler
         });
@@ -1187,14 +1192,14 @@ $('.contents').on('click', '.refine-field', async function () {
                 method: "POST",
                 headers: { "Authorization": "Bearer " + token },
                 success: function (newId) {
-                    runRefinement('agent', newId);
+                    runRefinement(assistant, newId);
                     window.open("model_card.html?id=" + newId, "_blank");
                 }
             });
             return;
         }
         else if ($(this).attr('data-type')==='pdf' || $(this).attr('data-type')==='url') {
-            let assistant = $(this).attr("id");
+            const assistant = $(this).attr("id");
             $("#saveJson").find('.btn-confirmation').fadeOut();
             $.ajax({
                 url: "/transparency/card/" + id,

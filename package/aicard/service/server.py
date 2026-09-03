@@ -87,7 +87,7 @@ def serve(
     user2agent_use = dict() # count usage of agents per user
     verification_tokens = {}
     for assistant in assistants.values():
-        assistant.start(logger)
+        assistant['agent'].start(logger)
     conn = users.UserDB(logger=logger, root=root)
     app = Flask(__name__)
     empty_card = ModelCard()
@@ -688,7 +688,7 @@ def serve(
     @app.route(domain_prefix+'/assistants', methods=['GET'])
     @users.require_auth(token2expiration)
     def get_assistants(token: str):
-        return jsonify([{"name": key, "desc": value.description} for key, value in assistants.items()])
+        return jsonify([{"name": key, "desc": value['agent'].description, "tasks": value['tasks']} for key, value in assistants.items()])
 
     @app.route(domain_prefix+'/banner/<int:card_id>', methods=['GET'])
     def get_banner(card_id: int):
@@ -943,6 +943,7 @@ def serve(
     @users.require_auth(token2expiration)
     def autocomplete_card(card_id: int, assistant_type: str, token: str):
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
+        assistant = assistant['agent']
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
         with auth_lock:
             creator = token2user.get(token, None)
@@ -970,6 +971,7 @@ def serve(
     @users.require_auth(token2expiration)
     def autorefine_card(card_id: int, assistant_type: str, token: str):
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
+        assistant = assistant['agent']
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
         with auth_lock:
             creator = token2user.get(token, None)

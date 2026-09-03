@@ -23,7 +23,7 @@ matcher = SemanticMatcher(
     "sentence-transformers/all-mpnet-base-v2",
     external_get_timeout_sec=3,
     matching_strictness=0.5)
-prompter = Prompter(
+ollama_prompter = Prompter(
     Ollama("mistral:latest", name="🌬️ Mistral", timeout_secs=45),
     description="Mistral is used as the base model.",
     text_preprocessor=text_compression
@@ -32,9 +32,10 @@ claude_prompter = Prompter(
     Claude(model = "claude-fable-5", name="🌬️ Claude", timeout_secs=60),
     description="claude-fable-5 is used as the base model.",
 )
-agent = Combined(refine=prompter, complete=claude_prompter)
 app, gc, monitor = serve(
-    {"agent": agent},
+    {'matcher': {'agent': matcher, 'tasks': ['import']},
+     'claude': {'agent': claude_prompter, 'tasks': ['import']},
+     'ollama': {'agent': ollama_prompter, 'tasks': ['refine']}},
     env="ui/.env",
     feature_extractor=matcher,
     email_verification=EmailVerification(env="ui/.env")
