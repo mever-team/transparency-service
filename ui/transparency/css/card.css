@@ -804,7 +804,9 @@ section.buttons {
     border: 1px solid var(--text-primary);
 }
 
-.info-tooltip::after {
+.info-tooltip::after
+/* , .card-button::after  */
+{
     content: attr(data-tooltip);
     position: absolute;
     bottom: 125%;
@@ -826,7 +828,9 @@ section.buttons {
     text-transform: none;
 }
 
-.info-tooltip:hover::after {opacity: 1;}
+.info-tooltip:hover::after
+/* , .card-button:hover::after  */
+{opacity: 1;}
 
 .history-graph text.edge-label {fill: #eeeeee;font-size: 11px; pointer-events: none;}
 .history-graph text.self-label {fill: #eeeeee;font-size: 11px;font-style: italic;}

@@ -6,7 +6,7 @@ $(function () {
     const $fileList = $modal.find('#fileListMetrics');
     const $totalSize = $modal.find('#totalSizeMetrics');
     const $progressFill = $modal.find('#progressFillMetrics');
-    $(document).on('click', '.card-button#agent[data-type="metrics"]', request);
+    $(document).on('click', '.card-button[data-type="metrics"]', request);
 
     function request (){
         const urlParams = new URLSearchParams(window.location.search);

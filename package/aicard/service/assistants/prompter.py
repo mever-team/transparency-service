@@ -134,6 +134,8 @@ class Prompter(Assistant):
             "<h2>Importing Information</h2>"
             "An AI assistant is working on the model card<br>"
         )
+        if not text:
+            return
         md_claude_schema = card.to_claude_schema()
         params = {"format":{"type": "json_schema", "schema": md_claude_schema}}
         answer = self.agent.completion(text, **params)

@@ -283,6 +283,9 @@ $(function() {
         $('#metrics_text').removeClass('active');
         $('#metrics-container').slideUp();
         $('#metrics_desc').slideUp();
+
+        $('.metrics_btn_wrapper').slideUp();
+        $('.assistants_wrapper').slideDown();
     });
     $('#url_text').click(function () {
         $('.card-button#agent').attr('data-type', 'url');
@@ -298,6 +301,9 @@ $(function() {
         $('#metrics_text').removeClass('active');
         $('#metrics-container').slideUp();
         $('#metrics_desc').slideUp();
+
+        $('.metrics_btn_wrapper').slideUp();
+        $('.assistants_wrapper').slideDown();
     });
     $('#metrics_text').click(function () {
         $('.card-button#agent').attr('data-type', 'metrics');
@@ -313,6 +319,9 @@ $(function() {
         $('#metrics_text').addClass('active');
         $('#metrics-container').slideDown();
         $('#metrics_desc').slideDown();
+
+        $('.metrics_btn_wrapper').slideDown();
+        $('.assistants_wrapper').slideUp();
     });
 
     $('#simple-view').click(function(){
@@ -890,16 +899,18 @@ $(function() {
                     const agent_name = agent.name;
                     const agent_desc = agent.desc;
                     if ( agent_tasks.includes('import') ){
+                        const uiName = agent_name=='matcher'? 'Semantic Matching' : 'LLM';
                         const $tmpBtn = $('<button>')
-                                        .html(`<div class="desc">${agent_name}</div>`)
+                                        .html(`<div class="desc">Run with ${uiName}</div>`)
                                         .addClass('card-button button')
                                         .attr('id', agent_name)
                                         .attr('data-type', 'url')
                         $('#modal-autocomplete-screen .assistants_wrapper').append($tmpBtn)
                     }
                     else if ( agent_tasks.includes('refine') ){
+                        const uiName = agent_name=='matcher'? 'Matcher' : 'LLM';
                         const $tmpBtn = $('<button>')
-                                        .html(`<div class="desc">${agent_name}</div>`)
+                                        .html(`<div class="desc">Run with ${uiName}</div>`)
                                         .addClass('card-button button')
                                         .attr('id', agent_name)
                                         .attr('data-type', 'url')
