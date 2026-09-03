@@ -13,6 +13,7 @@ from aicard.service import converters
 from aicard.service.logger import Logger
 from aicard.utils.eval_adapter.eval_adapter import eval_adapter
 from aicard.service.jobs_tracker import CardJobsTracker, Job
+from aicard.service.assistants.usage_limiter import UsageLimiter
 from flask import Flask, abort, redirect, request, jsonify, send_from_directory, Response, url_for
 from threading import Lock
 from dotenv import dotenv_values
@@ -54,6 +55,7 @@ def serve(
     jobs_tracker: CardJobsTracker = CardJobsTracker(),
     max_agents_per_user = 3,
     monitor_window=1440,
+    agents_usage_limits_per_user_per_day: dict = {'claude': 10}
 ):
     static = os.path.abspath(static)
     if env: config = dotenv_values(env)
@@ -75,6 +77,8 @@ def serve(
     log.setLevel(logging.ERROR)
     log.disabled = True
 
+    usage_limiter = UsageLimiter(agents_usage_limits_per_user_per_day)
+    
     card_cache_lock = Lock()
     card_cache: dict[int, ModelCardEntry | None] = dict()
     logger = Logger(log_file, silent=silent)
@@ -942,8 +946,11 @@ def serve(
     @app.route(domain_prefix+'/assistant/<string:assistant_type>/complete/<int:card_id>', methods=['POST'])
     @users.require_auth(token2expiration)
     def autocomplete_card(card_id: int, assistant_type: str, token: str):
+        user = token2user.get(token, None)
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
         assistant = assistant['agent']
+        if not usage_limiter.try_increment(user, assistant_type):
+            abort(429, "You have reached your daily usage limit for this agent. Please try again tomorrow.")
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
         with auth_lock:
             creator = token2user.get(token, None)
@@ -970,9 +977,12 @@ def serve(
     @app.route(domain_prefix+'/assistant/<string:assistant_type>/refine/<int:card_id>', methods=['POST'])
     @users.require_auth(token2expiration)
     def autorefine_card(card_id: int, assistant_type: str, token: str):
+        user = token2user.get(token, None)
         assistant = exists(assistants.get(assistant_type, None), "Assistant not available")
         assistant = assistant['agent']
         card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
+        if not usage_limiter.try_increment(user, assistant_type):
+            abort(429, "You have reached your daily usage limit for this agent. Please try again tomorrow.")
         with auth_lock:
             creator = token2user.get(token, None)
             if creator != card.creator: abort(403, "Only the card's creator can refine it in-place.")
