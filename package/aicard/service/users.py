@@ -400,7 +400,7 @@ def require_auth(token2expiration: dict, third_party_authenticator: CookieAuthen
         return wrapper
     return decorator
 
-def require_admin(token2expiration: dict):
+def require_admin(token2expiration: dict, token2user: dict, admin_username: str):
     def decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
@@ -411,6 +411,7 @@ def require_admin(token2expiration: dict):
             token = parts[1]
             expiry = token2expiration.get(token)
             if not expiry or time.monotonic() > expiry: abort(403, description="Token expired or invalid - please log in")
+            if token2user.get(token, "") != admin_username: abort(403,"This is an administrator-only action.")
             return f(*args, **kwargs, token=token)
         return wrapper
     return decorator
