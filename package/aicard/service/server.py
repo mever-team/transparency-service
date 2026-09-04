@@ -317,14 +317,14 @@ def serve(
                 +"\nThis link works only once. You can set up password-based access from your account page.\n\n"
                 +url_for("verify_user", token=token, _external=True)
             ):
-                return "You have already requested login with the same email. Wait for a minute and try again.", 409
+                return jsonify({"status": "pending verification"}), 201
             return jsonify({"status": "pending verification"}), 201
         return jsonify({"status": "pending approval"}), 201
 
     @app.route(domain_prefix + "/verify/<string:token>", methods=["GET"])
     def verify_user(token):
         with auth_lock: entry = verification_tokens.get(token)
-        if not entry: abort(400, description="Verification token invalid or already used")
+        if not entry: abort(400, description="You have already logged in with this verification token, or it has expired")
         username, expiry = entry
         del verification_tokens[token]
         if time.monotonic() > expiry:
