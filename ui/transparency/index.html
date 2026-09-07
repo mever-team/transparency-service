@@ -77,7 +77,6 @@
         <h2 class="success title">Login</h2>
         <ul style="text-align:left;margin-bottom:40px"><li>Create and edit model cards.</li><li>Aid by assistants.</li><li>Python integration.</li></ul>
         <p id="login-error" class="error"></p>
-        <p id="login-success" class="title success"></p>
         <label for="username">Username</label><br />
         <input type="text" id="username" name="username" /><br><br>
         <br />
@@ -99,6 +98,17 @@
         <div class="buttons">
             <button id="login-confirm-btn" class="success button"><i class="fa-solid fa-lock"></i>&nbsp;&nbsp;Login</button>
             <button class="button" id="cancel-login-btn"><i class="fa-solid fa-cancel"></i>&nbsp;&nbsp;Cancel</button>
+        </div>
+    </div>
+</div>
+
+
+<div id="index_message" class="popup">
+    <div class="popup_content">
+        <p id="login-success" class="title success"></p>
+        <br><br>
+        <div class="buttons">
+            <button class="button" id="index_message_close"><i class="fa-solid fa-cancel"></i>&nbsp;&nbsp;OK</button>
         </div>
     </div>
 </div>

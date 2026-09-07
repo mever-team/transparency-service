@@ -5,12 +5,6 @@ var loggedUser = "";
 var loggedUserNotifications = "";
 var loggedUserIsAdmin = false;
 
-document.cookie.split(";").forEach(cookie => {
-    const [name, value] = cookie.trim().split("=");
-    if (name === "access_token") token = value;
-});
-
-
 // incoming token from registration verification redirect
 const params = new URLSearchParams(window.location.search);
 const incomingBearer = params.get("token");
@@ -20,6 +14,12 @@ if (incomingBearer) {
     const clean = window.location.origin + window.location.pathname;
     window.history.replaceState({}, document.title, clean);
 }
+
+// this needs to be called AFTER the above segments so that we can account for the incoming bearer
+document.cookie.split(";").forEach(cookie => {
+    const [name, value] = cookie.trim().split("=");
+    if (name === "access_token") token = value;
+});
 
 let token_prefix = "Bearer"
 function initKeycloak() {
@@ -49,10 +49,8 @@ function initKeycloak() {
     } else updateUsername();
 }
 
-if (window.Keycloak) initKeycloak();
+if (window.Keycloak) initKeycloak(); // calls updateUsername
 else window.addEventListener('keycloak-check-done', initKeycloak, { once: true });
-
-updateUsername();
 
 function updateUsername() {
     $.ajax({
@@ -64,7 +62,6 @@ function updateUsername() {
                 token = response.token;
                 const expiresIn = response.expires_in || 3600;
                 document.cookie = "access_token=" + token + "; path=/; max-age=" + expiresIn + ";";
-
                 $('#new_card').removeClass("hidden");
                 $('#login-btn').addClass("hidden");
                 $('#logout-btn').removeClass("hidden");

@@ -233,7 +233,7 @@ def serve(
             return jsonify({"users": fetch_all_users("users"), "pending": fetch_all_users("pending_users"), "resources": monitor.unsafe_status(), "cards": fetch_cards(cursor, creator), "reported": fetch_cards(cursor, creator, "user<>? AND report_count<>0")})
 
     @app.route(domain_prefix+'/users/<string:username>', methods=['DELETE'])
-    @users.require_admin(token2expiration)
+    @users.require_admin(token2expiration, token2user, admin_username)
     def delete_user(username, token: str):
         if username == admin_username: abort(403, "You are not allowed to delete the administrator account. To remove this account, first restart the service with different administrator credentials.")
         deleted = False
@@ -270,7 +270,7 @@ def serve(
         return jsonify({"token": new_token, "expires_in": token_expiration_secs})
 
     @app.route(domain_prefix+'/users/<string:username>/accept', methods=['POST'])
-    @users.require_admin(token2expiration)
+    @users.require_admin(token2expiration, token2user, admin_username)
     def promote_user(username, token: str):
         cursor = conn.conn.cursor()
         cursor.execute("SELECT username, email, password FROM pending_users WHERE username = ?",(username,))
@@ -308,7 +308,7 @@ def serve(
             with auth_lock: verification_tokens[token] = (username, time.monotonic() + token_expiration_secs)
             try:
                 validate_email(email, check_deliverability=False)
-            except EmailNotValidError as e:
+            except EmailNotValidError:
                 return "The email you provided is not a valid email address.", 404
             if not email_verification.send_email(
                 email,
@@ -317,14 +317,14 @@ def serve(
                 +"\nThis link works only once. You can set up password-based access from your account page.\n\n"
                 +url_for("verify_user", token=token, _external=True)
             ):
-                return "You have already requested login with the same username and email. Wait for a minute and try again.", 409
+                return jsonify({"status": "pending verification"}), 201
             return jsonify({"status": "pending verification"}), 201
         return jsonify({"status": "pending approval"}), 201
 
     @app.route(domain_prefix + "/verify/<string:token>", methods=["GET"])
     def verify_user(token):
         with auth_lock: entry = verification_tokens.get(token)
-        if not entry: abort(400, description="Verification token invalid or already used")
+        if not entry: abort(400, description="You have already logged in with this verification token, or it has expired")
         username, expiry = entry
         del verification_tokens[token]
         if time.monotonic() > expiry:
@@ -349,7 +349,7 @@ def serve(
         if third_party_auth and auth.startswith("ThirdPartyBearer "):
             parts = auth.strip().split()
             if len(parts) != 2: return ""
-            payload = third_party_auth.validate_token( parts[1])
+            payload = third_party_auth.validate_token(parts[1])
 
             if not payload: return ""
             if not payload.get("email_verified"): return ""
