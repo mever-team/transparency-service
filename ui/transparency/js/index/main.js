@@ -56,8 +56,10 @@ $('#login-confirm-btn').click(()=>{
             success: function () {
                 $('#login-error').text("");
                 //$('#register').removeClass('show');
+                $('#login').removeClass('show')
+                $('#index_message').addClass('show');
                 $('#login-success').addClass('show');
-                $('#login-success').text("An email was sent to your account with a login link. Check your spam folder.");
+                $('#login-success').text("A login link was sent to your email. Check your spam folder.");
             },
             error: function (xhr) {
                 $('#login-success').text("");
@@ -108,4 +110,6 @@ $('.modal').on('click', function (e) {
         .find('.modal__content')
         .removeClass('modal__content--active');
 });
-
+$('#index_message_close').on('click', function (e) {
+    $('#index_message').removeClass('show');
+});
