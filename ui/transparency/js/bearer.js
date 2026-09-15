@@ -49,7 +49,8 @@ function initKeycloak() {
     } else updateUsername();
 }
 
-if (window.Keycloak) initKeycloak(); // calls updateUsername
+if ("isModelCard" in window) updateUsername(); // model_card.html sets this instead of keycloack logic
+else if (window.Keycloak) initKeycloak(); // calls updateUsername
 else window.addEventListener('keycloak-check-done', initKeycloak, { once: true });
 
 function updateUsername() {
