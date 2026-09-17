@@ -39,6 +39,13 @@ services:
     environment:
       OLLAMA_BASE_URL: http://ollama:11434
       PYTHONUNBUFFERED: 1
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 2
+              capabilities: [gpu]
     restart: unless-stopped
 
 volumes:
