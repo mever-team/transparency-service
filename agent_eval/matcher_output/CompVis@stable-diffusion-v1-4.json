@@ -1,0 +1,305 @@
+{
+  "title": "",
+  "data": [
+    {
+      "name": "overview",
+      "value": [
+        {
+          "name": "name",
+          "value": "stable-diffusion-v1-4",
+          "description": "Name of the model.",
+          "type": "short text"
+        },
+        {
+          "name": "description",
+          "value": "",
+          "description": "Model purpose, capabilities, novelty and caveats",
+          "type": "long text"
+        },
+        {
+          "name": "creator",
+          "value": "CompVis",
+          "description": "Person or organization developed the model.",
+          "type": "short text"
+        },
+        {
+          "name": "date",
+          "value": "2026-09-18",
+          "description": "Model development completion date.",
+          "type": "date"
+        },
+        {
+          "name": "version",
+          "value": "",
+          "description": "Version of the model.",
+          "type": "short text"
+        },
+        {
+          "name": "type",
+          "value": "Other",
+          "description": "Model architecture or algorithm type.",
+          "type": "list:#Neural Networks,Convolutional Neural Network,Recurrent Neural Network,Multilayer Perceptron,Transformer,Graph Neural Network,Autoencoder,Generative Adversarial Network,#Classical Machine Learning,Linear Regression,Logistic Regression,K-Nearest Neighbors,Naive Bayes,Support Vector Machine,Decision Tree,#Ensemble Methods,Random Forest,Gradient Boosting,Ensemble Model,#Unsupervised / Representation Learning,Clustering Model,Dimensionality Reduction Model,#Reinforcement Learning,Reinforcement Learning Agent,#Other,Other,unknown"
+        },
+        {
+          "name": "task",
+          "value": "Automatic Speech Recognition",
+          "description": "Model task.",
+          "type": "list:#Multimodal,Audio-Text-to-Text,Image-Text-to-Text,Image-Text-to-Image,Image-Text-to-Video,Visual Question Answering,Document Question Answering,Video-Text-to-Text,Visual Document Retrieval,Any-to-Any,#Computer Vision,Depth Estimation,Image Classification,Object Detection,Image Segmentation,Text-to-Image,Image-to-Text,Image-to-Image,Image-to-Video,Unconditional Image Generation,Video Classification,Text-to-Video,Zero-Shot Image Classification,Mask Generation,Zero-Shot Object Detection,Text-to-3D,Image-to-3D,Image Feature Extraction,Keypoint Detection,Video-to-Video,#Natural Language Processing,Text Classification,Token Classification,Table Question Answering,Question Answering,Zero-Shot Classification,Translation,Summarization,Feature Extraction,Text Generation,Fill-Mask,Sentence Similarity,Text Ranking,#Audio,Text-to-Speech,Text-to-Audio,Automatic Speech Recognition,Audio-to-Audio,Audio Classification,Voice Activity Detection,#Tabular,Tabular Classification,Tabular Regression,Time Series Forecasting,#Reinforcement Learning,Reinforcement Learning,Robotics,#Other,Other,unknown"
+        },
+        {
+          "name": "license",
+          "value": "",
+          "description": "Licence and intellectual property (IP) information.",
+          "type": "short text"
+        },
+        {
+          "name": "home",
+          "value": "http://localhost:8000/CompVis@stable-diffusion-v1-4.html",
+          "description": "URL hosting the model.",
+          "type": "short text"
+        },
+        {
+          "name": "contact",
+          "value": "",
+          "description": "Author contact information.",
+          "type": "short text"
+        },
+        {
+          "name": "citation",
+          "value": "",
+          "description": "How should the model be cited? Typically includes title, author, year, and publisher. May be a formatted citation or bibtex entries like @article.",
+          "type": "short text"
+        },
+        {
+          "name": "more",
+          "value": "",
+          "description": "Additional model information not found above.",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "use",
+      "value": [
+        {
+          "name": "use_cases",
+          "value": "Sharing of copyrighted or licensed material in violation of its terms of use. Sharing content that is an alteration of copyrighted or licensed material in violation of its terms of use.",
+          "description": "Intended uses of the model.",
+          "type": "long text"
+        },
+        {
+          "name": "oversight",
+          "value": "unknown",
+          "description": "Defines the level of human control over the system.",
+          "type": "list:self-learning/autonomous,human-in-the-loop,human-on-the-loop,human-in-command,unknown"
+        },
+        {
+          "name": "user_groups",
+          "value": "",
+          "description": "Intended users.",
+          "type": "long text"
+        },
+        {
+          "name": "out_of_scope_use",
+          "value": "The model was not trained to be factual or true representations of people or events, and therefore using the model to generate such content is out-of-scope for the abilities of this model.",
+          "description": "Unintended and improper use of model.",
+          "type": "long text"
+        },
+        {
+          "name": "software",
+          "value": "",
+          "description": "Software requirements and dependencies?",
+          "type": "long text"
+        },
+        {
+          "name": "instructions",
+          "value": "pip install --upgrade diffusers transformers scipy\n import torch\nfrom diffusers import StableDiffusionPipeline\n\nmodel_id = \"CompVis/stable-diffusion-v1-4\"\ndevice = \"cuda\"\n\n\npipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)\npipe = pipe.to(device)\n\nprompt = \"a photo of an astronaut riding a horse on mars\"\nimage = pipe(prompt).images[0]  \n    \nimage.save(\"astronaut_rides_horse.png\")\n import torch\n\npipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)\npipe = pipe.to(device)\npipe.enable_attention_slicing()\n\nprompt = \"a photo of an astronaut riding a horse on mars\"\nimage = pipe(prompt).images[0]  \n    \nimage.save(\"astronaut_rides_horse.png\")\n from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler\n\nmodel_id = \"CompVis/stable-diffusion-v1-4\"\n\n# Use the Euler scheduler here instead\nscheduler = EulerDiscreteScheduler.from_pretrained(model_id, subfolder=\"scheduler\")\npipe = StableDiffusionPipeline.from_pretrained(model_id, scheduler=scheduler, torch_dtype=torch.float16)\npipe = pipe.to(\"cuda\")\n\nprompt = \"a photo of an astronaut riding a horse on mars\"\nimage = pipe(prompt).images[0]  \n    \nimage.save(\"astronaut_rides_horse.png\")\n Note\n:\nIf you are limited by TPU memory, please make sure to load the \nFlaxStableDiffusionPipeline\n in \nbfloat16\n precision instead of the default \nfloat32\n precision as done above. You can do so by telling diffusers to load the weights from \"bf16\" branch.",
+          "description": "Use instructions.",
+          "type": "long text"
+        },
+        {
+          "name": "inputs_outputs",
+          "value": "",
+          "description": "Description of the model's inputs and outputs",
+          "type": "long text"
+        },
+        {
+          "name": "factors",
+          "value": "Probing and understanding the limitations and biases of generative models.",
+          "description": "Foreseeable salient factors for which model performance may vary.",
+          "type": "long text"
+        },
+        {
+          "name": "hardware",
+          "value": "To use StableDiffusion on TPUs and GPUs for faster inference you can leverage JAX/Flax.",
+          "description": "Hardware requirements for training and inference.",
+          "type": "long text"
+        },
+        {
+          "name": "more",
+          "value": "Excluded uses are described below.",
+          "description": "Additional information about intended uses not found above.",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "training",
+      "value": [
+        {
+          "name": "datasets",
+          "value": "The model was trained mainly with English captions and will not work as well in other languages. We currently provide four checkpoints, which were trained as follows.",
+          "description": "Dataset(s) used during training.",
+          "type": "long text"
+        },
+        {
+          "name": "motivation",
+          "value": "",
+          "description": "Why were training datasets chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "preprocessing",
+          "value": "The non-pooled output of the text encoder is fed into the UNet backbone of the latent diffusion model via cross-attention.",
+          "description": "Data pre-processing for training (tokenizer, data augmentation etc.).",
+          "type": "long text"
+        },
+        {
+          "name": "standards",
+          "value": "unknown",
+          "description": "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management.",
+          "type": "list:none,ISO,IEEE,unknown"
+        },
+        {
+          "name": "update",
+          "value": "unknown",
+          "description": "Is tge training set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?",
+          "type": "list:no,yes,unknown"
+        },
+        {
+          "name": "more",
+          "value": "",
+          "description": "Additional training set information not found above.",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "evaluation",
+      "value": [
+        {
+          "name": "datasets",
+          "value": "Research on generative models.",
+          "description": "Dataset(s) used during evaluation.",
+          "type": "long text"
+        },
+        {
+          "name": "motivation",
+          "value": "",
+          "description": "Why were evaluation datasets chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "preprocessing",
+          "value": "",
+          "description": "Data pre-processing for evaluation (tokenizer, data augmentation etc.).",
+          "type": "long text"
+        },
+        {
+          "name": "standards",
+          "value": "unknown",
+          "description": "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management.",
+          "type": "list:none,ISO,IEEE,unknown"
+        },
+        {
+          "name": "update",
+          "value": "unknown",
+          "description": "Is the evalution set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?",
+          "type": "list:no,yes,unknown"
+        },
+        {
+          "name": "more",
+          "value": "",
+          "description": "Additional evaluation set information not found above.",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "performance",
+      "value": [
+        {
+          "name": "analysis",
+          "value": "",
+          "description": "Analysis and explanation of performance results.",
+          "type": "long text"
+        },
+        {
+          "name": "metrics",
+          "value": "",
+          "description": "Benchmark results for any performance metrics.",
+          "type": "long text"
+        },
+        {
+          "name": "thresholds",
+          "value": "",
+          "description": "If decision thresholds are used, what are they, and why were those parameters chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "methodology",
+          "value": "The loss is a reconstruction objective between the noise that was added to the latent and the prediction made by the UNet.",
+          "description": "Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method.",
+          "type": "long text"
+        },
+        {
+          "name": "environmental_impact",
+          "value": "pip install -U diffusers transformers accelerate import torch\nfrom diffusers import DiffusionPipeline\n\n# switch to \"mps\" for apple devices\npipe = DiffusionPipeline.from_pretrained(\"CompVis/stable-diffusion-v1-4\", dtype=torch.bfloat16, device_map=\"cuda\")\n\nprompt = \"A high tech solarpunk utopia in the Amazon rainforest\"\nimage = pipe(prompt).images[0] @InProceedings{Rombach_2022_CVPR,\n    author    = {Rombach, Robin and Blattmann, Andreas and Lorenz, Dominik and Esser, Patrick and Ommer, Bj\\\"orn},\n    title     = {High-Resolution Image Synthesis With Latent Diffusion Models},\n    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},\n    month     = {June},\n    year      = {2022},\n    pages     = {10684-10695}\n}\n import jax\nimport numpy as np\nfrom flax.jax_utils import replicate\nfrom flax.training.common_utils import shard\n\nfrom diffusers import FlaxStableDiffusionPipeline\n\npipeline, params = FlaxStableDiffusionPipeline.from_pretrained(\n    \"CompVis/stable-diffusion-v1-4\", revision=\"flax\", dtype=jax.numpy.bfloat16\n)\n\nprompt = \"a photo of an astronaut riding a horse on mars\"\n\nprng_seed = jax.random.PRNGKey(0)\nnum_inference_steps = 50\n\nnum_samples = jax.device_count()\nprompt = num_samples * [prompt]\nprompt_ids = pipeline.prepare_inputs(prompt)\n\n# shard inputs and rng\nparams = replicate(params)\nprng_seed = jax.random.split(prng_seed, num_samples)\nprompt_ids = shard(prompt_ids)\n\nimages = pipeline(prompt_ids, params, prng_seed, num_inference_steps, jit=True).images\nimages = pipeline.numpy_to_pil(np.asarray(images.reshape((num_samples,) + images.shape[-3:])))\n import jax\nimport numpy as np\nfrom flax.jax_utils import replicate\nfrom flax.training.common_utils import shard\n\nfrom diffusers import FlaxStableDiffusionPipeline\n\npipeline, params = FlaxStableDiffusionPipeline.from_pretrained(\n    \"CompVis/stable-diffusion-v1-4\", revision=\"bf16\", dtype=jax.numpy.bfloat16\n)\n\nprompt = \"a photo of an astronaut riding a horse on mars\"\n\nprng_seed = jax.random.PRNGKey(0)\nnum_inference_steps = 50\n\nnum_samples = jax.device_count()\nprompt = num_samples * [prompt]\nprompt_ids = pipeline.prepare_inputs(prompt)\n\n# shard inputs and rng\nparams = replicate(params)\nprng_seed = jax.random.split(prng_seed, num_samples)\nprompt_ids = shard(prompt_ids)\n\nimages = pipeline(prompt_ids, params, prng_seed, num_inference_steps, jit=True).images\nimages = pipeline.numpy_to_pil(np.asarray(images.reshape((num_samples,) + images.shape[-3:])))\n     @InProceedings{Rombach_2022_CVPR,\n        author    = {Rombach, Robin and Blattmann, Andreas and Lorenz, Dominik and Esser, Patrick and Ommer, Bj\\\"orn},\n        title     = {High-Resolution Image Synthesis With Latent Diffusion Models},\n        booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},\n        month     = {June},\n        year      = {2022},\n        pages     = {10684-10695}\n    }\n Generation of artworks and use in design and other artistic processes. Applications in educational or creative tools. Generating demeaning, dehumanizing, or otherwise harmful representations of people or their environments, cultures, religions, etc.",
+          "description": "Report of energy consumption, CO2 emissions or any other environmental impact.",
+          "type": "long text"
+        },
+        {
+          "name": "bias",
+          "value": "Intentionally promoting or propagating discriminatory content or harmful stereotypes.",
+          "description": "Performance and bias across different groups (e.g. ethnicity, gender)",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "safety",
+      "value": [
+        {
+          "name": "ethics",
+          "value": "The model should not be used to intentionally create or disseminate images that create hostile or alienating environments for people. This includes generating images that people would foreseeably find disturbing, distressing, or offensive; or content that propagates historical or current stereotypes.",
+          "description": "Ethical considerations regarding datasets and usage of model. Recommended mitigation measures.",
+          "type": "long text"
+        },
+        {
+          "name": "fairness",
+          "value": "",
+          "description": "Definition of fairness applied in setting up the AI system.",
+          "type": "long text"
+        },
+        {
+          "name": "risks",
+          "value": "Safe deployment of models which have the potential to generate harmful content.",
+          "description": "Possible threats to the AI system (design faults, technical faults, environmental threats) and the possible consequences.",
+          "type": "long text"
+        },
+        {
+          "name": "security",
+          "value": "",
+          "description": "Is the AI system certified for cybersecurity or is it compliant with specific security standards?",
+          "type": "long text"
+        },
+        {
+          "name": "caveats",
+          "value": "Impersonating individuals without their consent. Sexual content without consent of the people who might see it. Faces and people in general may not be generated properly.",
+          "description": "Additional concerns that were not covered in the previous sections.",
+          "type": "long text"
+        }
+      ]
+    }
+  ]
+}

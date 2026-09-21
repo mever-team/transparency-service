@@ -227,7 +227,7 @@ class SemanticMatcher(Assistant):
             if best_path and best_path[0]+"__"+best_path[1] not in existing:
                 prev_content = has_been_replaced.get(best_path[0]+"__"+best_path[1], "")
                 if prev_content and (not prev_content.endswith(".") or not content.endswith(".")): prev_content = prev_content+"<br>"
-                if prev_content: content = prev_content +  " " + content
+                if prev_content: content = prev_content +  "<span id='agent-eval-mark'></span> " + content
                 has_been_replaced[best_path[0] + "__" + best_path[1]] = content
                 card.data[best_path[0]][best_path[1]].set(content)
             else: not_used_fields.append(heading)

@@ -1,0 +1,305 @@
+{
+  "title": "",
+  "data": [
+    {
+      "name": "overview",
+      "value": [
+        {
+          "name": "name",
+          "value": "Qwen3.8-27B",
+          "description": "Name of the model.",
+          "type": "short text"
+        },
+        {
+          "name": "description",
+          "value": "",
+          "description": "Model purpose, capabilities, novelty and caveats",
+          "type": "long text"
+        },
+        {
+          "name": "creator",
+          "value": "Qwen",
+          "description": "Person or organization developed the model.",
+          "type": "short text"
+        },
+        {
+          "name": "date",
+          "value": "2026-09-18",
+          "description": "Model development completion date.",
+          "type": "date"
+        },
+        {
+          "name": "version",
+          "value": "",
+          "description": "Version of the model.",
+          "type": "short text"
+        },
+        {
+          "name": "type",
+          "value": "Reinforcement Learning Agent",
+          "description": "Model architecture or algorithm type.",
+          "type": "list:#Neural Networks,Convolutional Neural Network,Recurrent Neural Network,Multilayer Perceptron,Transformer,Graph Neural Network,Autoencoder,Generative Adversarial Network,#Classical Machine Learning,Linear Regression,Logistic Regression,K-Nearest Neighbors,Naive Bayes,Support Vector Machine,Decision Tree,#Ensemble Methods,Random Forest,Gradient Boosting,Ensemble Model,#Unsupervised / Representation Learning,Clustering Model,Dimensionality Reduction Model,#Reinforcement Learning,Reinforcement Learning Agent,#Other,Other,unknown"
+        },
+        {
+          "name": "task",
+          "value": "#Tabular",
+          "description": "Model task.",
+          "type": "list:#Multimodal,Audio-Text-to-Text,Image-Text-to-Text,Image-Text-to-Image,Image-Text-to-Video,Visual Question Answering,Document Question Answering,Video-Text-to-Text,Visual Document Retrieval,Any-to-Any,#Computer Vision,Depth Estimation,Image Classification,Object Detection,Image Segmentation,Text-to-Image,Image-to-Text,Image-to-Image,Image-to-Video,Unconditional Image Generation,Video Classification,Text-to-Video,Zero-Shot Image Classification,Mask Generation,Zero-Shot Object Detection,Text-to-3D,Image-to-3D,Image Feature Extraction,Keypoint Detection,Video-to-Video,#Natural Language Processing,Text Classification,Token Classification,Table Question Answering,Question Answering,Zero-Shot Classification,Translation,Summarization,Feature Extraction,Text Generation,Fill-Mask,Sentence Similarity,Text Ranking,#Audio,Text-to-Speech,Text-to-Audio,Automatic Speech Recognition,Audio-to-Audio,Audio Classification,Voice Activity Detection,#Tabular,Tabular Classification,Tabular Regression,Time Series Forecasting,#Reinforcement Learning,Reinforcement Learning,Robotics,#Other,Other,unknown"
+        },
+        {
+          "name": "license",
+          "value": "",
+          "description": "Licence and intellectual property (IP) information.",
+          "type": "short text"
+        },
+        {
+          "name": "home",
+          "value": "http://localhost:8000/Qwen@Qwen3.8-27B.html",
+          "description": "URL hosting the model.",
+          "type": "short text"
+        },
+        {
+          "name": "contact",
+          "value": "",
+          "description": "Author contact information.",
+          "type": "short text"
+        },
+        {
+          "name": "citation",
+          "value": "",
+          "description": "How should the model be cited? Typically includes title, author, year, and publisher. May be a formatted citation or bibtex entries like @article.",
+          "type": "short text"
+        },
+        {
+          "name": "more",
+          "value": "",
+          "description": "Additional model information not found above.",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "use",
+      "value": [
+        {
+          "name": "use_cases",
+          "value": "",
+          "description": "Intended uses of the model.",
+          "type": "long text"
+        },
+        {
+          "name": "oversight",
+          "value": "unknown",
+          "description": "Defines the level of human control over the system.",
+          "type": "list:self-learning/autonomous,human-in-the-loop,human-on-the-loop,human-in-command,unknown"
+        },
+        {
+          "name": "user_groups",
+          "value": "",
+          "description": "Intended users.",
+          "type": "long text"
+        },
+        {
+          "name": "out_of_scope_use",
+          "value": "",
+          "description": "Unintended and improper use of model.",
+          "type": "long text"
+        },
+        {
+          "name": "software",
+          "value": "",
+          "description": "Software requirements and dependencies?",
+          "type": "long text"
+        },
+        {
+          "name": "instructions",
+          "value": "# Use a pipeline as a high-level helper\nfrom transformers import pipeline\n\npipe = pipeline(\"image-text-to-text\", model=\"Qwen/Qwen3.8-27B\")\nmessages = [\n    {\n        \"role\": \"user\",\n        \"content\": [\n            {\"type\": \"image\", \"url\": \"https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/p-blog/candy.JPG\"},\n            {\"type\": \"text\", \"text\": \"What animal is on the candy?\"}\n        ]\n    },\n]\npipe(text=messages) # Load model directly\nfrom transformers import AutoProcessor, AutoModelForMultimodalLM\n\nprocessor = AutoProcessor.from_pretrained(\"Qwen/Qwen3.8-27B\")\nmodel = AutoModelForMultimodalLM.from_pretrained(\"Qwen/Qwen3.8-27B\", device_map=\"auto\")\nmessages = [\n    {\n        \"role\": \"user\",\n        \"content\": [\n            {\"type\": \"image\", \"url\": \"https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/p-blog/candy.JPG\"},\n            {\"type\": \"text\", \"text\": \"What animal is on the candy?\"}\n        ]\n    },\n]\ninputs = processor.apply_chat_template(\n\tmessages,\n\tadd_generation_prompt=True,\n\ttokenize=True,\n\treturn_dict=True,\n\treturn_tensors=\"pt\",\n).to(model.device)\n\noutputs = model.generate(**inputs, max_new_tokens=40)\nprint(processor.decode(outputs[0][inputs[\"input_ids\"].shape[-1]:])) # Install vLLM from pip:\npip install vllm\n# Start the vLLM server:\nvllm serve \"Qwen/Qwen3.8-27B\"\n# Call the server using curl (OpenAI-compatible API):\ncurl -X POST \"http://localhost:8000/v1/chat/completions\" \\\n\t-H \"Content-Type: application/json\" \\\n\t--data '{\n\t\t\"model\": \"Qwen/Qwen3.8-27B\",\n\t\t\"messages\": [\n\t\t\t{\n\t\t\t\t\"role\": \"user\",\n\t\t\t\t\"content\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"text\",\n\t\t\t\t\t\t\"text\": \"Describe this image in one sentence.\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"image_url\",\n\t\t\t\t\t\t\"image_url\": {\n\t\t\t\t\t\t\t\"url\": \"https://cdn.britannica.com/61/93061-050-99147DCE/Statue-of-Liberty-Island-New-York-Bay.jpg\"\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t]\n\t}' docker model run hf.co/Qwen/Qwen3.8-27B # Install SGLang from pip:\npip install sglang\n# Start the SGLang server:\npython3 -m sglang.launch_server \\\n    --model-path \"Qwen/Qwen3.8-27B\" \\\n    --host 0.0.0.0 \\\n    --port 30000\n# Call the server using curl (OpenAI-compatible API):\ncurl -X POST \"http://localhost:30000/v1/chat/completions\" \\\n\t-H \"Content-Type: application/json\" \\\n\t--data '{\n\t\t\"model\": \"Qwen/Qwen3.8-27B\",\n\t\t\"messages\": [\n\t\t\t{\n\t\t\t\t\"role\": \"user\",\n\t\t\t\t\"content\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"text\",\n\t\t\t\t\t\t\"text\": \"Describe this image in one sentence.\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"image_url\",\n\t\t\t\t\t\t\"image_url\": {\n\t\t\t\t\t\t\t\"url\": \"https://cdn.britannica.com/61/93061-050-99147DCE/Statue-of-Liberty-Island-New-York-Bay.jpg\"\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t]\n\t}' docker model run hf.co/Qwen/Qwen3.8-27B pip install -U openai\n\n# Set the following accordingly\nexport OPENAI_BASE_URL='your-base-url'\nexport OPENAI_API_KEY='your-api-key'\n from openai import OpenAI\n# Configured by environment variables\nclient = OpenAI()\n\nmessages = [{\"role\": \"user\", \"content\": \"Write a Python function to merge two sorted linked lists.\"}]\n\ncompletion = client.chat.completions.create(\n    model=\"Qwen/Qwen3.8-27B\",\n    messages=messages,\n    extra_body={\n        \"chat_template_kwargs\": {\n            \"enable_thinking\": True,  # on by default\n            \"preserve_thinking\": True, # on by default\n        },\n    },\n    reasoning_effort=\"xhigh\",  # xhigh by default; supported levels are xhigh, medium, and low\n    stream=True,\n    stream_options={\"include_usage\": True},\n)\n\nreasoning_content = \"\"\nanswer_content = \"\"\nis_answering = False\nprint(\"\\n\" + \"=\" * 20 + \"Reasoning\" + \"=\" * 20 + \"\\n\")\n\nfor chunk in completion:\n    if not chunk.choices:\n        print(\"\\nUsage:\")\n        print(chunk.usage)\n        continue\n\n    delta = chunk.choices[0].delta\n\n    if hasattr(delta, \"reasoning_content\") and delta.reasoning_content is not None:\n        if not is_answering:\n            print(delta.reasoning_content, end=\"\", flush=True)\n        reasoning_content += delta.reasoning_content\n    elif hasattr(delta, \"reasoning\") and delta.reasoning is not None:\n        if not is_answering:\n            print(delta.reasoning, end=\"\", flush=True)\n        reasoning_content += delta.reasoning\n\n    if hasattr(delta, \"content\") and delta.content:\n        if not is_answering:\n            print(\"\\n\" + \"=\" * 20 + \"Answer\" + \"=\" * 20 + \"\\n\")\n            is_answering = True\n        print(delta.content, end=\"\", flush=True)\n        answer_content += delta.content\n\nmessages.append({\n    \"role\": \"assistant\",\n    \"content\": answer_content,\n    \"reasoning_content\": reasoning_content,\n    \"reasoning\": reasoning_content,\n})\n from openai import OpenAI\n# Configured by environment variables\nclient = OpenAI()\n\nmessages = [\n    {\n        \"role\": \"user\",\n        \"content\": [\n            {\n                \"type\": \"image_url\",\n                \"image_url\": {\n                    \"url\": \"https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.5/demo/CI_Demo/mathv-1327.jpg\"\n                }\n            },\n            {\n                \"type\": \"text\",\n                \"text\": \"The centres of the four illustrated circles are in the corners of the square. The two big circles touch each other and also the two little circles. With which factor do you have to multiply the radii of the little circles to obtain the radius of the big circles?\\nChoices:\\n(A) $\\\\frac{2}{9}$\\n(B) $\\\\sqrt{5}$\\n(C) $0.8 \\\\cdot \\\\pi$\\n(D) 2.5\\n(E) $1+\\\\sqrt{2}$\"\n            }\n        ]\n    }\n]\n\nchat_response = client.chat.completions.create(\n    model=\"Qwen/Qwen3.8-27B\",\n    messages=messages,\n)\nprint(\"Chat response:\", chat_response)\n from openai import OpenAI\n# Configured by environment variables\nclient = OpenAI()\n\nmessages = [\n    {\n        \"role\": \"user\",\n        \"content\": [\n            {\n                \"type\": \"image_url\",\n                \"image_url\": {\n                    \"url\": \"https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.5/demo/RealWorld/RealWorld-04.png\"\n                }\n            },\n            {\n                \"type\": \"text\",\n                \"text\": \"Where is this?\"\n            }\n        ]\n    }\n]\n\nchat_response = client.chat.completions.create(\n    model=\"Qwen/Qwen3.8-27B\",\n    messages=messages,\n    temperature=0.7,\n    top_p=0.8,\n    presence_penalty=1.5,\n    extra_body={\n        \"top_k\": 20,\n        \"chat_template_kwargs\": {\"enable_thinking\": False},\n    }, \n)\nprint(\"Chat response:\", chat_response)\n {\n    \"mrope_interleaved\": true,\n    \"mrope_section\": [\n        11,\n        11,\n        10\n    ],\n    \"rope_type\": \"yarn\",\n    \"rope_theta\": 10000000,\n    \"partial_rotary_factor\": 0.25,\n    \"factor\": 4.0,\n    \"original_max_position_embeddings\": 262144,\n}\n VLLM_ALLOW_LONG_MAX_MODEL_LEN=1 vllm serve ... --hf-overrides '{\"text_config\": {\"rope_parameters\": {\"mrope_interleaved\": true, \"mrope_section\": [11, 11, 10], \"rope_type\": \"yarn\", \"rope_theta\": 10000000, \"partial_rotary_factor\": 0.25, \"factor\": 4.0, \"original_max_position_embeddings\": 262144}}}' --max-model-len 1000000  \n SGLANG_ALLOW_OVERWRITE_LONGER_CONTEXT_LEN=1 python -m sglang.launch_server ... --json-model-override-args '{\"text_config\": {\"rope_parameters\": {\"mrope_interleaved\": true, \"mrope_section\": [11, 11, 10], \"rope_type\": \"yarn\", \"rope_theta\": 10000000, \"partial_rotary_factor\": 0.25, \"factor\": 4.0, \"original_max_position_embeddings\": 262144}}}' --context-length 1000000\n TOKENSPEED_ALLOW_OVERWRITE_LONGER_CONTEXT_LEN=1 tokenspeed serve ... --hf-overrides '{\"text_config\": {\"rope_parameters\": {\"mrope_interleaved\": true, \"mrope_section\": [11, 11, 10], \"rope_type\": \"yarn\", \"rope_theta\": 10000000, \"partial_rotary_factor\": 0.25, \"factor\": 4.0, \"original_max_position_embeddings\": 262144}}}' --max-model-len 1000000  \n {\"longest_edge\": 469762048, \"shortest_edge\": 4096}\n",
+          "description": "Use instructions.",
+          "type": "long text"
+        },
+        {
+          "name": "inputs_outputs",
+          "value": "",
+          "description": "Description of the model's inputs and outputs",
+          "type": "long text"
+        },
+        {
+          "name": "factors",
+          "value": "Please note that the support for sampling parameters varies according to inference frameworks.",
+          "description": "Foreseeable salient factors for which model performance may vary.",
+          "type": "long text"
+        },
+        {
+          "name": "hardware",
+          "value": "Inference efficiency and throughput vary significantly across frameworks. \nWe recommend using the latest framework versions to ensure optimal performance and compatibility.\nFor production workloads or high-throughput scenarios, dedicated serving engines such as SGLang, vLLM, or TokenSpeed are recommended.",
+          "description": "Hardware requirements for training and inference.",
+          "type": "long text"
+        },
+        {
+          "name": "more",
+          "value": "",
+          "description": "Additional information about intended uses not found above.",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "training",
+      "value": [
+        {
+          "name": "datasets",
+          "value": "This repository contains model weights and configuration files for the post-trained model in the Hugging Face Transformers format. Vision-Language Understanding\n: Native support for image and video understanding, from STEM diagrams and documents to hour-scale videos.",
+          "description": "Dataset(s) used during training.",
+          "type": "long text"
+        },
+        {
+          "name": "motivation",
+          "value": "",
+          "description": "Why were training datasets chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "preprocessing",
+          "value": "",
+          "description": "Data pre-processing for training (tokenizer, data augmentation etc.).",
+          "type": "long text"
+        },
+        {
+          "name": "standards",
+          "value": "IEEE",
+          "description": "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management.",
+          "type": "list:none,ISO,IEEE,unknown"
+        },
+        {
+          "name": "update",
+          "value": "unknown",
+          "description": "Is tge training set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?",
+          "type": "list:no,yes,unknown"
+        },
+        {
+          "name": "more",
+          "value": "",
+          "description": "Additional training set information not found above.",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "evaluation",
+      "value": [
+        {
+          "name": "datasets",
+          "value": "MathVision, BabyVision, and CharXiv (RQ): Where both settings are available, cells report âWithout CIâ and âWith CIâ separately; otherwise, only the available setting is shown. A small number of incorrect ground-truth annotations in MathVision and CharXiv (RQ) were corrected following manual verification, and all reported scores on those benchmarks were computed using the corrected annotations.",
+          "description": "Dataset(s) used during evaluation.",
+          "type": "long text"
+        },
+        {
+          "name": "motivation",
+          "value": "",
+          "description": "Why were evaluation datasets chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "preprocessing",
+          "value": "WebArena-Verified: Scores are computed with the official WebArena-Verified grader under the OSWorld scaffold.",
+          "description": "Data pre-processing for evaluation (tokenizer, data augmentation etc.).",
+          "type": "long text"
+        },
+        {
+          "name": "standards",
+          "value": "IEEE",
+          "description": "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management.",
+          "type": "list:none,ISO,IEEE,unknown"
+        },
+        {
+          "name": "update",
+          "value": "unknown",
+          "description": "Is the evalution set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?",
+          "type": "list:no,yes,unknown"
+        },
+        {
+          "name": "more",
+          "value": "",
+          "description": "Additional evaluation set information not found above.",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "performance",
+      "value": [
+        {
+          "name": "analysis",
+          "value": "By default, Qwen3.8 retains thinking blocks from all historical messages, maintaining a complete reasoning trace across the conversation. This behavior, known as preserved thinking, ensures full context continuity and is especially beneficial for agent scenarios where decision consistency and reduced redundant reasoning are critical. It also improves KV cache utilization, optimizing inference efficiency in both thinking and non-thinking modes.",
+          "description": "Analysis and explanation of performance results.",
+          "type": "long text"
+        },
+        {
+          "name": "metrics",
+          "value": "",
+          "description": "Benchmark results for any performance metrics.",
+          "type": "long text"
+        },
+        {
+          "name": "thresholds",
+          "value": "In multi-turn agentic tasks, lower reasoning effort does not always reduce overall task completion time. Although it may produce faster per-turn responses, it can also lead to insufficient analysis, more failures, and repeated retries, which may increase total latency and token consumption.",
+          "description": "If decision thresholds are used, what are they, and why were those parameters chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "methodology",
+          "value": "ClawEval-MM: Scores are reported as âPass@3 / average score.â Pass@3 is the percentage of tasks passed in at least one of three trials; the average score is the mean benchmark score across the three trials. These settings provide the necessary capacity for complex reasoning while ensuring ample space for high-quality final deliverables. All the notable open-source frameworks implement static YaRN, which means the scaling factor remains constant regardless of input length, \npotentially impacting performance on shorter texts.",
+          "description": "Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method.",
+          "type": "long text"
+        },
+        {
+          "name": "environmental_impact",
+          "value": "docker run --gpus all \\\n    --shm-size 32g \\\n    -p 30000:30000 \\\n    -v ~/.cache/huggingface:/root/.cache/huggingface \\\n    --env \"HF_TOKEN=&lt;secret&gt;\" \\\n    --ipc=host \\\n    lmsysorg/sglang:latest \\\n    python3 -m sglang.launch_server \\\n        --model-path \"Qwen/Qwen3.8-27B\" \\\n        --host 0.0.0.0 \\\n        --port 30000\n# Call the server using curl (OpenAI-compatible API):\ncurl -X POST \"http://localhost:30000/v1/chat/completions\" \\\n\t-H \"Content-Type: application/json\" \\\n\t--data '{\n\t\t\"model\": \"Qwen/Qwen3.8-27B\",\n\t\t\"messages\": [\n\t\t\t{\n\t\t\t\t\"role\": \"user\",\n\t\t\t\t\"content\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"text\",\n\t\t\t\t\t\t\"text\": \"Describe this image in one sentence.\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"image_url\",\n\t\t\t\t\t\t\"image_url\": {\n\t\t\t\t\t\t\t\"url\": \"https://cdn.britannica.com/61/93061-050-99147DCE/Statue-of-Liberty-Island-New-York-Bay.jpg\"\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t]\n\t}' \n\nQwen3.8-27BQwen3.6-27BQwen3.7-PlusMuse Glimmer-30BOpus4.6 Max\n\nCoding\n\nAgentic terminal codingTerminal Bench 2.1 (Terminus)\n73.0\n63.4\n64.0\n51.7\n78.2\n\n\nAgentic codingSWE-bench Pro\n61.7\n53.5\n57.6\n51.2\n53.4\n\n\nRepo-level code generationNL2Repo-Bench\n42.3\n36.2\n41.1\n--\n47.6\n\n\nAgentic codingDeepSWE 1.1\n42.2\n13.3\n14.2\n--\n--\n\n\nSoftware engineeringQwenSWEBench\n79.0\n49.3\n59.2\n--\n63.8\n\nAgent\n\nLong-horizon office workCoWorkBench\n70.7\n61.0\n65.1\n--\n68.2\n\n\nProfessional job tasksJobBench\n33.4\n21.8\n27.6\n--\n--\n\n\nFrontier agentic tasksAgents' Last Exam\nPass@120.4Score42.9\nPass@110.6Score27.3\nPass@113.2Score33.6\n--\n--\n\nGeneral\n\nInstruction followingIFBench\n79.5\n69.1\n79.1\n77.0\n62.5\n\n\nScientific reasoningGPQA Diamond\n89.2\n87.8\n90.3\n83.5\n91.3\n\n\nMultidisciplinary reasoningHLE\n30.8\n24.0\n34.7\n22.0\n40.0\n\n\nCompetitive codingLiveCodeBench v6\n90.3\n83.9\n89.6\n--\n88.8\n\n\n \nQwen3.8-27BQwen3.6-27BQwen3.7-PlusMuse Glimmer-30BOpus4.6 Max\n\nAgentic Multimodal Intelligence\nComputer useOSWorld-Verified84.363.973.365.972.7\nBrowser useWebArena-Verified64.848.855.3----\nMobile useAndroidWorld81.970.381.0--62.0\nApplication recreationRecreationBench47.129.830.2----\nMultimodal tool useClawEval-MMPass@357.4Average56.9Pass@342.6Average50.4Pass@357.4Average60.1--Pass@352.5Average54.7\nMultimodal software engineeringSWE-MM38.625.730.0--27.1\nVisual web developmentVision2Web62.945.042.1----\nGeneral Multimodal Intelligence\nVisual math problem solvingMathVisionWithout CI90.0With CI94.6Without CI85.1Without CI90.3--Without CI65.5\nGeneral visual reasoningBabyVisionWithout CI65.7With CI85.6Without CI28.9Without CI64.7With CI70.4--Without CI12.6\nScientific chart analysisCharXiv (RQ)Without CI83.7With CI90.2Without CI78.4Without CI85.8With CI85.978.8Without CI66.0\nDocument intelligenceOmniDocBench 1.591.189.491.475.886.6\nReal-world perceptionRealWorldQA85.984.186.9--73.9\nEmbodied intelligenceERQA65.562.569.8--40.8\n\n from openai import OpenAI\n# Configured by environment variables\nclient = OpenAI()\n\nmessages = [\n    {\n        \"role\": \"user\",\n        \"content\": [\n            {\n                \"type\": \"video_url\",\n                \"video_url\": {\n                    \"url\": \"https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.5/demo/video/N1cdUjctpG8.mp4\"\n                }\n            },\n            {\n                \"type\": \"text\",\n                \"text\": \"How many porcelain jars were discovered in the niches located in the primary chamber of the tomb?\"\n            }\n        ]\n    }\n]\n\nchat_response = client.chat.completions.create(\n    model=\"Qwen/Qwen3.8-27B\",\n    messages=messages,\n)\n\n# When vLLM is launched with `--media-io-kwargs '{\"video\": {\"num_frames\": -1}}'`,\n# video frame sampling can be configured via `extra_body` (e.g., by setting `fps`).\n# This feature is currently supported only in vLLM.\n#\n# By default, `fps=2` and `do_sample_frames=True`.\n# With `do_sample_frames=True`, you can customize the `fps` value to set your desired video sampling rate.\n# chat_response = client.chat.completions.create(\n#     model=\"Qwen/Qwen3.8-27B\",\n#     messages=messages,\n#     extra_body={\n#         \"mm_processor_kwargs\": {\"fps\": 2, \"do_sample_frames\": True},\n#     }, \n# )\n\nprint(\"Chat response:\", chat_response)\n from openai import OpenAI\n\n# Configured by environment variables\nclient = OpenAI()\nmessages = [...]\nchat_response = client.chat.completions.create(\n    model=\"Qwen/Qwen3.8-27B\",\n    messages=messages,\n    extra_body={\n        \"chat_template_kwargs\": {\"preserve_thinking\": False},\n    },\n)\nprint(\"Chat response:\", chat_response)\n @misc{qwen38,\n    title = {{Qwen3.8-Max}: A New Bar for Coding and Cowork},\n    url = {https://qwen.ai/blog?id=qwen3.8},\n    author = {{Qwen Team}},\n    month = {August},\n    year = {2026}\n}\n Core Capabilities\n: Comprehensive improvements across coding, professional work, research, and long-horizon agentic tasks. Agent Execution\n: Stronger autonomous planning and better handling of environment feedback, leading to more reliable end-to-end task completion. Downstream Compatibility\n: Broader support for popular harnesses and development tools, making it easier to integrate into your existing stack. CoWorkBench: In-house cowork benchmark for evaluating long-horizon tasks across computer science, finance, law, medical, and other productivity domains. The best result in each row is shown in bold. Empty cells (--) indicate that results are not yet available or not applicable. RecreationBench: An in-house, long-horizon application-recreation benchmark designed to evaluate hybrid-agent capabilities across five platforms: desktop (Ubuntu, macOS, and Windows), mobile (Android), and the web. Empty cells (--) indicate that results are not yet available or not applicable. If you find our work helpful, feel free to give us a cite.",
+          "description": "Report of energy consumption, CO2 emissions or any other environmental impact.",
+          "type": "long text"
+        },
+        {
+          "name": "bias",
+          "value": "",
+          "description": "Performance and bias across different groups (e.g. ethnicity, gender)",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "safety",
+      "value": [
+        {
+          "name": "ethics",
+          "value": "",
+          "description": "Ethical considerations regarding datasets and usage of model. Recommended mitigation measures.",
+          "type": "long text"
+        },
+        {
+          "name": "fairness",
+          "value": "",
+          "description": "Definition of fairness applied in setting up the AI system.",
+          "type": "long text"
+        },
+        {
+          "name": "risks",
+          "value": "",
+          "description": "Possible threats to the AI system (design faults, technical faults, environmental threats) and the possible consequences.",
+          "type": "long text"
+        },
+        {
+          "name": "security",
+          "value": "",
+          "description": "Is the AI system certified for cybersecurity or is it compliant with specific security standards?",
+          "type": "long text"
+        },
+        {
+          "name": "caveats",
+          "value": "",
+          "description": "Additional concerns that were not covered in the previous sections.",
+          "type": "long text"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,303 @@
+{
+  "title": "Kimi K3",
+  "data": [
+    {
+      "name": "overview",
+      "value": [
+        {
+          "name": "name",
+          "value": "Kimi K3",
+          "description": "Name of the model ",
+          "type": "short text"
+        },
+        {
+          "name": "description",
+          "value": "Kimi K3 is an open-weight, native multimodal agentic model and our most capable model to date  It is a 2 8T-parameter model built on Kimi Delta Attention (KDA) and Attention Residuals (AttnRes), with native vision capabilities and a 1-million-token context window  It is the world's first open 3T-class model, designed for frontier intelligence across long-horizon coding, knowledge work, and reasoning \n\nKey Features\n* New Architecture: Kimi K3 is built on Kimi Delta Attention (KDA) and Attention Residuals (AttnRes), and scales up MoE sparsity with a Stable LatentMoE framework that activates 16 out of 896 experts — yielding an approximate 2 5× improvement in overall scaling efficiency over Kimi K2 \n* Long-Horizon Coding: Operating with minimal human oversight, Kimi K3 sustains long engineering sessions, navigates massive repositories, and orchestrates terminal tools — from GPU kernel optimization and compiler development to vision-in-the-loop game dev, CAD, and even chip design \n* Agentic Knowledge Work: Kimi K3 advances end-to-end knowledge work, producing deep research with interactive visualizations, widgets and dashboards, and motion design and video editing, powered by its native multimodal architecture \n* Native Multimodality & Long Context: Kimi K3 understands text, images, and video within the same model, and supports a 1-million-token context window \n* Open Frontier Weights: We release the full Kimi K3 model weights under the Kimi K3 License, making frontier intelligence openly available for research, deployment, and further innovation ",
+          "description": "Model purpose, capabilities, novelty and caveats",
+          "type": "long text"
+        },
+        {
+          "name": "creator",
+          "value": "Moonshot AI",
+          "description": "Person or organization developed the model ",
+          "type": "short text"
+        },
+        {
+          "name": "date",
+          "value": "",
+          "description": "Model development completion date ",
+          "type": "date"
+        },
+        {
+          "name": "version",
+          "value": "Kimi K3",
+          "description": "Version of the model ",
+          "type": "short text"
+        },
+        {
+          "name": "type",
+          "value": "Mixture-of-Experts (MoE)",
+          "description": "Model architecture or algorithm type "
+        },
+        {
+          "name": "task",
+          "value": "long-horizon coding, knowledge work, reasoning, agentic knowledge work, multimodal understanding",
+          "description": "Model task "
+        },
+        {
+          "name": "license",
+          "value": "Kimi K3 License",
+          "description": "Licence and intellectual property (IP) information ",
+          "type": "short text"
+        },
+        {
+          "name": "home",
+          "value": "https://huggingface co/moonshotai/Kimi-K3",
+          "description": "URL hosting the model ",
+          "type": "short text"
+        },
+        {
+          "name": "contact",
+          "value": "support@moonshot ai",
+          "description": "Author contact information ",
+          "type": "short text"
+        },
+        {
+          "name": "citation",
+          "value": "",
+          "description": "How should the model be cited? Typically includes title, author, year, and publisher  May be a formatted citation or bibtex entries like @article ",
+          "type": "short text"
+        },
+        {
+          "name": "more",
+          "value": "Architecture  | Mixture-of-Experts (MoE)\nTotal Parameters  | 2 8T\nActivated Parameters  | 104B\nNumber of Layers  | 93\nNumber of Dense Layers  | 1\nAttention-Layer Composition  | 69 KDA + 24 Gated MLA\nAttention Hidden Dimension  | 7168\nNumber of Attention Heads  | 96\nLatent MoE Dimension  | 3584\nMoE Hidden Dimension (per Expert)  | 3072\nNumber of Experts  | 896\nSelected Experts per Token  | 16\nNumber of Shared Experts  | 2\nVocabulary Size  | 160K\nContext Length  | 1048576\nAttention Mechanism  | KDA & Gated MLA\nActivation Function  | SiTU-GLU\nVision Encoder  | MoonViT-V2\nParameters of Vision Encoder  | 401M\nQuantization  | MXFP4 weights / MXFP8 activations\n(quantization-aware training)\nModality  | Text, Image",
+          "description": "Additional model information not found above ",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "use",
+      "value": [
+        {
+          "name": "use_cases",
+          "value": "Kimi K3 sustains long engineering sessions, navigates massive repositories, and orchestrates terminal tools — from GPU kernel optimization and compiler development to vision-in-the-loop game dev, CAD, and even chip design \n\nKimi K3 advances end-to-end knowledge work, producing deep research with interactive visualizations, widgets and dashboards, and motion design and video editing, powered by its native multimodal architecture \n\nKimi K3 understands text, images, and video within the same model, and supports a 1-million-token context window ",
+          "description": "Intended uses of the model ",
+          "type": "long text"
+        },
+        {
+          "name": "oversight",
+          "value": "",
+          "description": "Defines the level of human control over the system ",
+          "type": "list:self-learning/autonomous,human-in-the-loop,human-on-the-loop,human-in-command,unknown"
+        },
+        {
+          "name": "user_groups",
+          "value": "",
+          "description": "Intended users ",
+          "type": "long text"
+        },
+        {
+          "name": "out_of_scope_use",
+          "value": "",
+          "description": "Unintended and improper use of model ",
+          "type": "long text"
+        },
+        {
+          "name": "software",
+          "value": "Transformers\nvLLM\nSGLang\nTokenSpeed\nDocker\nDocker Model Runner\nllama cpp\nOllama\nLM Studio\nKimi Code CLI",
+          "description": "Software requirements and dependencies?",
+          "type": "long text"
+        },
+        {
+          "name": "instructions",
+          "value": "Instructions to use moonshotai/Kimi-K3 with libraries, inference providers, notebooks, and local apps \n\nHow to use moonshotai/Kimi-K3 with Transformers:\n\n# Use a pipeline as a high-level helper\nfrom transformers import pipeline\n\npipe = pipeline(\"image-text-to-text\", model=\"moonshotai/Kimi-K3\", trust_remote_code=True)\nmessages = [\n    {\n        \"role\": \"user\",\n        \"content\": [\n            {\"type\": \"image\", \"url\": \"https://huggingface co/datasets/huggingface/documentation-images/resolve/main/p-blog/candy JPG\"},\n            {\"type\": \"text\", \"text\": \"What animal is on the candy?\"}\n        ]\n    },\n]\npipe(text=messages)\n\n# Load model directly\nfrom transformers import AutoModel\nmodel = AutoModel from_pretrained(\"moonshotai/Kimi-K3\", trust_remote_code=True, device_map=\"auto\")\n\nHow to use moonshotai/Kimi-K3 with vLLM:\n\n# Install vLLM from pip:\npip install vllm\n# Start the vLLM server:\nvllm serve \"moonshotai/Kimi-K3\"\n# Call the server using curl (OpenAI-compatible API):\ncurl -X POST \"http://localhost:8000/v1/chat/completions\" \\\n\t-H \"Content-Type: application/json\" \\\n\t--data '{\n\t\t\"model\": \"moonshotai/Kimi-K3\",\n\t\t\"messages\": [\n\t\t\t{\n\t\t\t\t\"role\": \"user\",\n\t\t\t\t\"content\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"text\",\n\t\t\t\t\t\t\"text\": \"Describe this image in one sentence \"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"image_url\",\n\t\t\t\t\t\t\"image_url\": {\n\t\t\t\t\t\t\t\"url\": \"https://cdn britannica com/61/93061-050-99147DCE/Statue-of-Liberty-Island-New-York-Bay jpg\"\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t]\n\t}'\n\n##### Use Docker\n\ndocker model run hf co/moonshotai/Kimi-K3\n\nHow to use moonshotai/Kimi-K3 with SGLang:\n\n# Install SGLang from pip:\npip install sglang\n# Start the SGLang server:\npython3 -m sglang launch_server \\\n    --model-path \"moonshotai/Kimi-K3\" \\\n    --host 0 0 0 0 \\\n    --port 30000\n# Call the server using curl (OpenAI-compatible API):\ncurl -X POST \"http://localhost:30000/v1/chat/completions\" \\\n\t-H \"Content-Type: application/json\" \\\n\t--data '{\n\t\t\"model\": \"moonshotai/Kimi-K3\",\n\t\t\"messages\": [\n\t\t\t{\n\t\t\t\t\"role\": \"user\",\n\t\t\t\t\"content\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"text\",\n\t\t\t\t\t\t\"text\": \"Describe this image in one sentence \"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"image_url\",\n\t\t\t\t\t\t\"image_url\": {\n\t\t\t\t\t\t\t\"url\": \"https://cdn britannica com/61/93061-050-99147DCE/Statue-of-Liberty-Island-New-York-Bay jpg\"\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t]\n\t}'\n\n##### Use Docker images\n\ndocker run --gpus all \\\n    --shm-size 32g \\\n    -p 30000:30000 \\\n    -v ~/ cache/huggingface:/root/ cache/huggingface \\\n    --env \"HF_TOKEN=<secret>\" \\\n    --ipc=host \\\n    lmsysorg/sglang:latest \\\n    python3 -m sglang launch_server \\\n        --model-path \"moonshotai/Kimi-K3\" \\\n        --host 0 0 0 0 \\\n        --port 30000\n# Call the server using curl (OpenAI-compatible API):\ncurl -X POST \"http://localhost:30000/v1/chat/completions\" \\\n\t-H \"Content-Type: application/json\" \\\n\t--data '{\n\t\t\"model\": \"moonshotai/Kimi-K3\",\n\t\t\"messages\": [\n\t\t\t{\n\t\t\t\t\"role\": \"user\",\n\t\t\t\t\"content\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"text\",\n\t\t\t\t\t\t\"text\": \"Describe this image in one sentence \"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"image_url\",\n\t\t\t\t\t\t\"image_url\": {\n\t\t\t\t\t\t\t\"url\": \"https://cdn britannica com/61/93061-050-99147DCE/Statue-of-Liberty-Island-New-York-Bay jpg\"\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t]\n\t}'\n\nHow to use moonshotai/Kimi-K3 with Docker Model Runner:\n\ndocker model run hf co/moonshotai/Kimi-K3\n\nKimi K3 always has thinking enabled, and will return `reasoning_content`  Thinking effort is configured with the top-level `reasoning_effort` request field, which supports `\"low\"`, `\"high\"`, and `\"max\"` (default `\"max\"`) \n\nKimi K3 was trained in the preserved thinking history mode  For multi-turn conversations and tool calls, Kimi K3 requires the complete assistant message returned by the API to be passed back to `messages` as-is — including `reasoning_content` and `tool_calls`, not just `content`:\n\n`import openai\n\ndef chat_with_preserved_thinking(client: openai OpenAI, model_name: str):\n    messages = [\n        {\n            \"role\": \"user\",\n            \"content\": \"Tell me three random numbers \"\n        },\n        {\n            \"role\": \"assistant\",\n            \"reasoning_content\": \"I'll start by listing five numbers: 473, 921, 235, 215, 222, and I'll tell you the first three \",\n            \"content\": \"473, 921, 235\"\n        },\n        {\n            \"role\": \"user\",\n            \"content\": \"What are the other two numbers you have in mind?\"\n        }\n    ]\n    response = client chat completions create(\n        model=model_name,\n        messages=messages,\n        stream=False,\n        max_tokens=4096,\n        reasoning_effort=\"max\",\n    )\n    # the assistant should mention 215 and 222 that appear in the prior reasoning content\n    print(f\"response: {response choices[0] message reasoning}\")\n    return response choices[0] message content\n`\n\nFor full guides and examples (vision input, structured output, partial mode, tool choice, dynamic tool loading, context caching), see the Kimi K3 Quickstart and Thinking Effort \n\n### Coding Agent Framework\nKimi K3 works best with Kimi Code CLI as its agent framework  We warmly invite you to give it a try — run Kimi Code in your terminal and select Kimi K3 using the `/model` command  We hope you enjoy building with Kimi K3, and we would love to hear your feedback!",
+          "description": "Use instructions ",
+          "type": "long text"
+        },
+        {
+          "name": "inputs_outputs",
+          "value": "Modality  | Text, Image\nKimi K3 understands text, images, and video within the same model ",
+          "description": "Description of the model's inputs and outputs",
+          "type": "long text"
+        },
+        {
+          "name": "factors",
+          "value": "",
+          "description": "Foreseeable salient factors for which model performance may vary ",
+          "type": "long text"
+        },
+        {
+          "name": "hardware",
+          "value": "docker run --gpus all \\\n    --shm-size 32g \\\n    -p 30000:30000 \\\n    -v ~/ cache/huggingface:/root/ cache/huggingface \\\n    --env \"HF_TOKEN=<secret>\" \\\n    --ipc=host \\\n    lmsysorg/sglang:latest \\\n    python3 -m sglang launch_server \\\n        --model-path \"moonshotai/Kimi-K3\" \\\n        --host 0 0 0 0 \\\n        --port 30000",
+          "description": "Hardware requirements for training and inference ",
+          "type": "long text"
+        },
+        {
+          "name": "more",
+          "value": "You can access Kimi K3's API on https://platform kimi ai by selecting `kimi-k3`, and we provide OpenAI/Anthropic-compatible API for you  Currently, Kimi K3 is recommended to run on the following inference engines:\n* vLLM — see recipes\n* SGLang — see cookbook\n* TokenSpeed — see recipes\n\nKimi K3 works best with Kimi Code CLI as its agent framework ",
+          "description": "Additional information about intended uses not found above ",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "training",
+      "value": [
+        {
+          "name": "datasets",
+          "value": "",
+          "description": "Dataset(s) used during training ",
+          "type": "long text"
+        },
+        {
+          "name": "motivation",
+          "value": "",
+          "description": "Why were training datasets chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "preprocessing",
+          "value": "Kimi K3 applies quantization-aware training from the SFT stage onward, using MXFP4 weights with MXFP8 activations for broad hardware compatibility ",
+          "description": "Data pre-processing for training (tokenizer, data augmentation etc ) ",
+          "type": "long text"
+        },
+        {
+          "name": "standards",
+          "value": "",
+          "description": "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management ",
+          "type": "list:none,ISO,IEEE,unknown"
+        },
+        {
+          "name": "update",
+          "value": "",
+          "description": "Is tge training set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?",
+          "type": "list:no,yes,unknown"
+        },
+        {
+          "name": "more",
+          "value": "Kimi K3 was trained in the preserved thinking history mode ",
+          "description": "Additional training set information not found above ",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "evaluation",
+      "value": [
+        {
+          "name": "datasets",
+          "value": "GPQA Diamond, CritPt, AA-LCR, HLE-Full, DeepSWE, ProgramBench, Terminal-Bench 2 1, FrontierSWE, SWE-Marathon, PostTrainBench, MLS-Bench-Lite, SciCode, Kimi Code Bench 2 0, BrowseComp, DeepSearchQA (F1), ResearchRubrics, GDPval-AA v2 (Elo), Toolathlon-Verified, MCPMark-Verified, MCP-Atlas, AutomationBench, JobBench, AA-Briefcase (Elo), Agents' Last Exam, APEX-Agents, OfficeQA Pro, SpreadsheetBench 2, OSWorld-Verified, OSWorld 2 0, SaaS-Bench, τ³-Banking, Harvey Lab-AA, CorpFin v2, Finance Agent v2, Legal Research Bench, WorldVQA ForceAnswer, OmniDocBench, PerceptionBench, Video-MME (w  sub), MMVU, BabyVision w/ python, MMMU-Pro, CharXiv (RQ), MathVision, ZeroBench (pass@5)",
+          "description": "Dataset(s) used during evaluation ",
+          "type": "long text"
+        },
+        {
+          "name": "motivation",
+          "value": "Reasoning & Knowledge\nCoding\nAgentic\nVision",
+          "description": "Why were evaluation datasets chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "preprocessing",
+          "value": "For HLE-Full, MMMU-Pro, CharXiv (RQ), MathVision, and ZeroBench, each cell reports the scores without and with tool augmentation (general tools for HLE-Full, Python for the vision benchmarks), in that order \n\nFor OfficeQA Pro, each test case provides the agent with the entire PDF corpus, with all PDFs rendered as images and no machine-readable text available \n\nBrowseComp: We adopt a context-compaction strategy triggered at 300K tokens \n\nMMMU-Pro is evaluated following the official protocol, preserving the original input order and prepending images to the text input ",
+          "description": "Data pre-processing for evaluation (tokenizer, data augmentation etc ) ",
+          "type": "long text"
+        },
+        {
+          "name": "standards",
+          "value": "",
+          "description": "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management ",
+          "type": "list:none,ISO,IEEE,unknown"
+        },
+        {
+          "name": "update",
+          "value": "",
+          "description": "Is the evalution set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?",
+          "type": "list:no,yes,unknown"
+        },
+        {
+          "name": "more",
+          "value": "All Kimi K3 results are obtained with reasoning effort set to 'max' and temperature = 1 0  For single-step tasks, such as GPQA Diamond, HLE-Full, and vision benchmarks without tools, we set top-p = 0 95; for agentic tasks, we set top-p = 1 0 \n\nExcept for ZeroBench, which follows the official setting and is run five times, all multimodal scores are averaged over three runs \n\nPerceptionBench is an in-house benchmark that focuses on atomic visual perception capabilities ",
+          "description": "Additional evaluation set information not found above ",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "performance",
+      "value": [
+        {
+          "name": "analysis",
+          "value": "The model card reports evaluation results across reasoning and knowledge, coding, agentic, and vision benchmarks  The evaluation notes that all Kimi K3 results use reasoning effort set to 'max' and temperature = 1 0 ",
+          "description": "Analysis and explanation of performance results ",
+          "type": "long text"
+        },
+        {
+          "name": "metrics",
+          "value": "Benchmark  | ^{Kimi K3\n^{(max)}}  | ^{Claude Fable 5\n^{(max, w/ fallback)}}  | ^{GPT-5 6 Sol\n^{(max)}}  | ^{Claude Opus 4 8\n^{(max)}}  | ^{GPT-5 5\n^{(xhigh)}}  | ^{GLM-5 2\n^{(max)}}\n--- | --- | --- | --- | --- | --- | ---\nReasoning & Knowledge\nGPQA Diamond  | 93 5  | 92 6  | 94 1  | 91 0  | 93 5  | 91 2\nCritPt  | 23 4  | 28 6  | 32 3  | 20 9  | 27 1  | 20 9\nAA-LCR  | 74 7  | 70 0  | 73 7  | 67 7  | 74 3  | 71 3\nHLE-Full  | 43 5 / 56 0  | 53 3 / 63 0  | 44 5 / 58 0  | 49 8 / 57 9  | 41 4 / 52 2  | —\nCoding\nDeepSWE  | 67 5  | 70 0  | 73 0  | 59 0  | 67 0  | 46 2\nProgramBench  | 77 8  | 76 8  | 77 6  | 71 9  | 70 8  | 63 7\nTerminal-Bench 2 1  | 88 3  | 88 0  | 88 8  | 84 6  | 83 4  | 82 7\nFrontierSWE  | 81 2  | 86 6  | 71 3  | 66 7  | 64 9  | 67 3\nSWE-Marathon  | 42 0  | 35 0  | 39 0  | 40 0  | 14 0  | 13 0\nPostTrainBench  | 36 6  | 41 4  | 34 6  | 34 1  | 28 4  | 34 3\nMLS-Bench-Lite  | 48 3  | 49 9  | 46 2  | 42 8  | 35 5  | 40 4\nSciCode  | 58 7  | 60 2  | 56 1  | 53 5  | 56 1  | 50 5\nKimi Code Bench 2 0  | 72 9  | 76 9  | 64 8  | 71 7  | 69 0  | 64 2\nAgentic\nBrowseComp  | 91 2  | 88 0  | 90 4  | 84 3  | 84 4  | —\nDeepSearchQA (F1)  | 95 0  | 94 2  | —  | 93 1  | —  | —\nResearchRubrics  | 76 2  | —  | 73 8  | 73 5  | 64 0  | 71 1\nGDPval-AA v2 (Elo)  | 1686  | 1747  | 1736  | 1593  | 1491  | 1510\nToolathlon-Verified  | 76 5  | 77 9  | 74 9  | 76 2  | 73 5  | 59 9\nMCPMark-Verified  | 94 5  | 87 4  | 92 9  | 76 4  | 92 9  | —\nMCP-Atlas  | 84 2  | 84 7  | 83 6  | 83 6  | 82 8  | 82 6\nAutomationBench  | 30 8  | 29 1  | 29 7  | 27 2  | 22 7  | 12 9\nJobBench  | 54 3  | 57 4  | 45 4  | 48 4  | 38 3  | 43 4\nAA-Briefcase (Elo)  | 1548  | 1583  | 1495  | 1354  | 1158  | 1260\nAgents' Last Exam  | 28 3  | 25 7^{†}  | 29 6  | 27 0  | 26 6  | 20 4\nAPEX-Agents  | 41 0  | 43 3  | 39 9  | 39 4  | 38 5  | 35 6\nOfficeQA Pro  | 63 3  | 69 9  | 63 2  | 63 9  | 60 9  | 41 4\nSpreadsheetBench 2  | 34 8  | 34 7  | 32 4  | 31 6  | 29 1  | 28 1\nOSWorld-Verified  | 84 8  | 85 0  | 83 0  | 83 4  | 79 0  | —\nOSWorld 2 0  | 58 3  | 66 1  | 62 6  | 55 7  | 49 5  | —\nSaaS-Bench  | 60 1  | —  | 61 4  | 56 1  | 43 8  | —\nτ³-Banking  | 33 4  | 26 8  | 33 0  | 27 6  | 31 3  | 26 8\nHarvey Lab-AA  | 94 6  | 93 6  | 87 2  | 91 1  | 86 3  | 91 0\nCorpFin v2  | 71 6  | 71 8  | 64 4  | 66 7  | 68 4  | 66 1\nFinance Agent v2  | 54 4  | 56 3  | 53 8  | 53 9  | 51 8  | 49 7\nLegal Research Bench  | 44 2  | 49 5  | 48 1  | 43 8  | 40 4  | 31 3\nVision\nWorldVQA ForceAnswer  | 51 0  | 56 7  | 41 8  | 39 1  | 38 5  | —\nOmniDocBench  | 91 1  | 89 8  | 85 8  | 87 9  | 89 4  | —\nPerceptionBench  | 58 5  | 57 2  | 59 7  | 47 2  | 55 8  | —\nVideo-MME (w  sub)  | 90 0  | —  | 89 5  | 86 0  | 89 3  | —\nMMVU  | 82 1  | —  | 81 2  | 79 2  | 81 7  | —\nBabyVision w/ python  | 85 7  | 90 5  | 88 9  | 81 2  | 83 6  | —\nMMMU-Pro  | 81 6 / 83 4  | 81 2 / 86 5  | 83 0 / 84 6  | 78 9 / 82 7  | 81 2 / 83 2  | —\nCharXiv (RQ)  | 84 8 / 91 3  | 88 9 / 93 5  | 84 6 / 89 1  | 80 5 / 89 9  | 84 1 / 89 0  | —\nMathVision  | 94 3 / 97 8  | 94 8 / 98 6  | 95 8 / 97 8  | 86 7 / 97 1  | 92 2 / 96 8  | —\nZeroBench (pass@5)  | 23 0 / 41 0  | 23 0 / 46 0  | 17 0 / 35 0  | 17 0 / 34 0  | 22 0 / 41 0  | —",
+          "description": "Benchmark results for any performance metrics ",
+          "type": "long text"
+        },
+        {
+          "name": "thresholds",
+          "value": "All Kimi K3 results are obtained with reasoning effort set to 'max' and temperature = 1 0  For single-step tasks, such as GPQA Diamond, HLE-Full, and vision benchmarks without tools, we set top-p = 0 95; for agentic tasks, we set top-p = 1 0 ",
+          "description": "If decision thresholds are used, what are they, and why were those parameters chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "methodology",
+          "value": "All Kimi K3 results are obtained with reasoning effort set to 'max' and temperature = 1 0  For single-step tasks, such as GPQA Diamond, HLE-Full, and vision benchmarks without tools, we set top-p = 0 95; for agentic tasks, we set top-p = 1 0  For HLE-Full, MMMU-Pro, CharXiv (RQ), MathVision, and ZeroBench, each cell reports the scores without and with tool augmentation (general tools for HLE-Full, Python for the vision benchmarks), in that order \n\nCritPt and AA-LCR  Scores are cited from Artificial Analysis as of July 23, 2026 \n\nDeepSWE  Kimi K3 is evaluated with the Kimi Code harness  The GLM-5 2 score is taken from the GLM-5 2 release blog; all remaining scores are from the official DeepSWE leaderboard, under which Kimi K3 attains 67 3 with the mini-SWE-agent harness  We report the DeepSWE v1 1 tasks \n\nTerminal-Bench 2 1  Kimi K3 is evaluated with the Kimi Code harness  For all other models, we report the best score across harnesses: GLM-5 2 with Claude Code; Claude Opus 4 8 and Claude Fable 5 with Terminus 2; GPT-5 5 and GPT-5 6 Sol with Codex \n\nProgramBench  Kimi K3 is evaluated with the Kimi Code harness  The GLM-5 2 score is from the GLM-5 2 release blog; all other scores are from Vals AI \n\nSWE-Marathon  Kimi K3, Claude Opus 4 8, and Claude Fable 5 are evaluated with the Claude Code harness; GPT-5 6 Sol is evaluated with the Codex harness  The GLM-5 2 score is from the GLM-5 2 release blog \n\nOur evaluation is based on an H20-calibrated branch of the official tasks as of July 9, 2026, prior to the final v1 1 release: the Docker images, performance gates, and reference oracles for the GPU tasks have been recalibrated for H20, while the correctness and anti-cheat validators remain unchanged  Additionally, Claude Fable 5 hit fallbacks on 35% of the tasks in our evaluation, which may have negatively impacted its measured performance \n\nFrontierSWE  Kimi K3 is evaluated with the Kimi Code harness and GPT-5 6 Sol with the Codex harness; all other results are from FrontierSWE  Dominance scores are recomputed from the raw scores using the official evaluation script and are current as of July 16, 2026 \n\nPostTrainBench  Scores for GLM-5 2, GPT-5 5, and Claude Opus 4 8 are adopted from the official PostTrainBench results  Kimi K3, Claude Fable 5, and GPT-5 6 Sol are evaluated with the official Harbor implementation at maximum reasoning effort, averaged over three runs on H20 GPUs (instead of H100 in the official setting) — Kimi K3 and Claude Fable 5 with the Claude Code harness, and GPT-5 6 Sol with the Codex harness \n\nMLS-Bench-Lite  Kimi K3 is evaluated with the Kimi Code harness; GLM-5 2 and the Claude models with the Claude Code harness; GPT-5 5 and GPT-5 6 Sol with the Codex harness \n\nSciCode  Scores are cited from Artificial Analysis as of July 23, 2026 \n\nKimi Code Bench 2 0 (in-house)  Kimi K3 is evaluated with the Kimi Code harness (it attains 73 7 with the Claude Code harness); GLM-5 2, Claude Opus 4 8, and Claude Fable 5 with the Claude Code harness; GPT-5 5 and GPT-5 6 Sol with the Codex harness  All models are evaluated at maximum reasoning effort, except GPT-5 5, which uses the \"xhigh\" setting \n\nAs the benchmark includes cybersecurity and safety-related tasks, we also disclose the fraction of refused or fallback tasks: Claude Fable 5 hit 13 fallbacks and 1 refusal out of 80 tasks; 10 refusals out of 80 tasks entered GPT-5 6 Sol's cyber guard; GPT-5 5 had 3 refusals out of 80 tasks \n\nOfficeQA Pro  Each test case provides the agent with the entire PDF corpus, with all PDFs rendered as images and no machine-readable text available \n\nOfficeQA Pro and SpreadsheetBench 2  Kimi K3, GLM-5 2, Claude Opus 4 8, and Claude Fable 5 are evaluated with the Claude Code harness; GPT-5 5 and GPT-5 6 Sol are evaluated with the Codex harness \n\nMCP-Atlas  All models are evaluated on the 500-task public subset with a 100-turn limit, using Gemini 3 1 Pro as the judge \n\nAutomationBench  All models are evaluated on the 600-task public subset, following the official GitHub setup in all other respects \n\nBrowseComp  We adopt a context-compaction strategy triggered at 300K tokens  When evaluated with the full 1M-token context window and no context management, Kimi K3 achieves a score of 90 4  The results of Claude Fable 5, Claude Opus 4 8, GPT-5 6 Sol, and GPT-5 5 are cited from Anthropic and OpenAI \n\nGDPval-AA v2, AA-Briefcase, τ³-Banking, Harvey Lab-AA, and APEX-Agents  Scores are cited from Artificial Analysis and the APEX-Agents leaderboard as of July 23, 2026  For Harvey Lab-AA, we report the criterion pass rate \n\nCorpFin v2, Finance Agent v2, and Legal Research Bench  Scores are cited from Vals AI \n\nAgents' Last Exam  Scores are cited from the official leaderboard as of July 23, 2026; we report the leaderboard's primary pass-rate metric  On the leaderboard, each model is paired with a specific harness: Kimi K3 with Kimi Code; GPT-5 6 Sol and GPT-5 5 with Codex; Claude Fable 5, Claude Opus 4 8, and GLM-5 2 with Claude Code  The Claude Fable 5 entry runs at xhigh effort with 40% of tasks annotated as downgraded \n\nExcept for ZeroBench, which follows the official setting and is run five times, all multimodal scores are averaged over three runs  MMMU-Pro is evaluated following the official protocol, preserving the original input order and prepending images to the text input \n\nPerceptionBench is an in-house benchmark that focuses on atomic visual perception capabilities ",
+          "description": "Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method ",
+          "type": "long text"
+        },
+        {
+          "name": "environmental_impact",
+          "value": "",
+          "description": "Report of energy consumption, CO2 emissions or any other environmental impact ",
+          "type": "long text"
+        },
+        {
+          "name": "bias",
+          "value": "",
+          "description": "Performance and bias across different groups (e g  ethnicity, gender)",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "safety",
+      "value": [
+        {
+          "name": "ethics",
+          "value": "",
+          "description": "Ethical considerations regarding datasets and usage of model  Recommended mitigation measures ",
+          "type": "long text"
+        },
+        {
+          "name": "fairness",
+          "value": "",
+          "description": "Definition of fairness applied in setting up the AI system ",
+          "type": "long text"
+        },
+        {
+          "name": "risks",
+          "value": "",
+          "description": "Possible threats to the AI system (design faults, technical faults, environmental threats) and the possible consequences ",
+          "type": "long text"
+        },
+        {
+          "name": "security",
+          "value": "",
+          "description": "Is the AI system certified for cybersecurity or is it compliant with specific security standards?",
+          "type": "long text"
+        },
+        {
+          "name": "caveats",
+          "value": "",
+          "description": "Additional concerns that were not covered in the previous sections ",
+          "type": "long text"
+        }
+      ]
+    }
+  ]
+}

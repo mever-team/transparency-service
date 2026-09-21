@@ -1,0 +1,305 @@
+{
+  "title": "",
+  "data": [
+    {
+      "name": "overview",
+      "value": [
+        {
+          "name": "name",
+          "value": "DeepSeek-R1",
+          "description": "Name of the model.",
+          "type": "short text"
+        },
+        {
+          "name": "description",
+          "value": "",
+          "description": "Model purpose, capabilities, novelty and caveats",
+          "type": "long text"
+        },
+        {
+          "name": "creator",
+          "value": "deepseek-ai",
+          "description": "Person or organization developed the model.",
+          "type": "short text"
+        },
+        {
+          "name": "date",
+          "value": "2026-09-18",
+          "description": "Model development completion date.",
+          "type": "date"
+        },
+        {
+          "name": "version",
+          "value": "",
+          "description": "Version of the model.",
+          "type": "short text"
+        },
+        {
+          "name": "type",
+          "value": "Other",
+          "description": "Model architecture or algorithm type.",
+          "type": "list:#Neural Networks,Convolutional Neural Network,Recurrent Neural Network,Multilayer Perceptron,Transformer,Graph Neural Network,Autoencoder,Generative Adversarial Network,#Classical Machine Learning,Linear Regression,Logistic Regression,K-Nearest Neighbors,Naive Bayes,Support Vector Machine,Decision Tree,#Ensemble Methods,Random Forest,Gradient Boosting,Ensemble Model,#Unsupervised / Representation Learning,Clustering Model,Dimensionality Reduction Model,#Reinforcement Learning,Reinforcement Learning Agent,#Other,Other,unknown"
+        },
+        {
+          "name": "task",
+          "value": "Other",
+          "description": "Model task.",
+          "type": "list:#Multimodal,Audio-Text-to-Text,Image-Text-to-Text,Image-Text-to-Image,Image-Text-to-Video,Visual Question Answering,Document Question Answering,Video-Text-to-Text,Visual Document Retrieval,Any-to-Any,#Computer Vision,Depth Estimation,Image Classification,Object Detection,Image Segmentation,Text-to-Image,Image-to-Text,Image-to-Image,Image-to-Video,Unconditional Image Generation,Video Classification,Text-to-Video,Zero-Shot Image Classification,Mask Generation,Zero-Shot Object Detection,Text-to-3D,Image-to-3D,Image Feature Extraction,Keypoint Detection,Video-to-Video,#Natural Language Processing,Text Classification,Token Classification,Table Question Answering,Question Answering,Zero-Shot Classification,Translation,Summarization,Feature Extraction,Text Generation,Fill-Mask,Sentence Similarity,Text Ranking,#Audio,Text-to-Speech,Text-to-Audio,Automatic Speech Recognition,Audio-to-Audio,Audio Classification,Voice Activity Detection,#Tabular,Tabular Classification,Tabular Regression,Time Series Forecasting,#Reinforcement Learning,Reinforcement Learning,Robotics,#Other,Other,unknown"
+        },
+        {
+          "name": "license",
+          "value": "",
+          "description": "Licence and intellectual property (IP) information.",
+          "type": "short text"
+        },
+        {
+          "name": "home",
+          "value": "http://localhost:8000/deepseek-ai@DeepSeek-R1.html",
+          "description": "URL hosting the model.",
+          "type": "short text"
+        },
+        {
+          "name": "contact",
+          "value": "",
+          "description": "Author contact information.",
+          "type": "short text"
+        },
+        {
+          "name": "citation",
+          "value": "",
+          "description": "How should the model be cited? Typically includes title, author, year, and publisher. May be a formatted citation or bibtex entries like @article.",
+          "type": "short text"
+        },
+        {
+          "name": "more",
+          "value": "",
+          "description": "Additional model information not found above.",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "use",
+      "value": [
+        {
+          "name": "use_cases",
+          "value": "",
+          "description": "Intended uses of the model.",
+          "type": "long text"
+        },
+        {
+          "name": "oversight",
+          "value": "unknown",
+          "description": "Defines the level of human control over the system.",
+          "type": "list:self-learning/autonomous,human-in-the-loop,human-on-the-loop,human-in-command,unknown"
+        },
+        {
+          "name": "user_groups",
+          "value": "",
+          "description": "Intended users.",
+          "type": "long text"
+        },
+        {
+          "name": "out_of_scope_use",
+          "value": "",
+          "description": "Unintended and improper use of model.",
+          "type": "long text"
+        },
+        {
+          "name": "software",
+          "value": "",
+          "description": "Software requirements and dependencies?",
+          "type": "long text"
+        },
+        {
+          "name": "instructions",
+          "value": "# Use a pipeline as a high-level helper\nfrom transformers import pipeline\n\npipe = pipeline(\"text-generation\", model=\"deepseek-ai/DeepSeek-R1\", trust_remote_code=True)\nmessages = [\n    {\"role\": \"user\", \"content\": \"Who are you?\"},\n]\npipe(messages) # Load model directly\nfrom transformers import AutoTokenizer, AutoModelForCausalLM\n\ntokenizer = AutoTokenizer.from_pretrained(\"deepseek-ai/DeepSeek-R1\", trust_remote_code=True)\nmodel = AutoModelForCausalLM.from_pretrained(\"deepseek-ai/DeepSeek-R1\", trust_remote_code=True, device_map=\"auto\")\nmessages = [\n    {\"role\": \"user\", \"content\": \"Who are you?\"},\n]\ninputs = tokenizer.apply_chat_template(\n\tmessages,\n\tadd_generation_prompt=True,\n\ttokenize=True,\n\treturn_dict=True,\n\treturn_tensors=\"pt\",\n).to(model.device)\n\noutputs = model.generate(**inputs, max_new_tokens=40)\nprint(tokenizer.decode(outputs[0][inputs[\"input_ids\"].shape[-1]:])) # Install vLLM from pip:\npip install vllm\n# Start the vLLM server:\nvllm serve \"deepseek-ai/DeepSeek-R1\"\n# Call the server using curl (OpenAI-compatible API):\ncurl -X POST \"http://localhost:8000/v1/chat/completions\" \\\n\t-H \"Content-Type: application/json\" \\\n\t--data '{\n\t\t\"model\": \"deepseek-ai/DeepSeek-R1\",\n\t\t\"messages\": [\n\t\t\t{\n\t\t\t\t\"role\": \"user\",\n\t\t\t\t\"content\": \"What is the capital of France?\"\n\t\t\t}\n\t\t]\n\t}' docker model run hf.co/deepseek-ai/DeepSeek-R1 # Install SGLang from pip:\npip install sglang\n# Start the SGLang server:\npython3 -m sglang.launch_server \\\n    --model-path \"deepseek-ai/DeepSeek-R1\" \\\n    --host 0.0.0.0 \\\n    --port 30000\n# Call the server using curl (OpenAI-compatible API):\ncurl -X POST \"http://localhost:30000/v1/chat/completions\" \\\n\t-H \"Content-Type: application/json\" \\\n\t--data '{\n\t\t\"model\": \"deepseek-ai/DeepSeek-R1\",\n\t\t\"messages\": [\n\t\t\t{\n\t\t\t\t\"role\": \"user\",\n\t\t\t\t\"content\": \"What is the capital of France?\"\n\t\t\t}\n\t\t]\n\t}' docker model run hf.co/deepseek-ai/DeepSeek-R1 python3 -m sglang.launch_server --model deepseek-ai/DeepSeek-R1-Distill-Qwen-32B --trust-remote-code --tp 2\n Avoid adding a system prompt; all instructions should be contained within the user prompt. To ensure that the model engages in thorough reasoning, we recommend enforcing the model to initiate its response with \"\\n\" at the beginning of every output.",
+          "description": "Use instructions.",
+          "type": "long text"
+        },
+        {
+          "name": "inputs_outputs",
+          "value": "",
+          "description": "Description of the model's inputs and outputs",
+          "type": "long text"
+        },
+        {
+          "name": "factors",
+          "value": "Additionally, we have observed that the DeepSeek-R1 series models tend to bypass thinking pattern (i.e., outputting \"\\n\\n\") when responding to certain queries, which can adversely affect the model's performance.",
+          "description": "Foreseeable salient factors for which model performance may vary.",
+          "type": "long text"
+        },
+        {
+          "name": "hardware",
+          "value": "",
+          "description": "Hardware requirements for training and inference.",
+          "type": "long text"
+        },
+        {
+          "name": "more",
+          "value": "",
+          "description": "Additional information about intended uses not found above.",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "training",
+      "value": [
+        {
+          "name": "datasets",
+          "value": "DeepSeek-R1-Distill models can be utilized in the same manner as Qwen or Llama models.",
+          "description": "Dataset(s) used during training.",
+          "type": "long text"
+        },
+        {
+          "name": "motivation",
+          "value": "",
+          "description": "Why were training datasets chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "preprocessing",
+          "value": "\n\nModel\n#Total Params\n#Activated Params\nContext Length\nDownload\n\n\nDeepSeek-R1-Zero\n671B\n37B\n128K\nð¤ HuggingFace\n\n\nDeepSeek-R1\n671B\n37B\n128K\nð¤ HuggingFace\n\n\n \n\nModel\nBase Model\nDownload\n\n\nDeepSeek-R1-Distill-Qwen-1.5B\nQwen2.5-Math-1.5B\nð¤ HuggingFace\n\n\nDeepSeek-R1-Distill-Qwen-7B\nQwen2.5-Math-7B\nð¤ HuggingFace\n\n\nDeepSeek-R1-Distill-Llama-8B\nLlama-3.1-8B\nð¤ HuggingFace\n\n\nDeepSeek-R1-Distill-Qwen-14B\nQwen2.5-14B\nð¤ HuggingFace\n\n\nDeepSeek-R1-Distill-Qwen-32B\nQwen2.5-32B\nð¤ HuggingFace\n\n\nDeepSeek-R1-Distill-Llama-70B\nLlama-3.3-70B-Instruct\nð¤ HuggingFace\n\n\n vllm serve deepseek-ai/DeepSeek-R1-Distill-Qwen-32B --tensor-parallel-size 2 --max-model-len 32768 --enforce-eager\n We introduce our pipeline to develop DeepSeek-R1. The pipeline incorporates two RL stages aimed at discovering improved reasoning patterns and aligning with human preferences, as well as two SFT stages that serve as the seed for the model's reasoning and non-reasoning capabilities.\nWe believe the pipeline will benefit the industry by creating better models. We demonstrate that the reasoning patterns of larger models can be distilled into smaller models, resulting in better performance compared to the reasoning patterns discovered through RL on small models. The open source DeepSeek-R1, as well as its API, will benefit the research community to distill better smaller models in the future.",
+          "description": "Data pre-processing for training (tokenizer, data augmentation etc.).",
+          "type": "long text"
+        },
+        {
+          "name": "standards",
+          "value": "ISO",
+          "description": "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management.",
+          "type": "list:none,ISO,IEEE,unknown"
+        },
+        {
+          "name": "update",
+          "value": "unknown",
+          "description": "Is tge training set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?",
+          "type": "list:no,yes,unknown"
+        },
+        {
+          "name": "more",
+          "value": "",
+          "description": "Additional training set information not found above.",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "evaluation",
+      "value": [
+        {
+          "name": "datasets",
+          "value": "",
+          "description": "Dataset(s) used during evaluation.",
+          "type": "long text"
+        },
+        {
+          "name": "motivation",
+          "value": "",
+          "description": "Why were evaluation datasets chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "preprocessing",
+          "value": "\n\nModel\nAIME 2024 pass@1\nAIME 2024 cons@64\nMATH-500 pass@1\nGPQA Diamond pass@1\nLiveCodeBench pass@1\nCodeForces rating\n\n\nGPT-4o-0513\n9.3\n13.4\n74.6\n49.9\n32.9\n759\n\n\nClaude-3.5-Sonnet-1022\n16.0\n26.7\n78.3\n65.0\n38.9\n717\n\n\no1-mini\n63.6\n80.0\n90.0\n60.0\n53.8\n1820\n\n\nQwQ-32B-Preview\n44.0\n60.0\n90.6\n54.5\n41.9\n1316\n\n\nDeepSeek-R1-Distill-Qwen-1.5B\n28.9\n52.7\n83.9\n33.8\n16.9\n954\n\n\nDeepSeek-R1-Distill-Qwen-7B\n55.5\n83.3\n92.8\n49.1\n37.6\n1189\n\n\nDeepSeek-R1-Distill-Qwen-14B\n69.7\n80.0\n93.9\n59.1\n53.1\n1481\n\n\nDeepSeek-R1-Distill-Qwen-32B\n72.6\n83.3\n94.3\n62.1\n57.2\n1691\n\n\nDeepSeek-R1-Distill-Llama-8B\n50.4\n80.0\n89.1\n49.0\n39.6\n1205\n\n\nDeepSeek-R1-Distill-Llama-70B\n70.0\n86.7\n94.5\n65.2\n57.5\n1633\n\n\n",
+          "description": "Data pre-processing for evaluation (tokenizer, data augmentation etc.).",
+          "type": "long text"
+        },
+        {
+          "name": "standards",
+          "value": "unknown",
+          "description": "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management.",
+          "type": "list:none,ISO,IEEE,unknown"
+        },
+        {
+          "name": "update",
+          "value": "unknown",
+          "description": "Is the evalution set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?",
+          "type": "list:no,yes,unknown"
+        },
+        {
+          "name": "more",
+          "value": "",
+          "description": "Additional evaluation set information not found above.",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "performance",
+      "value": [
+        {
+          "name": "analysis",
+          "value": "We directly apply reinforcement learning (RL) to the base model without relying on supervised fine-tuning (SFT) as a preliminary step. This approach allows the model to explore chain-of-thought (CoT) for solving complex problems, resulting in the development of DeepSeek-R1-Zero. DeepSeek-R1-Zero demonstrates capabilities such as self-verification, reflection, and generating long CoTs, marking a significant milestone for the research community. Notably, it is the first open research to validate that reasoning capabilities of LLMs can be incentivized purely through RL, without the need for SFT. This breakthrough paves the way for future advancements in this area.",
+          "description": "Analysis and explanation of performance results.",
+          "type": "long text"
+        },
+        {
+          "name": "metrics",
+          "value": "\n\nCategory\nBenchmark (Metric)\nClaude-3.5-Sonnet-1022\nGPT-4o 0513\nDeepSeek V3\nOpenAI o1-mini\nOpenAI o1-1217\nDeepSeek R1\n\n\n\nArchitecture\n-\n-\nMoE\n-\n-\nMoE\n\n\n\n# Activated Params\n-\n-\n37B\n-\n-\n37B\n\n\n\n# Total Params\n-\n-\n671B\n-\n-\n671B\n\n\nEnglish\nMMLU (Pass@1)\n88.3\n87.2\n88.5\n85.2\n91.8\n90.8\n\n\n\nMMLU-Redux (EM)\n88.9\n88.0\n89.1\n86.7\n-\n92.9\n\n\n\nMMLU-Pro (EM)\n78.0\n72.6\n75.9\n80.3\n-\n84.0\n\n\n\nDROP (3-shot F1)\n88.3\n83.7\n91.6\n83.9\n90.2\n92.2\n\n\n\nIF-Eval (Prompt Strict)\n86.5\n84.3\n86.1\n84.8\n-\n83.3\n\n\n\nGPQA-Diamond (Pass@1)\n65.0\n49.9\n59.1\n60.0\n75.7\n71.5\n\n\n\nSimpleQA (Correct)\n28.4\n38.2\n24.9\n7.0\n47.0\n30.1\n\n\n\nFRAMES (Acc.)\n72.5\n80.5\n73.3\n76.9\n-\n82.5\n\n\n\nAlpacaEval2.0 (LC-winrate)\n52.0\n51.1\n70.0\n57.8\n-\n87.6\n\n\n\nArenaHard (GPT-4-1106)\n85.2\n80.4\n85.5\n92.0\n-\n92.3\n\n\nCode\nLiveCodeBench (Pass@1-COT)\n33.8\n34.2\n-\n53.8\n63.4\n65.9\n\n\n\nCodeforces (Percentile)\n20.3\n23.6\n58.7\n93.4\n96.6\n96.3\n\n\n\nCodeforces (Rating)\n717\n759\n1134\n1820\n2061\n2029\n\n\n\nSWE Verified (Resolved)\n50.8\n38.8\n42.0\n41.6\n48.9\n49.2\n\n\n\nAider-Polyglot (Acc.)\n45.3\n16.0\n49.6\n32.9\n61.7\n53.3\n\n\nMath\nAIME 2024 (Pass@1)\n16.0\n9.3\n39.2\n63.6\n79.2\n79.8\n\n\n\nMATH-500 (Pass@1)\n78.3\n74.6\n90.2\n90.0\n96.4\n97.3\n\n\n\nCNMO 2024 (Pass@1)\n13.1\n10.8\n43.2\n67.6\n-\n78.8\n\n\nChinese\nCLUEWSC (EM)\n85.4\n87.9\n90.9\n89.9\n-\n92.8\n\n\n\nC-Eval (EM)\n76.7\n76.0\n86.5\n68.9\n-\n91.8\n\n\n\nC-SimpleQA (Correct)\n55.4\n58.7\n68.0\n40.3\n-\n63.7\n\n\n",
+          "description": "Benchmark results for any performance metrics.",
+          "type": "long text"
+        },
+        {
+          "name": "thresholds",
+          "value": "",
+          "description": "If decision thresholds are used, what are they, and why were those parameters chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "methodology",
+          "value": "When evaluating model performance, it is recommended to conduct multiple tests and average the results.",
+          "description": "Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method.",
+          "type": "long text"
+        },
+        {
+          "name": "environmental_impact",
+          "value": "docker run --gpus all \\\n    --shm-size 32g \\\n    -p 30000:30000 \\\n    -v ~/.cache/huggingface:/root/.cache/huggingface \\\n    --env \"HF_TOKEN=&lt;secret&gt;\" \\\n    --ipc=host \\\n    lmsysorg/sglang:latest \\\n    python3 -m sglang.launch_server \\\n        --model-path \"deepseek-ai/DeepSeek-R1\" \\\n        --host 0.0.0.0 \\\n        --port 30000\n# Call the server using curl (OpenAI-compatible API):\ncurl -X POST \"http://localhost:30000/v1/chat/completions\" \\\n\t-H \"Content-Type: application/json\" \\\n\t--data '{\n\t\t\"model\": \"deepseek-ai/DeepSeek-R1\",\n\t\t\"messages\": [\n\t\t\t{\n\t\t\t\t\"role\": \"user\",\n\t\t\t\t\"content\": \"What is the capital of France?\"\n\t\t\t}\n\t\t]\n\t}' @misc{deepseekai2025deepseekr1incentivizingreasoningcapability,\n      title={DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning}, \n      author={DeepSeek-AI},\n      year={2025},\n      eprint={2501.12948},\n      archivePrefix={arXiv},\n      primaryClass={cs.CL},\n      url={https://arxiv.org/abs/2501.12948}, \n}\n",
+          "description": "Report of energy consumption, CO2 emissions or any other environmental impact.",
+          "type": "long text"
+        },
+        {
+          "name": "bias",
+          "value": "",
+          "description": "Performance and bias across different groups (e.g. ethnicity, gender)",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "safety",
+      "value": [
+        {
+          "name": "ethics",
+          "value": "",
+          "description": "Ethical considerations regarding datasets and usage of model. Recommended mitigation measures.",
+          "type": "long text"
+        },
+        {
+          "name": "fairness",
+          "value": "",
+          "description": "Definition of fairness applied in setting up the AI system.",
+          "type": "long text"
+        },
+        {
+          "name": "risks",
+          "value": "",
+          "description": "Possible threats to the AI system (design faults, technical faults, environmental threats) and the possible consequences.",
+          "type": "long text"
+        },
+        {
+          "name": "security",
+          "value": "",
+          "description": "Is the AI system certified for cybersecurity or is it compliant with specific security standards?",
+          "type": "long text"
+        },
+        {
+          "name": "caveats",
+          "value": "NOTE: Hugging Face's Transformers has not been directly supported yet.",
+          "description": "Additional concerns that were not covered in the previous sections.",
+          "type": "long text"
+        }
+      ]
+    }
+  ]
+}

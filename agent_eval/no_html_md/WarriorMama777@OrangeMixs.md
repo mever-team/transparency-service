@@ -1,0 +1,478 @@
+"OrangeMixs" shares various Merge models that can be used with StableDiffusionWebui:Automatic1111 and others.
+Maintain a repository for the following purposes.
+1. to provide easy access to models commonly used in the Japanese community.The Wisdom of the Anons💎
+2. As a place to upload my merge models when I feel like it.
+![](https://github.com/WarriorMama777/imgup/raw/main/img/img_general/img_orangemixs_infograph_4_comp001.webp "image_orangemixs_infographics_03")
+Hero image prompts(AOM3B2):https://majinai.art/ja/i/jhw20Z_
+# UPDATE NOTE / How to read this README
+1. Read the ToC as release notes.  
+Sections are in descending order. The order within the section is ascending. It is written like SNS.
+3. View the repository history when you need to check the full history.
+I found that I abbreviated the model name too much, so that when users see illustrations using OrangeMixs models on the web, they cannot reach them in their searches.
+To make the specification more search engine friendly, I renamed it to "ModelName + (orangemixs)".
+- 2023-03-11: Change model name : () to _
+Changed to _ because an error occurs when using () in the Cloud environment(e.g.:paperspace).
+- 2023-04-01: Added description of AOM3A1 cursed by Dreamlike
+- 2023-06-27: Added AOM3B2. Removed Terms of Service.
+- 2023-11-25: Add VividOrangeMix (nonlabel, NSFW, Hard)
+- 2023-06-27: Added AOM3B2. Removed Terms of Service.
+- 2023-11-25: Add VividOrangeMix (nonlabel, NSFW, Hard)
+- 2024-01-07: Fix repo & Done upload VividOrangeMixs
+We support a [Gradio](https://github.com/gradio-app/gradio) Web UI to run OrangeMixs:
+[![Open In Spaces](https://camo.githubusercontent.com/00380c35e60d6b04be65d3d94a58332be5cc93779f630bcdfc18ab9a3a7d3388/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f25463025394625413425393725323048756767696e67253230466163652d5370616365732d626c7565)](https://huggingface.co/spaces/akhaliq/webui-orangemixs)
+- [UPDATE NOTE / How to read this README](#update-note--how-to-read-this-readme)
+  - [How to read this README](#how-to-read-this-readme)
+- [Table of Contents](#table-of-contents)
+- [~~Terms of use~~](#terms-of-use)
+- [How to download](#how-to-download)
+  - [Batch Download](#batch-download)
+  - [Batch Download (Advanced)](#batch-download-advanced)
+  - [Select and download](#select-and-download)
+- [Model Detail \& Merge Recipes](#model-detail--merge-recipes)
+  - [VividOrangeMix (VOM)](#vividorangemix-vom)
+    - [VividOrangeMix](#vividorangemix)
+    - [VividOrangeMix\_NSFW / Hard](#vividorangemix_nsfw--hard)
+    - [Instructions](#instructions)
+  - [AbyssOrangeMix3 (AOM3)](#abyssorangemix3-aom3)
+    - [More feature](#more-feature)
+    - [Variations / Sample Gallery](#variations--sample-gallery)
+    - [Description for enthusiast](#description-for-enthusiast)
+  - [AbyssOrangeMix2 (AOM2)](#abyssorangemix2-aom2)
+    - [AbyssOrangeMix2\_sfw (AOM2s)](#abyssorangemix2_sfw-aom2s)
+    - [AbyssOrangeMix2\_nsfw (AOM2n)](#abyssorangemix2_nsfw-aom2n)
+    - [AbyssOrangeMix2\_hard (AOM2h)](#abyssorangemix2_hard-aom2h)
+  - [EerieOrangeMix (EOM)](#eerieorangemix-eom)
+    - [EerieOrangeMix (EOM1)](#eerieorangemix-eom1)
+      - [EerieOrangeMix\_base (EOM1b)](#eerieorangemix_base-eom1b)
+      - [EerieOrangeMix\_Night (EOM1n)](#eerieorangemix_night-eom1n)
+      - [EerieOrangeMix\_half (EOM1h)](#eerieorangemix_half-eom1h)
+      - [EerieOrangeMix (EOM1)](#eerieorangemix-eom1-1)
+    - [EerieOrangeMix2 (EOM2)](#eerieorangemix2-eom2)
+      - [EerieOrangeMix2\_base (EOM2b)](#eerieorangemix2_base-eom2b)
+      - [EerieOrangeMix2\_night (EOM2n)](#eerieorangemix2_night-eom2n)
+      - [EerieOrangeMix2\_half (EOM2h)](#eerieorangemix2_half-eom2h)
+      - [EerieOrangeMix2 (EOM2)](#eerieorangemix2-eom2-1)
+    - [Models Comparison](#models-comparison)
+  - [AbyssOrangeMix (AOM)](#abyssorangemix-aom)
+    - [AbyssOrangeMix\_base (AOMb)](#abyssorangemix_base-aomb)
+    - [AbyssOrangeMix\_Night (AOMn)](#abyssorangemix_night-aomn)
+    - [AbyssOrangeMix\_half (AOMh)](#abyssorangemix_half-aomh)
+    - [AbyssOrangeMix (AOM)](#abyssorangemix-aom-1)
+  - [ElyOrangeMix (ELOM)](#elyorangemix-elom)
+    - [ElyOrangeMix (ELOM)](#elyorangemix-elom-1)
+    - [ElyOrangeMix\_half (ELOMh)](#elyorangemix_half-elomh)
+    - [ElyNightOrangeMix (ELOMn)](#elynightorangemix-elomn)
+  - [BloodOrangeMix (BOM)](#bloodorangemix-bom)
+    - [BloodOrangeMix (BOM)](#bloodorangemix-bom-1)
+    - [BloodOrangeMix\_half (BOMh)](#bloodorangemix_half-bomh)
+    - [BloodNightOrangeMix (BOMn)](#bloodnightorangemix-bomn)
+  - [ElderOrangeMix](#elderorangemix)
+  - [Troubleshooting](#troubleshooting)
+  - [FAQ and Tips (🐈MEME ZONE🦐)](#faq-and-tips-meme-zone)
++/hdg/ Stable Diffusion Models Cookbook - 
+Model names are named after Cookbook precedents🍊
+This model is open access and available to all, with a CreativeML OpenRAIL-M license further specifying rights and usage. The CreativeML OpenRAIL License specifies: 
+1. You can't use the model to deliberately produce nor share illegal or harmful outputs or content
+2. The authors claims no rights on the outputs you generate, you are free to use them and are accountable for their use which must not go against the provisions set in the license
+3. You may re-distribute the weights and use the model commercially and/or as a service. If you do, please be aware you have to include the same use restrictions as the ones in the license and share a copy of the CreativeML OpenRAIL-M to all your users (please read the license entirely and carefully) Please read the full license here ：https://huggingface.co/spaces/CompVis/stable-diffusion-license
+~~- **Clearly indicate where modifications have been made.**  
+If you used it for merging, please state what steps you took to do so.~~
+Removed terms of use. 2023-06-28  
+Freedom. If you share your recipes, Marge swamp will be fun.
+The user has complete control over whether or not to generate NSFW content, and the user's decision to enjoy either SFW or NSFW is entirely up to the user.The learning model does not contain any obscene visual content that can be viewed with a single click.The posting of the Learning Model is not intended to display obscene material in a public place.  
+In publishing examples of the generation of copyrighted characters, I consider the following cases to be exceptional cases in which unauthorised use is permitted. 
+"when the use is for private use or research purposes; when the work is used as material for merchandising (however, this does not apply when the main use of the work is to be merchandised); when the work is used in criticism, commentary or news reporting; when the work is used as a parody or derivative work to demonstrate originality."
+In these cases, use against the will of the copyright holder or use for unjustified gain should still be avoided, and if a complaint is lodged by the copyright holder, it is guaranteed that the publication will be stopped as soon as possible.  
+I would also like to note that I am aware of the fact that many of the merged models use NAI, which is learned from Danbooru and other sites that could be interpreted as illegal, and whose model data itself is also a leak, and that this should be watched carefully. I believe that the best we can do is to expand the possibilities of GenerativeAI while protecting the works of illustrators and artists.  
+⚠Deprecated: Orange has grown too huge. Doing this will kill your storage.
+2. create a folder of your choice and right click → "Git bash here" and open a gitbash on the folder's directory.
+3. run the following commands in order.
+git clone https://huggingface.co/WarriorMama777/OrangeMixs
+Advanced: (When you want to download only selected directories, not the entire repository.)
+Toggle: How to Batch Download (Advanced)
+1. Run the command `git clone --filter=tree:0 --no-checkout https://huggingface.co/WarriorMama777/OrangeMixs` to clone the huggingface repository. By adding the `--filter=tree:0` and `--no-checkout` options, you can download only the file names without their contents.
+git clone --filter=tree:0 --no-checkout https://huggingface.co/WarriorMama777/OrangeMixs
+2. Move to the cloned directory with the command `cd OrangeMixs`.
+3. Enable sparse-checkout mode with the command `git sparse-checkout init --cone`. By adding the `--cone` option, you can achieve faster performance.
+git sparse-checkout init --cone
+4. Specify the directory you want to get with the command `git sparse-checkout add `. For example, if you want to get only the `Models/AbyssOrangeMix3` directory, enter `git sparse-checkout add Models/AbyssOrangeMix3`.
+git sparse-checkout add Models/AbyssOrangeMix3
+5. Download the contents of the specified directory with the command `git checkout main`.
+This completes how to clone only a specific directory. If you want to add other directories, run `git sparse-checkout add ` again.
+1. Go to the Files and vaersions tab.
+2. select the model you want to download
+# Model Detail & Merge Recipes
+![](https://github.com/WarriorMama777/imgup/raw/main/img/VOM/VOM_heroimage_02_comp002.webp "VividOrangeMix")
+Prompt: https://majinai.art/ja/i/VZ9dNoI
+Civitai: https://civitai.com/models/196585?modelVersionId=221033
+"VividOrangeMix is a StableDiffusion model created for fans seeking vivid, flat, anime-style illustrations. With rich, bold colors and flat shading, it embodies the style seen in anime and manga.”
+One of the versions of OrangeMixs, AbyssOrangeMix1~3 (AOM), has improved the anatomical accuracy of the human body by merging photorealistic models, but I was dissatisfied with the too-realistic shapes and shadows.  
+VividOrangeMix is a model that has been adjusted to solve this problem.  
+![](https://github.com/WarriorMama777/imgup/raw/main/img/VOM/2023-11-14_VividOrangeMixSample_default_big_v2.1.webp "VividOrangeMixSampleGallery_default")
+![](https://github.com/WarriorMama777/imgup/raw/main/img/VOM/2023-11-14_VividOrangeMixSample_LoRA_med_v2.webp "VividOrangeMixSampleGallery_LoRA")
+### VividOrangeMix_NSFW / Hard
+VividOrangeMix NSFW/Hard is, as before, a model that Merges elements of NAI and Gape by U-Net Blocks Weight method.
+As of AOM3, elements of these models should be included, but when I simply merged other models, the elements of the old merge seem to gradually fade away. Also, by merging U-Net Blocks Weight, it is now possible to merge without affecting the design to some extent, but some changes are unavoidable, so I decided to upload it separately as before. .
+![](https://github.com/WarriorMama777/imgup/raw/main/img/VOM/2023-11-27_VividOrangeMixSample_NSFWandHard.webp "VividOrangeMixSampleGallery_LoRA")
+- https://github.com/hako-mikan/sd-webui-supermerger/  
+[GO TO AOM3B4 Instructions↓](#AOM3B4)
+![](https://github.com/WarriorMama777/imgup/raw/main/img/AOM3/AOM3_G_Top_comp001.webp "")
+――Everyone has different “ABYSS”!
+The main model, "AOM3 (AbyssOrangeMix3)", is a purely upgraded model that improves on the problems of the previous version, "AOM2". "AOM3" can generate illustrations with very realistic textures and can generate a wide variety of content. There are also three variant models based on the AOM3 that have been adjusted to a unique illustration style. These models will help you to express your ideas more clearly.
+- [⚠NSFW] Civitai: AbyssOrangeMix3 (AOM3) | Stable Diffusion Checkpoint | https://civitai.com/models/9942/abyssorangemix3-aom3
+Features: high-quality, realistic textured illustrations can be generated.  
+There are two major changes from AOM2.
+1: Models for NSFW such as _nsfw and _hard have been improved: the models after nsfw in AOM2 generated creepy realistic faces, muscles and ribs when using Hires.fix, even though they were animated characters. These have all been improved in AOM3.
+e.g.: explanatory diagram by MEME : [GO TO MEME ZONE↓](#MEME_realface)
+2: sfw/nsfw merged into one model. Originally, nsfw models were separated because adding NSFW content (models like NAI and gape) would change the face and cause the aforementioned problems. Now that those have been improved, the models can be packed into one.  
+In addition, thanks to excellent extensions such as [ModelToolkit](https://github.com/arenatemp/stable-diffusion-webui-model-toolkit
+), the model file size could be reduced (1.98 GB per model).
+![](https://github.com/WarriorMama777/imgup/raw/main/img/AOM3/AOM3_G_Full_2_comp002.webp "")
+In addition, these U-Net Blocks Weight Merge models take numerous steps but are carefully merged to ensure that mutual content is not overwritten.  
+(Of course, all models allow full control over adult content.)
+- 🔐 When generating illustrations for the general public: write "nsfw" in the negative prompt field
+- 🔞 ~~When generating adult illustrations: "nsfw" in the positive prompt field~~ -> It can be generated without putting it in. If you include it, the atmosphere will be more NSFW.
+### Variations / Sample Gallery
+![](https://github.com/WarriorMama777/imgup/raw/main/img/AOM3/AOM3_G_Art_comp003.webp "")
+![](https://github.com/WarriorMama777/imgup/raw/2c840982550fab41f45ba4b5aedbd3d84ddf2390/img/AOM3/img_sanmples_AOM3_01_comp001.webp "OrangeMixs_img_sanmples_AOM3_01_comp001")
+(Actually, this gallery doesn't make much sense since AOM3 is mainly an improvement of the NSFW part 😂  ...But we can confirm that the picture is not much different from AOM2sfw.)
+⛔Only this model (AOM3A1) includes ChilloutMix. The curse of the DreamLike license. In other words, only AOM3A1 is not available for commercial use. I recommend AOM3A1B instead.⛔
+[GO TO MEME ZONE↓](#MEME_AOM3A1)
+Features: Anime like illustrations with flat paint. Cute enough as it is, but I really like to apply LoRA of anime characters to this model to generate high quality anime illustrations like a frame from a theatre version.
+![](https://github.com/WarriorMama777/imgup/raw/33d21cd31e35ae6b7593e7f6dd913f5f71ddef4e/img/AOM3/img_sanmples_AOMA1_3.0_comp001.webp "OrangeMixs_img_sanmples_AOMA1_3.0_comp001")
+(1)©Yurucamp: Inuyama Aoi, (2)©The Quintessential Quintuplets: Nakano Yotsuba, (3)©Sailor Moon: Mizuno Ami/SailorMercury
+Features: Oil paintings like style artistic illustrations and stylish background depictions. In fact, this is mostly due to the work of Counterfeit 2.5, but the textures are more realistic thanks to the U-Net Blocks Weight Merge.
+Features: Midpoint of artistic and kawaii. the model has been tuned to combine realistic textures, a artistic style that also feels like an oil colour style, and a cute anime-style face. Can be used to create a wide range of illustrations.
+AOM3A1B added. This model is my latest favorite. I recommend it for its moderate realism, moderate brush touch, and moderate LoRA conformity.  
+The model was merged by mistakenly selecting 'Add sum' when 'Add differences' should have been selected in the ~~AOM3A3~~AOM3A2 recipe. It was an unintended merge, but we share it because the illustrations produced are consistently good results.  
+The model was merged by mistakenly selecting 'Add sum' when 'Add differences' should have been selected in the ~~AOM3A3~~AOM3A2 recipe. It was an unintended merge, but we share it because the illustrations produced are consistently good results.  
+In my review, this is an illustration style somewhere between AOM3A1 and A3.
+![](https://github.com/WarriorMama777/imgup/raw/c66097319405d5373fab1cebec03c5c71427879c/img/AOM3/img_AOM3A1B_01_comp001.webp "orangemix_img_AOM3A1B_01_comp001.webp")  
+![](https://github.com/WarriorMama777/imgup/raw/3e060893c0fb2c80c6f3aedf63bf8d576c9a37fc/img/AOM3/img_samples_AOM3A1B_01_comp001.webp "orangemix_img_samples_AOM3A1B_01_comp001.webp")  
+- Meisho Doto (umamusume): https://civitai.com/models/11980/meisho-doto-umamusume
+- Train and Girl: [JR East E235 series / train interior](https://civitai.com/models/9517/jr-east-e235-series-train-interior) 
+©umamusume: Meisho Doto, ©Girls und Panzer: Nishizumi Miho,©IDOLM@STER: Sagisawa Fumika
+Just AOM3A1B + BreakdomainM21: 0.4  
+So this model is somewhat of a troll model.
+I would like to create an improved DiffLoRAKit_v2 based on this.  
+Upload for access for research etc. 2023-06-27  
+![AOM3B2_orangemixs_sampleGallery](https://github.com/WarriorMama777/imgup/raw/main/img/AOM3/img_sanmples_AOM3B2_02_comp001.webp "AOM3B2_orangemixs_sampleGallery")
+1. [Maid](https://majinai.art/ja/i/jhw20Z_)
+2. Yotsuba: https://majinai.art/ja/i/f-O4wau
+3. Inuko in cafe: https://majinai.art/ja/i/Cj-Ar9C
+4. bathroom: https://majinai.art/ja/i/XiSj5K6
+This is a derivative model of AOM3B2.
+I merged some nice models and also merged some LoRAs to further adjust the color and painting style.
+AOM3B2+Mixprov4+BreakdomainAnime
+ triple sum : 0.3, 0.3 | mode:normal
+loraH(DiffLoRA)_FaceShadowTweaker_v1_dim4:-2,nijipretty_20230624235607:0.1,MatureFemale_epoch8:0.1,colorful_V1_lbw:0.5
+USE: https://github.com/hako-mikan/sd-webui-supermerger/  
+⚓[GO TO VividOrangeMix Instructions↑](#VOM)
+This is a derivative model of AOM3B2.
+I merged some nice models and also merged some LoRAs to further adjust the color and painting style.
+AOM3B2+Mixprov4+BreakdomainAnime
+ triple sum : 0.3, 0.3 | mode:normal
+loraH(DiffLoRA)_FaceShadowTweaker_v1_dim4:-2,nijipretty_20230624235607:0.1,MatureFemale_epoch8:0.1,colorful_V1_lbw:0.5
+USE: https://github.com/hako-mikan/sd-webui-supermerger/  
+⚓[GO TO VividOrangeMix Instructions↑](#VOM)
+### Description for enthusiast
+AOM3 was created with a focus on improving the nsfw version of AOM2, as mentioned above.The AOM3 is a merge of the following two models into AOM2sfw using U-Net Blocks Weight Merge, while extracting only the NSFW content part.  
+(2)gape: Finetune model of NAI trained on Danbooru's very hardcore NSFW content.  
+In other words, if you are looking for something like AOM3sfw, it is AOM2sfw.The AOM3 was merged with the NSFW model while removing only the layers that have a negative impact on the face and body.   However, the faces and compositions are not an exact match to AOM2sfw.AOM2sfw is sometimes superior when generating SFW content. I recommend choosing according to the intended use of the illustration.See below for a comparison between AOM2sfw and AOM3.
+![](https://github.com/WarriorMama777/imgup/raw/main/img/AOM3/img_modelComparison_AOM_comp001.webp "modelComparison_AOM")
+▼A summary of the AOM3 work is as follows
+1. investigated the impact of the NAI and gape layers as AOM2 _nsfw onwards is crap.  
+2. cut face layer: OUT04 because I want realistic faces to stop → Failed. No change.  
+3. gapeNAI layer investigation｜  
+  a. (IN05-08 (especially IN07) | Change the illustration   significantly. Noise is applied, natural colours are lost, shadows die, and we can see that the IN deep layer is a layer of light and shade.  
+  b. OUT03-05(?) | likely to be sexual section/NSFW layer.Cutting here will kill the NSFW.  
+  c. OUT03,OUT04｜NSFW effects are in(?). e.g.: spoken hearts, trembling, motion lines, etc...  
+  d. OUT05｜This is really an NSFW switch. All the "NSFW atmosphere" is in here. Facial expressions, Heavy breaths, etc...  
+  e. OUT10-11｜Paint layer. Does not affect detail, but does have an extensive impact.  
+1. (mass production of rubbish from here...)   
+2. cut IN05-08 and merge NAIgape with flat parameters → avoided creepy muscles and real faces. Also, merging NSFW models stronger has less impact.  
+3. so, cut IN05-08, OUT10-11 and merge NAI+gape with all others 0.5.  
+    - Negative prompts is As simple as possible is good.  
+    (worst quality, low quality:1.4)
+    - Using "3D" as a negative will result in a rough sketch style at the "sketch" level. Use with caution as it is a very strong prompt.
+    (realistic, lip, nose, tooth, rouge, lipstick, eyeshadow:1.0), (abs, muscular, rib:1.0),
+    (depth of field, bokeh, blurry:1.4)
+    - How to remove mosaic: `(censored, mosaic censoring, bar censor, convenient censoring, pointless censoring:1.0),`
+    - How to remove blush: `(blush, embarrassed, nose blush, light blush, full-face blush:1.4), `
+    - How to remove NSFW effects: `(trembling, motion lines, motion blur, emphasis lines:1.2),`
+    - 🔰Basic negative prompts sample for Anime girl ↓  
+    `nsfw, (worst quality, low quality:1.4), (realistic, lip, nose, tooth, rouge, lipstick, eyeshadow:1.0), (dusty sunbeams:1.0),, (abs, muscular, rib:1.0), (depth of field, bokeh, blurry:1.4),(motion lines, motion blur:1.4), (greyscale, monochrome:1.0), text, title, logo, signature`
+    `nsfw, (worst quality, low quality:1.4), (lip, nose, tooth, rouge, lipstick, eyeshadow:1.4), (blush:1.2), (jpeg artifacts:1.4), (depth of field, bokeh, blurry, film grain, chromatic aberration, lens flare:1.0), (1boy, abs, muscular, rib:1.0), greyscale, monochrome, dusty sunbeams,  trembling, motion lines, motion blur, emphasis lines, text, title, logo, signature, `
+- Sampler: ~~“DPM++ SDE Karras” is good~~ Take your pick  
+  - DPM++ SDE Karras: Test: 12～ ,illustration: 20～  
+  - DPM++ 2M Karras: Test: 20～ ,illustration: 28～  
+    - Detailed illust → Latenet (nearest-exact)  
+    Denoise strength: 0.5 (0.5~0.6)  
+    - Simple upscale: Swin IR, ESRGAN, Remacri etc…  
+    Denoise strength: Can be set low. (0.35~0.6)  
+D124FC18F0232D7F0A2A70358CDB1288AF9E1EE8596200F50F0936BE59514F6D
+F303D108122DDD43A34C160BD46DBB08CB0E088E979ACDA0BF168A7A1F5820E0
+553398964F9277A104DA840A930794AC5634FC442E6791E5D7E72B82B3BB88C3
+EB4099BA9CD5E69AB526FCA22A2E967F286F8512D9509B735C892FA6468767CF
+5493A0EC491F5961DBDC1C861404088A6AE9BD4007F6A3A7C5DEE8789CDC1361
+F553E7BDE46CFE9B3EF1F31998703A640AF7C047B65883996E44AC7156F8C1DB
+5493A0EC491F5961DBDC1C861404088A6AE9BD4007F6A3A7C5DEE8789CDC1361
+F553E7BDE46CFE9B3EF1F31998703A640AF7C047B65883996E44AC7156F8C1DB
+「038ba203d8ba3c8af24f14e01fbb870c85bbb8d4b6d9520804828f4193d12ce9」
+1. AnythingV3.0 huggingface pruned  
+[2700c435]「543bcbc21294831c6245cd74c8a7707761e28812c690f946cb81fef930d54b5e」
+1. NovelAI animefull-final-pruned  
+[925997e9]「89d59c3dde4c56c6d5c41da34cc55ce479d93b4007046980934b14db71bdb2a8」
+[1d4a34af]「22fa233c2dfd7748d534be603345cb9abf994a23244dfdfc1013f4f90322feca」
+[25396b85]「893cca5903ccd0519876f58f4bc188dd8fcc5beb8a69c1a3f1a5fe314bb573f5」
+「bbf07e3a1c3482c138d096f7dcdb4581a2aa573b74a68ba0906c7b657942f1c2」
+1. chilloutmix_fp16.safetensors  
+「4b3bf0860b7f372481d0b6ac306fed43b0635caf8aa788e28b32377675ce7630」
+1. Counterfeit-V2.5_fp16.safetensors  
+「71e703a0fca0e284dd9868bca3ce63c64084db1f0d68835f0a31e1f4e5b7cca6」
+「3b3982f3aaeaa8af3639a19001067905e146179b6cddf2e3b34a474a0acae7fa」
+USE: https://github.com/hako-mikan/sd-webui-supermerger/  
+USE: https://github.com/hako-mikan/sd-webui-supermerger/  
+(This extension is really great. It turns a month's work into an hour. Thank you)
+STEP: 1 | BWM : NAI - NAIsfw & gape - NAI
+STEP: 1 | Change the base photorealistic model of AOM3 from BasilMix to Chilloutmix.
+Change the photorealistic model from BasilMix to Chilloutmix and proceed to gapeNAI merge.
+CUT: BASE0, IN00-IN08：0, IN10：0.1, OUT03-04-05：0, OUT08：0.2
+⛔Only this model (AOM3A1) includes ChilloutMix (=The curse of DreamLike).Commercial use is not available.
+⛔Only this model (AOM3A1) includes ChilloutMix (=The curse of DreamLike).Commercial use is not available.
+CUT: BASE0, IN05:0.3、IN06-IN08：0, IN10：0.1, OUT03：0, OUT04：0.3, OUT05：0, OUT08：0.2
+CUT : BASE0, IN05-IN08：0, IN10：0.1, OUT03：0.5, OUT04-05：0.1, OUT08：0.2
+――Creating the next generation of illustration with “Abyss”!
+Prompt: [https://majinai.art/ja/i/nxpKRpw](https://majinai.art/ja/i/nxpKRpw)
+AbyssOrangeMix2 (AOM2) is an AI model capable of generating high-quality, highly realistic illustrations.
+It can generate elaborate and detailed illustrations that cannot be drawn by hand. It can also be used for a variety of purposes, making it extremely useful for design and artwork.
+Furthermore, it provides an unparalleled new means of expression.
+It can generate illustrations in a variety of genres to meet a wide range of needs. I encourage you to use "Abyss" to make your designs and artwork richer and of higher quality.
+▼Description for engineers/enthusiasts
+The merged model was formulated using an extension such as sdweb-merge-block-weighted-gui, which merges models at separate rates for each of the 25 U-Net blocks (input, intermediate, and output).
+The validation of many Anons has shown that such a recipe can generate a painting style that is anatomically realistic enough to feel the finger skeleton, but still maintains an anime-style face.
+The changes from AbyssOrangeMix are as follows.
+1. the model used for U-Net Blocks Weight Merge was changed from Instagram+F222 to BasilMix. ()
+This is an excellent merge model that can generate decent human bodies while maintaining the facial layers of the Instagram model. Thanks!!!
+This has improved the dullness of the color and given a more Japanese skin tone (or more precisely, the moisturized white skin that the Japanese would ideally like).
+Also, the unnatural bokeh that sometimes occurred in the previous version may have been eliminated (needs to be verified).
+2.Added IN deep layers (IN06-11) to the layer merging from the realistic model (BasilMix).
+It is said that the IN deep layer (IN06-11) is the layer that determines composition, etc., but perhaps light, reflections, skin texture, etc., may also be involved.
+It is like "Global Illumination", "Ray tracing" and "Ambient Occlusion" in 3DCG.
+※This does not fundamentally improve the fingers. Therefore, More research needs to be done to improve the fingers (e.g. '[bad_prompt](https://huggingface.co/datasets/Nerfgun3/bad_prompt)').
+About 30-50% chance of generating correct fingers(?). Abyss is deep.
+The prompts for generating these images were all generated using ChatGPT. I simply asked "Pirates sailing the oceans" to tell me what the prompts were.  
+However, to make sure the AI understood the specifications, I used the template for AI questions (Question template for AI prompt generation(v1.2) ).
+https://seesaawiki.jp/nai_ch/d/AI%a4%f2%b3%e8%cd%d1%a4%b7%a4%bf%a5%d7%a5%ed%a5%f3%a5%d7%a5%c8%c0%b8%c0%ae
+The images thus generated, strangely enough, look like MidJourney or Nijijourney illustrations. Perhaps they are passing user prompts through GPT or something else before passing them on to the image AI🤔
+▼All prompts to generate sample images
+1. [Gaming Girl](https://majinai.art/ja/i/GbTbLyk)
+2. [Fantasy](https://majinai.art/ja/i/ax45Pof)
+3. [Rainy Day](https://majinai.art/ja/i/1P9DUul)
+4. [Kemomimi Girl](https://majinai.art/ja/i/hrUSb31)
+5. [Supermarket](https://majinai.art/ja/i/6Mf4bVK)
+6. [Lunch Time](https://majinai.art/ja/i/YAgQ4On)
+7. [Womens in the Garden](https://majinai.art/ja/i/oHZYum_)
+8. [Pirate](https://majinai.art/ja/i/yEA3EZk)
+9. [Japanese Girl](https://majinai.art/ja/i/x4G_B_e)
+10. [Sweets Time](https://majinai.art/ja/i/vK_mkac)
+11. [Glasses Girl](https://majinai.art/ja/i/Z87IHOC)
+- ~~Prompts can be long or short~~  
+As simple as possible is good. Do not add excessive detail prompts. Start with just this negative propmt.  
+(worst quality, low quality:1.4)  
+- Sampler: “DPM++ SDE Karras” is good
+- Steps: forTest: 12～ ,illustration: 20～
+- Upscaler : Latenet (nearest-exact)
+- Denoise strength: 0.5 (0.45~0.6)  
+If you use 0.7～, the picture will change too much.  
+If below 0.45, Block noise occurs.  
+- AbyssOrangeMix2_sfw｜BasilMix U-Net Blocks Weight Merge
+  - AbyssOrangeMix2_nsfw｜+ NAI-NAISFW 0.3 Merge
+    - AbyssOrangeMix2_hard｜+ Gape 0.3 Merge
+_base →_sfw: _base was changed to_sfw.
+_night →_nsfw: Merged models up to NAI-NAI SFW were changed from _night to_nsfw.
+_half and non suffix →_hard: Gape merged models were given the suffix _hard.gape was reduced to 0.3 because it affects character modeling.  
+「f75b19923f2a4a0e70f564476178eedd94e76e2c94f8fd8f80c548742b5b51b9」  
+- AbyssOrangeMix2_sfw.safetensors  
+「038ba203d8ba3c8af24f14e01fbb870c85bbb8d4b6d9520804828f4193d12ce9」  
+- AbyssOrangeMix2_nsfw.safetensors  
+「0873291ac5419eaa7a18726e8841ce0f15f701ace29e0183c47efad2018900a4」  
+- AbyssOrangeMix_hard.safetensors  
+「0fc198c4908e98d7aae2a76bd78fa004e9c21cb0be7582e36008b4941169f18e」  
+1. AnythingV3.0 huggingface pruned  
+[2700c435]「543bcbc21294831c6245cd74c8a7707761e28812c690f946cb81fef930d54b5e」  
+1. NovelAI animefull-final-pruned  
+[925997e9]「89d59c3dde4c56c6d5c41da34cc55ce479d93b4007046980934b14db71bdb2a8」  
+[1d4a34af]「22fa233c2dfd7748d534be603345cb9abf994a23244dfdfc1013f4f90322feca」  
+[25396b85]「893cca5903ccd0519876f58f4bc188dd8fcc5beb8a69c1a3f1a5fe314bb573f5」  
+「bbf07e3a1c3482c138d096f7dcdb4581a2aa573b74a68ba0906c7b657942f1c2」  
+### AbyssOrangeMix2_sfw (AOM2s)
+### AbyssOrangeMix2_nsfw (AOM2n)
+JUST AbyssOrangeMix2_sfw+ (NAI-NAISFW) 0.3.
+### AbyssOrangeMix2_hard (AOM2h)
++Gape0.3 version AbyssOrangeMix2_nsfw.
+EerieOrangeMix is the generic name for a U-Net Blocks Weight Merge Models based on Elysium(Anime V2).  
+Since there are infinite possibilities for U-Net Blocks Weight Merging, I plan to treat all Elysium-based models as a lineage of this model.
+※This does not fundamentally improve the fingers. Therefore, More research needs to be done to improve the fingers (e.g. '[bad_prompt](https://huggingface.co/datasets/Nerfgun3/bad_prompt)').
+This merge model is simply a U-Net Blocks Weight Merge of ElysiumAnime V2 with the AbyssOrangeMix method.
+The AnythingModel is good at cute girls anyway, and no matter how hard I try, it doesn't seem to be good at women in their late 20s and beyond. Therefore, I created a U-Net Blocks Weight Merge model based on my personal favorite ElysiumAnime V2 model. ElyOrangeMix was originally my favorite, so this is an enhanced version of that.
+- EerieOrangeMix_base｜Instagram+F222 U-Net Blocks Weight Merge
+  - EerieOrangeMix_night｜+ NAI-NAISFW Merge
+    - EerieOrangeMix_half｜+ Gape0.5 Merge
+    - EerieOrangeMix｜+ Gape1.0 Merge
+- unlabeled : SFW ～ HARDCORE ～🤯  ex)AbyssOrangeMix, BloodOrangeMix...etc
+- EerieOrangeMix_half.safetensors
+- EerieOrangeMix_night.safetensors
+[]「5c4787ce1386500ee05dbb9d27c17273c7a78493535f2603321f40f6e0796851」
+2. NovelAI animefull-final-pruned
+[925997e9]「89d59c3dde4c56c6d5c41da34cc55ce479d93b4007046980934b14db71bdb2a8」
+[1d4a34af]「22fa233c2dfd7748d534be603345cb9abf994a23244dfdfc1013f4f90322feca」
+[25396b85]「893cca5903ccd0519876f58f4bc188dd8fcc5beb8a69c1a3f1a5fe314bb573f5」
+5. instagram-latest-plus-clip-v6e1_50000.safetensors
+[] 「8f1d325b194570754c6bd06cf1e90aa9219a7e732eb3d488fb52157e9451a2a5」
+[] 「9e2c6ceff3f6d6f65c6fb0e10d8e69d772871813be647fd2ea5d06e00db33c1f」
+[] 「e1441589a6f3c5a53f5f54d0975a18a7feb7cdf0b0dee276dfc3331ae376a053」
+- As simple as possible is good. Do not add excessive detail prompts. Start with just this.
+(worst quality, low quality:1.4)
+- Sampler: “DPM++ SDE Karras” is good
+- Steps: forTest: 20～24 ,illustration: 24～50
+- Denoise strength: 0.45 (0.4~0.5)  
+If you use 0.7～, the picture will change too much.
+🖌When generating cute girls, try this negative prompt first. It avoids low quality, prevents blurring, avoids dull colors, and dictates Anime-like cute face modeling.
+nsfw, (worst quality, low quality:1.3), (depth of field, blurry:1.2), (greyscale, monochrome:1.1), 3D face, nose, cropped, lowres, text, jpeg artifacts, signature, watermark, username, blurry, artist name, trademark, watermark, title, (tan, muscular, loli, petite, child, infant, toddlers, chibi, sd character:1.1), multiple view, Reference sheet,
+#### EerieOrangeMix_base (EOM1b)
+Details are omitted since it is the same as AbyssOrangeMix.
+STEP: 1｜Creation of photorealistic model for Merge
+#### EerieOrangeMix_Night (EOM1n)
+JUST EerieOrangeMix_base+ (NAI-NAISFW) 0.3.
+#### EerieOrangeMix_half (EOM1h)
++Gape0.5 version EerieOrangeMix.
+The model was created by adding the hierarchy responsible for detailing and painting ElysiumV1 to EerieOrangeMix_base, then merging NAI and Gape.
+- EerieOrangeMix2_base｜Instagram+F222+ElysiumV1 U-Net Blocks Weight Merge
+  - EerieOrangeMix2_night｜+ NAI-NAISFW Merge
+    - EerieOrangeMix2_half｜+ Gape0.5 Merge
+    - EerieOrangeMix2｜+ Gape1.0 Merge
+- unlabeled : SFW ～ HARDCORE ～🤯  ex)AbyssOrangeMix, BloodOrangeMix...etc
+- EerieOrangeMix2_half.safetensors
+- EerieOrangeMix2_night.safetensors
+[]「5c4787ce1386500ee05dbb9d27c17273c7a78493535f2603321f40f6e0796851」
+2. NovelAI animefull-final-pruned
+[925997e9]「89d59c3dde4c56c6d5c41da34cc55ce479d93b4007046980934b14db71bdb2a8」
+[1d4a34af]「22fa233c2dfd7748d534be603345cb9abf994a23244dfdfc1013f4f90322feca」
+[25396b85]「893cca5903ccd0519876f58f4bc188dd8fcc5beb8a69c1a3f1a5fe314bb573f5」
+5. instagram-latest-plus-clip-v6e1_50000.safetensors
+[] 「8f1d325b194570754c6bd06cf1e90aa9219a7e732eb3d488fb52157e9451a2a5」
+[] 「9e2c6ceff3f6d6f65c6fb0e10d8e69d772871813be647fd2ea5d06e00db33c1f」
+[] 「e1441589a6f3c5a53f5f54d0975a18a7feb7cdf0b0dee276dfc3331ae376a053」
+「abbb28cb5e70d3e0a635f241b8d61cefe42eb8f1be91fd1168bc3e52b0f09ae4」
+#### EerieOrangeMix2_base (EOM2b)
+The generated results do not change much with or without this process, but I wanted to incorporate Elysium's depiction, so I merged it.
+#### EerieOrangeMix2_night (EOM2n)
+JUST EerieOrangeMix2_base+ (NAI-NAISFW) 0.3.
+#### EerieOrangeMix2_half (EOM2h)
++Gape0.5 version EerieOrangeMix2.
+※The difference is slight but probably looks like this.
+← warm color, ↑ natural color, → animated color
+――How can you guys take on such a deep swamp and get results?  
+Is it something like "Made in Abyss"?  
+The merged model was formulated using an extension such as sdweb-merge-block-weighted-gui, which merges models at separate rates for each of the 25 U-Net blocks (input, intermediate, and output).
+The validation of many Anons has shown that such a recipe can generate a painting style that is anatomically realistic enough to feel the finger skeleton, but still maintains an anime-style face.
+※This model is the result of a great deal of testing and experimentation by many Anons🤗
+※This model can be very difficult to handle. I am not 100% confident in my ability to use this model. It is peaky and for experts.  
+※This does not fundamentally improve the fingers, and I recommend using bad_prompt, etc. (Embedding) in combination.  
+((masterpiece)), best quality, perfect anatomy, (1girl, solo focus:1.4), pov, looking at viewer, flower trim,(perspective, sideway, From directly above ,lying on water, open hand, palm, :1.3),(Accurate five-fingered hands, Reach out, hand focus, foot focus, Sole, heel, ball of the thumb:1.2), (outdoor, sunlight:1.2),(shiny skin:1.3),,(masterpiece, white border, outside border, frame:1.3),
+, (motherhood, aged up, mature female, medium breasts:1.2), (curvy:1.1), (single side braid:1.2), (long hair with queue and braid, disheveled hair, hair scrunchie, tareme:1.2), (light Ivory hair:1.2), looking at viewer,, Calm, Slight smile,
+,(anemic, dark, lake, river,puddle, Meadow, rock, stone, moss, cliff, white flower, stalactite, Godray, ruins, ancient, eternal, deep ,mystic background,sunlight,plant,lily,white flowers, Abyss, :1.2), (orange fruits, citrus fruit, citrus fruit bearing tree:1.4), volumetric lighting,good lighting,, masterpiece, best quality, highly detailed,extremely detailed cg unity 8k wallpaper,illustration,((beautiful detailed face)), best quality, (((hyper-detailed ))), high resolution illustration ,high quality, highres, sidelighting, ((illustrationbest)),highres,illustration, absurdres, hyper-detailed, intricate detail, perfect, high detailed eyes,perfect lighting, (extremely detailed CG:1.2),
+Negative prompt: (bad_prompt_version2:1), distant view, lip, Pregnant, maternity, pointy ears, realistic, tan, muscular, greyscale, monochrome, lineart, 2koma, 3koma, 4koma, manga, 3D, 3Dcubism, pablo picasso, disney, marvel, mutanted breasts, mutanted nipple, cropped, lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name, lowres, trademark, watermark, title, text, deformed, bad anatomy, disfigured, mutated, extra limbs, ugly, missing limb, floating limbs, disconnected limbs, out of frame, mutated hands and fingers, poorly drawn hands, malformed hands, poorly drawn face, poorly drawn asymmetrical eyes, (blurry:1.4), duplicate (loli, petite, child, infant, toddlers, chibi, sd character, teen age:1.4), tsurime, helmet hair, evil smile, smug_face, naughty smile, multiple view, Reference sheet, (worst quality, low quality:1.4),
+Steps: 24, Sampler: DPM++ SDE Karras, CFG scale: 10, Seed: 1159970659, Size: 1536x768, Model hash: cc44dbff, Model: AbyssOrangeMix, Variation seed: 93902374, Variation seed strength: 0.45, Denoising strength: 0.45, ENSD: 31337
+street, 130mm f1.4 lens, ,(shiny skin:1.3),, (teen age, school uniform:1.2), (glasses, black hair, medium hair with queue and braid, disheveled hair, hair scrunchie, tareme:1.2), looking at viewer,, Calm, Slight smile,
+Negative prompt: (bad_prompt_version2:1), distant view, lip, Pregnant, maternity, pointy ears, realistic, tan, muscular, greyscale, monochrome, lineart, 2koma, 3koma, 4koma, manga, 3D, 3Dcubism, pablo picasso, disney, marvel, mutanted breasts, mutanted nipple, cropped, lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name, lowres, trademark, watermark, title, text, deformed, bad anatomy, disfigured, mutated, extra limbs, ugly, missing limb, floating limbs, disconnected limbs, out of frame, mutated hands and fingers, poorly drawn hands, malformed hands, poorly drawn face, poorly drawn asymmetrical eyes, (blurry:1.4), duplicate (loli, petite, child, infant, toddlers, chibi, sd character, teen age:1.4), tsurime, helmet hair, evil smile, smug_face, naughty smile, multiple view, Reference sheet, (worst quality, low quality:1.4),
+Steps: 24, Sampler: DPM++ SDE Karras, CFG scale: 10, Seed: 1140782193, Size: 1024x1536, Model hash: cc44dbff, Model: AbyssOrangeMix, Denoising strength: 0.45, ENSD: 31337, First pass size: 512x768, Model sha256: 6bb3a5a3b1eadd32, VAE sha256: f921fb3f29891d2a, Options: xformers medvram gtx_16x0
+Used embeddings: bad_prompt_version2 [afea]
+- ~~Prompts can be long or short~~  
+As simple as possible is good. Do not add excessive detail prompts. Start with just this.
+(worst quality, low quality:1.4)
+- Sampler: “DPM++ SDE Karras” is good
+- Steps: forTest: 20～24 ,illustration: 24～50
+- Denoise strength: 0.45 (0.4~0.5)
+If you use 0.7～, the picture will change too much.
+🖌When generating cute girls, try this negative prompt first. It avoids low quality, prevents blurring, avoids dull colors, and dictates Anime-like cute face modeling.
+nsfw, (worst quality, low quality:1.3), (depth of field, blurry:1.2), (greyscale, monochrome:1.1), 3D face, nose, cropped, lowres, text, jpeg artifacts, signature, watermark, username, blurry, artist name, trademark, watermark, title, (tan, muscular, loli, petite, child, infant, toddlers, chibi, sd character:1.1), multiple view, Reference sheet,
+- AbyssOrangeMix_base｜Instagram Merge
+  - AbyssOrangeMix_Night｜+ NAI-NAISFW Merge
+    - AbyssOrangeMix_half｜+ Gape0.5 Merge
+    - AbyssOrangeMix｜+ Gape1.0 Merge
+- unlabeled : SFW ～ HARDCORE ～🤯  ex)AbyssOrangeMix, BloodOrangeMix...etc
+6bb3a5a3b1eadd32dfbc8f0987559c48cb4177aee7582baa6d6a25181929b345
+- AbyssOrangeMix_half.safetensors  
+468d1b5038c4fbd354113842e606fe0557b4e0e16cbaca67706b29bcf51dc402
+- AbyssOrangeMix_Night.safetensors  
+167cd104699dd98df22f4dfd3c7a2c7171df550852181e454e71e5bff61d56a6
+bbd2621f3ec4fad707f75fc032a2c2602c296180a53ed3d9897d8ca7a01dd6ed
+1. AnythingV3.0 huggingface pruned
+[2700c435]「543bcbc21294831c6245cd74c8a7707761e28812c690f946cb81fef930d54b5e」
+1. NovelAI animefull-final-pruned
+[925997e9]「89d59c3dde4c56c6d5c41da34cc55ce479d93b4007046980934b14db71bdb2a8」
+[1d4a34af]「22fa233c2dfd7748d534be603345cb9abf994a23244dfdfc1013f4f90322feca」
+[25396b85]「893cca5903ccd0519876f58f4bc188dd8fcc5beb8a69c1a3f1a5fe314bb573f5」
+1. instagram-latest-plus-clip-v6e1_50000.safetensors
+[] 「8f1d325b194570754c6bd06cf1e90aa9219a7e732eb3d488fb52157e9451a2a5」
+[] 「9e2c6ceff3f6d6f65c6fb0e10d8e69d772871813be647fd2ea5d06e00db33c1f」
+[] 「e1441589a6f3c5a53f5f54d0975a18a7feb7cdf0b0dee276dfc3331ae376a053」
+### AbyssOrangeMix_base (AOMb)
+The basic trick for this merged model is to incorporate a model that has learned more than 1m Instagram photos (mostly Japanese) or a photorealistic model like f222. The choice of base model here depends on the person. I chose AnythingV3 for versatility.
+STEP: 1｜Creation of photorealistic model for Merge
+### AbyssOrangeMix_Night (AOMn)
+JUST AbyssOrangeMix_base+ (NAI-NAISFW) 0.3.
+### AbyssOrangeMix_half (AOMh)
++Gape0.5 version AbyssOrangeMix.
+Elysium_Anime_V2 + NAI + Gape.  
+This is a merge model that improves on the Elysium_Anime_V2, where NSFW representation is not good.  
+It can produce SFW, NSFW, and any other type of artwork, while retaining the Elysium's three-dimensional, thickly painted style.
+- unlabeled : SFW ～ HARDCORE ～🤯  ex)AbyssOrangeMix, BloodOrangeMix...etc
+- ElyOrangeMix_half [6b508e59]
+1. Elysium_Anime_V2 [6b508e59]
+2. NovelAI animefull-final-pruned [925997e9]
++Gape0.5 version ElyOrangeMix.
+1. Elysium_Anime_V2 [6b508e59]
+2. NovelAI animefull-final-pruned [925997e9]
+It is a merged model that just did Elysium_Anime_V2+ (NAI-NAISFW) 0.3.
+1. Elysium_Anime_V2 [6b508e59]
+2. NovelAI animefull-final-pruned [925997e9]
+This is a merge model that improves on the AnythingV3, where NSFW representation is not good.  
+It can produce SFW, NSFW, and any other type of artwork, while retaining the flat, beautifully painted style of AnythingV3.  
+Stable. Popular in the Japanese community.  
+▼ModelList & [] = WebUI Hash,「」= SHA256
+  [ffa7b160]「f8aff727ba3da0358815b1766ed232fd1ef9682ad165067cac76e576d19689e0」
+ [ffa7b160]「b2168aaa59fa91229b8add21f140ac9271773fe88a387276f3f0c7d70f726a83」
+[ffa7b160] 「25cece3fe303ea8e3ad40c3dca788406dbd921bcf3aa8e3d1c7c5ac81f208a4f」
+「79a1edf6af43c75ee1e00a884a09213a28ee743b2e913de978cb1f6faa1b320d」
+- unlabeled : SFW ～ HARDCORE ～🤯  ex)AbyssOrangeMix, BloodOrangeMix...etc
+1. AnythingV3.0 huggingface pruned [2700c435]
+2. NovelAI animefull-final-pruned [925997e9]
+### BloodOrangeMix_half (BOMh)
++Gape0.5 version BloodOrangeMix.
+NSFW expression will be softer and have less impact on the Anything style painting style.
+1. AnythingV3.0 huggingface pruned [2700c435]
+2. NovelAI animefull-final-pruned [925997e9]
+### BloodNightOrangeMix (BOMn)
+It is a merged model that just did AnythingV3+ (NAI-NAISFW) 0.3.
+1. AnythingV3.0 huggingface pruned [2700c435]
+2. NovelAI animefull-final-pruned [925997e9]
+※I found this model to be very prone to body collapse. Not recommended.
+anything and everything mix ver.1.5+Gape+Nai(AnEve.G.N0.3)  
+This is a merged model with improved NSFW representation of anything and everything mix ver.1.5.
+1. anything and everything mix ver.1.5 [5265dcf6]
+2. NovelAI animefull-final-pruned [925997e9]
+1. blurred Images & clearly low quality output  
+If the generated images are blurred or only clearly low quality output is produced, it is possible that the vae, etc. are not loaded properly. Try reloading the model/vae or restarting the WebUI/OS.
+▼Noooo, not work. This guy is Scammer  
+▼Noooo, can't generate image like samples.This models is hype. 
+▼Noooo, This models have troy virus. don't download.  
+All models in this repository are secure. It is most likely that anti-virus software has detected them erroneously.  
+However, the models with the .ckpt extension have the potential danger of executing arbitrary code.  
+A safe model that is free from these dangers is the model with the .safetensors extension.  
+![](https://github.com/WarriorMama777/imgup/raw/main/img/img_general/img_Neko.webp "")
+▼Noooo^()&*%#NG0u!!!!!!!!縺ゅ♀繧?縺医?縺､繝ｼ縺ｨ縺医?縺吶ｊ繝ｼ縺ｯ驕主ｭｦ鄙偵?繧ｴ繝溘〒縺? (「AOM3A2 and A3 are overlearning and Trash. delete!」)
+▼Noooo, Too many models. Tell me which one to choose.  
+→ [全部同じじゃないですか](https://github.com/WarriorMama777/imgup/blob/main/img/img_general/img_MEME_whichModel_comp001.webp?raw=true "全部同じじゃないですか")
