@@ -1,0 +1,261 @@
+[
+    {
+    "id": 1,
+    "input": "Inflect v2 is a parameter-efficient VITS-family end-to-end text-to-waveform generator with an English phoneme frontend, monotonic alignment, stochastic latent synthesis, residual coupling flow, and an integrated alias-reduced neural waveform decoder.",
+    "ground_truth": [
+        {
+        "id": 1,
+        "requirement": "States that Inflect v2 belongs to the VITS family."
+        },
+        {
+        "id": 2,
+        "requirement": "Explains that the model is parameter-efficient, meaning it is designed to provide its functionality using a relatively small number of model parameters."
+        },
+        {
+        "id": 3,
+        "requirement": "Explains that the model is end-to-end, meaning the process from text input to generated audio is handled as one integrated model pipeline."
+        },
+        {
+        "id": 4,
+        "requirement": "Explains that the model generates a waveform from text, i.e. converts written text into an audio signal."
+        },
+        {
+        "id": 5,
+        "requirement": "Mentions that the model has an English phoneme frontend."
+        },
+        {
+        "id": 6,
+        "requirement": "Explains that phonemes are the basic sound units used to represent spoken language."
+        },
+        {
+        "id": 7,
+        "requirement": "Explains that the phoneme frontend processes English text into phoneme information used by the model."
+        },
+        {
+        "id": 8,
+        "requirement": "Mentions monotonic alignment."
+        },
+        {
+        "id": 9,
+        "requirement": "Explains that monotonic alignment establishes the correspondence between the sequence of text/phonemes and the sequence of generated audio over time while preserving their order."
+        },
+        {
+        "id": 10,
+        "requirement": "Mentions stochastic latent synthesis."
+        },
+        {
+        "id": 11,
+        "requirement": "Explains that stochastic latent synthesis involves generating the speech using latent variables with an element of randomness or variation."
+        },
+        {
+        "id": 12,
+        "requirement": "Mentions residual coupling flow."
+        },
+        {
+        "id": 13,
+        "requirement": "Explains that residual coupling flow is a flow-based transformation used within the model to transform or refine its internal representation for speech generation."
+        },
+        {
+        "id": 14,
+        "requirement": "Mentions the integrated alias-reduced neural waveform decoder."
+        },
+        {
+        "id": 15,
+        "requirement": "Explains that the neural waveform decoder converts the model's internal representation into the final audio waveform."
+        },
+        {
+        "id": 16,
+        "requirement": "Explains that alias reduction reduces unwanted artifacts or distortions that can occur when generating the audio waveform."
+        },
+        {
+        "id": 17,
+        "requirement": "Does not introduce unsupported claims about the model's capabilities, training, quality, or benefits."
+        }
+    ],
+    "source": "https://huggingface.co/owensong/Inflect-Micro-v2"
+    },
+    {
+    "id": 2,
+    "input": "Step 3.7 Flash is a 198B-parameter sparse Mixture-of-Experts (MoE) vision-language model that combines a 196B-parameter language backbone with a 1.8B-parameter vision encoder for native image understanding.",
+    "ground_truth": [
+        {
+        "id": 1,
+        "requirement": "States that Step 3.7 Flash is a vision-language model, meaning it can work with both visual and language information."
+        },
+        {
+        "id": 2,
+        "requirement": "States that the model has approximately 198 billion parameters."
+        },
+        {
+        "id": 3,
+        "requirement": "Explains that parameters are the numerical values learned by the model during training that are used to process and generate information."
+        },
+        {
+        "id": 4,
+        "requirement": "States that the model uses a sparse Mixture-of-Experts (MoE) architecture."
+        },
+        {
+        "id": 5,
+        "requirement": "Explains that a Mixture-of-Experts architecture consists of multiple specialized components or 'experts' and that only a subset of them is used for a particular input."
+        },
+        {
+        "id": 6,
+        "requirement": "States that the model contains a 196-billion-parameter language backbone."
+        },
+        {
+        "id": 7,
+        "requirement": "Explains that the language backbone is the main part of the model responsible for processing language information."
+        },
+        {
+        "id": 8,
+        "requirement": "States that the model contains a 1.8-billion-parameter vision encoder."
+        },
+        {
+        "id": 9,
+        "requirement": "Explains that a vision encoder processes information from images and converts it into a form the model can use."
+        },
+        {
+        "id": 10,
+        "requirement": "Explains that the language backbone and vision encoder are combined as parts of the same model."
+        },
+        {
+        "id": 11,
+        "requirement": "States that the model provides native image understanding, meaning image information can be processed directly as part of the model rather than requiring a separate external image-understanding system."
+        },
+        {
+        "id": 12,
+        "requirement": "Does not introduce unsupported claims about the model's performance, capabilities, training, or benefits."
+        }
+    ],
+    "source": "https://huggingface.co/stepfun-ai/Step-3.7-Flash"
+    },
+    {
+    "id": 3,
+    "input": "This version of Stable Diffusion has been fine-tuned to accept CLIP image embeddings instead of text embeddings, allowing it to create variations of an input image in a way similar to DALL-E 2.",
+    "ground_truth": [
+        {
+        "id": 1,
+        "requirement": "States that this version is a fine-tuned version of Stable Diffusion."
+        },
+        {
+        "id": 2,
+        "requirement": "Explains that fine-tuning means the existing model was further trained or adapted for this specific purpose."
+        },
+        {
+        "id": 3,
+        "requirement": "States that the model accepts CLIP image embeddings as its input representation."
+        },
+        {
+        "id": 4,
+        "requirement": "Explains that an embedding is a numerical representation of information that a model can process."
+        },
+        {
+        "id": 5,
+        "requirement": "Explains that CLIP image embeddings are numerical representations of images produced using CLIP."
+        },
+        {
+        "id": 6,
+        "requirement": "Clearly explains that the model uses image embeddings instead of text embeddings."
+        },
+        {
+        "id": 7,
+        "requirement": "Explains that the model can use an input image to generate variations of that image."
+        },
+        {
+        "id": 8,
+        "requirement": "Preserves the comparison that the image-variation capability is similar to that of DALL-E 2."
+        },
+        {
+        "id": 9,
+        "requirement": "Does not introduce unsupported claims about the model's performance, image quality, training data, or capabilities."
+        }
+    ],
+    "source": "https://huggingface.co/lambda/sd-image-variations-diffusers"
+    },
+    {
+    "id": 4,
+    "input": "DeepSeek-R1-Zero is trained through large-scale reinforcement learning (RL) without supervised fine-tuning (SFT) as a preliminary step, allowing it to develop reasoning behaviors through reinforcement learning alone.",
+    "ground_truth": [
+        {
+        "id": 1,
+        "requirement": "States that DeepSeek-R1-Zero is trained using reinforcement learning (RL)."
+        },
+        {
+        "id": 2,
+        "requirement": "Explains that reinforcement learning is a training approach in which the model learns by receiving feedback or rewards for its behavior."
+        },
+        {
+        "id": 3,
+        "requirement": "States that the reinforcement learning used for training is performed at large scale."
+        },
+        {
+        "id": 4,
+        "requirement": "States that DeepSeek-R1-Zero is trained without supervised fine-tuning (SFT) as a preliminary or initial training step."
+        },
+        {
+        "id": 5,
+        "requirement": "Explains that supervised fine-tuning is a training process in which a model is further trained using examples with desired or labeled outputs."
+        },
+        {
+        "id": 6,
+        "requirement": "Clearly preserves the distinction that SFT is omitted specifically as a preliminary step before the reinforcement learning stage."
+        },
+        {
+        "id": 7,
+        "requirement": "States that DeepSeek-R1-Zero develops reasoning behaviors through reinforcement learning."
+        },
+        {
+        "id": 8,
+        "requirement": "Makes clear that these reasoning behaviors emerge from the reinforcement learning process rather than from a preceding supervised fine-tuning stage."
+        },
+        {
+        "id": 9,
+        "requirement": "Does not introduce unsupported claims about the model's reasoning ability, performance, training data, or other capabilities."
+        }
+    ],
+    "source": "https://huggingface.co/deepseek-ai/DeepSeek-R1"
+    },
+    {
+    "id": 5,
+    "input": "Whisper is a state-of-the-art model for automatic speech recognition (ASR) and speech translation, trained on more than 5 million hours of labeled data and designed to generalize to many datasets and domains in a zero-shot setting.",
+    "ground_truth": [
+        {
+        "id": 1,
+        "requirement": "States that Whisper is a model for automatic speech recognition (ASR), meaning it can convert spoken audio into written text."
+        },
+        {
+        "id": 2,
+        "requirement": "States that Whisper is also designed for speech translation, meaning it can translate spoken language into another language."
+        },
+        {
+        "id": 3,
+        "requirement": "Preserves the claim that Whisper is state-of-the-art."
+        },
+        {
+        "id": 4,
+        "requirement": "States that Whisper was trained on more than 5 million hours of labeled data."
+        },
+        {
+        "id": 5,
+        "requirement": "Explains that labeled data is data that has been provided with corresponding information or labels that identify the desired output."
+        },
+        {
+        "id": 6,
+        "requirement": "States that the model is designed to generalize across many different datasets and domains."
+        },
+        {
+        "id": 7,
+        "requirement": "Explains generalization as the ability to work with data or situations different from those specifically encountered during training."
+        },
+        {
+        "id": 8,
+        "requirement": "Explains that zero-shot means performing a task or working with a dataset or domain without being specifically trained on examples for that particular task or domain."
+        },
+        {
+        "id": 9,
+        "requirement": "Does not introduce unsupported claims about Whisper's accuracy, performance, languages, training data, or capabilities."
+        }
+    ],
+    "source": "https://huggingface.co/openai/whisper-large-v3"
+    }
+]
