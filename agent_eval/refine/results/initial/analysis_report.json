@@ -1,0 +1,1452 @@
+{
+    "overall_metrics": {
+        "overall": {
+            "total_requirements": 345,
+            "information_present": 303,
+            "information_presence": 0.8782608695652174,
+            "fully_satisfied": 230,
+            "partially_satisfied": 63,
+            "not_satisfied": 52,
+            "satisfaction_score": 0.7579710144927536
+        },
+        "by_type": {
+            "mention": {
+                "total_requirements": 144,
+                "information_present": 130,
+                "information_presence": 0.9027777777777778,
+                "fully_satisfied": 130,
+                "partially_satisfied": 0,
+                "not_satisfied": 14,
+                "satisfaction_score": 0.9027777777777778
+            },
+            "explain": {
+                "total_requirements": 169,
+                "information_present": 141,
+                "information_presence": 0.834319526627219,
+                "fully_satisfied": 78,
+                "partially_satisfied": 63,
+                "not_satisfied": 28,
+                "satisfaction_score": 0.6479289940828402
+            },
+            "constraint": {
+                "total_requirements": 32,
+                "information_present": 32,
+                "information_presence": 1.0,
+                "fully_satisfied": 22,
+                "partially_satisfied": 0,
+                "not_satisfied": 10,
+                "satisfaction_score": 0.6875
+            }
+        }
+    },
+    "samples": [
+        {
+            "id": 1,
+            "source": "https://huggingface.co/owensong/Inflect-Micro-v2",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 17,
+                    "information_present": 17,
+                    "information_presence": 1.0,
+                    "fully_satisfied": 10,
+                    "partially_satisfied": 6,
+                    "not_satisfied": 1,
+                    "satisfaction_score": 0.7647058823529411
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 6,
+                        "information_present": 6,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 6,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 10,
+                        "information_present": 10,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 4,
+                        "partially_satisfied": 6,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 0.7
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 0,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 2,
+            "source": "https://huggingface.co/stepfun-ai/Step-3.7-Flash",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 12,
+                    "information_present": 9,
+                    "information_presence": 0.75,
+                    "fully_satisfied": 6,
+                    "partially_satisfied": 2,
+                    "not_satisfied": 4,
+                    "satisfaction_score": 0.5833333333333334
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 6,
+                        "information_present": 5,
+                        "information_presence": 0.8333333333333334,
+                        "fully_satisfied": 5,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.8333333333333334
+                    },
+                    "explain": {
+                        "total_requirements": 5,
+                        "information_present": 3,
+                        "information_presence": 0.6,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 2,
+                        "not_satisfied": 2,
+                        "satisfaction_score": 0.4
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 0,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 3,
+            "source": "https://huggingface.co/lambda/sd-image-variations-diffusers",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 9,
+                    "information_present": 8,
+                    "information_presence": 0.8888888888888888,
+                    "fully_satisfied": 6,
+                    "partially_satisfied": 2,
+                    "not_satisfied": 1,
+                    "satisfaction_score": 0.7777777777777778
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 3,
+                        "information_present": 3,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 3,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 5,
+                        "information_present": 4,
+                        "information_presence": 0.8,
+                        "fully_satisfied": 2,
+                        "partially_satisfied": 2,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.6
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 4,
+            "source": "https://huggingface.co/deepseek-ai/DeepSeek-R1",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 9,
+                    "information_present": 8,
+                    "information_presence": 0.8888888888888888,
+                    "fully_satisfied": 7,
+                    "partially_satisfied": 1,
+                    "not_satisfied": 1,
+                    "satisfaction_score": 0.8333333333333334
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 5,
+                        "information_present": 4,
+                        "information_presence": 0.8,
+                        "fully_satisfied": 4,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.8
+                    },
+                    "explain": {
+                        "total_requirements": 3,
+                        "information_present": 3,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 2,
+                        "partially_satisfied": 1,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 0.8333333333333334
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 5,
+            "source": "https://huggingface.co/openai/whisper-large-v3",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 9,
+                    "information_present": 8,
+                    "information_presence": 0.8888888888888888,
+                    "fully_satisfied": 8,
+                    "partially_satisfied": 0,
+                    "not_satisfied": 1,
+                    "satisfaction_score": 0.8888888888888888
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 4,
+                        "information_present": 4,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 4,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 4,
+                        "information_present": 3,
+                        "information_presence": 0.75,
+                        "fully_satisfied": 3,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.75
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 6,
+            "source": "https://huggingface.co/OmniGen2/OmniGen2",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 9,
+                    "information_present": 9,
+                    "information_presence": 1.0,
+                    "fully_satisfied": 9,
+                    "partially_satisfied": 0,
+                    "not_satisfied": 0,
+                    "satisfaction_score": 1.0
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 4,
+                        "information_present": 4,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 4,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 4,
+                        "information_present": 4,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 4,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 7,
+            "source": "https://huggingface.co/ServiceNow-AI/Apriel-1.5-15b-Thinker",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 7,
+                    "information_present": 4,
+                    "information_presence": 0.5714285714285714,
+                    "fully_satisfied": 4,
+                    "partially_satisfied": 0,
+                    "not_satisfied": 3,
+                    "satisfaction_score": 0.5714285714285714
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 3,
+                        "information_present": 2,
+                        "information_presence": 0.6666666666666666,
+                        "fully_satisfied": 2,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.6666666666666666
+                    },
+                    "explain": {
+                        "total_requirements": 3,
+                        "information_present": 1,
+                        "information_presence": 0.3333333333333333,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 2,
+                        "satisfaction_score": 0.3333333333333333
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 8,
+            "source": "https://huggingface.co/stanford-crfm/BioMedLM",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 6,
+                    "information_present": 6,
+                    "information_presence": 1.0,
+                    "fully_satisfied": 6,
+                    "partially_satisfied": 0,
+                    "not_satisfied": 0,
+                    "satisfaction_score": 1.0
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 3,
+                        "information_present": 3,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 3,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 2,
+                        "information_present": 2,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 2,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 9,
+            "source": "https://huggingface.co/CAMB-AI/MARS5-TTS",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 8,
+                    "information_present": 5,
+                    "information_presence": 0.625,
+                    "fully_satisfied": 4,
+                    "partially_satisfied": 1,
+                    "not_satisfied": 3,
+                    "satisfaction_score": 0.5625
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 4,
+                        "information_present": 2,
+                        "information_presence": 0.5,
+                        "fully_satisfied": 2,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 2,
+                        "satisfaction_score": 0.5
+                    },
+                    "explain": {
+                        "total_requirements": 3,
+                        "information_present": 2,
+                        "information_presence": 0.6666666666666666,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 1,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.5
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 10,
+            "source": "https://huggingface.co/Alibaba-NLP/gte-Qwen2-7B-instruct",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 8,
+                    "information_present": 7,
+                    "information_presence": 0.875,
+                    "fully_satisfied": 5,
+                    "partially_satisfied": 1,
+                    "not_satisfied": 2,
+                    "satisfaction_score": 0.6875
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 3,
+                        "information_present": 3,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 3,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 4,
+                        "information_present": 3,
+                        "information_presence": 0.75,
+                        "fully_satisfied": 2,
+                        "partially_satisfied": 1,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.625
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 0,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 11,
+            "source": "https://huggingface.co/echo840/MonkeyOCR",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 8,
+                    "information_present": 8,
+                    "information_presence": 1.0,
+                    "fully_satisfied": 6,
+                    "partially_satisfied": 2,
+                    "not_satisfied": 0,
+                    "satisfaction_score": 0.875
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 3,
+                        "information_present": 3,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 3,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 4,
+                        "information_present": 4,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 2,
+                        "partially_satisfied": 2,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 0.75
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 12,
+            "source": "https://huggingface.co/meituan-longcat/LongCat-Flash-Chat",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 10,
+                    "information_present": 9,
+                    "information_presence": 0.9,
+                    "fully_satisfied": 7,
+                    "partially_satisfied": 2,
+                    "not_satisfied": 1,
+                    "satisfaction_score": 0.8
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 5,
+                        "information_present": 4,
+                        "information_presence": 0.8,
+                        "fully_satisfied": 4,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.8
+                    },
+                    "explain": {
+                        "total_requirements": 4,
+                        "information_present": 4,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 2,
+                        "partially_satisfied": 2,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 0.75
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 13,
+            "source": "https://huggingface.co/HiDream-ai/HiDream-O1-Image",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 12,
+                    "information_present": 12,
+                    "information_presence": 1.0,
+                    "fully_satisfied": 8,
+                    "partially_satisfied": 4,
+                    "not_satisfied": 0,
+                    "satisfaction_score": 0.8333333333333334
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 5,
+                        "information_present": 5,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 5,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 6,
+                        "information_present": 6,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 2,
+                        "partially_satisfied": 4,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 0.6666666666666666
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 14,
+            "source": "https://huggingface.co/HiDream-ai/HiDream-O1-Image",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 13,
+                    "information_present": 13,
+                    "information_presence": 1.0,
+                    "fully_satisfied": 10,
+                    "partially_satisfied": 3,
+                    "not_satisfied": 0,
+                    "satisfaction_score": 0.8846153846153846
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 6,
+                        "information_present": 6,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 6,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 6,
+                        "information_present": 6,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 3,
+                        "partially_satisfied": 3,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 0.75
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 15,
+            "source": "https://huggingface.co/LGAI-EXAONE/K-EXAONE-236B-A23B",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 11,
+                    "information_present": 11,
+                    "information_presence": 1.0,
+                    "fully_satisfied": 6,
+                    "partially_satisfied": 5,
+                    "not_satisfied": 0,
+                    "satisfaction_score": 0.7727272727272727
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 5,
+                        "information_present": 5,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 5,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 5,
+                        "information_present": 5,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 0,
+                        "partially_satisfied": 5,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 0.5
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 16,
+            "source": "https://huggingface.co/sand-ai/MAGI-1",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 15,
+                    "information_present": 13,
+                    "information_presence": 0.8666666666666667,
+                    "fully_satisfied": 8,
+                    "partially_satisfied": 4,
+                    "not_satisfied": 3,
+                    "satisfaction_score": 0.6666666666666666
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 7,
+                        "information_present": 6,
+                        "information_presence": 0.8571428571428571,
+                        "fully_satisfied": 6,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.8571428571428571
+                    },
+                    "explain": {
+                        "total_requirements": 7,
+                        "information_present": 6,
+                        "information_presence": 0.8571428571428571,
+                        "fully_satisfied": 2,
+                        "partially_satisfied": 4,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.5714285714285714
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 0,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 17,
+            "source": "https://huggingface.co/HuggingFaceM4/idefics2-8b",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 8,
+                    "information_present": 8,
+                    "information_presence": 1.0,
+                    "fully_satisfied": 6,
+                    "partially_satisfied": 1,
+                    "not_satisfied": 1,
+                    "satisfaction_score": 0.8125
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 3,
+                        "information_present": 3,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 3,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 4,
+                        "information_present": 4,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 3,
+                        "partially_satisfied": 1,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 0.875
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 0,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 18,
+            "source": "https://huggingface.co/InternScience/Agents-A1",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 16,
+                    "information_present": 14,
+                    "information_presence": 0.875,
+                    "fully_satisfied": 10,
+                    "partially_satisfied": 3,
+                    "not_satisfied": 3,
+                    "satisfaction_score": 0.71875
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 9,
+                        "information_present": 9,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 9,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 6,
+                        "information_present": 4,
+                        "information_presence": 0.6666666666666666,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 3,
+                        "not_satisfied": 2,
+                        "satisfaction_score": 0.4166666666666667
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 0,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 19,
+            "source": "https://huggingface.co/XiaomiMiMo/MiMo-V2-Flash",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 10,
+                    "information_present": 10,
+                    "information_presence": 1.0,
+                    "fully_satisfied": 8,
+                    "partially_satisfied": 1,
+                    "not_satisfied": 1,
+                    "satisfaction_score": 0.85
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 4,
+                        "information_present": 4,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 4,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 5,
+                        "information_present": 5,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 4,
+                        "partially_satisfied": 1,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 0.9
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 0,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 20,
+            "source": "https://huggingface.co/XiaomiMiMo/MiMo-V2-Flash",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 12,
+                    "information_present": 11,
+                    "information_presence": 0.9166666666666666,
+                    "fully_satisfied": 6,
+                    "partially_satisfied": 5,
+                    "not_satisfied": 1,
+                    "satisfaction_score": 0.7083333333333334
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 4,
+                        "information_present": 3,
+                        "information_presence": 0.75,
+                        "fully_satisfied": 3,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.75
+                    },
+                    "explain": {
+                        "total_requirements": 7,
+                        "information_present": 7,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 2,
+                        "partially_satisfied": 5,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 0.6428571428571429
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 21,
+            "source": "https://huggingface.co/nex-agi/Nex-N2.5-mini",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 10,
+                    "information_present": 8,
+                    "information_presence": 0.8,
+                    "fully_satisfied": 4,
+                    "partially_satisfied": 4,
+                    "not_satisfied": 2,
+                    "satisfaction_score": 0.6
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 3,
+                        "information_present": 3,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 3,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 6,
+                        "information_present": 4,
+                        "information_presence": 0.6666666666666666,
+                        "fully_satisfied": 0,
+                        "partially_satisfied": 4,
+                        "not_satisfied": 2,
+                        "satisfaction_score": 0.3333333333333333
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 22,
+            "source": "https://huggingface.co/jinaai/jina-embeddings-v3",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 12,
+                    "information_present": 11,
+                    "information_presence": 0.9166666666666666,
+                    "fully_satisfied": 8,
+                    "partially_satisfied": 3,
+                    "not_satisfied": 1,
+                    "satisfaction_score": 0.7916666666666666
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 5,
+                        "information_present": 5,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 5,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 6,
+                        "information_present": 5,
+                        "information_presence": 0.8333333333333334,
+                        "fully_satisfied": 2,
+                        "partially_satisfied": 3,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.5833333333333334
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 23,
+            "source": "https://huggingface.co/google/diffusiongemma-26B-A4B-it",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 5,
+                    "information_present": 3,
+                    "information_presence": 0.6,
+                    "fully_satisfied": 3,
+                    "partially_satisfied": 0,
+                    "not_satisfied": 2,
+                    "satisfaction_score": 0.6
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 3,
+                        "information_present": 1,
+                        "information_presence": 0.3333333333333333,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 2,
+                        "satisfaction_score": 0.3333333333333333
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 24,
+            "source": "https://huggingface.co/ibm-granite/granite-docling-258M",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 10,
+                    "information_present": 10,
+                    "information_presence": 1.0,
+                    "fully_satisfied": 9,
+                    "partially_satisfied": 1,
+                    "not_satisfied": 0,
+                    "satisfaction_score": 0.95
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 4,
+                        "information_present": 4,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 4,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 5,
+                        "information_present": 5,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 4,
+                        "partially_satisfied": 1,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 0.9
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 25,
+            "source": "https://huggingface.co/dots-studio/dots.ocr",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 12,
+                    "information_present": 12,
+                    "information_presence": 1.0,
+                    "fully_satisfied": 10,
+                    "partially_satisfied": 2,
+                    "not_satisfied": 0,
+                    "satisfaction_score": 0.9166666666666666
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 4,
+                        "information_present": 4,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 4,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 7,
+                        "information_present": 7,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 5,
+                        "partially_satisfied": 2,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 0.8571428571428571
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 26,
+            "source": "https://huggingface.co/openbmb/MiniCPM5-2B",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 12,
+                    "information_present": 8,
+                    "information_presence": 0.6666666666666666,
+                    "fully_satisfied": 5,
+                    "partially_satisfied": 2,
+                    "not_satisfied": 5,
+                    "satisfaction_score": 0.5
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 5,
+                        "information_present": 3,
+                        "information_presence": 0.6,
+                        "fully_satisfied": 3,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 2,
+                        "satisfaction_score": 0.6
+                    },
+                    "explain": {
+                        "total_requirements": 6,
+                        "information_present": 4,
+                        "information_presence": 0.6666666666666666,
+                        "fully_satisfied": 2,
+                        "partially_satisfied": 2,
+                        "not_satisfied": 2,
+                        "satisfaction_score": 0.5
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 0,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 27,
+            "source": "https://huggingface.co/meta-models/Muse-Glimmer-30B",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 14,
+                    "information_present": 9,
+                    "information_presence": 0.6428571428571429,
+                    "fully_satisfied": 6,
+                    "partially_satisfied": 2,
+                    "not_satisfied": 6,
+                    "satisfaction_score": 0.5
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 6,
+                        "information_present": 4,
+                        "information_presence": 0.6666666666666666,
+                        "fully_satisfied": 4,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 2,
+                        "satisfaction_score": 0.6666666666666666
+                    },
+                    "explain": {
+                        "total_requirements": 7,
+                        "information_present": 4,
+                        "information_presence": 0.5714285714285714,
+                        "fully_satisfied": 2,
+                        "partially_satisfied": 2,
+                        "not_satisfied": 3,
+                        "satisfaction_score": 0.42857142857142855
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 0,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 28,
+            "source": "https://huggingface.co/meta-models/Muse-Glimmer-30B",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 16,
+                    "information_present": 16,
+                    "information_presence": 1.0,
+                    "fully_satisfied": 13,
+                    "partially_satisfied": 3,
+                    "not_satisfied": 0,
+                    "satisfaction_score": 0.90625
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 7,
+                        "information_present": 7,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 7,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 8,
+                        "information_present": 8,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 5,
+                        "partially_satisfied": 3,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 0.8125
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 29,
+            "source": "https://huggingface.co/zai-org/GLM-4.7",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 14,
+                    "information_present": 10,
+                    "information_presence": 0.7142857142857143,
+                    "fully_satisfied": 9,
+                    "partially_satisfied": 1,
+                    "not_satisfied": 4,
+                    "satisfaction_score": 0.6785714285714286
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 5,
+                        "information_present": 4,
+                        "information_presence": 0.8,
+                        "fully_satisfied": 4,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.8
+                    },
+                    "explain": {
+                        "total_requirements": 8,
+                        "information_present": 5,
+                        "information_presence": 0.625,
+                        "fully_satisfied": 4,
+                        "partially_satisfied": 1,
+                        "not_satisfied": 3,
+                        "satisfaction_score": 0.5625
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 30,
+            "source": "https://huggingface.co/tencent/HunyuanVideo",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 11,
+                    "information_present": 10,
+                    "information_presence": 0.9090909090909091,
+                    "fully_satisfied": 8,
+                    "partially_satisfied": 1,
+                    "not_satisfied": 2,
+                    "satisfaction_score": 0.7727272727272727
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 4,
+                        "information_present": 4,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 4,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 6,
+                        "information_present": 5,
+                        "information_presence": 0.8333333333333334,
+                        "fully_satisfied": 4,
+                        "partially_satisfied": 1,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.75
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 0,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 31,
+            "source": "https://huggingface.co/stabilityai/stable-video-diffusion-img2vid-xt",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 9,
+                    "information_present": 8,
+                    "information_presence": 0.8888888888888888,
+                    "fully_satisfied": 8,
+                    "partially_satisfied": 0,
+                    "not_satisfied": 1,
+                    "satisfaction_score": 0.8888888888888888
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 4,
+                        "information_present": 4,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 4,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    },
+                    "explain": {
+                        "total_requirements": 4,
+                        "information_present": 3,
+                        "information_presence": 0.75,
+                        "fully_satisfied": 3,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.75
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "id": 32,
+            "source": "https://huggingface.co/bigscience/bloom",
+            "metrics": {
+                "overall": {
+                    "total_requirements": 11,
+                    "information_present": 8,
+                    "information_presence": 0.7272727272727273,
+                    "fully_satisfied": 7,
+                    "partially_satisfied": 1,
+                    "not_satisfied": 3,
+                    "satisfaction_score": 0.6818181818181818
+                },
+                "by_type": {
+                    "mention": {
+                        "total_requirements": 4,
+                        "information_present": 3,
+                        "information_presence": 0.75,
+                        "fully_satisfied": 3,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 1,
+                        "satisfaction_score": 0.75
+                    },
+                    "explain": {
+                        "total_requirements": 6,
+                        "information_present": 4,
+                        "information_presence": 0.6666666666666666,
+                        "fully_satisfied": 3,
+                        "partially_satisfied": 1,
+                        "not_satisfied": 2,
+                        "satisfaction_score": 0.5833333333333334
+                    },
+                    "constraint": {
+                        "total_requirements": 1,
+                        "information_present": 1,
+                        "information_presence": 1.0,
+                        "fully_satisfied": 1,
+                        "partially_satisfied": 0,
+                        "not_satisfied": 0,
+                        "satisfaction_score": 1.0
+                    }
+                }
+            }
+        }
+    ]
+}

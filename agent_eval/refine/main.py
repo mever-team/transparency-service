@@ -4,6 +4,9 @@ from inference import load_dataset, run_inference
 from evaluator import evaluate_sample
 from metrics import calculate_sample_metrics, calculate_overall_metrics
 from reports import save_json, print_summary
+from analyze_results import main as analyze
+from faithfulness import main as faith
+from to_html import main as html_out
 
 
 def main():
@@ -67,6 +70,22 @@ def main():
     # -------------------------
 
     print_summary(overall_metrics)
+    
+    # -------------------------
+    # 7. Analyze results
+    # -------------------------
+    
+    analyze()
+    
+    # -------------------------
+    # 8. Report faithfulness
+    # -------------------------
+    faith()
+    
+    # -------------------------
+    # 9. Report in HTML
+    # -------------------------
+    html_out()
 
 
 if __name__ == "__main__":

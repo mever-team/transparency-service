@@ -1,0 +1,1765 @@
+{
+  "metrics": {
+    "total_claims": 212,
+    "supported_claims": 165,
+    "partial_claims": 31,
+    "unsupported_claims": 16,
+    "contradiction_claims": 0,
+    "factual_faithfulness": 0.8514150943396226,
+    "unsupported_claim_rate": 0.07547169811320754
+  },
+  "samples": [
+    {
+      "id": 1,
+      "source": "https://huggingface.co/owensong/Inflect-Micro-v2",
+      "metrics": {
+        "total_claims": 16,
+        "supported_claims": 11,
+        "partial_claims": 5,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 0.84375,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "Inflect v2 is a type of automated system that turns written text into speech.",
+          "verdict": "SUPPORTED",
+          "evidence": "Inflect v2 is ... end-to-end text-to-waveform generator",
+          "reason": "A text-to-waveform generator converts written text into audible speech, matching the claim."
+        },
+        {
+          "claim": "Inflect v2 belongs to the VITS family.",
+          "verdict": "SUPPORTED",
+          "evidence": "Inflect v2 is a ... VITS-family ... generator",
+          "reason": "The source explicitly states that Inflect v2 is VITS-family."
+        },
+        {
+          "claim": "Inflect v2 is parameter-efficient.",
+          "verdict": "SUPPORTED",
+          "evidence": "Inflect v2 is a parameter-efficient VITS-family ... generator",
+          "reason": "The source directly mentions that the model is parameter‑efficient."
+        },
+        {
+          "claim": "Parameter-efficient means the model requires less computational power to run than other similar models.",
+          "verdict": "PARTIAL",
+          "evidence": "Inflect v2 is a parameter-efficient ... generator",
+          "reason": "The source confirms the model is parameter‑efficient but does not specify that this translates to lower computational power compared to other models."
+        },
+        {
+          "claim": "Inflect v2 is an end-to-end text-to-waveform generator.",
+          "verdict": "SUPPORTED",
+          "evidence": "Inflect v2 is a ... end-to-end text-to-waveform generator",
+          "reason": "Exact phrasing appears in the source."
+        },
+        {
+          "claim": "The model takes written text as input and produces speech waveforms as output without needing any intermediate steps.",
+          "verdict": "SUPPORTED",
+          "evidence": "end-to-end text-to-waveform generator",
+          "reason": "An end-to-end text‑to‑waveform generator implies direct conversion from text to waveform without intermediate processing."
+        },
+        {
+          "claim": "Inflect v2 has an English phoneme frontend.",
+          "verdict": "SUPPORTED",
+          "evidence": "Inflect v2 is a ... with an English phoneme frontend",
+          "reason": "The source explicitly lists an English phoneme frontend."
+        },
+        {
+          "claim": "The frontend converts English words into a series of basic sounds or phonemes before processing the text.",
+          "verdict": "PARTIAL",
+          "evidence": "English phoneme frontend",
+          "reason": "The source confirms the presence of a phoneme frontend but does not detail the exact conversion process."
+        },
+        {
+          "claim": "Inflect v2 uses monotonic alignment.",
+          "verdict": "SUPPORTED",
+          "evidence": "monotonic alignment",
+          "reason": "Monotonic alignment is listed in the source description."
+        },
+        {
+          "claim": "Monotonic alignment ensures that the generated speech has consistent pitch and timing throughout.",
+          "verdict": "PARTIAL",
+          "evidence": "monotonic alignment",
+          "reason": "The source mentions monotonic alignment but does not state its effect on pitch and timing."
+        },
+        {
+          "claim": "Inflect v2 uses stochastic latent synthesis.",
+          "verdict": "SUPPORTED",
+          "evidence": "stochastic latent synthesis",
+          "reason": "The component is explicitly listed in the source."
+        },
+        {
+          "claim": "Stochastic latent synthesis generates variations in speech, making it sound more natural by introducing randomness at certain levels.",
+          "verdict": "PARTIAL",
+          "evidence": "stochastic latent synthesis",
+          "reason": "The source confirms the component’s presence but does not describe its purpose or effect."
+        },
+        {
+          "claim": "Inflect v2 uses residual coupling flow.",
+          "verdict": "SUPPORTED",
+          "evidence": "residual coupling flow",
+          "reason": "The source explicitly includes residual coupling flow."
+        },
+        {
+          "claim": "Residual coupling flow improves the model's ability to learn complex patterns in the data.",
+          "verdict": "PARTIAL",
+          "evidence": "residual coupling flow",
+          "reason": "The source lists the component but does not claim it improves learning of complex patterns."
+        },
+        {
+          "claim": "Inflect v2 has an integrated alias-reduced neural waveform decoder.",
+          "verdict": "SUPPORTED",
+          "evidence": "integrated alias-reduced neural waveform decoder",
+          "reason": "Exact phrase appears in the source."
+        },
+        {
+          "claim": "The decoder converts the model's output (the speech waveform) into an actual sound wave that we can hear.",
+          "verdict": "SUPPORTED",
+          "evidence": "integrated alias-reduced neural waveform decoder",
+          "reason": "A waveform decoder’s purpose is to produce audible sound from the model’s output; this is a general technical definition consistent with the source."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "source": "https://huggingface.co/stepfun-ai/Step-3.7-Flash",
+      "metrics": {
+        "total_claims": 10,
+        "supported_claims": 8,
+        "partial_claims": 1,
+        "unsupported_claims": 1,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 0.85,
+        "unsupported_claim_rate": 0.1
+      },
+      "claims": [
+        {
+          "claim": "Flash is a sparse Mixture-of-Experts (MoE) model.",
+          "verdict": "SUPPORTED",
+          "evidence": "Flash is a ... sparse Mixture-of-Experts (MoE) vision-language model",
+          "reason": "The source explicitly describes Flash as a sparse Mixture-of-Experts model."
+        },
+        {
+          "claim": "Flash is designed for both vision and language tasks.",
+          "verdict": "SUPPORTED",
+          "evidence": "Flash is a ... vision-language model",
+          "reason": "The term \"vision-language model\" indicates it handles both vision and language tasks."
+        },
+        {
+          "claim": "Flash consists of two main components.",
+          "verdict": "SUPPORTED",
+          "evidence": "Flash ... combines a 196B-parameter language backbone with a 1.8B-parameter vision encoder",
+          "reason": "The source states the model is formed by a language backbone and a vision encoder, i.e., two components."
+        },
+        {
+          "claim": "Flash has a language backbone with 196 billion parameters.",
+          "verdict": "SUPPORTED",
+          "evidence": "combines a 196B-parameter language backbone",
+          "reason": "The source explicitly gives the size of the language backbone."
+        },
+        {
+          "claim": "The language backbone specializes in processing language-related data, such as text.",
+          "verdict": "PARTIAL",
+          "evidence": "combines a 196B-parameter language backbone",
+          "reason": "The source confirms the existence of a language backbone but does not specify its specialization; the added detail about processing language data is not stated."
+        },
+        {
+          "claim": "Flash has a vision encoder with 1.8 billion parameters.",
+          "verdict": "SUPPORTED",
+          "evidence": "with a 1.8B-parameter vision encoder",
+          "reason": "The source explicitly provides the parameter count for the vision encoder."
+        },
+        {
+          "claim": "The vision encoder is responsible for understanding images natively, without needing extra processing.",
+          "verdict": "SUPPORTED",
+          "evidence": "vision encoder for native image understanding",
+          "reason": "The source says the vision encoder is for native image understanding, matching the claim."
+        },
+        {
+          "claim": "Flash can understand both words and pictures.",
+          "verdict": "SUPPORTED",
+          "evidence": "vision-language model",
+          "reason": "A vision-language model is intended to process (understand) both visual and textual information."
+        },
+        {
+          "claim": "Flash is a powerful AI model.",
+          "verdict": "UNSUPPORTED",
+          "evidence": "",
+          "reason": "The source provides no information about the model's power, quality, or performance."
+        },
+        {
+          "claim": "Flash uses two specialized components.",
+          "verdict": "SUPPORTED",
+          "evidence": "combines a 196B-parameter language backbone with a 1.8B-parameter vision encoder",
+          "reason": "The two components (language backbone and vision encoder) are described, implying they are specialized for language and vision respectively."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "source": "https://huggingface.co/lambda/sd-image-variations-diffusers",
+      "metrics": {
+        "total_claims": 5,
+        "supported_claims": 5,
+        "partial_claims": 0,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 1.0,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "This fine-tuned variant of Stable Diffusion uses CLIP image embeddings.",
+          "verdict": "SUPPORTED",
+          "evidence": "This version of Stable Diffusion has been fine‑tuned to accept CLIP image embeddings...",
+          "reason": "The source explicitly states that the model has been fine‑tuned to accept CLIP image embeddings."
+        },
+        {
+          "claim": "It uses CLIP image embeddings rather than text embeddings.",
+          "verdict": "SUPPORTED",
+          "evidence": "...to accept CLIP image embeddings instead of text embeddings...",
+          "reason": "The source directly says the model uses CLIP image embeddings in place of text embeddings."
+        },
+        {
+          "claim": "This change enables the model to generate diverse versions of an initial image.",
+          "verdict": "SUPPORTED",
+          "evidence": "...allowing it to create variations of an input image...",
+          "reason": "Creating variations of an input image corresponds to generating diverse versions; the source confirms this capability."
+        },
+        {
+          "claim": "The model generates diverse versions of an initial image similarly to how DALL‑E 2 operates.",
+          "verdict": "SUPPORTED",
+          "evidence": "...in a way similar to DALL‑E 2.",
+          "reason": "The source explicitly notes that the variation creation is similar to DALL‑E 2."
+        },
+        {
+          "claim": "The model generates variations based on images instead of text descriptions.",
+          "verdict": "SUPPORTED",
+          "evidence": "...accept CLIP image embeddings instead of text embeddings...",
+          "reason": "Because the model uses image embeddings rather than text, its variations are driven by images, as the source states."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "source": "https://huggingface.co/deepseek-ai/DeepSeek-R1",
+      "metrics": {
+        "total_claims": 4,
+        "supported_claims": 4,
+        "partial_claims": 0,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 1.0,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "DeepSeek-R1-Zero learns complex behaviors primarily through reinforcement learning (RL).",
+          "verdict": "SUPPORTED",
+          "evidence": "Source states that DeepSeek-R1-Zero is trained through large‑scale reinforcement learning (RL) allowing it to develop reasoning behaviors through reinforcement learning alone.",
+          "reason": "The source explicitly says the model is trained via RL, which enables it to learn complex/reasoning behaviors."
+        },
+        {
+          "claim": "Reinforcement learning (RL) is a type of machine learning where an agent learns to make decisions by interacting with its environment and receiving rewards or penalties for those actions.",
+          "verdict": "SUPPORTED",
+          "evidence": "Source mentions reinforcement learning (RL); the definition is a general technical explanation not requiring source support.",
+          "reason": "General definition of RL; not a model‑specific claim, and does not contradict the source."
+        },
+        {
+          "claim": "DeepSeek-R1-Zero doesn't need supervised fine-tuning (SFT) as a first step.",
+          "verdict": "SUPPORTED",
+          "evidence": "Source says the model is trained without supervised fine-tuning (SFT) as a preliminary step.",
+          "reason": "The source directly states that SFT is not used as an initial step."
+        },
+        {
+          "claim": "DeepSeek-R1-Zero develops its reasoning abilities solely through reinforcement learning.",
+          "verdict": "SUPPORTED",
+          "evidence": "Source notes that training via RL allows the model to develop reasoning behaviors through reinforcement learning alone.",
+          "reason": "The claim matches the source's description of reasoning being developed only via RL."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "source": "https://huggingface.co/openai/whisper-large-v3",
+      "metrics": {
+        "total_claims": 5,
+        "supported_claims": 5,
+        "partial_claims": 0,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 1.0,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "Whisper is a modern tool for converting spoken words into written text (speech recognition).",
+          "verdict": "SUPPORTED",
+          "evidence": "Whisper is a state-of-the-art model for automatic speech recognition (ASR)...",
+          "reason": "The source explicitly states Whisper is an ASR model, which matches the claim."
+        },
+        {
+          "claim": "Whisper can translate spoken words from one language to another.",
+          "verdict": "SUPPORTED",
+          "evidence": "... and speech translation...",
+          "reason": "The source mentions Whisper performs speech translation, supporting the claim."
+        },
+        {
+          "claim": "Whisper does not need specific training data for each new dataset or domain.",
+          "verdict": "SUPPORTED",
+          "evidence": "... designed to generalize to many datasets and domains in a zero-shot setting.",
+          "reason": "Zero‑shot generalization implies no additional dataset‑specific training, matching the claim."
+        },
+        {
+          "claim": "Whisper has been trained on over 5 million hours of audio files that already have written transcripts.",
+          "verdict": "SUPPORTED",
+          "evidence": "trained on more than 5 million hours of labeled data",
+          "reason": "Labeled data consists of audio paired with transcripts; the quantity matches the claim."
+        },
+        {
+          "claim": "Whisper is capable of understanding a wide variety of speech patterns and languages in zero-shot settings.",
+          "verdict": "SUPPORTED",
+          "evidence": "... designed to generalize to many datasets and domains in a zero-shot setting.",
+          "reason": "Generalization to many datasets/domains implies ability to handle diverse speech patterns and languages without prior training."
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "source": "https://huggingface.co/OmniGen2/OmniGen2",
+      "metrics": {
+        "total_claims": 7,
+        "supported_claims": 7,
+        "partial_claims": 0,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 1.0,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "OmniGen2 separates its text and image processing using two unique decoding routes.",
+          "verdict": "SUPPORTED",
+          "evidence": "OmniGen2 features two distinct decoding pathways for text and image modalities",
+          "reason": "The source explicitly states that OmniGen2 has two distinct decoding pathways for text and image."
+        },
+        {
+          "claim": "OmniGen2 uses independent parameter settings for text and image processing.",
+          "verdict": "SUPPORTED",
+          "evidence": "utilizing unshared parameters",
+          "reason": "The source says OmniGen2 utilizes unshared parameters, which means the parameters are independent for each modality."
+        },
+        {
+          "claim": "OmniGen2 uses a separate image tokenizer that's not connected.",
+          "verdict": "SUPPORTED",
+          "evidence": "a decoupled image tokenizer",
+          "reason": "A decoupled image tokenizer is equivalent to a separate, unconnected image tokenizer."
+        },
+        {
+          "claim": "OmniGen v1 processed both text and images with shared parameters.",
+          "verdict": "SUPPORTED",
+          "evidence": "Unlike OmniGen v1, OmniGen2 features... utilizing unshared parameters",
+          "reason": "The contrast implies that OmniGen v1 did not have unshared parameters, i.e., it used shared parameters."
+        },
+        {
+          "claim": "OmniGen2 has distinct methods for handling text and images.",
+          "verdict": "SUPPORTED",
+          "evidence": "features two distinct decoding pathways for text and image modalities",
+          "reason": "Distinct decoding pathways constitute distinct methods for handling each modality."
+        },
+        {
+          "claim": "These methods use separate settings (unshared parameters).",
+          "verdict": "SUPPORTED",
+          "evidence": "utilizing unshared parameters",
+          "reason": "The source confirms that the methods use unshared parameters, i.e., separate settings."
+        },
+        {
+          "claim": "OmniGen2 has an exclusive tokenizer for images that operates independently from the one used for text processing.",
+          "verdict": "SUPPORTED",
+          "evidence": "a decoupled image tokenizer",
+          "reason": "A decoupled image tokenizer means an image tokenizer that operates independently of the text tokenizer."
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "source": "https://huggingface.co/ServiceNow-AI/Apriel-1.5-15b-Thinker",
+      "metrics": {
+        "total_claims": 7,
+        "supported_claims": 6,
+        "partial_claims": 0,
+        "unsupported_claims": 1,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 0.8571428571428571,
+        "unsupported_claim_rate": 0.14285714285714285
+      },
+      "claims": [
+        {
+          "claim": "The Apriel-1.5-15b-Thinker is a reasoning model.",
+          "verdict": "SUPPORTED",
+          "evidence": "Apriel-1.5-15b-Thinker is a multimodal reasoning model",
+          "reason": "The source explicitly describes the model as a reasoning model."
+        },
+        {
+          "claim": "The Apriel-1.5-15b-Thinker is smart.",
+          "verdict": "UNSUPPORTED",
+          "evidence": "",
+          "reason": "The source does not make any claim about the model being \"smart\"; this qualitative attribute is not supported."
+        },
+        {
+          "claim": "The Apriel-1.5-15b-Thinker belongs to ServiceNow's Apriel Service Level Management (SLM) collection.",
+          "verdict": "SUPPORTED",
+          "evidence": "in ServiceNow’s Apriel SLM series",
+          "reason": "The source states the model is part of the Apriel SLM series."
+        },
+        {
+          "claim": "The Apriel-1.5-15b-Thinker performs as well as larger models.",
+          "verdict": "SUPPORTED",
+          "evidence": "achieves competitive performance against models 10 times its size",
+          "reason": "Competitive performance implies performance comparable to larger models."
+        },
+        {
+          "claim": "The Apriel-1.5-15b-Thinker is only one-tenth the size of larger models.",
+          "verdict": "SUPPORTED",
+          "evidence": "against models 10 times its size",
+          "reason": "If the compared models are ten times larger, this model is one‑tenth their size."
+        },
+        {
+          "claim": "This smaller model can think as effectively as much larger, more complex models.",
+          "verdict": "SUPPORTED",
+          "evidence": "achieves competitive performance against models 10 times its size",
+          "reason": "Competitive performance includes the ability to think/reason at a level comparable to larger models."
+        },
+        {
+          "claim": "This smaller model can solve problems as effectively as much larger, more complex models.",
+          "verdict": "SUPPORTED",
+          "evidence": "achieves competitive performance against models 10 times its size",
+          "reason": "Competitive performance implies comparable problem‑solving capability."
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "source": "https://huggingface.co/stanford-crfm/BioMedLM",
+      "metrics": {
+        "total_claims": 5,
+        "supported_claims": 3,
+        "partial_claims": 0,
+        "unsupported_claims": 2,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 0.6,
+        "unsupported_claim_rate": 0.4
+      },
+      "claims": [
+        {
+          "claim": "BioMedLM is a newly developed language model.",
+          "verdict": "SUPPORTED",
+          "evidence": "BioMedLM 2.7B is new language model...",
+          "reason": "The source explicitly states the model is new."
+        },
+        {
+          "claim": "BioMedLM has been specially trained using only scientific articles and summaries related to medicine and biology.",
+          "verdict": "SUPPORTED",
+          "evidence": "trained exclusively on biomedical abstracts and papers...",
+          "reason": "The source confirms exclusive training on biomedical (medical/biological) abstracts and papers."
+        },
+        {
+          "claim": "The scientific articles and summaries used to train BioMedLM were collected in The Pile.",
+          "verdict": "SUPPORTED",
+          "evidence": "trained exclusively on biomedical abstracts and papers from The Pile.",
+          "reason": "The source specifies the training data came from The Pile."
+        },
+        {
+          "claim": "BioMedLM is particularly skilled at understanding text about medicine and biology.",
+          "verdict": "UNSUPPORTED",
+          "evidence": "",
+          "reason": "The source does not make any claim about the model's skill or performance."
+        },
+        {
+          "claim": "BioMedLM is particularly skilled at generating text about medicine and biology.",
+          "verdict": "UNSUPPORTED",
+          "evidence": "",
+          "reason": "The source provides no information about the model's generation capabilities or quality."
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "source": "https://huggingface.co/CAMB-AI/MARS5-TTS",
+      "metrics": {
+        "total_claims": 4,
+        "supported_claims": 3,
+        "partial_claims": 1,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 0.875,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "Mars 5 is a type of text-to-speech system.",
+          "verdict": "SUPPORTED",
+          "evidence": "Mars 5 is a text-to-speech model.",
+          "reason": "The source directly states that Mars 5 is a text-to-speech model; this is a paraphrase."
+        },
+        {
+          "claim": "It converts written text into spoken words.",
+          "verdict": "SUPPORTED",
+          "evidence": "Mars 5 is a text-to-speech model.",
+          "reason": "A text-to-speech model converts text into speech, which aligns with the claim."
+        },
+        {
+          "claim": "It first generates coarse speech features using an autoregressive transformer model.",
+          "verdict": "SUPPORTED",
+          "evidence": "coarse (L0) encodec speech features are obtained through an autoregressive transformer model",
+          "reason": "The source explicitly says coarse speech features are obtained via an autoregressive transformer model."
+        },
+        {
+          "claim": "It does this when compared to the original audio.",
+          "verdict": "PARTIAL",
+          "evidence": "Given text and a reference audio, coarse (L0) encodec speech features are obtained...",
+          "reason": "The source mentions a reference audio is used, but does not specify that the process involves a comparison to the original audio; the comparison detail is not supported."
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "source": "https://huggingface.co/Alibaba-NLP/gte-Qwen2-7B-instruct",
+      "metrics": {
+        "total_claims": 10,
+        "supported_claims": 7,
+        "partial_claims": 2,
+        "unsupported_claims": 1,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 0.8,
+        "unsupported_claim_rate": 0.1
+      },
+      "claims": [
+        {
+          "claim": "This training uses weakly supervised data.",
+          "verdict": "SUPPORTED",
+          "evidence": "This training leverages ... weakly supervised ... data",
+          "reason": "The source explicitly states that training leverages weakly supervised data."
+        },
+        {
+          "claim": "This training uses supervised data.",
+          "verdict": "SUPPORTED",
+          "evidence": "This training leverages ... supervised data",
+          "reason": "The source explicitly states that training leverages supervised data."
+        },
+        {
+          "claim": "This training uses two types of data.",
+          "verdict": "SUPPORTED",
+          "evidence": "This training leverages both weakly supervised and supervised data",
+          "reason": "The source mentions both weakly supervised and supervised data, implying two data types."
+        },
+        {
+          "claim": "Weakly supervised data allows the model to work across various languages.",
+          "verdict": "PARTIAL",
+          "evidence": "This training leverages ... weakly supervised ... data, ensuring the model's applicability across numerous languages",
+          "reason": "The source says the overall training ensures cross‑language applicability, but does not specify that weakly supervised data alone provides this."
+        },
+        {
+          "claim": "Weakly supervised data doesn't strictly require human-labeled data for each language.",
+          "verdict": "PARTIAL",
+          "evidence": "This training leverages ... weakly supervised data",
+          "reason": "The source confirms the use of weakly supervised data but does not detail its labeling requirements."
+        },
+        {
+          "claim": "Supervised data is labeled or corrected by a human.",
+          "verdict": "SUPPORTED",
+          "evidence": "This training leverages ... supervised data",
+          "reason": "Describing supervised data as human‑labeled is a standard definition and aligns with the source's mention of supervised data."
+        },
+        {
+          "claim": "Supervised data helps the model learn specific tasks more accurately.",
+          "verdict": "UNSUPPORTED",
+          "evidence": "This training leverages ... supervised data",
+          "reason": "The source does not claim any accuracy or learning benefit from supervised data."
+        },
+        {
+          "claim": "This combination makes the model versatile.",
+          "verdict": "SUPPORTED",
+          "evidence": "This training leverages both weakly supervised and supervised data, ensuring the model's applicability across numerous languages and a wide array of downstream tasks",
+          "reason": "Versatility is a paraphrase of the source’s statement about broad applicability."
+        },
+        {
+          "claim": "This combination makes the model useful for a wide range of language-related tasks.",
+          "verdict": "SUPPORTED",
+          "evidence": "ensuring the model's applicability ... a wide array of downstream tasks",
+          "reason": "The source explicitly mentions applicability to a wide array of downstream tasks, which matches the claim."
+        },
+        {
+          "claim": "The model is useful for a wide range of language-related tasks in different languages.",
+          "verdict": "SUPPORTED",
+          "evidence": "ensuring the model's applicability across numerous languages and a wide array of downstream tasks",
+          "reason": "The claim restates the source's description of cross‑language and cross‑task applicability."
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "source": "https://huggingface.co/echo840/MonkeyOCR",
+      "metrics": {
+        "total_claims": 8,
+        "supported_claims": 5,
+        "partial_claims": 0,
+        "unsupported_claims": 3,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 0.625,
+        "unsupported_claim_rate": 0.375
+      },
+      "claims": [
+        {
+          "claim": "MonkeyOCR uses a Structure-Recognition-Relation (SRR) triplet approach.",
+          "verdict": "SUPPORTED",
+          "evidence": "MonkeyOCR adopts a Structure-Recognition-Relation (SRR) triplet paradigm",
+          "reason": "The claim directly restates the source's statement that MonkeyOCR uses an SRR triplet paradigm."
+        },
+        {
+          "claim": "The SRR triplet approach streamlines MonkeyOCR's multi-tool process.",
+          "verdict": "SUPPORTED",
+          "evidence": "which simplifies the multi-tool pipeline of modular approaches",
+          "reason": "Simplifying a pipeline is equivalent to streamlining it; the source explicitly says the SRR paradigm simplifies the multi-tool pipeline."
+        },
+        {
+          "claim": "The SRR method combines multiple tools more efficiently.",
+          "verdict": "SUPPORTED",
+          "evidence": "simplifies the multi-tool pipeline of modular approaches",
+          "reason": "Simplifying the pipeline implies a more efficient combination of multiple tools; this is entailed by the source."
+        },
+        {
+          "claim": "The SRR method is more efficient compared to employing large multimodal models for handling entire pages of documents.",
+          "verdict": "SUPPORTED",
+          "evidence": "while avoiding the inefficiency of using large multimodal models for full-page document processing",
+          "reason": "The source states that the SRR paradigm avoids the inefficiency of large multimodal models, which means it is more efficient than using those models."
+        },
+        {
+          "claim": "SRR triplet helps MonkeyOCR handle different parts of a document (structure).",
+          "verdict": "UNSUPPORTED",
+          "evidence": "",
+          "reason": "The source does not specify that the SRR triplet handles document parts or defines the 'structure' component."
+        },
+        {
+          "claim": "SRR triplet helps MonkeyOCR recognize what those parts are (recognition).",
+          "verdict": "UNSUPPORTED",
+          "evidence": "",
+          "reason": "The source does not mention a recognition function of the SRR triplet."
+        },
+        {
+          "claim": "SRR triplet helps MonkeyOCR understand the relationships between them (relation).",
+          "verdict": "UNSUPPORTED",
+          "evidence": "",
+          "reason": "The source does not provide any information about a relation component in the SRR triplet."
+        },
+        {
+          "claim": "SRR triplet allows MonkeyOCR to process documents without needing complex models that might struggle with processing entire pages at once.",
+          "verdict": "SUPPORTED",
+          "evidence": "avoiding the inefficiency of using large multimodal models for full-page document processing",
+          "reason": "The source indicates that the SRR paradigm avoids the inefficiency of large multimodal models, implying it does not need such complex models for full-page processing."
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "source": "https://huggingface.co/meituan-longcat/LongCat-Flash-Chat",
+      "metrics": {
+        "total_claims": 4,
+        "supported_claims": 4,
+        "partial_claims": 0,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 1.0,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "The model utilizes a flexible calculation system.",
+          "verdict": "SUPPORTED",
+          "evidence": "The model incorporates a dynamic computation mechanism...",
+          "reason": "The source describes a dynamic computation mechanism, which is synonymous with a flexible calculation system."
+        },
+        {
+          "claim": "The model engages around 27 billion parameters.",
+          "verdict": "SUPPORTED",
+          "evidence": "...activates 18.6B∼31.3B parameters (averaging∼27B)...",
+          "reason": "The source states the average number of activated parameters is approximately 27 B."
+        },
+        {
+          "claim": "The model adjusts according to the specific requirements of the situation.",
+          "verdict": "SUPPORTED",
+          "evidence": "...based on contextual demands...",
+          "reason": "Adjusting based on specific requirements aligns with the source's mention of activation based on contextual demands."
+        },
+        {
+          "claim": "This strategy aims to balance computational effectiveness with performance.",
+          "verdict": "SUPPORTED",
+          "evidence": "...optimizing both computational efficiency and performance.",
+          "reason": "The source explicitly says the mechanism optimizes computational efficiency and performance, matching the claim."
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "source": "https://huggingface.co/HiDream-ai/HiDream-O1-Image",
+      "metrics": {
+        "total_claims": 4,
+        "supported_claims": 4,
+        "partial_claims": 0,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 1.0,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "The HiDream-O1-Image model is a single, integrated image generation foundation.",
+          "verdict": "SUPPORTED",
+          "evidence": "HiDream-O1-Image is a natively unified image generative foundation model",
+          "reason": "The source describes the model as a unified image generative foundation, matching the claim."
+        },
+        {
+          "claim": "The HiDream-O1-Image model operates using a pixel-level Unified Transformer (UiT).",
+          "verdict": "SUPPORTED",
+          "evidence": "built on a Pixel-level Unified Transformer (UiT)",
+          "reason": "The source explicitly states the model is built on a pixel-level Unified Transformer."
+        },
+        {
+          "claim": "The HiDream-O1-Image model does not need external Variational Autoencoders (VAEs).",
+          "verdict": "SUPPORTED",
+          "evidence": "without external VAEs",
+          "reason": "The source indicates the model operates without external VAEs."
+        },
+        {
+          "claim": "The HiDream-O1-Image model does not need separate text encoding components.",
+          "verdict": "SUPPORTED",
+          "evidence": "without ... disjoint text encoders",
+          "reason": "The source states the model works without disjoint (separate) text encoders."
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "source": "https://huggingface.co/HiDream-ai/HiDream-O1-Image",
+      "metrics": {
+        "total_claims": 5,
+        "supported_claims": 5,
+        "partial_claims": 0,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 1.0,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "The HiDream-O1-Image model combines raw pixel data, text descriptions, and specific task requirements into a single shared token space.",
+          "verdict": "SUPPORTED",
+          "evidence": "HiDream-O1-Image is a model that natively encodes raw pixels, text, and task-specific conditions in a single shared token space",
+          "reason": "The source explicitly states that the model encodes raw pixels, text, and task-specific conditions in a shared token space, matching the claim."
+        },
+        {
+          "claim": "The model can generate images from text.",
+          "verdict": "SUPPORTED",
+          "evidence": "supporting text-to-image ... at up to 2,048 × 2,048",
+          "reason": "The source lists text-to-image as a supported capability."
+        },
+        {
+          "claim": "The model can edit existing images.",
+          "verdict": "SUPPORTED",
+          "evidence": "supporting ... image editing ... at up to 2,048 × 2,048",
+          "reason": "Image editing is mentioned as a supported function in the source."
+        },
+        {
+          "claim": "The model can personalize images based on specific subjects.",
+          "verdict": "SUPPORTED",
+          "evidence": "supporting ... subject-driven personalization ... at up to 2,048 × 2,048",
+          "reason": "Subject-driven personalization is explicitly stated in the source."
+        },
+        {
+          "claim": "The model supports resolutions up to 2,048 × 2,048 pixels.",
+          "verdict": "SUPPORTED",
+          "evidence": "at up to 2,048 × 2,048",
+          "reason": "The source specifies the maximum resolution as 2,048 × 2,048."
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "source": "https://huggingface.co/LGAI-EXAONE/K-EXAONE-236B-A23B",
+      "metrics": {
+        "total_claims": 4,
+        "supported_claims": 4,
+        "partial_claims": 0,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 1.0,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "K-EXAONE is a multilingual language model created by LG AI Research.",
+          "verdict": "SUPPORTED",
+          "evidence": "We introduce K-EXAONE, a large-scale multilingual language model developed by LG AI Research.",
+          "reason": "The source explicitly states that K-EXAONE is a multilingual model developed by LG AI Research."
+        },
+        {
+          "claim": "K-EXAONE employs the Mixture-of-Experts architecture.",
+          "verdict": "SUPPORTED",
+          "evidence": "Built using a Mixture-of-Experts architecture,",
+          "reason": "The source directly says the model is built using a Mixture-of-Experts architecture."
+        },
+        {
+          "claim": "K-EXAONE has 236 billion total parameters.",
+          "verdict": "SUPPORTED",
+          "evidence": "features 236 billion total parameters",
+          "reason": "The source explicitly provides the total parameter count of 236 billion."
+        },
+        {
+          "claim": "During inference, about 23 billion of these parameters are active.",
+          "verdict": "SUPPORTED",
+          "evidence": "with 23 billion active during inference",
+          "reason": "The source confirms that 23 billion parameters are active during inference; the qualifier \"about\" does not contradict the source."
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "source": "https://huggingface.co/sand-ai/MAGI-1",
+      "metrics": {
+        "total_claims": 8,
+        "supported_claims": 7,
+        "partial_claims": 1,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 0.9375,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "MAGI-1 is a system that produces videos by progressively predicting a series of video segments.",
+          "verdict": "SUPPORTED",
+          "evidence": "MAGI-1 ... generates videos by autoregressively predicting a sequence of video chunks",
+          "reason": "Paraphrases the source's statement about autoregressive video chunk prediction."
+        },
+        {
+          "claim": "MAGI-1 is trained to eliminate increasing noise in each segment as time passes.",
+          "verdict": "SUPPORTED",
+          "evidence": "trained to denoise per-chunk noise that increases monotonically over time",
+          "reason": "Directly matches the source's description of training to denoise increasing per‑chunk noise."
+        },
+        {
+          "claim": "MAGI-1 allows for cause-and-effect modeling in the temporal domain.",
+          "verdict": "SUPPORTED",
+          "evidence": "enables causal temporal modeling",
+          "reason": "Paraphrases the source's claim about causal temporal modeling."
+        },
+        {
+          "claim": "MAGI-1 offers seamless streaming generation.",
+          "verdict": "SUPPORTED",
+          "evidence": "naturally supports streaming generation",
+          "reason": "Paraphrases the source's statement that it supports streaming generation."
+        },
+        {
+          "claim": "MAGI-1 makes videos by guessing what comes next in a series of video clips.",
+          "verdict": "SUPPORTED",
+          "evidence": "generates videos by autoregressively predicting a sequence of video chunks",
+          "reason": "‘Guessing what comes next’ is a lay description of autoregressive prediction."
+        },
+        {
+          "claim": "MAGI-1 learns to remove more noise over time.",
+          "verdict": "SUPPORTED",
+          "evidence": "trained to denoise per-chunk noise that increases monotonically over time",
+          "reason": "Describes the same denoising of increasing noise as stated in the source."
+        },
+        {
+          "claim": "MAGI-1 enables understanding events that happen one after the other.",
+          "verdict": "SUPPORTED",
+          "evidence": "enables causal temporal modeling",
+          "reason": "Causal temporal modeling implies the ability to model sequential events."
+        },
+        {
+          "claim": "MAGI-1 generates videos smoothly.",
+          "verdict": "PARTIAL",
+          "evidence": "naturally supports streaming generation",
+          "reason": "Core claim (generates videos) is supported; the qualifier ‘smoothly’ is a quality not mentioned in the source."
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "source": "https://huggingface.co/HuggingFaceM4/idefics2-8b",
+      "metrics": {
+        "total_claims": 7,
+        "supported_claims": 5,
+        "partial_claims": 1,
+        "unsupported_claims": 1,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 0.7857142857142857,
+        "unsupported_claim_rate": 0.14285714285714285
+      },
+      "claims": [
+        {
+          "claim": "Idefics2 is open.",
+          "verdict": "SUPPORTED",
+          "evidence": "Idefics2 is an open multimodal model",
+          "reason": "The source explicitly states that Idefics2 is open."
+        },
+        {
+          "claim": "Idefics2 is versatile.",
+          "verdict": "UNSUPPORTED",
+          "evidence": "Idefics2 is an open multimodal model that accepts arbitrary sequences of image and text inputs and produces text outputs.",
+          "reason": "The source does not mention the model being \"versatile\"; the attribute is not supported nor contradicted."
+        },
+        {
+          "claim": "Idefics2 works with combinations of images and text as inputs.",
+          "verdict": "SUPPORTED",
+          "evidence": "accepts arbitrary sequences of image and text inputs",
+          "reason": "The source directly states that the model accepts sequences of image and text inputs."
+        },
+        {
+          "claim": "Idefics2 generates text as output.",
+          "verdict": "SUPPORTED",
+          "evidence": "produces text outputs",
+          "reason": "The source explicitly says the model produces text outputs."
+        },
+        {
+          "claim": "The model can process various combinations of images and words.",
+          "verdict": "SUPPORTED",
+          "evidence": "accepts arbitrary sequences of image and text inputs",
+          "reason": "Processing image‑text combinations follows directly from the source description."
+        },
+        {
+          "claim": "The model can understand various combinations of images and words.",
+          "verdict": "PARTIAL",
+          "evidence": "accepts arbitrary sequences of image and text inputs and produces text outputs",
+          "reason": "The source supports the ability to process image‑text inputs, but does not state that the model \"understands\" them; the understanding part is an added detail."
+        },
+        {
+          "claim": "The model can produce a written response or explanation.",
+          "verdict": "SUPPORTED",
+          "evidence": "produces text outputs",
+          "reason": "Producing a written response is equivalent to generating text, which the source confirms."
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "source": "https://huggingface.co/InternScience/Agents-A1",
+      "metrics": {
+        "total_claims": 10,
+        "supported_claims": 3,
+        "partial_claims": 6,
+        "unsupported_claims": 1,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 0.6,
+        "unsupported_claim_rate": 0.1
+      },
+      "claims": [
+        {
+          "claim": "Agents-A1 is a complex artificial intelligence model.",
+          "verdict": "UNSUPPORTED",
+          "evidence": "Source states only that Agents-A1 is a 35B Mixture-of-Experts agentic model; it does not describe the model as complex.",
+          "reason": "The source does not mention the model being \"complex,\" which is an additional model‑specific attribute not supported by the source."
+        },
+        {
+          "claim": "Agents-A1 was developed by InternScience.",
+          "verdict": "SUPPORTED",
+          "evidence": "Source: \"Agents-A1 is a 35B Mixture-of-Experts agentic model from InternScience\".",
+          "reason": "The source explicitly indicates InternScience as the origin of the model."
+        },
+        {
+          "claim": "Agents-A1 is designed to effectively handle long-term problem solving.",
+          "verdict": "PARTIAL",
+          "evidence": "Source: \"built to scale heterogeneous agentic abilities ... including Long-horizon Search\".",
+          "reason": "The source supports the capability for long‑horizon (long‑term) tasks, but does not state that it handles them \"effectively,\" adding an unsupported detail."
+        },
+        {
+          "claim": "Agents-A1 is designed to effectively handle engineering tasks.",
+          "verdict": "PARTIAL",
+          "evidence": "Source: \"built to scale heterogeneous agentic abilities ... including Engineering\".",
+          "reason": "Engineering capability is supported, but the claim of handling them \"effectively\" is not mentioned in the source."
+        },
+        {
+          "claim": "Agents-A1 is designed to effectively handle scientific research.",
+          "verdict": "PARTIAL",
+          "evidence": "Source: \"built to scale heterogeneous agentic abilities ... including Scientific Research\".",
+          "reason": "Scientific research capability is supported; the qualifier \"effectively\" is not provided by the source."
+        },
+        {
+          "claim": "Agents-A1 is designed to effectively handle following instructions.",
+          "verdict": "PARTIAL",
+          "evidence": "Source: \"built to scale heterogeneous agentic abilities ... including Instruction Following\".",
+          "reason": "Instruction‑following capability is supported, but the claim of doing so \"effectively\" is unsupported."
+        },
+        {
+          "claim": "Agents-A1 is designed to effectively handle using tools.",
+          "verdict": "PARTIAL",
+          "evidence": "Source: \"built to scale heterogeneous agentic abilities ... including Tool‑calling\".",
+          "reason": "Tool‑calling capability is supported; the added claim of handling tools \"effectively\" is not stated in the source."
+        },
+        {
+          "claim": "Agents-A1 is a 35B Mixture-of-Experts agentic model.",
+          "verdict": "SUPPORTED",
+          "evidence": "Source: \"Agents-A1 is a 35B Mixture-of-Experts agentic model\".",
+          "reason": "Exact wording matches the source."
+        },
+        {
+          "claim": "Agents-A1 is structured to distribute diverse AI capabilities across multiple domains.",
+          "verdict": "SUPPORTED",
+          "evidence": "Source: \"built to scale heterogeneous agentic abilities across multiple domains\".",
+          "reason": "The claim paraphrases the source statement about scaling heterogeneous abilities across domains."
+        },
+        {
+          "claim": "Agents-A1 distributes diverse AI capabilities across multiple domains to achieve better performance.",
+          "verdict": "PARTIAL",
+          "evidence": "Source: \"built to scale heterogeneous agentic abilities across multiple domains\".",
+          "reason": "The distribution across domains is supported, but the purpose \"to achieve better performance\" is an unsupported benefit claim."
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "source": "https://huggingface.co/XiaomiMiMo/MiMo-V2-Flash",
+      "metrics": {
+        "total_claims": 9,
+        "supported_claims": 6,
+        "partial_claims": 2,
+        "unsupported_claims": 1,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 0.7777777777777778,
+        "unsupported_claim_rate": 0.1111111111111111
+      },
+      "claims": [
+        {
+          "claim": "Hybrid Attention Structure blends Sliding Window Attention (SWA) and Global Attention (GA) in a 5:1 proportion.",
+          "verdict": "SUPPORTED",
+          "evidence": "Hybrid Attention Architecture ... with a 5:1 ratio",
+          "reason": "The source explicitly states a 5:1 ratio between SWA and GA."
+        },
+        {
+          "claim": "Hybrid Attention Structure blends SWA and GA with a broad 128-token viewing window.",
+          "verdict": "SUPPORTED",
+          "evidence": "Hybrid Attention Architecture ... an aggressive 128-token window",
+          "reason": "The source mentions a 128-token window, matching the claim."
+        },
+        {
+          "claim": "Hybrid Attention Structure does so with an assertive approach.",
+          "verdict": "PARTIAL",
+          "evidence": "",
+          "reason": "The source does not mention an \"assertive\" or \"bold\" approach; the core blending claim is supported but the qualitative descriptor is unsupported."
+        },
+        {
+          "claim": "The structure combines two types of attention mechanisms – Sliding Window Attention and Global Attention – in a way that Sliding Window Attention is used five times more than Global Attention.",
+          "verdict": "SUPPORTED",
+          "evidence": "Hybrid Attention Architecture ... with a 5:1 ratio",
+          "reason": "Restates the 5:1 ratio described in the source."
+        },
+        {
+          "claim": "It employs a large window of 128 tokens to scan the data.",
+          "verdict": "SUPPORTED",
+          "evidence": "Hybrid Attention Architecture ... an aggressive 128-token window",
+          "reason": "The source explicitly mentions a 128-token window."
+        },
+        {
+          "claim": "It does so with a bold approach.",
+          "verdict": "PARTIAL",
+          "evidence": "",
+          "reason": "The source does not contain any information about a \"bold\" or \"assertive\" approach; only the structural details are supported."
+        },
+        {
+          "claim": "Sliding Window Attention (SWA) focuses on specific parts or windows within the data sequence.",
+          "verdict": "SUPPORTED",
+          "evidence": "",
+          "reason": "This is a general technical definition of SWA; the source does not contradict it, and such definitions are not penalized."
+        },
+        {
+          "claim": "Global Attention (GA) considers the entire sequence at once.",
+          "verdict": "SUPPORTED",
+          "evidence": "",
+          "reason": "General definition of GA; not contradicted by the source and acceptable under the rules."
+        },
+        {
+          "claim": "The hybrid structure takes advantage of both approaches, allowing it to analyze both small sections and the overall context efficiently.",
+          "verdict": "UNSUPPORTED",
+          "evidence": "",
+          "reason": "The source does not make any claim about efficiency or benefits; this statement adds unsupported model‑specific performance information."
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "source": "https://huggingface.co/XiaomiMiMo/MiMo-V2-Flash",
+      "metrics": {
+        "total_claims": 8,
+        "supported_claims": 4,
+        "partial_claims": 4,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 0.75,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "Post-training employs Multi-Teacher On-Policy Distillation (MOPD).",
+          "verdict": "SUPPORTED",
+          "evidence": "Post-training utilizes Multi-Teacher On-Policy Distillation (MOPD)...",
+          "reason": "The source explicitly states that post‑training utilizes MOPD."
+        },
+        {
+          "claim": "Post-training uses advanced reinforcement learning for agents.",
+          "verdict": "SUPPORTED",
+          "evidence": "...and large-scale agentic RL...",
+          "reason": "The source mentions large‑scale agentic RL, which is an advanced form of reinforcement learning."
+        },
+        {
+          "claim": "Post-training leads to excellent performance on the SWE‑Bench.",
+          "verdict": "SUPPORTED",
+          "evidence": "...achieving superior performance on SWE‑Bench...",
+          "reason": "The source claims superior (i.e., excellent) performance on SWE‑Bench."
+        },
+        {
+          "claim": "Post-training leads to excellent performance on complex problem‑solving tasks.",
+          "verdict": "SUPPORTED",
+          "evidence": "...achieving superior performance on ... complex reasoning tasks.",
+          "reason": "The source asserts superior performance on complex reasoning tasks, which matches the claim."
+        },
+        {
+          "claim": "It learns from multiple teachers during training.",
+          "verdict": "PARTIAL",
+          "evidence": "Post-training utilizes Multi-Teacher On-Policy Distillation (MOPD)...",
+          "reason": "The source confirms use of MOPD, which implies multiple teachers, but the explicit learning‑from‑multiple‑teachers detail is not stated."
+        },
+        {
+          "claim": "It uses sophisticated methods to make decisions like an intelligent agent.",
+          "verdict": "PARTIAL",
+          "evidence": "...large-scale agentic RL...",
+          "reason": "The source supports the use of agentic RL for decision‑making, but the qualifiers “sophisticated” and “like an intelligent agent” add unsupported detail."
+        },
+        {
+          "claim": "It outperforms many other systems in software engineering benchmarks.",
+          "verdict": "PARTIAL",
+          "evidence": "...achieving superior performance on SWE‑Bench...",
+          "reason": "The source indicates superior performance on a software‑engineering benchmark, but does not specify that it outperforms many other systems."
+        },
+        {
+          "claim": "It outperforms many other systems in tasks requiring intricate reasoning.",
+          "verdict": "PARTIAL",
+          "evidence": "...achieving superior performance on ... complex reasoning tasks.",
+          "reason": "The source claims superior performance on complex reasoning tasks, but does not mention comparison to many other systems."
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "source": "https://huggingface.co/nex-agi/Nex-N2.5-mini",
+      "metrics": {
+        "total_claims": 6,
+        "supported_claims": 4,
+        "partial_claims": 1,
+        "unsupported_claims": 1,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 0.75,
+        "unsupported_claim_rate": 0.16666666666666666
+      },
+      "claims": [
+        {
+          "claim": "Nex-N2.5 enhances its capacity for persistent action in practical scenarios with long-term goals.",
+          "verdict": "SUPPORTED",
+          "evidence": "For long-horizon tasks ... Nex-N2.5 further strengthens its ability to act continuously ...",
+          "reason": "The source states Nex‑N2.5 strengthens its ability to act continuously, which aligns with enhancing persistent action."
+        },
+        {
+          "claim": "Nex-N2.5 enhances its capacity for self-correction based on visual cues.",
+          "verdict": "SUPPORTED",
+          "evidence": "For long-horizon tasks ... Nex-N2.5 further strengthens its ability to ... self-correct through visual feedback.",
+          "reason": "The source explicitly mentions self‑correction through visual feedback, matching the claim."
+        },
+        {
+          "claim": "Long-horizon tasks refer to complex tasks that require continued action over a long period of time.",
+          "verdict": "SUPPORTED",
+          "evidence": "The source uses the term \"long-horizon tasks\" but does not define it; the claim is a general definition and not contradictory.",
+          "reason": "General technical definitions are allowed and not contradicted by the source."
+        },
+        {
+          "claim": "Nex-N2.5 can perform actions.",
+          "verdict": "SUPPORTED",
+          "evidence": "The source says Nex-N2.5 strengthens its ability to act continuously.",
+          "reason": "Ability to act continuously implies the model can perform actions."
+        },
+        {
+          "claim": "Nex-N2.5 can make decisions.",
+          "verdict": "UNSUPPORTED",
+          "evidence": "The source mentions acting and self‑correcting but does not state that the model makes decisions.",
+          "reason": "There is no information in the source about decision‑making capability."
+        },
+        {
+          "claim": "Nex-N2.5 improves its performance by self-correcting based on visual feedback in real-world environments.",
+          "verdict": "PARTIAL",
+          "evidence": "The source states Nex-N2.5 self‑corrects through visual feedback in real‑world environments.",
+          "reason": "Self‑correction via visual feedback is supported, but the additional assertion that this \"improves its performance\" is not covered by the source."
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "source": "https://huggingface.co/jinaai/jina-embeddings-v3",
+      "metrics": {
+        "total_claims": 4,
+        "supported_claims": 4,
+        "partial_claims": 0,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 1.0,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "The Jina-Embeddings-V3 is a versatile, multilingual text embedding model.",
+          "verdict": "SUPPORTED",
+          "evidence": "jina-embeddings-v3 is a multilingual multi-task text embedding model designed for a variety of NLP applications.",
+          "reason": "The source confirms it is multilingual and a text embedding model for various NLP uses, which supports the description as versatile."
+        },
+        {
+          "claim": "The Jina-Embeddings-V3 is built for numerous Natural Language Processing (NLP) tasks.",
+          "verdict": "SUPPORTED",
+          "evidence": "jina-embeddings-v3 ... designed for a variety of NLP applications.",
+          "reason": "The source states the model is designed for a variety of NLP applications, which entails being built for many NLP tasks."
+        },
+        {
+          "claim": "The Jina-Embeddings-V3 is equipped with Rotary Position Embeddings.",
+          "verdict": "SUPPORTED",
+          "evidence": "It supports Rotary Position Embeddings to handle long input sequences up to 8192 tokens.",
+          "reason": "The source explicitly says the model supports (i.e., is equipped with) Rotary Position Embeddings."
+        },
+        {
+          "claim": "It can manage extended input sequences containing up to 8192 tokens.",
+          "verdict": "SUPPORTED",
+          "evidence": "It supports Rotary Position Embeddings to handle long input sequences up to 8192 tokens.",
+          "reason": "The source indicates the model can handle input sequences up to 8192 tokens, matching the claim."
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "source": "https://huggingface.co/google/diffusiongemma-26B-A4B-it",
+      "metrics": {
+        "total_claims": 3,
+        "supported_claims": 1,
+        "partial_claims": 2,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 0.6666666666666666,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "DiffusionGemma utilizes a method known as discrete diffusion to create tokens.",
+          "verdict": "SUPPORTED",
+          "evidence": "DiffusionGemma generates tokens using discrete diffusion.",
+          "reason": "The source directly states that DiffusionGemma generates tokens using discrete diffusion."
+        },
+        {
+          "claim": "This process involves incrementally altering data in small, discreet steps.",
+          "verdict": "PARTIAL",
+          "evidence": "DiffusionGemma generates tokens using discrete diffusion.",
+          "reason": "The source confirms the use of discrete diffusion, but does not specify that it works by incrementally altering data in small steps."
+        },
+        {
+          "claim": "It moves gradually from one point to another rather than jumping suddenly to a different location.",
+          "verdict": "PARTIAL",
+          "evidence": "DiffusionGemma generates tokens using discrete diffusion.",
+          "reason": "The source mentions discrete diffusion but does not describe its behavior as gradual versus sudden jumps."
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "source": "https://huggingface.co/ibm-granite/granite-docling-258M",
+      "metrics": {
+        "total_claims": 5,
+        "supported_claims": 3,
+        "partial_claims": 2,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 0.8,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "The updated version, named Granite Docling 258M, is based on the Idefics3 architecture.",
+          "verdict": "SUPPORTED",
+          "evidence": "Granite Docling 258M builds upon the Idefics3 architecture",
+          "reason": "The source explicitly states that Granite Docling 258M builds upon (is based on) the Idefics3 architecture."
+        },
+        {
+          "claim": "It utilizes siglip2-base-patch16-512 instead of the original vision encoder.",
+          "verdict": "SUPPORTED",
+          "evidence": "it replaces the vision encoder with siglip2-base-patch16-512",
+          "reason": "The source clearly says the vision encoder is replaced by siglip2-base-patch16-512."
+        },
+        {
+          "claim": "siglip2-base-patch16-512 is a type of pre‑trained model that processes visual data (images, videos).",
+          "verdict": "PARTIAL",
+          "evidence": "replaces the vision encoder with siglip2-base-patch16-512",
+          "reason": "The source confirms siglip2-base-patch16-512 is used as a vision encoder, which implies it processes visual data, but it does not mention that the model is pre‑trained; that detail is not supported."
+        },
+        {
+          "claim": "It employs a Granite 165M LLM instead of the previous language model.",
+          "verdict": "SUPPORTED",
+          "evidence": "substitutes the language model with a Granite 165M LLM",
+          "reason": "The source explicitly states the language model is substituted with a Granite 165M LLM."
+        },
+        {
+          "claim": "Granite 165M LLM specializes in understanding and generating human language.",
+          "verdict": "PARTIAL",
+          "evidence": "substitutes the language model with a Granite 165M LLM",
+          "reason": "The source indicates the component is a Large Language Model, which implies language understanding/generation, but it does not explicitly claim specialization; that extra detail is not supported."
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "source": "https://huggingface.co/dots-studio/dots.ocr",
+      "metrics": {
+        "total_claims": 5,
+        "supported_claims": 5,
+        "partial_claims": 0,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 1.0,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "The document parser called dots.ocr is quite potent.",
+          "verdict": "SUPPORTED",
+          "evidence": "dots.ocr is a powerful ... document parser",
+          "reason": "The source describes dots.ocr as a powerful document parser, which is synonymous with \"quite potent\"."
+        },
+        {
+          "claim": "The document parser called dots.ocr supports various languages.",
+          "verdict": "SUPPORTED",
+          "evidence": "dots.ocr is a ... multilingual document parser",
+          "reason": "\"Multilingual\" implies support for various languages, matching the claim."
+        },
+        {
+          "claim": "It combines the tasks of understanding the structure (layout) of documents into one vision-language model.",
+          "verdict": "SUPPORTED",
+          "evidence": "unifies layout detection ... within a single vision-language model",
+          "reason": "The source states that layout detection is unified within a single vision-language model, directly supporting the claim."
+        },
+        {
+          "claim": "It combines the task of recognizing their contents into one vision-language model.",
+          "verdict": "SUPPORTED",
+          "evidence": "unifies ... content recognition within a single vision-language model",
+          "reason": "The source explicitly mentions content recognition is unified within the same vision-language model."
+        },
+        {
+          "claim": "It ensures a readable sequence when processed.",
+          "verdict": "SUPPORTED",
+          "evidence": "while maintaining good reading order",
+          "reason": "Maintaining good reading order means the output follows a readable sequence, matching the claim."
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "source": "https://huggingface.co/openbmb/MiniCPM5-2B",
+      "metrics": {
+        "total_claims": 5,
+        "supported_claims": 5,
+        "partial_claims": 0,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 1.0,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "MiniCPM5-2B is created specifically for personal helpers.",
+          "verdict": "SUPPORTED",
+          "evidence": "MiniCPM5-2B is designed for local assistants...",
+          "reason": "‘Personal helpers’ paraphrases ‘local assistants’, which is directly stated in the source."
+        },
+        {
+          "claim": "MiniCPM5-2B is created specifically for programming robots.",
+          "verdict": "SUPPORTED",
+          "evidence": "MiniCPM5-2B is designed for coding agents...",
+          "reason": "‘Programming robots’ is a paraphrase of ‘coding agents’, matching the source description."
+        },
+        {
+          "claim": "MiniCPM5-2B is created specifically for task‑oriented processes.",
+          "verdict": "SUPPORTED",
+          "evidence": "MiniCPM5-2B is designed for tool‑use workflows...",
+          "reason": "‘Task‑oriented processes’ corresponds to ‘tool‑use workflows’, which the source cites."
+        },
+        {
+          "claim": "MiniCPM5-2B is created specifically for problem‑solving situations that require a smaller, more efficient model.",
+          "verdict": "SUPPORTED",
+          "evidence": "MiniCPM5-2B is designed for reasoning scenarios where a compact model is preferred.",
+          "reason": "‘Problem‑solving situations’ parallels ‘reasoning scenarios’, and the need for a smaller, more efficient model matches the source’s mention of a preferred compact model."
+        },
+        {
+          "claim": "The model is used in situations that require a smaller, more efficient model.",
+          "verdict": "SUPPORTED",
+          "evidence": "MiniCPM5-2B is designed for ... scenarios where a compact model is preferred.",
+          "reason": "The source explicitly states the model is intended for scenarios preferring a compact (i.e., smaller, more efficient) model."
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "source": "https://huggingface.co/meta-models/Muse-Glimmer-30B",
+      "metrics": {
+        "total_claims": 7,
+        "supported_claims": 4,
+        "partial_claims": 0,
+        "unsupported_claims": 3,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 0.5714285714285714,
+        "unsupported_claim_rate": 0.42857142857142855
+      },
+      "claims": [
+        {
+          "claim": "Muse Glimmer is a sophisticated language model designed specifically for autonomous tasks on consumer devices.",
+          "verdict": "SUPPORTED",
+          "evidence": "Muse Glimmer is a ... purpose-built for autonomous agentic tasks on consumer hardware.",
+          "reason": "Paraphrases the source statement that the model is purpose-built for autonomous tasks on consumer hardware."
+        },
+        {
+          "claim": "Muse Glimmer has over 30 billion parameters.",
+          "verdict": "SUPPORTED",
+          "evidence": "Muse Glimmer is a 30-billion-parameter causal language model ...",
+          "reason": "The source explicitly states the model has 30 billion parameters."
+        },
+        {
+          "claim": "Having over 30 billion parameters means it can learn complex patterns in data.",
+          "verdict": "UNSUPPORTED",
+          "evidence": "Muse Glimmer is a 30-billion-parameter causal language model ...",
+          "reason": "The source does not provide any information about what the parameter count enables; the capability claim is not supported."
+        },
+        {
+          "claim": "The unique feature of this model is its dedicated perception encoder, borrowed from Muse Spark.",
+          "verdict": "SUPPORTED",
+          "evidence": "… with a dedicated perception encoder, distilled from Muse Spark …",
+          "reason": "The source confirms the model has a dedicated perception encoder that originates from Muse Spark (distilled)."
+        },
+        {
+          "claim": "This encoder helps the model understand and process sensory inputs like images or sounds.",
+          "verdict": "UNSUPPORTED",
+          "evidence": "… with a dedicated perception encoder, distilled from Muse Spark …",
+          "reason": "The source mentions the encoder's existence but does not state what it enables; the functional claim is unsupported."
+        },
+        {
+          "claim": "It is designed to make decisions and interact with the world like an autonomous agent.",
+          "verdict": "SUPPORTED",
+          "evidence": "… purpose-built for autonomous agentic tasks on consumer hardware.",
+          "reason": "Being purpose‑built for autonomous agentic tasks implies decision‑making and interaction capabilities; the claim paraphrases the source."
+        },
+        {
+          "claim": "It runs smoothly on consumer hardware.",
+          "verdict": "UNSUPPORTED",
+          "evidence": "… purpose-built for autonomous agentic tasks on consumer hardware.",
+          "reason": "The source states suitability for consumer hardware but does not claim smooth operation; the performance implication is unsupported."
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "source": "https://huggingface.co/meta-models/Muse-Glimmer-30B",
+      "metrics": {
+        "total_claims": 8,
+        "supported_claims": 8,
+        "partial_claims": 0,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 1.0,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "The model combines multiple stages of logical thinking.",
+          "verdict": "SUPPORTED",
+          "evidence": "The model integrates multi-step reasoning ...",
+          "reason": "Multi-step reasoning matches \"multiple stages of logical thinking\"."
+        },
+        {
+          "claim": "The model combines dependable tool utilization.",
+          "verdict": "SUPPORTED",
+          "evidence": "The model integrates ... reliable tool use ...",
+          "reason": "\"Reliable tool use\" is synonymous with \"dependable tool utilization\"."
+        },
+        {
+          "claim": "The model combines comprehension across different types of data (like text, images, and sounds).",
+          "verdict": "SUPPORTED",
+          "evidence": "The model integrates ... multimodal understanding ...",
+          "reason": "\"Multimodal understanding\" entails comprehension of various data types such as text, images, and sounds."
+        },
+        {
+          "claim": "The model combines the ability to recover from errors.",
+          "verdict": "SUPPORTED",
+          "evidence": "The model integrates ... failure recovery ...",
+          "reason": "\"Failure recovery\" directly corresponds to \"ability to recover from errors\"."
+        },
+        {
+          "claim": "All of these components are within a single model.",
+          "verdict": "SUPPORTED",
+          "evidence": "The model integrates ... into a single model ...",
+          "reason": "The source explicitly states the integration occurs in a single model."
+        },
+        {
+          "claim": "The model can operate independently on your local computer.",
+          "verdict": "SUPPORTED",
+          "evidence": "The model ... runs locally ...",
+          "reason": "Running locally implies independent operation on a local computer."
+        },
+        {
+          "claim": "The model does not need remote server resources.",
+          "verdict": "SUPPORTED",
+          "evidence": "The model ... runs locally without requiring cloud infrastructure ...",
+          "reason": "Absence of cloud infrastructure means no remote server resources are required."
+        },
+        {
+          "claim": "The model does not need internet connection.",
+          "verdict": "SUPPORTED",
+          "evidence": "The model ... runs locally without ... network access.",
+          "reason": "Lack of network access indicates no internet connection is needed."
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "source": "https://huggingface.co/zai-org/GLM-4.7",
+      "metrics": {
+        "total_claims": 9,
+        "supported_claims": 9,
+        "partial_claims": 0,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 1.0,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "GLM-4.7 significantly outperforms its previous version, GLM-4.6, in various aspects of multilingual tasks and terminal-based operations.",
+          "verdict": "SUPPORTED",
+          "evidence": "GLM-4.7 brings clear gains, compared to its predecessor GLM-4.6, in multilingual agentic coding and terminal-based tasks",
+          "reason": "Source states that GLM-4.7 has clear gains over GLM-4.6 in multilingual and terminal tasks, which supports the outperformance claim."
+        },
+        {
+          "claim": "SWE-bench is a standard test for machine learning models.",
+          "verdict": "SUPPORTED",
+          "evidence": "General definition; not contradicted by source.",
+          "reason": "The claim is a general description of the benchmark, not a model‑specific fact, and the source does not contradict it."
+        },
+        {
+          "claim": "GLM-4.7 achieved 73.8% accuracy on SWE-bench.",
+          "verdict": "SUPPORTED",
+          "evidence": "(73.8%, +5.8%) on SWE-bench",
+          "reason": "Source explicitly provides the 73.8% figure for SWE-bench."
+        },
+        {
+          "claim": "The 73.8% accuracy is an improvement of 5.8% compared to GLM-4.6 on SWE-bench.",
+          "verdict": "SUPPORTED",
+          "evidence": "(73.8%, +5.8%) on SWE-bench",
+          "reason": "The \"+5.8%\" in the source indicates the improvement over GLM-4.6."
+        },
+        {
+          "claim": "In the multilingual version of SWE-bench, GLM-4.7 scored 66.7%.",
+          "verdict": "SUPPORTED",
+          "evidence": "(66.7%, +12.9%) on SWE-bench Multilingual",
+          "reason": "Source provides the 66.7% figure for the multilingual SWE-bench."
+        },
+        {
+          "claim": "The 66.7% score is an increase of 12.9% compared to GLM-4.6 on the multilingual SWE-bench.",
+          "verdict": "SUPPORTED",
+          "evidence": "(66.7%, +12.9%) on SWE-bench Multilingual",
+          "reason": "The \"+12.9%\" in the source denotes the improvement over GLM-4.6."
+        },
+        {
+          "claim": "Terminal Bench 2.0 is a test for terminal commands.",
+          "verdict": "SUPPORTED",
+          "evidence": "General definition; not contradicted by source.",
+          "reason": "The statement is a general description of the benchmark and is not contradicted by the source."
+        },
+        {
+          "claim": "GLM-4.7 achieved 41% success rate on Terminal Bench 2.0.",
+          "verdict": "SUPPORTED",
+          "evidence": "(41%, +16.5%) on Terminal Bench 2.0",
+          "reason": "Source explicitly provides the 41% figure for Terminal Bench 2.0."
+        },
+        {
+          "claim": "The 41% success rate is an improvement of 16.5% compared to GLM-4.6 on Terminal Bench 2.0.",
+          "verdict": "SUPPORTED",
+          "evidence": "(41%, +16.5%) on Terminal Bench 2.0",
+          "reason": "The \"+16.5%\" in the source indicates the improvement over GLM-4.6."
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "source": "https://huggingface.co/tencent/HunyuanVideo",
+      "metrics": {
+        "total_claims": 8,
+        "supported_claims": 6,
+        "partial_claims": 1,
+        "unsupported_claims": 1,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 0.8125,
+        "unsupported_claim_rate": 0.125
+      },
+      "claims": [
+        {
+          "claim": "We utilize essential technologies during the learning process to teach the HunyuanVideo model.",
+          "verdict": "SUPPORTED",
+          "evidence": "In order to train HunyuanVideo model, we adopt several key technologies for model learning, including ...",
+          "reason": "The source states that key technologies are adopted for training, matching the claim."
+        },
+        {
+          "claim": "We use data curation.",
+          "verdict": "SUPPORTED",
+          "evidence": "including data curation ...",
+          "reason": "The source explicitly lists data curation as one of the adopted technologies."
+        },
+        {
+          "claim": "Data curation involves preparing our data so it's ready for training by removing errors or inconsistencies.",
+          "verdict": "PARTIAL",
+          "evidence": "including data curation ...",
+          "reason": "The use of data curation is supported, but the specific description of removing errors or inconsistencies is not mentioned in the source."
+        },
+        {
+          "claim": "We use image-video joint model training.",
+          "verdict": "SUPPORTED",
+          "evidence": "image-video joint model training ...",
+          "reason": "The source explicitly lists image‑video joint model training as an adopted technology."
+        },
+        {
+          "claim": "Image‑video joint model training means training a model using both images and videos together.",
+          "verdict": "SUPPORTED",
+          "evidence": "image-video joint model training ...",
+          "reason": "Provides a general definition of the term; the source confirms the technique is used, so the definition is acceptable."
+        },
+        {
+          "claim": "We combine the strengths of image and video data to create a more powerful learning model.",
+          "verdict": "UNSUPPORTED",
+          "evidence": "image-video joint model training ...",
+          "reason": "The source does not state that combining image and video data creates a more powerful model; this benefit claim is not supported."
+        },
+        {
+          "claim": "We use efficient infrastructure.",
+          "verdict": "SUPPORTED",
+          "evidence": "and an efficient infrastructure designed to facilitate large-scale model training and inference.",
+          "reason": "The source explicitly mentions the use of efficient infrastructure."
+        },
+        {
+          "claim": "The efficient infrastructure is a specially built system that helps us train our models quickly and efficiently, handling a lot of data at once.",
+          "verdict": "SUPPORTED",
+          "evidence": "and an efficient infrastructure designed to facilitate large‑scale model training and inference.",
+          "reason": "The claim paraphrases the source description of the infrastructure’s purpose and scale."
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "source": "https://huggingface.co/stabilityai/stable-video-diffusion-img2vid-xt",
+      "metrics": {
+        "total_claims": 7,
+        "supported_claims": 5,
+        "partial_claims": 2,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 0.8571428571428571,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "The Stable Video Diffusion (SVD) Image-to-Video model creates a video starting from a single still image.",
+          "verdict": "SUPPORTED",
+          "evidence": "Stable Video Diffusion (SVD) Image-to-Video is a diffusion model that takes in a still image as a conditioning frame, and generates a video from it.",
+          "reason": "The source explicitly states that the model takes a still image and generates a video."
+        },
+        {
+          "claim": "The single still image serves as the initial frame.",
+          "verdict": "SUPPORTED",
+          "evidence": "takes in a still image as a conditioning frame",
+          "reason": "A conditioning frame is effectively the initial frame for the generated video."
+        },
+        {
+          "claim": "The model uses a series of steps to create a video.",
+          "verdict": "PARTIAL",
+          "evidence": "The source describes the model as a diffusion model that generates a video from an image, but does not detail the procedural steps.",
+          "reason": "Core claim (video creation) is supported, but the detail about a \"series of steps\" is not mentioned in the source."
+        },
+        {
+          "claim": "The method is based on diffusion processes.",
+          "verdict": "SUPPORTED",
+          "evidence": "Stable Video Diffusion (SVD) Image-to-Video is a diffusion model",
+          "reason": "The source explicitly identifies the model as a diffusion model."
+        },
+        {
+          "claim": "In diffusion processes, information gradually spreads out in a controlled manner.",
+          "verdict": "SUPPORTED",
+          "evidence": "General definition of diffusion processes (not contradicted by the source).",
+          "reason": "Provides a generic technical definition; no conflict with the source."
+        },
+        {
+          "claim": "The model starts with an image.",
+          "verdict": "SUPPORTED",
+          "evidence": "takes in a still image as a conditioning frame",
+          "reason": "The source states the model receives an image as input."
+        },
+        {
+          "claim": "The model adds subtle changes over time to produce a video.",
+          "verdict": "PARTIAL",
+          "evidence": "The source confirms the model generates a video from an image but does not describe how changes are applied.",
+          "reason": "Core claim (video generation) is supported; the detail about \"subtle changes over time\" is not provided by the source."
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "source": "https://huggingface.co/bigscience/bloom",
+      "metrics": {
+        "total_claims": 5,
+        "supported_claims": 5,
+        "partial_claims": 0,
+        "unsupported_claims": 0,
+        "contradiction_claims": 0,
+        "factual_faithfulness": 1.0,
+        "unsupported_claim_rate": 0.0
+      },
+      "claims": [
+        {
+          "claim": "BLOOM is a large language model (LLM).",
+          "verdict": "SUPPORTED",
+          "evidence": "BLOOM is an autoregressive Large Language Model (LLM)",
+          "reason": "The source explicitly identifies BLOOM as a Large Language Model."
+        },
+        {
+          "claim": "BLOOM is designed to generate text by predicting one word at a time.",
+          "verdict": "SUPPORTED",
+          "evidence": "trained to continue text from a prompt on vast amounts of text data using industrial‑scale computational resources.",
+          "reason": "As an autoregressive model, BLOOM generates text token‑by‑token (i.e., predicts the next word each step), which matches the claim."
+        },
+        {
+          "claim": "BLOOM was trained on a huge amount of text data.",
+          "verdict": "SUPPORTED",
+          "evidence": "trained to continue text from a prompt on vast amounts of text data",
+          "reason": "The source states BLOOM was trained on vast (huge) amounts of text data."
+        },
+        {
+          "claim": "The training process requires significant computational power.",
+          "verdict": "SUPPORTED",
+          "evidence": "using industrial‑scale computational resources",
+          "reason": "Industrial‑scale resources imply the training needs significant computational power."
+        },
+        {
+          "claim": "The computational power is provided on an industrial scale.",
+          "verdict": "SUPPORTED",
+          "evidence": "using industrial‑scale computational resources",
+          "reason": "The source explicitly mentions that the computational resources are industrial‑scale."
+        }
+      ]
+    }
+  ]
+}
