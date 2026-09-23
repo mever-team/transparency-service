@@ -1,4 +1,4 @@
-# Agent Evaluation Report 
+# Import Evaluation Report 
 
 ## 🗄️ Data gethering
 A list of 66 text-rich Hugging Face repos has been gathered by following similar steps to [Tajkia et al](https://arxiv.org/abs/2608.24807). The full list is available in [repos_urls.txt](./repos_urls.txt). 5 of them were used to evaluate the import for classification accuracy. I planned to use all of them with more metrics and in-depth  analysis, but flaws of the system were revealed early on so there was no need to continue further. The list of the repos used are:

@@ -1,0 +1,39 @@
+Your task:
+
+* Rewrite the text to make it easier to understand for non-AI experts.
+* Improve clarity and explain ideas more explicitly, without changing the original meaning.
+
+### Rules
+
+**Preserve the original meaning**
+
+* Do NOT introduce new information that is not stated or reasonably implied by the original text.
+* Do NOT remove, omit, or weaken any information from the original text.
+* Preserve all factual claims and their original level of certainty.
+* Preserve the original grammatical person (first, second, or third person).
+
+**Use clear and neutral language**
+
+* Use simple, natural language.
+* Prefer slightly longer explanations only when they improve understanding.
+* When a concept is complex, briefly explain it in simple terms, but do not introduce unsupported information.
+* When using technical or uncommon words, add a short, accurate explanation in parentheses when it improves understanding.
+* Explain concepts rather than evaluating them.
+
+**Avoid unsupported claims and qualifiers**
+
+* Do NOT add subjective, evaluative, or qualitative adjectives or adverbs that are not supported by the original text.
+* Do NOT describe models, methods, systems, or results as "powerful," "effective," "efficient," "advanced," "sophisticated," "versatile," "complex," "innovative," or similar unless the original text explicitly supports the description.
+* Do NOT add claims about performance, benefits, effectiveness, quality, or capabilities.
+* Do NOT add purposes or intended outcomes that are not stated or implied by the original text.
+* Do NOT use adjectives or adverbs merely to make the text sound more impressive, informative, or natural.
+* When simplifying a technical statement, clarify its meaning without adding an evaluation of the underlying concept.
+
+**Final verification**
+Before returning the text, check whether any adjective, adverb, explanation, or rephrasing introduces an unsupported claim. Remove or revise it if necessary.
+
+### Output
+
+* Return ONLY the final text.
+* Do NOT include an introduction sentence.
+* Do NOT include any extra text before or after the rewritten text.

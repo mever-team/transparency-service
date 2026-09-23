@@ -24,26 +24,141 @@ Instructions:
 """,
         "simplification": """Your task:
 
-- Rewrite the text to make it easier to understand for non AI experts
-- Improve clarity and explain ideas more explicitly, without changing the meaning
+* Rewrite the text to make it easier to understand for non-AI experts.
+* Improve clarity and explain ideas more explicitly, without changing the original meaning.
 
-Rules:
+### Rules
 
-- Preserving the original grammatical person (first, second, or third person)
-- Do NOT include an introduction sentence 
-- Do NOT introduce new information that is not implied by the original text
-- Do NOT remove or omit any information
-- Use simple, natural language
-- Prefer slightly longer explanations only when they improve understanding
-- Use natural language
-- When a concept is complex, briefly explain it in simple terms
-- When using technical or uncommon words, add a short explanation in parentheses
-- Preserve the original meaning
+#### Preserve the original information
 
-Output:
+* Preserve every factual claim, technical concept, attribute, and component from the original text.
+* Do NOT remove, omit, weaken, or replace information from the original text.
+* Preserve the original grammatical person (first, second, or third person).
+* Preserve the original level of certainty.
+* If the original text explicitly states a qualitative attribute, preserve it. For example, if the original says "state-of-the-art," do not remove it or replace it with a weaker term such as "advanced."
+* Do NOT introduce information that is not stated or reasonably implied by the original text.
 
-- Return ONLY the final text
-- Do NOT include any extra text before or after""",
+#### Make technical concepts understandable
+
+* Use simple, natural language suitable for non-AI experts.
+* When the original text contains a technical or uncommon concept, explain it briefly in simple language when this improves understanding.
+* Do NOT omit a technical concept merely because explaining it requires additional words.
+* Distinguish between explaining the meaning of an existing concept and introducing a new claim about the specific model.
+* Accurate, neutral definitions of technical concepts are allowed and encouraged.
+* When appropriate, explain both what a technical component is and what it does.
+* When using technical or uncommon words, add a short explanation in parentheses or in the surrounding sentence.
+* Prefer slightly longer explanations when they are necessary to make an existing concept understandable.
+* The goal is not to minimize the length of the rewrite. The goal is to make the original information understandable while preserving its factual content.
+
+For example:
+
+* "fine-tuned" can be explained as "further trained or adapted for a specific task."
+* "image embeddings" can be explained as "numerical representations of images that the model can process."
+* "parameter-efficient" can be explained as using relatively few model parameters, without adding unsupported claims about performance.
+* "labeled data" can be explained as data accompanied by labels or corresponding information identifying the desired output.
+* "reinforcement learning" can be explained as a training approach in which a model learns from feedback or rewards.
+* "end-to-end" can be explained as a process in which the input is transformed into the final output through one integrated pipeline.
+
+These explanations should clarify the concept, not evaluate it.
+
+#### Avoid unsupported claims and qualifiers
+
+* Do NOT add subjective, evaluative, or qualitative adjectives or adverbs that are not supported by the original text.
+* Do NOT describe a model, method, system, component, or result as "powerful," "effective," "efficient," "advanced," "sophisticated," "versatile," "complex," "innovative," "robust," or similar unless the original text explicitly supports that description.
+* Do NOT add claims about performance, quality, effectiveness, efficiency, benefits, advantages, or capabilities unless they are stated or reasonably implied by the original text.
+* Do NOT add purposes or intended outcomes that are not stated or reasonably implied by the original text.
+* Do NOT add comparisons with other models, systems, or methods unless the original text contains such a comparison.
+* Do NOT use adjectives or adverbs merely to make the text sound more impressive, informative, or natural.
+* When simplifying a technical statement, explain what the concept means or does rather than describing it positively or negatively.
+* When explaining a technical component, describe its general function accurately and neutrally. Do not invent specific implementation details or unsupported benefits.
+
+For example:
+
+Original:
+"The model supports tool calling."
+
+Incorrect:
+"The model supports tool calling effectively."
+
+Reason:
+"Effectively" introduces an unsupported claim about the quality of the capability.
+
+Correct:
+"The model supports tool calling."
+
+---
+
+Original:
+"The model uses agentic reinforcement learning for decision-making."
+
+Incorrect:
+"The model uses sophisticated agentic reinforcement learning for intelligent decision-making."
+
+Reason:
+"Sophisticated" and "intelligent" introduce unsupported qualitative judgments.
+
+Correct:
+"The model uses agentic reinforcement learning, a training approach in which the model learns through feedback or rewards, for decision-making."
+
+---
+
+Original:
+"The model combines information from different domains."
+
+Incorrect:
+"The model combines information from different domains to achieve better performance."
+
+Reason:
+"Better performance" introduces an unsupported benefit.
+
+Correct:
+"The model combines information from different domains."
+
+#### Explanations must not replace original claims
+
+* Do not replace an explicit claim with only an explanation of that claim.
+* Preserve the original claim and add the explanation when needed.
+
+For example:
+
+Original:
+"Whisper is a state-of-the-art speech recognition model."
+
+Incorrect:
+"Whisper is an advanced speech recognition model."
+
+Reason:
+The original claim "state-of-the-art" has been weakened and replaced.
+
+Correct:
+"Whisper is a state-of-the-art speech recognition model, meaning it represents a leading level of performance in speech recognition."
+
+Only add the explanation if it can be expressed accurately and neutrally.
+
+#### Final verification
+
+Before returning the answer, check the rewrite internally:
+
+1. Is every original factual claim still present?
+2. Is every important technical concept still present?
+3. Have explicitly stated attributes been preserved?
+4. Are unfamiliar technical concepts explained when an explanation would improve understanding?
+5. Does each explanation accurately describe the concept without adding unsupported model-specific information?
+6. Did I introduce any new claim about performance, quality, effectiveness, efficiency, benefits, capabilities, or complexity?
+7. Did I introduce any unsupported adjective or adverb?
+8. Did I add a purpose, benefit, comparison, or evaluation that was not in the original?
+9. Did I accidentally weaken, remove, or replace an original claim?
+10. If an added sentence only explains an existing concept and does not introduce a new unsupported claim, keep it.
+
+If an added word or sentence makes the model sound better, more capable, more efficient, more advanced, or more sophisticated without support from the original text, remove it.
+
+### Output
+
+* Return ONLY the final rewritten text.
+* Do NOT include an introduction sentence.
+* Do NOT include an explanation of your changes.
+* Do NOT include any extra text before or after the rewritten text.
+""",
         "vision": "Provide explanation about the image."
     }
     def name(self):

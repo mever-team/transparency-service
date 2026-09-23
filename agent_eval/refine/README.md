@@ -1,0 +1,76 @@
+# Import Evaluation Report 
+
+## 🗄️ Data gathering
+To create an evaluation dataset for the refine functionality, 32 samples of technical content were gathered from the same Hugging Face model cards used for the import evaluation, with the assistance of ChatGPT. The samples were then manually selected to represent content likely to appear in model descriptions and other fields intended for non-expert readers. More technical content intended for technical fields was excluded.
+
+For each sample, ChatGPT was prompted to create a requirements checklist that the refine output was expected to satisfy. The checklist consists of two types of requirements: “mention” and “explain”. These requirements were used to evaluate the refine functionality in terms of information retention and technical explainability, respectively. The checklists were partially manually checked.
+
+The resulting dataset contains 144 “mention” requirements and 152 “explain” requirements, for a total of 296 checklist items. The evaluation dataset is available [here](./results/5_manually_corrected/dataset.json)
+
+## 🧭 Methodology
+To evaluate the model, we ask 3 questions:
+1.	Information Retention (IR): How much of the original information is preserved
+2.	Technical Explainability (TE): How many of the technical terms were explained 
+3.	Factual Faithfulness (FF): How much of the information stated in the output is supported by the original, and how much is fabricated. 
+
+the possible evaluation labels for each are:
+1. IR: 
+   * "YES" = 1 point
+   * "PARTIAL" = 0.5 points
+   * "NO" = 0 points
+2. TE:
+   * "YES" = 1 point
+   * "PARTIAL" = 0.5 points
+   * "NO" = 0 points
+3. FF:
+   * "SUPPORTED" = 1 point
+   * "PARTIAL" = 0.5 points
+   * "UNSUPPORTED" = 0 points
+
+For each dimension, the final score is calculated as:
+**`Satisfaction Score = Total Points / Number of Items`**
+
+The evaluation labels are obtained by prompting an LLM. The `gpt-oss:120b-cloud` from Ollama was used for this job. The evaluation labels were partially manually checked.
+
+Furthermore, to obtain the FF checklist, the same `gpt-oss:120b-cloud` model was prompted to first generate a factual checklist from the output text and then evaluate each fact against the corresponding original sample.
+
+## 📊 Results
+| Dimention | Total | Fully satisfied | Partially satisfied | Not satisfied | Satisfaction score |
+|--------|-------|-----------------|---------------------|---------------|--------------------|
+| IR     | 144   | 133 / 144 (92.36%) | 7 / 144 (4.86%)  | 	4 / 144 (2.78%) | 94.79% |
+| TE     | 152   | 82 / 152 (53.95%) | 35 / 152 (23.03%)  | 35 / 152 (23.03%) | 65.46% |
+| FF     | 204   | 177 / 204 (86.76%) | 16 / 204 (7.84%)  | 11 / 204 (5.39%) | 90.69% |
+
+The above are the final results after 3 refine prompt adjustments. It was obserbed that there was a trade-off between FF and TE depending on the strictness and emphasis on preserving the original facts. 
+
+For the 11 UNSUPPORTED FF, 3 of them were wrong or oversimplified explanations of terms, 6 of them were added assumptions about the usage / effectiveness of the model, and 2 were not stated by the original sample. 
+
+For the 4 Not satisfied IR, 2 of them were information loss due to oversimplification, and 2 were facts there were simply not stated.
+
+The 35 Not satisfied FF are terms that were expected to be explained but they were not. The terms are:
+* parameter-efficient
+* Mixture-of-Experts
+* embedding
+* image embeddings
+* text embedding
+* Rotary Position Embeddings
+* supervised fine-tuning
+* EnCodec speech features
+* weakly supervised
+* Pixel-level Unified Transformer (UiT)
+* VAE (Variational Autoencoder) 
+* shared token space
+* subject-driven personalization
+* denoising 
+* causal temporal modeling
+* Long-horizon Search
+* Sliding Window Attention (SWA) 
+* discrete diffusion
+* layout detection
+* content recognition
+* coding agents
+* model distillation
+
+The results can be found in an HTML [here](./results/5_manually_corrected/evaluation_report.html)
+
+
