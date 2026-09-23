@@ -18,7 +18,9 @@ from threading import Thread
 matcher = SemanticMatcher(
     "sentence-transformers/all-mpnet-base-v2",
     external_get_timeout_sec=3,
-    matching_strictness=0.5)
+    matching_strictness=0,
+    fuzzer_weight=0.25,
+    promote_filling_simple_fields=0.1)
 prompter = Prompter(
     Ollama("phi3:latest", name="AI", timeout_secs=60),
     description="Phi3 is used to refine the model card.",
