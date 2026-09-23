@@ -45,11 +45,16 @@ Furthermore, to obtain the FF checklist, the same `gpt-oss:120b-cloud` model was
 
 The above are the final results after 3 refine prompt adjustments. It was obserbed that there was a trade-off between FF and TE depending on the strictness and emphasis on preserving the original facts. 
 
-For the 11 UNSUPPORTED FF(Factual Faithfulness), 3 of them were wrong or oversimplified explanations of terms, 6 of them were added assumptions about the usage / effectiveness of the model, and 2 were not stated by the original sample. 
+For the 11 UNSUPPORTED FF (false facts that the refine produced): 
+* 3 of them were wrong or oversimplified explanations of terms found in the original, which ended up as unsupported facts
+* 6 of them were added assumptions about the usage / effectiveness of the model (basically the refine added extra adjectives and adverbs not included in the original like effective, efficiently etc.)
+* and 2 were not stated by the original sample. (facts that are not present or related to the original text)
 
-For the 4 Not satisfied IR(Information Retention), 2 of them were information loss due to oversimplification, and 2 were facts there were simply not stated.
+For the 4 Not satisfied IR (facts that the refine missed): 
+* 2 of them were information loss due to oversimplification, 
+* and 2 facts that were simply not stated at all.
 
-The 35 Not satisfied TE(Technical Explainability) are terms that were expected to be explained but they were not. The terms are:
+The 35 Not satisfied TE (terms that the refine was expected to explain but did not) the terms are:
 * parameter-efficient
 * Mixture-of-Experts
 * embedding
