@@ -39,9 +39,9 @@ Furthermore, to obtain the FF checklist, the same `gpt-oss:120b-cloud` model was
 ### **Overall Satisfaction score 84.2%**
 | Dimention | Total | Fully satisfied | Partially satisfied | Not satisfied | Satisfaction score |
 |--------|-------|-----------------|---------------------|---------------|--------------------|
-| Information Retention     | 144   | 133 / 144 (92.36%) | 7 / 144 (4.86%)  | 	4 / 144 (2.78%) | 94.79% |
-| Technical Explainability     | 152   | 82 / 152 (53.95%) | 35 / 152 (23.03%)  | 35 / 152 (23.03%) | 65.46% |
-| Factual Faithfulness     | 204   | 177 / 204 (86.76%) | 16 / 204 (7.84%)  | 11 / 204 (5.39%) | 90.69% |
+| IR (Information Retention)     | 144   | 133 / 144 (92.36%) | 7 / 144 (4.86%)  | 	4 / 144 (2.78%) | 94.79% |
+| TE (Technical Explainability)     | 152   | 82 / 152 (53.95%) | 35 / 152 (23.03%)  | 35 / 152 (23.03%) | 65.46% |
+| FF (Factual Faithfulness)     | 204   | 177 / 204 (86.76%) | 16 / 204 (7.84%)  | 11 / 204 (5.39%) | 90.69% |
 
 The above are the final results after 3 refine prompt adjustments. It was obserbed that there was a trade-off between FF and TE depending on the strictness and emphasis on preserving the original facts. 
 
