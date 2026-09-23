@@ -35,6 +35,8 @@ The evaluation labels are obtained by prompting an LLM. The `gpt-oss:120b-cloud`
 Furthermore, to obtain the FF checklist, the same `gpt-oss:120b-cloud` model was prompted to first generate a factual checklist from the output text and then evaluate each fact against the corresponding original sample.
 
 ## 📊 Results
+
+### **Overall Satisfaction score 84.2%**
 | Dimention | Total | Fully satisfied | Partially satisfied | Not satisfied | Satisfaction score |
 |--------|-------|-----------------|---------------------|---------------|--------------------|
 | IR     | 144   | 133 / 144 (92.36%) | 7 / 144 (4.86%)  | 	4 / 144 (2.78%) | 94.79% |
