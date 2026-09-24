@@ -7,6 +7,59 @@ For each sample, ChatGPT was prompted to create a requirements checklist that th
 
 The resulting dataset contains 144 “mention” requirements and 152 “explain” requirements, for a total of 296 checklist items. The evaluation dataset is available [here](./results/5_manually_corrected/dataset.json)
 
+<details>
+<summary><strong>Example of one sample:</strong></summary>
+<pre>
+{
+   "id": 4,
+   "input": "DeepSeek-R1-Zero is trained through large-scale reinforcement learning (RL) without supervised fine-tuning (SFT) as a preliminary step, allowing it to develop reasoning behaviors through reinforcement learning alone.",
+   "ground_truth": [
+      {
+            "id": 1,
+            "type": "mention",
+            "requirement": "States that DeepSeek-R1-Zero is trained using reinforcement learning (RL)."
+      },
+      {
+            "id": 2,
+            "type": "explain",
+            "requirement": "Explains that reinforcement learning is a training approach in which the model learns by receiving feedback or rewards for its behavior."
+      },
+      {
+            "id": 3,
+            "type": "mention",
+            "requirement": "States that the reinforcement learning used for training is performed at large scale."
+      },
+      {
+            "id": 4,
+            "type": "mention",
+            "requirement": "States that DeepSeek-R1-Zero is trained without supervised fine-tuning (SFT) as a preliminary or initial training step."
+      },
+      {
+            "id": 5,
+            "type": "explain",
+            "requirement": "Explains that supervised fine-tuning is a training process in which a model is further trained using examples with desired or labeled outputs."
+      },
+      {
+            "id": 6,
+            "type": "mention",
+            "requirement": "Clearly preserves the distinction that SFT is omitted specifically as a preliminary step before the reinforcement learning stage."
+      },
+      {
+            "id": 7,
+            "type": "mention",
+            "requirement": "States that DeepSeek-R1-Zero develops reasoning behaviors through reinforcement learning."
+      },
+      {
+            "id": 8,
+            "type": "explain",
+            "requirement": "Makes clear that these reasoning behaviors emerge from the reinforcement learning process rather than from a preceding supervised fine-tuning stage."
+      }
+   ],
+   "source": "https://huggingface.co/deepseek-ai/DeepSeek-R1"
+}
+</pre>
+</details>
+
 ## 🧭 Methodology
 To evaluate the model, we ask 3 questions:
 1.	Information Retention (IR): How much of the original information is preserved
