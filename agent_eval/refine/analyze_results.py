@@ -3,7 +3,7 @@ from collections import defaultdict
 from pathlib import Path
 
 
-RESULTS_PATH = "evaluation_results.recalculated.json"
+RESULTS_PATH = "evaluation_results.json"
 REPORT_PATH = "analysis_report.json"
 
 

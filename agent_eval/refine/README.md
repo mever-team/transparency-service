@@ -79,6 +79,7 @@ the possible evaluation labels for each are:
    * "SUPPORTED" = 1 point
    * "PARTIAL" = 0.5 points
    * "UNSUPPORTED" = 0 points
+   * "CONTRADICTION" = -1 points
 
 For each dimension, the final score is calculated as:
 **`Satisfaction Score = Total Points / Number of Items`**
@@ -96,7 +97,7 @@ Furthermore, to obtain the FF checklist, the same `gpt-oss:120b-cloud` model was
 | TE (Technical Explainability)     | 152   | 82 / 152 (53.95%) | 35 / 152 (23.03%)  | 35 / 152 (23.03%) | 65.46% |
 | FF (Factual Faithfulness)     | 204   | 177 / 204 (86.76%) | 16 / 204 (7.84%)  | 11 / 204 (5.39%) | 90.69% |
 
-The above are the final results after 3 refine prompt adjustments. It was obserbed that there was a trade-off between FF and TE depending on the strictness and emphasis on preserving the original facts. 
+The above are the final results after 4 refine prompt adjustments. It was obserbed that there was a trade-off between FF and TE depending on the strictness and emphasis on preserving the original facts. Furthermore, an attempt was made to add a glossary for the missed technical explanations in the prompt, but no improvements were observed in the TE satisfaction score while the unsupported claims reached 45%, indicating hallucination problems. Further improvements maybe impossible without fine-tuning, changing the model, or adding tool-calling.
 
 For the 11 UNSUPPORTED FF (false facts that the refine produced): 
 * 3 of them were wrong or oversimplified explanations of terms found in the original, which ended up as unsupported facts

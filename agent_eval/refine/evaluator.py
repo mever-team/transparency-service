@@ -36,7 +36,9 @@ is present in the model output.
 Return:
 
 YES:
-The required information is present.
+The required information is conveyed by the output, either explicitly or
+through an equivalent description or explanation. The exact terminology
+does not need to appear if the meaning is clearly present.
 
 NO:
 The required information is absent.
@@ -60,32 +62,41 @@ The requirement is not satisfied.
 Evaluation rules:
 
 For "mention" requirements:
-- Check whether the required concept or fact is present.
+- Check whether the required concept or fact is present in the output.
 - Different wording is acceptable if the meaning is preserved.
+- The required information does NOT need to explicitly name the concept
+  if the output clearly conveys the required information through its
+  description or explanation.
 - Do not require additional explanation.
-- If the concept is present, satisfaction is normally YES.
-- If the concept is absent, information_present must be NO
-  and satisfaction must be NO.
+- If the required information is present, even without explicitly naming
+  the concept, information_present is YES.
+- If the concept or its required information is absent, information_present
+  must be NO and satisfaction must be NO.
+- If the required information is present, satisfaction is normally YES.
 
 For "explain" requirements:
-- The required concept must be present.
-- The concept must be explained clearly enough for a non-expert.
+- Check whether the required concept is explained, not merely whether its
+  exact name appears.
+- The concept does NOT need to be explicitly named if the output clearly
+  conveys the required explanation or definition.
+- For example, if the requirement is:
+  "Explains that phonemes are the basic sound units used to represent
+  spoken language."
+  an output such as:
+  "They are the basic sound units used to represent spoken language."
+  contains the required explanation even though the word "phonemes" does
+  not appear explicitly.
+- If the required information or explanation can be clearly understood
+  from the output without the technical term being explicitly stated,
+  information_present is YES.
+- The concept must still be explained clearly enough for a non-expert.
 - Merely mentioning the technical term is not sufficient.
-- If the concept is mentioned but the explanation is insufficient,
-  information_present can be YES while satisfaction is PARTIAL.
-- If the required concept is completely absent,
-  information_present must be NO and satisfaction must be NO.
-- If the explanation fully addresses the requirement,
-  satisfaction is YES.
-
-For "constraint" requirements:
-- Check whether the required constraint is respected by the output.
-- If the constraint is respected, satisfaction is YES.
-- If it is partially respected, satisfaction is PARTIAL.
-- If it is violated, satisfaction is NO.
-- Determine information_present based on whether the relevant
-  information needed to evaluate the constraint is present.
-
+- If the concept or explanation is partially conveyed, information_present
+  can be YES while satisfaction is PARTIAL.
+- If the required information is completely absent, information_present
+  must be NO and satisfaction must be NO.
+- If the explanation fully addresses the requirement, satisfaction is YES.
+  
 The model output should be evaluated against the requirement,
 not against what you personally think would make a good explanation.
 
