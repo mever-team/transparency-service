@@ -27,9 +27,47 @@ function compressHistory(historyEdges, hidden, nodeIds) {
     return {compactHistory, newRootId};
 }
 
+function relaxLayout(yPos, depth, adj, hasLabel, Y_SPACING) {
+    const byDepth = new Map();
+    depth.forEach((d, id) => {if (!byDepth.has(d)) byDepth.set(d, []);byDepth.get(d).push(id);});
+    const MIN_GAP = new Map();
+    depth.forEach((_, id) => MIN_GAP.set(id, hasLabel.has(id) ? Y_SPACING * 1.6 : Y_SPACING));
+    const ITERATIONS = 300;
+    const SPRING_K = 0.03;
+    const REPEL_K = 1.5;
+    for (let it = 0; it < ITERATIONS; it++) {
+        const force = new Map();
+        depth.forEach((_, id) => force.set(id, 0));
+        adj.forEach((neighbors, u) => {
+            neighbors.forEach(v => {
+                if (v <= u) return; // each edge once
+                const diff = yPos.get(v) - yPos.get(u);
+                const pull = diff * SPRING_K;
+                force.set(u, force.get(u) + pull);
+                force.set(v, force.get(v) - pull);
+            });
+        });
+        byDepth.forEach(ids => {
+            const sorted = [...ids].sort((a, b) => yPos.get(a) - yPos.get(b));
+            for (let i = 0; i < sorted.length - 1; i++) {
+                const a = sorted[i], b = sorted[i + 1];
+                const gap = yPos.get(b) - yPos.get(a);
+                const needed = (MIN_GAP.get(a) + MIN_GAP.get(b)) / 2;
+                if (gap < needed) {
+                    const push = (needed - gap) * REPEL_K;
+                    force.set(a, force.get(a) - push);
+                    force.set(b, force.get(b) + push);
+                }
+            }
+        });
+        depth.forEach((_, id) => yPos.set(id, yPos.get(id) + force.get(id)));
+    }
+}
+
 function renderHistoryGraph(history, currentId, container) {
     //console.log(history);
     let compareMode = false;
+    const compareToId = Number(new URLSearchParams(window.location.search).get('compareto')) || null;
 
     let node_info = history.info;
     history = history.edges; // dict from node id to tuple (username, version)
@@ -58,6 +96,7 @@ function renderHistoryGraph(history, currentId, container) {
     });
     container.appendChild(btn);
 
+
     const X_SPACING = 200;
     const Y_SPACING = 35;
     const NODE_RADIUS = 10;
@@ -67,8 +106,10 @@ function renderHistoryGraph(history, currentId, container) {
 
     history.forEach(([u, v, msg]) => {
         if(u === v) {
-            if (msg) selfLabels.set(u, (node_info[u][1].length===0?"[DRAFT] ":(node_info[u][1]!==msg)?(node_info[u][1]+" "):"")+msg + " by " + node_info[u][0]);
-            return;
+            if (msg) selfLabels.set(u, {
+                line1: (node_info[u][1].length===0?"[DRAFT] ":(node_info[u][1]!==msg)?(node_info[u][1]+" "):"")+msg,
+                line2: "by " + node_info[u][0]
+            });return;
         }
         if (!adj.has(u)) adj.set(u, new Set());
         if (!adj.has(v)) adj.set(v, new Set());
@@ -111,10 +152,12 @@ function renderHistoryGraph(history, currentId, container) {
     }
 
     layout(rootId);
+    relaxLayout(yPos, depth, adj, selfLabels, Y_SPACING);
 
     const ys = Array.from(yPos.values());
     const minY = Math.min(...ys);
-    yPos.forEach((v, k) => yPos.set(k, v - minY + 40));
+    const LABEL_HEADROOM = 40; // room above the topmost node for its two-line label
+    yPos.forEach((v, k) => yPos.set(k, v - minY + LABEL_HEADROOM));
 
     const maxDepth = Math.max(...depth.values());
     const width = (maxDepth + 1) * X_SPACING + 80;
@@ -166,23 +209,37 @@ function renderHistoryGraph(history, currentId, container) {
 
     depth.forEach((d, id) => {
         const x = d * X_SPACING + 40;
-        const y = yPos.get(id);
+        const y = yPos.get(id)+6;
         const g = document.createElementNS(svg.namespaceURI, "g");
         g.classList.add("node");
         const c = document.createElementNS(svg.namespaceURI, "circle");
         c.setAttribute("cx", x);
         c.setAttribute("cy", y);
         c.setAttribute("r", NODE_RADIUS);
-        c.classList.add(id === currentId ? "node-current" : "node-related");
+        c.classList.add(id === currentId ? "node-current" : id === compareToId ? "node-compare" : "node-related");
         g.appendChild(c);
         if (selfLabels.has(id)) {
+            const { line1, line2 } = selfLabels.get(id);
             const label = document.createElementNS(svg.namespaceURI, "text");
             label.setAttribute("x", x-30);
-            label.setAttribute("y", y - NODE_RADIUS - 6);
+            label.setAttribute("y", y - NODE_RADIUS - 6-16);
             label.setAttribute("text-anchor", "left");
             label.setAttribute("pointer-events", "none");
             label.classList.add("node-label");
-            label.textContent = selfLabels.get(id);
+
+            const tspan1 = document.createElementNS(svg.namespaceURI, "tspan");
+            tspan1.setAttribute("x", x-30);
+            tspan1.setAttribute("dy", "0");
+            tspan1.textContent = line1;
+
+            const tspan2 = document.createElementNS(svg.namespaceURI, "tspan");
+            tspan2.setAttribute("x", x-30);
+            tspan2.setAttribute("dy", "1.2em");
+            tspan2.classList.add("self-label"); // reuse existing italic style for the "by" line
+            tspan2.textContent = line2;
+
+            label.appendChild(tspan1);
+            label.appendChild(tspan2);
             g.appendChild(label);
         }
         g.style.cursor = "pointer";

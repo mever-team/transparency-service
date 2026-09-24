@@ -7,6 +7,11 @@ $(function() {
     let turndownService = null;
     let markedInstance = null;
 
+    function formatFieldName(name) {
+        const text = name.replace(/_/g, " ");
+        return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+
     // Custom MediumEditor extension for inserting code blocks
     function getHighestPreFromNode(node) {
         let current = node;
@@ -362,12 +367,12 @@ $(function() {
         if (!no_title) $section.append($("<h2>").text(sectionTitle));
         if (!section.value.length) $section.append($("<p>").text("No data provided."));
         section.value.forEach((field, fieldIndex) => {
-            let $field = $("<div>").addClass("field").attr('data-name', field.name.replace(/_/g, " "));
+            let $field = $("<div>").addClass("field").attr('data-name', formatFieldName(field.name));
 
             // field-name
             let $fieldName = $("<span>")
                 .addClass("field-name")
-                .text(" "+field.name.replace(/_/g, " "));
+                .text(" "+formatFieldName(field.name));
             
 
 
@@ -501,14 +506,7 @@ $(function() {
                 $('.menu').find('div').eq(index).find('.light').removeClass('square');
                 $('.menu').find('div').eq(index).find('.light').addClass('arrow');
             }
-
-            let $refineBtn = $("<button>")
-                .addClass("refine-field")
-                .text("refine field");
             $field.append($fieldInfo).append($fieldValue);
-            // if (token && cardJson.creator===loggedUser){
-            //     $field.append($refineBtn);
-            // }
             $section.append($field);
 
             // compared value
@@ -520,7 +518,7 @@ $(function() {
                 let $fieldBase = $("<span>")
                     .addClass("field-name")
                     .addClass("comparison")
-                    .text("difference");
+                    .text((comparedJson?.message || comparedJson?.title || "compared model")+" by "+(comparedJson?.creator || "unknown"));
 
                 $field.append($fieldBase);
                 $field.append($baseFieldValue);
