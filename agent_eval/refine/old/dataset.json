@@ -82,6 +82,11 @@
                 "id": 16,
                 "type": "explain",
                 "requirement": "Explains that alias reduction reduces unwanted artifacts or distortions that can occur when generating the audio waveform."
+            },
+            {
+                "id": 17,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's capabilities, training, quality, or benefits."
             }
         ],
         "source": "https://huggingface.co/owensong/Inflect-Micro-v2"
@@ -99,6 +104,11 @@
                 "id": 2,
                 "type": "mention",
                 "requirement": "States that the model has approximately 198 billion parameters."
+            },
+            {
+                "id": 3,
+                "type": "explain",
+                "requirement": "Explains that parameters are the numerical values learned by the model during training that are used to process and generate information."
             },
             {
                 "id": 4,
@@ -139,6 +149,11 @@
                 "id": 11,
                 "type": "mention",
                 "requirement": "States that the model provides native image understanding, meaning image information can be processed directly as part of the model rather than requiring a separate external image-understanding system."
+            },
+            {
+                "id": 12,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's performance, capabilities, training, or benefits."
             }
         ],
         "source": "https://huggingface.co/stepfun-ai/Step-3.7-Flash"
@@ -186,6 +201,11 @@
                 "id": 8,
                 "type": "mention",
                 "requirement": "Preserves the comparison that the image-variation capability is similar to that of DALL-E 2."
+            },
+            {
+                "id": 9,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's performance, image quality, training data, or capabilities."
             }
         ],
         "source": "https://huggingface.co/lambda/sd-image-variations-diffusers"
@@ -233,6 +253,11 @@
                 "id": 8,
                 "type": "explain",
                 "requirement": "Makes clear that these reasoning behaviors emerge from the reinforcement learning process rather than from a preceding supervised fine-tuning stage."
+            },
+            {
+                "id": 9,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's reasoning ability, performance, training data, or other capabilities."
             }
         ],
         "source": "https://huggingface.co/deepseek-ai/DeepSeek-R1"
@@ -280,6 +305,11 @@
                 "id": 8,
                 "type": "explain",
                 "requirement": "Explains that zero-shot means performing a task or working with a dataset or domain without being specifically trained on examples for that particular task or domain."
+            },
+            {
+                "id": 9,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about Whisper's accuracy, performance, languages, training data, or capabilities."
             }
         ],
         "source": "https://huggingface.co/openai/whisper-large-v3"
@@ -327,6 +357,11 @@
                 "id": 8,
                 "type": "explain",
                 "requirement": "Preserves the comparison with OmniGen v1, indicating that these architectural features distinguish OmniGen2 from OmniGen v1."
+            },
+            {
+                "id": 9,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about Whisper's accuracy, performance, languages, training data, or capabilities."
             }
         ],
         "source": "https://huggingface.co/OmniGen2/OmniGen2"
@@ -364,6 +399,11 @@
                 "id": 6,
                 "type": "explain",
                 "requirement": "Explains that the comparison refers to Apriel-1.5-15b-Thinker achieving performance described as competitive with models that are approximately ten times larger."
+            },
+            {
+                "id": 7,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about Whisper's accuracy, performance, languages, training data, or capabilities."
             }
         ],
         "source": "https://huggingface.co/ServiceNow-AI/Apriel-1.5-15b-Thinker"
@@ -396,6 +436,11 @@
                 "id": 5,
                 "type": "explain",
                 "requirement": "Explains that The Pile is the named source or dataset from which the biomedical abstracts and papers were obtained."
+            },
+            {
+                "id": 6,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about Whisper's accuracy, performance, languages, training data, or capabilities."
             }
         ],
         "source": "https://huggingface.co/stanford-crfm/BioMedLM"
@@ -438,6 +483,11 @@
                 "id": 7,
                 "type": "explain",
                 "requirement": "Explains that an autoregressive transformer generates or processes outputs sequentially, with later outputs depending on previously generated outputs."
+            },
+            {
+                "id": 8,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about Whisper's accuracy, performance, languages, training data, or capabilities."
             }
         ],
         "source": "https://huggingface.co/CAMB-AI/MARS5-TTS"
@@ -480,6 +530,11 @@
                 "id": 7,
                 "type": "explain",
                 "requirement": "Preserves the stated relationship that the use of both weakly supervised and supervised data is presented as supporting the model's applicability across numerous languages and downstream tasks."
+            },
+            {
+                "id": 8,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about Whisper's accuracy, performance, languages, training data, or capabilities."
             }
         ],
         "source": "https://huggingface.co/Alibaba-NLP/gte-Qwen2-7B-instruct"
@@ -522,6 +577,11 @@
                 "id": 7,
                 "type": "explain",
                 "requirement": "Preserves the comparison with modular approaches and large multimodal models, without claiming that one approach is universally more efficient than the other."
+            },
+            {
+                "id": 8,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about Whisper's accuracy, performance, languages, training data, or capabilities."
             }
         ],
         "source": "https://huggingface.co/echo840/MonkeyOCR"
@@ -556,6 +616,11 @@
                 "requirement": "States that the model activates an average of approximately 27 billion parameters."
             },
             {
+                "id": 6,
+                "type": "explain",
+                "requirement": "Explains that parameters are numerical values learned by the model during training that are used to process and generate information."
+            },
+            {
                 "id": 7,
                 "type": "mention",
                 "requirement": "Preserves the claim that the dynamic computation mechanism is intended to optimize computational efficiency."
@@ -569,6 +634,11 @@
                 "id": 9,
                 "type": "explain",
                 "requirement": "Explains that activating different numbers of parameters according to contextual demands is intended to balance computational efficiency and model performance."
+            },
+            {
+                "id": 10,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's performance, efficiency, training, capabilities, or parameter usage."
             }
         ],
         "source": "https://huggingface.co/meituan-longcat/LongCat-Flash-Chat"
@@ -631,6 +701,11 @@
                 "id": 11,
                 "type": "explain",
                 "requirement": "Makes clear that the model's unified architecture is achieved without relying on external VAEs or separate text encoders."
+            },
+            {
+                "id": 12,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's performance, image quality, training, architecture, or capabilities."
             }
         ],
         "source": "https://huggingface.co/HiDream-ai/HiDream-O1-Image"
@@ -698,6 +773,11 @@
                 "id": 12,
                 "type": "mention",
                 "requirement": "States that the model supports these capabilities at resolutions up to 2,048 × 2,048 pixels."
+            },
+            {
+                "id": 13,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's performance, image quality, training, architecture, or capabilities."
             }
         ],
         "source": "https://huggingface.co/HiDream-ai/HiDream-O1-Image"
@@ -737,14 +817,29 @@
                 "requirement": "States that K-EXAONE has 236 billion total parameters."
             },
             {
+                "id": 7,
+                "type": "explain",
+                "requirement": "Explains that parameters are numerical values learned by the model during training that are used to process and generate information."
+            },
+            {
                 "id": 8,
                 "type": "mention",
                 "requirement": "States that 23 billion parameters are active during inference."
             },
             {
+                "id": 9,
+                "type": "explain",
+                "requirement": "Explains that inference is the process of using the trained model to produce outputs for new inputs."
+            },
+            {
                 "id": 10,
                 "type": "explain",
                 "requirement": "Explains that having 23 billion active parameters during inference means that only that subset of the model's 236 billion total parameters is activated when processing an input."
+            },
+            {
+                "id": 11,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's performance, languages, training, capabilities, or efficiency."
             }
         ],
         "source": "https://huggingface.co/LGAI-EXAONE/K-EXAONE-236B-A23B"
@@ -777,6 +872,11 @@
                 "id": 5,
                 "type": "mention",
                 "requirement": "States that the model generates or processes video as a sequence of video chunks."
+            },
+            {
+                "id": 6,
+                "type": "explain",
+                "requirement": "Explains that video chunks are smaller sequential segments or portions of a video that together form the complete video."
             },
             {
                 "id": 7,
@@ -817,6 +917,11 @@
                 "id": 14,
                 "type": "explain",
                 "requirement": "Explains that streaming generation means generating the video progressively in chunks rather than requiring the entire video to be generated before output can begin."
+            },
+            {
+                "id": 15,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's video quality, performance, training data, capabilities, or generation speed."
             }
         ],
         "source": "https://huggingface.co/sand-ai/MAGI-1"
@@ -859,6 +964,11 @@
                 "id": 7,
                 "type": "explain",
                 "requirement": "Makes clear that the model can combine image and text information as inputs while producing text as its output."
+            },
+            {
+                "id": 8,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's performance, capabilities, training, languages, or input/output limitations."
             }
         ],
         "source": "https://huggingface.co/HuggingFaceM4/idefics2-8b"
@@ -928,6 +1038,11 @@
                 "requirement": "States that the supported domains include Instruction Following."
             },
             {
+                "id": 13,
+                "type": "explain",
+                "requirement": "Explains that instruction following means carrying out tasks or producing outputs according to given instructions."
+            },
+            {
                 "id": 14,
                 "type": "mention",
                 "requirement": "States that the supported domains include Tool-calling."
@@ -936,6 +1051,11 @@
                 "id": 15,
                 "type": "explain",
                 "requirement": "Explains that tool-calling means using external tools or functions as part of completing a task."
+            },
+            {
+                "id": 16,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's performance, capabilities, training, domains, or tool-use abilities."
             }
         ],
         "source": "https://huggingface.co/InternScience/Agents-A1"
@@ -988,6 +1108,11 @@
                 "id": 9,
                 "type": "explain",
                 "requirement": "Explains that a 128-token window means each Sliding Window Attention operation considers a local window of 128 tokens."
+            },
+            {
+                "id": 10,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's performance, efficiency, context length, attention behavior, or capabilities."
             }
         ],
         "source": "https://huggingface.co/XiaomiMiMo/MiMo-V2-Flash"
@@ -1050,6 +1175,11 @@
                 "id": 11,
                 "type": "explain",
                 "requirement": "Makes clear that the stated SWE-Bench and complex reasoning performance is presented as an outcome of the post-training approach."
+            },
+            {
+                "id": 12,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's performance, training methods, capabilities, or benchmark results."
             }
         ],
         "source": "https://huggingface.co/XiaomiMiMo/MiMo-V2-Flash"
@@ -1102,6 +1232,11 @@
                 "id": 9,
                 "type": "explain",
                 "requirement": "Makes clear that visual feedback enables the model to observe the results or state of its actions and use that information to self-correct during continuous task execution."
+            },
+            {
+                "id": 10,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's performance, real-world reliability, visual capabilities, training, or autonomy."
             }
         ],
         "source": "https://huggingface.co/nex-agi/Nex-N2.5-mini"
@@ -1156,9 +1291,19 @@
                 "requirement": "States that the model can handle long input sequences of up to 8192 tokens."
             },
             {
+                "id": 10,
+                "type": "explain",
+                "requirement": "Explains that tokens are units into which text is divided for processing by a language model, and that an input sequence of up to 8192 tokens indicates the maximum stated input length."
+            },
+            {
                 "id": 11,
                 "type": "explain",
                 "requirement": "Makes clear that Rotary Position Embeddings are used to support handling of the stated long input sequences."
+            },
+            {
+                "id": 12,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's performance, languages, NLP applications, embedding quality, or capabilities."
             }
         ],
         "source": "https://huggingface.co/jinaai/jina-embeddings-v3"
@@ -1186,6 +1331,11 @@
                 "id": 4,
                 "type": "explain",
                 "requirement": "Makes clear that discrete diffusion is the method used by DiffusionGemma to generate its tokens."
+            },
+            {
+                "id": 5,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's performance, architecture, training, capabilities, or generation process."
             }
         ],
         "source": "https://huggingface.co/google/diffusiongemma-26B-A4B-it"
@@ -1225,6 +1375,11 @@
                 "requirement": "States that the model substitutes the language model with a Granite 165M LLM."
             },
             {
+                "id": 7,
+                "type": "explain",
+                "requirement": "Explains that a language model is a component designed to process and generate language information."
+            },
+            {
                 "id": 8,
                 "type": "explain",
                 "requirement": "Explains that LLM stands for large language model, without adding unsupported details about the Granite 165M model."
@@ -1233,6 +1388,11 @@
                 "id": 9,
                 "type": "explain",
                 "requirement": "Makes clear that the two modifications consist of replacing the vision encoder and substituting the language model while retaining the Idefics3 architecture as the basis."
+            },
+            {
+                "id": 10,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's performance, architecture, training, capabilities, or component behavior."
             }
         ],
         "source": "https://huggingface.co/ibm-granite/granite-docling-258M"
@@ -1255,6 +1415,11 @@
                 "id": 3,
                 "type": "mention",
                 "requirement": "States that dots.ocr is a vision-language model."
+            },
+            {
+                "id": 4,
+                "type": "explain",
+                "requirement": "Explains that a vision-language model works with both visual and language information."
             },
             {
                 "id": 5,
@@ -1280,6 +1445,21 @@
                 "id": 9,
                 "type": "mention",
                 "requirement": "States that dots.ocr maintains good reading order."
+            },
+            {
+                "id": 10,
+                "type": "explain",
+                "requirement": "Explains that reading order refers to the sequence in which the recognized document content should be read."
+            },
+            {
+                "id": 11,
+                "type": "explain",
+                "requirement": "Preserves the claim that the model is described as powerful without turning it into an unsupported quantitative or comparative performance claim."
+            },
+            {
+                "id": 12,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's performance, languages, document types, accuracy, or capabilities."
             }
         ],
         "source": "https://huggingface.co/dots-studio/dots.ocr"
@@ -1342,6 +1522,11 @@
                 "id": 11,
                 "type": "explain",
                 "requirement": "Preserves the relationship that the listed use cases are scenarios for which a compact model is preferred."
+            },
+            {
+                "id": 12,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's performance, capabilities, efficiency, or suitability beyond the stated use cases."
             }
         ],
         "source": "https://huggingface.co/openbmb/MiniCPM5-2B"
@@ -1364,6 +1549,11 @@
                 "id": 3,
                 "type": "mention",
                 "requirement": "States that Muse Glimmer has 30 billion parameters."
+            },
+            {
+                "id": 4,
+                "type": "explain",
+                "requirement": "Explains that parameters are learned values within a model that are adjusted during training."
             },
             {
                 "id": 5,
@@ -1409,6 +1599,11 @@
                 "id": 13,
                 "type": "explain",
                 "requirement": "Preserves the relationship between the model's autonomous agentic purpose and its intended use on consumer hardware."
+            },
+            {
+                "id": 14,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's performance, efficiency, hardware requirements, capabilities, training, or relationship to Muse Spark."
             }
         ],
         "source": "https://huggingface.co/meta-models/Muse-Glimmer-30B"
@@ -1491,6 +1686,11 @@
                 "id": 15,
                 "type": "explain",
                 "requirement": "Preserves the relationship that the integrated capabilities are available within a model designed to run locally without cloud infrastructure or network access."
+            },
+            {
+                "id": 16,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's reliability, performance, capabilities, privacy, security, or hardware requirements."
             }
         ],
         "source": "https://huggingface.co/meta-models/Muse-Glimmer-30B"
@@ -1563,6 +1763,11 @@
                 "id": 13,
                 "type": "explain",
                 "requirement": "Preserves that the reported gains are relative to GLM-4.6 rather than presenting them as absolute improvements against an unspecified baseline."
+            },
+            {
+                "id": 14,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about GLM-4.7's performance, capabilities, benchmarks, or improvements beyond the reported comparisons and scores."
             }
         ],
         "source": "https://huggingface.co/zai-org/GLM-4.7"
@@ -1612,9 +1817,19 @@
                 "requirement": "Explains that large-scale model training refers to training models using substantial computational resources and data."
             },
             {
+                "id": 9,
+                "type": "explain",
+                "requirement": "Explains that inference is the process of using a trained model to produce outputs from inputs."
+            },
+            {
                 "id": 10,
                 "type": "explain",
                 "requirement": "Preserves that the efficient infrastructure is specifically designed to facilitate both large-scale training and inference."
+            },
+            {
+                "id": 11,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the training data, infrastructure efficiency, computational requirements, model performance, or capabilities of HunyuanVideo."
             }
         ],
         "source": "https://huggingface.co/tencent/HunyuanVideo"
@@ -1662,6 +1877,11 @@
                 "id": 8,
                 "type": "explain",
                 "requirement": "Preserves the input-output relationship that a still image is used to condition the generated video."
+            },
+            {
+                "id": 9,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about the model's video quality, motion capabilities, resolution, performance, or supported inputs beyond the stated image-to-video functionality."
             }
         ],
         "source": "https://huggingface.co/stabilityai/stable-video-diffusion-img2vid-xt"
@@ -1719,6 +1939,11 @@
                 "id": 10,
                 "type": "explain",
                 "requirement": "Preserves the relationship between autoregressive modeling, prompt-based text continuation, large amounts of text data, and the computational resources used for training."
+            },
+            {
+                "id": 11,
+                "type": "constraint",
+                "requirement": "Does not introduce unsupported claims about BLOOM's performance, capabilities, training data beyond the stated description, or computational requirements."
             }
         ],
         "source": "https://huggingface.co/bigscience/bloom"

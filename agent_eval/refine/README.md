@@ -97,7 +97,7 @@ Furthermore, to obtain the FF checklist, the same `gpt-oss:120b-cloud` model was
 | TE (Technical Explainability)     | 152   | 82 / 152 (53.95%) | 35 / 152 (23.03%)  | 35 / 152 (23.03%) | 65.46% |
 | FF (Factual Faithfulness)     | 204   | 177 / 204 (86.76%) | 16 / 204 (7.84%)  | 11 / 204 (5.39%) | 90.69% |
 
-The above are the final results after 4 refine prompt adjustments. It was obserbed that there was a trade-off between FF and TE depending on the strictness and emphasis on preserving the original facts. Furthermore, an attempt was made to add a glossary for the missed technical explanations in the prompt, but no improvements were observed in the TE satisfaction score while the unsupported claims reached 42%, indicating hallucination problems. Further improvements maybe impossible without fine-tuning, changing the model, or adding tool-calling.
+The above are the final results after 4 refine prompt adjustments of Mistral. Mistral 7b, Qwen2.5 7b, and Llama3.2 3b were tested from which Mistral had the better results. It was observed that there was a trade-off between FF and TE depending on the strictness and emphasis on preserving the original facts. Furthermore, an attempt was made to add a glossary for the missed technical explanations in the prompt, but no improvements were observed in the TE satisfaction score while the unsupported claims reached 42%, indicating hallucination problems. Further improvements maybe impossible without fine-tuning (probably LoRa), changing to a larger model, or adding tool-calling.
 
 For the 11 UNSUPPORTED FF (false facts that the refine produced): 
 * 3 of them were wrong or oversimplified explanations of terms found in the original, which ended up as unsupported facts
