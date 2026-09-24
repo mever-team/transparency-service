@@ -130,6 +130,9 @@ def serve(
                     card = ModelCardEntry(model_card, card_creator, conn)
                     card.card_id = card_id
                     card_cache[card_id] = card
+                cursor.execute("SELECT message FROM card_children WHERE parent_id = ? AND child_id = ?", (card_id, card_id))
+                msg_row = cursor.fetchone()
+                card.message = msg_row[0] if msg_row and msg_row[0] else ""
             else:
                 card.touch()
         return card
@@ -724,14 +727,14 @@ def serve(
         found = find_card(card_id)
         card = exists(found, "Model card does not exist or has been deleted.").card
         return jsonify(converters.dict2dynamic(card.data, {"title"})
-                       |{"description": card.summary(), "quality": card.quality(), "history": found.history(), "creator": found.creator})
+                       |{"description": card.summary(), "message": found.message, "quality": card.quality(), "history": found.history(), "creator": found.creator})
 
     @app.route(domain_prefix+'/card/simple/<int:card_id>', methods=['GET'])
     def get_card_simple(card_id):
         found = find_card(card_id)
         card = exists(found, "Model card does not exist or has been deleted.").card
         return jsonify(converters.dict2dynamic({"simple": card.get_simple_fields()}, dict())
-                       |{"description": card.summary(), "quality": card.quality(), "creator": found.creator})
+                       |{"description": card.summary(), "message": found.message, "quality": card.quality(), "creator": found.creator})
 
     @app.route(domain_prefix+'/card/<int:card_id>/locked', methods=['GET'])
     def get_card_locked_status(card_id):

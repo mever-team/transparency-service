@@ -7,6 +7,11 @@ $(function() {
     let turndownService = null;
     let markedInstance = null;
 
+    function formatFieldName(name) {
+        const text = name.replace(/_/g, " ");
+        return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+
     // Custom MediumEditor extension for inserting code blocks
     function getHighestPreFromNode(node) {
         let current = node;
@@ -362,12 +367,12 @@ $(function() {
         if (!no_title) $section.append($("<h2>").text(sectionTitle));
         if (!section.value.length) $section.append($("<p>").text("No data provided."));
         section.value.forEach((field, fieldIndex) => {
-            let $field = $("<div>").addClass("field").attr('data-name', field.name.replace(/_/g, " "));
+            let $field = $("<div>").addClass("field").attr('data-name', formatFieldName(field.name));
 
             // field-name
             let $fieldName = $("<span>")
                 .addClass("field-name")
-                .text(" "+field.name.replace(/_/g, " "));
+                .text(" "+formatFieldName(field.name));
             
 
 
@@ -501,14 +506,7 @@ $(function() {
                 $('.menu').find('div').eq(index).find('.light').removeClass('square');
                 $('.menu').find('div').eq(index).find('.light').addClass('arrow');
             }
-
-            let $refineBtn = $("<button>")
-                .addClass("refine-field")
-                .text("refine field");
             $field.append($fieldInfo).append($fieldValue);
-            // if (token && cardJson.creator===loggedUser){
-            //     $field.append($refineBtn);
-            // }
             $section.append($field);
 
             // compared value
@@ -520,7 +518,7 @@ $(function() {
                 let $fieldBase = $("<span>")
                     .addClass("field-name")
                     .addClass("comparison")
-                    .text("difference");
+                    .text((comparedJson?.message || comparedJson?.title || "compared model")+" by "+(comparedJson?.creator || "unknown"));
 
                 $field.append($fieldBase);
                 $field.append($baseFieldValue);
@@ -547,7 +545,10 @@ $(function() {
 
             let jsonData = cardJson;
             $("#model-title").text(jsonData.title);
-            $("#model-description").html(jsonData.description+" uploaded by "+jsonData.creator);
+            $("#model-description").html(jsonData.message+" uploaded by "+jsonData.creator);
+            if (compareto && comparedJson && comparedJson.creator) {
+                $("#model-description-compare").html("Comparing differences to " + (comparedJson.message || comparedJson.title || "model") + " by " + comparedJson.creator).show();
+            } else $("#model-description-compare").hide();
             $("#model-pending").html(jsonData.description?"":"DRAFT (needs version to be searchable)");
             $("#model-quality").html(`
                     <svg class="quality-circle" viewBox="0 0 36 36">
@@ -763,16 +764,41 @@ $(function() {
                                 const this_section = $(this).find('h2').first().text().trim().toLowerCase();
                                 if (this_section === section) {
                                     $(this).find('.field').each(function () {
-                                        const this_field = $(this).find('.field-name').text().trim().toLowerCase();
+                                        const $field = $(this);
+                                        const this_field = $field.find('.field-name').first().text().trim().toLowerCase();
                                         if (this_field === field) {
-                                        $(this)
-                                            .find('span.field-value')
-                                            .html(value)
-                                            .fadeOut(0, function () {
-                                                $(this)
-                                                    // .attr('contenteditable', 'true')
-                                                    .fadeIn(300);
-                                            });
+                                            $field
+                                                .find('span.field-value').first()
+                                                .html(value)
+                                                .fadeOut(0, function () {
+                                                    $(this)
+                                                        // .attr('contenteditable', 'true')
+                                                        .fadeIn(300);
+                                                });
+
+                                            // add comparison against the original, now that this field is filled
+                                            $field.find('.field-name.comparison').remove();
+                                            $field.find('.field-value.comparison').remove();
+                                            const baseSection = comparedJson && comparedJson.data
+                                                ? comparedJson.data.find(s => s.name.replace(/_/g, " ").toLowerCase() === section)
+                                                : undefined;
+                                            const baseField = baseSection
+                                                ? baseSection.value.find(f => f.name.replace(/_/g, " ").toLowerCase() === field)
+                                                : undefined;
+                                            if (baseField && baseField.value !== value) {
+                                                const $baseFieldValue = $("<span>")
+                                                    .addClass("field-value")
+                                                    .addClass("comparison")
+                                                    .html(baseField.value || "");
+                                                const $fieldBase = $("<span>")
+                                                    .addClass("field-name")
+                                                    .addClass("comparison")
+                                                    .text(formatFieldName(field)+" for "+(comparedJson?.message || comparedJson?.title || "compared model")+" by "+(comparedJson?.creator || "unknown"));
+
+                                                $field.append($fieldBase);
+                                                $field.append($baseFieldValue);
+                                            }
+
                                             matched = true;
                                             completed[section].push(field);
                                             return false; // break .each()
@@ -1188,7 +1214,7 @@ $('.contents').on('click', '.refine-field', async function () {
                 headers: { "Authorization": "Bearer " + token },
                 success: function (newId) {
                     runRefinement('agent', newId);
-                    window.open("model_card.html?id=" + newId, "_blank");
+                    window.open("model_card.html?id=" + newId + "&compareto=" + id, "_blank");
                 }
             });
             return;

@@ -131,11 +131,18 @@ ul.nacc li h2 {
 /* Field rows */
 ul.nacc .field {
     display: grid;
-    grid-template-columns: 130px 1fr;
+    grid-template-columns: 200px 1fr;
     gap: 1rem;
     align-items: start;
     padding: 0.8rem 0;
-    /* border-bottom: 1px solid #f0f0f0; */
+}
+
+/* Have made field labels wider and to appear stacked in mobile */
+@media screen and (max-width: 768px) {
+    ul.nacc .field {
+        grid-template-columns: 1fr;
+        gap: 0.3rem;
+    }
 }
 
 ul.nacc .field:last-child {
@@ -146,13 +153,17 @@ ul.nacc .field:last-child {
 ul.nacc .field-name {
     font-weight: 600;
     color: var(--text-primary2);
-    text-transform: capitalize;
     padding-top: 4px;
     word-break: break-word;
 }
 ul.nacc .field-name.comparison {
     margin-left: 30px;  color: var(--red-primary)
 }
+
+/* Scrollbars for card elements */
+ul.nacc .field-value {max-height: 400px; overflow: auto;}
+ul.nacc .field-value::-webkit-scrollbar {width: 12px;}
+
 
 /* Editable values */
 ul.nacc .field-value[type="date"], ul.nacc .field-value[type="date"]:focus {border: none; outline: none; background-color: var(--bg-light);}
@@ -832,6 +843,7 @@ section.buttons {
 .history-graph text.self-label {fill: #eeeeee;font-size: 11px;font-style: italic;}
 .history-graph g.node text {fill: var(--text-primary);font-size: 12px;pointer-events: none;}
 .node-current {fill: var(--text-info-light);stroke: var(--text-info);stroke-width: 2px;filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));opacity: 1;}
+.node-compare { fill: #F87F76; stroke: #F87F76; }
 .node-related {fill: #C8C8C8;stroke: #A8A8A8;stroke-width: 2px;}
 .node-related:hover {filter: brightness(1.2);}
 .node-related{transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;}
