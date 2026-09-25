@@ -535,6 +535,8 @@ $(function() {
             if(!cardJson || !comparedJson) return;
             if (token && cardJson.creator===loggedUser){
                 $('#technical-view').html('<span>Show full version and edit</span>')
+                $('#technical-view').addClass('edit-highlighting')
+
             }
             let is_logged_in = token&&cardJson.creator === loggedUser;
             if(is_logged_in) {

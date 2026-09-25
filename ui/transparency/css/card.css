@@ -74,6 +74,10 @@
 
 }
 
+.edit-highlighting:not(.active) {
+    color: var(--yellow-primary);
+}
+
 .naccs .menu div.active {
     color: var(--green-primary);
     padding: 15px 20px 15px 20px;
