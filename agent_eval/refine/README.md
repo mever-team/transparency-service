@@ -123,8 +123,6 @@ For the 5 UNSUPPORTED FF (false facts that the refine produced):
 * and 2 were not stated by the original sample. (facts that are not present or related to the original text)
 
 For the 5 Not satisfied IR (facts that the refine missed): 
-States that coarse (L0) EnCodec speech features are obtained from the text and reference audio.
-States that the SRR triplet paradigm simplifies the multi-tool pipeline used by modular approaches.
 * 4 of them were information loss due to oversimplification, 
 * and 1 facts that were simply not stated at all.
 
