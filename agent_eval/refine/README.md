@@ -105,7 +105,6 @@ The agent was enhanced with:
 
 ## 📊 Results
 
-### Models Tested
 The best performing model with glossary + tool enhancements is qwen2.5:7b. These two enhasments increased the TE Satisfaction score by +10% and the overall Satisfaction score by +5.9%. 
 
 ### **Overall Satisfaction score 86.24% of qwen2.5:7b**
@@ -152,5 +151,12 @@ The 51 Not satisfied TE (terms that the refine was expected to explain but did n
 * discrete diffusion
 * conditioning frame
 
-The results can be found in an HTML [here](./results/12_qwen2.5:7b/evaluation_report.html)
+### Other models
+* **mistral:latest**: Best raw performance. Low FF score with glossary
+* **qwen3:4b-instruct**: Bad with number understanding. Results in contradictory facts
+* **qwen3:4b-thinking**: Super slow
+* **granite4:3b**: OK but not good. Nothing special to report
+* **phi4-mini**: OK but not good. Nothing special to report
+
+The results of **qwen2.5:7b** can be found in an HTML [here](./results/12_qwen2.5:7b/evaluation_report.html)
 
