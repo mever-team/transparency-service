@@ -1,4 +1,4 @@
-# Import Evaluation Report 
+# Refine Evaluation Report 
 
 ## 🗄️ Data gathering
 To create an evaluation dataset for the refine functionality, 32 samples of technical content were gathered from the same Hugging Face model cards used for the import evaluation, with the assistance of ChatGPT. The samples were then manually selected to represent content likely to appear in model descriptions and other fields intended for non-expert readers. More technical content intended for technical fields was excluded.
