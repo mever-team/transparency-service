@@ -103,10 +103,9 @@ with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
             valid_ids.add(model_id)
 
         print(
-            f"\rChecked {i}/{len(models)} | "
+            f"Checked {i}/{len(models)} | "
             f"Valid base models: {len(valid_ids)}",
-            end="",
-            flush=True,
+
         )
 
 print("\n")
@@ -189,9 +188,8 @@ for i, model in enumerate(selected_models, 1):
             f.write(response.text)
 
         print(
-            f"\rDownloaded {i}/{len(selected_models)}",
-            end="",
-            flush=True,
+            f"Downloaded {i}/{len(selected_models)}",
+
         )
 
     except requests.RequestException as e:

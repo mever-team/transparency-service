@@ -514,11 +514,6 @@
                 "requirement": "States that the SRR approach is intended to avoid the inefficiency associated with using large multimodal models for full-page document processing."
             },
             {
-                "id": 6,
-                "type": "explain",
-                "requirement": "Explains that full-page document processing means processing an entire document page rather than focusing only on selected regions or elements."
-            },
-            {
                 "id": 7,
                 "type": "explain",
                 "requirement": "Preserves the comparison with modular approaches and large multimodal models, without claiming that one approach is universally more efficient than the other."
@@ -680,11 +675,6 @@
                 "requirement": "States that the model supports image editing."
             },
             {
-                "id": 9,
-                "type": "explain",
-                "requirement": "Explains that image editing means modifying or transforming an existing image according to the provided input or conditions."
-            },
-            {
                 "id": 10,
                 "type": "mention",
                 "requirement": "States that the model supports subject-driven personalization."
@@ -710,11 +700,6 @@
                 "id": 1,
                 "type": "mention",
                 "requirement": "States that K-EXAONE is a large-scale multilingual language model."
-            },
-            {
-                "id": 2,
-                "type": "explain",
-                "requirement": "Explains that multilingual means the model is designed to work with multiple languages."
             },
             {
                 "id": 3,
@@ -839,11 +824,6 @@
                 "id": 3,
                 "type": "mention",
                 "requirement": "States that Idefics2 accepts arbitrary sequences of image and text inputs."
-            },
-            {
-                "id": 4,
-                "type": "explain",
-                "requirement": "Explains that arbitrary sequences mean the model can accept image and text inputs arranged in different sequences rather than requiring one fixed input order or format."
             },
             {
                 "id": 5,
@@ -1069,11 +1049,6 @@
                 "requirement": "Explains that long-horizon tasks are tasks that require a sequence of actions or decisions over an extended period to achieve a goal."
             },
             {
-                "id": 3,
-                "type": "explain",
-                "requirement": "Explains that real-world environments refer to environments outside a purely simulated or abstract setting where the model's actions can interact with the surrounding environment."
-            },
-            {
                 "id": 4,
                 "type": "mention",
                 "requirement": "States that Nex-N2.5 has an ability to act continuously."
@@ -1092,11 +1067,6 @@
                 "id": 7,
                 "type": "explain",
                 "requirement": "Explains that self-correction means adjusting subsequent actions when feedback indicates that a previous action or decision needs to be changed."
-            },
-            {
-                "id": 8,
-                "type": "explain",
-                "requirement": "Explains that visual feedback is information obtained from visual observations of the environment that can be used to guide or adjust subsequent actions."
             },
             {
                 "id": 9,
@@ -1399,11 +1369,6 @@
                 "id": 11,
                 "type": "mention",
                 "requirement": "States that the model is intended to run on consumer hardware."
-            },
-            {
-                "id": 12,
-                "type": "explain",
-                "requirement": "Explains that consumer hardware refers to commonly available end-user computing devices rather than specialized data-center hardware."
             },
             {
                 "id": 13,

@@ -373,10 +373,8 @@ def main():
     for i, sample in enumerate(samples):
 
         print(
-            f"\rEvaluating sample "
+            f"Evaluating sample "
             f"{i + 1}/{len(samples)}",
-            end="",
-            flush=True
         )
 
         result = evaluate_sample(sample)

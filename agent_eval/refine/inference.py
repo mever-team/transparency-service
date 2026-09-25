@@ -37,7 +37,7 @@ def run_inference(dataset):
     results = []
 
     for i, sample in enumerate(dataset):
-        print(f"\rInference {i + 1}/{len(dataset)}", end='', flush=True)
+        print(f"Inference {i + 1}/{len(dataset)}")
 
         prediction = infer_sample(sample["input"])
 

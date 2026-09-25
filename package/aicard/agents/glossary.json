@@ -1,0 +1,1797 @@
+{
+  "activation function": {
+    "term": "Activation Function",
+    "aliases": [],
+    "match_terms": [
+      "activation function"
+    ],
+    "explanation": "Mathematical function that determines the output of a neural network node.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "adversarial examples": {
+    "term": "Adversarial Examples",
+    "aliases": [],
+    "match_terms": [
+      "adversarial examples"
+    ],
+    "explanation": "Inputs specifically designed to cause AI models to make mistakes.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "agi": {
+    "term": "AGI",
+    "aliases": [],
+    "match_terms": [
+      "agi"
+    ],
+    "explanation": "Artificial General Intelligence, hypothetical AI with human-level cognitive abilities across all domains.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "ai": {
+    "term": "AI",
+    "aliases": [],
+    "match_terms": [
+      "ai"
+    ],
+    "explanation": "Artificial Intelligence, computer systems that can perform tasks requiring human intelligence.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "ai agents": {
+    "term": "AI Agents",
+    "aliases": [],
+    "match_terms": [
+      "ai agents"
+    ],
+    "explanation": "AI entities that can perform tasks autonomously on behalf of users or systems.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "ai alignment": {
+    "term": "AI Alignment",
+    "aliases": [],
+    "match_terms": [
+      "ai alignment"
+    ],
+    "explanation": "Ensuring AI systems act according to human values and intentions.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "ai as a service": {
+    "term": "AI as a Service",
+    "aliases": [],
+    "match_terms": [
+      "ai as a service"
+    ],
+    "explanation": "Cloud-based AI capabilities offered as services.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "ai assistant": {
+    "term": "AI Assistant",
+    "aliases": [],
+    "match_terms": [
+      "ai assistant"
+    ],
+    "explanation": "A conversational interface that uses AI to support users in various tasks and decision-making.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "ai bias": {
+    "term": "AI Bias",
+    "aliases": [],
+    "match_terms": [
+      "ai bias"
+    ],
+    "explanation": "Unfair prejudice in AI systems that leads to discriminatory outcomes.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "ai governance": {
+    "term": "AI Governance",
+    "aliases": [],
+    "match_terms": [
+      "ai governance"
+    ],
+    "explanation": "Frameworks and policies for managing AI development and deployment.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "ai safety": {
+    "term": "AI Safety",
+    "aliases": [],
+    "match_terms": [
+      "ai safety"
+    ],
+    "explanation": "Field focused on developing beneficial and safe AI systems.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "ai search": {
+    "term": "AI Search",
+    "aliases": [],
+    "match_terms": [
+      "ai search"
+    ],
+    "explanation": "Search technology that allows users to find information using natural language queries instead of keywords.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "algorithm": {
+    "term": "Algorithm",
+    "aliases": [],
+    "match_terms": [
+      "algorithm"
+    ],
+    "explanation": "A set of rules or instructions for solving problems or performing computations.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "algorithmic auditing": {
+    "term": "Algorithmic Auditing",
+    "aliases": [],
+    "match_terms": [
+      "algorithmic auditing"
+    ],
+    "explanation": "Systematic examination of algorithms for bias, fairness, and ethical concerns.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "anthropic": {
+    "term": "Anthropic",
+    "aliases": [],
+    "match_terms": [
+      "anthropic"
+    ],
+    "explanation": "AI safety company that developed Claude, focused on building helpful, harmless, and honest AI.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "api": {
+    "term": "API",
+    "aliases": [],
+    "match_terms": [
+      "api"
+    ],
+    "explanation": "Application Programming Interface, a set of protocols for building software applications.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "asi": {
+    "term": "ASI",
+    "aliases": [],
+    "match_terms": [
+      "asi"
+    ],
+    "explanation": "Artificial Superintelligence, hypothetical AI that surpasses human intelligence in all domains.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "attention mechanism": {
+    "term": "Attention Mechanism",
+    "aliases": [],
+    "match_terms": [
+      "attention mechanism"
+    ],
+    "explanation": "Technique allowing models to focus on relevant parts of input data.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "autoencoder": {
+    "term": "Autoencoder",
+    "aliases": [],
+    "match_terms": [
+      "autoencoder"
+    ],
+    "explanation": "Neural network that learns to compress and reconstruct data.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "automatic speech recognition": {
+    "term": "Automatic Speech Recognition",
+    "aliases": [],
+    "match_terms": [
+      "automatic speech recognition"
+    ],
+    "explanation": "Technology that transcribes spoken language into text.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "automation": {
+    "term": "Automation",
+    "aliases": [],
+    "match_terms": [
+      "automation"
+    ],
+    "explanation": "Using AI to perform tasks without human intervention.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "automl": {
+    "term": "AutoML",
+    "aliases": [],
+    "match_terms": [
+      "automl"
+    ],
+    "explanation": "Automated Machine Learning, automating the process of applying ML to real-world problems.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "autonomous": {
+    "term": "Autonomous",
+    "aliases": [],
+    "match_terms": [
+      "autonomous"
+    ],
+    "explanation": "A machine that can perform tasks without needing human intervention.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "backpropagation": {
+    "term": "Backpropagation",
+    "aliases": [],
+    "match_terms": [
+      "backpropagation"
+    ],
+    "explanation": "Algorithm for training neural networks by propagating errors backward.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "batch normalization": {
+    "term": "Batch Normalization",
+    "aliases": [],
+    "match_terms": [
+      "batch normalization"
+    ],
+    "explanation": "Technique to normalize inputs of each layer to improve training stability and speed.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "bert": {
+    "term": "BERT",
+    "aliases": [],
+    "match_terms": [
+      "bert"
+    ],
+    "explanation": "Bidirectional Encoder Representations from Transformers, a language model for understanding context.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "big data": {
+    "term": "Big Data",
+    "aliases": [],
+    "match_terms": [
+      "big data"
+    ],
+    "explanation": "Datasets that are too large or complex to be processed by traditional data processing applications.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "chain of thought": {
+    "term": "Chain-of-Thought",
+    "aliases": [],
+    "match_terms": [
+      "chain of thought"
+    ],
+    "explanation": "Prompting technique that encourages step-by-step reasoning in AI responses.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "chatbot": {
+    "term": "Chatbot",
+    "aliases": [],
+    "match_terms": [
+      "chatbot"
+    ],
+    "explanation": "Computer program designed to simulate conversation with humans.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "chatgpt": {
+    "term": "ChatGPT",
+    "aliases": [],
+    "match_terms": [
+      "chatgpt"
+    ],
+    "explanation": "A conversational AI model developed by OpenAI based on GPT architecture.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "claude": {
+    "term": "Claude",
+    "aliases": [],
+    "match_terms": [
+      "claude"
+    ],
+    "explanation": "AI assistant developed by Anthropic, designed to be helpful, harmless, and honest.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "cloud computing": {
+    "term": "Cloud Computing",
+    "aliases": [],
+    "match_terms": [
+      "cloud computing"
+    ],
+    "explanation": "Delivering AI services over the internet.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "cnn": {
+    "term": "CNN",
+    "aliases": [],
+    "match_terms": [
+      "cnn"
+    ],
+    "explanation": "Convolutional Neural Network, a deep learning algorithm primarily used for image processing.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "cohere": {
+    "term": "Cohere",
+    "aliases": [],
+    "match_terms": [
+      "cohere"
+    ],
+    "explanation": "AI platform company specializing in large language models for enterprises.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "computer vision": {
+    "term": "Computer Vision",
+    "aliases": [],
+    "match_terms": [
+      "computer vision"
+    ],
+    "explanation": "Field enabling computers to interpret and understand visual information.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "constitutional ai": {
+    "term": "Constitutional AI",
+    "aliases": [],
+    "match_terms": [
+      "constitutional ai"
+    ],
+    "explanation": "Training approach that teaches AI to follow a set of principles.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "continual learning": {
+    "term": "Continual Learning",
+    "aliases": [],
+    "match_terms": [
+      "continual learning"
+    ],
+    "explanation": "Ability to learn new tasks while retaining knowledge of previous tasks.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "conversational ai": {
+    "term": "Conversational AI",
+    "aliases": [],
+    "match_terms": [
+      "conversational ai"
+    ],
+    "explanation": "Technology enabling natural dialogue between humans and machines.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "corrections and additions": {
+    "term": "Corrections and additions*",
+    "aliases": [],
+    "match_terms": [
+      "corrections and additions"
+    ],
+    "explanation": "PRs welcome. Keep the bar: terms a practitioner genuinely encounters, definitions that teach rather than gesture.",
+    "sources": [
+      "ai_handbook"
+    ]
+  },
+  "cross validation": {
+    "term": "Cross-Validation",
+    "aliases": [],
+    "match_terms": [
+      "cross validation"
+    ],
+    "explanation": "Technique for evaluating model performance by splitting data into multiple train/test sets.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "cuda": {
+    "term": "CUDA",
+    "aliases": [],
+    "match_terms": [
+      "cuda"
+    ],
+    "explanation": "NVIDIA's parallel computing platform for GPU programming.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "dall e": {
+    "term": "DALL-E",
+    "aliases": [],
+    "match_terms": [
+      "dall e"
+    ],
+    "explanation": "OpenAI's text-to-image generation model that creates images from textual descriptions.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "data augmentation": {
+    "term": "Data Augmentation",
+    "aliases": [],
+    "match_terms": [
+      "data augmentation"
+    ],
+    "explanation": "Techniques to increase dataset size by creating modified versions of existing data.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "data drift": {
+    "term": "Data Drift",
+    "aliases": [],
+    "match_terms": [
+      "data drift"
+    ],
+    "explanation": "Changes in data distribution over time that can affect model performance.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "deep learning": {
+    "term": "Deep Learning",
+    "aliases": [],
+    "match_terms": [
+      "deep learning"
+    ],
+    "explanation": "A subset of machine learning using neural networks with multiple layers.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "deepseek": {
+    "term": "DeepSeek",
+    "aliases": [],
+    "match_terms": [
+      "deepseek"
+    ],
+    "explanation": "Chinese AI company known for developing competitive open-source language models.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "differential privacy": {
+    "term": "Differential Privacy",
+    "aliases": [],
+    "match_terms": [
+      "differential privacy"
+    ],
+    "explanation": "Mathematical framework for quantifying and limiting privacy loss in data analysis.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "diffusion models": {
+    "term": "Diffusion Models",
+    "aliases": [],
+    "match_terms": [
+      "diffusion models"
+    ],
+    "explanation": "Generative models that create data by gradually denoising random inputs.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "digital transformation": {
+    "term": "Digital Transformation",
+    "aliases": [],
+    "match_terms": [
+      "digital transformation"
+    ],
+    "explanation": "Integration of AI and digital technology into business operations.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "dimensionality reduction": {
+    "term": "Dimensionality Reduction",
+    "aliases": [],
+    "match_terms": [
+      "dimensionality reduction"
+    ],
+    "explanation": "Reducing the number of input variables in a dataset while preserving information.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "distributed computing": {
+    "term": "Distributed Computing",
+    "aliases": [],
+    "match_terms": [
+      "distributed computing"
+    ],
+    "explanation": "Using multiple computers to train large AI models.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "dropout": {
+    "term": "Dropout",
+    "aliases": [],
+    "match_terms": [
+      "dropout"
+    ],
+    "explanation": "Regularization technique that randomly ignores neurons during training to prevent overfitting.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "edge ai": {
+    "term": "Edge AI",
+    "aliases": [],
+    "match_terms": [
+      "edge ai"
+    ],
+    "explanation": "Running AI models on local devices rather than cloud servers.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "embedding": {
+    "term": "Embedding",
+    "aliases": [],
+    "match_terms": [
+      "embedding"
+    ],
+    "explanation": "A vector representation of data that captures semantic relationships.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "embodied ai": {
+    "term": "Embodied AI",
+    "aliases": [],
+    "match_terms": [
+      "embodied ai"
+    ],
+    "explanation": "AI systems that interact with and learn from the physical world, like robots and drones.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "ensemble methods": {
+    "term": "Ensemble Methods",
+    "aliases": [],
+    "match_terms": [
+      "ensemble methods"
+    ],
+    "explanation": "Combining multiple models to improve overall performance and reduce errors.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "explainable ai": {
+    "term": "Explainable AI",
+    "aliases": [],
+    "match_terms": [
+      "explainable ai"
+    ],
+    "explanation": "AI systems designed to provide understandable explanations for their decisions.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "facial recognition": {
+    "term": "Facial Recognition",
+    "aliases": [],
+    "match_terms": [
+      "facial recognition"
+    ],
+    "explanation": "Technology for identifying individuals from facial features.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "fairness": {
+    "term": "Fairness",
+    "aliases": [],
+    "match_terms": [
+      "fairness"
+    ],
+    "explanation": "Principle ensuring AI systems treat all individuals and groups equitably.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "feature engineering": {
+    "term": "Feature Engineering",
+    "aliases": [],
+    "match_terms": [
+      "feature engineering"
+    ],
+    "explanation": "Process of selecting and transforming variables for machine learning models.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "federated learning": {
+    "term": "Federated Learning",
+    "aliases": [],
+    "match_terms": [
+      "federated learning"
+    ],
+    "explanation": "Training models across decentralized data without sharing raw data.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "few shot learning": {
+    "term": "Few-shot Learning",
+    "aliases": [],
+    "match_terms": [
+      "few shot learning"
+    ],
+    "explanation": "Learning from very few examples.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "fine tuning": {
+    "term": "Fine-tuning",
+    "aliases": [],
+    "match_terms": [
+      "fine tuning"
+    ],
+    "explanation": "Adapting a pre-trained model to perform specific tasks with additional training.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "foundation models": {
+    "term": "Foundation Models",
+    "aliases": [],
+    "match_terms": [
+      "foundation models"
+    ],
+    "explanation": "Large-scale models trained on diverse data, serving as base for many applications.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "frugal ai": {
+    "term": "Frugal AI",
+    "aliases": [],
+    "match_terms": [
+      "frugal ai"
+    ],
+    "explanation": "Development of AI systems that prioritize efficiency, cost-effectiveness, and resource optimization.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "gan": {
+    "term": "GAN",
+    "aliases": [],
+    "match_terms": [
+      "gan"
+    ],
+    "explanation": "Generative Adversarial Network, two neural networks competing to generate realistic data.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "gemini": {
+    "term": "Gemini",
+    "aliases": [],
+    "match_terms": [
+      "gemini"
+    ],
+    "explanation": "Google's flagship LLM and AI assistant.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "generative ai": {
+    "term": "Generative AI",
+    "aliases": [],
+    "match_terms": [
+      "generative ai"
+    ],
+    "explanation": "AI systems that create new content such as text, images, audio, or video based on training data.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "google deepmind": {
+    "term": "Google DeepMind",
+    "aliases": [],
+    "match_terms": [
+      "google deepmind"
+    ],
+    "explanation": "Google's AI research division, creators of Gemini.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "gpt": {
+    "term": "GPT",
+    "aliases": [],
+    "match_terms": [
+      "gpt"
+    ],
+    "explanation": "Generative Pre-trained Transformer, a type of AI model designed for natural language processing tasks.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "gpu": {
+    "term": "GPU",
+    "aliases": [],
+    "match_terms": [
+      "gpu"
+    ],
+    "explanation": "Graphics Processing Unit, specialized hardware for parallel processing, essential for AI training.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "gradient descent": {
+    "term": "Gradient Descent",
+    "aliases": [],
+    "match_terms": [
+      "gradient descent"
+    ],
+    "explanation": "Optimization algorithm for training neural networks.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "hallucination": {
+    "term": "Hallucination",
+    "aliases": [],
+    "match_terms": [
+      "hallucination"
+    ],
+    "explanation": "When AI generates false or nonsensical information presented as fact.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "hugging face": {
+    "term": "Hugging Face",
+    "aliases": [],
+    "match_terms": [
+      "hugging face"
+    ],
+    "explanation": "Platform for sharing and deploying ML models.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "hyperparameter": {
+    "term": "Hyperparameter",
+    "aliases": [],
+    "match_terms": [
+      "hyperparameter"
+    ],
+    "explanation": "Configuration settings that control the learning process of ML algorithms.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "hyperparameter tuning": {
+    "term": "Hyperparameter Tuning",
+    "aliases": [],
+    "match_terms": [
+      "hyperparameter tuning"
+    ],
+    "explanation": "Process of optimizing model configuration settings for best performance.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "image classification": {
+    "term": "Image Classification",
+    "aliases": [],
+    "match_terms": [
+      "image classification"
+    ],
+    "explanation": "Categorizing images into predefined classes.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "image segmentation": {
+    "term": "Image Segmentation",
+    "aliases": [],
+    "match_terms": [
+      "image segmentation"
+    ],
+    "explanation": "Dividing images into meaningful regions or segments.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "in context learning": {
+    "term": "In-Context Learning",
+    "aliases": [],
+    "match_terms": [
+      "in context learning"
+    ],
+    "explanation": "Model's ability to learn and adapt from examples provided in the input prompt.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "inference": {
+    "term": "Inference",
+    "aliases": [],
+    "match_terms": [
+      "inference"
+    ],
+    "explanation": "Process of using a trained model to make predictions.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "instance segmentation": {
+    "term": "Instance Segmentation",
+    "aliases": [],
+    "match_terms": [
+      "instance segmentation"
+    ],
+    "explanation": "Detecting and outlining individual object instances.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "knowledge distillation": {
+    "term": "Knowledge Distillation",
+    "aliases": [],
+    "match_terms": [
+      "knowledge distillation"
+    ],
+    "explanation": "Training smaller models to mimic the behavior of larger, more complex models.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "knowledge graph": {
+    "term": "Knowledge Graph",
+    "aliases": [],
+    "match_terms": [
+      "knowledge graph"
+    ],
+    "explanation": "A semantic network that organizes information into entities and relationships, enabling machines to understand context.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "language model": {
+    "term": "Language Model",
+    "aliases": [],
+    "match_terms": [
+      "language model"
+    ],
+    "explanation": "AI system trained to predict and generate sequences of words.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "latency": {
+    "term": "Latency",
+    "aliases": [],
+    "match_terms": [
+      "latency"
+    ],
+    "explanation": "Time delay between input and output in AI system responses.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "license": {
+    "term": "License*",
+    "aliases": [],
+    "match_terms": [
+      "license"
+    ],
+    "explanation": "MIT for the repository. Attribution appreciated if you reuse substantial portions.",
+    "sources": [
+      "ai_handbook"
+    ]
+  },
+  "lime": {
+    "term": "LIME",
+    "aliases": [],
+    "match_terms": [
+      "lime"
+    ],
+    "explanation": "Local Interpretable Model-agnostic Explanations, method for explaining individual predictions.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "llama": {
+    "term": "LLaMA",
+    "aliases": [],
+    "match_terms": [
+      "llama"
+    ],
+    "explanation": "Meta's family of open-source language models.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "llm": {
+    "term": "LLM",
+    "aliases": [],
+    "match_terms": [
+      "llm"
+    ],
+    "explanation": "Large Language Model, AI models trained on vast amounts of text data.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "lora": {
+    "term": "LoRA",
+    "aliases": [],
+    "match_terms": [
+      "lora"
+    ],
+    "explanation": "Low-Rank Adaptation, efficient method for fine-tuning large language models.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "loss function": {
+    "term": "Loss Function",
+    "aliases": [],
+    "match_terms": [
+      "loss function"
+    ],
+    "explanation": "Measure of how wrong a model's predictions are.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "machine learning": {
+    "term": "Machine Learning",
+    "aliases": [],
+    "match_terms": [
+      "machine learning"
+    ],
+    "explanation": "A method of data analysis that automates analytical model building.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "machine translation": {
+    "term": "Machine Translation",
+    "aliases": [],
+    "match_terms": [
+      "machine translation"
+    ],
+    "explanation": "Automatically translating text between languages.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "maintained by hesham haroon https": {
+    "term": "Maintained by* [Hesham Haroon](https",
+    "aliases": [],
+    "match_terms": [
+      "maintained by hesham haroon https"
+    ],
+    "explanation": "//github.com/h9-tec), AI engineer focused on Arabic NLP, production LLM systems, and speech AI (STT/TTS).",
+    "sources": [
+      "ai_handbook"
+    ]
+  },
+  "meta ai": {
+    "term": "Meta AI",
+    "aliases": [],
+    "match_terms": [
+      "meta ai"
+    ],
+    "explanation": "Meta's AI research division, creators of LLaMA models.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "meta learning": {
+    "term": "Meta-Learning",
+    "aliases": [],
+    "match_terms": [
+      "meta learning"
+    ],
+    "explanation": "Learning to learn, where models adapt quickly to new tasks with minimal data.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "microsoft copilot": {
+    "term": "Microsoft Copilot",
+    "aliases": [],
+    "match_terms": [
+      "microsoft copilot"
+    ],
+    "explanation": "AI assistant integrated across Microsoft products.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "midjourney": {
+    "term": "Midjourney",
+    "aliases": [],
+    "match_terms": [
+      "midjourney"
+    ],
+    "explanation": "AI-powered image generation tool that creates artwork from text prompts.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "mixture of experts": {
+    "term": "Mixture of Experts",
+    "aliases": [],
+    "match_terms": [
+      "mixture of experts",
+      "moe"
+    ],
+    "explanation": "Architecture using multiple specialized sub-models.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "mlflow": {
+    "term": "MLflow",
+    "aliases": [],
+    "match_terms": [
+      "mlflow"
+    ],
+    "explanation": "Open-source platform for managing machine learning lifecycle.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "mlops": {
+    "term": "MLOps",
+    "aliases": [],
+    "match_terms": [
+      "mlops"
+    ],
+    "explanation": "Practices for deploying and maintaining machine learning models in production.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "model cards": {
+    "term": "Model Cards",
+    "aliases": [],
+    "match_terms": [
+      "model cards"
+    ],
+    "explanation": "Documentation that provides information about AI model performance and limitations.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "model deployment": {
+    "term": "Model Deployment",
+    "aliases": [],
+    "match_terms": [
+      "model deployment"
+    ],
+    "explanation": "Process of putting trained models into production use.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "model monitoring": {
+    "term": "Model Monitoring",
+    "aliases": [],
+    "match_terms": [
+      "model monitoring"
+    ],
+    "explanation": "Continuously tracking model performance and behavior in production.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "model quantization": {
+    "term": "Model Quantization",
+    "aliases": [],
+    "match_terms": [
+      "model quantization"
+    ],
+    "explanation": "Reducing model size by using lower precision numbers for weights and activations.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "model registry": {
+    "term": "Model Registry",
+    "aliases": [],
+    "match_terms": [
+      "model registry"
+    ],
+    "explanation": "Centralized repository for storing and managing machine learning models.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "multimodal": {
+    "term": "Multimodal",
+    "aliases": [],
+    "match_terms": [
+      "multimodal"
+    ],
+    "explanation": "AI systems that can process multiple types of data (text, images, audio).",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "named entity recognition": {
+    "term": "Named Entity Recognition",
+    "aliases": [],
+    "match_terms": [
+      "named entity recognition"
+    ],
+    "explanation": "Identifying and classifying entities in text.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "neural network": {
+    "term": "Neural Network",
+    "aliases": [],
+    "match_terms": [
+      "neural network"
+    ],
+    "explanation": "Computing systems inspired by biological neural networks that learn patterns in data.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "neural processing unit": {
+    "term": "Neural Processing Unit",
+    "aliases": [],
+    "match_terms": [
+      "neural processing unit"
+    ],
+    "explanation": "Specialized chips designed for AI computations.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "nlg": {
+    "term": "NLG",
+    "aliases": [],
+    "match_terms": [
+      "nlg"
+    ],
+    "explanation": "Natural Language Generation, AI capability to produce human-like text.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "nlp": {
+    "term": "NLP",
+    "aliases": [],
+    "match_terms": [
+      "nlp"
+    ],
+    "explanation": "Natural Language Processing, AI's ability to understand and generate human language.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "nlu": {
+    "term": "NLU",
+    "aliases": [],
+    "match_terms": [
+      "nlu"
+    ],
+    "explanation": "Natural Language Understanding, subset of NLP focused on comprehending text meaning.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "npu": {
+    "term": "NPU",
+    "aliases": [],
+    "match_terms": [
+      "npu"
+    ],
+    "explanation": "Neural Processing Unit, specialized chips designed for AI computations.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "nvidia": {
+    "term": "NVIDIA",
+    "aliases": [],
+    "match_terms": [
+      "nvidia"
+    ],
+    "explanation": "Technology company known for GPUs and AI computing platforms.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "object detection": {
+    "term": "Object Detection",
+    "aliases": [],
+    "match_terms": [
+      "object detection"
+    ],
+    "explanation": "Computer vision task of identifying and locating objects in images.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "ocr": {
+    "term": "OCR",
+    "aliases": [],
+    "match_terms": [
+      "ocr"
+    ],
+    "explanation": "Optical Character Recognition, converting images of text into machine-readable text.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "onnx": {
+    "term": "ONNX",
+    "aliases": [],
+    "match_terms": [
+      "onnx"
+    ],
+    "explanation": "Open Neural Network Exchange, standard for representing machine learning models.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "openai": {
+    "term": "OpenAI",
+    "aliases": [],
+    "match_terms": [
+      "openai"
+    ],
+    "explanation": "AI research company that created GPT models, ChatGPT, and DALL-E.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "overfitting": {
+    "term": "Overfitting",
+    "aliases": [],
+    "match_terms": [
+      "overfitting"
+    ],
+    "explanation": "When a model performs well on training data but poorly on new, unseen data.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "predictive analytics": {
+    "term": "Predictive Analytics",
+    "aliases": [],
+    "match_terms": [
+      "predictive analytics"
+    ],
+    "explanation": "Using AI to forecast future trends and behaviors.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "prompt": {
+    "term": "Prompt",
+    "aliases": [],
+    "match_terms": [
+      "prompt"
+    ],
+    "explanation": "Input text or instructions given to an AI model to generate desired outputs.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "prompt engineering": {
+    "term": "Prompt Engineering",
+    "aliases": [],
+    "match_terms": [
+      "prompt engineering"
+    ],
+    "explanation": "Craft of designing effective inputs for AI models.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "pytorch": {
+    "term": "PyTorch",
+    "aliases": [],
+    "match_terms": [
+      "pytorch"
+    ],
+    "explanation": "Open-source machine learning framework developed by Meta.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "question answering": {
+    "term": "Question Answering",
+    "aliases": [],
+    "match_terms": [
+      "question answering"
+    ],
+    "explanation": "AI systems that provide answers to questions in natural language.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "rag": {
+    "term": "RAG",
+    "aliases": [],
+    "match_terms": [
+      "rag"
+    ],
+    "explanation": "Retrieval-Augmented Generation, combining information retrieval with text generation.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "reasoning models": {
+    "term": "Reasoning Models",
+    "aliases": [],
+    "match_terms": [
+      "reasoning models"
+    ],
+    "explanation": "AI models designed to perform step-by-step problem solving.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "recommendation system": {
+    "term": "Recommendation System",
+    "aliases": [],
+    "match_terms": [
+      "recommendation system"
+    ],
+    "explanation": "AI that suggests relevant content or products to users.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "red teaming": {
+    "term": "Red Teaming",
+    "aliases": [],
+    "match_terms": [
+      "red teaming"
+    ],
+    "explanation": "Testing AI systems for potential harmful outputs or behaviors.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "regularization": {
+    "term": "Regularization",
+    "aliases": [],
+    "match_terms": [
+      "regularization"
+    ],
+    "explanation": "Techniques to prevent overfitting by adding penalty terms to the model.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "reinforcement learning": {
+    "term": "Reinforcement Learning",
+    "aliases": [],
+    "match_terms": [
+      "reinforcement learning"
+    ],
+    "explanation": "Learning through interaction with environment using rewards and penalties.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "resnet": {
+    "term": "ResNet",
+    "aliases": [],
+    "match_terms": [
+      "resnet"
+    ],
+    "explanation": "Deep neural network architecture using residual connections.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "responsible ai": {
+    "term": "Responsible AI",
+    "aliases": [],
+    "match_terms": [
+      "responsible ai"
+    ],
+    "explanation": "Approach to developing AI that considers ethical implications.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "rlhf": {
+    "term": "RLHF",
+    "aliases": [],
+    "match_terms": [
+      "rlhf"
+    ],
+    "explanation": "Reinforcement Learning from Human Feedback, technique used to train models like ChatGPT.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "rnn": {
+    "term": "RNN",
+    "aliases": [],
+    "match_terms": [
+      "rnn"
+    ],
+    "explanation": "Recurrent Neural Network, neural network designed for sequential data processing.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "scope": {
+    "term": "Scope*",
+    "aliases": [],
+    "match_terms": [
+      "scope"
+    ],
+    "explanation": "This glossary targets the working vocabulary of modern AI engineering as of 2026. It deliberately goes deeper than one-line definitions and connects terms across sections, because that is how the concepts actually live in papers and production systems.",
+    "sources": [
+      "ai_handbook"
+    ]
+  },
+  "semantic segmentation": {
+    "term": "Semantic Segmentation",
+    "aliases": [],
+    "match_terms": [
+      "semantic segmentation"
+    ],
+    "explanation": "Classifying each pixel in an image by category.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "sentiment analysis": {
+    "term": "Sentiment Analysis",
+    "aliases": [],
+    "match_terms": [
+      "sentiment analysis"
+    ],
+    "explanation": "Determining emotional tone or opinion in text.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "shadow deployment": {
+    "term": "Shadow Deployment",
+    "aliases": [],
+    "match_terms": [
+      "shadow deployment"
+    ],
+    "explanation": "Running new models alongside production models without affecting end users.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "shap": {
+    "term": "SHAP",
+    "aliases": [],
+    "match_terms": [
+      "shap"
+    ],
+    "explanation": "SHapley Additive exPlanations, method for explaining model predictions using game theory.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "skip connections": {
+    "term": "Skip Connections",
+    "aliases": [],
+    "match_terms": [
+      "skip connections"
+    ],
+    "explanation": "Direct connections between non-adjacent layers in neural networks.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "small language models": {
+    "term": "Small Language Models",
+    "aliases": [],
+    "match_terms": [
+      "small language models"
+    ],
+    "explanation": "Compact, efficient alternatives to large language models.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "stable diffusion": {
+    "term": "Stable Diffusion",
+    "aliases": [],
+    "match_terms": [
+      "stable diffusion"
+    ],
+    "explanation": "Open-source text-to-image diffusion model for generating images.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "supervised learning": {
+    "term": "Supervised Learning",
+    "aliases": [],
+    "match_terms": [
+      "supervised learning"
+    ],
+    "explanation": "ML approach using labeled data to train models.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "synthetic data": {
+    "term": "Synthetic Data",
+    "aliases": [],
+    "match_terms": [
+      "synthetic data"
+    ],
+    "explanation": "Artificially generated data used for training AI models.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "tensorflow": {
+    "term": "TensorFlow",
+    "aliases": [],
+    "match_terms": [
+      "tensorflow"
+    ],
+    "explanation": "Open-source machine learning framework developed by Google.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "text summarization": {
+    "term": "Text Summarization",
+    "aliases": [],
+    "match_terms": [
+      "text summarization"
+    ],
+    "explanation": "Automatically creating concise summaries of longer texts.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "throughput": {
+    "term": "Throughput",
+    "aliases": [],
+    "match_terms": [
+      "throughput"
+    ],
+    "explanation": "Number of requests or operations an AI system can handle per unit time.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "tokenization": {
+    "term": "Tokenization",
+    "aliases": [],
+    "match_terms": [
+      "tokenization"
+    ],
+    "explanation": "Process of breaking text into smaller units for processing.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "tpu": {
+    "term": "TPU",
+    "aliases": [],
+    "match_terms": [
+      "tpu"
+    ],
+    "explanation": "Tensor Processing Unit, Google's custom AI accelerator chips.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "training data": {
+    "term": "Training Data",
+    "aliases": [],
+    "match_terms": [
+      "training data"
+    ],
+    "explanation": "The dataset used to teach machine learning models how to make predictions.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "transfer learning": {
+    "term": "Transfer Learning",
+    "aliases": [],
+    "match_terms": [
+      "transfer learning"
+    ],
+    "explanation": "Technique of using pre-trained models for new, related tasks.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "transformer": {
+    "term": "Transformer",
+    "aliases": [],
+    "match_terms": [
+      "transformer"
+    ],
+    "explanation": "A neural network architecture that uses attention mechanisms for sequence processing.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "underfitting": {
+    "term": "Underfitting",
+    "aliases": [],
+    "match_terms": [
+      "underfitting"
+    ],
+    "explanation": "When a model is too simple to capture underlying patterns in data.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "unsupervised learning": {
+    "term": "Unsupervised Learning",
+    "aliases": [],
+    "match_terms": [
+      "unsupervised learning"
+    ],
+    "explanation": "ML approach that finds patterns in data without labeled examples.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "vector database": {
+    "term": "Vector Database",
+    "aliases": [],
+    "match_terms": [
+      "vector database"
+    ],
+    "explanation": "Database optimized for storing and searching high-dimensional vector embeddings.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "video understanding": {
+    "term": "Video Understanding",
+    "aliases": [],
+    "match_terms": [
+      "video understanding"
+    ],
+    "explanation": "AI field that analyzes and interprets video data to extract meaningful information like objects and activities.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "vision transformer": {
+    "term": "Vision Transformer",
+    "aliases": [],
+    "match_terms": [
+      "vision transformer"
+    ],
+    "explanation": "Transformer architecture adapted for computer vision tasks.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "weights biases": {
+    "term": "Weights & Biases",
+    "aliases": [],
+    "match_terms": [
+      "weights biases"
+    ],
+    "explanation": "Platform for experiment tracking and model management in ML.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "what is intentionally light here": {
+    "term": "What is intentionally light here*",
+    "aliases": [],
+    "match_terms": [
+      "what is intentionally light here"
+    ],
+    "explanation": "classical statistics, robotics, and pre-deep-learning NLP internals, each of which deserves its own reference.",
+    "sources": [
+      "ai_handbook"
+    ]
+  },
+  "world model": {
+    "term": "World Model",
+    "aliases": [],
+    "match_terms": [
+      "world model"
+    ],
+    "explanation": "A simulated representation of an environment that enables AI to predict outcomes and improve decision-making.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "yolo": {
+    "term": "YOLO",
+    "aliases": [],
+    "match_terms": [
+      "yolo"
+    ],
+    "explanation": "You Only Look Once, real-time object detection algorithm.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  },
+  "zero shot learning": {
+    "term": "Zero-shot Learning",
+    "aliases": [],
+    "match_terms": [
+      "zero shot learning",
+      "zero shot"
+    ],
+    "explanation": "Model's ability to perform tasks without specific training examples.",
+    "sources": [
+      "openl_dictionary"
+    ]
+  }
+}

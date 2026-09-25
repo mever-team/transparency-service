@@ -1,0 +1,104 @@
+
+Your task is to rewrite the original text so that it is easier to understand
+for non-AI experts.
+
+Preserve the original meaning, information, and claims.
+
+### Rules
+
+1. Preserve information
+
+- Preserve every factual claim, technical concept, attribute, component,
+  relationship, and explicitly stated qualification from the original.
+- Do not omit, weaken, replace, contradict, or remove information.
+- Preserve the original grammatical person and level of certainty.
+- Preserve explicit qualitative claims such as "state-of-the-art".
+- Do not add information that is not stated or reasonably implied.
+
+2. Explain technical concepts
+
+- Keep important technical terms in the rewrite.
+- Add short, simple explanations for technical or uncommon terms when needed
+  for a non-AI expert to understand the text.
+- Explanations should describe the general meaning of the term.
+- Do not infer model-specific behavior from the technical term alone.
+- Do not add benefits, advantages, performance claims, capabilities,
+  purposes, or other properties unless supported by the original text.
+- An explanation may make the rewrite longer.
+
+3. Use the provided glossary explanations
+
+Some technical terms from the original text have already been identified
+automatically. Their explanations are provided below.
+
+{glossary_context}
+
+Use these explanations when explaining the corresponding terms.
+Do not replace the original term with its explanation.
+
+4. Use the technical-term explanation tool when necessary
+
+You also have access to:
+
+explain_technical_term(term)
+
+The tool provides a short, general explanation of a technical term.
+
+After examining the original text, identify any technical or uncommon terms
+that are not already explained by the provided glossary context.
+
+For EVERY such term that may be unfamiliar to a non-AI expert, you MUST call
+explain_technical_term before writing the final answer.
+
+Do not rely on your own knowledge to explain such a term when the tool can
+provide an explanation.
+
+Call the tool separately for each term.
+
+If the tool provides no explanation, keep the original term but do not invent
+a definition.
+
+Do not call the tool for ordinary words or concepts that a non-AI expert
+would reasonably understand.
+
+5. Avoid unsupported claims
+
+- Do not add subjective, evaluative, or qualitative adjectives or adverbs
+  that are not supported by the original.
+- Do not add claims about performance, quality, effectiveness, efficiency,
+  benefits, advantages, capabilities, or complexity unless supported by
+  the original.
+- Do not add purposes or intended outcomes unless supported by the original.
+- Do not add comparisons unless they appear in the original.
+- Technical explanations must remain general and neutral.
+
+6. Preserve original claims
+
+Explanations must supplement the original claim, not replace it.
+
+For example:
+
+Original:
+"Whisper is a state-of-the-art speech recognition model."
+
+Correct:
+"Whisper is a state-of-the-art speech recognition model, meaning it
+represents a leading level of performance in speech recognition."
+
+The explanation does not replace the original claim.
+
+### Final verification
+
+Before returning the answer, verify that:
+
+1. Every original factual claim is preserved.
+2. Every important technical concept is preserved.
+3. Explicit attributes and qualifications are preserved.
+4. Unfamiliar technical terms are explained.
+5. Tool explanations are used accurately.
+6. No unsupported claims or qualifiers were added.
+7. No unsupported adjective or adverb was added.
+8. No unsupported purpose, benefit, comparison, or evaluation was added.
+9. No original claim was weakened, removed, or replaced.
+
+Return ONLY the final rewritten text.

@@ -41,6 +41,7 @@ class Prompter(Assistant):
         self.image_classifier = image_classifier
         self.text_preprocessor = text_preprocessor
 
+
     def complete(self, card: ModelCard, data: dict, logger: Logger, user_messages: list[str]):
         if data['data_type'] == 'url':
             url = data['url']

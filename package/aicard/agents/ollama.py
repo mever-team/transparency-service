@@ -22,142 +22,110 @@ Instructions:
 - Make sure that the output is considerably shorter than the input.
 - The output should be in pure text format, with no lists, line breaks, or paragraphs.
 """,
-        "simplification": """Your task:
+        "simplification": """
+Your task is to rewrite the original text so that it is easier to understand
+for non-AI experts.
 
-* Rewrite the text to make it easier to understand for non-AI experts.
-* Improve clarity and explain ideas more explicitly, without changing the original meaning.
+Preserve the original meaning, information, and claims.
 
 ### Rules
 
-#### Preserve the original information
+1. Preserve information
 
-* Preserve every factual claim, technical concept, attribute, and component from the original text.
-* Do NOT remove, omit, weaken, or replace information from the original text.
-* Preserve the original grammatical person (first, second, or third person).
-* Preserve the original level of certainty.
-* If the original text explicitly states a qualitative attribute, preserve it. For example, if the original says "state-of-the-art," do not remove it or replace it with a weaker term such as "advanced."
-* Do NOT introduce information that is not stated or reasonably implied by the original text.
+- Preserve every factual claim, technical concept, attribute, component,
+  relationship, and explicitly stated qualification from the original.
+- Do not omit, weaken, replace, contradict, or remove information.
+- Preserve the original grammatical person and level of certainty.
+- Preserve explicit qualitative claims such as "state-of-the-art".
+- Do not add information that is not stated or reasonably implied.
 
-#### Make technical concepts understandable
+2. Explain technical concepts
 
-* Use simple, natural language suitable for non-AI experts.
-* When the original text contains a technical or uncommon concept, explain it briefly in simple language when this improves understanding.
-* Do NOT omit a technical concept merely because explaining it requires additional words.
-* Distinguish between explaining the meaning of an existing concept and introducing a new claim about the specific model.
-* Accurate, neutral definitions of technical concepts are allowed and encouraged.
-* When appropriate, explain both what a technical component is and what it does.
-* When using technical or uncommon words, add a short explanation in parentheses or in the surrounding sentence.
-* Prefer slightly longer explanations when they are necessary to make an existing concept understandable.
-* The goal is not to minimize the length of the rewrite. The goal is to make the original information understandable while preserving its factual content.
+- Keep important technical terms in the rewrite.
+- Add short, simple explanations for technical or uncommon terms when needed
+  for a non-AI expert to understand the text.
+- Explanations should describe the general meaning of the term.
+- Do not infer model-specific behavior from the technical term alone.
+- Do not add benefits, advantages, performance claims, capabilities,
+  purposes, or other properties unless supported by the original text.
+- An explanation may make the rewrite longer.
 
-For example:
+3. Use the provided glossary explanations
 
-* "fine-tuned" can be explained as "further trained or adapted for a specific task."
-* "image embeddings" can be explained as "numerical representations of images that the model can process."
-* "parameter-efficient" can be explained as using relatively few model parameters, without adding unsupported claims about performance.
-* "labeled data" can be explained as data accompanied by labels or corresponding information identifying the desired output.
-* "reinforcement learning" can be explained as a training approach in which a model learns from feedback or rewards.
-* "end-to-end" can be explained as a process in which the input is transformed into the final output through one integrated pipeline.
+Some technical terms from the original text have already been identified
+automatically. Their explanations are provided below.
 
-These explanations should clarify the concept, not evaluate it.
+{glossary_context}
 
-#### Avoid unsupported claims and qualifiers
+Use these explanations when explaining the corresponding terms.
+Do not replace the original term with its explanation.
 
-* Do NOT add subjective, evaluative, or qualitative adjectives or adverbs that are not supported by the original text.
-* Do NOT describe a model, method, system, component, or result as "powerful," "effective," "efficient," "advanced," "sophisticated," "versatile," "complex," "innovative," "robust," or similar unless the original text explicitly supports that description.
-* Do NOT add claims about performance, quality, effectiveness, efficiency, benefits, advantages, or capabilities unless they are stated or reasonably implied by the original text.
-* Do NOT add purposes or intended outcomes that are not stated or reasonably implied by the original text.
-* Do NOT add comparisons with other models, systems, or methods unless the original text contains such a comparison.
-* Do NOT use adjectives or adverbs merely to make the text sound more impressive, informative, or natural.
-* When simplifying a technical statement, explain what the concept means or does rather than describing it positively or negatively.
-* When explaining a technical component, describe its general function accurately and neutrally. Do not invent specific implementation details or unsupported benefits.
+4. Use the technical-term explanation tool when necessary
 
-For example:
+You also have access to:
 
-Original:
-"The model supports tool calling."
+explain_technical_term(term)
 
-Incorrect:
-"The model supports tool calling effectively."
+The tool provides a short, general explanation of a technical term.
 
-Reason:
-"Effectively" introduces an unsupported claim about the quality of the capability.
+After examining the original text, identify any technical or uncommon terms
+that are not already explained by the provided glossary context.
 
-Correct:
-"The model supports tool calling."
+For EVERY such term that may be unfamiliar to a non-AI expert, you MUST call
+explain_technical_term before writing the final answer.
 
----
+Do not rely on your own knowledge to explain such a term when the tool can
+provide an explanation.
 
-Original:
-"The model uses agentic reinforcement learning for decision-making."
+Call the tool separately for each term.
 
-Incorrect:
-"The model uses sophisticated agentic reinforcement learning for intelligent decision-making."
+If the tool provides no explanation, keep the original term but do not invent
+a definition.
 
-Reason:
-"Sophisticated" and "intelligent" introduce unsupported qualitative judgments.
+Do not call the tool for ordinary words or concepts that a non-AI expert
+would reasonably understand.
 
-Correct:
-"The model uses agentic reinforcement learning, a training approach in which the model learns through feedback or rewards, for decision-making."
+5. Avoid unsupported claims
 
----
+- Do not add subjective, evaluative, or qualitative adjectives or adverbs
+  that are not supported by the original.
+- Do not add claims about performance, quality, effectiveness, efficiency,
+  benefits, advantages, capabilities, or complexity unless supported by
+  the original.
+- Do not add purposes or intended outcomes unless supported by the original.
+- Do not add comparisons unless they appear in the original.
+- Technical explanations must remain general and neutral.
 
-Original:
-"The model combines information from different domains."
+6. Preserve original claims
 
-Incorrect:
-"The model combines information from different domains to achieve better performance."
-
-Reason:
-"Better performance" introduces an unsupported benefit.
-
-Correct:
-"The model combines information from different domains."
-
-#### Explanations must not replace original claims
-
-* Do not replace an explicit claim with only an explanation of that claim.
-* Preserve the original claim and add the explanation when needed.
+Explanations must supplement the original claim, not replace it.
 
 For example:
 
 Original:
 "Whisper is a state-of-the-art speech recognition model."
 
-Incorrect:
-"Whisper is an advanced speech recognition model."
-
-Reason:
-The original claim "state-of-the-art" has been weakened and replaced.
-
 Correct:
-"Whisper is a state-of-the-art speech recognition model, meaning it represents a leading level of performance in speech recognition."
+"Whisper is a state-of-the-art speech recognition model, meaning it
+represents a leading level of performance in speech recognition."
 
-Only add the explanation if it can be expressed accurately and neutrally.
+The explanation does not replace the original claim.
 
-#### Final verification
+### Final verification
 
-Before returning the answer, check the rewrite internally:
+Before returning the answer, verify that:
 
-1. Is every original factual claim still present?
-2. Is every important technical concept still present?
-3. Have explicitly stated attributes been preserved?
-4. Are unfamiliar technical concepts explained when an explanation would improve understanding?
-5. Does each explanation accurately describe the concept without adding unsupported model-specific information?
-6. Did I introduce any new claim about performance, quality, effectiveness, efficiency, benefits, capabilities, or complexity?
-7. Did I introduce any unsupported adjective or adverb?
-8. Did I add a purpose, benefit, comparison, or evaluation that was not in the original?
-9. Did I accidentally weaken, remove, or replace an original claim?
-10. If an added sentence only explains an existing concept and does not introduce a new unsupported claim, keep it.
+1. Every original factual claim is preserved.
+2. Every important technical concept is preserved.
+3. Explicit attributes and qualifications are preserved.
+4. Unfamiliar technical terms are explained.
+5. Tool explanations are used accurately.
+6. No unsupported claims or qualifiers were added.
+7. No unsupported adjective or adverb was added.
+8. No unsupported purpose, benefit, comparison, or evaluation was added.
+9. No original claim was weakened, removed, or replaced.
 
-If an added word or sentence makes the model sound better, more capable, more efficient, more advanced, or more sophisticated without support from the original text, remove it.
-
-### Output
-
-* Return ONLY the final rewritten text.
-* Do NOT include an introduction sentence.
-* Do NOT include an explanation of your changes.
-* Do NOT include any extra text before or after the rewritten text.
+Return ONLY the final rewritten text.
 """,
         "vision": "Provide explanation about the image."
     }
@@ -236,23 +204,257 @@ If an added word or sentence makes the model sound better, more capable, more ef
     
     def _run_stream(self, content: str, task: str, **params):
         assert isinstance(content, str), "Content must be of type str"
-        assert task in Ollama.tasks, "Not supported task: "+task
+        assert task in Ollama.tasks, "Not supported task: " + task
+
         if not content:
             yield '{"message": {"content": ""}}\n'
             return
-        payload = {
-            "model": self._model,
-            "stream": True,
-            "messages": [{"role": "system", "content": Ollama.tasks[task]}, {"role": "user", "content": content}]
-        }
-        if params:
-            payload.update(params)
+
+        tools = [
+            {
+                "type": "function",
+                "function": {
+                    "name": "explain_technical_term",
+                    "description": (
+                        "Return a simple explanation of a technical term "
+                        "for a non-AI expert."
+                    ),
+                    "parameters": {
+                        "type": "object",
+                        "required": ["term"],
+                        "properties": {
+                            "term": {
+                                "type": "string",
+                                "description": "The technical term to explain."
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+
+        prompt = Ollama.tasks[task]
+        if task == 'simplification':
+            glossary_context = build_glossary_context(content)
+            print('added', glossary_context)
+            prompt = Ollama.tasks[task].format(glossary_context=glossary_context)
             
-            
-        with requests.post(self._url, json=payload, stream=True) as r:
-            for line in r.iter_lines():
-                if line:
+        messages = [
+            {
+                "role": "system",
+                "content": prompt
+            },
+            {
+                "role": "user",
+                "content": content
+            }
+        ]
+
+        payload_params = dict(params)
+        payload_params.pop("messages", None)
+        payload_params.pop("tools", None)
+        payload_params.pop("stream", None)
+        tool_calls_count = 0
+        while True:
+            payload = {
+                "model": self._model,
+                "stream": True,
+                "messages": messages,
+                "tools": tools,
+                **payload_params
+            }
+
+            tool_calls = []
+            assistant_content = ""
+
+            with requests.post(self._url, json=payload, stream=True) as r:
+                r.raise_for_status()
+
+                for line in r.iter_lines():
+                    if not line:
+                        continue
                     data = json.loads(line)
-                    # data = data['message']['content']
-                    yield json.dumps(data) + "\n"
+                    message = data.get("message", {})
+
+                    # Accumulate normal streamed content
+                    if message.get("content"):
+                        assistant_content += message["content"]
+                        yield json.dumps(data) + "\n"
+
+                    # Accumulate streamed tool calls
+                    if message.get("tool_calls"):
+                        tool_calls.extend(message["tool_calls"])
+
+            # No tool call -> model has finished
+            if not tool_calls:
+                break
+
+            # Add the complete assistant message containing the tool calls
+            messages.append({
+                "role": "assistant",
+                "content": assistant_content,
+                "tool_calls": tool_calls
+            })
+
+            print(tool_calls)
+            # Execute each requested tool
+            for tool_call in tool_calls:
+                function = tool_call.get("function", {})
+                name = function.get("name")
+                arguments = function.get("arguments", {})
+
+                if name == "explain_technical_term":
+                    tool_calls_count += 1
+                    term = arguments.get("term", "")
+                    result = explain_technical_term(term)
+                    print(f"Tool calls: {tool_calls_count}")
+                else:
+                    result = f"Unknown tool: {name}"
+
+                # Give the tool result back to Ollama
+                messages.append({
+                    "role": "tool",
+                    "tool_name": name,
+                    "content": result
+                })
             
+            
+
+JUDGE_MODEL = "gpt-oss:120b-cloud"
+OLLAMA_URL = "http://localhost:11434/api/chat"
+
+def _normalize_term(term: str) -> str:
+    """Normalize a term for glossary lookup."""
+    return " ".join(term.lower().strip().replace("-", " ").split())
+
+
+def explain_technical_term(term: str) -> str:
+    """
+    Return a simple explanation of a technical term
+    """
+    
+    entry = find_glossary_entry(term)
+
+    if entry is not None:
+        print('HIT!!!!')
+        return entry["explanation"]
+
+    prompt = f"""
+Explain the following technical term for a general audience.
+
+Term: {term}
+
+Rules:
+- Give a short explanation in 1-2 sentences.
+- Explain only the general meaning of the term.
+- Use simple, plain language.
+- Be accurate and neutral.
+- Do not assume anything about a specific model, system, dataset, or application.
+- Do not add benefits, advantages, performance claims, or other properties
+  unless they are part of the basic definition of the term.
+- Do not invent information.
+- Avoid introducing other technical terms that require explanation.
+- Return ONLY the explanation.
+"""
+
+    payload = {
+        "model": JUDGE_MODEL,
+        "stream": False,
+        "messages": [
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
+    }
+
+    response = requests.post(
+        OLLAMA_URL,
+        json=payload,
+        timeout=60
+    )
+    response.raise_for_status()
+
+    data = response.json()
+    explanation = data["message"]["content"].strip()
+    print('MISS :(')
+
+    return explanation
+
+import re
+from pathlib import Path
+
+glossary_path = Path(__file__).resolve().parent / "glossary.json"
+with Path(glossary_path).open("r", encoding="utf-8") as f:
+    glossary = json.load(f)
+def find_glossary_entry(term: str) -> dict | None:
+    for entry in glossary.values():
+        for match_term in entry["match_terms"]:
+            if term_matches_text(match_term, term):
+                return entry
+    return None
+def find_glossary_terms(text: str) -> list[dict]:
+    matches = []
+    for entry in glossary.values():
+        for term in entry["match_terms"]:
+            if term_matches_text(term, text):
+                matches.append(entry)
+                break
+    return matches
+
+def build_glossary_context(text: str) -> str:
+    entries = find_glossary_terms(text)
+    if not entries:
+        return ""
+    lines = [
+        "The following technical terms were found in the original text.",
+        "Use these explanations when making the text understandable.",
+        "",
+    ]
+    for entry in entries:
+        lines.append(
+            f"- {entry['term']}: {entry['explanation']}"
+        )
+    return "\n".join(lines)
+
+
+from nltk.stem import SnowballStemmer
+
+
+stemmer = SnowballStemmer("english")
+
+
+def normalize_tokens(text: str) -> list[str]:
+    text = text.lower()
+
+    text = text.replace("-", " ")
+    text = text.replace("_", " ")
+
+    # Keep only words and numbers.
+    tokens = re.findall(r"\b\w+\b", text)
+
+    return [
+        stemmer.stem(token)
+        for token in tokens
+    ]
+    
+def term_matches_text(term: str, text: str) -> bool:
+    term_tokens = normalize_tokens(term)
+    text_tokens = normalize_tokens(text)
+
+    if not term_tokens:
+        return False
+
+    term_length = len(term_tokens)
+
+    for i in range(
+        len(text_tokens) - term_length + 1
+    ):
+        window = text_tokens[
+            i:i + term_length
+        ]
+
+        if window == term_tokens:
+            return True
+
+    return False

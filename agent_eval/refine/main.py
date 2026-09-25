@@ -32,8 +32,8 @@ def main():
     for i, sample in enumerate(predictions):
 
         print(
-            f"\rEvaluating sample "
-            f"{i + 1}/{len(predictions)}", end="", flush=True
+            f"Evaluating sample "
+            f"{i + 1}/{len(predictions)}"
         )
 
         checklist_results = evaluate_sample(sample)

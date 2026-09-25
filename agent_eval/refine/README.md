@@ -88,50 +88,69 @@ The evaluation labels are obtained by prompting an LLM. The `gpt-oss:120b-cloud`
 
 Furthermore, to obtain the FF checklist, the same `gpt-oss:120b-cloud` model was prompted to first generate a factual checklist from the output text and then evaluate each fact against the corresponding original sample.
 
+## 🧪 Experimental Setup
+
+Models checked:
+* mistral:latest
+* qwen2.5:7b
+* qwen3:4b-instruct
+* qwen3:4b-thinking
+* granite4:3b
+* phi4-mini
+
+The agent was enhanced with:
+* A **glossary** with 164 technical terms and their definitions. If any of them were detected in the input, the definitions were added in the system prompt.
+* A **tool call** that the LLM can use if a technical terms is not included in the glossary. This tool prompts `gpt-oss:120b-cloud` to provide an explanation of the term.
+* Improvements to prompt for better explainability.
+
 ## 📊 Results
 
-### **Overall Satisfaction score 84.2%**
+### Models Tested
+The best performing model with glossary + tool enhancements is qwen2.5:7b. These two enhasments increased the TE Satisfaction score by +10% and the overall Satisfaction score by +5.9%. 
+
+### **Overall Satisfaction score 86.24% of qwen2.5:7b**
 | Dimention | Total | Fully satisfied | Partially satisfied | Not satisfied | Satisfaction score |
 |--------|-------|-----------------|---------------------|---------------|--------------------|
-| IR (Information Retention)     | 144   | 133 / 144 (92.36%) | 7 / 144 (4.86%)  | 	4 / 144 (2.78%) | 94.79% |
-| TE (Technical Explainability)     | 152   | 82 / 152 (53.95%) | 35 / 152 (23.03%)  | 35 / 152 (23.03%) | 65.46% |
-| FF (Factual Faithfulness)     | 204   | 177 / 204 (86.76%) | 16 / 204 (7.84%)  | 11 / 204 (5.39%) | 90.69% |
+| IR (Information Retention)     | 144   | 139 / 144 (96.53%) | 0 / 144 (0%)  | 	5 / 144 (3.47%) | 96.53% |
+| TE (Technical Explainability)     | 149   | 95 / 149 (63.76%) | 10 / 149 (6.71%)  | 44 / 149 (29.53%) | 67.11% |
+| FF (Factual Faithfulness)     | 183   | 165 / 183 (90.17%) | 13 / 183 (7.1%)  | 5 / 183 (2.73%) | 93.72% |
 
-The above are the final results after 4 refine prompt adjustments of Mistral. Mistral 7b, Qwen2.5 7b, and Llama3.2 3b were tested from which Mistral had the better results. It was observed that there was a trade-off between FF and TE depending on the strictness and emphasis on preserving the original facts. Furthermore, an attempt was made to add a glossary for the missed technical explanations in the prompt, but no improvements were observed in the TE satisfaction score while the unsupported claims reached 42%, indicating hallucination problems. Further improvements maybe impossible without fine-tuning (probably LoRa), changing to a larger model, or adding tool-calling.
+The bottleneck for obtaining higher TE scores is the ability of the agent model (qwen2.5:7b) to decide if something needs explanation or not. This behavior can be partially changed through the system prompt but unfortunately there is a tradeoff between TE and FF scores. The more freedom the model has on explaining terms, the less faithful it becomes to the original text introducing unsupported claims. The prompt was optimized to yield good TE results without compromising the IR and FF scores. 
 
-For the 11 UNSUPPORTED FF (false facts that the refine produced): 
-* 3 of them were wrong or oversimplified explanations of terms found in the original, which ended up as unsupported facts
-* 6 of them were added assumptions about the usage / effectiveness of the model (basically the refine added extra adjectives and adverbs not included in the original like effective, efficiently etc.)
+For the 5 UNSUPPORTED FF (false facts that the refine produced):
+* 2 of them were wrong or oversimplified explanations of terms found in the original, which ended up as unsupported facts
+* 1 of them were added assumptions about the usage / effectiveness of the model (basically the refine added extra adjectives and adverbs not included in the original like effective, efficiently etc.)
 * and 2 were not stated by the original sample. (facts that are not present or related to the original text)
 
-For the 4 Not satisfied IR (facts that the refine missed): 
-* 2 of them were information loss due to oversimplification, 
-* and 2 facts that were simply not stated at all.
+For the 5 Not satisfied IR (facts that the refine missed): 
+States that coarse (L0) EnCodec speech features are obtained from the text and reference audio.
+States that the SRR triplet paradigm simplifies the multi-tool pipeline used by modular approaches.
+* 4 of them were information loss due to oversimplification, 
+* and 1 facts that were simply not stated at all.
 
-The 35 Not satisfied TE (terms that the refine was expected to explain but did not) the terms are:
-* parameter-efficient
-* Mixture-of-Experts
+The 51 Not satisfied TE (terms that the refine was expected to explain but did not) the terms are:
 * embedding
-* image embeddings
-* text embedding
-* Rotary Position Embeddings
-* supervised fine-tuning
+* CLIP image embeddings
+* labeled data
+* SLM 
+* text-to-speech
 * EnCodec speech features
-* weakly supervised
-* Pixel-level Unified Transformer (UiT)
-* VAE (Variational Autoencoder) 
-* shared token space
-* subject-driven personalization
-* denoising 
+* downstream tasks
+* multi-tool pipeline
+* VAE (Variational Autoencoder)
+* disjoint text encoders
+* encoding 
 * causal temporal modeling
+* agentic model
 * Long-horizon Search
-* Sliding Window Attention (SWA) 
+* reinforcement learning
+* agentic reinforcement learning
+* SWE-Bench
+* complex reasoning tasks
+* NLP applications
+* Rotary Position Embeddings
 * discrete diffusion
-* layout detection
-* content recognition
-* coding agents
-* model distillation
+* conditioning frame
 
-The results can be found in an HTML [here](./results/5_manually_corrected/evaluation_report.html)
-
+The results can be found in an HTML [here](./results/12_qwen2.5:7b/evaluation_report.html)
 
