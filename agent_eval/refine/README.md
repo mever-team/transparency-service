@@ -5,7 +5,7 @@ To create an evaluation dataset for the refine functionality, 32 samples of tech
 
 For each sample, ChatGPT was prompted to create a requirements checklist that the refine output was expected to satisfy. The checklist consists of two types of requirements: “mention” and “explain”. These requirements were used to evaluate the refine functionality in terms of information retention and technical explainability, respectively. The checklists were partially manually checked.
 
-The resulting dataset contains 144 “mention” requirements and 149 “explain” requirements, for a total of 296 checklist items. The evaluation dataset is available [here](./results/5_manually_corrected/dataset.json)
+The resulting dataset contains 144 “mention” requirements and 149 “explain” requirements, for a total of 293 checklist items. The evaluation dataset is available [here](./results/5_manually_corrected/dataset.json)
 
 <details>
 <summary><strong>Example of one sample:</strong></summary>
