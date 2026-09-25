@@ -97,6 +97,7 @@ Models checked:
 * qwen3:4b-thinking
 * granite4:3b
 * phi4-mini
+* llama3.2:3b
 
 The agent was enhanced with:
 * A **glossary** with 164 technical terms and their definitions. If any of them are detected in the input, the definitions are then injected in the system prompt.
@@ -157,6 +158,7 @@ The 51 Not satisfied TE (terms that the refine was expected to explain but did n
 * **qwen3:4b-thinking**: Super slow
 * **granite4:3b**: OK but not good. Nothing special to report
 * **phi4-mini**: OK but not good. Nothing special to report
+* **llama3.2:3b**: OK but not good. Nothing special to report
 
 The results of **qwen2.5:7b** can be found in an HTML [here](./results/12_qwen2.5:7b/evaluation_report.html)
 
