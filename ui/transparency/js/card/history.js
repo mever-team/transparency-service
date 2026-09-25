@@ -88,11 +88,11 @@ function renderHistoryGraph(history, currentId, container) {
 
     const btn = document.createElement('button');
     btn.className = 'compare-toggle-btn';
-    btn.textContent = 'select to compare: off';
+    btn.textContent = 'compare: off (just open selection)';
     $(btn).on('click', () => {
         compareMode = !compareMode;
         btn.classList.toggle('active', compareMode);
-        btn.textContent = compareMode?'select to compare: on':'select to compare: off'
+        btn.textContent = compareMode?'compare: pending (select version to compare)':'compare: off (just open selection)'
     });
     container.appendChild(btn);
 

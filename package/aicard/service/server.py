@@ -420,7 +420,7 @@ def serve(
         query = re.sub(r'[^a-z0-9_\-\s]', '', query)
 
         page = min(1,max(int(data.get('page', 1)), 1))
-        page_size = min(100, max(int(data.get('page_size', 5)), 1))
+        page_size = min(100, max(int(data.get('page_size', 50)), 1))
         owner = data.get("user", "").strip().lower()
         owner = [owner] if owner else []
         if data.get('drafts', False):

@@ -245,6 +245,8 @@ $(function () {
                         });
                     else this.$tbody.append(`<tr><td colspan="3" style="text-align:center;color: var(--text-primary);font-weight:bold;font-size:22px;">No matching results</td></tr>`);
                     $("#resultsTable").show();
+                    if(r.total===results.length || results.length<50) $('#total-count').text(results.length + ' found model cards');
+                    else $('#total-count').text("Top "+results.length+" found model cards (database size: "+r.total + ')');
                     this.first = false;
                 },
                 error: () => {

@@ -851,8 +851,8 @@ section.buttons {
 
 pre {font-size: 14px;background:inherit!important}
 
-.compare-toggle-btn {float:right;background: var(--gb1-primary);border:0;color: var(--text-primary);margin:5px 10px}
-.compare-toggle-btn.active {color:var(--text-info)}
+.compare-toggle-btn {float:right;background: var(--gb1-primary);border:0;color: var(--text-info);margin:5px 10px}
+.compare-toggle-btn.active {color:var(--red-primary)}
 
 
 /* flash */
