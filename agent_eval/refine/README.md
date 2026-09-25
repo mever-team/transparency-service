@@ -99,7 +99,7 @@ Models checked:
 * phi4-mini
 
 The agent was enhanced with:
-* A **glossary** with 164 technical terms and their definitions. If any of them were detected in the input, the definitions were added in the system prompt.
+* A **glossary** with 164 technical terms and their definitions. If any of them are detected in the input, the definitions are then injected in the system prompt.
 * A **tool call** that the LLM can use if a technical terms is not included in the glossary. This tool prompts `gpt-oss:120b-cloud` to provide an explanation of the term.
 * Improvements to prompt for better explainability.
 
