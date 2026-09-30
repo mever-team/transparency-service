@@ -40,10 +40,10 @@ class ModelCard:
                 citation=ShortText("How should the model be cited? Typically includes title, author, year, and publisher. May be a formatted citation or bibtex entries like @article.", technical_nature=True),
                 more=LongText("Additional model information not found above.")),
             use=DotDict(
-                use_cases=LongText("Intended uses of the model.", is_simple=True),
+                use_cases=LongText("Intended use of the model.", is_simple=True),
                 oversight=Options(["self-learning/autonomous", "human-in-the-loop", "human-on-the-loop", "human-in-command", "unknown"], "Defines the level of human control over the system."),
-                user_groups=LongText("Intended users.", is_simple=True),
-                out_of_scope_use=LongText("Unintended and improper use of model.", is_simple=True),
+                user_groups=LongText("Intended users, for example categorized by background, role, or expertise.", is_simple=True),
+                out_of_scope_use=LongText("Unintended or improper use of the model, for example in scenarios that could degrade its quality.", is_simple=True),
                 software=LongText("Software requirements and dependencies?"),
                 instructions=LongText("Use instructions.", technical_nature=True),
                 inputs_outputs=LongText("Description of the model's inputs and outputs", technical_nature=True),

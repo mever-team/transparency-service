@@ -16,10 +16,13 @@ from codecarbon import EmissionsTracker
 from aicard.service.jobs_tracker import CardJobsTracker, Job
 import trafilatura
 from aicard.utils.import_addons import huggingface_redirect, github_redirect
+import nltk
 
-def ratio(s1, s2):
+def ratio(s1, s2, stopwords):
     w1 = re.findall(r"\w+", s1.lower())
     w2 = re.findall(r"\w+", s2.lower())
+    w1 = [s1 for s1 in w1 if s1 not in stopwords]
+    w2 = [s2 for s2 in w2 if s2 not in stopwords]
     if not w1 or not w2: return 0
 
     a = sum(max(1 if x==y else 0 for y in w2) for x in w1) / len(w1)
@@ -79,6 +82,7 @@ class SemanticMatcher(Assistant):
         self.max_special_character_density = max_special_character_density
         self.external_get_timeout_sec = external_get_timeout_sec
         self.matching_strictness = matching_strictness
+        self.stopwords = []
 
 
     def start(self, logger: Logger):
@@ -90,6 +94,11 @@ class SemanticMatcher(Assistant):
                 with SemanticMatcher._loader_lock:
                     logger.warn("preparing semantic matcher\n * will proceed asynchronously\n * may take a while the first time\n * agent tasks will wait on this", user="📚 Semantic Matcher")
                     device = "cpu"# "cuda" if torch.cuda.is_available() else "cpu"
+
+                    nltk.download('stopwords', quiet=True)
+                    from nltk.corpus import stopwords
+                    self.stopwords = set(stopwords.words("english"))
+
                     self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
                     self.model = AutoModel.from_pretrained(self.model_name).to(device)
                     logger.ok(f"Loaded {self.model_name} on torch device: {device}", user="📚 Semantic Matcher")
@@ -101,16 +110,17 @@ class SemanticMatcher(Assistant):
                         for field, value in values.items():
                             if isinstance(value, Options):
                                 for option in value.options():
+                                    if option.startswith("#"): continue
                                     field_embeddings[cat+"__"+field+"__"+option] = self._get_embeddings("question: # AI model card "+cat+" "+field+" "+option+"\n"+value.description)
                             field_embeddings[cat+"__"+field] = self._get_embeddings("question: # AI model card "+cat+" "+field+"\n"+value.description)
-                    vals = list(field_embeddings.values())
                     keys = list(field_embeddings)
                     vals = list(field_embeddings.values())
-                    sims = [(self.embedding_similarity(vals[i], vals[j])*(1-self.fuzzer_weight) + ratio(keys[i], keys[j])*self.fuzzer_weight/100)
+                    sims = [(self.embedding_similarity(vals[i], vals[j])*(1-self.fuzzer_weight) + ratio(keys[i], keys[j], self.stopwords)*self.fuzzer_weight/100)
                             for i in range(len(vals)) for j in range(i + 1, len(vals))]
                     max_noise_similarity = min(sims)
                     logger.ok(f"loading complete" 
                             f"\n * {len(field_embeddings)} card field semantic embeddings"
+                            f"\n * {len(self.stopwords)} stopwords"
                             f"\n * {max_noise_similarity:.3f} minimum matching (semantic similarity lesser than this is considered irrelevant)", user="📚 Semantic Matcher")
 
                     self.field_embeddings = field_embeddings
@@ -132,26 +142,45 @@ class SemanticMatcher(Assistant):
         text = re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)
         sections = []
         current_heading, current_content = "", []
+        in_code = False
         for line in text.splitlines():
+            fences = line.count("```")
+            if (in_code or fences) and current_heading:
+                if current_heading: current_content.append(line.replace(" ```", "\n```"))
+                if fences % 2: in_code = not in_code
+                continue
             match = re.match(r"^\s{0,3}#{1,6}\s+(.+?)\s*#*\s*$", line)
+            if match: match = match.group(1).strip().replace("#", " ").strip()
             if match:
                 if current_heading: sections.append((current_heading, "\n".join(current_content).strip()))
-                current_heading = match.group(1).strip()
+                current_heading = match
                 current_content = []
             elif current_heading:
-                current_content.append(line)
+                current_content.append(line.replace("#", " ").strip())
         if current_heading: sections.append((current_heading, "\n".join(current_content).strip()))
 
+
+
+
         title = sections[0][0] if sections else ""
+
+        # split long paragraphs into separate sections BUT in case of lists we split
+        # them up only if all items are long
+        LIST_ITEM = re.compile(r"^\s*(?:[-*+]|\d+[.)])\s+")
+        def _needs_split(content, limit=300):
+            items = re.split(r"\n(?=\s*(?:[-*+]|\d+[.)])\s+)", content.strip())
+            if items and all(LIST_ITEM.match(i) for i in items): return any(len(i) > limit for i in items)
+            return len(content) > limit
         sections = [
             (heading, part)
             for heading, content in sections
             for part in (
-                [p.strip() for p in re.split(r"\n\s*\n", content) if p.strip()]
-                if len(re.findall(r"\b\w+\b", content)) > 300
+                [p.strip() for p in re.split(r"(?<=\.)\n\s*", content) if p.strip()] # split on on '.\n'
+                if _needs_split(content)
                 else [content]
             )
         ]
+
         creator = ""
         if "/" in title:
             title = title.split("/", 1)
@@ -199,9 +228,10 @@ class SemanticMatcher(Assistant):
                     if isinstance(value, Options):
                         if cat + "__" + field in existing: continue
                         for option in value.options():
+                            if option.startswith("#"): continue
                             normalized_option = cat + "__" + field + "__" + option
                             semantic = self.embedding_similarity(embedding, self.field_embeddings[normalized_option])
-                            fuzzy = (ratio(heading, option) + ratio(content, option)) / 200
+                            fuzzy = (ratio(heading, option, self.stopwords) + ratio(content, option, self.stopwords)) / 200
                             score = semantic*(1-self.fuzzer_weight) + fuzzy*self.fuzzer_weight
                             if score > best_option_matches.get(normalized_option, 0):
                                 best_option_matches[normalized_option] = score
@@ -210,7 +240,7 @@ class SemanticMatcher(Assistant):
 
                     idx = cat + "__" + field
                     semantic = self.embedding_similarity(embedding, self.field_embeddings[idx])
-                    fuzzy = (ratio(heading, field) + ratio(content, value.description)) / 200
+                    fuzzy = (ratio(heading, field, self.stopwords) + ratio(content, value.description, self.stopwords)) / 200
                     score = semantic*(1-self.fuzzer_weight) + fuzzy*self.fuzzer_weight
 
                     if not isinstance(value, LongText) and (len(content) > 120 or ' ' in content.strip()): score -= .25
@@ -297,7 +327,7 @@ class SemanticMatcher(Assistant):
                 sections.append((para, para))
 
         sections = [
-            (heading, part)
+            (heading.replace("#", " ").strip(), part.replace("#", " ").strip())
             for heading, content in sections
             for part in (
                 [p.strip() for p in re.split(r"\n\s*\n", content) if p.strip()]
@@ -351,9 +381,10 @@ class SemanticMatcher(Assistant):
                     if isinstance(value, Options):
                         if cat+"__"+field in existing: continue
                         for option in value.options():
+                            if option.startswith("#"): continue
                             normalized_option = cat+"__"+field+"__"+option
                             semantic = self.embedding_similarity(embedding, self.field_embeddings[normalized_option])
-                            fuzzy = (ratio(heading, option) + ratio(content, value.description)) / 200
+                            fuzzy = (ratio(heading, option) + ratio(content, value.description, self.stopwords)) / 200
                             score = semantic*(1-self.fuzzer_weight) + fuzzy*self.fuzzer_weight
                             if score > best_option_matches.get(normalized_option, 0):
                                 best_option_matches[normalized_option] = score
@@ -363,7 +394,7 @@ class SemanticMatcher(Assistant):
                     if isinstance(value, LongText) and is_technical and not value.technical_nature: continue
                     idx = cat+"__"+field
                     semantic = self.embedding_similarity(embedding, self.field_embeddings[idx])
-                    fuzzy = (ratio(heading, field) + ratio(content, value.description)) / 200
+                    fuzzy = (ratio(heading, field) + ratio(content, value.description, self.stopwords)) / 200
                     score = semantic*(1-self.fuzzer_weight) + fuzzy*self.fuzzer_weight
 
                     if not isinstance(value, LongText) and (len(content) > 120 or ' ' in content.strip()): score -= .25
@@ -428,6 +459,8 @@ class SemanticMatcher(Assistant):
         tracker.start()
         try:
             url = data["url"]
+            url = huggingface_redirect(card, url, external_get_timeout_sec=self.external_get_timeout_sec) or url
+            url = github_redirect(card, url, external_get_timeout_sec=self.external_get_timeout_sec) or url
             p = urlparse(url)
             if p.scheme not in ("http", "https") or not p.netloc: raise Exception("Invalid url format")
             r = requests.get(url, timeout=self.external_get_timeout_sec)

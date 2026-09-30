@@ -11,7 +11,7 @@ def huggingface_redirect(card: ModelCard, url: str, external_get_timeout_sec: fl
     url = urlparse(url)
     parts = [x for x in url.path.split("/") if x]
     model_id = "/".join(parts[:2]) if url.netloc in ("huggingface.co", "www.huggingface.co") and len(parts) >= 2 else ""
-    if not model_id: raise ValueError(f"Invalid Hugging Face model URL: {url}")
+    if not model_id: return ""#raise ValueError(f"Invalid Hugging Face model URL: {url}")
     r = requests.get(f"https://huggingface.co/api/models/{model_id}", timeout=external_get_timeout_sec)
     r.raise_for_status()
     meta = r.json()
@@ -47,7 +47,7 @@ def huggingface_redirect(card: ModelCard, url: str, external_get_timeout_sec: fl
         "document-question-answering": "Document Question Answering",
         "zero-shot-classification": "Zero-Shot Classification",
         "zero-shot-image-classification": "Zero-Shot Image Classification",
-        "reinforcement-learning": "Reinforcement Learning",
+        "reinforcement-learning": "Reinforcement Learning Agent",
         "tabular-classification": "Tabular Classification",
         "tabular-regression": "Tabular Regression",
         "time-series-forecasting": "Time Series Forecasting"
@@ -55,7 +55,7 @@ def huggingface_redirect(card: ModelCard, url: str, external_get_timeout_sec: fl
     pipeline = meta.get("pipeline_tag", "")
     lib = meta.get("library_name", "") or ""
     tags = set(meta.get("tags", []))
-    o.task = pipelines.get(pipeline, "unknown")
+    o.task = (pipelines.get(pipeline, "unknown"))
     o.type = (
         "Transformer"
         if "transformer" in tags or "transformers" in lib
