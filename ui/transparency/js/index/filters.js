@@ -313,7 +313,7 @@ $(function () {
                 .attr('id', 'new-filter')
                 .addClass('filter button modal__trigger')
                 .attr('data-modal', '#filters')
-                .html('<div><i class="fa-solid fa-plus"></i>&nbsp;&nbsp;New Filter</div>')
+                .html('<div><i class="fa-solid fa-plus"></i>&nbsp;&nbsp;New filter</div>')
                 .appendTo(this.$filters);
             
         },
