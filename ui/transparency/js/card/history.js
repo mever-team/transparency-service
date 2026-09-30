@@ -32,7 +32,7 @@ function relaxLayout(yPos, depth, adj, hasLabel, Y_SPACING) {
     depth.forEach((d, id) => {if (!byDepth.has(d)) byDepth.set(d, []);byDepth.get(d).push(id);});
     const MIN_GAP = new Map();
     depth.forEach((_, id) => MIN_GAP.set(id, hasLabel.has(id) ? Y_SPACING * 1.6 : Y_SPACING));
-    const ITERATIONS = 300;
+    const ITERATIONS = 500;
     const SPRING_K = 0.03;
     const REPEL_K = 1.5;
     for (let it = 0; it < ITERATIONS; it++) {
@@ -88,11 +88,11 @@ function renderHistoryGraph(history, currentId, container) {
 
     const btn = document.createElement('button');
     btn.className = 'compare-toggle-btn';
-    btn.textContent = 'select to compare: off';
+    btn.textContent = 'compare: off (just open selection)';
     $(btn).on('click', () => {
         compareMode = !compareMode;
         btn.classList.toggle('active', compareMode);
-        btn.textContent = compareMode?'select to compare: on':'select to compare: off'
+        btn.textContent = compareMode?'compare: pending (select version to compare)':'compare: off (just open selection)'
     });
     container.appendChild(btn);
 
