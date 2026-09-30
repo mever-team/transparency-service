@@ -91,6 +91,7 @@ def serve(
     conn = users.UserDB(logger=logger, root=root)
     app = Flask(__name__)
     empty_card = ModelCard()
+    last_front_page_data = {"time": 0, "total": 0, "jsonified": ""}
 
     def register_third_party_token(token, user, email):
         # TODO: This strategy for occupying user names could prove frustrating. Consider some way of utilizing emails for uniqueness in the future.
@@ -454,9 +455,10 @@ def serve(
 
         cursor = conn.conn.cursor()
         cursor.execute("SELECT COUNT(*) FROM cards")
-        total = cursor.fetchone()[0]
+        total = int(cursor.fetchone()[0])
         num_pages = (total + page_size - 1) // page_size
         offset = (page - 1) * page_size
+        recache = False # whether we are in the no-inputs front page search
         if len(query) >= 3 and owner:
             cursor.execute(
                 f"""
@@ -616,11 +618,17 @@ def serve(
                 {type_filter}
                 {task_filter}
                 {desc_filter_simpler}
-                ORDER BY id
+                ORDER BY quality DESC, id ASC
                 LIMIT ? OFFSET ?
                 """,
                 (*safe_argument_list, page_size, offset)
             )
+            if last_front_page_data["total"]==total and time.monotonic()<last_front_page_data["time"]+300: # refresh every 5 minutes, or if there are new cards
+                return last_front_page_data["jsonified"]
+            last_front_page_data["total"] = total
+            last_front_page_data["time"] = time.monotonic()
+            recache = True
+        print("refreshing")
         rows = cursor.fetchall()
         added_ids = set()
         results = []
@@ -636,7 +644,9 @@ def serve(
             overview_task = row[8]
             overview_date = row[9]
             results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality, "description": overview, "type": overview_type, "task": overview_task, "date": overview_date})
-        return jsonify({"results": results, "pages": num_pages, "total": total})
+        jsonified = jsonify({"results": results, "pages": num_pages, "total": total})
+        if recache: last_front_page_data["jsonified"] = jsonified
+        return jsonified
 
     @app.route(domain_prefix + '/card/<int:card_id>/ask', methods=['POST'])
     def ask_card(card_id: int):
@@ -728,6 +738,11 @@ def serve(
         card = exists(found, "Model card does not exist or has been deleted.").card
         return jsonify(converters.dict2dynamic(card.data, {"title"})
                        |{"description": card.summary(), "message": found.message, "quality": card.quality(), "history": found.history(), "creator": found.creator})
+
+    @app.route(domain_prefix+'/card/history/<int:card_id>', methods=['GET'])
+    def get_card_history(card_id):
+        found = find_card(card_id)
+        return jsonify({"history": found.history()})
 
     @app.route(domain_prefix+'/card/simple/<int:card_id>', methods=['GET'])
     def get_card_simple(card_id):

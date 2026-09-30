@@ -32,7 +32,7 @@ function relaxLayout(yPos, depth, adj, hasLabel, Y_SPACING) {
     depth.forEach((d, id) => {if (!byDepth.has(d)) byDepth.set(d, []);byDepth.get(d).push(id);});
     const MIN_GAP = new Map();
     depth.forEach((_, id) => MIN_GAP.set(id, hasLabel.has(id) ? Y_SPACING * 1.6 : Y_SPACING));
-    const ITERATIONS = 300;
+    const ITERATIONS = 500;
     const SPRING_K = 0.03;
     const REPEL_K = 1.5;
     for (let it = 0; it < ITERATIONS; it++) {

@@ -575,7 +575,7 @@ section.buttons {
 .menu {
     display: none;
     position: sticky;
-    top: 20px;
+    top: 90px;
     transition: top 0.3s;
     width: 180px;
     margin: 20px 0;
