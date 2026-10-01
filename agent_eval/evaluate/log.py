@@ -18,6 +18,9 @@ def print_metrics(name, metrics, result=None, file=None):
     output(f"Misclassified:           {metrics['misclassified']}")
     output(f"Extra/unmatched:         {metrics['extra']}")
     output(f"Missing GT:              {metrics['missing_gt']}")
+    output(f"section_correct:         {metrics['section_correct']}")
+    output(f"section_accuracy:        {metrics['section_accuracy']}")
+    output(f"section_metrics:         {metrics['section_metrics']}")
 
     output("\n--- RATES ---")
     output(f"Sentence match rate:     {metrics['sentence_match_rate']:.2%}")

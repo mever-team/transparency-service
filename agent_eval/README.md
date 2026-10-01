@@ -1,5 +1,94 @@
 # Agent Evaluation Report 
 
+## 🔥 Latest 
+
+Classification accuracy: 30.34% (30/89)
+with more tolerance (for example, bias content misclassified as ethics or caveats we count as correct prediction. Also short senteces that can go anywhere we also count as correct)
+Classification accuracy: 61% (55/89)
+pre-manual inspection results in [here](./evaluation_results/evaluation.html)
+
+* 7 times evaluation results got misclassified as overview.description they all had either `*results*` or `*evaluation*` included in the beginging.
+examples:
+<pre>
+                        *DeepSeek-R1-Evaluation*
+For all our models, the maximum generation length is set to 32,768 tokens. For benchmarks requiring sampling, we use a temperature of $0.6$, a top-p value of $0.95$, and generate 64 responses per query to estimate pass@1.
+</pre>
+<pre>
+                        *3. Evaluation Results*
+- **OfficeQA Pro and SpreadsheetBench 2.** Kimi K3, GLM-5.2, Claude Opus 4.8, and Claude Fable 5 are evaluated with the Claude Code harness; GPT-5.5 and GPT-5.6 Sol are evaluated with the Codex harness.
+</pre>
+<pre>
+                        *3. Evaluation Results*
+- **MCP-Atlas.** All models are evaluated on the 500-task public subset with a 100-turn limit, using Gemini 3.1 Pro as the judge.
+</pre>
+
+* 4 cases performance.analysis misclassified as overview.description
+examples:
+<pre>
+
+* 1 use.use_cases misclassified as overview.description
+<pre>
+                        *Evaluated Use*
+The primary intended users of these models are AI researchers studying robustness, generalization, capabilities, biases, and constraints of the current model. However, Whisper is also potentially quite useful as an ASR solution for developers, especially for English speech recognition. We recognize that once models are released, it is impossible to restrict access to only “intended” uses or to draw reasonable guidelines around what is or is not research.
+</pre>
+
+                        *Performance and Limitations*
+Our studies show that, over many existing ASR systems, the models exhibit improved robustness to accents, background noise, technical language, as well as zero shot translation from multiple languages into English; and that accuracy on speech recognition and translation is near the state-of-the-art level.
+</pre>
+<pre>
+                        *Performance and Limitations*
+However, because the models are trained in a weakly supervised manner using large-scale noisy data, the predictions may include texts that are not actually spoken in the audio input (i.e. hallucination). We hypothesize that this happens because, given their general knowledge of language, the models combine trying to predict the next word in audio with trying to transcribe the audio itself.
+</pre>
+<pre>
+
+                        *Performance and Limitations*
+Our models perform unevenly across languages, and we observe lower accuracy on low-resource and/or low-discoverability languages or languages where we have less training data. The models also exhibit disparate performance on different accents and dialects of particular languages, which may include higher word error rate across speakers of different genders, races, ages, or other demographic criteria. Our full evaluation results are presented in [the paper accompanying this release](https://cdn.openai.com/papers/whisper.pdf).
+</pre>
+
+Also some misclassified inputs are individual sentences. I don’t know how the process works but if the model has no context, it makes sense that they get misclassified. 
+Exmples for:
+use.out_of_scope_use classified as safety.caveats
+>Impersonating individuals without their consent.
+
+> Sexual content without consent of the people who might see it.
+
+training.preprocessing classified as use.out_of_scope_use
+>We slightly change their configs and tokenizers. Please use our setting to run these models.
+
+some results are just misclassifications. for example:
+performance.methodology
+classified as
+safety.caveats
+<pre>
+                        *3. Evaluation Results*
+- **Kimi Code Bench 2.0 (in-house).** Kimi K3 is evaluated with the Kimi Code harness (it attains 73.7 with the Claude Code harness); GLM-5.2, Claude Opus 4.8, and Claude Fable 5 with the Claude Code harness; GPT-5.5 and GPT-5.6 Sol with the Codex harness. All models are evaluated at maximum reasoning effort, except GPT-5.5, which uses the "xhigh" setting. As the benchmark includes cybersecurity and safety-related tasks, we also disclose the fraction of refused or fallback tasks: Claude Fable 5 hit 13 fallbacks and 1 refusal out of 80 tasks; 10 refusals out of 80 tasks entered GPT-5.6 Sol's cyber guard; GPT-5.5 had 3 refusals out of 80 tasks.
+</pre>
+safety.caveats
+classified as
+overview.description
+<pre>
+                        *Broader Implications*
+We anticipate that Whisper models’ transcription capabilities may be used for improving accessibility tools. While Whisper models cannot be used for real-time transcription out of the box – their speed and size suggest that others may be able to build applications on top of them that allow for near-real-time speech recognition and translation. The real value of beneficial applications built on top of Whisper models suggests that the disparate performance of these models may have real economic implications.
+</pre>
+performance.methodology
+classified as
+use.use_cases
+<pre>
+                        *3. Evaluation Results*
+- **MLS-Bench-Lite.** Kimi K3 is evaluated with the Kimi Code harness; GLM-5.2 and the Claude models with the Claude Code harness; GPT-5.5 and GPT-5.6 Sol with the Codex harness.
+</pre>
+performance.environmental_impact
+classified as
+safety.risks
+<pre>
+                        *Environmental Impact*
+- **Hardware Type:** A100 PCIe 40GB
+- **Hours used:** 150000
+- **Cloud Provider:** AWS
+- **Compute Region:** US-east
+- **Carbon Emitted (Power consumption x Time x Carbon produced based on location of power grid):** 11250 kg CO2 eq.
+</pre>
+
 ## 🗄️ Data gethering
 A list of 66 text-rich Hugging Face repos has been gathered by following similar steps to [Tajkia et al](https://arxiv.org/abs/2608.24807). The full list is available in [repos_urls.txt](./repos_urls.txt). 5 of them were used to evaluate the import for classification accuracy. I planned to use all of them with more metrics and in-depth  analysis, but flaws of the system were revealed early on so there was no need to continue further. The list of the repos used are:
 1. https://huggingface.co/Qwen/Qwen3.8-27B
@@ -92,3 +181,4 @@ An example of a text that contains eval dataset info but is meant for methodolog
 
 There was also one case with a short text that was not present in the visible content of the model card in HF but it was inside the HTML and it was classified by matcher:
 >Duplicated fromÂ sanchit-gandhi
+

@@ -4,6 +4,8 @@ from collections import Counter, defaultdict
 def safe_div(a, b):
     return a / b if b else 0.0
 
+def get_section(field):
+    return field.split(".", 1)[0]
 
 def calculate_metrics(result):
     matches = result["matches"]
@@ -141,6 +143,88 @@ def calculate_metrics(result):
         }
 
     # --------------------------------------------------
+    # Section-level metrics
+    # --------------------------------------------------
+
+    section_correct = sum(
+        get_section(m["gt_field"]) == get_section(m["pred_field"])
+        for m in matches
+    )
+
+    section_accuracy = safe_div(
+        section_correct,
+        len(matches),
+    )
+
+    section_metrics = {}
+
+    sections = set()
+
+    for m in matches:
+        sections.add(get_section(m["gt_field"]))
+        sections.add(get_section(m["pred_field"]))
+
+    for p in missing:
+        sections.add(get_section(p["field"]))
+
+    for p in extra:
+        sections.add(get_section(p["pred_field"]))
+
+    for section in sorted(sections):
+
+        tp = sum(
+            1
+            for m in matches
+            if (
+                get_section(m["gt_field"]) == section
+                and get_section(m["pred_field"]) == section
+            )
+        )
+
+        fp = sum(
+            1
+            for m in matches
+            if (
+                get_section(m["pred_field"]) == section
+                and get_section(m["gt_field"]) != section
+            )
+        )
+
+        fn = sum(
+            1
+            for m in matches
+            if (
+                get_section(m["gt_field"]) == section
+                and get_section(m["pred_field"]) != section
+            )
+        )
+
+        fn += sum(
+            get_section(p["field"]) == section
+            for p in missing
+        )
+
+        fp += sum(
+            get_section(p["pred_field"]) == section
+            for p in extra
+        )
+
+        precision = safe_div(tp, tp + fp)
+        recall = safe_div(tp, tp + fn)
+        f1 = safe_div(
+            2 * precision * recall,
+            precision + recall,
+        )
+
+        section_metrics[section] = {
+            "tp": tp,
+            "fp": fp,
+            "fn": fn,
+            "precision": precision,
+            "recall": recall,
+            "f1": f1,
+        }
+    # --------------------------------------------------
     # Confusion matrix
     # --------------------------------------------------
 
@@ -177,6 +261,10 @@ def calculate_metrics(result):
 
         "field_metrics": field_metrics,
         "confusion_matrix": confusion_matrix,
+        
+        "section_correct": section_correct,
+        "section_accuracy": section_accuracy,
+        "section_metrics": section_metrics,
     }
 
 
@@ -185,6 +273,45 @@ def aggregate_metrics(results):
     total_gt = sum(r["total_gt"] for r in results)
     matched_gt = sum(r["matched_gt"] for r in results)
     missing_gt = sum(r["missing_gt"] for r in results)
+    section_correct = sum(r["section_correct"] for r in results)
+    
+    section_counts = defaultdict(
+        lambda: {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+        }
+    )
+
+    for result in results:
+        for section, values in result["section_metrics"].items():
+            section_counts[section]["tp"] += values["tp"]
+            section_counts[section]["fp"] += values["fp"]
+            section_counts[section]["fn"] += values["fn"]
+
+    section_metrics = {}
+
+    for section, values in sorted(section_counts.items()):
+
+        tp = values["tp"]
+        fp = values["fp"]
+        fn = values["fn"]
+
+        precision = safe_div(tp, tp + fp)
+        recall = safe_div(tp, tp + fn)
+        f1 = safe_div(
+            2 * precision * recall,
+            precision + recall,
+        )
+
+        section_metrics[section] = {
+            "tp": tp,
+            "fp": fp,
+            "fn": fn,
+            "precision": precision,
+            "recall": recall,
+            "f1": f1,
+        }
 
     predicted_total = sum(
         r["predicted_total"]
@@ -312,4 +439,11 @@ def aggregate_metrics(results):
         "confusion_matrix": dict(
             sorted(confusion.items())
         ),
+        
+        "section_correct": section_correct,
+        "section_accuracy": safe_div(
+            section_correct,
+            matched_predictions,
+        ),
+        "section_metrics": section_metrics,
     }

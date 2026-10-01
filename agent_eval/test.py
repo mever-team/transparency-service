@@ -18,6 +18,8 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 HTML_DIR = os.path.join(ROOT_DIR, "original_web_pages")
 GPT_REORGANIZE_DIR = os.path.join(ROOT_DIR, "gpt_reorganize")
 OUTPUT_DIR = os.path.join(ROOT_DIR, "matcher_output")
+LOCAL_SOURCE = False
+os.environ["EVALUATION_RUN"] = "1"
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -46,12 +48,19 @@ data = []
 
 for filename in sorted(os.listdir(GPT_REORGANIZE_DIR)):
     if filename.endswith(".json"):
-        html_filename = filename[:-4] + "html"
-
-        data.append({
-            "url": f"http://localhost:8000/{html_filename}",
-            "id": len(data)
-        })
+        if LOCAL_SOURCE:
+            html_filename = filename[:-4] + "html"
+            data.append({
+                "url": f"http://localhost:8000/{html_filename}",
+                "id": len(data)
+            })
+        else:
+            html_filename = filename[:-5]
+            data.append({
+                "url": f"http://huggingface.co/{html_filename.replace('@', '/')}",
+                "id": len(data)
+            })
+        
 
 print(f"Found {len(data)} files to process.")
 
@@ -73,8 +82,20 @@ matcher.start(logger)
 
 for item in data:
 
-    filename = os.path.basename(item["url"])
-    output_filename = os.path.splitext(filename)[0] + ".json"
+    if LOCAL_SOURCE:
+        filename = os.path.basename(item["url"])
+        output_filename = os.path.splitext(filename)[0] + ".json"
+    else:
+        filename = item["url"]
+        parts = os.path.normpath(filename).split(os.sep)
+        output_filename = "@".join(parts[-2:])
+        output_filename = os.path.splitext(output_filename)[0] + ".json"
+        print('---------------------------------')
+        print(filename)
+        print(parts)
+        print(output_filename)
+        print('---------------------------------')
+        
     output_path = os.path.join(OUTPUT_DIR, output_filename)
 
     print(f"Processing: {filename}")
