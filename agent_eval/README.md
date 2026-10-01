@@ -2,7 +2,7 @@
 
 ## 🔥 Latest 
 
-Classification accuracy: 30.34% (30/89)
+Classification accuracy: 33.7% (30/89)
 
 with more tolerance (for example, bias content misclassified as ethics or caveats we count as correct prediction. Also short senteces that can go anywhere we also count as correct)
 
