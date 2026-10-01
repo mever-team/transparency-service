@@ -3,7 +3,9 @@
 ## 🔥 Latest 
 
 Classification accuracy: 30.34% (30/89)
+
 with more tolerance (for example, bias content misclassified as ethics or caveats we count as correct prediction. Also short senteces that can go anywhere we also count as correct)
+
 Classification accuracy: 61% (55/89)
 pre-manual inspection results in [here](./evaluation_results/evaluation.html)
 
@@ -24,12 +26,11 @@ For all our models, the maximum generation length is set to 32,768 tokens. For b
 
 * 4 cases performance.analysis misclassified as overview.description
 examples:
-<pre>
 
-* 1 use.use_cases misclassified as overview.description
 <pre>
                         *Evaluated Use*
 The primary intended users of these models are AI researchers studying robustness, generalization, capabilities, biases, and constraints of the current model. However, Whisper is also potentially quite useful as an ASR solution for developers, especially for English speech recognition. We recognize that once models are released, it is impossible to restrict access to only “intended” uses or to draw reasonable guidelines around what is or is not research.
+</pre>
 </pre>
 
                         *Performance and Limitations*
