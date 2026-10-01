@@ -28,7 +28,7 @@ class ModelCard:
             title=ShortText(),
             overview=DotDict(
                 name=ShortText("Name of the model.", is_simple=True),
-                description=LongText("Model purpose, capabilities, novelty and caveats", is_simple=True, is_refinable=True),
+                description=LongText("Model introduction, purpose, capabilities, novelty and caveats.", is_simple=True, is_refinable=True),
                 creator=ShortText("Person or organization developed the model.", is_simple=True),
                 date=Date("Model development completion date."),
                 version=ShortText("Version of the model."),
@@ -40,10 +40,10 @@ class ModelCard:
                 citation=ShortText("How should the model be cited? Typically includes title, author, year, and publisher. May be a formatted citation or bibtex entries like @article.", technical_nature=True),
                 more=LongText("Additional model information not found above.")),
             use=DotDict(
-                use_cases=LongText("Intended uses of the model.", is_simple=True),
+                use_cases=LongText("Intended use of the model.", is_simple=True),
                 oversight=Options(["self-learning/autonomous", "human-in-the-loop", "human-on-the-loop", "human-in-command", "unknown"], "Defines the level of human control over the system."),
-                user_groups=LongText("Intended users.", is_simple=True),
-                out_of_scope_use=LongText("Unintended and improper use of model.", is_simple=True),
+                user_groups=LongText("Intended users, for example categorized by background, role, or expertise.", is_simple=True),
+                out_of_scope_use=LongText("Unintended or improper use of the model, for example in scenarios that could degrade its quality.", is_simple=True),
                 software=LongText("Software requirements and dependencies?"),
                 instructions=LongText("Use instructions.", technical_nature=True),
                 inputs_outputs=LongText("Description of the model's inputs and outputs", technical_nature=True),
@@ -62,7 +62,7 @@ class ModelCard:
                 motivation=LongText("Why were evaluation datasets chosen?", is_refinable=True),
                 preprocessing=LongText("Data pre-processing for evaluation (tokenizer, data augmentation etc.).", technical_nature=True),
                 standards=Options(["none", "ISO","IEEE", "unknown"], "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management."),
-                update=Options(["no", "yes", "unknown"], "Is the evalution set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),
+                update=Options(["no", "yes", "unknown"], "Is the evaluation set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?"),
                 more=LongText("Additional evaluation set information not found above.", technical_nature=True)
             ),
             performance=DotDict(
@@ -71,10 +71,10 @@ class ModelCard:
                 thresholds=LongText("If decision thresholds are used, what are they, and why were those parameters chosen?"),
                 methodology=LongText("Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method.", is_refinable=True),
                 environmental_impact=LongText("Report of energy consumption, CO2 emissions or any other environmental impact.", technical_nature=True),
-                bias=LongText("Performance and bias across different groups (e.g. ethnicity, gender)", is_refinable=True),
+                bias=LongText("Performance and bias across different groups (e.g. ethnicity, gender)", is_refinable=True, technical_nature=True),
             ),
             safety=DotDict(
-                ethics=LongText("Ethical considerations regarding datasets and usage of model. Recommended mitigation measures.", is_simple=True, is_refinable=True),
+                ethics=LongText("Ethical considerations regarding datasets and usage of model, including harmful bias and discrimination concerns. Recommended mitigation measures.", is_simple=True, is_refinable=True),
                 fairness=LongText("Definition of fairness applied in setting up the AI system.", is_simple=True, is_refinable=True),
                 risks=LongText("Possible threats to the AI system (design faults, technical faults, environmental threats) and the possible consequences.", is_simple=True, is_refinable=True),
                 security=LongText("Is the AI system certified for cybersecurity or is it compliant with specific security standards?", is_simple=True, is_refinable=True),

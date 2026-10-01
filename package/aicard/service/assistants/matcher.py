@@ -14,8 +14,20 @@ from datetime import date
 from transformers import AutoTokenizer, AutoModel
 from codecarbon import EmissionsTracker
 from aicard.service.jobs_tracker import CardJobsTracker, Job
+import trafilatura
+from aicard.utils.import_addons import huggingface_redirect, github_redirect
+import nltk
 
+def ratio(s1, s2, stopwords):
+    w1 = re.findall(r"\w+", s1.lower())
+    w2 = re.findall(r"\w+", s2.lower())
+    w1 = [s1 for s1 in w1 if s1 not in stopwords]
+    w2 = [s2 for s2 in w2 if s2 not in stopwords]
+    if not w1 or not w2: return 0
 
+    a = sum(max(1 if x==y else 0 for y in w2) for x in w1) / len(w1)
+    b = sum(max(1 if x==y else 0 for x in w1) for y in w2) / len(w2)
+    return max(a, b)
 
 class SemanticMatcher(Assistant):
     _loader_thread: threading.Thread | None = None
@@ -49,7 +61,9 @@ class SemanticMatcher(Assistant):
                  model_name: str="BAAI/bge-small-en-v1.5", #"BAAI/bge-m3",
                  external_get_timeout_sec: float=1,
                  matching_strictness: float=1,
-                 max_special_character_density: float=0.05):
+                 max_special_character_density: float=0.05,
+                 fuzzer_weight=0.25,
+                 promote_filling_simple_fields=0.1):
         super().__init__(
             alias="📚 Semantic organizer",
             description=(
@@ -63,9 +77,12 @@ class SemanticMatcher(Assistant):
         self.field_embeddings = None
         self.average_field_embeddings = 0
         self.max_noise_similarity = 0
+        self.fuzzer_weight = fuzzer_weight
+        self.promote_filling_simple_fields = promote_filling_simple_fields
         self.max_special_character_density = max_special_character_density
         self.external_get_timeout_sec = external_get_timeout_sec
         self.matching_strictness = matching_strictness
+        self.stopwords = []
 
 
     def start(self, logger: Logger):
@@ -77,6 +94,11 @@ class SemanticMatcher(Assistant):
                 with SemanticMatcher._loader_lock:
                     logger.warn("preparing semantic matcher\n * will proceed asynchronously\n * may take a while the first time\n * agent tasks will wait on this", user="📚 Semantic Matcher")
                     device = "cpu"# "cuda" if torch.cuda.is_available() else "cpu"
+
+                    nltk.download('stopwords', quiet=True)
+                    from nltk.corpus import stopwords
+                    self.stopwords = set(stopwords.words("english"))
+
                     self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
                     self.model = AutoModel.from_pretrained(self.model_name).to(device)
                     logger.ok(f"Loaded {self.model_name} on torch device: {device}", user="📚 Semantic Matcher")
@@ -88,13 +110,17 @@ class SemanticMatcher(Assistant):
                         for field, value in values.items():
                             if isinstance(value, Options):
                                 for option in value.options():
+                                    if option.startswith("#"): continue
                                     field_embeddings[cat+"__"+field+"__"+option] = self._get_embeddings("question: # AI model card "+cat+" "+field+" "+option+"\n"+value.description)
                             field_embeddings[cat+"__"+field] = self._get_embeddings("question: # AI model card "+cat+" "+field+"\n"+value.description)
+                    keys = list(field_embeddings)
                     vals = list(field_embeddings.values())
-                    sims = [self.embedding_similarity(vals[s1], vals[s2]) for s1 in range(len(vals)) for s2 in range(s1+1, len(vals))]
+                    sims = [(self.embedding_similarity(vals[i], vals[j])*(1-self.fuzzer_weight) + ratio(keys[i], keys[j], self.stopwords)*self.fuzzer_weight/100)
+                            for i in range(len(vals)) for j in range(i + 1, len(vals))]
                     max_noise_similarity = min(sims)
                     logger.ok(f"loading complete" 
                             f"\n * {len(field_embeddings)} card field semantic embeddings"
+                            f"\n * {len(self.stopwords)} stopwords"
                             f"\n * {max_noise_similarity:.3f} minimum matching (semantic similarity lesser than this is considered irrelevant)", user="📚 Semantic Matcher")
 
                     self.field_embeddings = field_embeddings
@@ -105,17 +131,149 @@ class SemanticMatcher(Assistant):
 
         SemanticMatcher._loader_thread = threading.Thread(target=_load, daemon=True)
         SemanticMatcher._loader_thread.start()
+        return self
 
     def _wait_until_ready(self):
         with SemanticMatcher._loader_lock:
             if self.field_embeddings is None:
                 raise Exception("Semantic Matcher is still starting")
 
-    def complete_from_text(self, card: ModelCard, url:str, text:str, user_messages=["dummy message list"]):
+    def complete_from_markdown(self, card: ModelCard, url: str, text: str, user_messages=["dummy message list"], progress_partition=(0,1)):
+        text = re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)
+        sections = []
+        current_heading, current_content = "", []
+        in_code = False
+        for line in text.splitlines():
+            fences = line.count("```")
+            if (in_code or fences) and current_heading:
+                if current_heading: current_content.append(line.replace(" ```", "\n```"))
+                if fences % 2: in_code = not in_code
+                continue
+            match = re.match(r"^\s{0,3}#{1,6}\s+(.+?)\s*#*\s*$", line)
+            if match: match = match.group(1).strip().replace("#", " ").strip()
+            if match:
+                if current_heading: sections.append((current_heading, "\n".join(current_content).strip()))
+                current_heading = match
+                current_content = []
+            elif current_heading:
+                current_content.append(line.replace("#", " ").strip())
+        if current_heading: sections.append((current_heading, "\n".join(current_content).strip()))
+
+
+
+
+        title = sections[0][0] if sections else ""
+
+        # split long paragraphs into separate sections BUT in case of lists we split
+        # them up only if all items are long
+        LIST_ITEM = re.compile(r"^\s*(?:[-*+]|\d+[.)])\s+")
+        def _needs_split(content, limit=300):
+            items = re.split(r"\n(?=\s*(?:[-*+]|\d+[.)])\s+)", content.strip())
+            if items and all(LIST_ITEM.match(i) for i in items): return any(len(i) > limit for i in items)
+            return len(content) > limit
+        sections = [
+            (heading, part)
+            for heading, content in sections
+            for part in (
+                [p.strip() for p in re.split(r"(?<=\.)\n\s*", content) if p.strip()] # split on on '.\n'
+                if _needs_split(content)
+                else [content]
+            )
+        ]
+
+        creator = ""
+        if "/" in title:
+            title = title.split("/", 1)
+            creator = title[0].strip()
+            title = title[1].strip()
+        if " " in title and "-" in title:
+            title_parts = title.split(" ")
+            if title_parts[0].strip() and "-" in title_parts[0]: title = title_parts[0]
+
+        not_used_fields = list()
+        has_been_replaced = dict()
+        best_option_matches = dict()
+        existing = set(
+            cat + "__" + field for cat, values in card.data.items()
+            if isinstance(values, dict)
+            for field, value in values.items() if value.get() and value.get().lower() != "unknown")
+        count_sections = sum(1 for heading, content in sections if content.strip())
+        progress = 0
+        for heading, content in sections:
+            content = content.strip()
+            if not content: continue
+            progress_html = (
+                f"<progress value='{int((progress_partition[0]+progress / count_sections)/progress_partition[1] * 100)}' max='100' "
+                f"style='width: 300px; height: 20px; "
+                f"accent-color: #79CFDC; border: 2px solid #1F1F1F;'></progress>"
+            )
+            user_messages[-1] = (
+                f"<h2>{self.alias} import</h2>"
+                f"{progress_html}<br>"
+                f"<b>Organizing information.</b>"
+            )
+            progress += 1
+            with SemanticMatcher._loader_lock:
+                embedding = self._get_embeddings(
+                    "passage: #" + (heading if heading else "") + "\n" + (content if content else ""))
+
+            best_path = []
+            best_score = float("-inf")
+            is_technical = bool(
+                re.search(r"```|`[^`]+`|\$\$|^\s*\|.+\|\s*$|!\[[^\]]*\]\([^)]+\)", content, flags=re.MULTILINE))
+
+            for cat, values in card.data.items():
+                if not isinstance(values, dict): continue
+                for field, value in values.items():
+                    if isinstance(value, Options):
+                        if cat + "__" + field in existing: continue
+                        for option in value.options():
+                            if option.startswith("#"): continue
+                            normalized_option = cat + "__" + field + "__" + option
+                            semantic = self.embedding_similarity(embedding, self.field_embeddings[normalized_option])
+                            fuzzy = (ratio(heading, option, self.stopwords) + ratio(content, option, self.stopwords)) / 200
+                            score = semantic*(1-self.fuzzer_weight) + fuzzy*self.fuzzer_weight
+                            if score > best_option_matches.get(normalized_option, 0):
+                                best_option_matches[normalized_option] = score
+                                value.set(option)
+                        continue
+
+                    idx = cat + "__" + field
+                    semantic = self.embedding_similarity(embedding, self.field_embeddings[idx])
+                    fuzzy = (ratio(heading, field, self.stopwords) + ratio(content, value.description, self.stopwords)) / 200
+                    score = semantic*(1-self.fuzzer_weight) + fuzzy*self.fuzzer_weight
+
+                    if not isinstance(value, LongText) and (len(content) > 120 or ' ' in content.strip()): score -= .25
+                    if isinstance(value, LongText) and is_technical and not value.technical_nature: score -= .15
+                    if not isinstance(value, LongText) and is_technical: score -= .25
+                    if value.is_simple: score += self.promote_filling_simple_fields
+
+                    if score > best_score:
+                        best_score = score
+                        best_path = (cat, field)
+
+            if best_path:
+                idx = best_path[0] + "__" + best_path[1]
+                prev_content = has_been_replaced.get(idx, "")
+                content = f"<span id='agent-eval-mark'></span>*{heading}*\n{content}\n\n\n\n" if heading and len(content)>120 else content
+                if prev_content and (not prev_content.endswith(".") or not content.endswith(
+                    ".")): prev_content = prev_content + "<br>"
+                if prev_content: content = prev_content + "<span id='agent-eval-mark'></span> " + content
+                has_been_replaced[idx] = content
+                card.data[best_path[0]][best_path[1]].set(content)
+            else:
+                not_used_fields.append(heading)
+
+        if not card.overview.name: card.overview.name = title
+        if not card.overview.creator: card.overview.creator = creator
+        if not card.overview.date: card.overview.date = date.today().strftime("%Y-%m-%d")
+        if not card.overview.home: card.overview.home = url
+
+
+    def complete_from_text(self, card: ModelCard, url:str, text:str, user_messages=["dummy message list"], progress_partition=(0,1)):
         soup = BeautifulSoup(text, "html.parser")
+
         for comment in soup.findAll(string=lambda text: isinstance(text, Comment)): comment.extract() # remove comments
-        for tag in soup.find_all(href=True): tag["href"] = urljoin(url, tag["href"])
-        for tag in soup.find_all(src=True): tag["src"] = urljoin(url, tag["src"])
         first_header = soup.find(re.compile("^h[1-6]$"))
         creator = ""
         title = ""
@@ -147,8 +305,11 @@ class SemanticMatcher(Assistant):
                 full_info = (context + "\n" + str(tag)) if context else str(tag)
                 sections.append((full_info, str(tag)))
 
-        for tag in soup.find_all(["table", "img", "pre"]):
-            tag.decompose()  # remove from document
+        for tag in soup.find_all(["table", "pre", "img"]):
+            tag.decompose() # remove from document
+        # for img in soup.find_all("img"):
+        #     if not img.get("src", "").startswith(("http://", "https://")):
+        #         img.decompose()
         for a in soup.find_all("a", href=True):
             href = a["href"].strip()
             text = a.get_text(strip=True)
@@ -164,6 +325,16 @@ class SemanticMatcher(Assistant):
             elif para.startswith("https://"):
                 para = f'<a href={para} target="_blank">{para}</a>'
                 sections.append((para, para))
+
+        sections = [
+            (heading.replace("#", " ").strip(), part.replace("#", " ").strip())
+            for heading, content in sections
+            for part in (
+                [p.strip() for p in re.split(r"\n\s*\n", content) if p.strip()]
+                if len(re.findall(r"\b\w+\b", content)) > 300
+                else [content]
+            )
+        ]
 
         not_used_fields = list()
         has_been_replaced = dict()
@@ -182,7 +353,7 @@ class SemanticMatcher(Assistant):
             content = content.strip()
             if not content: continue
             progress_html = (
-                f"<progress value='{int(progress / count_sections * 100)}' max='100' "
+                f"<progress value='{int((progress_partition[0]+progress / count_sections)/progress_partition[1] * 100)}' max='100' "
                 f"style='width: 300px; height: 20px; "
                 f"accent-color: #79CFDC; border: 2px solid #1F1F1F;'></progress>"
             )
@@ -210,8 +381,11 @@ class SemanticMatcher(Assistant):
                     if isinstance(value, Options):
                         if cat+"__"+field in existing: continue
                         for option in value.options():
+                            if option.startswith("#"): continue
                             normalized_option = cat+"__"+field+"__"+option
-                            score = self.embedding_similarity(embedding, self.field_embeddings[normalized_option])
+                            semantic = self.embedding_similarity(embedding, self.field_embeddings[normalized_option])
+                            fuzzy = (ratio(heading, option) + ratio(content, value.description, self.stopwords)) / 200
+                            score = semantic*(1-self.fuzzer_weight) + fuzzy*self.fuzzer_weight
                             if score > best_option_matches.get(normalized_option, 0):
                                 best_option_matches[normalized_option] = score
                                 value.set(option)
@@ -219,15 +393,23 @@ class SemanticMatcher(Assistant):
                     if not isinstance(value, LongText) and (len(content)>120 or ' ' in content.strip()): continue
                     if isinstance(value, LongText) and is_technical and not value.technical_nature: continue
                     idx = cat+"__"+field
-                    score = self.embedding_similarity(embedding, self.field_embeddings[idx])
+                    semantic = self.embedding_similarity(embedding, self.field_embeddings[idx])
+                    fuzzy = (ratio(heading, field) + ratio(content, value.description, self.stopwords)) / 200
+                    score = semantic*(1-self.fuzzer_weight) + fuzzy*self.fuzzer_weight
+
+                    if not isinstance(value, LongText) and (len(content) > 120 or ' ' in content.strip()): score -= .25
+                    if isinstance(value, LongText) and is_technical and not value.technical_nature: score -= .15
+                    if not isinstance(value, LongText) and is_technical: score -= .25
+                    if value.is_simple: score += self.promote_filling_simple_fields
+
                     if score > best_score:
                         best_score = score
                         best_path = (cat, field)
             # actually place the new content (some minor formatting for paragraphs too)
-            if best_path and best_path[0]+"__"+best_path[1] not in existing:
+            if best_path:# and best_path[0]+"__"+best_path[1] not in existing:
                 prev_content = has_been_replaced.get(best_path[0]+"__"+best_path[1], "")
                 if prev_content and (not prev_content.endswith(".") or not content.endswith(".")): prev_content = prev_content+"<br>"
-                if prev_content: content = prev_content +  " " + content
+                if prev_content: content = prev_content +  "<span id='agent-eval-mark'></span> " + content
                 has_been_replaced[best_path[0] + "__" + best_path[1]] = content
                 card.data[best_path[0]][best_path[1]].set(content)
             else: not_used_fields.append(heading)
@@ -236,7 +418,8 @@ class SemanticMatcher(Assistant):
         if not card.overview.date: card.overview.date = date.today().strftime("%Y-%m-%d")
         if not card.overview.home: card.overview.home = url
 
-    def complete(self, card: ModelCard, card_id: int, data: dict, logger: Logger, user_messages: list[str], job_tracker: CardJobsTracker):
+    def complete_old(self, card: ModelCard, card_id: int, data: dict, logger: Logger, user_messages: list[str], job_tracker: CardJobsTracker):
+        # deprecated
         user_messages[-1] = (
             f"<h2>{self.alias} import</h2>"
             f"Retrieving document."
@@ -261,6 +444,36 @@ class SemanticMatcher(Assistant):
         emissions = tracker.stop()
         emissions_data = json.loads(tracker.final_emissions_data.toJSON())
         job_tracker.delete(card_id, emissions_data)
+
+    def complete(self, card: ModelCard, card_id: int, data: dict, logger: Logger, user_messages: list[str], job_tracker: CardJobsTracker):
+        user_messages[-1] = f"<h2>{self.alias} import</h2>Preparing semantic matcher..."
+        self._wait_until_ready()
+        job = Job(worker="matcher", operation="complete", data={})
+        job_tracker.set(card_id, job)
+        tracker = EmissionsTracker(
+            project_name=job_tracker.get(card_id).id,
+            save_to_file=False,
+            log_level="WARNING",
+            tracking_mode="process"
+        )
+        tracker.start()
+        try:
+            url = data["url"]
+            url = huggingface_redirect(card, url, external_get_timeout_sec=self.external_get_timeout_sec) or url
+            url = github_redirect(card, url, external_get_timeout_sec=self.external_get_timeout_sec) or url
+            p = urlparse(url)
+            if p.scheme not in ("http", "https") or not p.netloc: raise Exception("Invalid url format")
+            r = requests.get(url, timeout=self.external_get_timeout_sec)
+            r.raise_for_status()
+            url = r.url
+            text = r.text
+            if not urlparse(url).path.lower().endswith((".md", ".markdown")):
+                text = trafilatura.extract(text, output_format="markdown", include_formatting=True, include_links=True)
+            self.complete_from_markdown(card, url, text, user_messages)
+            user_messages[-1] = f"<h2>{self.alias} import</h2>Saving..."
+        finally:
+            tracker.stop()
+            job_tracker.delete(card_id, json.loads(tracker.final_emissions_data.toJSON()))
 
     def refine(self, *args, **kwargs):
         raise Exception("Semantic matcher cannot perform refinement - consider combining it with an LLM")
