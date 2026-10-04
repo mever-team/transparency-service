@@ -344,7 +344,7 @@ $(function() {
             headers: token ? {"Authorization": "Bearer " + token} : {},
             success: function (history) {
                 $c.html("");
-                if (history.history) renderHistoryGraph(history.history, Number(id), $c[0]);
+                renderHistoryGraph(history.history, Number(id), $c[0]);
                 historyLoading = false;
             },
             error: error_handler,

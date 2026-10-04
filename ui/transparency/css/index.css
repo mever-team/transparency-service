@@ -185,7 +185,7 @@ input {
 .quality-circle {width: 48px;height: 48px;}
 .quality-text {font-size: 12px;fill: var(--text-primary);text-anchor: middle;dominant-baseline: middle;}
 #resultsTable tbody {display: block; overflow-y: auto;}
-
+#total-count {cursor: auto;}
 .search_section {
     flex: 1 0 auto;
     display: flex;
