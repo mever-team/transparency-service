@@ -234,6 +234,8 @@ class ModelCard:
             elif hasattr(v, "is_simple") and v.is_simple:
                 assert k not in simple_fields, "Duplicate simple field names in card definition (they must be unique across categories)"
                 simple_fields[k] = v
+        if 'contact' in simple_fields:
+            simple_fields['contact'] = simple_fields.pop('contact')
         return simple_fields
 
     def get_simple_fields(self):

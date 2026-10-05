@@ -891,7 +891,6 @@ $(function() {
             contentType: "application/json",
             dataType: "json",
             success: function (jsonData) {
-                let is_logged_in = token&&cardJson.creator === loggedUser;
                 // fill in fields
                 const $ul = $(".nacc");
                 isActive = $ul.find("li#simpleSection").hasClass("active");
@@ -904,8 +903,6 @@ $(function() {
                     if (isActive){
                         $('#simple-view').trigger('click');
                     }
-                    // $('.menu').find('div').removeClass('active');
-                    // $('.menu div:first-child').addClass('active');
                 });
                 if (!fromRefine){
                     $('#simple-view').trigger('click');
@@ -1363,10 +1360,11 @@ $('.contents').on('click', '.refine-field', async function () {
                         let emissions = response['emissions'];
 
                         if (energy_consumed && emissions) {
+                            phone_charge_equivalent = formatHours(Number(energy_consumed) / 0.02) // the argument is in hours assuming a charger consumes 20W
                             energy_consumed = formatKWh(energy_consumed);
                             emissions = formatKg(emissions);
 
-                            const text = `Job finished with energy consumed ${energy_consumed} and CO2 emissions ${emissions}`;
+                            const text = `Job finished with energy consumed <strong>${energy_consumed}</strong> and CO2 emissions ${emissions}. This is equal to <strong>${phone_charge_equivalent}</strong> of fast phone charging.`;
 
                             showFlash(text);
                         }
@@ -1467,5 +1465,22 @@ $('.contents').on('click', '.refine-field', async function () {
         const text = (e.originalEvent || e).clipboardData.getData("text/plain");
         document.execCommand("insertText", false, text);
     });
+
+
+    function formatHours(hours) {
+        const totalSeconds = Math.round(hours * 3600);
+
+        const h = Math.floor(totalSeconds / 3600);
+        const m = Math.floor((totalSeconds % 3600) / 60);
+        const s = totalSeconds % 60;
+
+        const parts = [];
+
+        if (h > 0) parts.push(`${h} hour${h !== 1 ? "s" : ""}`);
+        if (m > 0) parts.push(`${m} minute${m !== 1 ? "s" : ""}`);
+        if (s > 0) parts.push(`${s} second${s !== 1 ? "s" : ""}`);
+
+        return parts.length > 0 ? parts.join(" and ") : "0 seconds";
+    }
 });
 

@@ -165,9 +165,9 @@ ul.nacc .field-name.comparison {
 }
 
 /* Scrollbars for card elements */
-ul.nacc .field-value {max-height: 400px; overflow: auto;}
+ul.nacc .field-value {padding: .1rem 0; max-height: 400px; overflow: auto;}
 ul.nacc .field-value::-webkit-scrollbar {width: 12px;}
-
+ul.nacc .field-value::-webkit-scrollbar-thumb {background: #aaa;}
 
 /* Editable values */
 ul.nacc .field-value[type="date"], ul.nacc .field-value[type="date"]:focus {border: none; outline: none; background-color: var(--bg-light);}
@@ -861,10 +861,6 @@ pre {font-size: 14px;background:inherit!important}
 
 /* flash */
 .flash-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -873,7 +869,7 @@ pre {font-size: 14px;background:inherit!important}
 }
 
 .flash-message {
-    max-width: 350px;
+    margin-top: 1rem;
 
     background-color: #d4edda;
     color: #155724;
