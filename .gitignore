@@ -22,3 +22,4 @@ htmlcov
 node_modules/
 coverage
 coverage.xml
+package/aicard/agents/extensions/glossary/missed.txt

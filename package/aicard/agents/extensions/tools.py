@@ -1,4 +1,5 @@
 import requests
+from pathlib import Path
 from aicard.agents.extensions.glossary.glossary import Glossary
 
 class Tools:
@@ -42,7 +43,9 @@ class Tools:
 
         if entry is not None:
             return entry["explanation"]
-
+        BASE_DIR = Path(__file__).resolve().parent
+        with open(BASE_DIR / "glossary" / "missed.txt", "a") as f:
+            f.write(f"{term}\n")
         # IMPORTANT: when we set up ollama cloud access, remove early return.
         return 'No explanation provided for this term.'
 
