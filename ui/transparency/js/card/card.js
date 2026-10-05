@@ -6,6 +6,7 @@ $(function() {
     let editor;
     let turndownService = null;
     let markedInstance = null;
+    let historyLoading = false;
 
     function formatFieldName(name) {
         const text = name.replace(/_/g, " ");
@@ -320,9 +321,52 @@ $(function() {
         $('#metrics_desc').slideDown();
     });
 
+    function hideHistory() {
+        $('#history-dropdown').hide();
+        $('.contents').show();
+        $('#history-view').removeClass('active');
+    }
+    function showHistory() {
+        $('#technical-view, #simple-view').removeClass('active');
+        $('#history-view').addClass('active');
+        $menu.removeClass('active');
+        $('.contents').hide();
+        $('#history-dropdown').show();
+
+        if (historyLoading) return;
+        historyLoading = true;
+        const $c = $("#history-dropdown");
+        $c.html('<div class="fieldLoader"></div>');
+        $.ajax({
+            url: "/transparency/card/history/" + id,
+            method: "GET",
+            dataType: "json",
+            headers: token ? {"Authorization": "Bearer " + token} : {},
+            success: function (history) {
+                $c.html("");
+                renderHistoryGraph(history.history, Number(id), $c[0]);
+                historyLoading = false;
+            },
+            error: error_handler,
+            complete: () => { historyLoading = false; }
+        });
+    }
+
     $('#simple-view').click(function(){
         $('#technical-view').removeClass('active');
+        hideHistory();
         $('#simple-view').addClass('active');
+        $menu.removeClass('active');
+        $('.contents').addClass('simple');
+        $('.nacc li').removeClass('active');
+        $('.nacc li#simpleSection').addClass('active');
+    })
+
+
+    $('#history-view').click(function(){
+        $('#technical-view').removeClass('active');
+        showHistory();
+        $('#simple-view').removeClass('active');
         $menu.removeClass('active');
         $('.contents').addClass('simple');
         $('.nacc li').removeClass('active');
@@ -332,6 +376,7 @@ $(function() {
     
     $('#technical-view').click(function(){
         $('#technical-view').addClass('active');
+        hideHistory();
         $('#simple-view').removeClass('active');
         $menu.addClass('active');
         // $('.contents').css('margin-left', '190px')
@@ -534,7 +579,9 @@ $(function() {
         function _render() {
             if(!cardJson || !comparedJson) return;
             if (token && cardJson.creator===loggedUser){
-                $('#technical-view').html('<span>Show full version and edit</span>')
+                $('#technical-view').html('<span>Edit the full card</span>')
+                $('#technical-view').addClass('edit-highlighting')
+
             }
             let is_logged_in = token&&cardJson.creator === loggedUser;
             if(is_logged_in) {
@@ -547,7 +594,7 @@ $(function() {
             $("#model-title").text(jsonData.title);
             $("#model-description").html(jsonData.message+" uploaded by "+jsonData.creator);
             if (compareto && comparedJson && comparedJson.creator) {
-                $("#model-description-compare").html("Comparing differences to " + (comparedJson.message || comparedJson.title || "model") + " by " + comparedJson.creator).show();
+                $("#model-description-compare").html("Comparing differences to version " + (comparedJson.message || comparedJson.title || "model") + " by " + comparedJson.creator).show();
             } else $("#model-description-compare").hide();
             $("#model-pending").html(jsonData.description?"":"DRAFT (needs version to be searchable)");
             $("#model-quality").html(`
@@ -562,14 +609,13 @@ $(function() {
 
             const $historyContainer = $("#history-dropdown");
             $historyContainer.html(""); // clear previous content
-            if (jsonData.history) {
-                renderHistoryGraph(
-                    jsonData.history,
-                    Number(id),
-                    $historyContainer[0]
-                );
-
-            }
+            // if (jsonData.history) {
+            //     renderHistoryGraph(
+            //         jsonData.history,
+            //         Number(id),
+            //         $historyContainer[0]
+            //     );
+            // }
 
 
             // fill in fields
@@ -793,7 +839,7 @@ $(function() {
                                                 const $fieldBase = $("<span>")
                                                     .addClass("field-name")
                                                     .addClass("comparison")
-                                                    .text(formatFieldName(field)+" for "+(comparedJson?.message || comparedJson?.title || "compared model")+" by "+(comparedJson?.creator || "unknown"));
+                                                    .text(formatFieldName(field)+" for version "+(comparedJson?.message || comparedJson?.title || "compared model")+" by "+(comparedJson?.creator || "unknown"));
 
                                                 $field.append($fieldBase);
                                                 $field.append($baseFieldValue);

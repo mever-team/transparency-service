@@ -156,13 +156,14 @@
 
     <section class="search_section">
         <div class="naccs">
-            <div class="row bigWidth" style="border:1px dashed var(--text-primary);border-radius:12px">
-                <span id="history-dropdown" ></span>
-            </div>
+<!--            <div class="row bigWidth" style="border:1px dashed var(&#45;&#45;text-primary);border-radius:12px">-->
+<!--                <span id="history-dropdown" ></span>-->
+<!--            </div>-->
             <div class="row bigWidth">
                 <div class="card_view">
                     <div class="active" id="simple-view"><span>Show summary</span></div>
-                    <div id="technical-view"><span>Show full version</span></div>
+                    <div id="technical-view"><span>Show the full card</span></div>
+                    <div id="history-view"><span>Show other versions</span></div>
                 </div>
                 <div class="menu">
                     <div class="active"><span class="light square"></span><span>Overview</span></div>
@@ -179,6 +180,7 @@
                     </div>
                     <ul class="nacc"></ul>
                 </div>
+                <div id="history-dropdown"  style="margin-top:20px;min-height:100vh"></div>
             </div>
         </div>
     </section>

@@ -74,6 +74,10 @@
 
 }
 
+.edit-highlighting:not(.active) {
+    color: var(--yellow-primary);
+}
+
 .naccs .menu div.active {
     color: var(--green-primary);
     padding: 15px 20px 15px 20px;
@@ -571,7 +575,7 @@ section.buttons {
 .menu {
     display: none;
     position: sticky;
-    top: 20px;
+    top: 100px;
     transition: top 0.3s;
     width: 180px;
     margin: 20px 0;
@@ -851,8 +855,8 @@ section.buttons {
 
 pre {font-size: 14px;background:inherit!important}
 
-.compare-toggle-btn {float:right;background: var(--gb1-primary);border:0;color: var(--text-primary);margin:5px 10px}
-.compare-toggle-btn.active {color:var(--text-info)}
+.compare-toggle-btn {float:right;background: var(--gb1-primary);border:0;color: var(--text-info);margin:5px 10px}
+.compare-toggle-btn.active {color:var(--red-primary)}
 
 
 /* flash */

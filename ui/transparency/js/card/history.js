@@ -32,7 +32,7 @@ function relaxLayout(yPos, depth, adj, hasLabel, Y_SPACING) {
     depth.forEach((d, id) => {if (!byDepth.has(d)) byDepth.set(d, []);byDepth.get(d).push(id);});
     const MIN_GAP = new Map();
     depth.forEach((_, id) => MIN_GAP.set(id, hasLabel.has(id) ? Y_SPACING * 1.6 : Y_SPACING));
-    const ITERATIONS = 300;
+    const ITERATIONS = 500;
     const SPRING_K = 0.03;
     const REPEL_K = 1.5;
     for (let it = 0; it < ITERATIONS; it++) {
@@ -65,14 +65,20 @@ function relaxLayout(yPos, depth, adj, hasLabel, Y_SPACING) {
 }
 
 function renderHistoryGraph(history, currentId, container) {
-    //console.log(history);
+    const nohistrory =  "<div style='color:var(--text-primary);'>No related model card versions or publicly available derivatives by other users.</div>";
+    if (!history) {
+        container.innerHTML = nohistrory;
+        return;
+    }
     let compareMode = false;
     const compareToId = Number(new URLSearchParams(window.location.search).get('compareto')) || null;
 
     let node_info = history.info;
     history = history.edges; // dict from node id to tuple (username, version)
-    if (!history || history.length === 0) return;
-    if (history.length<2) return;
+    if (!history || history.length === 0 || history.length<2) {
+        container.innerHTML = nohistrory;
+        return;
+    }
     const nodeIds = new Set();
     history.forEach(([u, v]) => {
         nodeIds.add(u);
@@ -84,15 +90,18 @@ function renderHistoryGraph(history, currentId, container) {
     const {compactHistory, newRootId} = compressHistory(history, hidden, nodeIds);
     history = compactHistory;
     rootId = newRootId;
-    if (history.length<2) return;
+    if (history.length<2) {
+        container.innerHTML = nohistrory;
+        return;
+    }
 
     const btn = document.createElement('button');
     btn.className = 'compare-toggle-btn';
-    btn.textContent = 'select to compare: off';
+    btn.textContent = 'compare: off (just open selection)';
     $(btn).on('click', () => {
         compareMode = !compareMode;
         btn.classList.toggle('active', compareMode);
-        btn.textContent = compareMode?'select to compare: on':'select to compare: off'
+        btn.textContent = compareMode?'compare: pending (select version to compare)':'compare: off (just open selection)'
     });
     container.appendChild(btn);
 

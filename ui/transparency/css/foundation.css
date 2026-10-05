@@ -102,6 +102,12 @@ img {max-width: 100%;height: auto;-ms-interpolation-mode: bicubic;}
     max-width: none !important;
 }
 
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--bg-primary);
+}
 .left {float: left !important;}
 .right {float: right !important;}
 .clearfix:before, .clearfix:after {content: " ";display: table;}
