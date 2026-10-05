@@ -56,7 +56,7 @@ $(function () {
 
         init_dashboards: async function() {
             this.dashboards.task = {html: "", setState: this.taskSetState.bind(this), description: 'Filter Model Cards by task.'};
-            this.dashboards.type = {html: "", setState: this.typeSetState.bind(this), description: 'Filter Model Cards by type.'};
+            this.dashboards.type = {html: "", setState: this.typeSetState.bind(this), description: 'Filter Model Cards by model architecture or algorithm.'};
             this.dashboards.info = {html: "", setState: this.infoSetState.bind(this), description: 'Show only model cards based on how complete their information is.'};
             this.getTaskDashboard().then(function (html) { this.dashboards.task.html = html; }.bind(this));
             this.getTypeDashboard().then(function (html) { this.dashboards.type.html = html; }.bind(this));

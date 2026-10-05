@@ -871,9 +871,9 @@ pre {font-size: 14px;background:inherit!important}
 .flash-message {
     max-width: 350px;
 
-    background-color: #fff3cd;
-    color: #856404;
-    border: 1px solid #ffeeba;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
 
     padding: 14px 18px;
     border-radius: 8px;
@@ -889,8 +889,9 @@ pre {font-size: 14px;background:inherit!important}
 
     animation: slideIn 0.25s ease;
 
-    position: relative; /* important */
+    position: relative;
 }
+
 
 @keyframes slideIn {
     from {
@@ -912,9 +913,10 @@ pre {font-size: 14px;background:inherit!important}
     position: absolute;
     top: 6px;
     right: 10px;
+
     cursor: pointer;
     font-weight: bold;
-    color: #856404;
+    color: #155724;
 }
 
 /* Custom autocomplete styles */
