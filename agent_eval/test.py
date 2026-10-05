@@ -6,13 +6,7 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 from aicard.card.model_card import ModelCard
 from aicard.service.assistants.matcher import SemanticMatcher
 from aicard.service.logger import Logger
-from aicard.service.jobs_tracker import CardJobsTracker
 from aicard.service.converters import dict2dynamic
-
-
-# --------------------------------------------------
-# Configuration
-# --------------------------------------------------
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 HTML_DIR = os.path.join(ROOT_DIR, "original_web_pages")
@@ -22,108 +16,44 @@ LOCAL_SOURCE = False
 os.environ["EVALUATION_RUN"] = "1"
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
-
-
-# --------------------------------------------------
-# Serve the markdown files
-# --------------------------------------------------
-
 os.chdir(HTML_DIR)
 
+# serve data markdowns through localhost so that the matcher can retrieve them as web resources
 server = HTTPServer(("localhost", 8000), SimpleHTTPRequestHandler)
-server_thread = threading.Thread(
-    target=server.serve_forever,
-    daemon=True
-)
+server_thread = threading.Thread(target=server.serve_forever, daemon=True)
 server_thread.start()
 
-print("Serving html files at http://localhost:8000/")
-
-
-# --------------------------------------------------
-# Create data list from gpt_reorganize
-# --------------------------------------------------
-
-data = []
-
-for filename in sorted(os.listdir(GPT_REORGANIZE_DIR)):
-    if filename.endswith(".json"):
-        if LOCAL_SOURCE:
-            html_filename = filename[:-4] + "html"
-            data.append({
-                "url": f"http://localhost:8000/{html_filename}",
-                "id": len(data)
-            })
-        else:
-            html_filename = filename[:-5]
-            data.append({
-                "url": f"http://huggingface.co/{html_filename.replace('@', '/')}",
-                "id": len(data)
-            })
-        
-
-print(f"Found {len(data)} files to process.")
-
-
-# --------------------------------------------------
-# Start matcher
-# --------------------------------------------------
-
+# find data
 logger = Logger()
-job_tracker = CardJobsTracker()
+data = []
+for filename in sorted(os.listdir(GPT_REORGANIZE_DIR)):
+    if not filename.endswith(".json"): continue
+    html_filename = filename[:-4] + "html" if LOCAL_SOURCE else filename[:-5].replace('@', '/')
+    data.append({ "url": f"http://huggingface.co/{html_filename}", "id": len(data) })
 
-matcher = SemanticMatcher()
+# recreate model cards
+matcher = SemanticMatcher(
+    "sentence-transformers/all-mpnet-base-v2",
+    external_get_timeout_sec=3,
+    matching_strictness=0,
+    fuzzer_weight=0.25,
+    promote_filling_simple_fields=0.1)
 matcher.start(logger)
-
-
-# --------------------------------------------------
-# Process each file
-# --------------------------------------------------
-
-for item in data:
-
+for item_num, item in enumerate(data):
     if LOCAL_SOURCE:
         filename = os.path.basename(item["url"])
         output_filename = os.path.splitext(filename)[0] + ".json"
     else:
         filename = item["url"]
         parts = os.path.normpath(filename).split(os.sep)
-        output_filename = "@".join(parts[-2:])
-        output_filename = os.path.splitext(output_filename)[0] + ".json"
-        print('---------------------------------')
-        print(filename)
-        print(parts)
-        print(output_filename)
-        print('---------------------------------')
-        
+        output_filename = os.path.splitext("@".join(parts[-2:]))[0] + ".json"
     output_path = os.path.join(OUTPUT_DIR, output_filename)
+    logger.info(f"Processing file {item_num+1}/{len(data)}: {filename}")
 
-    print(f"Processing: {filename}")
-
-    # Create a fresh model card for every file
     md = ModelCard()
-
-    matcher.complete(
-        md,
-        item["id"],
-        item,
-        logger,
-        [""],
-        job_tracker
-    )
-
+    matcher.complete(md, item["id"], item, logger,[""], job_tracker=None)
     result = dict2dynamic(md.data, {"title"})
-
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
-
-    print(f"Saved: {output_path}")
-
-
-# --------------------------------------------------
-# Shutdown server
-# --------------------------------------------------
-
+    logger.ok(f"Saved: {output_path}")
 server.shutdown()
-
-print("Done.")
