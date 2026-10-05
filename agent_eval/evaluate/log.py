@@ -1,10 +1,7 @@
 def print_metrics(name, metrics, result=None, file=None):
-
     def output(text=""):
         print(text)
-
-        if file is not None:
-            print(text, file=file)
+        if file is not None: print(text, file=file)
 
     output("\n" + "=" * 80)
     output(name)
@@ -28,9 +25,7 @@ def print_metrics(name, metrics, result=None, file=None):
     output(f"Correct prediction rate: {metrics['correct_prediction_rate']:.2%}")
     output(f"GT recall:               {metrics['gt_recall']:.2%}")
     output(f"Extra sentence rate:     {metrics['extra_rate']:.2%}")
-    
-    
-    
+
     output("\n--- FIELD MISMATCHES ---")
 
     mismatches = [
@@ -64,15 +59,10 @@ def print_metrics(name, metrics, result=None, file=None):
                 f"{count:8}"
             )
 
-    if result is None:
-        return
-
+    if result is None: return
     output("\n--- MISCLASSIFIED PREDICTIONS ---")
-
     for m in result["matches"]:
-        if m["status"] != "misclassified":
-            continue
-
+        if m["status"] != "misclassified": continue
         output("-" * 80)
         output(f"Similarity:      {m['similarity']}")
         output(f"Predicted field: {m['pred_field']}")
@@ -83,7 +73,6 @@ def print_metrics(name, metrics, result=None, file=None):
         output(m["gt_text"])
 
     output("\n--- EXTRA / UNMATCHED PREDICTIONS ---")
-
     for extra in result["extra"]:
         output("-" * 80)
         output(f"Similarity:      {extra['similarity']}")
@@ -92,7 +81,6 @@ def print_metrics(name, metrics, result=None, file=None):
         output(extra["pred_text"])
 
     output("\n--- MISSING GT PARAGRAPHS ---")
-
     for missing in result["missing"]:
         output("-" * 80)
         output(f"GT field: {missing['field']}")
@@ -100,7 +88,6 @@ def print_metrics(name, metrics, result=None, file=None):
         output(missing["text"])
 
     output("\n--- FIELD METRICS ---")
-
     output(
         f"{'Field':50} "
         f"{'TP':>5} "
