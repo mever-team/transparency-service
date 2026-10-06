@@ -309,6 +309,8 @@ ul.nacc .field-value li {
     color: var(--text-primary);
     padding: 8px 12px;
     cursor: pointer;
+    white-space: nowrap;
+
 }
 
 .share-btn {
@@ -572,10 +574,13 @@ section.buttons {
 /* placeholder */
 .text-input::placeholder {color: #9aa6b2; opacity: 1;}
 
+:root {
+    --header-height: 100px;
+}
 .menu {
     display: none;
     position: sticky;
-    top: 100px;
+    top: var(--header-height);
     transition: top 0.3s;
     width: 180px;
     margin: 20px 0;
@@ -628,7 +633,7 @@ section.buttons {
     margin-left: 0;
 }
 @media screen and (max-width: 768px) {
-    .menu.active {display:flex; position: relative; width: 100%; margin: 0; float: none; flex-wrap: wrap; margin-top: 10px;}
+    .menu.active {display:flex; position: relative; width: 100%; margin: 0; float: none; flex-wrap: wrap; margin-top: 10px; top: 0;}
     .contents {margin-left: 0px;margin-top: 0;position: relative; min-height: 400px;}
     .menu.fixed {position: relative; width: 100%; margin: 0; margin-top: 10px;}
     .menu div {min-width: 33%; height:30px; padding-top:7px!important; margin:0px!important;}
@@ -708,7 +713,10 @@ section.buttons {
     padding: 5px;
 }
 
-#pdf_text,#url_text,#metrics_text {
+#pdf_text,
+#url_text,
+#metrics_text, 
+#card_text {
     color: var(--text-primary);
     text-align: right;
     margin: 7px 0 7px;
@@ -720,7 +728,8 @@ section.buttons {
 }
 #pdf_text.active,
 #url_text.active,
-#metrics_text.active {
+#metrics_text.active,
+#card_text.active {
     color: var(--bg-primary);
     border-color: var(--green-primary);
     background-color: var(--green-primary);
@@ -739,6 +748,18 @@ section.buttons {
 /* #import_selector div#metrics_text {
     border-right: 2px solid #EEEEEE;
 } */
+#agent-info {
+    color: var(--text-primary);
+    text-align: center;
+    display: none;
+    padding: 1rem;
+}
+#agent-info.active{
+    display: block;
+}
+#refine-percent{
+    font-weight: bold;
+}
 
 .upload-container {
     color: var(--text-primary);
@@ -977,7 +998,9 @@ pre {font-size: 14px;background:inherit!important}
 .autocomplete-group-header:first-child {
     border-top: none;
 }
-
+.medium-editor-anchor-preview, .medium-editor-toolbar{
+    z-index: 9;
+}
 .medium-editor-toolbar .undo-hint {
     font-size: 12px;
     padding: 4px 8px;
@@ -1002,4 +1025,18 @@ span[class*="hljs-"]:not(pre span[class*="hljs-"]) {
 .medium-editor-toolbar button:disabled {
     opacity: 0.4;
     pointer-events: none;
+}
+
+#import-error{
+    color: var(--red-primary);
+}
+
+table {border-collapse: collapse;border-spacing: 0;}
+table {
+    border-collapse: collapse;
+}
+
+table th,
+table td {
+    border: 1px solid #ccc;
 }

@@ -21,8 +21,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/medium-editor/5.23.3/css/medium-editor.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/medium-editor/5.23.3/css/themes/default.min.css">
     <script src="https://cdn.jsdelivr.net/npm/turndown@7.1.2/dist/turndown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/turndown-plugin-gfm@1.0.2/dist/turndown-plugin-gfm.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="js/shellui.js"></script>
+
 </head>
 <body>
 <script src="js/themes.js"></script>
@@ -95,6 +98,7 @@
                 </div>
             </div>
         </div>
+        <div id="agent-info"></div>
     </section>
     <div id="card-locked" class="card-lock">
         <div class="card-lock-content" id="lock-msg">
@@ -202,7 +206,7 @@
 <div id="modal-refine-screen" class="delete-confirm-screen" style="display: none;">
     <div class="delete-confirm-content modal_refinement">
         <h2 class="success title">Refine for non-experts?</h2>
-        <div style="text-align:left">Will use an agent to create a simpler model card version. <a href="handbook.html#refine" target="_blank">Learn more</a></div>
+        <div style="text-align:left">Will use an AI agent to create a simpler model card version. <a href="handbook.html#refine" target="_blank">Learn more</a></div>
 
         <img style="width: 70%; flex-shrink: 0;" src="img/transparency_img.png">
         <div class="assistants_wrapper"></div>
@@ -222,11 +226,13 @@
                 File
             </div><div id="metrics_text">
                 Metrics
+            </div><div id="card_text">
+                Card
             </div>
         </div>
 
         <p id="url_desc" class="import_options">
-            Paste any URL with model info, for example
+            An AI agent will autocompete your model card. Paste any URL with model info, for example
             from <a href="https://github.com/" target="_blank">GitHub</a> or
             <a href="https://huggingface.co/" target="_blank">HuggingFace</a>.
         </p>
@@ -235,10 +241,15 @@
             Do you have a metric score report from our <a href="https://pypi.org/project/aicard-eval/">evaluation tool</a>?
             Upload your results here.
         </p>
+        <p id="card_desc" class="import_options" style="display: none;">
+            Paste a TrAI URL to copy information from another model card.
+        </p>
         <img style="width: 70%; flex-shrink: 0;" src="img/create_img.png">
         <div><span class="learn-more"><a href="handbook.html#creators" target="_blank" style="float:left">Learn more</a></span></div>
         <br>
+        <div id="import-error" style="display: none;"></div>
         <input type="text" class="text-input" placeholder="Enter URL..." id="card-url"/>
+        <input type="text" class="text-input" placeholder="Enter URL..." id="trai-url" style="display: none;"/>
         <div id="pdf-container" class="upload-container">
             <div class="file-drop-area" id="dropArea">
                 <br><br>
@@ -292,7 +303,6 @@
 <!-- JS -->
 <script>window.isModelCard = true;</script>
 <script src="js/themes.js"></script>
-<script src="js/shellui.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-editor/5.23.3/js/medium-editor.min.js"></script>
 <script src="js/card/file_upload.js"></script>
 <script src="js/bearer.js"></script>
@@ -300,5 +310,6 @@
 <script src="js/card/card.js"></script>
 <script src="js/card/chat.js"></script>
 <script src="js/card/eval_adapter.js"></script>
+<script src="js/card/import_from_trai.js"></script>
 </body>
 </html>

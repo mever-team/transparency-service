@@ -157,6 +157,7 @@ $(function() {
                 headingStyle: 'atx',
                 codeBlockStyle: 'fenced'
             });
+            turndownService.use(turndownPluginGfm.tables);
             turndownService.keep(['sub', 'sup', 'u', 'ins']);
 
             // Custom rule for <pre>
@@ -184,6 +185,7 @@ $(function() {
                 }
             };
             markedInstance.use({ renderer });
+
         }
     }
 
@@ -196,7 +198,12 @@ $(function() {
         const container = document.createElement('div');
         container.innerHTML = html;
 
-        return turndownService.turndown(container.innerHTML);
+        console.log(html);
+        let markdown = turndownService.turndown(container.innerHTML);
+        markdown = markdown.replace(/(\|.*\|)\n\n(?=\|)/g, '$1\n');
+        console.log(markdown);
+
+        return markdown;
     }
 
     function markdownToHtml(md) {
@@ -289,6 +296,10 @@ $(function() {
         $('#metrics_text').removeClass('active');
         $('#metrics-container').slideUp();
         $('#metrics_desc').slideUp();
+
+        $('#card_text').removeClass('active');
+        $('#trai-url').slideUp();
+        $('#card_desc').slideUp();
     });
     $('#url_text').click(function () {
         $('.card-button#agent').attr('data-type', 'url');
@@ -304,6 +315,10 @@ $(function() {
         $('#metrics_text').removeClass('active');
         $('#metrics-container').slideUp();
         $('#metrics_desc').slideUp();
+
+        $('#card_text').removeClass('active');
+        $('#trai-url').slideUp();
+        $('#card_desc').slideUp();
     });
     $('#metrics_text').click(function () {
         $('.card-button#agent').attr('data-type', 'metrics');
@@ -319,6 +334,29 @@ $(function() {
         $('#metrics_text').addClass('active');
         $('#metrics-container').slideDown();
         $('#metrics_desc').slideDown();
+
+        $('#card_text').removeClass('active');
+        $('#trai-url').slideUp();
+        $('#card_desc').slideUp();
+    });
+    $('#card_text').click(function () {
+        $('.card-button#agent').attr('data-type', 'trai');
+
+        $('#url_text').removeClass('active');
+        $('#card-url,#card-url-p').slideUp();
+        $('#url_desc').slideUp();
+        
+        $('#pdf_text').removeClass('active');
+        $('#pdf-container').slideUp();
+        $('#pdf_desc').slideUp();
+
+        $('#metrics_text').removeClass('active');
+        $('#metrics-container').slideUp();
+        $('#metrics_desc').slideUp();
+
+        $('#card_text').addClass('active');
+        $('#trai-url').slideDown();
+        $('#card_desc').slideDown();
     });
 
     function hideHistory() {
@@ -537,7 +575,9 @@ $(function() {
             } else {
                 let displayHtml = field.value || "";
                 if (!field.type.startsWith("list:") && field.type !== 'date') {
+                    console.log(displayHtml);
                     displayHtml = markdownToHtml(displayHtml);
+                    console.log(displayHtml);
                 }
                 $fieldValue = $("<span>").addClass("field-value").html(displayHtml);
                 if(is_logged_in) $fieldValue.attr("contenteditable", "true");
@@ -798,6 +838,20 @@ $(function() {
                         //console.log($('.menu .light'));
                         $('.menu .light').hide();
                         $('.menu div').prepend($loading_section);
+                        const $loading_section_clone = $("<span>").addClass('sectionLoader');
+                        const numberOfFields = $('li:not(#simpleSection) .field').length;
+                        const numberOfLoaders = $('li:not(#simpleSection) .fieldLoader').length;
+                        const $refinePercent = $('<span>')
+                            .attr('id', 'refine-percent')
+                            .html(`${Math.round((1-numberOfLoaders/numberOfFields)*100)} %`)
+                        const $refinePercentWrapper = $('<span>')
+                            .attr('id', 'refine-percent-wrapper')
+                            .html('An agent is refining the card: ')
+                            .append($refinePercent)
+                            .prepend($loading_section_clone)
+                        $('#agent-info')
+                            .append($refinePercentWrapper)
+                            .addClass('active');
                     }
                     // poll update
                     for (const [section, fields] of Object.entries(job.data)) {
@@ -871,6 +925,12 @@ $(function() {
                                 continue;
                             }
                         }
+                        const numberOfFields = $('li:not(#simpleSection) .field').length;
+                        const numberOfLoaders = $('li:not(#simpleSection) .fieldLoader').length;
+                        console.log(numberOfLoaders);
+                        console.log(numberOfFields);
+                        console.log(`${Math.round((1-numberOfLoaders/numberOfFields)*100)} %`);
+                        $('#refine-percent').html(`${Math.round((1-numberOfLoaders/numberOfFields)*100)} %`)
                     }
                 },
                 error: function (xhr, status, error) {
@@ -1482,5 +1542,18 @@ $('.contents').on('click', '.refine-field', async function () {
 
         return parts.length > 0 ? parts.join(" and ") : "0 seconds";
     }
+
+    const header = $('.header');
+
+    function updateHeaderHeight() {
+        document.documentElement.style.setProperty(
+            '--header-height',
+            `${header.outerHeight()}px`
+        );
+    }
+
+    updateHeaderHeight();
+
+    new ResizeObserver(updateHeaderHeight).observe(header[0]);
 });
 

@@ -136,12 +136,29 @@ $(function () {
             this.current.value.forEach(function(task){
                 this.$modal.find('[data-filter="' + task + '"]').addClass("active");
             }.bind(this));
+            // update optgroups
+            $('.filter-optgroup').each(function () {
+                const options = $(this).nextUntil('.filter-optgroup', '.filter-option');
+                if (options.filter('.active').length === options.length) {
+                    $(this).addClass('active');
+                } else {
+                    $(this).removeClass('active');
+                }
+            });
         },
         typeSetState: function() {
             this.current.value.forEach(function(type){
                 this.$modal.find('[data-filter="' + type + '"]').addClass("active");
             }.bind(this));
-
+            // update optgroups
+            $('.filter-optgroup').each(function () {
+                const options = $(this).nextUntil('.filter-optgroup', '.filter-option');
+                if (options.filter('.active').length === options.length) {
+                    $(this).addClass('active');
+                } else {
+                    $(this).removeClass('active');
+                }
+            });
         },
         infoSetState: function() {
             $('.info-input')
@@ -176,6 +193,16 @@ $(function () {
         },
         filterTask: function(e) {
             const $target = $(e.target)
+            if ($target.hasClass('filter-optgroup')) {
+                // multiple selection
+                $target.toggleClass("active");
+                if ($target.hasClass('active')){
+                    $target.nextUntil('.filter-optgroup', '.filter-option:not(.active)').trigger('click');
+                }
+                else{
+                    $target.nextUntil('.filter-optgroup', '.filter-option.active').trigger('click');
+                }
+            }
             const option = $target.attr('data-filter')
             if (!(option && $target.hasClass('filter-option'))) return;
             $target.toggleClass("active");
@@ -184,10 +211,28 @@ $(function () {
             }
             else {
                 this.current.value.push(option);
+            }
+            // check if optgroup must have active class
+            const optgroup = $target.prevAll('.filter-optgroup').first();
+            const options = optgroup.nextUntil('.filter-optgroup', '.filter-option');
+            if (options.length > 0 && options.filter('.active').length === options.length) {
+                optgroup.addClass('active');
+            } else {
+                optgroup.removeClass('active');
             }
         },
         filterType: function(e) {
             const $target = $(e.target)
+            if ($target.hasClass('filter-optgroup')) {
+                // multiple selection
+                $target.toggleClass("active");
+                if ($target.hasClass('active')){
+                    $target.nextUntil('.filter-optgroup', '.filter-option:not(.active)').trigger('click');
+                }
+                else{
+                    $target.nextUntil('.filter-optgroup', '.filter-option.active').trigger('click');
+                }
+            }
             const option = $target.attr('data-filter')
             if (!(option && $target.hasClass('filter-option'))) return;
             $target.toggleClass("active");
@@ -196,6 +241,14 @@ $(function () {
             }
             else {
                 this.current.value.push(option);
+            }
+            // check if optgroup must have active class
+            const optgroup = $target.prevAll('.filter-optgroup').first();
+            const options = optgroup.nextUntil('.filter-optgroup', '.filter-option');
+            if (options.length > 0 && options.filter('.active').length === options.length) {
+                optgroup.addClass('active');
+            } else {
+                optgroup.removeClass('active');
             }
         },
         newFilter: function() {
@@ -231,7 +284,7 @@ $(function () {
                 success: r => {
                     $('#loading').hide();
                     const results = r.results || [];
-
+                    
                     $('#search_results_wrapper').text("Showing");
                     $('#search_results').text(results.length + " of " + (r.total || 0));
                     this.$tbody.empty();
@@ -372,19 +425,21 @@ $(function () {
             return 'Info at least <span class="info-value">0</span>% <input type="range" class="info-input" min="0" max="100" step="1" value="0"/>'
         },
         done: function() {
-            if ((Array.isArray(this.current.value) && this.current.value.length === 0) || this.current.value === '' || !this.current.name) { 
-                this.$modal.removeClass('modal--active');
-                return 
-            }
             if (!(this.options[this.current.name].active)) {
                 this.addfilter(this.current.name);
                 this.options[this.current.name].active = true;
             }
             this.filters[this.current.name] = this.current.value;
             this.captions[this.current.name].update()
-            this.request();
             this.$modal.removeClass('modal--active');
             this.current = {};
+            $('#edit-filter').each(function () {
+                const spans = $(this).find('span');
+                if (spans.length === 1) {
+                    spans.trigger('click');
+                }
+            });
+            this.request();
         },
         cancel: function() {
             this.$modal.removeClass('modal--active');

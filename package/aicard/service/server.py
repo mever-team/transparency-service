@@ -456,9 +456,13 @@ def serve(
         cursor = conn.conn.cursor()
         cursor.execute("SELECT COUNT(*) FROM cards")
         total = int(cursor.fetchone()[0])
+        data.pop('query', '')
+        if (not data and not query) and (last_front_page_data["total"]==total) and (time.monotonic()<last_front_page_data["time"]+300): # refresh every 5 minutes, or if there are new cards
+            # print('return cache')
+            return last_front_page_data["jsonified"]
+        recache = (not data and not query) # whether we are in the no-inputs front page search
         num_pages = (total + page_size - 1) // page_size
         offset = (page - 1) * page_size
-        recache = False # whether we are in the no-inputs front page search
         if len(query) >= 3 and owner:
             cursor.execute(
                 f"""
@@ -623,12 +627,7 @@ def serve(
                 """,
                 (*safe_argument_list, page_size, offset)
             )
-            if last_front_page_data["total"]==total and time.monotonic()<last_front_page_data["time"]+300: # refresh every 5 minutes, or if there are new cards
-                return last_front_page_data["jsonified"]
-            last_front_page_data["total"] = total
-            last_front_page_data["time"] = time.monotonic()
-            recache = True
-        print("refreshing")
+        # print("refreshing")
         rows = cursor.fetchall()
         added_ids = set()
         results = []
@@ -645,7 +644,10 @@ def serve(
             overview_date = row[9]
             results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality, "description": overview, "type": overview_type, "task": overview_task, "date": overview_date})
         jsonified = jsonify({"results": results, "pages": num_pages, "total": total})
-        if recache: last_front_page_data["jsonified"] = jsonified
+        if recache: 
+            last_front_page_data["jsonified"] = jsonified
+            last_front_page_data["total"] = total
+            last_front_page_data["time"] = time.monotonic()
         return jsonified
 
     @app.route(domain_prefix + '/card/<int:card_id>/ask', methods=['POST'])
@@ -698,6 +700,38 @@ def serve(
         logger.info("cloned a card", user=creator)
         return jsonify(card_id), 201
 
+    @app.route(domain_prefix+'/importFromTraiCard/<int:src_id>/<int:card_id>', methods=['POST'])
+    @users.require_auth(token2expiration)
+    def import_from_trai_card(src_id, card_id, token: str):
+        with auth_lock: creator = token2user.get(token, "")
+        try:
+            card = find_card(card_id)
+            src_card = find_card(src_id)
+        except:
+            abort(404, 'Model card does not exist or has been deleted.')
+        with exists(src_card, "Model card does not exist or has been deleted.") as _src_card:
+            if not _src_card.data.overview.version and src_card.creator != creator:
+                abort(403, 'Access Denied. The model card is not open to the public.')
+            with exists(card, "Model card does not exist or has been deleted.") as _card:
+                try: _card.data.assign(_src_card.data)
+                except AssertionError as e:
+                    logger.warn("Assertion error: " + str(e))
+                    abort(500, description=str(e))
+                except Exception as e:
+                    logger.warn("Exception: " + str(e))
+                    abort(500, description=str(e))
+        flattened = card.card.data.flatten()
+        columns = list(flattened.keys())
+        cursor = conn.conn.cursor()
+        cursor.execute(
+            f'''UPDATE cards
+                SET {','.join(f"{column} = ?" for column in columns)}
+                WHERE id = ?''',
+            [flattened[key] for key in columns] + [card_id]
+        )
+        conn.conn.commit()
+        return jsonify(card_id), 201
+    
     @app.route(domain_prefix+'/assistants', methods=['GET'])
     @users.require_auth(token2expiration)
     def get_assistants(token: str):
