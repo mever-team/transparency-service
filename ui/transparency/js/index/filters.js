@@ -28,7 +28,7 @@ $(function () {
         templates: {}, // {name: {template: .mustache, render: function()},...}
         options: {}, // dropdown menu
         dashboards: {}, // html strings e.g. {type: "...",...}
-        current:{}, // current editable filter {name:, value:}
+        current:[], // current editable filters [{name:, value:}, ...]
         captions: {}, 
         lastUpdate: 0,
         pending: null,
@@ -133,7 +133,8 @@ $(function () {
         },
 
         taskSetState: function() {
-            this.current.value.forEach(function(task){
+            const index = this.current.findIndex(item => item.name === "task");
+            this.current[index].value.forEach(function(task){
                 this.$modal.find('[data-filter="' + task + '"]').addClass("active");
             }.bind(this));
             // update optgroups
@@ -147,7 +148,8 @@ $(function () {
             });
         },
         typeSetState: function() {
-            this.current.value.forEach(function(type){
+            const index = this.current.findIndex(item => item.name === "type");
+            this.current[index].value.forEach(function(type){
                 this.$modal.find('[data-filter="' + type + '"]').addClass("active");
             }.bind(this));
             // update optgroups
@@ -161,16 +163,17 @@ $(function () {
             });
         },
         infoSetState: function() {
+            const index = this.current.findIndex(item => item.name === "info");
             $('.info-input')
-                .val(this.current.value)
-                .css('background', 'linear-gradient(90deg, #3e3e3e '+ this.current.value + '%, #EEEEEE '+this.current.value+'%)');
-            $('.info-value').text(this.current.value);
+                .val(this.current[index].value)
+                .css('background', 'linear-gradient(90deg, #3e3e3e '+ this.current[index].value + '%, #EEEEEE '+this.current[index].value+'%)');
+            $('.info-value').text(this.current[index].value);
             
         },
         editFilter: function(e) {
             if ($(e.target).closest('.remove-filter').length) return;
             const filter = $(e.currentTarget).attr('data-filter');
-            this.current = {name: filter, value: this.filters[filter]};
+            this.current.push({name: filter, value: this.filters[filter]});
             this.EditModalRender(filter);
             this.dashboards[filter].setState();
         },
@@ -187,9 +190,10 @@ $(function () {
         },
 
         filterInfo: function(e) {
-            this.current.value = $(e.currentTarget).val();
-            $('.info-value').text(this.current.value);
-            $(e.currentTarget).css('background', 'linear-gradient(90deg, #3e3e3e '+ this.current.value + '%, #EEEEEE '+this.current.value+'%)');
+            const index = this.current.findIndex(item => item.name === "info");
+            this.current[index].value = $(e.currentTarget).val();
+            $('.info-value').text(this.current[index].value);
+            $(e.currentTarget).css('background', 'linear-gradient(90deg, #3e3e3e '+ this.current[index].value + '%, #EEEEEE '+this.current[index].value+'%)');
         },
         filterTask: function(e) {
             const $target = $(e.target)
@@ -206,11 +210,12 @@ $(function () {
             const option = $target.attr('data-filter')
             if (!(option && $target.hasClass('filter-option'))) return;
             $target.toggleClass("active");
-            if(this.current.value.includes(option)){
-                this.current.value.splice(this.current.value.indexOf(option), 1);
+            const index = this.current.findIndex(item => item.name === "task");
+            if(this.current[index].value.includes(option)){
+                this.current[index].value.splice(this.current[index].value.indexOf(option), 1);
             }
             else {
-                this.current.value.push(option);
+                this.current[index].value.push(option);
             }
             // check if optgroup must have active class
             const optgroup = $target.prevAll('.filter-optgroup').first();
@@ -236,11 +241,12 @@ $(function () {
             const option = $target.attr('data-filter')
             if (!(option && $target.hasClass('filter-option'))) return;
             $target.toggleClass("active");
-            if(this.current.value.includes(option)){
-                this.current.value.splice(this.current.value.indexOf(option), 1);
+            const index = this.current.findIndex(item => item.name === "type");
+            if(this.current[index].value.includes(option)){
+                this.current[index].value.splice(this.current[index].value.indexOf(option), 1);
             }
             else {
-                this.current.value.push(option);
+                this.current[index].value.push(option);
             }
             // check if optgroup must have active class
             const optgroup = $target.prevAll('.filter-optgroup').first();
@@ -314,11 +320,15 @@ $(function () {
             $filterdashboard = $(".filter-dashboard");
             $filterdashboard.attr('data-filter', selectedDashboard);
             $dashboard = $(".dashboard");
-            this.setCurrent(selectedDashboard);
+            const index = this.current.findIndex(item => item.name === selectedDashboard);
+            if (index === -1){
+                this.appendToCurrent(selectedDashboard);
+            }
             $filterdashboard.css('overflow-y', 'hidden');
             $dashboard.slideUp(300, function() {
                 $filterdashboard.html(this.dashboards[selectedDashboard].html);
                 $('.dashboard-description').text(this.dashboards[selectedDashboard].description);
+                this.dashboards[selectedDashboard].setState();
                 $dashboard.slideDown(400, function(){
                     $filterdashboard.css('overflow-y', 'auto');
                 });
@@ -370,10 +380,10 @@ $(function () {
                 .appendTo(this.$filters);
             
         },
-        setCurrent: function(filter) {
-            if (filter === 'type'){ this.current = {name: 'type', value: []} }
-            else if (filter === 'task'){ this.current = {name: 'task', value: []} }
-            else if (filter === 'info'){ this.current = {name: 'info', value: ''} }
+        appendToCurrent: function(filter) {
+            if (filter === 'type'){ this.current.push({name: 'type', value: []}) }
+            else if (filter === 'task'){ this.current.push({name: 'task', value: []}) }
+            else if (filter === 'info'){ this.current.push({name: 'info', value: '0'}) }
         },
         getTaskDashboard: function () {
             return $.getJSON('/transparency/options/overview/task').then(function (data) {
@@ -425,20 +435,26 @@ $(function () {
             return 'Info at least <span class="info-value">0</span>% <input type="range" class="info-input" min="0" max="100" step="1" value="0"/>'
         },
         done: function() {
-            if (!(this.options[this.current.name].active)) {
-                this.addfilter(this.current.name);
-                this.options[this.current.name].active = true;
-            }
-            this.filters[this.current.name] = this.current.value;
-            this.captions[this.current.name].update()
-            this.$modal.removeClass('modal--active');
-            this.current = {};
-            $('#edit-filter').each(function () {
-                const spans = $(this).find('span');
-                if (spans.length === 1) {
-                    spans.trigger('click');
+            for (let current of this.current) {
+                if (!(this.options[current.name].active)) {
+                    if (current.name === 'info' && current.value === '0') {
+                        this.$modal.removeClass('modal--active');
+                        continue;
+                    }
+                    this.addfilter(current.name);
+                    this.options[current.name].active = true;
                 }
-            });
+                this.filters[current.name] = current.value;
+                this.captions[current.name].update()
+                this.$modal.removeClass('modal--active');
+                $('#edit-filter').each(function () {
+                    const spans = $(this).find('span');
+                    if (spans.length === 1) {
+                        spans.trigger('click');
+                    }
+                });
+            }
+            this.current = []
             this.request();
         },
         cancel: function() {
