@@ -1,0 +1,303 @@
+{
+  "title": "Stable Diffusion v1-4 Model Card",
+  "data": [
+    {
+      "name": "overview",
+      "value": [
+        {
+          "name": "name",
+          "value": "Stable Diffusion v1-4",
+          "description": "Name of the model ",
+          "type": "short text"
+        },
+        {
+          "name": "description",
+          "value": "Stable Diffusion is a latent text-to-image diffusion model capable of generating photo-realistic images given any text input  For more information about how Stable Diffusion functions, please have a look at 🤗's Stable Diffusion with 🧨Diffusers blog  \nThe Stable-Diffusion-v1-4 checkpoint was initialized with the weights of the Stable-Diffusion-v1-2 checkpoint and subsequently fine-tuned on 225k steps at resolution 512x512 on \"laion-aesthetics v2 5+\" and 10% dropping of the text-conditioning to improve classifier-free guidance sampling  \n\nThis weights here are intended to be used with the 🧨 Diffusers library  If you are looking for the weights to be loaded into the CompVis Stable Diffusion codebase, come here",
+          "description": "Model purpose, capabilities, novelty and caveats",
+          "type": "long text"
+        },
+        {
+          "name": "creator",
+          "value": "Robin Rombach, Patrick Esser",
+          "description": "Person or organization developed the model ",
+          "type": "short text"
+        },
+        {
+          "name": "date",
+          "value": "",
+          "description": "Model development completion date ",
+          "type": "date"
+        },
+        {
+          "name": "version",
+          "value": "stable-diffusion-v1-4",
+          "description": "Version of the model ",
+          "type": "short text"
+        },
+        {
+          "name": "type",
+          "value": "Diffusion-based text-to-image generation model",
+          "description": "Model architecture or algorithm type "
+        },
+        {
+          "name": "task",
+          "value": "Text-to-Image",
+          "description": "Model task "
+        },
+        {
+          "name": "license",
+          "value": "The CreativeML OpenRAIL M license is an Open RAIL M license , adapted from the work that BigScience and the RAIL Initiative are jointly carrying in the area of responsible AI licensing  See also the article about the BLOOM Open RAIL license on which our license is based ",
+          "description": "Licence and intellectual property (IP) information ",
+          "type": "short text"
+        },
+        {
+          "name": "home",
+          "value": "https://huggingface co/CompVis/stable-diffusion-v1-4",
+          "description": "URL hosting the model ",
+          "type": "short text"
+        },
+        {
+          "name": "contact",
+          "value": "",
+          "description": "Author contact information ",
+          "type": "short text"
+        },
+        {
+          "name": "citation",
+          "value": "@InProceedings{Rombach_2022_CVPR,\n    author    = {Rombach, Robin and Blattmann, Andreas and Lorenz, Dominik and Esser, Patrick and Ommer, Bj\\\"orn},\n    title     = {High-Resolution Image Synthesis With Latent Diffusion Models},\n    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},\n    month     = {June},\n    year      = {2022},\n    pages     = {10684-10695}\n}",
+          "description": "How should the model be cited? Typically includes title, author, year, and publisher  May be a formatted citation or bibtex entries like @article ",
+          "type": "short text"
+        },
+        {
+          "name": "more",
+          "value": "Language(s): English\n\nResources for more information: GitHub Repository , Paper  \n\nThis model card was written by: Robin Rombach and Patrick Esser and is based on the DALL-E Mini model card ",
+          "description": "Additional model information not found above ",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "use",
+      "value": [
+        {
+          "name": "use_cases",
+          "value": "The model is intended for research purposes only  Possible research areas and tasks include\n\n  * Safe deployment of models which have the potential to generate harmful content \n  * Probing and understanding the limitations and biases of generative models \n  * Generation of artworks and use in design and other artistic processes \n  * Applications in educational or creative tools \n  * Research on generative models \n\nExcluded uses are described below ",
+          "description": "Intended uses of the model ",
+          "type": "long text"
+        },
+        {
+          "name": "oversight",
+          "value": "human-in-the-loop",
+          "description": "Defines the level of human control over the system ",
+          "type": "list:self-learning/autonomous,human-in-the-loop,human-on-the-loop,human-in-command,unknown"
+        },
+        {
+          "name": "user_groups",
+          "value": "Researchers, artists, designers, and users of educational or creative tools ",
+          "description": "Intended users ",
+          "type": "long text"
+        },
+        {
+          "name": "out_of_scope_use",
+          "value": "Note: This section is taken from the DALLE-MINI model card , but applies in the same way to Stable Diffusion v1 \n\nThe model should not be used to intentionally create or disseminate images that create hostile or alienating environments for people  This includes generating images that people would foreseeably find disturbing, distressing, or offensive; or content that propagates historical or current stereotypes \n\nThe model was not trained to be factual or true representations of people or events, and therefore using the model to generate such content is out-of-scope for the abilities of this model \n\nUsing the model to generate content that is cruel to individuals is a misuse of this model  This includes, but is not limited to:\n  * Generating demeaning, dehumanizing, or otherwise harmful representations of people or their environments, cultures, religions, etc \n  * Intentionally promoting or propagating discriminatory content or harmful stereotypes \n  * Impersonating individuals without their consent \n  * Sexual content without consent of the people who might see it \n  * Mis- and disinformation\n  * Representations of egregious violence and gore\n  * Sharing of copyrighted or licensed material in violation of its terms of use \n  * Sharing content that is an alteration of copyrighted or licensed material in violation of its terms of use ",
+          "description": "Unintended and improper use of model ",
+          "type": "long text"
+        },
+        {
+          "name": "software",
+          "value": "The weights here are intended to be used with the 🧨 Diffusers library \n\npip install -U diffusers transformers accelerate\n\npip install --upgrade diffusers transformers scipy\n\nThe model can also be used with JAX/Flax ",
+          "description": "Software requirements and dependencies?",
+          "type": "long text"
+        },
+        {
+          "name": "instructions",
+          "value": "How to use CompVis/stable-diffusion-v1-4 with Diffusers:\n\npip install -U diffusers transformers accelerate\n\nimport torch\nfrom diffusers import DiffusionPipeline\n\n# switch to \"mps\" for apple devices\npipe = DiffusionPipeline from_pretrained(\"CompVis/stable-diffusion-v1-4\", dtype=torch bfloat16, device_map=\"cuda\")\n\nprompt = \"A high tech solarpunk utopia in the Amazon rainforest\"\nimage = pipe(prompt) images[0]\n\nWe recommend using 🤗's Diffusers library to run Stable Diffusion \n\nRunning the pipeline with the default PNDM scheduler:\n\n`import torch\nfrom diffusers import StableDiffusionPipeline\n\nmodel_id = \"CompVis/stable-diffusion-v1-4\"\ndevice = \"cuda\"\n\n\npipe = StableDiffusionPipeline from_pretrained(model_id, torch_dtype=torch float16)\npipe = pipe to(device)\n\nprompt = \"a photo of an astronaut riding a horse on mars\"\nimage = pipe(prompt) images[0]\n\nimage save(\"astronaut_rides_horse png\")\n`\n\nNote: If you are limited by GPU memory and have less than 4GB of GPU RAM available, please make sure to load the StableDiffusionPipeline in float16 precision instead of the default float32 precision as done above  You can do so by telling diffusers to expect the weights to be in float16 precision:\n\n`import torch\n\npipe = StableDiffusionPipeline from_pretrained(model_id, torch_dtype=torch float16)\npipe = pipe to(device)\npipe enable_attention_slicing()\nprompt = \"a photo of an astronaut riding a horse on mars\"\nimage = pipe(prompt) images[0]\n\nimage save(\"astronaut_rides_horse png\")\n`\n\nTo swap out the noise scheduler, pass it to `from_pretrained`:\n\n`from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler\n\nmodel_id = \"CompVis/stable-diffusion-v1-4\"\n\n# Use the Euler scheduler here instead\nscheduler = EulerDiscreteScheduler from_pretrained(model_id, subfolder=\"scheduler\")\npipe = StableDiffusionPipeline from_pretrained(model_id, scheduler=scheduler, torch_dtype=torch float16)\npipe = pipe to(\"cuda\")\nprompt = \"a photo of an astronaut riding a horse on mars\"\nimage = pipe(prompt) images[0]\n\nimage save(\"astronaut_rides_horse png\")\n`\n\nTo use StableDiffusion on TPUs and GPUs for faster inference you can leverage JAX/Flax \n\nRunning the pipeline with default PNDMScheduler\n\n`import jax\nimport numpy as np\nfrom flax jax_utils import replicate\nfrom flax training common_utils import shard\n\nfrom diffusers import FlaxStableDiffusionPipeline\n\npipeline, params = FlaxStableDiffusionPipeline from_pretrained(\n    \"CompVis/stable-diffusion-v1-4\", revision=\"flax\", dtype=jax numpy bfloat16\n)\n\nprompt = \"a photo of an astronaut riding a horse on mars\"\nprng_seed = jax random PRNGKey(0)\nnum_inference_steps = 50\n\nnum_samples = jax device_count()\nprompt = num_samples * [prompt]\nprompt_ids = pipeline prepare_inputs(prompt)\n\n# shard inputs and rng\nparams = replicate(params)\nprng_seed = jax random split(prng_seed, num_samples)\nprompt_ids = shard(prompt_ids)\n\nimages = pipeline(prompt_ids, params, prng_seed, num_inference_steps, jit=True) images\nimages = pipeline numpy_to_pil(np asarray(images reshape((num_samples,) + images shape[-3:])))\n`\n\nNote: If you are limited by TPU memory, please make sure to load the `FlaxStableDiffusionPipeline` in `bfloat16` precision instead of the default `float32` precision  You can do so by telling diffusers to load the weights from \"bf16\" branch \n\n`import jax\nimport numpy as np\nfrom flax jax_utils import replicate\nfrom flax training common_utils import shard\n\nfrom diffusers import FlaxStableDiffusionPipeline\npipeline, params = FlaxStableDiffusionPipeline from_pretrained(\n    \"CompVis/stable-diffusion-v1-4\", revision=\"bf16\", dtype=jax numpy bfloat16\n)\n\nprompt = \"a photo of an astronaut riding a horse on mars\"\nprng_seed = jax random PRNGKey(0)\nnum_inference_steps = 50\n\nnum_samples = jax device_count()\nprompt = num_samples * [prompt]\nprompt_ids = pipeline prepare_inputs(prompt)\n\n# shard inputs and rng\nparams = replicate(params)\nprng_seed = jax random split(prng_seed, num_samples)\nprompt_ids = shard(prompt_ids)\n\nimages = pipeline(prompt_ids, params, prng_seed, num_inference_steps, jit=True) images\nimages = pipeline numpy_to_pil(np asarray(images reshape((num_samples,) + images shape[-3:])))\n`",
+          "description": "Use instructions ",
+          "type": "long text"
+        },
+        {
+          "name": "inputs_outputs",
+          "value": "The model generates and modifies images based on text prompts  Text prompts are encoded through a ViT-L/14 text-encoder  The model outputs images ",
+          "description": "Description of the model's inputs and outputs",
+          "type": "long text"
+        },
+        {
+          "name": "factors",
+          "value": "The model was trained mainly with English captions and will not work as well in other languages  Further, the ability of the model to generate content with non-English prompts is significantly worse than with English-language prompts ",
+          "description": "Foreseeable salient factors for which model performance may vary ",
+          "type": "long text"
+        },
+        {
+          "name": "hardware",
+          "value": "For training: 32 x 8 x A100 GPUs \n\nHardware Type for environmental impact: A100 PCIe 40GB ",
+          "description": "Hardware requirements for training and inference ",
+          "type": "long text"
+        },
+        {
+          "name": "more",
+          "value": "",
+          "description": "Additional information about intended uses not found above ",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "training",
+      "value": [
+        {
+          "name": "datasets",
+          "value": "LAION-2B (en) and subsets thereof (see next section) \n\nstable-diffusion-v1-4: Resumed from stable-diffusion-v1-2  225,000 steps at resolution 512x512 on \"laion-aesthetics v2 5+\" and 10 % dropping of the text-conditioning to improve classifier-free guidance sampling \n\nstable-diffusion-v1-2: Resumed from stable-diffusion-v1-1  515,000 steps at resolution 512x512 on \"laion-improved-aesthetics\" (a subset of laion2B-en, filtered to images with an original size >= 512x512, estimated aesthetics score > 5 0, and an estimated watermark probability < 0 5  The watermark estimate is from the LAION-5B metadata, the aesthetics score is estimated using an improved aesthetics estimator) \n\nstable-diffusion-v1-1: 237,000 steps at resolution 256x256 on laion2B-en  194,000 steps at resolution 512x512 on laion-high-resolution (170M examples from LAION-5B with resolution >= 1024x1024) \n\nstable-diffusion-v1-3: Resumed from stable-diffusion-v1-2  195,000 steps at resolution 512x512 on \"laion-improved-aesthetics\" and 10 % dropping of the text-conditioning to improve classifier-free guidance sampling ",
+          "description": "Dataset(s) used during training ",
+          "type": "long text"
+        },
+        {
+          "name": "motivation",
+          "value": "The model was fine-tuned on \"laion-aesthetics v2 5+\" and 10% dropping of the text-conditioning to improve classifier-free guidance sampling ",
+          "description": "Why were training datasets chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "preprocessing",
+          "value": "Stable Diffusion v1-4 is a latent diffusion model which combines an autoencoder with a diffusion model that is trained in the latent space of the autoencoder  During training,\n  * Images are encoded through an encoder, which turns images into latent representations  The autoencoder uses a relative downsampling factor of 8 and maps images of shape H x W x 3 to latents of shape H/f x W/f x 4\n  * Text prompts are encoded through a ViT-L/14 text-encoder \n  * The non-pooled output of the text encoder is fed into the UNet backbone of the latent diffusion model via cross-attention \n  * The loss is a reconstruction objective between the noise that was added to the latent and the prediction made by the UNet ",
+          "description": "Data pre-processing for training (tokenizer, data augmentation etc ) ",
+          "type": "long text"
+        },
+        {
+          "name": "standards",
+          "value": "",
+          "description": "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management ",
+          "type": "list:none,ISO,IEEE,unknown"
+        },
+        {
+          "name": "update",
+          "value": "unknown",
+          "description": "Is tge training set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?",
+          "type": "list:no,yes,unknown"
+        },
+        {
+          "name": "more",
+          "value": "Training Procedure\n\nHardware: 32 x 8 x A100 GPUs\n\nOptimizer: AdamW\n\nGradient Accumulations: 2\n\nBatch: 32 x 8 x 2 x 4 = 2048\n\nLearning rate: warmup to 0 0001 for 10,000 steps and then kept constant",
+          "description": "Additional training set information not found above ",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "evaluation",
+      "value": [
+        {
+          "name": "datasets",
+          "value": "COCO2017 validation set",
+          "description": "Dataset(s) used during evaluation ",
+          "type": "long text"
+        },
+        {
+          "name": "motivation",
+          "value": "",
+          "description": "Why were evaluation datasets chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "preprocessing",
+          "value": "Evaluated at 512x512 resolution ",
+          "description": "Data pre-processing for evaluation (tokenizer, data augmentation etc ) ",
+          "type": "long text"
+        },
+        {
+          "name": "standards",
+          "value": "",
+          "description": "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management ",
+          "type": "list:none,ISO,IEEE,unknown"
+        },
+        {
+          "name": "update",
+          "value": "unknown",
+          "description": "Is the evalution set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?",
+          "type": "list:no,yes,unknown"
+        },
+        {
+          "name": "more",
+          "value": "Evaluations with different classifier-free guidance scales (1 5, 2 0, 3 0, 4 0, 5 0, 6 0, 7 0, 8 0) and 50 PLMS sampling steps show the relative improvements of the checkpoints:\n\nEvaluated using 50 PLMS steps and 10000 random prompts from the COCO2017 validation set, evaluated at 512x512 resolution  Not optimized for FID scores ",
+          "description": "Additional evaluation set information not found above ",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "performance",
+      "value": [
+        {
+          "name": "analysis",
+          "value": "The model does not achieve perfect photorealism  The model cannot render legible text  The model does not perform well on more difficult tasks which involve compositionality, such as rendering an image corresponding to “A red cube on top of a blue sphere”  Faces and people in general may not be generated properly  The model was trained mainly with English captions and will not work as well in other languages  The autoencoding part of the model is lossy ",
+          "description": "Analysis and explanation of performance results ",
+          "type": "long text"
+        },
+        {
+          "name": "metrics",
+          "value": "Evaluations with different classifier-free guidance scales (1 5, 2 0, 3 0, 4 0, 5 0, 6 0, 7 0, 8 0) and 50 PLMS sampling steps show the relative improvements of the checkpoints  Evaluated using 50 PLMS steps and 10000 random prompts from the COCO2017 validation set, evaluated at 512x512 resolution  Not optimized for FID scores ",
+          "description": "Benchmark results for any performance metrics ",
+          "type": "long text"
+        },
+        {
+          "name": "thresholds",
+          "value": "",
+          "description": "If decision thresholds are used, what are they, and why were those parameters chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "methodology",
+          "value": "Evaluations with different classifier-free guidance scales (1 5, 2 0, 3 0, 4 0, 5 0, 6 0, 7 0, 8 0) and 50 PLMS sampling steps  Evaluated using 50 PLMS steps and 10000 random prompts from the COCO2017 validation set, evaluated at 512x512 resolution  Not optimized for FID scores ",
+          "description": "Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method ",
+          "type": "long text"
+        },
+        {
+          "name": "environmental_impact",
+          "value": "Stable Diffusion v1 Estimated Emissions Based on that information, we estimate the following CO2 emissions using the Machine Learning Impact calculator presented in Lacoste et al  (2019)   The hardware, runtime, cloud provider, and compute region were utilized to estimate the carbon impact \n  * Hardware Type: A100 PCIe 40GB\n  * Hours used: 150000\n  * Cloud Provider: AWS\n  * Compute Region: US-east\n  * Carbon Emitted (Power consumption x Time x Carbon produced based on location of power grid): 11250 kg CO2 eq ",
+          "description": "Report of energy consumption, CO2 emissions or any other environmental impact ",
+          "type": "long text"
+        },
+        {
+          "name": "bias",
+          "value": "While the capabilities of image generation models are impressive, they can also reinforce or exacerbate social biases  Stable Diffusion v1 was trained on subsets of LAION-2B(en), which consists of images that are primarily limited to English descriptions  Texts and images from communities and cultures that use other languages are likely to be insufficiently accounted for  This affects the overall output of the model, as white and western cultures are often set as the default \nFurther, the ability of the model to generate content with non-English prompts is significantly worse than with English-language prompts ",
+          "description": "Performance and bias across different groups (e g  ethnicity, gender)",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "safety",
+      "value": [
+        {
+          "name": "ethics",
+          "value": "The model should not be used to intentionally create or disseminate images that create hostile or alienating environments for people  This includes generating images that people would foreseeably find disturbing, distressing, or offensive; or content that propagates historical or current stereotypes \n\nUsing the model to generate content that is cruel to individuals is a misuse of this model  This includes, but is not limited to:\n  * Generating demeaning, dehumanizing, or otherwise harmful representations of people or their environments, cultures, religions, etc \n  * Intentionally promoting or propagating discriminatory content or harmful stereotypes \n  * Impersonating individuals without their consent \n  * Sexual content without consent of the people who might see it \n  * Mis- and disinformation\n  * Representations of egregious violence and gore\n  * Sharing of copyrighted or licensed material in violation of its terms of use \n  * Sharing content that is an alteration of copyrighted or licensed material in violation of its terms of use ",
+          "description": "Ethical considerations regarding datasets and usage of model  Recommended mitigation measures ",
+          "type": "long text"
+        },
+        {
+          "name": "fairness",
+          "value": "While the capabilities of image generation models are impressive, they can also reinforce or exacerbate social biases  Stable Diffusion v1 was trained on subsets of LAION-2B(en), which consists of images that are primarily limited to English descriptions  Texts and images from communities and cultures that use other languages are likely to be insufficiently accounted for  This affects the overall output of the model, as white and western cultures are often set as the default ",
+          "description": "Definition of fairness applied in setting up the AI system ",
+          "type": "long text"
+        },
+        {
+          "name": "risks",
+          "value": "The model was trained on a large-scale dataset LAION-5B which contains adult material and is not fit for product use without additional safety mechanisms and considerations \n\nNo additional measures were used to deduplicate the dataset  As a result, we observe some degree of memorization for images that are duplicated in the training data  The training data can be searched at https://rom1504 github io/clip-retrieval/ to possibly assist in the detection of memorized images ",
+          "description": "Possible threats to the AI system (design faults, technical faults, environmental threats) and the possible consequences ",
+          "type": "long text"
+        },
+        {
+          "name": "security",
+          "value": "The intended use of this model is with the Safety Checker in Diffusers  This checker works by checking model outputs against known hard-coded NSFW concepts  The concepts are intentionally hidden to reduce the likelihood of reverse-engineering this filter  Specifically, the checker compares the class probability of harmful concepts in the embedding space of the CLIPTextModel after generation of the images \nThe concepts are passed into the model with the generated image and compared to a hand-engineered weight for each NSFW concept ",
+          "description": "Is the AI system certified for cybersecurity or is it compliant with specific security standards?",
+          "type": "long text"
+        },
+        {
+          "name": "caveats",
+          "value": "The model does not achieve perfect photorealism\nThe model cannot render legible text\nThe model does not perform well on more difficult tasks which involve compositionality, such as rendering an image corresponding to “A red cube on top of a blue sphere”\nFaces and people in general may not be generated properly \nThe model was trained mainly with English captions and will not work as well in other languages \nThe autoencoding part of the model is lossy\nThe model was trained on a large-scale dataset LAION-5B which contains adult material and is not fit for product use without additional safety mechanisms and considerations \nNo additional measures were used to deduplicate the dataset  As a result, we observe some degree of memorization for images that are duplicated in the training data ",
+          "description": "Additional concerns that were not covered in the previous sections ",
+          "type": "long text"
+        }
+      ]
+    }
+  ]
+}

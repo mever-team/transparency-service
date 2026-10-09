@@ -26,3 +26,4 @@ codecarbon
 python-keycloak
 jwcrypto
 email-validator
+trafilatura

@@ -1,0 +1,305 @@
+{
+  "title": "",
+  "data": [
+    {
+      "name": "overview",
+      "value": [
+        {
+          "name": "name",
+          "value": "CompVis/stable-diffusion-v1-4",
+          "description": "Name of the model.",
+          "type": "short text"
+        },
+        {
+          "name": "description",
+          "value": "<span id='agent-eval-mark'></span>\n\n#### Stable Diffusion v1-4 Model Card\nStable Diffusion is a latent text-to-image diffusion model capable of generating photo-realistic images given any text input.\n\n\n\n<br><span id='agent-eval-mark'></span> For more information about how Stable Diffusion functions, please have a look at [🤗's Stable Diffusion with 🧨Diffusers blog](https://huggingface.co/blog/stable_diffusion).<span id='agent-eval-mark'></span> The **Stable-Diffusion-v1-4** checkpoint was initialized with the weights of the [Stable-Diffusion-v1-2](https:/steps/huggingface.co/CompVis/stable-diffusion-v1-2)\ncheckpoint and subsequently fine-tuned on 225k steps at resolution 512x512 on \"laion-aesthetics v2 5+\" and 10% dropping of the text-conditioning to improve [classifier-free guidance sampling](https://arxiv.org/abs/2207.12598).<br><span id='agent-eval-mark'></span> This weights here are intended to be used with the 🧨 Diffusers library. If you are looking for the weights to be loaded into the CompVis Stable Diffusion codebase, [come here](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original)<br><span id='agent-eval-mark'></span> <span id='agent-eval-mark'></span>\n\n#### Model Details\n- **Developed by:** Robin Rombach, Patrick Esser\n- **Model type:** Diffusion-based text-to-image generation model\n- **Language(s):** English\n- **License:** [The CreativeML OpenRAIL M license](https://huggingface.co/spaces/CompVis/stable-diffusion-license) is an [Open RAIL M license](https://www.licenses.ai/blog/2022/8/18/naming-convention-of-responsible-ai-licenses), adapted from the work that [BigScience](https://bigscience.huggingface.co/) and [the RAIL Initiative](https://www.licenses.ai/) are jointly carrying in the area of responsible AI licensing. See also [the article about the BLOOM Open RAIL license](https://bigscience.huggingface.co/blog/the-bigscience-rail-license) on which our license is based.\n\n\n\n<br><span id='agent-eval-mark'></span> - **Model Description:** This is a model that can be used to generate and modify images based on text prompts. It is a [Latent Diffusion Model](https://arxiv.org/abs/2112.10752) that uses a fixed, pretrained text encoder ([CLIP ViT-L/14](https://arxiv.org/abs/2103.00020)) as suggested in the [Imagen paper](https://arxiv.org/abs/2205.11487).<span id='agent-eval-mark'></span> - **Resources for more information:** [GitHub Repository](https://github.com/CompVis/stable-diffusion), [Paper](https://arxiv.org/abs/2112.10752).<br><span id='agent-eval-mark'></span> - **Cite as:**\n\n@InProceedings{Rombach_2022_CVPR,\nauthor    = {Rombach, Robin and Blattmann, Andreas and Lorenz, Dominik and Esser, Patrick and Ommer, Bj\\\"orn},\ntitle     = {High-Resolution Image Synthesis With Latent Diffusion Models},\nbooktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},\nmonth     = {June},\nyear      = {2022},\npages     = {10684-10695}\n}",
+          "description": "Model introduction, purpose, capabilities, novelty and caveats.",
+          "type": "long text"
+        },
+        {
+          "name": "creator",
+          "value": "CompVis",
+          "description": "Person or organization developed the model.",
+          "type": "short text"
+        },
+        {
+          "name": "date",
+          "value": "2026-10-09",
+          "description": "Model development completion date.",
+          "type": "date"
+        },
+        {
+          "name": "version",
+          "value": "133a221",
+          "description": "Version of the model.",
+          "type": "short text"
+        },
+        {
+          "name": "type",
+          "value": "Generative Adversarial Network",
+          "description": "Model architecture or algorithm type.",
+          "type": "list:#Neural Networks,Convolutional Neural Network,Recurrent Neural Network,Multilayer Perceptron,Transformer,Graph Neural Network,Autoencoder,Generative Adversarial Network,#Classical Machine Learning,Linear Regression,Logistic Regression,K-Nearest Neighbors,Naive Bayes,Support Vector Machine,Decision Tree,#Ensemble Methods,Random Forest,Gradient Boosting,Ensemble Model,#Unsupervised / Representation Learning,Clustering Model,Dimensionality Reduction Model,#Reinforcement Learning,Reinforcement Learning Agent,#Other,Other,unknown"
+        },
+        {
+          "name": "task",
+          "value": "Text-to-Image",
+          "description": "Model task.",
+          "type": "list:#Multimodal,Audio-Text-to-Text,Image-Text-to-Text,Image-Text-to-Image,Image-Text-to-Video,Visual Question Answering,Document Question Answering,Video-Text-to-Text,Visual Document Retrieval,Any-to-Any,#Computer Vision,Depth Estimation,Image Classification,Object Detection,Image Segmentation,Text-to-Image,Image-to-Text,Image-to-Image,Image-to-Video,Unconditional Image Generation,Video Classification,Text-to-Video,Zero-Shot Image Classification,Mask Generation,Zero-Shot Object Detection,Text-to-3D,Image-to-3D,Image Feature Extraction,Keypoint Detection,Video-to-Video,#Natural Language Processing,Text Classification,Token Classification,Table Question Answering,Question Answering,Zero-Shot Classification,Translation,Summarization,Feature Extraction,Text Generation,Fill-Mask,Sentence Similarity,Text Ranking,#Audio,Text-to-Speech,Text-to-Audio,Automatic Speech Recognition,Audio-to-Audio,Audio Classification,Voice Activity Detection,#Tabular,Tabular Classification,Tabular Regression,Time Series Forecasting,#Reinforcement Learning,Reinforcement Learning,Robotics,#Other,Other,unknown"
+        },
+        {
+          "name": "license",
+          "value": "creativeml-openrail-m",
+          "description": "Licence and intellectual property (IP) information.",
+          "type": "short text"
+        },
+        {
+          "name": "home",
+          "value": "https://huggingface.co/CompVis/stable-diffusion-v1-4",
+          "description": "URL hosting the model.",
+          "type": "short text"
+        },
+        {
+          "name": "contact",
+          "value": "CompVis",
+          "description": "Author contact information.",
+          "type": "short text"
+        },
+        {
+          "name": "citation",
+          "value": "<span id='agent-eval-mark'></span>\n\n#### Citation\n```bibtex\n    @InProceedings{Rombach_2022_CVPR,\n        author    = {Rombach, Robin and Blattmann, Andreas and Lorenz, Dominik and Esser, Patrick and Ommer, Bj\\\"orn},\n        title     = {High-Resolution Image Synthesis With Latent Diffusion Models},\n        booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},\n        month     = {June},\n        year      = {2022},\n        pages     = {10684-10695}\n    }\n```\n\n*This model card was written by: Robin Rombach and Patrick Esser and is based on the [DALL-E Mini model card](https://huggingface.co/dalle-mini/dalle-mini).*\n\n\n\n",
+          "description": "How should the model be cited? Typically includes title, author, year, and publisher. May be a formatted citation or bibtex entries like @article.",
+          "type": "long text"
+        },
+        {
+          "name": "more",
+          "value": "",
+          "description": "Additional model information not found above.",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "use",
+      "value": [
+        {
+          "name": "use_cases",
+          "value": "text-to-image<br><span id='agent-eval-mark'></span> <span id='agent-eval-mark'></span>\n\n#### Examples\nWe recommend using [🤗's Diffusers library](https://github.com/huggingface/diffusers) to run Stable Diffusion.\n\n\n\n<br><span id='agent-eval-mark'></span> <span id='agent-eval-mark'></span>\n\n#### Direct Use\nThe model is intended for research purposes only. Possible research areas and\ntasks include\n\n- Safe deployment of models which have the potential to generate harmful content.\n\n\n\n<br><span id='agent-eval-mark'></span> - Probing and understanding the limitations and biases of generative models.<span id='agent-eval-mark'></span> - Generation of artworks and use in design and other artistic processes.<span id='agent-eval-mark'></span> - Applications in educational or creative tools.<span id='agent-eval-mark'></span> - Research on generative models.<span id='agent-eval-mark'></span> Excluded uses are described below.",
+          "description": "Intended use of the model.",
+          "type": "long text"
+        },
+        {
+          "name": "oversight",
+          "value": "human-in-command",
+          "description": "Defines the level of human control over the system.",
+          "type": "list:self-learning/autonomous,human-in-the-loop,human-on-the-loop,human-in-command,unknown"
+        },
+        {
+          "name": "user_groups",
+          "value": "",
+          "description": "Intended users, for example categorized by background, role, or expertise.",
+          "type": "long text"
+        },
+        {
+          "name": "out_of_scope_use",
+          "value": "<span id='agent-eval-mark'></span>\n\n#### Misuse, Malicious Use, and Out-of-Scope Use\n_Note: This section is taken from the [DALLE-MINI model card](https://huggingface.co/dalle-mini/dalle-mini), but applies in the same way to Stable Diffusion v1_.\n\n\n\n<br><span id='agent-eval-mark'></span> The model should not be used to intentionally create or disseminate images that create hostile or alienating environments for people. This includes generating images that people would foreseeably find disturbing, distressing, or offensive; or content that propagates historical or current stereotypes.<span id='agent-eval-mark'></span> The model was not trained to be factual or true representations of people or events, and therefore using the model to generate such content is out-of-scope for the abilities of this model.<br><span id='agent-eval-mark'></span> <span id='agent-eval-mark'></span>\n\n#### Misuse and Malicious Use\nUsing the model to generate content that is cruel to individuals is a misuse of this model. This includes, but is not limited to:\n\n- Generating demeaning, dehumanizing, or otherwise harmful representations of people or their environments, cultures, religions, etc.\n\n\n\n<br><span id='agent-eval-mark'></span> - Intentionally promoting or propagating discriminatory content or harmful stereotypes.<span id='agent-eval-mark'></span> - Sexual content without consent of the people who might see it.<span id='agent-eval-mark'></span> - Mis- and disinformation\n- Representations of egregious violence and gore\n- Sharing of copyrighted or licensed material in violation of its terms of use.<span id='agent-eval-mark'></span> - Sharing content that is an alteration of copyrighted or licensed material in violation of its terms of use.",
+          "description": "Unintended or improper use of the model, for example in scenarios that could degrade its quality.",
+          "type": "long text"
+        },
+        {
+          "name": "software",
+          "value": "diffusers",
+          "description": "Software requirements and dependencies?",
+          "type": "long text"
+        },
+        {
+          "name": "instructions",
+          "value": "<span id='agent-eval-mark'></span>\n\n#### JAX/Flax\nRunning the pipeline with default PNDMScheduler\n\n```python\nimport jax\nimport numpy as np\nfrom flax.jax_utils import replicate\nfrom flax.training.common_utils import shard\n\nfrom diffusers import FlaxStableDiffusionPipeline\n\npipeline, params = FlaxStableDiffusionPipeline.from_pretrained(\n    \"CompVis/stable-diffusion-v1-4\", revision=\"flax\", dtype=jax.numpy.bfloat16\n)\n\nprompt = \"a photo of an astronaut riding a horse on mars\"\n\nprng_seed = jax.random.PRNGKey(0)\nnum_inference_steps = 50\n\nnum_samples = jax.device_count()\nprompt = num_samples * [prompt]\nprompt_ids = pipeline.prepare_inputs(prompt)\n\n# shard inputs and rng\nparams = replicate(params)\nprng_seed = jax.random.split(prng_seed, num_samples)\nprompt_ids = shard(prompt_ids)\n\nimages = pipeline(prompt_ids, params, prng_seed, num_inference_steps, jit=True).images\nimages = pipeline.numpy_to_pil(np.asarray(images.reshape((num_samples,) + images.shape[-3:])))\n```\n\n**Note**:\nIf you are limited by TPU memory, please make sure to load the `FlaxStableDiffusionPipeline` in `bfloat16` precision instead of the default `float32` precision as done above. You can do so by telling diffusers to load the weights from \"bf16\" branch.\n\n\n\n<br><span id='agent-eval-mark'></span> ```python\nimport jax\nimport numpy as np\nfrom flax.jax_utils import replicate\nfrom flax.training.common_utils import shard\n\nfrom diffusers import FlaxStableDiffusionPipeline\n\npipeline, params = FlaxStableDiffusionPipeline.from_pretrained(\n    \"CompVis/stable-diffusion-v1-4\", revision=\"bf16\", dtype=jax.numpy.bfloat16\n)\n\nprompt = \"a photo of an astronaut riding a horse on mars\"\n\nprng_seed = jax.random.PRNGKey(0)\nnum_inference_steps = 50\n\nnum_samples = jax.device_count()\nprompt = num_samples * [prompt]\nprompt_ids = pipeline.prepare_inputs(prompt)\n\n# shard inputs and rng\nparams = replicate(params)\nprng_seed = jax.random.split(prng_seed, num_samples)\nprompt_ids = shard(prompt_ids)\n\nimages = pipeline(prompt_ids, params, prng_seed, num_inference_steps, jit=True).images\nimages = pipeline.numpy_to_pil(np.asarray(images.reshape((num_samples,) + images.shape[-3:])))\n```",
+          "description": "Use instructions.",
+          "type": "long text"
+        },
+        {
+          "name": "inputs_outputs",
+          "value": "",
+          "description": "Description of the model's inputs and outputs",
+          "type": "long text"
+        },
+        {
+          "name": "factors",
+          "value": "",
+          "description": "Foreseeable salient factors for which model performance may vary.",
+          "type": "long text"
+        },
+        {
+          "name": "hardware",
+          "value": "",
+          "description": "Hardware requirements for training and inference.",
+          "type": "long text"
+        },
+        {
+          "name": "more",
+          "value": "",
+          "description": "Additional information about intended uses not found above.",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "training",
+      "value": [
+        {
+          "name": "datasets",
+          "value": "",
+          "description": "Dataset(s) used during training.",
+          "type": "long text"
+        },
+        {
+          "name": "motivation",
+          "value": "",
+          "description": "Why were training datasets chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "preprocessing",
+          "value": "",
+          "description": "Data pre-processing for training (tokenizer, data augmentation etc.).",
+          "type": "long text"
+        },
+        {
+          "name": "standards",
+          "value": "unknown",
+          "description": "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management.",
+          "type": "list:none,ISO,IEEE,unknown"
+        },
+        {
+          "name": "update",
+          "value": "unknown",
+          "description": "Is tge training set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?",
+          "type": "list:no,yes,unknown"
+        },
+        {
+          "name": "more",
+          "value": "<span id='agent-eval-mark'></span>\n\n#### PyTorch\n```bash\npip install --upgrade diffusers transformers scipy\n```\n\nRunning the pipeline with the default PNDM scheduler:\n\n```python\nimport torch\nfrom diffusers import StableDiffusionPipeline\n\nmodel_id = \"CompVis/stable-diffusion-v1-4\"\ndevice = \"cuda\"\n\n\npipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)\npipe = pipe.to(device)\n\nprompt = \"a photo of an astronaut riding a horse on mars\"\nimage = pipe(prompt).images[0]  \n    \nimage.save(\"astronaut_rides_horse.png\")\n```\n\n**Note**:\nIf you are limited by GPU memory and have less than 4GB of GPU RAM available, please make sure to load the StableDiffusionPipeline in float16 precision instead of the default float32 precision as done above. You can do so by telling diffusers to expect the weights to be in float16 precision:\n\n\n```py\nimport torch\n\npipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)\npipe = pipe.to(device)\npipe.enable_attention_slicing()\n\nprompt = \"a photo of an astronaut riding a horse on mars\"\nimage = pipe(prompt).images[0]  \n    \nimage.save(\"astronaut_rides_horse.png\")\n```\n\nTo swap out the noise scheduler, pass it to `from_pretrained`:\n\n```python\nfrom diffusers import StableDiffusionPipeline, EulerDiscreteScheduler\n\nmodel_id = \"CompVis/stable-diffusion-v1-4\"\n\n# Use the Euler scheduler here instead\nscheduler = EulerDiscreteScheduler.from_pretrained(model_id, subfolder=\"scheduler\")\npipe = StableDiffusionPipeline.from_pretrained(model_id, scheduler=scheduler, torch_dtype=torch.float16)\npipe = pipe.to(\"cuda\")\n\nprompt = \"a photo of an astronaut riding a horse on mars\"\nimage = pipe(prompt).images[0]  \n    \nimage.save(\"astronaut_rides_horse.png\")\n```\n\n\n\n<br><span id='agent-eval-mark'></span> <span id='agent-eval-mark'></span>\n\n#### Training\n**Training Data**\nThe model developers used the following dataset for training the model:\n\n- LAION-2B (en) and subsets thereof (see next section)\n\n**Training Procedure**\nStable Diffusion v1-4 is a latent diffusion model which combines an autoencoder with a diffusion model that is trained in the latent space of the autoencoder. During training,\n\n- Images are encoded through an encoder, which turns images into latent representations. The autoencoder uses a relative downsampling factor of 8 and maps images of shape H x W x 3 to latents of shape H/f x W/f x 4\n- Text prompts are encoded through a ViT-L/14 text-encoder.\n\n\n\n<br><span id='agent-eval-mark'></span> - The non-pooled output of the text encoder is fed into the UNet backbone of the latent diffusion model via cross-attention.<span id='agent-eval-mark'></span> - The loss is a reconstruction objective between the noise that was added to the latent and the prediction made by the UNet.<span id='agent-eval-mark'></span> We currently provide four checkpoints, which were trained as follows.<span id='agent-eval-mark'></span> - [`stable-diffusion-v1-1`](https://huggingface.co/CompVis/stable-diffusion-v1-1): 237,000 steps at resolution `256x256` on [laion2B-en](https://huggingface.co/datasets/laion/laion2B-en).<span id='agent-eval-mark'></span> 194,000 steps at resolution `512x512` on [laion-high-resolution](https://huggingface.co/datasets/laion/laion-high-resolution) (170M examples from LAION-5B with resolution `>= 1024x1024`).<span id='agent-eval-mark'></span> - [`stable-diffusion-v1-2`](https://huggingface.co/CompVis/stable-diffusion-v1-2): Resumed from `stable-diffusion-v1-1`.<span id='agent-eval-mark'></span> 515,000 steps at resolution `512x512` on \"laion-improved-aesthetics\" (a subset of laion2B-en,\nfiltered to images with an original size `>= 512x512`, estimated aesthetics score `> 5.0`, and an estimated watermark probability `< 0.5`. The watermark estimate is from the LAION-5B metadata, the aesthetics score is estimated using an [improved aesthetics estimator](https://github.com/christophschuhmann/improved-aesthetic-predictor)).<span id='agent-eval-mark'></span> - [`stable-diffusion-v1-3`](https://huggingface.co/CompVis/stable-diffusion-v1-3): Resumed from `stable-diffusion-v1-2`. 195,000 steps at resolution `512x512` on \"laion-improved-aesthetics\" and 10 % dropping of the text-conditioning to improve [classifier-free guidance sampling](https://arxiv.org/abs/2207.12598).<span id='agent-eval-mark'></span> - [`stable-diffusion-v1-4`](https://huggingface.co/CompVis/stable-diffusion-v1-4) Resumed from `stable-diffusion-v1-2`.225,000 steps at resolution `512x512` on \"laion-aesthetics v2 5+\"  and 10 % dropping of the text-conditioning to improve [classifier-free guidance sampling](https://arxiv.org/abs/2207.12598).<br><span id='agent-eval-mark'></span> - **Hardware:** 32 x 8 x A100 GPUs\n- **Optimizer:** AdamW\n- **Gradient Accumulations**: 2\n- **Batch:** 32 x 8 x 2 x 4 = 2048\n- **Learning rate:** warmup to 0.0001 for 10,000 steps and then kept constant",
+          "description": "Additional training set information not found above.",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "evaluation",
+      "value": [
+        {
+          "name": "datasets",
+          "value": "",
+          "description": "Dataset(s) used during evaluation.",
+          "type": "long text"
+        },
+        {
+          "name": "motivation",
+          "value": "",
+          "description": "Why were evaluation datasets chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "preprocessing",
+          "value": "",
+          "description": "Data pre-processing for evaluation (tokenizer, data augmentation etc.).",
+          "type": "long text"
+        },
+        {
+          "name": "standards",
+          "value": "unknown",
+          "description": "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management.",
+          "type": "list:none,ISO,IEEE,unknown"
+        },
+        {
+          "name": "update",
+          "value": "unknown",
+          "description": "Is the evaluation set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?",
+          "type": "list:no,yes,unknown"
+        },
+        {
+          "name": "more",
+          "value": "<span id='agent-eval-mark'></span>\n\n#### Evaluation Results\nEvaluations with different classifier-free guidance scales (1.5, 2.0, 3.0, 4.0,\n5.0, 6.0, 7.0, 8.0) and 50 PLMS sampling\nsteps show the relative improvements of the checkpoints:\n\n![pareto](https://huggingface.co/CompVis/stable-diffusion/resolve/main/v1-variants-scores.jpg)\n\nEvaluated using 50 PLMS steps and 10000 random prompts from the COCO2017 validation set, evaluated at 512x512 resolution.  Not optimized for FID scores.\n\n\n\n",
+          "description": "Additional evaluation set information not found above.",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "performance",
+      "value": [
+        {
+          "name": "analysis",
+          "value": "",
+          "description": "Analysis and explanation of performance results.",
+          "type": "long text"
+        },
+        {
+          "name": "metrics",
+          "value": "",
+          "description": "Benchmark results for any performance metrics.",
+          "type": "long text"
+        },
+        {
+          "name": "thresholds",
+          "value": "",
+          "description": "If decision thresholds are used, what are they, and why were those parameters chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "methodology",
+          "value": "",
+          "description": "Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method.",
+          "type": "long text"
+        },
+        {
+          "name": "environmental_impact",
+          "value": "<span id='agent-eval-mark'></span>\n\n#### Environmental Impact\n**Stable Diffusion v1** **Estimated Emissions**\nBased on that information, we estimate the following CO2 emissions using the [Machine Learning Impact calculator](https://mlco2.github.io/impact compute) presented in [Lacoste et al. (2019)](https://arxiv.org/abs/1910.09700). The hardware, runtime, cloud provider, and compute region were utilized to estimate the carbon impact.\n\n\n\n<br><span id='agent-eval-mark'></span> - **Hardware Type:** A100 PCIe 40GB\n- **Hours used:** 150000\n- **Cloud Provider:** AWS\n- **Compute Region:** US-east\n- **Carbon Emitted (Power consumption x Time x Carbon produced based on location of power grid):** 11250 kg CO2 eq.",
+          "description": "Report of energy consumption, CO2 emissions or any other environmental impact.",
+          "type": "long text"
+        },
+        {
+          "name": "bias",
+          "value": "<span id='agent-eval-mark'></span>\n\n#### Bias\nWhile the capabilities of image generation models are impressive, they can also reinforce or exacerbate social biases.\n\n\n\n<br><span id='agent-eval-mark'></span> Stable Diffusion v1 was trained on subsets of [LAION-2B(en)](https://laion.ai/blog/laion-5b/),\nwhich consists of images that are primarily limited to English descriptions.<span id='agent-eval-mark'></span> Texts and images from communities and cultures that use other languages are likely to be insufficiently accounted for.<span id='agent-eval-mark'></span> This affects the overall output of the model, as white and western cultures are often set as the default. Further, the\nability of the model to generate content with non-English prompts is significantly worse than with English-language prompts.",
+          "description": "Performance and bias across different groups (e.g. ethnicity, gender)",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "safety",
+      "value": [
+        {
+          "name": "ethics",
+          "value": "",
+          "description": "Ethical considerations regarding datasets and usage of model, including harmful bias and discrimination concerns. Recommended mitigation measures.",
+          "type": "long text"
+        },
+        {
+          "name": "fairness",
+          "value": "",
+          "description": "Bias or fairness assessments of the model, for example that indicate discrimination against demographic groups.",
+          "type": "long text"
+        },
+        {
+          "name": "risks",
+          "value": "<span id='agent-eval-mark'></span>\n\n#### Misuse and Malicious Use\n- Impersonating individuals without their consent.\n\n\n\n<br><span id='agent-eval-mark'></span> <span id='agent-eval-mark'></span>\n\n#### Safety Module\nThe intended use of this model is with the [Safety Checker](https://github.com/huggingface/diffusers/blob/main/src/diffusers/pipelines/stable_diffusion/safety_checker.py) in Diffusers.\n\n\n\n<br><span id='agent-eval-mark'></span> This checker works by checking model outputs against known hard-coded NSFW concepts.<span id='agent-eval-mark'></span> The concepts are intentionally hidden to reduce the likelihood of reverse-engineering this filter.<span id='agent-eval-mark'></span> Specifically, the checker compares the class probability of harmful concepts in the embedding space of the `CLIPTextModel` *after generation* of the images.<span id='agent-eval-mark'></span> The concepts are passed into the model with the generated image and compared to a hand-engineered weight for each NSFW concept.",
+          "description": "Possible threats to the model's validity (design and technical faults) and consequences.",
+          "type": "long text"
+        },
+        {
+          "name": "security",
+          "value": "",
+          "description": "Is the model certified for cybersecurity or is it compliant with specific security standards?",
+          "type": "long text"
+        },
+        {
+          "name": "caveats",
+          "value": "<span id='agent-eval-mark'></span>\n\n#### JAX/Flax\nTo use StableDiffusion on TPUs and GPUs for faster inference you can leverage JAX/Flax.\n\n\n\n<br><span id='agent-eval-mark'></span> <span id='agent-eval-mark'></span>\n\n#### Limitations\n- The model does not achieve perfect photorealism\n- The model cannot render legible text\n- The model does not perform well on more difficult tasks which involve compositionality, such as rendering an image corresponding to “A red cube on top of a blue sphere”\n- Faces and people in general may not be generated properly.\n\n\n\n<br><span id='agent-eval-mark'></span> - The model was trained mainly with English captions and will not work as well in other languages.<span id='agent-eval-mark'></span> - The autoencoding part of the model is lossy\n- The model was trained on a large-scale dataset\n[LAION-5B](https://laion.ai/blog/laion-5b/) which contains adult material\nand is not fit for product use without additional safety mechanisms and\nconsiderations.<span id='agent-eval-mark'></span> - No additional measures were used to deduplicate the dataset. As a result, we observe some degree of memorization for images that are duplicated in the training data.<span id='agent-eval-mark'></span> The training data can be searched at [https://rom1504.github.io/clip-retrieval/](https://rom1504.github.io/clip-retrieval/) to possibly assist in the detection of memorized images.",
+          "description": "Additional concerns that were not covered in the previous sections.",
+          "type": "long text"
+        }
+      ]
+    }
+  ]
+}

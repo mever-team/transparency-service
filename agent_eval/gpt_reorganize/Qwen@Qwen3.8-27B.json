@@ -1,0 +1,303 @@
+{
+  "title": "Qwen3 8-27B",
+  "data": [
+    {
+      "name": "overview",
+      "value": [
+        {
+          "name": "name",
+          "value": "Qwen3 8-27B",
+          "description": "Name of the model ",
+          "type": "short text"
+        },
+        {
+          "name": "description",
+          "value": "This repository contains model weights and configuration files for the post-trained model in the Hugging Face Transformers format \n\nThese artifacts are compatible with Hugging Face Transformers, vLLM, SGLang, TokenSpeed, etc \n\nFollowing the widespread community adoption of the Qwen3 5 and Qwen3 6 series, we are pleased to introduce Qwen3 8, the most capable generation in the Qwen open-model family to date \n\nBuilt on the architectural foundation of Qwen3 5, Qwen3 8 delivers substantial gains across coding, professional work, research, and long-horizon agentic tasks  Qwen3 8-27B brings these advances to a compact, deployment-friendly dense model: a native vision-language model that understands images and videos, with flexible thinking control, designed to carry complex, multi-step tasks through to completion with greater reliability \n\nQwen3 8-27B features the following enhancements:\n\n* Core Capabilities: Comprehensive improvements across coding, professional work, research, and long-horizon agentic tasks \n* Agent Execution: Stronger autonomous planning and better handling of environment feedback, leading to more reliable end-to-end task completion \n* Downstream Compatibility: Broader support for popular harnesses and development tools, making it easier to integrate into your existing stack \n* Flexible Thinking Control: Thinking mode is on by default and can be disabled per request; reasoning depth can be tuned with `reasoning_effort`, and reasoning context from historical messages is retained via `preserve_thinking` \n* Vision-Language Understanding: Native support for image and video understanding, from STEM diagrams and documents to hour-scale videos ",
+          "description": "Model purpose, capabilities, novelty and caveats",
+          "type": "long text"
+        },
+        {
+          "name": "creator",
+          "value": "Qwen Team",
+          "description": "Person or organization developed the model ",
+          "type": "short text"
+        },
+        {
+          "name": "date",
+          "value": "",
+          "description": "Model development completion date ",
+          "type": "date"
+        },
+        {
+          "name": "version",
+          "value": "Qwen3 8-27B",
+          "description": "Version of the model ",
+          "type": "short text"
+        },
+        {
+          "name": "type",
+          "value": "Causal Language Model with Vision Encoder",
+          "description": "Model architecture or algorithm type "
+        },
+        {
+          "name": "task",
+          "value": "Image-Text-to-Text",
+          "description": "Model task "
+        },
+        {
+          "name": "license",
+          "value": "apache-2 0",
+          "description": "Licence and intellectual property (IP) information ",
+          "type": "short text"
+        },
+        {
+          "name": "home",
+          "value": "https://huggingface co/Qwen/Qwen3 8-27B",
+          "description": "URL hosting the model ",
+          "type": "short text"
+        },
+        {
+          "name": "contact",
+          "value": "",
+          "description": "Author contact information ",
+          "type": "short text"
+        },
+        {
+          "name": "citation",
+          "value": "@misc{qwen38,\n    title = {{Qwen3 8-Max}: A New Bar for Coding and Cowork},\n    url = {https://qwen ai/blog?id=qwen3 8},\n    author = {{Qwen Team}},\n    month = {August},\n    year = {2026}\n}",
+          "description": "How should the model be cited? Typically includes title, author, year, and publisher  May be a formatted citation or bibtex entries like @article ",
+          "type": "short text"
+        },
+        {
+          "name": "more",
+          "value": "Language Model\nNumber of Parameters: 27B\nHidden Dimension: 5120\nToken Embedding: 248,320 (Padded)\nNumber of Layers: 64\nHidden Layout: 16 × (3 × (Gated DeltaNet → FFN) → 1 × (Gated Attention → FFN))\nGated DeltaNet:\n  Number of Linear Attention Heads: 48 for V and 16 for QK\n  Head Dimension: 128\nGated Attention:\n  Number of Attention Heads: 24 for Q and 4 for KV\n  Head Dimension: 256\n  Rotary Position Embedding Dimension: 64\nFeed Forward Network:\n  Intermediate Dimension: 17,408\nLM Output: 248,320 (Padded)\nMTP (Multi-Token Prediction): trained with multiple steps\nContext Length: 262,144 natively and extensible up to 1,000,000 tokens ",
+          "description": "Additional model information not found above ",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "use",
+      "value": [
+        {
+          "name": "use_cases",
+          "value": "Comprehensive improvements across coding, professional work, research, and long-horizon agentic tasks \n\nStronger autonomous planning and better handling of environment feedback, leading to more reliable end-to-end task completion \n\nNative support for image and video understanding, from STEM diagrams and documents to hour-scale videos \n\nFor users seeking managed, scalable inference without infrastructure maintenance, the official Qwen API service is provided by Qwen Cloud  In particular, Qwen3 8-27B will be available as a hosted version with more production features, e g , 1M context length by default, official built-in tools ",
+          "description": "Intended uses of the model ",
+          "type": "long text"
+        },
+        {
+          "name": "oversight",
+          "value": "",
+          "description": "Defines the level of human control over the system ",
+          "type": "list:self-learning/autonomous,human-in-the-loop,human-on-the-loop,human-in-command,unknown"
+        },
+        {
+          "name": "user_groups",
+          "value": "",
+          "description": "Intended users ",
+          "type": "long text"
+        },
+        {
+          "name": "out_of_scope_use",
+          "value": "",
+          "description": "Unintended and improper use of model ",
+          "type": "long text"
+        },
+        {
+          "name": "software",
+          "value": "Hugging Face Transformers, vLLM, SGLang, TokenSpeed, Qwen Cloud, OpenAI Python SDK, Docker, llama cpp, Ollama, LM Studio, or any compatible app ",
+          "description": "Software requirements and dependencies?",
+          "type": "long text"
+        },
+        {
+          "name": "instructions",
+          "value": "Instructions to use Qwen/Qwen3 8-27B with libraries, inference providers, notebooks, and local apps  Follow these links to get started \n\nLibraries\nTransformers\n\nHow to use Qwen/Qwen3 8-27B with Transformers:\n\nfrom transformers import pipeline\n\npipe = pipeline(\"image-text-to-text\", model=\"Qwen/Qwen3 8-27B\")\nmessages = [\n    {\n        \"role\": \"user\",\n        \"content\": [\n            {\"type\": \"image\", \"url\": \"https://huggingface co/datasets/huggingface/documentation-images/resolve/main/p-blog/candy JPG\"},\n            {\"type\": \"text\", \"text\": \"What animal is on the candy?\"}\n        ]\n    },\n]\npipe(text=messages)\n\n# Load model directly\nfrom transformers import AutoProcessor, AutoModelForMultimodalLM\n\nprocessor = AutoProcessor from_pretrained(\"Qwen/Qwen3 8-27B\")\nmodel = AutoModelForMultimodalLM from_pretrained(\"Qwen/Qwen3 8-27B\", device_map=\"auto\")\nmessages = [\n    {\n        \"role\": \"user\",\n        \"content\": [\n            {\"type\": \"image\", \"url\": \"https://huggingface co/datasets/huggingface/documentation-images/resolve/main/p-blog/candy JPG\"},\n            {\"type\": \"text\", \"text\": \"What animal is on the candy?\"}\n        ]\n    },\n]\ninputs = processor apply_chat_template(\n    messages,\n    add_generation_prompt=True,\n    tokenize=True,\n    return_dict=True,\n    return_tensors=\"pt\",\n) to(model device)\n\noutputs = model generate(**inputs, max_new_tokens=40)\nprint(processor decode(outputs[0][inputs[\"input_ids\"] shape[-1]:]))\n\nHow to use Qwen/Qwen3 8-27B with vLLM:\n\n# Install vLLM from pip:\npip install vllm\n# Start the vLLM server:\nvllm serve \"Qwen/Qwen3 8-27B\"\n# Call the server using curl (OpenAI-compatible API):\ncurl -X POST \"http://localhost:8000/v1/chat/completions\" \\\n    -H \"Content-Type: application/json\" \\\n    --data '{\n        \"model\": \"Qwen/Qwen3 8-27B\",\n        \"messages\": [\n            {\n                \"role\": \"user\",\n                \"content\": [\n                    {\n                        \"type\": \"text\",\n                        \"text\": \"Describe this image in one sentence \"\n                    },\n                    {\n                        \"type\": \"image_url\",\n                        \"image_url\": {\n                            \"url\": \"https://cdn britannica com/61/93061-050-99147DCE/Statue-of-Liberty-Island-New-York-Bay jpg\"\n                        }\n                    }\n                ]\n            }\n        ]\n    }'\n\nUse Docker\n\ndocker model run hf co/Qwen/Qwen3 8-27B\n\nHow to use Qwen3 8-27B with SGLang:\n\n# Install SGLang from pip:\npip install sglang\n# Start the SGLang server:\npython3 -m sglang launch_server \\\n    --model-path \"Qwen/Qwen3 8-27B\" \\\n    --host 0 0 0 0 \\\n    --port 30000\n# Call the server using curl (OpenAI-compatible API):\ncurl -X POST \"http://localhost:30000/v1/chat/completions\" \\\n    -H \"Content-Type: application/json\" \\\n    --data '{\n        \"model\": \"Qwen/Qwen3 8-27B\",\n        \"messages\": [\n            {\n                \"role\": \"user\",\n                \"content\": [\n                    {\n                        \"type\": \"text\",\n                        \"text\": \"Describe this image in one sentence \"\n                    },\n                    {\n                        \"type\": \"image_url\",\n                        \"image_url\": {\n                            \"url\": \"https://cdn britannica com/61/93061-050-99147DCE/Statue-of-Liberty-Island-New-York-Bay jpg\"\n                        }\n                    }\n                ]\n            }\n        ]\n    }'\n\nUse Docker images\n\ndocker run --gpus all \\\n    --shm-size 32g \\\n    -p 30000:30000 \\\n    -v ~/ cache/huggingface:/root/ cache/huggingface \\\n    --env \"HF_TOKEN=<secret>\" \\\n    --ipc=host \\\n    lmsysorg/sglang:latest \\\n    python3 -m sglang launch_server \\\n        --model-path \"Qwen/Qwen3 8-27B\" \\\n        --host 0 0 0 0 \\\n        --port 30000\n# Call the server using curl (OpenAI-compatible API):\ncurl -X POST \"http://localhost:30000/v1/chat/completions\" \\\n    -H \"Content-Type: application/json\" \\\n    --data '{\n        \"model\": \"Qwen/Qwen3 8-27B\",\n        \"messages\": [\n            {\n                \"role\": \"user\",\n                \"content\": [\n                    {\n                        \"type\": \"text\",\n                        \"text\": \"Describe this image in one sentence \"\n                    },\n                    {\n                        \"type\": \"image_url\",\n                        \"image_url\": {\n                            \"url\": \"https://cdn britannica com/61/93061-050-99147DCE/Statue-of-Liberty-Island-New-York-Bay jpg\"\n                        }\n                    }\n                ]\n            }\n        ]\n    }'\n\ndocker model run hf co/Qwen/Qwen3 8-27B\n\nQwen3 8 models operate in thinking mode by default, generating thinking content signified by `<think>\\n   </think>\\n\\n` before producing the final response  To disable thinking content and obtain a direct response, refer to the examples here \n\nWe recommend using the following sets of sampling parameters for generation:\n\n* Thinking Mode: `temperature=1 0`, `top_p=0 95`, `top_k=20`, `min_p=0 0`, `presence_penalty=0 0`, `repetition_penalty=1 0`\n* Instruct (or non-thinking) mode: `temperature=0 7`, `top_p=0 80`, `top_k=20`, `min_p=0 0`, `presence_penalty=1 5`, `repetition_penalty=1 0`\n\nQwen3 8 comes with official support for `reasoning_effort`, which can be used to adjust reasoning depth and control cost:\n\n* `xhigh` (default): for complex tasks demanding thorough analysis\n* `medium`: balancing accuracy and speed\n* `low`: efficient reasoning optimizing for speed and cost\n\nIn addition, `preserve_thinking` is enabled by default for all workloads for the best out-of-the-box experience ",
+          "description": "Use instructions ",
+          "type": "long text"
+        },
+        {
+          "name": "inputs_outputs",
+          "value": "Native vision-language model that understands images and videos  The model operates in image-text-to-text mode and supports text-only, image, and video inputs ",
+          "description": "Description of the model's inputs and outputs",
+          "type": "long text"
+        },
+        {
+          "name": "factors",
+          "value": "In multi-turn agentic tasks, lower reasoning effort does not always reduce overall task completion time  Although it may produce faster per-turn responses, it can also lead to insufficient analysis, more failures, and repeated retries, which may increase total latency and token consumption ",
+          "description": "Foreseeable salient factors for which model performance may vary ",
+          "type": "long text"
+        },
+        {
+          "name": "hardware",
+          "value": "Model size: 28B params\nTensor type: BF16",
+          "description": "Hardware requirements for training and inference ",
+          "type": "long text"
+        },
+        {
+          "name": "more",
+          "value": "For production workloads or high-throughput scenarios, dedicated serving engines such as SGLang, vLLM, or TokenSpeed are recommended \n\nQwen3 8 can be deployed with popular inference frameworks, e g :\n* SGLang\n* vLLM\n* TokenSpeed\n\nQwen3 8-27B is available for use with llama cpp, Ollama, LM Studio, or any compatible app through quantizations ",
+          "description": "Additional information about intended uses not found above ",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "training",
+      "value": [
+        {
+          "name": "datasets",
+          "value": "",
+          "description": "Dataset(s) used during training ",
+          "type": "long text"
+        },
+        {
+          "name": "motivation",
+          "value": "",
+          "description": "Why were training datasets chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "preprocessing",
+          "value": "",
+          "description": "Data pre-processing for training (tokenizer, data augmentation etc ) ",
+          "type": "long text"
+        },
+        {
+          "name": "standards",
+          "value": "",
+          "description": "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management ",
+          "type": "list:none,ISO,IEEE,unknown"
+        },
+        {
+          "name": "update",
+          "value": "",
+          "description": "Is tge training set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?",
+          "type": "list:no,yes,unknown"
+        },
+        {
+          "name": "more",
+          "value": "Training Stage: Pre-training & Post-training",
+          "description": "Additional training set information not found above ",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "evaluation",
+      "value": [
+        {
+          "name": "datasets",
+          "value": "Terminal Bench 2 1 (Terminus), SWE-bench Pro, NL2Repo-Bench, DeepSWE 1 1, QwenSWEBench, CoWorkBench, JobBench, Agents' Last Exam, IFBench, GPQA Diamond, HLE, LiveCodeBench v6, OSWorld-Verified, WebArena-Verified, AndroidWorld, RecreationBench, ClawEval-MM, SWE-MM, Vision2Web, MathVision, BabyVision, CharXiv (RQ), OmniDocBench 1 5, RealWorldQA, ERQA, ParseBench ",
+          "description": "Dataset(s) used during evaluation ",
+          "type": "long text"
+        },
+        {
+          "name": "motivation",
+          "value": "Coding, agentic terminal coding, agentic coding, repo-level code generation, software engineering, long-horizon office work, professional job tasks, frontier agentic tasks, instruction following, scientific reasoning, multidisciplinary reasoning, competitive coding, computer use, browser use, mobile use, application recreation, multimodal tool use, multimodal software engineering, visual web development, visual math problem solving, general visual reasoning, scientific chart analysis, document intelligence, real-world perception, and embodied intelligence ",
+          "description": "Why were evaluation datasets chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "preprocessing",
+          "value": "A small number of incorrect ground-truth annotations in MathVision and CharXiv (RQ) were corrected following manual verification, and all reported scores on those benchmarks were computed using the corrected annotations ",
+          "description": "Data pre-processing for evaluation (tokenizer, data augmentation etc ) ",
+          "type": "long text"
+        },
+        {
+          "name": "standards",
+          "value": "",
+          "description": "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management ",
+          "type": "list:none,ISO,IEEE,unknown"
+        },
+        {
+          "name": "update",
+          "value": "",
+          "description": "Is the evalution set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?",
+          "type": "list:no,yes,unknown"
+        },
+        {
+          "name": "more",
+          "value": "Text Performance:\n\nAgentic terminal coding Terminal Bench 2 1 (Terminus): 73 0\nAgentic coding SWE-bench Pro: 61 7\nRepo-level code generation NL2Repo-Bench: 42 3\nAgentic coding DeepSWE 1 1: 42 2\nSoftware engineering QwenSWEBench: 79 0\nLong-horizon office work CoWorkBench: 70 7\nProfessional job tasks JobBench: 33 4\nFrontier agentic tasks Agents' Last Exam: Pass@1 20 4 Score 42 9\nInstruction following IFBench: 79 5\nScientific reasoning GPQA Diamond: 89 2\nMultidisciplinary reasoning HLE: 30 8\nCompetitive coding LiveCodeBench v6: 90 3\n\nVL Performance:\n\nComputer use OSWorld-Verified: 84 3\nBrowser use WebArena-Verified: 64 8\nMobile use AndroidWorld: 81 9\nApplication recreation RecreationBench: 47 1\nMultimodal tool use ClawEval-MM: Pass@3 57 4 Average 56 9\nMultimodal software engineering SWE-MM: 38 6\nVisual web development Vision2Web: 62 9\nVisual math problem solving MathVision: Without CI 90 0 With CI 94 6\nGeneral visual reasoning BabyVision: Without CI 65 7 With CI 85 6\nScientific chart analysis CharXiv (RQ): Without CI 83 7 With CI 90 2\nDocument intelligence OmniDocBench 1 5: 91 1\nReal-world perception RealWorldQA: 85 9\nEmbodied intelligence ERQA: 65 5",
+          "description": "Additional evaluation set information not found above ",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "performance",
+      "value": [
+        {
+          "name": "analysis",
+          "value": "The model card reports performance across coding, agentic tasks, general reasoning, multimodal intelligence, visual reasoning, document intelligence, real-world perception, and embodied intelligence  Qwen3 8-27B is evaluated using multiple external and in-house benchmarks ",
+          "description": "Analysis and explanation of performance results ",
+          "type": "long text"
+        },
+        {
+          "name": "metrics",
+          "value": "Terminal Bench 2 1 (Terminus): 73 0\nSWE-bench Pro: 61 7\nNL2Repo-Bench: 42 3\nDeepSWE 1 1: 42 2\nQwenSWEBench: 79 0\nCoWorkBench: 70 7\nJobBench: 33 4\nAgents' Last Exam: Pass@1 20 4 Score 42 9\nIFBench: 79 5\nGPQA Diamond: 89 2\nHLE: 30 8\nLiveCodeBench v6: 90 3\nOSWorld-Verified: 84 3\nWebArena-Verified: 64 8\nAndroidWorld: 81 9\nRecreationBench: 47 1\nClawEval-MM: Pass@3 57 4 Average 56 9\nSWE-MM: 38 6\nVision2Web: 62 9\nMathVision: Without CI 90 0 With CI 94 6\nBabyVision: Without CI 65 7 With CI 85 6\nCharXiv (RQ): Without CI 83 7 With CI 90 2\nOmniDocBench 1 5: 91 1\nRealWorldQA: 85 9\nERQA: 65 5",
+          "description": "Benchmark results for any performance metrics ",
+          "type": "long text"
+        },
+        {
+          "name": "thresholds",
+          "value": "",
+          "description": "If decision thresholds are used, what are they, and why were those parameters chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "methodology",
+          "value": "SWE-bench Pro: Except for Opus4 6 Max, which uses the officially reported score, all models are evaluated with the Claude Code harness at temp=1 0, top_p=0 95, and a 256K context window  Problematic tasks were corrected, and all baseline models were re-evaluated on the refined benchmark \n\nNL2Repo-Bench: Evaluated with the Claude Code harness  To prevent reward hacking, we disable Bash commands that attempt to access the specific repository, such as pip download, pip install, and git clone \n\nDeepSWE 1 1: Evaluated with the Claude Code harness at temp=1 0, top_p=0 95, and a 256K context window \n\nQwenSWEBench: In-house coding benchmark for evaluating models' software engineering capabilities  Evaluated with the Claude Code harness  Reporting avg@3 with an 8-hour timeout, max_tokens=32,768, temperature=1 0, and a 256K context window \n\nCoWorkBench: In-house cowork benchmark for evaluating long-horizon tasks across computer science, finance, law, medical, and other productivity domains \n\nHLE: Judged by GPT-4o \n\nMathVision, BabyVision, and CharXiv (RQ): Where both settings are available, cells report “Without CI” and “With CI” separately; otherwise, only the available setting is shown  A small number of incorrect ground-truth annotations in MathVision and CharXiv (RQ) were corrected following manual verification, and all reported scores on those benchmarks were computed using the corrected annotations \n\nMathVision: Qwen3 8-27B is evaluated using the fixed prompt: “Please reason step by step, and put your final answer within `\\boxed{}` ” For the remaining models, we report the higher score from two prompt variants—one with and one without the `\\boxed{}` formatting requirement \n\nWebArena-Verified: Scores are computed with the official WebArena-Verified grader under the OSWorld scaffold \n\nRecreationBench: An in-house, long-horizon application-recreation benchmark designed to evaluate hybrid-agent capabilities across five platforms: desktop (Ubuntu, macOS, and Windows), mobile (Android), and the web \n\nClawEval-MM: Scores are reported as “Pass@3 / average score ” Pass@3 is the percentage of tasks passed in at least one of three trials; the average score is the mean benchmark score across the three trials \n\nVision2Web: Scores are averaged across the frontend, webpage, and website categories  Evaluations use the Claude Code harness and are judged by `gpt-5 4-2026-03-05` \n\nSWE-MM: Scores are evaluated on the Claude Code harness using the public dev split of SWE-bench Multimodal, with the modifications described in Appendix 8 3 of the Claude Opus 4 7 system card \n\nEmpty cells (--) indicate that results are not yet available or not applicable ",
+          "description": "Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method ",
+          "type": "long text"
+        },
+        {
+          "name": "environmental_impact",
+          "value": "",
+          "description": "Report of energy consumption, CO2 emissions or any other environmental impact ",
+          "type": "long text"
+        },
+        {
+          "name": "bias",
+          "value": "",
+          "description": "Performance and bias across different groups (e g  ethnicity, gender)",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "safety",
+      "value": [
+        {
+          "name": "ethics",
+          "value": "",
+          "description": "Ethical considerations regarding datasets and usage of model  Recommended mitigation measures ",
+          "type": "long text"
+        },
+        {
+          "name": "fairness",
+          "value": "",
+          "description": "Definition of fairness applied in setting up the AI system ",
+          "type": "long text"
+        },
+        {
+          "name": "risks",
+          "value": "",
+          "description": "Possible threats to the AI system (design faults, technical faults, environmental threats) and the possible consequences ",
+          "type": "long text"
+        },
+        {
+          "name": "security",
+          "value": "",
+          "description": "Is the AI system certified for cybersecurity or is it compliant with specific security standards?",
+          "type": "long text"
+        },
+        {
+          "name": "caveats",
+          "value": "All the notable open-source frameworks implement static YaRN, which means the scaling factor remains constant regardless of input length, potentially impacting performance on shorter texts  We advise modifying the `rope_parameters` configuration only when processing long contexts is required  It is also recommended to modify the `factor` as needed  For example, if the typical context length for your application is 524,288 tokens, it would be better to set `factor` as 2 0 \n\nIn multi-turn agentic tasks, lower reasoning effort does not always reduce overall task completion time  Although it may produce faster per-turn responses, it can also lead to insufficient analysis, more failures, and repeated retries, which may increase total latency and token consumption ",
+          "description": "Additional concerns that were not covered in the previous sections ",
+          "type": "long text"
+        }
+      ]
+    }
+  ]
+}
