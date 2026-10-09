@@ -35,9 +35,9 @@ class ModelCard:
                 type=Options(self._type_options,"Model architecture or algorithm type.", is_simple=True),
                 task=Options(self._task_options, "Model task.", is_simple=True),
                 license=ShortText("Licence and intellectual property (IP) information."),
-                home=ShortText("URL hosting the model."),
+                home=ShortText("URL hosting the model.", is_simple=True),
                 contact=ShortText("Author contact information.", is_simple=True),
-                citation=ShortText("How should the model be cited? Typically includes title, author, year, and publisher. May be a formatted citation or bibtex entries like @article.", technical_nature=True),
+                citation=LongText("How should the model be cited? Typically includes title, author, year, and publisher. May be a formatted citation or bibtex entries like @article.", technical_nature=True),
                 more=LongText("Additional model information not found above.")),
             use=DotDict(
                 use_cases=LongText("Intended use of the model.", is_simple=True),
@@ -76,7 +76,7 @@ class ModelCard:
             safety=DotDict(
                 ethics=LongText("Ethical considerations regarding datasets and usage of model, including harmful bias and discrimination concerns. Recommended mitigation measures.", is_simple=True, is_refinable=True),
                 fairness=LongText("Bias or fairness assessments of the model, for example that indicate discrimination against demographic groups.", is_simple=True, is_refinable=True),
-                risks=LongText("Possible threats to the model (design faults, technical faults, environmental threats) and the possible consequences.", is_simple=True, is_refinable=True),
+                risks=LongText("Possible threats to the model's validity (design and technical faults) and consequences.", is_simple=True, is_refinable=True),
                 security=LongText("Is the model certified for cybersecurity or is it compliant with specific security standards?", is_simple=True, is_refinable=True),
                 caveats=LongText("Additional concerns that were not covered in the previous sections.", is_simple=True, is_refinable=True)
             ),

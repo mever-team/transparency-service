@@ -133,6 +133,7 @@ def serve(
                     card_cache[card_id] = card
                 cursor.execute("SELECT message FROM card_children WHERE parent_id = ? AND child_id = ?", (card_id, card_id))
                 msg_row = cursor.fetchone()
+                if card is None: return card
                 card.message = msg_row[0] if msg_row and msg_row[0] else ""
             else:
                 card.touch()
@@ -628,7 +629,7 @@ def serve(
             last_front_page_data["total"] = total
             last_front_page_data["time"] = time.monotonic()
             recache = True
-        print("refreshing")
+        logger.info("refreshing index cache for empty search")
         rows = cursor.fetchall()
         added_ids = set()
         results = []

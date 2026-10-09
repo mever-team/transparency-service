@@ -48,7 +48,7 @@
         },
         {
           "name": "license",
-          "value": "This code repository and the model weights are licensed under the [MIT License](https://github.com/deepseek-ai/DeepSeek-R1/blob/main/LICENSE).<span id='agent-eval-mark'></span> DeepSeek-R1 series support commercial use, allow for any modifications and derivative works, including, but not limited to, distillation for training other LLMs. Please note that:\n- DeepSeek-R1-Distill-Qwen-1.5B, DeepSeek-R1-Distill-Qwen-7B, DeepSeek-R1-Distill-Qwen-14B and DeepSeek-R1-Distill-Qwen-32B are derived from [Qwen-2.5 series](https://github.com/QwenLM/Qwen2.5), which are originally licensed under [Apache 2.0 License](https://huggingface.co/Qwen/Qwen2.5-1.5B/blob/main/LICENSE), and now finetuned with 800k samples curated with DeepSeek-R1.<span id='agent-eval-mark'></span> - DeepSeek-R1-Distill-Llama-8B is derived from Llama3.1-8B-Base and is originally licensed under [llama3.1 license](https://huggingface.co/meta-llama/Llama-3.1-8B/blob/main/LICENSE).<span id='agent-eval-mark'></span> - DeepSeek-R1-Distill-Llama-70B is derived from Llama3.3-70B-Instruct and is originally licensed under [llama3.3 license](https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct/blob/main/LICENSE).",
+          "value": "mit<br><span id='agent-eval-mark'></span> This code repository and the model weights are licensed under the [MIT License](https://github.com/deepseek-ai/DeepSeek-R1/blob/main/LICENSE).<span id='agent-eval-mark'></span> DeepSeek-R1 series support commercial use, allow for any modifications and derivative works, including, but not limited to, distillation for training other LLMs. Please note that:\n- DeepSeek-R1-Distill-Qwen-1.5B, DeepSeek-R1-Distill-Qwen-7B, DeepSeek-R1-Distill-Qwen-14B and DeepSeek-R1-Distill-Qwen-32B are derived from [Qwen-2.5 series](https://github.com/QwenLM/Qwen2.5), which are originally licensed under [Apache 2.0 License](https://huggingface.co/Qwen/Qwen2.5-1.5B/blob/main/LICENSE), and now finetuned with 800k samples curated with DeepSeek-R1.<span id='agent-eval-mark'></span> - DeepSeek-R1-Distill-Llama-8B is derived from Llama3.1-8B-Base and is originally licensed under [llama3.1 license](https://huggingface.co/meta-llama/Llama-3.1-8B/blob/main/LICENSE).<span id='agent-eval-mark'></span> - DeepSeek-R1-Distill-Llama-70B is derived from Llama3.3-70B-Instruct and is originally licensed under [llama3.3 license](https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct/blob/main/LICENSE).",
           "description": "Licence and intellectual property (IP) information.",
           "type": "short text"
         },
@@ -60,15 +60,15 @@
         },
         {
           "name": "contact",
-          "value": "If you have any questions, please raise an issue or contact us at [service@deepseek.com](service@deepseek.com).",
+          "value": "deepseek-ai<br><span id='agent-eval-mark'></span> If you have any questions, please raise an issue or contact us at [service@deepseek.com](service@deepseek.com).",
           "description": "Author contact information.",
           "type": "short text"
         },
         {
           "name": "citation",
-          "value": "",
+          "value": "<span id='agent-eval-mark'></span>\n\n#### 8. Citation\n```\n@misc{deepseekai2025deepseekr1incentivizingreasoningcapability,\n      title={DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning}, \n      author={DeepSeek-AI},\n      year={2025},\n      eprint={2501.12948},\n      archivePrefix={arXiv},\n      primaryClass={cs.CL},\n      url={https://arxiv.org/abs/2501.12948}, \n}\n\n```\n\n\n\n",
           "description": "How should the model be cited? Typically includes title, author, year, and publisher. May be a formatted citation or bibtex entries like @article.",
-          "type": "short text"
+          "type": "long text"
         },
         {
           "name": "more",
@@ -83,7 +83,7 @@
       "value": [
         {
           "name": "use_cases",
-          "value": "<span id='agent-eval-mark'></span>\n\n#### DeepSeek-R1-Evaluation\nFor all our models, the maximum generation length is set to 32,768 tokens. For benchmarks requiring sampling, we use a temperature of $0.6$, a top-p value of $0.95$, and generate 64 responses per query to estimate pass@1.\n\n\n\n<br><span id='agent-eval-mark'></span> <span id='agent-eval-mark'></span>\n\n#### Usage Recommendations\nAdditionally, we have observed that the DeepSeek-R1 series models tend to bypass thinking pattern (i.e., outputting \"\\<think\\>\\n\\n\\</think\\>\") when responding to certain queries, which can adversely affect the model's performance.\n\n\n\n<br><span id='agent-eval-mark'></span> **To ensure that the model engages in thorough reasoning, we recommend enforcing the model to initiate its response with \"\\<think\\>\\n\" at the beginning of every output.**",
+          "value": "text-generation<br><span id='agent-eval-mark'></span> <span id='agent-eval-mark'></span>\n\n#### DeepSeek-R1-Evaluation\nFor all our models, the maximum generation length is set to 32,768 tokens. For benchmarks requiring sampling, we use a temperature of $0.6$, a top-p value of $0.95$, and generate 64 responses per query to estimate pass@1.\n\n\n\n<br><span id='agent-eval-mark'></span> <span id='agent-eval-mark'></span>\n\n#### Usage Recommendations\nAdditionally, we have observed that the DeepSeek-R1 series models tend to bypass thinking pattern (i.e., outputting \"\\<think\\>\\n\\n\\</think\\>\") when responding to certain queries, which can adversely affect the model's performance.\n\n\n\n<br><span id='agent-eval-mark'></span> **To ensure that the model engages in thorough reasoning, we recommend enforcing the model to initiate its response with \"\\<think\\>\\n\" at the beginning of every output.**",
           "description": "Intended use of the model.",
           "type": "long text"
         },
@@ -137,7 +137,7 @@
         },
         {
           "name": "more",
-          "value": "<span id='agent-eval-mark'></span>\n\n#### 8. Citation\n```\n@misc{deepseekai2025deepseekr1incentivizingreasoningcapability,\n      title={DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning}, \n      author={DeepSeek-AI},\n      year={2025},\n      eprint={2501.12948},\n      archivePrefix={arXiv},\n      primaryClass={cs.CL},\n      url={https://arxiv.org/abs/2501.12948}, \n}\n\n```\n\n\n\n",
+          "value": "",
           "description": "Additional information about intended uses not found above.",
           "type": "long text"
         }
@@ -284,7 +284,7 @@
         {
           "name": "risks",
           "value": "",
-          "description": "Possible threats to the model (design faults, technical faults, environmental threats) and the possible consequences.",
+          "description": "Possible threats to the model's validity (design and technical faults) and consequences.",
           "type": "long text"
         },
         {

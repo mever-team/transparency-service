@@ -1706,6 +1706,473 @@ In addition, the sequence-to-sequence architecture of the model makes it prone t
                     <span class="arrow">→</span>
 
                     <span class="field predicted-field">
+                        use.use_cases
+                    </span>
+
+                    <span class="count">
+                        3
+                    </span>
+                </summary>
+
+                <div class="details-content">
+                    
+                <div class="sentence">
+                    <div class="meta">
+                        <strong>File:</strong>
+                        deepseek-ai@DeepSeek-R1.json
+                        &nbsp;&nbsp;
+                        <strong>Similarity:</strong>
+                        89.69
+                    </div>
+
+                    <div class="label">Predicted text</div>
+                    <div class="text predicted">
+                        #### Usage Recommendations
+Additionally, we have observed that the DeepSeek-R1 series models tend to bypass thinking pattern (i.e., outputting &quot;\&lt;think\&gt;\n\n\&lt;/think\&gt;&quot;) when responding to certain queries, which can adversely affect the model&#x27;s performance.
+
+
+
+&lt;br&gt;
+                    </div>
+
+                    <div class="label">Ground truth text</div>
+                    <div class="text ground-truth">
+                        How to use deepseek-ai/DeepSeek-R1 with Transformers:
+
+# Use a pipeline as a high-level helper
+from transformers import pipeline
+
+pipe = pipeline(&quot;text-generation&quot;, model=&quot;deepseek-ai/DeepSeek-R1&quot;, trust_remote_code=True)
+messages = [
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Who are you?&quot;},
+]
+pipe(messages)
+
+# Load model directly
+from transformers import AutoTokenizer, AutoModelForCausalLM
+
+tokenizer = AutoTokenizer from_pretrained(&quot;deepseek-ai/DeepSeek-R1&quot;, trust_remote_code=True)
+model = AutoModelForCausalLM from_pretrained(&quot;deepseek-ai/DeepSeek-R1&quot;, trust_remote_code=True, device_map=&quot;auto&quot;)
+messages = [
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Who are you?&quot;},
+]
+inputs = tokenizer apply_chat_template(
+	messages,
+	add_generation_prompt=True,
+	tokenize=True,
+	return_dict=True,
+	return_tensors=&quot;pt&quot;,
+) to(model device)
+outputs = model generate(**inputs, max_new_tokens=40)
+print(tokenizer decode(outputs[0][inputs[&quot;input_ids&quot;] shape[-1]:]))
+
+How to use deepseek-ai/DeepSeek-R1 with vLLM:
+
+# Install vLLM from pip:
+pip install vllm
+# Start the vLLM server:
+vllm serve &quot;deepseek-ai/DeepSeek-R1&quot;
+# Call the server using curl (OpenAI-compatible API):
+curl -X POST &quot;http://localhost:8000/v1/chat/completions&quot; \
+	-H &quot;Content-Type: application/json&quot; \
+	--data &#x27;{
+		&quot;model&quot;: &quot;deepseek-ai/DeepSeek-R1&quot;,
+		&quot;messages&quot;: [
+			{
+				&quot;role&quot;: &quot;user&quot;,
+				&quot;content&quot;: &quot;What is the capital of France?&quot;
+			}
+		]
+	}&#x27;
+
+How to use deepseek-ai/DeepSeek-R1 with SGLang:
+
+# Install SGLang from pip:
+pip install sglang
+# Start the SGLang server:
+python3 -m sglang launch_server \
+    --model-path &quot;deepseek-ai/DeepSeek-R1&quot; \
+    --host 0 0 0 0 \
+    --port 30000
+# Call the server using curl (OpenAI-compatible API):
+curl -X POST &quot;http://localhost:30000/v1/chat/completions&quot; \
+	-H &quot;Content-Type: application/json&quot; \
+	--data &#x27;{
+		&quot;model&quot;: &quot;deepseek-ai/DeepSeek-R1&quot;,
+		&quot;messages&quot;: [
+			{
+				&quot;role&quot;: &quot;user&quot;,
+				&quot;content&quot;: &quot;What is the capital of France?&quot;
+			}
+		]
+	}&#x27;
+
+How to use DeepSeek-R1 with Docker Model Runner:
+
+docker model run hf co/deepseek-ai/DeepSeek-R1
+
+DeepSeek-R1-Distill models can be utilized in the same manner as Qwen or Llama models 
+
+For instance, you can easily start a service using vLLM :
+`vllm serve deepseek-ai/DeepSeek-R1-Distill-Qwen-32B --tensor-parallel-size 2 --max-model-len 32768 --enforce-eager
+`
+
+You can also easily start a service using SGLang :
+`python3 -m sglang launch_server --model deepseek-ai/DeepSeek-R1-Distill-Qwen-32B --trust-remote-code --tp 2
+`
+
+Usage Recommendations
+
+1  Set the temperature within the range of 0 5-0 7 (0 6 is recommended) to prevent endless repetitions or incoherent outputs 
+2  Avoid adding a system prompt; all instructions should be contained within the user prompt 
+3  For mathematical problems, it is advisable to include a directive in your prompt such as: &quot;Please reason step by step, and put your final answer within \boxed{} &quot;
+4  When evaluating model performance, it is recommended to conduct multiple tests and average the results 
+Additionally, we have observed that the DeepSeek-R1 series models tend to bypass thinking pattern (i e , outputting &quot;&lt;think&gt;\n\n&lt;/think&gt;&quot;) when responding to certain queries, which can adversely affect the model&#x27;s performance  To ensure that the model engages in thorough reasoning, we recommend enforcing the model to initiate its response with &quot;&lt;think&gt;\n&quot; at the beginning of every output
+                    </div>
+                </div>
+                
+                <div class="sentence">
+                    <div class="meta">
+                        <strong>File:</strong>
+                        deepseek-ai@DeepSeek-R1.json
+                        &nbsp;&nbsp;
+                        <strong>Similarity:</strong>
+                        97.9
+                    </div>
+
+                    <div class="label">Predicted text</div>
+                    <div class="text predicted">
+                        **To ensure that the model engages in thorough reasoning, we recommend enforcing the model to initiate its response with &quot;\&lt;think\&gt;\n&quot; at the beginning of every output.**
+                    </div>
+
+                    <div class="label">Ground truth text</div>
+                    <div class="text ground-truth">
+                        How to use deepseek-ai/DeepSeek-R1 with Transformers:
+
+# Use a pipeline as a high-level helper
+from transformers import pipeline
+
+pipe = pipeline(&quot;text-generation&quot;, model=&quot;deepseek-ai/DeepSeek-R1&quot;, trust_remote_code=True)
+messages = [
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Who are you?&quot;},
+]
+pipe(messages)
+
+# Load model directly
+from transformers import AutoTokenizer, AutoModelForCausalLM
+
+tokenizer = AutoTokenizer from_pretrained(&quot;deepseek-ai/DeepSeek-R1&quot;, trust_remote_code=True)
+model = AutoModelForCausalLM from_pretrained(&quot;deepseek-ai/DeepSeek-R1&quot;, trust_remote_code=True, device_map=&quot;auto&quot;)
+messages = [
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Who are you?&quot;},
+]
+inputs = tokenizer apply_chat_template(
+	messages,
+	add_generation_prompt=True,
+	tokenize=True,
+	return_dict=True,
+	return_tensors=&quot;pt&quot;,
+) to(model device)
+outputs = model generate(**inputs, max_new_tokens=40)
+print(tokenizer decode(outputs[0][inputs[&quot;input_ids&quot;] shape[-1]:]))
+
+How to use deepseek-ai/DeepSeek-R1 with vLLM:
+
+# Install vLLM from pip:
+pip install vllm
+# Start the vLLM server:
+vllm serve &quot;deepseek-ai/DeepSeek-R1&quot;
+# Call the server using curl (OpenAI-compatible API):
+curl -X POST &quot;http://localhost:8000/v1/chat/completions&quot; \
+	-H &quot;Content-Type: application/json&quot; \
+	--data &#x27;{
+		&quot;model&quot;: &quot;deepseek-ai/DeepSeek-R1&quot;,
+		&quot;messages&quot;: [
+			{
+				&quot;role&quot;: &quot;user&quot;,
+				&quot;content&quot;: &quot;What is the capital of France?&quot;
+			}
+		]
+	}&#x27;
+
+How to use deepseek-ai/DeepSeek-R1 with SGLang:
+
+# Install SGLang from pip:
+pip install sglang
+# Start the SGLang server:
+python3 -m sglang launch_server \
+    --model-path &quot;deepseek-ai/DeepSeek-R1&quot; \
+    --host 0 0 0 0 \
+    --port 30000
+# Call the server using curl (OpenAI-compatible API):
+curl -X POST &quot;http://localhost:30000/v1/chat/completions&quot; \
+	-H &quot;Content-Type: application/json&quot; \
+	--data &#x27;{
+		&quot;model&quot;: &quot;deepseek-ai/DeepSeek-R1&quot;,
+		&quot;messages&quot;: [
+			{
+				&quot;role&quot;: &quot;user&quot;,
+				&quot;content&quot;: &quot;What is the capital of France?&quot;
+			}
+		]
+	}&#x27;
+
+How to use DeepSeek-R1 with Docker Model Runner:
+
+docker model run hf co/deepseek-ai/DeepSeek-R1
+
+DeepSeek-R1-Distill models can be utilized in the same manner as Qwen or Llama models 
+
+For instance, you can easily start a service using vLLM :
+`vllm serve deepseek-ai/DeepSeek-R1-Distill-Qwen-32B --tensor-parallel-size 2 --max-model-len 32768 --enforce-eager
+`
+
+You can also easily start a service using SGLang :
+`python3 -m sglang launch_server --model deepseek-ai/DeepSeek-R1-Distill-Qwen-32B --trust-remote-code --tp 2
+`
+
+Usage Recommendations
+
+1  Set the temperature within the range of 0 5-0 7 (0 6 is recommended) to prevent endless repetitions or incoherent outputs 
+2  Avoid adding a system prompt; all instructions should be contained within the user prompt 
+3  For mathematical problems, it is advisable to include a directive in your prompt such as: &quot;Please reason step by step, and put your final answer within \boxed{} &quot;
+4  When evaluating model performance, it is recommended to conduct multiple tests and average the results 
+Additionally, we have observed that the DeepSeek-R1 series models tend to bypass thinking pattern (i e , outputting &quot;&lt;think&gt;\n\n&lt;/think&gt;&quot;) when responding to certain queries, which can adversely affect the model&#x27;s performance  To ensure that the model engages in thorough reasoning, we recommend enforcing the model to initiate its response with &quot;&lt;think&gt;\n&quot; at the beginning of every output
+                    </div>
+                </div>
+                
+                <div class="sentence">
+                    <div class="meta">
+                        <strong>File:</strong>
+                        openai@whisper-large-v3.json
+                        &nbsp;&nbsp;
+                        <strong>Similarity:</strong>
+                        87.5
+                    </div>
+
+                    <div class="label">Predicted text</div>
+                    <div class="text predicted">
+                        automatic-speech-recognition&lt;br&gt;
+                    </div>
+
+                    <div class="label">Ground truth text</div>
+                    <div class="text ground-truth">
+                        pip install --upgrade pip
+pip install --upgrade transformers datasets[audio] accelerate
+
+import torch
+from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
+from datasets import load_dataset
+
+
+device = &quot;cuda:0&quot; if torch cuda is_available() else &quot;cpu&quot;
+torch_dtype = torch float16 if torch cuda is_available() else torch float32
+
+model_id = &quot;openai/whisper-large-v3&quot;
+
+model = AutoModelForSpeechSeq2Seq from_pretrained(
+    model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=True, use_safetensors=True
+)
+model to(device)
+
+processor = AutoProcessor from_pretrained(model_id)
+
+pipe = pipeline(
+    &quot;automatic-speech-recognition&quot;,
+    model=model,
+    tokenizer=processor tokenizer,
+    feature_extractor=processor feature_extractor,
+    torch_dtype=torch_dtype,
+    device=device,
+)
+dataset = load_dataset(&quot;distil-whisper/librispeech_long&quot;, &quot;clean&quot;, split=&quot;validation&quot;)
+sample = dataset[0][&quot;audio&quot;]
+
+result = pipe(sample)
+print(result[&quot;text&quot;])
+
+result = pipe(&quot;audio mp3&quot;)
+
+result = pipe([&quot;audio_1 mp3&quot;, &quot;audio_2 mp3&quot;], batch_size=2)
+
+generate_kwargs = {
+    &quot;max_new_tokens&quot;: 448,
+    &quot;num_beams&quot;: 1,
+    &quot;condition_on_prev_tokens&quot;: False,
+    &quot;compression_ratio_threshold&quot;: 1 35,  # zlib compression ratio threshold (in token space)
+    &quot;temperature&quot;: (0 0, 0 2, 0 4, 0 6, 0 8, 1 0),
+    &quot;logprob_threshold&quot;: -1 0,
+    &quot;no_speech_threshold&quot;: 0 6,
+    &quot;return_timestamps&quot;: True,
+}
+
+result = pipe(sample, generate_kwargs=generate_kwargs)
+
+result = pipe(sample, generate_kwargs={&quot;language&quot;: &quot;english&quot;})
+
+result = pipe(sample, generate_kwargs={&quot;task&quot;: &quot;translate&quot;})
+
+result = pipe(sample, return_timestamps=True)
+print(result[&quot;chunks&quot;])
+
+result = pipe(sample, return_timestamps=&quot;word&quot;)
+print(result[&quot;chunks&quot;])
+
+result = pipe(sample, return_timestamps=True, generate_kwargs={&quot;language&quot;: &quot;french&quot;, &quot;task&quot;: &quot;translate&quot;})
+print(result[&quot;chunks&quot;])
+
+import torch
+from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor
+from datasets import Audio, load_dataset
+
+
+device = &quot;cuda:0&quot; if torch cuda is_available() else &quot;cpu&quot;
+torch_dtype = torch float16 if torch cuda is_available() else torch float32
+
+model_id = &quot;openai/whisper-large-v3&quot;
+
+model = AutoModelForSpeechSeq2Seq from_pretrained(
+    model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=True
+)
+model to(device)
+
+processor = AutoProcessor from_pretrained(model_id)
+
+dataset = load_dataset(&quot;hf-internal-testing/librispeech_asr_dummy&quot;, &quot;clean&quot;, split=&quot;validation&quot;)
+dataset = dataset cast_column(&quot;audio&quot;, Audio(processor feature_extractor sampling_rate))
+sample = dataset[0][&quot;audio&quot;]
+
+inputs = processor(
+    sample[&quot;array&quot;],
+    sampling_rate=sample[&quot;sampling_rate&quot;],
+    return_tensors=&quot;pt&quot;,
+    truncation=False,
+    padding=&quot;longest&quot;,
+    return_attention_mask=True,
+)
+inputs = inputs to(device, dtype=torch_dtype)
+
+gen_kwargs = {
+    &quot;max_new_tokens&quot;: 448,
+    &quot;num_beams&quot;: 1,
+    &quot;condition_on_prev_tokens&quot;: False,
+    &quot;compression_ratio_threshold&quot;: 1 35,  # zlib compression ratio threshold (in token space)
+    &quot;temperature&quot;: (0 0, 0 2, 0 4, 0 6, 0 8, 1 0),
+    &quot;logprob_threshold&quot;: -1 0,
+    &quot;no_speech_threshold&quot;: 0 6,
+    &quot;return_timestamps&quot;: True,
+}
+
+pred_ids = model generate(**inputs, **gen_kwargs)
+pred_text = processor batch_decode(pred_ids, skip_special_tokens=True, decode_with_timestamps=False)
+
+print(pred_text)
+
+import torch
+from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
+from datasets import load_dataset
+
+
+device = &quot;cuda:0&quot; if torch cuda is_available() else &quot;cpu&quot;
+torch_dtype = torch float16 if torch cuda is_available() else torch float32
+
+model_id = &quot;openai/whisper-large-v3&quot;
+
+model = AutoModelForSpeechSeq2Seq from_pretrained(
+    model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=True
+)
+model to(device)
+
+processor = AutoProcessor from_pretrained(model_id)
+
+pipe = pipeline(
+    &quot;automatic-speech-recognition&quot;,
+    model=model,
+    tokenizer=processor tokenizer,
+    feature_extractor=processor feature_extractor,
+    chunk_length_s=30,
+    batch_size=16,  # batch size for inference - set based on your device
+    torch_dtype=torch_dtype,
+    device=device,
+)
+
+dataset = load_dataset(&quot;distil-whisper/librispeech_long&quot;, &quot;clean&quot;, split=&quot;validation&quot;)
+sample = dataset[0][&quot;audio&quot;]
+
+result = pipe(sample)
+print(result[&quot;text&quot;])
+
+import torch
+from torch nn attention import SDPBackend, sdpa_kernel
+from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
+from datasets import load_dataset
+from tqdm import tqdm
+
+torch set_float32_matmul_precision(&quot;high&quot;)
+
+device = &quot;cuda:0&quot; if torch cuda is_available() else &quot;cpu&quot;
+torch_dtype = torch float16 if torch cuda is_available() else torch float32
+
+model_id = &quot;openai/whisper-large-v3&quot;
+
+model = AutoModelForSpeechSeq2Seq from_pretrained(
+    model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=True
+) to(device)
+
+# Enable static cache and compile the forward pass
+model generation_config cache_implementation = &quot;static&quot;
+model generation_config max_new_tokens = 256
+model forward = torch compile(model forward, mode=&quot;reduce-overhead&quot;, fullgraph=True)
+
+processor = AutoProcessor from_pretrained(model_id)
+
+pipe = pipeline(
+    &quot;automatic-speech-recognition&quot;,
+    model=model,
+    tokenizer=processor tokenizer,
+    feature_extractor=processor feature_extractor,
+    torch_dtype=torch_dtype,
+    device=device,
+)
+
+dataset = load_dataset(&quot;distil-whisper/librispeech_long&quot;, &quot;clean&quot;, split=&quot;validation&quot;)
+sample = dataset[0][&quot;audio&quot;]
+
+# 2 warmup steps
+for _ in tqdm(range(2), desc=&quot;Warm-up step&quot;):
+    with sdpa_kernel(SDPBackend MATH):
+        result = pipe(sample copy(), generate_kwargs={&quot;min_new_tokens&quot;: 256, &quot;max_new_tokens&quot;: 256})
+
+# fast run
+with sdpa_kernel(SDPBackend MATH):
+    result = pipe(sample copy())
+
+print(result[&quot;text&quot;])
+
+pip install flash-attn --no-build-isolation
+
+model = AutoModelForSpeechSeq2Seq from_pretrained(model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=True, attn_implementation=&quot;flash_attention_2&quot;)
+
+from transformers utils import is_torch_sdpa_available
+
+print(is_torch_sdpa_available())
+
+model = AutoModelForSpeechSeq2Seq from_pretrained(model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=True, attn_implementation=&quot;sdpa&quot;)
+                    </div>
+                </div>
+                
+                </div>
+            </details>
+            
+            <details class="mismatch">
+                <summary>
+                    <span class="field gt">
+                        use.instructions
+                    </span>
+
+                    <span class="arrow">→</span>
+
+                    <span class="field predicted-field">
                         use.more
                     </span>
 
@@ -2688,253 +3155,6 @@ Additionally, we have observed that the DeepSeek-R1 series models tend to bypass
             <details class="mismatch">
                 <summary>
                     <span class="field gt">
-                        use.instructions
-                    </span>
-
-                    <span class="arrow">→</span>
-
-                    <span class="field predicted-field">
-                        use.use_cases
-                    </span>
-
-                    <span class="count">
-                        2
-                    </span>
-                </summary>
-
-                <div class="details-content">
-                    
-                <div class="sentence">
-                    <div class="meta">
-                        <strong>File:</strong>
-                        deepseek-ai@DeepSeek-R1.json
-                        &nbsp;&nbsp;
-                        <strong>Similarity:</strong>
-                        89.69
-                    </div>
-
-                    <div class="label">Predicted text</div>
-                    <div class="text predicted">
-                        #### Usage Recommendations
-Additionally, we have observed that the DeepSeek-R1 series models tend to bypass thinking pattern (i.e., outputting &quot;\&lt;think\&gt;\n\n\&lt;/think\&gt;&quot;) when responding to certain queries, which can adversely affect the model&#x27;s performance.
-
-
-
-&lt;br&gt;
-                    </div>
-
-                    <div class="label">Ground truth text</div>
-                    <div class="text ground-truth">
-                        How to use deepseek-ai/DeepSeek-R1 with Transformers:
-
-# Use a pipeline as a high-level helper
-from transformers import pipeline
-
-pipe = pipeline(&quot;text-generation&quot;, model=&quot;deepseek-ai/DeepSeek-R1&quot;, trust_remote_code=True)
-messages = [
-    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Who are you?&quot;},
-]
-pipe(messages)
-
-# Load model directly
-from transformers import AutoTokenizer, AutoModelForCausalLM
-
-tokenizer = AutoTokenizer from_pretrained(&quot;deepseek-ai/DeepSeek-R1&quot;, trust_remote_code=True)
-model = AutoModelForCausalLM from_pretrained(&quot;deepseek-ai/DeepSeek-R1&quot;, trust_remote_code=True, device_map=&quot;auto&quot;)
-messages = [
-    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Who are you?&quot;},
-]
-inputs = tokenizer apply_chat_template(
-	messages,
-	add_generation_prompt=True,
-	tokenize=True,
-	return_dict=True,
-	return_tensors=&quot;pt&quot;,
-) to(model device)
-outputs = model generate(**inputs, max_new_tokens=40)
-print(tokenizer decode(outputs[0][inputs[&quot;input_ids&quot;] shape[-1]:]))
-
-How to use deepseek-ai/DeepSeek-R1 with vLLM:
-
-# Install vLLM from pip:
-pip install vllm
-# Start the vLLM server:
-vllm serve &quot;deepseek-ai/DeepSeek-R1&quot;
-# Call the server using curl (OpenAI-compatible API):
-curl -X POST &quot;http://localhost:8000/v1/chat/completions&quot; \
-	-H &quot;Content-Type: application/json&quot; \
-	--data &#x27;{
-		&quot;model&quot;: &quot;deepseek-ai/DeepSeek-R1&quot;,
-		&quot;messages&quot;: [
-			{
-				&quot;role&quot;: &quot;user&quot;,
-				&quot;content&quot;: &quot;What is the capital of France?&quot;
-			}
-		]
-	}&#x27;
-
-How to use deepseek-ai/DeepSeek-R1 with SGLang:
-
-# Install SGLang from pip:
-pip install sglang
-# Start the SGLang server:
-python3 -m sglang launch_server \
-    --model-path &quot;deepseek-ai/DeepSeek-R1&quot; \
-    --host 0 0 0 0 \
-    --port 30000
-# Call the server using curl (OpenAI-compatible API):
-curl -X POST &quot;http://localhost:30000/v1/chat/completions&quot; \
-	-H &quot;Content-Type: application/json&quot; \
-	--data &#x27;{
-		&quot;model&quot;: &quot;deepseek-ai/DeepSeek-R1&quot;,
-		&quot;messages&quot;: [
-			{
-				&quot;role&quot;: &quot;user&quot;,
-				&quot;content&quot;: &quot;What is the capital of France?&quot;
-			}
-		]
-	}&#x27;
-
-How to use DeepSeek-R1 with Docker Model Runner:
-
-docker model run hf co/deepseek-ai/DeepSeek-R1
-
-DeepSeek-R1-Distill models can be utilized in the same manner as Qwen or Llama models 
-
-For instance, you can easily start a service using vLLM :
-`vllm serve deepseek-ai/DeepSeek-R1-Distill-Qwen-32B --tensor-parallel-size 2 --max-model-len 32768 --enforce-eager
-`
-
-You can also easily start a service using SGLang :
-`python3 -m sglang launch_server --model deepseek-ai/DeepSeek-R1-Distill-Qwen-32B --trust-remote-code --tp 2
-`
-
-Usage Recommendations
-
-1  Set the temperature within the range of 0 5-0 7 (0 6 is recommended) to prevent endless repetitions or incoherent outputs 
-2  Avoid adding a system prompt; all instructions should be contained within the user prompt 
-3  For mathematical problems, it is advisable to include a directive in your prompt such as: &quot;Please reason step by step, and put your final answer within \boxed{} &quot;
-4  When evaluating model performance, it is recommended to conduct multiple tests and average the results 
-Additionally, we have observed that the DeepSeek-R1 series models tend to bypass thinking pattern (i e , outputting &quot;&lt;think&gt;\n\n&lt;/think&gt;&quot;) when responding to certain queries, which can adversely affect the model&#x27;s performance  To ensure that the model engages in thorough reasoning, we recommend enforcing the model to initiate its response with &quot;&lt;think&gt;\n&quot; at the beginning of every output
-                    </div>
-                </div>
-                
-                <div class="sentence">
-                    <div class="meta">
-                        <strong>File:</strong>
-                        deepseek-ai@DeepSeek-R1.json
-                        &nbsp;&nbsp;
-                        <strong>Similarity:</strong>
-                        97.9
-                    </div>
-
-                    <div class="label">Predicted text</div>
-                    <div class="text predicted">
-                        **To ensure that the model engages in thorough reasoning, we recommend enforcing the model to initiate its response with &quot;\&lt;think\&gt;\n&quot; at the beginning of every output.**
-                    </div>
-
-                    <div class="label">Ground truth text</div>
-                    <div class="text ground-truth">
-                        How to use deepseek-ai/DeepSeek-R1 with Transformers:
-
-# Use a pipeline as a high-level helper
-from transformers import pipeline
-
-pipe = pipeline(&quot;text-generation&quot;, model=&quot;deepseek-ai/DeepSeek-R1&quot;, trust_remote_code=True)
-messages = [
-    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Who are you?&quot;},
-]
-pipe(messages)
-
-# Load model directly
-from transformers import AutoTokenizer, AutoModelForCausalLM
-
-tokenizer = AutoTokenizer from_pretrained(&quot;deepseek-ai/DeepSeek-R1&quot;, trust_remote_code=True)
-model = AutoModelForCausalLM from_pretrained(&quot;deepseek-ai/DeepSeek-R1&quot;, trust_remote_code=True, device_map=&quot;auto&quot;)
-messages = [
-    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Who are you?&quot;},
-]
-inputs = tokenizer apply_chat_template(
-	messages,
-	add_generation_prompt=True,
-	tokenize=True,
-	return_dict=True,
-	return_tensors=&quot;pt&quot;,
-) to(model device)
-outputs = model generate(**inputs, max_new_tokens=40)
-print(tokenizer decode(outputs[0][inputs[&quot;input_ids&quot;] shape[-1]:]))
-
-How to use deepseek-ai/DeepSeek-R1 with vLLM:
-
-# Install vLLM from pip:
-pip install vllm
-# Start the vLLM server:
-vllm serve &quot;deepseek-ai/DeepSeek-R1&quot;
-# Call the server using curl (OpenAI-compatible API):
-curl -X POST &quot;http://localhost:8000/v1/chat/completions&quot; \
-	-H &quot;Content-Type: application/json&quot; \
-	--data &#x27;{
-		&quot;model&quot;: &quot;deepseek-ai/DeepSeek-R1&quot;,
-		&quot;messages&quot;: [
-			{
-				&quot;role&quot;: &quot;user&quot;,
-				&quot;content&quot;: &quot;What is the capital of France?&quot;
-			}
-		]
-	}&#x27;
-
-How to use deepseek-ai/DeepSeek-R1 with SGLang:
-
-# Install SGLang from pip:
-pip install sglang
-# Start the SGLang server:
-python3 -m sglang launch_server \
-    --model-path &quot;deepseek-ai/DeepSeek-R1&quot; \
-    --host 0 0 0 0 \
-    --port 30000
-# Call the server using curl (OpenAI-compatible API):
-curl -X POST &quot;http://localhost:30000/v1/chat/completions&quot; \
-	-H &quot;Content-Type: application/json&quot; \
-	--data &#x27;{
-		&quot;model&quot;: &quot;deepseek-ai/DeepSeek-R1&quot;,
-		&quot;messages&quot;: [
-			{
-				&quot;role&quot;: &quot;user&quot;,
-				&quot;content&quot;: &quot;What is the capital of France?&quot;
-			}
-		]
-	}&#x27;
-
-How to use DeepSeek-R1 with Docker Model Runner:
-
-docker model run hf co/deepseek-ai/DeepSeek-R1
-
-DeepSeek-R1-Distill models can be utilized in the same manner as Qwen or Llama models 
-
-For instance, you can easily start a service using vLLM :
-`vllm serve deepseek-ai/DeepSeek-R1-Distill-Qwen-32B --tensor-parallel-size 2 --max-model-len 32768 --enforce-eager
-`
-
-You can also easily start a service using SGLang :
-`python3 -m sglang launch_server --model deepseek-ai/DeepSeek-R1-Distill-Qwen-32B --trust-remote-code --tp 2
-`
-
-Usage Recommendations
-
-1  Set the temperature within the range of 0 5-0 7 (0 6 is recommended) to prevent endless repetitions or incoherent outputs 
-2  Avoid adding a system prompt; all instructions should be contained within the user prompt 
-3  For mathematical problems, it is advisable to include a directive in your prompt such as: &quot;Please reason step by step, and put your final answer within \boxed{} &quot;
-4  When evaluating model performance, it is recommended to conduct multiple tests and average the results 
-Additionally, we have observed that the DeepSeek-R1 series models tend to bypass thinking pattern (i e , outputting &quot;&lt;think&gt;\n\n&lt;/think&gt;&quot;) when responding to certain queries, which can adversely affect the model&#x27;s performance  To ensure that the model engages in thorough reasoning, we recommend enforcing the model to initiate its response with &quot;&lt;think&gt;\n&quot; at the beginning of every output
-                    </div>
-                </div>
-                
-                </div>
-            </details>
-            
-            <details class="mismatch">
-                <summary>
-                    <span class="field gt">
                         performance.analysis
                     </span>
 
@@ -3020,7 +3240,7 @@ In addition, the sequence-to-sequence architecture of the model makes it prone t
                     <span class="arrow">→</span>
 
                     <span class="field predicted-field">
-                        safety.caveats
+                        safety.risks
                     </span>
 
                     <span class="count">
@@ -4200,7 +4420,7 @@ Moreover, these models may have some capabilities to recognize specific individu
             <summary>
                 <span>Extra / Unmatched Predictions</span>
                 <span class="count">
-                    66
+                    67
                 </span>
             </summary>
 
@@ -4432,6 +4652,60 @@ Excluded uses are described below
                     CompVis@stable-diffusion-v1-4.json
                     &nbsp;&nbsp;
                     <strong>Best similarity:</strong>
+                    40.5
+                    &nbsp;&nbsp;
+                    <strong>Predicted field:</strong>
+                    overview.citation
+                </div>
+
+                <div class="label">Predicted text</div>
+                <div class="text predicted">
+                    #### Citation
+```bibtex
+    @InProceedings{Rombach_2022_CVPR,
+        author    = {Rombach, Robin and Blattmann, Andreas and Lorenz, Dominik and Esser, Patrick and Ommer, Bj\&quot;orn},
+        title     = {High-Resolution Image Synthesis With Latent Diffusion Models},
+        booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+        month     = {June},
+        year      = {2022},
+        pages     = {10684-10695}
+    }
+```
+
+*This model card was written by: Robin Rombach and Patrick Esser and is based on the [DALL-E Mini model card](https://huggingface.co/dalle-mini/dalle-mini).*
+                </div>
+
+                <div class="label">Best matching ground truth</div>
+                <div class="meta">
+                    <strong>GT field:</strong>
+                    use.out_of_scope_use
+                </div>
+
+                <div class="text ground-truth">
+                    Note: This section is taken from the DALLE-MINI model card , but applies in the same way to Stable Diffusion v1 
+
+The model should not be used to intentionally create or disseminate images that create hostile or alienating environments for people  This includes generating images that people would foreseeably find disturbing, distressing, or offensive; or content that propagates historical or current stereotypes 
+
+The model was not trained to be factual or true representations of people or events, and therefore using the model to generate such content is out-of-scope for the abilities of this model 
+
+Using the model to generate content that is cruel to individuals is a misuse of this model  This includes, but is not limited to:
+  * Generating demeaning, dehumanizing, or otherwise harmful representations of people or their environments, cultures, religions, etc 
+  * Intentionally promoting or propagating discriminatory content or harmful stereotypes 
+  * Impersonating individuals without their consent 
+  * Sexual content without consent of the people who might see it 
+  * Mis- and disinformation
+  * Representations of egregious violence and gore
+  * Sharing of copyrighted or licensed material in violation of its terms of use 
+  * Sharing content that is an alteration of copyrighted or licensed material in violation of its terms of use
+                </div>
+            </div>
+            
+            <div class="sentence">
+                <div class="meta">
+                    <strong>File:</strong>
+                    CompVis@stable-diffusion-v1-4.json
+                    &nbsp;&nbsp;
+                    <strong>Best similarity:</strong>
                     57.81
                     &nbsp;&nbsp;
                     <strong>Predicted field:</strong>
@@ -4600,60 +4874,6 @@ _Note: This section is taken from the [DALLE-MINI model card](https://huggingfac
 
 
 &lt;br&gt;
-                </div>
-
-                <div class="label">Best matching ground truth</div>
-                <div class="meta">
-                    <strong>GT field:</strong>
-                    use.out_of_scope_use
-                </div>
-
-                <div class="text ground-truth">
-                    Note: This section is taken from the DALLE-MINI model card , but applies in the same way to Stable Diffusion v1 
-
-The model should not be used to intentionally create or disseminate images that create hostile or alienating environments for people  This includes generating images that people would foreseeably find disturbing, distressing, or offensive; or content that propagates historical or current stereotypes 
-
-The model was not trained to be factual or true representations of people or events, and therefore using the model to generate such content is out-of-scope for the abilities of this model 
-
-Using the model to generate content that is cruel to individuals is a misuse of this model  This includes, but is not limited to:
-  * Generating demeaning, dehumanizing, or otherwise harmful representations of people or their environments, cultures, religions, etc 
-  * Intentionally promoting or propagating discriminatory content or harmful stereotypes 
-  * Impersonating individuals without their consent 
-  * Sexual content without consent of the people who might see it 
-  * Mis- and disinformation
-  * Representations of egregious violence and gore
-  * Sharing of copyrighted or licensed material in violation of its terms of use 
-  * Sharing content that is an alteration of copyrighted or licensed material in violation of its terms of use
-                </div>
-            </div>
-            
-            <div class="sentence">
-                <div class="meta">
-                    <strong>File:</strong>
-                    CompVis@stable-diffusion-v1-4.json
-                    &nbsp;&nbsp;
-                    <strong>Best similarity:</strong>
-                    40.5
-                    &nbsp;&nbsp;
-                    <strong>Predicted field:</strong>
-                    use.more
-                </div>
-
-                <div class="label">Predicted text</div>
-                <div class="text predicted">
-                    #### Citation
-```bibtex
-    @InProceedings{Rombach_2022_CVPR,
-        author    = {Rombach, Robin and Blattmann, Andreas and Lorenz, Dominik and Esser, Patrick and Ommer, Bj\&quot;orn},
-        title     = {High-Resolution Image Synthesis With Latent Diffusion Models},
-        booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
-        month     = {June},
-        year      = {2022},
-        pages     = {10684-10695}
-    }
-```
-
-*This model card was written by: Robin Rombach and Patrick Esser and is based on the [DALL-E Mini model card](https://huggingface.co/dalle-mini/dalle-mini).*
                 </div>
 
                 <div class="label">Best matching ground truth</div>
@@ -4962,6 +5182,53 @@ which consists of images that are primarily limited to English descriptions.
                 <div class="text ground-truth">
                     While the capabilities of image generation models are impressive, they can also reinforce or exacerbate social biases  Stable Diffusion v1 was trained on subsets of LAION-2B(en), which consists of images that are primarily limited to English descriptions  Texts and images from communities and cultures that use other languages are likely to be insufficiently accounted for  This affects the overall output of the model, as white and western cultures are often set as the default 
 Further, the ability of the model to generate content with non-English prompts is significantly worse than with English-language prompts
+                </div>
+            </div>
+            
+            <div class="sentence">
+                <div class="meta">
+                    <strong>File:</strong>
+                    CompVis@stable-diffusion-v1-4.json
+                    &nbsp;&nbsp;
+                    <strong>Best similarity:</strong>
+                    69.41
+                    &nbsp;&nbsp;
+                    <strong>Predicted field:</strong>
+                    safety.risks
+                </div>
+
+                <div class="label">Predicted text</div>
+                <div class="text predicted">
+                    #### Misuse and Malicious Use
+- Impersonating individuals without their consent.
+
+
+
+&lt;br&gt;
+                </div>
+
+                <div class="label">Best matching ground truth</div>
+                <div class="meta">
+                    <strong>GT field:</strong>
+                    use.out_of_scope_use
+                </div>
+
+                <div class="text ground-truth">
+                    Note: This section is taken from the DALLE-MINI model card , but applies in the same way to Stable Diffusion v1 
+
+The model should not be used to intentionally create or disseminate images that create hostile or alienating environments for people  This includes generating images that people would foreseeably find disturbing, distressing, or offensive; or content that propagates historical or current stereotypes 
+
+The model was not trained to be factual or true representations of people or events, and therefore using the model to generate such content is out-of-scope for the abilities of this model 
+
+Using the model to generate content that is cruel to individuals is a misuse of this model  This includes, but is not limited to:
+  * Generating demeaning, dehumanizing, or otherwise harmful representations of people or their environments, cultures, religions, etc 
+  * Intentionally promoting or propagating discriminatory content or harmful stereotypes 
+  * Impersonating individuals without their consent 
+  * Sexual content without consent of the people who might see it 
+  * Mis- and disinformation
+  * Representations of egregious violence and gore
+  * Sharing of copyrighted or licensed material in violation of its terms of use 
+  * Sharing content that is an alteration of copyrighted or licensed material in violation of its terms of use
                 </div>
             </div>
             
@@ -5561,6 +5828,61 @@ Distillation: Smaller Models Can Be Powerful Too
                     deepseek-ai@DeepSeek-R1.json
                     &nbsp;&nbsp;
                     <strong>Best similarity:</strong>
+                    40.34
+                    &nbsp;&nbsp;
+                    <strong>Predicted field:</strong>
+                    overview.citation
+                </div>
+
+                <div class="label">Predicted text</div>
+                <div class="text predicted">
+                    #### 8. Citation
+```
+@misc{deepseekai2025deepseekr1incentivizingreasoningcapability,
+      title={DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning}, 
+      author={DeepSeek-AI},
+      year={2025},
+      eprint={2501.12948},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2501.12948}, 
+}
+
+```
+                </div>
+
+                <div class="label">Best matching ground truth</div>
+                <div class="meta">
+                    <strong>GT field:</strong>
+                    overview.description
+                </div>
+
+                <div class="text ground-truth">
+                    We introduce our first-generation reasoning models, DeepSeek-R1-Zero and DeepSeek-R1  DeepSeek-R1-Zero, a model trained via large-scale reinforcement learning (RL) without supervised fine-tuning (SFT) as a preliminary step, demonstrated remarkable performance on reasoning  With RL, DeepSeek-R1-Zero naturally emerged with numerous powerful and interesting reasoning behaviors  However, DeepSeek-R1-Zero encounters challenges such as endless repetition, poor readability, and language mixing 
+
+To address these issues and further enhance reasoning performance, we introduce DeepSeek-R1, which incorporates cold-start data before RL  DeepSeek-R1 achieves performance comparable to OpenAI-o1 across math, code, and reasoning tasks  To support the research community, we have open-sourced DeepSeek-R1-Zero, DeepSeek-R1, and six dense models distilled from DeepSeek-R1 based on Llama and Qwen 
+
+DeepSeek-R1-Distill-Qwen-32B outperforms OpenAI-o1-mini across various benchmarks, achieving new state-of-the-art results for dense models 
+
+Post-Training: Large-Scale Reinforcement Learning on the Base Model
+
+* We directly apply reinforcement learning (RL) to the base model without relying on supervised fine-tuning (SFT) as a preliminary step  This approach allows the model to explore chain-of-thought (CoT) for solving complex problems, resulting in the development of DeepSeek-R1-Zero  DeepSeek-R1-Zero demonstrates capabilities such as self-verification, reflection, and generating long CoTs, marking a significant milestone for the research community 
+* Notably, it is the first open research to validate that reasoning capabilities of LLMs can be incentivized purely through RL, without the need for SFT  This breakthrough paves the way for future advancements in this area 
+* We introduce our pipeline to develop DeepSeek-R1  The pipeline incorporates two RL stages aimed at discovering improved reasoning patterns and aligning with human preferences, as well as two SFT stages that serve as the seed for the model&#x27;s reasoning and non-reasoning capabilities  We believe the pipeline will benefit the industry by creating better models 
+
+Distillation: Smaller Models Can Be Powerful Too
+
+* We demonstrate that the reasoning patterns of larger models can be distilled into smaller models, resulting in better performance compared to the reasoning patterns discovered through RL on small models  The open source DeepSeek-R1, as well as its API, will benefit the research community to distill better smaller models in the future 
+* Using the reasoning data generated by DeepSeek-R1, we fine-tuned several dense models that are widely used in the research community  The evaluation results demonstrate that the distilled smaller dense models perform exceptionally well on benchmarks  We open-source distilled 1 5B, 7B, 8B, 14B, 32B, and 70B checkpoints based on Qwen2 5 and Llama3 series to the community
+                </div>
+            </div>
+            
+            <div class="sentence">
+                <div class="meta">
+                    <strong>File:</strong>
+                    deepseek-ai@DeepSeek-R1.json
+                    &nbsp;&nbsp;
+                    <strong>Best similarity:</strong>
                     42.23
                     &nbsp;&nbsp;
                     <strong>Predicted field:</strong>
@@ -5862,61 +6184,6 @@ Usage Recommendations
 3  For mathematical problems, it is advisable to include a directive in your prompt such as: &quot;Please reason step by step, and put your final answer within \boxed{} &quot;
 4  When evaluating model performance, it is recommended to conduct multiple tests and average the results 
 Additionally, we have observed that the DeepSeek-R1 series models tend to bypass thinking pattern (i e , outputting &quot;&lt;think&gt;\n\n&lt;/think&gt;&quot;) when responding to certain queries, which can adversely affect the model&#x27;s performance  To ensure that the model engages in thorough reasoning, we recommend enforcing the model to initiate its response with &quot;&lt;think&gt;\n&quot; at the beginning of every output
-                </div>
-            </div>
-            
-            <div class="sentence">
-                <div class="meta">
-                    <strong>File:</strong>
-                    deepseek-ai@DeepSeek-R1.json
-                    &nbsp;&nbsp;
-                    <strong>Best similarity:</strong>
-                    40.34
-                    &nbsp;&nbsp;
-                    <strong>Predicted field:</strong>
-                    use.more
-                </div>
-
-                <div class="label">Predicted text</div>
-                <div class="text predicted">
-                    #### 8. Citation
-```
-@misc{deepseekai2025deepseekr1incentivizingreasoningcapability,
-      title={DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning}, 
-      author={DeepSeek-AI},
-      year={2025},
-      eprint={2501.12948},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/2501.12948}, 
-}
-
-```
-                </div>
-
-                <div class="label">Best matching ground truth</div>
-                <div class="meta">
-                    <strong>GT field:</strong>
-                    overview.description
-                </div>
-
-                <div class="text ground-truth">
-                    We introduce our first-generation reasoning models, DeepSeek-R1-Zero and DeepSeek-R1  DeepSeek-R1-Zero, a model trained via large-scale reinforcement learning (RL) without supervised fine-tuning (SFT) as a preliminary step, demonstrated remarkable performance on reasoning  With RL, DeepSeek-R1-Zero naturally emerged with numerous powerful and interesting reasoning behaviors  However, DeepSeek-R1-Zero encounters challenges such as endless repetition, poor readability, and language mixing 
-
-To address these issues and further enhance reasoning performance, we introduce DeepSeek-R1, which incorporates cold-start data before RL  DeepSeek-R1 achieves performance comparable to OpenAI-o1 across math, code, and reasoning tasks  To support the research community, we have open-sourced DeepSeek-R1-Zero, DeepSeek-R1, and six dense models distilled from DeepSeek-R1 based on Llama and Qwen 
-
-DeepSeek-R1-Distill-Qwen-32B outperforms OpenAI-o1-mini across various benchmarks, achieving new state-of-the-art results for dense models 
-
-Post-Training: Large-Scale Reinforcement Learning on the Base Model
-
-* We directly apply reinforcement learning (RL) to the base model without relying on supervised fine-tuning (SFT) as a preliminary step  This approach allows the model to explore chain-of-thought (CoT) for solving complex problems, resulting in the development of DeepSeek-R1-Zero  DeepSeek-R1-Zero demonstrates capabilities such as self-verification, reflection, and generating long CoTs, marking a significant milestone for the research community 
-* Notably, it is the first open research to validate that reasoning capabilities of LLMs can be incentivized purely through RL, without the need for SFT  This breakthrough paves the way for future advancements in this area 
-* We introduce our pipeline to develop DeepSeek-R1  The pipeline incorporates two RL stages aimed at discovering improved reasoning patterns and aligning with human preferences, as well as two SFT stages that serve as the seed for the model&#x27;s reasoning and non-reasoning capabilities  We believe the pipeline will benefit the industry by creating better models 
-
-Distillation: Smaller Models Can Be Powerful Too
-
-* We demonstrate that the reasoning patterns of larger models can be distilled into smaller models, resulting in better performance compared to the reasoning patterns discovered through RL on small models  The open source DeepSeek-R1, as well as its API, will benefit the research community to distill better smaller models in the future 
-* Using the reasoning data generated by DeepSeek-R1, we fine-tuned several dense models that are widely used in the research community  The evaluation results demonstrate that the distilled smaller dense models perform exceptionally well on benchmarks  We open-source distilled 1 5B, 7B, 8B, 14B, 32B, and 70B checkpoints based on Qwen2 5 and Llama3 series to the community
                 </div>
             </div>
             
@@ -7834,6 +8101,53 @@ If your GPU does not support Flash Attention, we recommend making use of PyTorch
                     openai@whisper-large-v3.json
                     &nbsp;&nbsp;
                     <strong>Best similarity:</strong>
+                    44.71
+                    &nbsp;&nbsp;
+                    <strong>Predicted field:</strong>
+                    overview.citation
+                </div>
+
+                <div class="label">Predicted text</div>
+                <div class="text predicted">
+                    #### BibTeX entry and citation info
+```bibtex
+@misc{radford2022whisper,
+  doi = {10.48550/ARXIV.2212.04356},
+  url = {https://arxiv.org/abs/2212.04356},
+  author = {Radford, Alec and Kim, Jong Wook and Xu, Tao and Brockman, Greg and McLeavey, Christine and Sutskever, Ilya},
+  title = {Robust Speech Recognition via Large-Scale Weak Supervision},
+  publisher = {arXiv},
+  year = {2022},
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+```
+                </div>
+
+                <div class="label">Best matching ground truth</div>
+                <div class="meta">
+                    <strong>GT field:</strong>
+                    overview.description
+                </div>
+
+                <div class="text ground-truth">
+                    Whisper is a state-of-the-art model for automatic speech recognition (ASR) and speech translation, proposed in the paper Robust Speech Recognition via Large-Scale Weak Supervision by Alec Radford et al  from OpenAI  Trained on &gt;5M hours of labeled data, Whisper demonstrates a strong ability to generalise to many datasets and domains in a zero-shot setting 
+
+Whisper large-v3 has the same architecture as the previous large and large-v2 models, except for the following minor differences:
+
+1  The spectrogram input uses 128 Mel frequency bins instead of 80
+2  A new language token for Cantonese
+
+The Whisper large-v3 model was trained on 1 million hours of weakly labeled audio and 4 million hours of pseudo-labeled audio collected using Whisper large-v2   The model was trained for 2 0 epochs over this mixture dataset 
+The large-v3 model shows improved performance over a wide variety of languages, showing 10% to 20% reduction of errors compared to Whisper large-v2   For more details on the different checkpoints available, refer to the section Model details
+                </div>
+            </div>
+            
+            <div class="sentence">
+                <div class="meta">
+                    <strong>File:</strong>
+                    openai@whisper-large-v3.json
+                    &nbsp;&nbsp;
+                    <strong>Best similarity:</strong>
                     46.97
                     &nbsp;&nbsp;
                     <strong>Predicted field:</strong>
@@ -8064,7 +8378,7 @@ If your GPU does not support Flash Attention, we recommend making use of PyTorch
                     openai@whisper-large-v3.json
                     &nbsp;&nbsp;
                     <strong>Best similarity:</strong>
-                    37.18
+                    37.44
                     &nbsp;&nbsp;
                     <strong>Predicted field:</strong>
                     use.inputs_outputs
@@ -8072,7 +8386,7 @@ If your GPU does not support Flash Attention, we recommend making use of PyTorch
 
                 <div class="label">Predicted text</div>
                 <div class="text predicted">
-                    te, uz, mr, ar, is, th, tl, bo, ml, si, sv, he, nn, ro, sa, ja, cs, sr, yo, es, it, mk, fo, sq, no, jw, lv, su, hy, ka, mg, ln, br, tr, de, ur, as, ta, uk, ru, gl, km, hu, bn, be, tt, sl, zh, et, da, tg, oc, eu, tk, ba, en, yi, ko, ha, hr, fr, sn, lt, pa, sd, lo, kn, az, cy, af, hi, id, ne, fa, sw, ca, mt, gu, mi, pl, ms, vi, fi, nl, el, my, kk, ht, la, mn, pt, bs, so, sk, lb, bg, ps, am
+                    br, cs, ka, ha, fr, ko, af, as, sn, en, ps, kn, km, mt, la, mi, fi, th, fo, ru, pa, da, uz, ro, az, lt, mr, ar, si, bs, bg, hi, oc, yi, jw, hy, bo, is, sw, ba, ja, he, pt, no, gu, el, nl, yo, sl, tl, eu, su, tk, hu, mk, ms, fa, ln, te, pl, gl, nn, sa, ur, cy, be, et, lv, ht, lo, sk, ta, id, ca, mn, my, ne, mg, lb, it, de, ml, zh, sd, bn, vi, uk, so, sq, es, tr, hr, tt, kk, am, tg, sr, sv
                 </div>
 
                 <div class="label">Best matching ground truth</div>
@@ -8512,7 +8826,7 @@ model = AutoModelForSpeechSeq2Seq from_pretrained(model_id, torch_dtype=torch_dt
                     openai@whisper-large-v3.json
                     &nbsp;&nbsp;
                     <strong>Best similarity:</strong>
-                    59.69
+                    60.16
                     &nbsp;&nbsp;
                     <strong>Predicted field:</strong>
                     use.more
@@ -8532,10 +8846,6 @@ Then pass `attn_implementation=&quot;flash_attention_2&quot;` to `from_pretraine
 ```python
 model = AutoModelForSpeechSeq2Seq.from_pretrained(model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=True, attn_implementation=&quot;flash_attention_2&quot;)
 ```
-
-
-
-&lt;br&gt;
                 </div>
 
                 <div class="label">Best matching ground truth</div>
@@ -8746,53 +9056,6 @@ from transformers utils import is_torch_sdpa_available
 print(is_torch_sdpa_available())
 
 model = AutoModelForSpeechSeq2Seq from_pretrained(model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=True, attn_implementation=&quot;sdpa&quot;)
-                </div>
-            </div>
-            
-            <div class="sentence">
-                <div class="meta">
-                    <strong>File:</strong>
-                    openai@whisper-large-v3.json
-                    &nbsp;&nbsp;
-                    <strong>Best similarity:</strong>
-                    44.71
-                    &nbsp;&nbsp;
-                    <strong>Predicted field:</strong>
-                    use.more
-                </div>
-
-                <div class="label">Predicted text</div>
-                <div class="text predicted">
-                    #### BibTeX entry and citation info
-```bibtex
-@misc{radford2022whisper,
-  doi = {10.48550/ARXIV.2212.04356},
-  url = {https://arxiv.org/abs/2212.04356},
-  author = {Radford, Alec and Kim, Jong Wook and Xu, Tao and Brockman, Greg and McLeavey, Christine and Sutskever, Ilya},
-  title = {Robust Speech Recognition via Large-Scale Weak Supervision},
-  publisher = {arXiv},
-  year = {2022},
-  copyright = {arXiv.org perpetual, non-exclusive license}
-}
-```
-                </div>
-
-                <div class="label">Best matching ground truth</div>
-                <div class="meta">
-                    <strong>GT field:</strong>
-                    overview.description
-                </div>
-
-                <div class="text ground-truth">
-                    Whisper is a state-of-the-art model for automatic speech recognition (ASR) and speech translation, proposed in the paper Robust Speech Recognition via Large-Scale Weak Supervision by Alec Radford et al  from OpenAI  Trained on &gt;5M hours of labeled data, Whisper demonstrates a strong ability to generalise to many datasets and domains in a zero-shot setting 
-
-Whisper large-v3 has the same architecture as the previous large and large-v2 models, except for the following minor differences:
-
-1  The spectrogram input uses 128 Mel frequency bins instead of 80
-2  A new language token for Cantonese
-
-The Whisper large-v3 model was trained on 1 million hours of weakly labeled audio and 4 million hours of pseudo-labeled audio collected using Whisper large-v2   The model was trained for 2 0 epochs over this mixture dataset 
-The large-v3 model shows improved performance over a wide variety of languages, showing 10% to 20% reduction of errors compared to Whisper large-v2   For more details on the different checkpoints available, refer to the section Model details
                 </div>
             </div>
             
@@ -9130,6 +9393,78 @@ model = AutoModelForSpeechSeq2Seq from_pretrained(model_id, torch_dtype=torch_dt
                     openai@whisper-large-v3.json
                     &nbsp;&nbsp;
                     <strong>Best similarity:</strong>
+                    74.92
+                    &nbsp;&nbsp;
+                    <strong>Predicted field:</strong>
+                    safety.risks
+                </div>
+
+                <div class="label">Predicted text</div>
+                <div class="text predicted">
+                    Whisper large-v3 has the same architecture as the previous [large](https://huggingface.co/openai/whisper-large) and [large-v2](https://huggingface.co/openai/whisper-large-v2)
+models, except for the following minor differences:
+
+1. The spectrogram input uses 128 Mel frequency bins instead of 80
+2. A new language token for Cantonese
+
+The Whisper large-v3 model was trained on 1 million hours of weakly labeled audio and 4 million hours of pseudo-labeled
+audio collected using Whisper [large-v2](https://huggingface.co/openai/whisper-large-v2) . The model was trained for 2.0 epochs over this mixture dataset.
+                </div>
+
+                <div class="label">Best matching ground truth</div>
+                <div class="meta">
+                    <strong>GT field:</strong>
+                    overview.description
+                </div>
+
+                <div class="text ground-truth">
+                    Whisper is a state-of-the-art model for automatic speech recognition (ASR) and speech translation, proposed in the paper Robust Speech Recognition via Large-Scale Weak Supervision by Alec Radford et al  from OpenAI  Trained on &gt;5M hours of labeled data, Whisper demonstrates a strong ability to generalise to many datasets and domains in a zero-shot setting 
+
+Whisper large-v3 has the same architecture as the previous large and large-v2 models, except for the following minor differences:
+
+1  The spectrogram input uses 128 Mel frequency bins instead of 80
+2  A new language token for Cantonese
+
+The Whisper large-v3 model was trained on 1 million hours of weakly labeled audio and 4 million hours of pseudo-labeled audio collected using Whisper large-v2   The model was trained for 2 0 epochs over this mixture dataset 
+The large-v3 model shows improved performance over a wide variety of languages, showing 10% to 20% reduction of errors compared to Whisper large-v2   For more details on the different checkpoints available, refer to the section Model details
+                </div>
+            </div>
+            
+            <div class="sentence">
+                <div class="meta">
+                    <strong>File:</strong>
+                    openai@whisper-large-v3.json
+                    &nbsp;&nbsp;
+                    <strong>Best similarity:</strong>
+                    48.73
+                    &nbsp;&nbsp;
+                    <strong>Predicted field:</strong>
+                    safety.risks
+                </div>
+
+                <div class="label">Predicted text</div>
+                <div class="text predicted">
+                    **Disclaimer**: Content for this model card has partly been written by the 🤗 Hugging Face team, and partly copied and
+pasted from the original model card.&lt;br&gt;
+                </div>
+
+                <div class="label">Best matching ground truth</div>
+                <div class="meta">
+                    <strong>GT field:</strong>
+                    use.software
+                </div>
+
+                <div class="text ground-truth">
+                    Whisper large-v3 is supported in Hugging Face Transformers  To run the model, first install the Transformers library  For this example, we&#x27;ll also install Datasets to load toy audio dataset from the Hugging Face Hub, and Accelerate to reduce the model loading time
+                </div>
+            </div>
+            
+            <div class="sentence">
+                <div class="meta">
+                    <strong>File:</strong>
+                    openai@whisper-large-v3.json
+                    &nbsp;&nbsp;
+                    <strong>Best similarity:</strong>
                     56.19
                     &nbsp;&nbsp;
                     <strong>Predicted field:</strong>
@@ -9181,78 +9516,6 @@ If your GPU does not support Flash Attention, we recommend making use of PyTorch
                     openai@whisper-large-v3.json
                     &nbsp;&nbsp;
                     <strong>Best similarity:</strong>
-                    74.92
-                    &nbsp;&nbsp;
-                    <strong>Predicted field:</strong>
-                    safety.caveats
-                </div>
-
-                <div class="label">Predicted text</div>
-                <div class="text predicted">
-                    Whisper large-v3 has the same architecture as the previous [large](https://huggingface.co/openai/whisper-large) and [large-v2](https://huggingface.co/openai/whisper-large-v2)
-models, except for the following minor differences:
-
-1. The spectrogram input uses 128 Mel frequency bins instead of 80
-2. A new language token for Cantonese
-
-The Whisper large-v3 model was trained on 1 million hours of weakly labeled audio and 4 million hours of pseudo-labeled
-audio collected using Whisper [large-v2](https://huggingface.co/openai/whisper-large-v2) . The model was trained for 2.0 epochs over this mixture dataset.
-                </div>
-
-                <div class="label">Best matching ground truth</div>
-                <div class="meta">
-                    <strong>GT field:</strong>
-                    overview.description
-                </div>
-
-                <div class="text ground-truth">
-                    Whisper is a state-of-the-art model for automatic speech recognition (ASR) and speech translation, proposed in the paper Robust Speech Recognition via Large-Scale Weak Supervision by Alec Radford et al  from OpenAI  Trained on &gt;5M hours of labeled data, Whisper demonstrates a strong ability to generalise to many datasets and domains in a zero-shot setting 
-
-Whisper large-v3 has the same architecture as the previous large and large-v2 models, except for the following minor differences:
-
-1  The spectrogram input uses 128 Mel frequency bins instead of 80
-2  A new language token for Cantonese
-
-The Whisper large-v3 model was trained on 1 million hours of weakly labeled audio and 4 million hours of pseudo-labeled audio collected using Whisper large-v2   The model was trained for 2 0 epochs over this mixture dataset 
-The large-v3 model shows improved performance over a wide variety of languages, showing 10% to 20% reduction of errors compared to Whisper large-v2   For more details on the different checkpoints available, refer to the section Model details
-                </div>
-            </div>
-            
-            <div class="sentence">
-                <div class="meta">
-                    <strong>File:</strong>
-                    openai@whisper-large-v3.json
-                    &nbsp;&nbsp;
-                    <strong>Best similarity:</strong>
-                    48.73
-                    &nbsp;&nbsp;
-                    <strong>Predicted field:</strong>
-                    safety.caveats
-                </div>
-
-                <div class="label">Predicted text</div>
-                <div class="text predicted">
-                    **Disclaimer**: Content for this model card has partly been written by the 🤗 Hugging Face team, and partly copied and
-pasted from the original model card.&lt;br&gt;
-                </div>
-
-                <div class="label">Best matching ground truth</div>
-                <div class="meta">
-                    <strong>GT field:</strong>
-                    use.software
-                </div>
-
-                <div class="text ground-truth">
-                    Whisper large-v3 is supported in Hugging Face Transformers  To run the model, first install the Transformers library  For this example, we&#x27;ll also install Datasets to load toy audio dataset from the Hugging Face Hub, and Accelerate to reduce the model loading time
-                </div>
-            </div>
-            
-            <div class="sentence">
-                <div class="meta">
-                    <strong>File:</strong>
-                    openai@whisper-large-v3.json
-                    &nbsp;&nbsp;
-                    <strong>Best similarity:</strong>
                     50.85
                     &nbsp;&nbsp;
                     <strong>Predicted field:</strong>
@@ -9285,7 +9548,7 @@ requirements.
         </details>
         
     <section>
-        <h2>Correct Predictions (40)</h2>
+        <h2>Correct Predictions (39)</h2>
 
         <details>
             <summary>Show correct predictions</summary>
@@ -9686,43 +9949,6 @@ Using the model to generate content that is cruel to individuals is a misuse of 
                 <div class="label">Predicted text</div>
                 <div class="text predicted">
                     - Intentionally promoting or propagating discriminatory content or harmful stereotypes.
-                </div>
-
-                <div class="label">Ground-truth text</div>
-                <div class="text ground-truth">
-                    Note: This section is taken from the DALLE-MINI model card , but applies in the same way to Stable Diffusion v1 
-
-The model should not be used to intentionally create or disseminate images that create hostile or alienating environments for people  This includes generating images that people would foreseeably find disturbing, distressing, or offensive; or content that propagates historical or current stereotypes 
-
-The model was not trained to be factual or true representations of people or events, and therefore using the model to generate such content is out-of-scope for the abilities of this model 
-
-Using the model to generate content that is cruel to individuals is a misuse of this model  This includes, but is not limited to:
-  * Generating demeaning, dehumanizing, or otherwise harmful representations of people or their environments, cultures, religions, etc 
-  * Intentionally promoting or propagating discriminatory content or harmful stereotypes 
-  * Impersonating individuals without their consent 
-  * Sexual content without consent of the people who might see it 
-  * Mis- and disinformation
-  * Representations of egregious violence and gore
-  * Sharing of copyrighted or licensed material in violation of its terms of use 
-  * Sharing content that is an alteration of copyrighted or licensed material in violation of its terms of use
-                </div>
-            </div>
-            
-            <div class="sentence correct">
-                <div class="meta">
-                    <strong>File:</strong>
-                    CompVis@stable-diffusion-v1-4.json
-                    &nbsp;&nbsp;
-                    <strong>Similarity:</strong>
-                    96.0
-                    &nbsp;&nbsp;
-                    <strong>Field:</strong>
-                    use.out_of_scope_use
-                </div>
-
-                <div class="label">Predicted text</div>
-                <div class="text predicted">
-                    - Impersonating individuals without their consent.
                 </div>
 
                 <div class="label">Ground-truth text</div>
