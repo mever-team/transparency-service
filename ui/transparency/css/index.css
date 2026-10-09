@@ -66,19 +66,19 @@ input {
 .search_results_button:hover {transform: translateY(-2px);}
 .search_results_button a:hover {filter: none !important;}
 
-/* The animated left border (pseudo-element) */
-.search_results_button a::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 0;
-    height: 1px;
-    background-color: var(--text-primary);
-    transition: width 0.25s ease-out, left 0.25s ease-out;
-    pointer-events: none;
-    z-index: 1;
-}
+/*!* The animated left border (pseudo-element) *!*/
+/*.search_results_button a::before {*/
+/*    content: '';*/
+/*    position: absolute;*/
+/*    bottom: 0;*/
+/*    left: 50%;*/
+/*    width: 0;*/
+/*    height: 1px;*/
+/*    background-color: var(--text-primary);*/
+/*    transition: width 0.25s ease-out, left 0.25s ease-out;*/
+/*    pointer-events: none;*/
+/*    z-index: 1;*/
+/*}*/
 
 .search_results_button a:hover::before {
     left: 0;
@@ -185,7 +185,7 @@ input {
 .quality-circle {width: 48px;height: 48px;}
 .quality-text {font-size: 12px;fill: var(--text-primary);text-anchor: middle;dominant-baseline: middle;}
 #resultsTable tbody {display: block; overflow-y: auto;}
-
+#total-count {cursor: auto;}
 .search_section {
     flex: 1 0 auto;
     display: flex;

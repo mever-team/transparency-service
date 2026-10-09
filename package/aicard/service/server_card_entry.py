@@ -16,6 +16,7 @@ class ModelCardEntry(contextlib.AbstractContextManager):
     def __init__(self, card: ModelCard, creator: str, conn):
         self.card = card
         self.creator = creator
+        self.message = ""
         self.preview = card.to_html_card()
         self.lock = Lock()
         self._is_completing: bool = False
@@ -92,6 +93,7 @@ class ModelCardEntry(contextlib.AbstractContextManager):
         if edit_message:
             if edit_message == "Edited" and summary: edit_message = summary
             else: edit_message = edit_message + " " + summary
+            self.message = edit_message
 
         timestamp = int(time.time())
         columns = list(flattened.keys())

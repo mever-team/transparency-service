@@ -36,10 +36,11 @@
                         <div class="row-top-inner bigWidth" style="margin-top:-10px">
                             <div id="model-quality"></div>
                             <div>
-                                <div id="model-title" style="font-size:30px;color: var(--text-primary)" class="model-title"></div>
+                                <div id="model-title" style="font-size:30px;color: var(--text-primary);text-align: left" class="model-title"></div>
                                 <div>
-                                    <div id="model-pending" style="color:var(--yellow-primary);font-size:16px"></div>
-                                    <div id="model-description" style="color:var(--text-info);font-size:16px"></div>
+                                    <div id="model-pending" style="color:var(--yellow-primary);font-size:16px;text-align: left"></div>
+                                    <div id="model-description" style="color:var(--text-info);font-size:16px;text-align: left"></div>
+                                    <div id="model-description-compare" style="color:var(--red-primary);font-size:16px;text-align: left"></div>
                                 </div>
                             </div>
                         </div>
@@ -155,13 +156,14 @@
 
     <section class="search_section">
         <div class="naccs">
-            <div class="row bigWidth" style="border:1px dashed var(--text-primary);border-radius:12px">
-                <span id="history-dropdown" ></span>
-            </div>
+<!--            <div class="row bigWidth" style="border:1px dashed var(&#45;&#45;text-primary);border-radius:12px">-->
+<!--                <span id="history-dropdown" ></span>-->
+<!--            </div>-->
             <div class="row bigWidth">
                 <div class="card_view">
                     <div class="active" id="simple-view"><span>Show summary</span></div>
-                    <div id="technical-view"><span>Show full version</span></div>
+                    <div id="technical-view"><span>Show the full card</span></div>
+                    <div id="history-view"><span>Show other versions</span></div>
                 </div>
                 <div class="menu">
                     <div class="active"><span class="light square"></span><span>Overview</span></div>
@@ -178,6 +180,7 @@
                     </div>
                     <ul class="nacc"></ul>
                 </div>
+                <div id="history-dropdown"  style="margin-top:20px;min-height:100vh"></div>
             </div>
         </div>
     </section>
