@@ -8,7 +8,7 @@ from log import print_metrics
 
 def main():
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
-    pairs = find_file_pairs(GT_DIR, PRED_DIR,)
+    pairs = find_file_pairs(GT_DIR, PRED_DIR)
     results = []
     detailed_results = []
     with REPORT_FILE.open("w", encoding="utf-8") as report:

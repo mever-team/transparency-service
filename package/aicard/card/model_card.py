@@ -69,15 +69,15 @@ class ModelCard:
                 analysis=LongText("Analysis and explanation of performance results.", is_refinable=True),
                 metrics=LongText("Benchmark results for any performance metrics.", technical_nature=True),
                 thresholds=LongText("If decision thresholds are used, what are they, and why were those parameters chosen?"),
-                methodology=LongText("Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method.", is_refinable=True),
+                methodology=LongText("Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method.", is_refinable=True, technical_nature=True),
                 environmental_impact=LongText("Report of energy consumption, CO2 emissions or any other environmental impact.", technical_nature=True),
                 bias=LongText("Performance and bias across different groups (e.g. ethnicity, gender)", is_refinable=True, technical_nature=True),
             ),
             safety=DotDict(
                 ethics=LongText("Ethical considerations regarding datasets and usage of model, including harmful bias and discrimination concerns. Recommended mitigation measures.", is_simple=True, is_refinable=True),
-                fairness=LongText("Definition of fairness applied in setting up the AI system.", is_simple=True, is_refinable=True),
-                risks=LongText("Possible threats to the AI system (design faults, technical faults, environmental threats) and the possible consequences.", is_simple=True, is_refinable=True),
-                security=LongText("Is the AI system certified for cybersecurity or is it compliant with specific security standards?", is_simple=True, is_refinable=True),
+                fairness=LongText("Bias or fairness assessments of the model, for example that indicate discrimination against demographic groups.", is_simple=True, is_refinable=True),
+                risks=LongText("Possible threats to the model (design faults, technical faults, environmental threats) and the possible consequences.", is_simple=True, is_refinable=True),
+                security=LongText("Is the model certified for cybersecurity or is it compliant with specific security standards?", is_simple=True, is_refinable=True),
                 caveats=LongText("Additional concerns that were not covered in the previous sections.", is_simple=True, is_refinable=True)
             ),
         ))
