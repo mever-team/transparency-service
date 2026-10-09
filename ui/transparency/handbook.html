@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="css/normalize.css"/>
     <link rel="stylesheet" href="css/handbook.css"/>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="js/shellui.js"></script>
+
 
 </head>
     <body>
@@ -55,6 +57,101 @@
                     <hr>
                     <h1>Handbook</h1>
                     <hr>
+
+                <h4>FAQ:</h4>
+                <div class="faq-card">
+                    <div class="faq-question">
+                        What is TrAI?
+                    </div>
+                    <div class="faq-answer" style="display: none;">
+                        TrAI is a transparency service for AI model cards. It helps users create, manage, explore, and understand information about AI models and their use.
+                    </div>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-card">
+                    <div class="faq-question">
+                        What is a model card?
+                    </div>
+                    <div class="faq-answer" style="display: none;">
+                        A model card is a document that provides important information about an AI model, including its intended use, training, performance, limitations, risks, and other relevant information.
+                    </div>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-card">
+                    <div class="faq-question">
+                        Who is TrAI for?
+                    </div>
+                    <div class="faq-answer" style="display: none;">
+                        TrAI is designed for both model card creators and people who need to understand or work with information about AI models, including researchers, engineers, data scientists, journalists, and other professionals without specialised AI expertise.
+                    </div>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-card">
+                    <div class="faq-question">
+                        Why should I use a model card?
+                    </div>
+                    <div class="faq-answer" style="display: none;">
+                        Model cards provide information that can help users understand an AI model's capabilities, intended uses, limitations, risks, and performance before using or deploying it.
+                    </div>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-card">
+                    <div class="faq-question">
+                        Can I create my own model card?
+                    </div>
+                    <div class="faq-answer" style="display: none;">
+                        Yes. TrAI allows users to create and manage model cards using its structured model card format.
+                    </div>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-card">
+                    <div class="faq-question">
+                        What are the Import and Refine operations?
+                    </div>
+                    <div class="faq-answer" style="display: none;">
+                        The Import and Refine operations are AI-powered actions. Import uses external information to complete parts of a model card, while Refine rewrites model card content to create a simpler version that is easier for non-AI experts to understand.
+                    </div>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-card">
+                    <div class="faq-question">
+                        Can I use the output of the Import and Refine operations without verifying it?
+                    </div>
+                    <div class="faq-answer" style="display: none;">
+                        No. Like all AI systems, the Import and Refine operations can produce incorrect results. Users should always verify their output before publishing a model card.
+                    </div>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-card">
+                    <div class="faq-question">
+                        Can I see previous versions of a model card?
+                    </div>
+                    <div class="faq-answer" style="display: none;">
+                        Yes. TrAI keeps a version history, allowing you to review previous versions and compare changes with the current version.
+                    </div>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-card">
+                    <div class="faq-question">
+                        Can I export a model card?
+                    </div>
+                    <div class="faq-answer" style="display: none;">
+                        Yes. Model cards can be exported in human- or machine-readable format for further use or publication.
+                    </div>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-card">
+                    <div class="faq-question">
+                        Can I trust the information in a model card without checking it?
+                    </div>
+                    <div class="faq-answer" style="display: none;">
+                        No. A model card is intended to provide useful transparency information, but users should evaluate the information and consider the original sources before making important decisions.
+                    </div>
+                    <span class="faq-arrow">▼</span>
+                </div>
+
+
+
                 <h2 id="introduction">Introduction</h2>
                 <h3 id="the-service">Our service</h3>
                     <p>
@@ -562,7 +659,6 @@
         </section>
 
         <script src="js/themes.js"></script>
-        <script src="js/shellui.js"></script>
         <script src="js/handbook/main.js"></script>
     </body>
 </html>
