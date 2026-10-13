@@ -1083,3 +1083,7 @@ table td {
 .medium-editor-table-controls button[data-table-action="delete-table"]:hover {
     background: color-mix(in srgb, var(--aicode-error-light) 50%, transparent);
 }
+
+.medium-editor-anchor-preview, .medium-editor-toolbar {
+    z-index: 1000!important;
+}
