@@ -1039,4 +1039,51 @@ table {
 table th,
 table td {
     border: 1px solid #ccc;
+    height: 1.5rem;
+    min-width: 5rem;
+    padding: .5rem;
+}
+.field-value table td:empty::after,
+.field-value table th:empty::after {
+    content: "\00a0";
+}
+
+.medium-editor-table-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .4rem;
+    padding: .4rem;
+    margin-top: .4rem;
+    border-top: 1px solid var(--aicode-surface-dark);
+    background: var(--aicode-surface-light);
+    border-radius: 0 0 5px 5px;
+}
+
+.medium-editor-table-controls button {
+    padding: .2rem .6rem;
+    border: 1px solid var(--aicode-surface-dark);
+    border-radius: 4px;
+    background: var(--aicode-surface);
+    color: var(--aicode-primary-dark);
+    font-size: .8rem;
+    cursor: pointer;
+}
+
+.medium-editor-table-controls button:hover {
+    background: var(--aicode-surface-ligh);
+}
+
+.medium-editor-table-controls button[data-table-action="delete-table"] {
+    margin-left: auto;
+    color: var(--aicode-error-dark);
+    border-color: var(--aicode-error-light);
+}
+
+.medium-editor-table-controls button[data-table-action="delete-table"]:hover {
+    background: color-mix(in srgb, var(--aicode-error-light) 50%, transparent);
+}
+
+.medium-editor-anchor-preview, .medium-editor-toolbar {
+    z-index: 900!important;
 }
