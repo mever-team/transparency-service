@@ -1085,5 +1085,5 @@ table td {
 }
 
 .medium-editor-anchor-preview, .medium-editor-toolbar {
-    z-index: 1000!important;
+    z-index: 900!important;
 }
