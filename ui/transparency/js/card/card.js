@@ -599,7 +599,7 @@ $(function() {
                 //console.log(baseSection.value[fieldIndex]);
                 let $baseFieldValue = $("<span>")
                         .addClass("field-value")
-                        .html(baseSection.value[fieldIndex].value || "");
+                        .html(markdownToHtml(baseSection.value[fieldIndex].value) || "");
                 let $fieldBase = $("<span>")
                     .addClass("field-name")
                     .addClass("comparison")
@@ -869,7 +869,7 @@ $(function() {
                                         if (this_field === field) {
                                             $field
                                                 .find('span.field-value').first()
-                                                .html(value)
+                                                .html(markdownToHtml(value))
                                                 .fadeOut(0, function () {
                                                     $(this)
                                                         // .attr('contenteditable', 'true')
@@ -889,7 +889,7 @@ $(function() {
                                                 const $baseFieldValue = $("<span>")
                                                     .addClass("field-value")
                                                     .addClass("comparison")
-                                                    .html(baseField.value || "");
+                                                    .html(markdownToHtml(baseField.value) || "");
                                                 const $fieldBase = $("<span>")
                                                     .addClass("field-name")
                                                     .addClass("comparison")
