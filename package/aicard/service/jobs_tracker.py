@@ -96,7 +96,7 @@ class CardJobsTracker():
             now = time.time()
             for name, job in self.__jobs.items():
                 finished_at = job.finish
-                dt = now - finished_at
+                dt = now - (finished_at if finished_at else now) # patch: have encountered finished_at being none
                 if dt > 600:
                     self.__jobs.pop(name)
             for name, job in self.__last_job.items():

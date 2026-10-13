@@ -1,0 +1,303 @@
+{
+  "title": "Whisper",
+  "data": [
+    {
+      "name": "overview",
+      "value": [
+        {
+          "name": "name",
+          "value": "whisper-large-v3",
+          "description": "Name of the model ",
+          "type": "short text"
+        },
+        {
+          "name": "description",
+          "value": "Whisper is a state-of-the-art model for automatic speech recognition (ASR) and speech translation, proposed in the paper Robust Speech Recognition via Large-Scale Weak Supervision by Alec Radford et al  from OpenAI  Trained on >5M hours of labeled data, Whisper demonstrates a strong ability to generalise to many datasets and domains in a zero-shot setting \n\nWhisper large-v3 has the same architecture as the previous large and large-v2 models, except for the following minor differences:\n\n1  The spectrogram input uses 128 Mel frequency bins instead of 80\n2  A new language token for Cantonese\n\nThe Whisper large-v3 model was trained on 1 million hours of weakly labeled audio and 4 million hours of pseudo-labeled audio collected using Whisper large-v2   The model was trained for 2 0 epochs over this mixture dataset \nThe large-v3 model shows improved performance over a wide variety of languages, showing 10% to 20% reduction of errors compared to Whisper large-v2   For more details on the different checkpoints available, refer to the section Model details  ",
+          "description": "Model purpose, capabilities, novelty and caveats",
+          "type": "long text"
+        },
+        {
+          "name": "creator",
+          "value": "OpenAI",
+          "description": "Person or organization developed the model ",
+          "type": "short text"
+        },
+        {
+          "name": "date",
+          "value": "",
+          "description": "Model development completion date ",
+          "type": "date"
+        },
+        {
+          "name": "version",
+          "value": "large-v3",
+          "description": "Version of the model ",
+          "type": "short text"
+        },
+        {
+          "name": "type",
+          "value": "Whisper is a Transformer based encoder-decoder model, also referred to as a sequence-to-sequence model ",
+          "description": "Model architecture or algorithm type "
+        },
+        {
+          "name": "task",
+          "value": "Automatic speech recognition (ASR) and speech translation ",
+          "description": "Model task "
+        },
+        {
+          "name": "license",
+          "value": "apache-2 0",
+          "description": "Licence and intellectual property (IP) information ",
+          "type": "short text"
+        },
+        {
+          "name": "home",
+          "value": "https://huggingface co/openai/whisper-large-v3",
+          "description": "URL hosting the model ",
+          "type": "short text"
+        },
+        {
+          "name": "contact",
+          "value": "",
+          "description": "Author contact information ",
+          "type": "short text"
+        },
+        {
+          "name": "citation",
+          "value": "@misc{radford2022whisper,\n  doi = {10 48550/ARXIV 2212 04356},\n  url = {https://arxiv org/abs/2212 04356},\n  author = {Radford, Alec and Kim, Jong Wook and Xu, Tao and Brockman, Greg and McLeavey, Christine and Sutskever, Ilya},\n  title = {Robust Speech Recognition via Large-Scale Weak Supervision},\n  publisher = {arXiv},\n  year = {2022},\n  copyright = {arXiv org perpetual, non-exclusive license}\n}",
+          "description": "How should the model be cited? Typically includes title, author, year, and publisher  May be a formatted citation or bibtex entries like @article ",
+          "type": "short text"
+        },
+        {
+          "name": "more",
+          "value": "Whisper checkpoints come in five configurations of varying model sizes  The smallest four are available as English-only and multilingual  The largest checkpoints are multilingual only  All ten of the pre-trained checkpoints are available on the Hugging Face Hub   The checkpoints are summarised in the following table with links to the models on the Hub:\n\nSize | Parameters | English-only | Multilingual\n--- | --- | --- | ---\ntiny | 39 M | ✓ | ✓\nbase | 74 M | ✓ | ✓\nsmall | 244 M | ✓ | ✓\nmedium | 769 M | ✓ | ✓\nlarge | 1550 M | x | ✓\nlarge-v2 | 1550 M | x | ✓\nlarge-v3 | 1550 M | x | ✓\n\nThe large-v3 checkpoint is trained on 1 million hours of weakly labeled audio and 4 million hours of pseudo-labeled audio collected using Whisper large-v2 \n\nAs discussed in the accompanying paper , we see that performance on transcription in a given language is directly correlated with the amount of training data we employ in that language \n\nDownloads last month: 4,756,726\n\nSafetensors\nModel size: 2B params\nTensor type: F16",
+          "description": "Additional model information not found above ",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "use",
+      "value": [
+        {
+          "name": "use_cases",
+          "value": "The primary intended users of these models are AI researchers studying robustness, generalization, capabilities, biases, and constraints of the current model  However, Whisper is also potentially quite useful as an ASR solution for developers, especially for English speech recognition  We recognize that once models are released, it is impossible to restrict access to only “intended” uses or to draw reasonable guidelines around what is or is not research \n\nThe models are intended to transcribe and translate speech ",
+          "description": "Intended uses of the model ",
+          "type": "long text"
+        },
+        {
+          "name": "oversight",
+          "value": "unknown",
+          "description": "Defines the level of human control over the system ",
+          "type": "list:self-learning/autonomous,human-in-the-loop,human-on-the-loop,human-in-command,unknown"
+        },
+        {
+          "name": "user_groups",
+          "value": "AI researchers studying robustness, generalization, capabilities, biases, and constraints of the current model  Developers, especially for English speech recognition ",
+          "description": "Intended users ",
+          "type": "long text"
+        },
+        {
+          "name": "out_of_scope_use",
+          "value": "We caution against using Whisper models to transcribe recordings of individuals taken without their consent or purporting to use these models for any kind of subjective classification  We recommend against use in high-risk domains like decision-making contexts, where flaws in accuracy can lead to pronounced flaws in outcomes \n\nThe models are intended to transcribe and translate speech, use of the model for classification is not only not evaluated but also not appropriate, particularly to infer human attributes ",
+          "description": "Unintended and improper use of model ",
+          "type": "long text"
+        },
+        {
+          "name": "software",
+          "value": "Whisper large-v3 is supported in Hugging Face Transformers  To run the model, first install the Transformers library  For this example, we'll also install Datasets to load toy audio dataset from the Hugging Face Hub, and Accelerate to reduce the model loading time ",
+          "description": "Software requirements and dependencies?",
+          "type": "long text"
+        },
+        {
+          "name": "instructions",
+          "value": "pip install --upgrade pip\npip install --upgrade transformers datasets[audio] accelerate\n\nimport torch\nfrom transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline\nfrom datasets import load_dataset\n\n\ndevice = \"cuda:0\" if torch cuda is_available() else \"cpu\"\ntorch_dtype = torch float16 if torch cuda is_available() else torch float32\n\nmodel_id = \"openai/whisper-large-v3\"\n\nmodel = AutoModelForSpeechSeq2Seq from_pretrained(\n    model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=True, use_safetensors=True\n)\nmodel to(device)\n\nprocessor = AutoProcessor from_pretrained(model_id)\n\npipe = pipeline(\n    \"automatic-speech-recognition\",\n    model=model,\n    tokenizer=processor tokenizer,\n    feature_extractor=processor feature_extractor,\n    torch_dtype=torch_dtype,\n    device=device,\n)\ndataset = load_dataset(\"distil-whisper/librispeech_long\", \"clean\", split=\"validation\")\nsample = dataset[0][\"audio\"]\n\nresult = pipe(sample)\nprint(result[\"text\"])\n\nresult = pipe(\"audio mp3\")\n\nresult = pipe([\"audio_1 mp3\", \"audio_2 mp3\"], batch_size=2)\n\ngenerate_kwargs = {\n    \"max_new_tokens\": 448,\n    \"num_beams\": 1,\n    \"condition_on_prev_tokens\": False,\n    \"compression_ratio_threshold\": 1 35,  # zlib compression ratio threshold (in token space)\n    \"temperature\": (0 0, 0 2, 0 4, 0 6, 0 8, 1 0),\n    \"logprob_threshold\": -1 0,\n    \"no_speech_threshold\": 0 6,\n    \"return_timestamps\": True,\n}\n\nresult = pipe(sample, generate_kwargs=generate_kwargs)\n\nresult = pipe(sample, generate_kwargs={\"language\": \"english\"})\n\nresult = pipe(sample, generate_kwargs={\"task\": \"translate\"})\n\nresult = pipe(sample, return_timestamps=True)\nprint(result[\"chunks\"])\n\nresult = pipe(sample, return_timestamps=\"word\")\nprint(result[\"chunks\"])\n\nresult = pipe(sample, return_timestamps=True, generate_kwargs={\"language\": \"french\", \"task\": \"translate\"})\nprint(result[\"chunks\"])\n\nimport torch\nfrom transformers import AutoModelForSpeechSeq2Seq, AutoProcessor\nfrom datasets import Audio, load_dataset\n\n\ndevice = \"cuda:0\" if torch cuda is_available() else \"cpu\"\ntorch_dtype = torch float16 if torch cuda is_available() else torch float32\n\nmodel_id = \"openai/whisper-large-v3\"\n\nmodel = AutoModelForSpeechSeq2Seq from_pretrained(\n    model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=True\n)\nmodel to(device)\n\nprocessor = AutoProcessor from_pretrained(model_id)\n\ndataset = load_dataset(\"hf-internal-testing/librispeech_asr_dummy\", \"clean\", split=\"validation\")\ndataset = dataset cast_column(\"audio\", Audio(processor feature_extractor sampling_rate))\nsample = dataset[0][\"audio\"]\n\ninputs = processor(\n    sample[\"array\"],\n    sampling_rate=sample[\"sampling_rate\"],\n    return_tensors=\"pt\",\n    truncation=False,\n    padding=\"longest\",\n    return_attention_mask=True,\n)\ninputs = inputs to(device, dtype=torch_dtype)\n\ngen_kwargs = {\n    \"max_new_tokens\": 448,\n    \"num_beams\": 1,\n    \"condition_on_prev_tokens\": False,\n    \"compression_ratio_threshold\": 1 35,  # zlib compression ratio threshold (in token space)\n    \"temperature\": (0 0, 0 2, 0 4, 0 6, 0 8, 1 0),\n    \"logprob_threshold\": -1 0,\n    \"no_speech_threshold\": 0 6,\n    \"return_timestamps\": True,\n}\n\npred_ids = model generate(**inputs, **gen_kwargs)\npred_text = processor batch_decode(pred_ids, skip_special_tokens=True, decode_with_timestamps=False)\n\nprint(pred_text)\n\nimport torch\nfrom transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline\nfrom datasets import load_dataset\n\n\ndevice = \"cuda:0\" if torch cuda is_available() else \"cpu\"\ntorch_dtype = torch float16 if torch cuda is_available() else torch float32\n\nmodel_id = \"openai/whisper-large-v3\"\n\nmodel = AutoModelForSpeechSeq2Seq from_pretrained(\n    model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=True\n)\nmodel to(device)\n\nprocessor = AutoProcessor from_pretrained(model_id)\n\npipe = pipeline(\n    \"automatic-speech-recognition\",\n    model=model,\n    tokenizer=processor tokenizer,\n    feature_extractor=processor feature_extractor,\n    chunk_length_s=30,\n    batch_size=16,  # batch size for inference - set based on your device\n    torch_dtype=torch_dtype,\n    device=device,\n)\n\ndataset = load_dataset(\"distil-whisper/librispeech_long\", \"clean\", split=\"validation\")\nsample = dataset[0][\"audio\"]\n\nresult = pipe(sample)\nprint(result[\"text\"])\n\nimport torch\nfrom torch nn attention import SDPBackend, sdpa_kernel\nfrom transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline\nfrom datasets import load_dataset\nfrom tqdm import tqdm\n\ntorch set_float32_matmul_precision(\"high\")\n\ndevice = \"cuda:0\" if torch cuda is_available() else \"cpu\"\ntorch_dtype = torch float16 if torch cuda is_available() else torch float32\n\nmodel_id = \"openai/whisper-large-v3\"\n\nmodel = AutoModelForSpeechSeq2Seq from_pretrained(\n    model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=True\n) to(device)\n\n# Enable static cache and compile the forward pass\nmodel generation_config cache_implementation = \"static\"\nmodel generation_config max_new_tokens = 256\nmodel forward = torch compile(model forward, mode=\"reduce-overhead\", fullgraph=True)\n\nprocessor = AutoProcessor from_pretrained(model_id)\n\npipe = pipeline(\n    \"automatic-speech-recognition\",\n    model=model,\n    tokenizer=processor tokenizer,\n    feature_extractor=processor feature_extractor,\n    torch_dtype=torch_dtype,\n    device=device,\n)\n\ndataset = load_dataset(\"distil-whisper/librispeech_long\", \"clean\", split=\"validation\")\nsample = dataset[0][\"audio\"]\n\n# 2 warmup steps\nfor _ in tqdm(range(2), desc=\"Warm-up step\"):\n    with sdpa_kernel(SDPBackend MATH):\n        result = pipe(sample copy(), generate_kwargs={\"min_new_tokens\": 256, \"max_new_tokens\": 256})\n\n# fast run\nwith sdpa_kernel(SDPBackend MATH):\n    result = pipe(sample copy())\n\nprint(result[\"text\"])\n\npip install flash-attn --no-build-isolation\n\nmodel = AutoModelForSpeechSeq2Seq from_pretrained(model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=True, attn_implementation=\"flash_attention_2\")\n\nfrom transformers utils import is_torch_sdpa_available\n\nprint(is_torch_sdpa_available())\n\nmodel = AutoModelForSpeechSeq2Seq from_pretrained(model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=True, attn_implementation=\"sdpa\")",
+          "description": "Use instructions ",
+          "type": "long text"
+        },
+        {
+          "name": "inputs_outputs",
+          "value": "Whisper performs automatic speech recognition and speech translation  For speech recognition, the model predicts transcriptions in the same language as the audio  For speech translation, the model predicts transcriptions to a different language to the audio  Whisper predicts the language of the source audio automatically  The model can also return sentence-level or word-level timestamps ",
+          "description": "Description of the model's inputs and outputs",
+          "type": "long text"
+        },
+        {
+          "name": "factors",
+          "value": "The models perform unevenly across languages, with lower accuracy on low-resource and/or low-discoverability languages or languages where there is less training data  The models also exhibit disparate performance on different accents and dialects of particular languages, which may include higher word error rate across speakers of different genders, races, ages, or other demographic criteria ",
+          "description": "Foreseeable salient factors for which model performance may vary ",
+          "type": "long text"
+        },
+        {
+          "name": "hardware",
+          "value": "The model can use CUDA when available  The model card provides CUDA/CPU device selection and torch float16/torch float32 selection  Additional speed and memory improvements are available through torch compile, Flash Attention 2, and SDPA ",
+          "description": "Hardware requirements for training and inference ",
+          "type": "long text"
+        },
+        {
+          "name": "more",
+          "value": "Whisper has a receptive field of 30-seconds  To transcribe audios longer than this, one of two long-form algorithms are required:\n\n1  Sequential: uses a \"sliding window\" for buffered inference, transcribing 30-second slices one after the other\n2  Chunked: splits long audio files into shorter ones (with a small overlap between segments), transcribes each segment independently, and stitches the resulting transcriptions at the boundaries\n\nThe sequential long-form algorithm should be used in either of the following scenarios:\n\n1  Transcription accuracy is the most important factor, and speed is less of a consideration\n2  You are transcribing batches of long audio files, in which case the latency of sequential is comparable to chunked, while being up to 0 5% WER more accurate\n\nConversely, the chunked algorithm should be used when:\n\n1  Transcription speed is the most important factor\n2  You are transcribing a single long audio file\n\nBy default, Transformers uses the sequential algorithm  To enable the chunked algorithm, pass the chunk_length_s parameter to the pipeline  For large-v3, a chunk length of 30-seconds is optimal  To activate batching over long audio files, pass the argument batch_size \n\nThe Whisper forward pass is compatible with torch compile for 4 5x speed-ups \nNote: torch compile is currently not compatible with the Chunked long-form algorithm or Flash Attention 2 ⚠️\n\nWe recommend using Flash-Attention 2 if your GPU supports it and you are not using torch compile \n\nIf your GPU does not support Flash Attention, we recommend making use of PyTorch scaled dot-product attention (SDPA)  This attention implementation is activated by default for PyTorch versions 2 1 1 or greater  If this returns True, you have a valid version of PyTorch installed and SDPA is activated by default  If it returns False, you need to upgrade your PyTorch version according to the official instructions  Once a valid PyTorch version is installed, SDPA is activated by default  It can also be set explicitly by specifying attn_implementation=\"sdpa\" ",
+          "description": "Additional information about intended uses not found above ",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "training",
+      "value": [
+        {
+          "name": "datasets",
+          "value": "The Whisper large-v3 model was trained on 1 million hours of weakly labeled audio and 4 million hours of pseudo-labeled audio collected using Whisper large-v2 ",
+          "description": "Dataset(s) used during training ",
+          "type": "long text"
+        },
+        {
+          "name": "motivation",
+          "value": "The model was trained on large-scale weakly labeled and pseudo-labeled audio  Performance on transcription in a given language is directly correlated with the amount of training data employed in that language ",
+          "description": "Why were training datasets chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "preprocessing",
+          "value": "The spectrogram input uses 128 Mel frequency bins instead of 80  The model was trained for 2 0 epochs over the mixture dataset ",
+          "description": "Data pre-processing for training (tokenizer, data augmentation etc ) ",
+          "type": "long text"
+        },
+        {
+          "name": "standards",
+          "value": "none",
+          "description": "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management ",
+          "type": "list:none,ISO,IEEE,unknown"
+        },
+        {
+          "name": "update",
+          "value": "unknown",
+          "description": "Is tge training set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?",
+          "type": "list:no,yes,unknown"
+        },
+        {
+          "name": "more",
+          "value": "The large-v3 model was trained on 1 million hours of weakly labeled audio and 4 million hours of pseudo-labeled audio collected using Whisper large-v2   The model was trained for 2 0 epochs over this mixture dataset ",
+          "description": "Additional training set information not found above ",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "evaluation",
+      "value": [
+        {
+          "name": "datasets",
+          "value": "The models are primarily trained and evaluated on ASR and speech translation to English tasks  They show strong ASR results in ~10 languages ",
+          "description": "Dataset(s) used during evaluation ",
+          "type": "long text"
+        },
+        {
+          "name": "motivation",
+          "value": "The models are primarily trained and evaluated on ASR and speech translation to English tasks ",
+          "description": "Why were evaluation datasets chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "preprocessing",
+          "value": "",
+          "description": "Data pre-processing for evaluation (tokenizer, data augmentation etc ) ",
+          "type": "long text"
+        },
+        {
+          "name": "standards",
+          "value": "none",
+          "description": "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management ",
+          "type": "list:none,ISO,IEEE,unknown"
+        },
+        {
+          "name": "update",
+          "value": "unknown",
+          "description": "Is the evalution set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?",
+          "type": "list:no,yes,unknown"
+        },
+        {
+          "name": "more",
+          "value": "The models show strong ASR results in ~10 languages  They may exhibit additional capabilities, particularly if fine-tuned on certain tasks like voice activity detection, speaker classification, or speaker diarization but have not been robustly evaluated in these areas  We strongly recommend that users perform robust evaluations of the models in a particular context and domain before deploying them ",
+          "description": "Additional evaluation set information not found above ",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "performance",
+      "value": [
+        {
+          "name": "analysis",
+          "value": "Our studies show that, over many existing ASR systems, the models exhibit improved robustness to accents, background noise, technical language, as well as zero shot translation from multiple languages into English; and that accuracy on speech recognition and translation is near the state-of-the-art level \n\nHowever, because the models are trained in a weakly supervised manner using large-scale noisy data, the predictions may include texts that are not actually spoken in the audio input (i e  hallucination)  We hypothesize that this happens because, given their general knowledge of language, the models combine trying to predict the next word in audio with trying to transcribe the audio itself \n\nOur models perform unevenly across languages, and we observe lower accuracy on low-resource and/or low-discoverability languages or languages where we have less training data  The models also exhibit disparate performance on different accents and dialects of particular languages, which may include higher word error rate across speakers of different genders, races, ages, or other demographic criteria  Our full evaluation results are presented in the paper accompanying this release \n\nIn addition, the sequence-to-sequence architecture of the model makes it prone to generating repetitive texts, which can be mitigated to some degree by beam search and temperature scheduling but not perfectly  Further analysis on these limitations are provided in the paper accompanying this release  It is likely that this behavior and hallucinations may be worse on lower-resource and/or lower-discoverability languages ",
+          "description": "Analysis and explanation of performance results ",
+          "type": "long text"
+        },
+        {
+          "name": "metrics",
+          "value": "Mean WER: 7 44\nRTFX: 145 51\nAMI WER: 15 95\nHindi WER: 26 8",
+          "description": "Benchmark results for any performance metrics ",
+          "type": "long text"
+        },
+        {
+          "name": "thresholds",
+          "value": "",
+          "description": "If decision thresholds are used, what are they, and why were those parameters chosen?",
+          "type": "long text"
+        },
+        {
+          "name": "methodology",
+          "value": "The models are evaluated on ASR and speech translation tasks  The full evaluation results are presented in the paper accompanying the release ",
+          "description": "Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method ",
+          "type": "long text"
+        },
+        {
+          "name": "environmental_impact",
+          "value": "",
+          "description": "Report of energy consumption, CO2 emissions or any other environmental impact ",
+          "type": "long text"
+        },
+        {
+          "name": "bias",
+          "value": "The models perform unevenly across languages and exhibit disparate performance on different accents and dialects of particular languages, which may include higher word error rate across speakers of different genders, races, ages, or other demographic criteria ",
+          "description": "Performance and bias across different groups (e g  ethnicity, gender)",
+          "type": "long text"
+        }
+      ]
+    },
+    {
+      "name": "safety",
+      "value": [
+        {
+          "name": "ethics",
+          "value": "We caution against using Whisper models to transcribe recordings of individuals taken without their consent or purporting to use these models for any kind of subjective classification  We recommend against use in high-risk domains like decision-making contexts, where flaws in accuracy can lead to pronounced flaws in outcomes \n\nThere are also potential dual use concerns that come with releasing Whisper  While we hope the technology will be used primarily for beneficial purposes, making ASR technology more accessible could enable more actors to build capable surveillance technologies or scale up existing surveillance efforts, as the speed and accuracy allow for affordable automatic transcription and translation of large volumes of audio communication \n\nMoreover, these models may have some capabilities to recognize specific individuals out of the box, which in turn presents safety concerns related both to dual use and disparate performance  In practice, we expect that the cost of transcription is not the limiting factor of scaling up surveillance projects ",
+          "description": "Ethical considerations regarding datasets and usage of model  Recommended mitigation measures ",
+          "type": "long text"
+        },
+        {
+          "name": "fairness",
+          "value": "The models exhibit disparate performance on different accents and dialects of particular languages, which may include higher word error rate across speakers of different genders, races, ages, or other demographic criteria ",
+          "description": "Definition of fairness applied in setting up the AI system ",
+          "type": "long text"
+        },
+        {
+          "name": "risks",
+          "value": "The predictions may include texts that are not actually spoken in the audio input (i e  hallucination)  The sequence-to-sequence architecture of the model makes it prone to generating repetitive texts  It is likely that this behavior and hallucinations may be worse on lower-resource and/or lower-discoverability languages \n\nThere are also potential dual use concerns that come with releasing Whisper, including enabling more actors to build capable surveillance technologies or scale up existing surveillance efforts ",
+          "description": "Possible threats to the AI system (design faults, technical faults, environmental threats) and the possible consequences ",
+          "type": "long text"
+        },
+        {
+          "name": "security",
+          "value": "",
+          "description": "Is the AI system certified for cybersecurity or is it compliant with specific security standards?",
+          "type": "long text"
+        },
+        {
+          "name": "caveats",
+          "value": "Whisper models cannot be used for real-time transcription out of the box – their speed and size suggest that others may be able to build applications on top of them that allow for near-real-time speech recognition and translation \n\nThe real value of beneficial applications built on top of Whisper models suggests that the disparate performance of these models may have real economic implications \n\nThe models are not robustly evaluated for additional capabilities such as voice activity detection, speaker classification, or speaker diarization ",
+          "description": "Additional concerns that were not covered in the previous sections ",
+          "type": "long text"
+        }
+      ]
+    }
+  ]
+}
