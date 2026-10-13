@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="css/normalize.css"/>
     <link rel="stylesheet" href="css/index.css"/>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="js/shellui.js"></script>
+
 </head>
 <body>
 <script src="js/themes.js"></script>
@@ -32,18 +34,20 @@
                 <span class="search_input">
                     <input placeholder="Search for model name or text." type="text" id="topic">
                 </span>
+                <p id="total-count" style="color: var(--text-secondary)"></p>
             </div>
 
         </div>
     </div>
-</section>
 
-<section class="filters">
-    <div class="row bigWidth">
-        <div class="small-12 medium-12 large-12 columns">
+    <div class="filters">
+        <div class="row bigWidth">
+            <div class="small-12 medium-12 large-12 columns">
+            </div>
         </div>
     </div>
 </section>
+
 <section class="search_section">
     <div class="search_wrapper">
         <div class="row bigWidth">
@@ -127,7 +131,7 @@
                 <p><br>These describe AI capabilities, usage, limits, risks, and repercussions of AI models.<br>&nbsp;</p>
                 <br>
                 <img src="img/transparency_img.png"><h2>Why is this important?</h2>
-                <p style="margin: 0;"> <br>We promote transparent AI and responsible real-world use.</p>
+                <p style="margin: 0;"> <br>Model cards promote transparent AI and responsible real-world use.<br>We provide card structure, completion assessment, and often deterministic assistants.</p>
             </div>
         </div>
         <div href="" class="modal__close modal-close">
@@ -152,7 +156,6 @@
     window.dispatchEvent(new Event('keycloak-check-done'));
 </script>
 <script src="js/themes.js"></script>
-<script src="js/shellui.js"></script>
 <script src="js/bearer.js"></script>
 <script src="js/index/filters.js"></script>
 <script src="js/index/main.js"></script>

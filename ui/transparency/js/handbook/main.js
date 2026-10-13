@@ -41,4 +41,11 @@ $(document).ready(function () {
         $hide_btn.text($hide_btn.text() === '▸'? '◂': '▸');
     });
 
+    $('.faq-card').on('click', function (){
+        $(this).find('.faq-answer').slideToggle(200);
+        $(this).find('.faq-arrow').text(function(i, text) {
+            return text === '▼' ? '▲' : '▼';
+        });
+    });
+
 });

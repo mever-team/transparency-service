@@ -66,19 +66,19 @@ input {
 .search_results_button:hover {transform: translateY(-2px);}
 .search_results_button a:hover {filter: none !important;}
 
-/* The animated left border (pseudo-element) */
-.search_results_button a::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 0;
-    height: 1px;
-    background-color: var(--text-primary);
-    transition: width 0.25s ease-out, left 0.25s ease-out;
-    pointer-events: none;
-    z-index: 1;
-}
+/*!* The animated left border (pseudo-element) *!*/
+/*.search_results_button a::before {*/
+/*    content: '';*/
+/*    position: absolute;*/
+/*    bottom: 0;*/
+/*    left: 50%;*/
+/*    width: 0;*/
+/*    height: 1px;*/
+/*    background-color: var(--text-primary);*/
+/*    transition: width 0.25s ease-out, left 0.25s ease-out;*/
+/*    pointer-events: none;*/
+/*    z-index: 1;*/
+/*}*/
 
 .search_results_button a:hover::before {
     left: 0;
@@ -185,7 +185,7 @@ input {
 .quality-circle {width: 48px;height: 48px;}
 .quality-text {font-size: 12px;fill: var(--text-primary);text-anchor: middle;dominant-baseline: middle;}
 #resultsTable tbody {display: block; overflow-y: auto;}
-
+#total-count {cursor: auto;}
 .search_section {
     flex: 1 0 auto;
     display: flex;
@@ -257,21 +257,23 @@ i.fa-brands:before {
 .filter-optgroup { 
     padding: 0.5rem 0 .3rem .3rem; 
     text-decoration: underline;
-    cursor: default;
 }
 
 .filter-option { padding: 0.3rem 0 .3rem 1.5rem; }
 
-.filter-option.active::before {
+.filter-option.active::before,
+.filter-optgroup.active::before {
     content: "✓ ";
     font-weight: bold;
     color: var(--green-primary);
 }
-.filter-option.active {
+.filter-option.active,
+.filter-optgroup.active {
     color: var(--green-primary);
 }
 
-.filter-option:hover {
+.filter-option:hover,
+.filter-optgroup:hover {
     box-shadow:
         inset 0 5px 3px -5px rgb(155, 155, 155),   
         inset 0 -5px 3px -5px rgb(155, 155, 155);  

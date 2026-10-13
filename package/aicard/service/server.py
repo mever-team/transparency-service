@@ -91,6 +91,7 @@ def serve(
     conn = users.UserDB(logger=logger, root=root)
     app = Flask(__name__)
     empty_card = ModelCard()
+    last_front_page_data = {"time": 0, "total": 0, "jsonified": ""}
 
     def register_third_party_token(token, user, email):
         # TODO: This strategy for occupying user names could prove frustrating. Consider some way of utilizing emails for uniqueness in the future.
@@ -132,6 +133,7 @@ def serve(
                     card_cache[card_id] = card
                 cursor.execute("SELECT message FROM card_children WHERE parent_id = ? AND child_id = ?", (card_id, card_id))
                 msg_row = cursor.fetchone()
+                if card is None: return card
                 card.message = msg_row[0] if msg_row and msg_row[0] else ""
             else:
                 card.touch()
@@ -420,7 +422,7 @@ def serve(
         query = re.sub(r'[^a-z0-9_\-\s]', '', query)
 
         page = min(1,max(int(data.get('page', 1)), 1))
-        page_size = min(100, max(int(data.get('page_size', 5)), 1))
+        page_size = min(100, max(int(data.get('page_size', 50)), 1))
         owner = data.get("user", "").strip().lower()
         owner = [owner] if owner else []
         if data.get('drafts', False):
@@ -454,7 +456,12 @@ def serve(
 
         cursor = conn.conn.cursor()
         cursor.execute("SELECT COUNT(*) FROM cards")
-        total = cursor.fetchone()[0]
+        total = int(cursor.fetchone()[0])
+        data.pop('query', '')
+        if (not data and not query) and (last_front_page_data["total"]==total) and (time.monotonic()<last_front_page_data["time"]+300): # refresh every 5 minutes, or if there are new cards
+            # print('return cache')
+            return last_front_page_data["jsonified"]
+        recache = (not data and not query) # whether we are in the no-inputs front page search
         num_pages = (total + page_size - 1) // page_size
         offset = (page - 1) * page_size
         if len(query) >= 3 and owner:
@@ -616,11 +623,17 @@ def serve(
                 {type_filter}
                 {task_filter}
                 {desc_filter_simpler}
-                ORDER BY id
+                ORDER BY quality DESC, id ASC
                 LIMIT ? OFFSET ?
                 """,
                 (*safe_argument_list, page_size, offset)
             )
+            if last_front_page_data["total"]==total and time.monotonic()<last_front_page_data["time"]+300: # refresh every 5 minutes, or if there are new cards
+                return last_front_page_data["jsonified"]
+            last_front_page_data["total"] = total
+            last_front_page_data["time"] = time.monotonic()
+            recache = True
+            logger.info("refreshing index cache for empty search")
         rows = cursor.fetchall()
         added_ids = set()
         results = []
@@ -636,7 +649,12 @@ def serve(
             overview_task = row[8]
             overview_date = row[9]
             results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality, "description": overview, "type": overview_type, "task": overview_task, "date": overview_date})
-        return jsonify({"results": results, "pages": num_pages, "total": total})
+        jsonified = jsonify({"results": results, "pages": num_pages, "total": total})
+        if recache: 
+            last_front_page_data["jsonified"] = jsonified
+            last_front_page_data["total"] = total
+            last_front_page_data["time"] = time.monotonic()
+        return jsonified
 
     @app.route(domain_prefix + '/card/<int:card_id>/ask', methods=['POST'])
     def ask_card(card_id: int):
@@ -688,6 +706,38 @@ def serve(
         logger.info("cloned a card", user=creator)
         return jsonify(card_id), 201
 
+    @app.route(domain_prefix+'/importFromTraiCard/<int:src_id>/<int:card_id>', methods=['POST'])
+    @users.require_auth(token2expiration)
+    def import_from_trai_card(src_id, card_id, token: str):
+        with auth_lock: creator = token2user.get(token, "")
+        try:
+            card = find_card(card_id)
+            src_card = find_card(src_id)
+        except:
+            abort(404, 'Model card does not exist or has been deleted.')
+        with exists(src_card, "Model card does not exist or has been deleted.") as _src_card:
+            if not _src_card.data.overview.version and src_card.creator != creator:
+                abort(403, 'Access Denied. The model card is not open to the public.')
+            with exists(card, "Model card does not exist or has been deleted.") as _card:
+                try: _card.data.assign(_src_card.data)
+                except AssertionError as e:
+                    logger.warn("Assertion error: " + str(e))
+                    abort(500, description=str(e))
+                except Exception as e:
+                    logger.warn("Exception: " + str(e))
+                    abort(500, description=str(e))
+        flattened = card.card.data.flatten()
+        columns = list(flattened.keys())
+        cursor = conn.conn.cursor()
+        cursor.execute(
+            f'''UPDATE cards
+                SET {','.join(f"{column} = ?" for column in columns)}
+                WHERE id = ?''',
+            [flattened[key] for key in columns] + [card_id]
+        )
+        conn.conn.commit()
+        return jsonify(card_id), 201
+    
     @app.route(domain_prefix+'/assistants', methods=['GET'])
     @users.require_auth(token2expiration)
     def get_assistants(token: str):
@@ -728,6 +778,11 @@ def serve(
         card = exists(found, "Model card does not exist or has been deleted.").card
         return jsonify(converters.dict2dynamic(card.data, {"title"})
                        |{"description": card.summary(), "message": found.message, "quality": card.quality(), "history": found.history(), "creator": found.creator})
+
+    @app.route(domain_prefix+'/card/history/<int:card_id>', methods=['GET'])
+    def get_card_history(card_id):
+        found = find_card(card_id)
+        return jsonify({"history": found.history()})
 
     @app.route(domain_prefix+'/card/simple/<int:card_id>', methods=['GET'])
     def get_card_simple(card_id):
