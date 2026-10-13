@@ -2,7 +2,9 @@ let editor;
 let turndownService = null;
 let markedInstance = null;
 
-// Custom MediumEditor extension for inserting code blocks
+////////////////////////////////////////////
+// Helpers
+////////////////////////////////////////////
 function getHighestPreFromNode(node) {
     let current = node;
     let highestPre = null;
@@ -25,6 +27,81 @@ function getHighestPreFromCursor() {
     }
     return getHighestPreFromNode(node);
 }
+
+
+function insertTable() {
+    const selection = window.getSelection();
+
+    if (!selection || selection.rangeCount === 0) return;
+
+    const range = selection.getRangeAt(0);
+
+    // Make sure the cursor is inside the MediumEditor instance
+    const editable = range.commonAncestorContainer.nodeType === Node.TEXT_NODE
+        ? range.commonAncestorContainer.parentElement.closest('.medium-editor-element')
+        : range.commonAncestorContainer.closest('.medium-editor-element');
+
+    if (!editable) return;
+
+    const table = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Header 1</th>
+                    <th>Header 2</th>
+                    <th>Header 3</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            </tbody>
+        </table>
+        <p><br></p>
+    `;
+
+    // Focus the editor and restore the cursor selection
+    editable.focus();
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    // Native insertion helps preserve Ctrl+Z undo behavior
+    document.execCommand('insertHTML', false, table);
+
+    // Notify MediumEditor that the content changed
+    if (window.jQuery) {
+        window.jQuery(editable).trigger('input');
+        window.jQuery(editable).trigger('editableInput');
+    }
+}
+
+////////////////////////////////////////////
+// Custom MediumEditor extension
+////////////////////////////////////////////
+
+var TableButton = MediumEditor.Extension.extend({
+    name: 'table',
+
+    init: function () {
+        this.button = document.createElement('button');
+        this.button.classList.add('medium-editor-action');
+        this.button.innerHTML = '<i class="fa-solid fa-table"></i>';
+        this.button.title = 'Table';
+        this.button.onclick = this.handleClick.bind(this);
+    },
+    getButton: function () {
+        return this.button;
+    },
+    handleClick: function (event) {
+        this.action();
+    },
+    action: function () {
+        insertTable();
+    }
+
+})
+
 var CodeBlockButton = MediumEditor.Extension.extend({
     name: 'codeblock',
 
@@ -123,6 +200,9 @@ var CodeBlockButton = MediumEditor.Extension.extend({
     }
 });
 
+////////////////////////////////////////////
+// Init Converters
+////////////////////////////////////////////
 function initConverters() {
     function getPreText(node) {
         let text = '';
@@ -178,6 +258,9 @@ function initConverters() {
     }
 }
 
+////////////////////////////////////////////
+// Exports
+////////////////////////////////////////////
 export function htmlToMarkdown(html) {
     initConverters();
 
@@ -187,10 +270,8 @@ export function htmlToMarkdown(html) {
     const container = document.createElement('div');
     container.innerHTML = html;
 
-    console.log(html);
     let markdown = turndownService.turndown(container.innerHTML);
     markdown = markdown.replace(/(\|.*\|)\n\n(?=\|)/g, '$1\n');
-    console.log(markdown);
 
     return markdown;
 }
@@ -217,13 +298,15 @@ export function initMediumEditor(){
             'quote',
             'orderedlist',
             'unorderedlist',
-            'codeblock'
+            'codeblock',
+            'table'
         ],
         static: true,
         updateOnEmptySelection: true
         }, 
         extensions: {
-            codeblock: new CodeBlockButton()
+            codeblock: new CodeBlockButton(),
+            table: new TableButton()
         }
     });
 
@@ -233,9 +316,316 @@ export function initMediumEditor(){
             $('<div class="undo-hint">⌨️ Ctrl+Z to undo</div>')
                 .prependTo($toolbar);
         }
-});
+    });
 
-editor.subscribe('hideToolbar', function() {
-    $('.medium-editor-toolbar .undo-hint').remove();
-});
+    editor.subscribe('hideToolbar', function() {
+        $('.medium-editor-toolbar .undo-hint').remove();
+    });
+}
+
+//////////////////////////////////////
+// Table functionality
+//////////////////////////////////////
+
+export function initTableControls() {
+    $('.field-value[contenteditable="true"]').each(function () {
+        const editable = this;
+        const $editor = $(editable);
+
+        if ($editor.data('tableControlsInitialized')) return;
+        $editor.data('tableControlsInitialized', true);
+
+        // show table toolbar
+        $editor.on(
+            'mousedown.tableControls focusin.tableControls',
+            'table td, table th',
+            function () {
+                const $controls = ensureTableActionRow();
+
+                if (!$controls) return;
+
+                $controls.data({
+                    activeEditor: editable,
+                    activeTable: this.closest('table'),
+                    activeCell: this
+                });
+
+                $controls.show();
+                requestAnimationFrame(() => {
+                    if (editor) editor.checkSelection();
+                });
+            }
+        );
+
+        // hide table toolabar
+        $editor.on('mousedown.tableControls', function (event) {
+            if ($(event.target).closest('table td, table th').length) {
+                return;
+            }
+
+            ensureTableActionRow()?.hide();
+        });
+    });
+}
+
+// medium editor table actions
+function ensureTableActionRow() {
+    const $toolbar = $('.medium-editor-toolbar').first();
+
+    if (!$toolbar.length) return null;
+
+    let $controls = $toolbar.children('.medium-editor-table-controls');
+
+    if ($controls.length) {
+        const observer = new MutationObserver(() => {
+            requestAnimationFrame(() => {
+                if (editor) editor.checkSelection();
+            });
+        });
+
+        observer.observe($controls[0], {
+            attributes: true,
+            attributeFilter: ['style', 'class']
+        });
+    }
+
+    if (!$controls.length) {
+        $controls = $('<div>', {
+            class: 'medium-editor-table-controls'
+        }).hide();
+
+        const actions = [
+            ['+ Row', 'add-row'],
+            ['- Row', 'remove-row'],
+            ['+ Column', 'add-column'],
+            ['- Column', 'remove-column'],
+            ['Delete Table', 'delete-table']
+        ];
+
+        actions.forEach(([label, action]) => {
+            $('<button>', {
+                type: 'button',
+                text: label,
+                title: label
+            })
+                .attr('data-table-action', action)
+                .appendTo($controls);
+        });
+
+        $toolbar.append($controls);
+
+        // Keep the editor selection when clicking a table action.
+        $controls.on('mousedown.tableControls', 'button', function (event) {
+            event.preventDefault();
+        });
+
+        $controls.on('mousedown.tableControls', 'button', function () {
+            const action = $(this).attr('data-table-action');
+
+            const editor = $controls.data('activeEditor');
+            const table = $controls.data('activeTable');
+            const cell = $controls.data('activeCell');
+
+            if (!editor || !table || !table.isConnected) {
+                $controls.hide();
+                requestAnimationFrame(() => {
+                    if (editor) editor.checkSelection();
+                });
+                return;
+            }
+
+            if (action !== 'delete-table' && !cell) return;
+
+            const tableIndex = Array.from(
+                editor.querySelectorAll('table')
+            ).indexOf(table);
+
+            const rowIndex = cell?.parentElement.rowIndex ?? 0;
+            const columnIndex = cell?.cellIndex ?? 0;
+
+            if (action === 'delete-table') {
+                deleteTableUndoably(table);
+                $controls.hide();
+                requestAnimationFrame(() => {
+                    if (editor) editor.checkSelection();
+                });
+
+                $controls.removeData(
+                    'activeEditor activeTable activeCell'
+                );
+
+                notifyEditorChanged(editor);
+                return;
+            }
+
+            if (action === 'remove-row' && table.rows.length <= 1) return;
+
+            if (
+                action === 'remove-column' &&
+                cell.parentElement.cells.length <= 1
+            ) return;
+
+            const success = replaceTableUndoably(table, replacement => {
+                switch (action) {
+                    case 'add-row': {
+                        const row = replacement.rows[rowIndex];
+                        if (!row) return;
+
+                        const newRow = document.createElement('tr');
+
+                        Array.from(row.cells).forEach(existingCell => {
+                            const newCell = document.createElement(
+                                existingCell.tagName.toLowerCase()
+                            );
+
+                            newCell.innerHTML = '&nbsp;';
+                            newRow.appendChild(newCell);
+                        });
+
+                        row.after(newRow);
+                        break;
+                    }
+
+                    case 'remove-row':
+                        replacement.rows[rowIndex]?.remove();
+                        break;
+
+                    case 'add-column':
+                        Array.from(replacement.rows).forEach(row => {
+                            const existingCell = row.cells[columnIndex];
+
+                            const tag = existingCell
+                                ? existingCell.tagName.toLowerCase()
+                                : row.parentElement.tagName === 'THEAD'
+                                    ? 'th'
+                                    : 'td';
+
+                            const newCell = document.createElement(tag);
+                            newCell.innerHTML = '&nbsp;';
+
+                            if (existingCell) {
+                                existingCell.after(newCell);
+                            } else {
+                                row.appendChild(newCell);
+                            }
+                        });
+                        break;
+
+                    case 'remove-column':
+                        Array.from(replacement.rows).forEach(row => {
+                            row.cells[columnIndex]?.remove();
+                        });
+                        break;
+                }
+            });
+
+            if (!success) return;
+
+            // Find the replacement table at its original position.
+            const newTable = editor.querySelectorAll('table')[tableIndex];
+
+            if (!newTable) {
+                $controls.hide();
+                requestAnimationFrame(() => {
+                    if (editor) editor.checkSelection();
+                });
+                return;
+            }
+
+            const targetRow = newTable.rows[
+                Math.min(
+                    action === 'add-row' ? rowIndex + 1 : rowIndex,
+                    newTable.rows.length - 1
+                )
+            ];
+
+            const targetColumn = Math.min(
+                action === 'add-column'
+                    ? columnIndex + 1
+                    : columnIndex,
+                (targetRow?.cells.length ?? 1) - 1
+            );
+
+            const newCell = targetRow?.cells[targetColumn];
+
+            $controls.data({
+                activeEditor: editor,
+                activeTable: newTable,
+                activeCell: newCell ?? null
+            });
+
+            if (newCell) {
+                $controls.data({
+                    activeEditor: editor,
+                    activeTable: newTable,
+                    activeCell: newCell
+                });
+
+                focusCell(newCell);
+                $controls.show();
+                requestAnimationFrame(() => {
+                    if (editor) editor.checkSelection();
+                });
+            } else {
+                $controls.hide();
+                requestAnimationFrame(() => {
+                    if (editor) editor.checkSelection();
+                });
+            }
+
+            notifyEditorChanged(editor);
+        });
+    }
+
+    return $controls;
+}
+
+// make table action buttons respect ctrl+z
+function replaceTableUndoably(table, mutate) {
+    const replacement = table.cloneNode(true);
+    mutate(replacement);
+
+    const selection = window.getSelection();
+    const range = document.createRange();
+
+    range.selectNode(table);
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    return document.execCommand(
+        'insertHTML',
+        false,
+        replacement.outerHTML
+    );
+}
+
+function deleteTableUndoably(table) {
+    const selection = window.getSelection();
+    const range = document.createRange();
+
+    range.selectNode(table);
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    document.execCommand('delete', false, null);
+}
+
+function notifyEditorChanged(editable) {
+    $(editable).trigger('input');
+    $(editable).trigger('editableInput');
+}
+
+function focusCell(cell) {
+    if (!cell) return;
+
+    cell.focus?.();
+
+    const range = document.createRange();
+    const selection = window.getSelection();
+
+    range.selectNodeContents(cell);
+    range.collapse(true);
+
+    selection.removeAllRanges();
+    selection.addRange(range);
 }

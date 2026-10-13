@@ -1,4 +1,4 @@
-import {htmlToMarkdown, markdownToHtml, initMediumEditor} from "./medium_editor.js"
+import {htmlToMarkdown, markdownToHtml, initMediumEditor, initTableControls} from "./medium_editor.js"
 
 $(function() {
     let cardJson;
@@ -6,6 +6,7 @@ $(function() {
     let comparedJsonSimple;
     let menuOffsetTop=0;
     let historyLoading = false;
+
 
     function formatFieldName(name) {
         const text = name.replace(/_/g, " ");
@@ -531,6 +532,8 @@ $(function() {
                     render_emissions_flash();
                 }
                 initMediumEditor();
+                initTableControls();
+
             },
             error: error_handler
         });
@@ -690,9 +693,6 @@ $(function() {
                         }
                         const numberOfFields = $('li:not(#simpleSection) .field').length;
                         const numberOfLoaders = $('li:not(#simpleSection) .fieldLoader').length;
-                        console.log(numberOfLoaders);
-                        console.log(numberOfFields);
-                        console.log(`${Math.round((1-numberOfLoaders/numberOfFields)*100)} %`);
                         $('#refine-percent').html(`${Math.round((1-numberOfLoaders/numberOfFields)*100)} %`)
                     }
                 },

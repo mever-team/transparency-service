@@ -105,7 +105,7 @@ img {max-width: 100%;height: auto;-ms-interpolation-mode: bicubic;}
 .header {
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 3000;
   background: var(--bg-primary);
 }
 .left {float: left !important;}
