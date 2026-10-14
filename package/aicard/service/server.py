@@ -458,11 +458,9 @@ def serve(
         cursor = conn.conn.cursor()
         cursor.execute("SELECT COUNT(*) FROM cards")
         total = int(cursor.fetchone()[0])
-        data.pop('query', '')
-        if (not data and not query) and (last_front_page_data["total"]==total) and (time.monotonic()<last_front_page_data["time"]+300): # refresh every 5 minutes, or if there are new cards
-            # print('return cache')
+        can_reuse_cache = not(query or type_list or task_list or quality_limits or owner)
+        if can_reuse_cache and (last_front_page_data["total"]==total) and (time.monotonic()<last_front_page_data["time"]+300): # refresh every 5 minutes, or if there are new cards
             return last_front_page_data["jsonified"]
-        recache = (not data and not query) # whether we are in the no-inputs front page search
         num_pages = (total + page_size - 1) // page_size
         offset = (page - 1) * page_size
         if len(query) >= 3 and owner:
@@ -633,12 +631,6 @@ def serve(
                 """,
                 (*safe_argument_list, page_size, offset)
             )
-            if last_front_page_data["total"]==total and time.monotonic()<last_front_page_data["time"]+300: # refresh every 5 minutes, or if there are new cards
-                return last_front_page_data["jsonified"]
-            last_front_page_data["total"] = total
-            last_front_page_data["time"] = time.monotonic()
-            recache = True
-            logger.info("refreshing index cache for empty search")
         rows = cursor.fetchall()
         added_ids = set()
         results = []
@@ -656,10 +648,11 @@ def serve(
             energy = row[10]
             results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality, "description": overview, "type": overview_type, "task": overview_task, "date": overview_date, "energy": energy})
         jsonified = jsonify({"results": results, "pages": num_pages, "total": total})
-        if recache: 
+        if can_reuse_cache:
             last_front_page_data["jsonified"] = jsonified
             last_front_page_data["total"] = total
             last_front_page_data["time"] = time.monotonic()
+            logger.info("refreshed index cache for empty search")
         return jsonified
 
     @app.route(domain_prefix + '/card/<int:card_id>/ask', methods=['POST'])
