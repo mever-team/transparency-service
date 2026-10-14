@@ -43,7 +43,11 @@ async function loadPage(url, username = null, password = null){
         }
 
         if (oldScript.src) {
-            script.src = oldScript.src;
+            const url = new URL(oldScript.src);
+            if (oldScript.type === 'module') {
+                url.searchParams.set('reload', Date.now());
+            }
+            script.src = url.href;
             let skipJS = false;
             if(loadedJS.includes(script.src.replace(/\/$/, "").split("/").pop())){
                 for( let once of loadOnce){
