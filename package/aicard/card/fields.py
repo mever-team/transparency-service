@@ -85,6 +85,30 @@ class Date(Field):
         return bool(self.__contents)
     def __html__(self):
         return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "date"}
+    
+class Unit(Field):
+    def __init__(self, description: str="", is_simple: bool=False, units:list[str]=[], format:str=r""):
+        self.__contents = ""
+        self.description = description
+        self.__units = units
+        self.__format = format
+        self.is_simple = is_simple
+        self.is_refinable = False
+    def set(self, value):
+        if isinstance(value, Field): value = value.get()
+        try:
+            is_in_format = bool(re.fullmatch(self.__format, value))
+            if not is_in_format:
+                return
+            self.__contents = value
+        except:
+            return
+    def get(self):
+        return self.__contents
+    def __bool__(self):
+        return bool(self.__contents)
+    def __html__(self):
+        return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "unit:"+",".join(self.__units)}
 
 # Ollama pattern issue: https://github.com/ollama/ollama/issues/10591
 class Pattern(Field):

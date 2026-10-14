@@ -267,112 +267,164 @@ $(function() {
             $fieldInfo = $("<span>").addClass("field-info").append($fieldInfo).append($fieldName);
             let $fieldValue;
             
-        if (field.type.startsWith("list:") && is_logged_in) {
-            // Parse the raw list
-            const rawOptions = field.type.replace("list:", "").split(",");
-            const groups = []; // { label: "GroupName", options: [...] }
-            let currentGroup = null;
-            
-            rawOptions.forEach(opt => {
-                if (opt.startsWith("#")) {
-                    currentGroup = { label: opt.replace("#", ""), options: [] };
-                    groups.push(currentGroup);
-                } else if (currentGroup) {
-                    currentGroup.options.push(opt);
-                } else {
-                    if (!groups[0]) groups.push({ label: "Options", options: [] });
-                    groups[0].options.push(opt);
-                }
-            });
-
-            // Flatten for search but keep group context for rendering
-            const allOptions = groups.flatMap(g => g.options);
-            
-            // Create wrapper and input
-            const $wrapper = $("<div>").addClass("autocomplete-wrapper");
-            const $input = $("<input>").addClass("autocomplete-input editable").attr({
-                type: "text",
-                value: field.value || "",
-                placeholder: "Type or select from list"
-            });
-            const $suggestions = $("<div>").addClass("autocomplete-suggestions").hide();
-            
-            $wrapper.append($input, $suggestions);
-            $fieldValue = $wrapper;
-
-            // Update suggestions with groups
-            function updateSuggestions(filterText) {
-                const filter = filterText.toLowerCase().trim();
-                $suggestions.empty();
+            if (field.type.startsWith("list:") && is_logged_in) {
+                // Parse the raw list
+                const rawOptions = field.type.replace("list:", "").split(",");
+                const groups = []; // { label: "GroupName", options: [...] }
+                let currentGroup = null;
                 
-                let hasMatches = false;
-                
-                groups.forEach(group => {
-                    const matchedOptions = group.options.filter(opt => 
-                        filter === "" || opt.toLowerCase().includes(filter)
-                    );
-                    if (matchedOptions.length === 0) return;
-                    hasMatches = true;
-                    
-                    const $groupHeader = $("<div>")
-                        .addClass("autocomplete-group-header")
-                        .text(group.label);
-                    $suggestions.append($groupHeader);
-                    
-                    matchedOptions.forEach(opt => {
-                        let displayHtml = opt;
-                        const filterLower = filterText.toLowerCase().trim();
-                        if (filterLower !== "") {
-                            const index = opt.toLowerCase().indexOf(filterLower);
-                            if (index !== -1) {
-                                const before = opt.slice(0, index);
-                                const match = opt.slice(index, index + filterLower.length);
-                                const after = opt.slice(index + filterLower.length);
-                                displayHtml = before + "<strong>" + match + "</strong>" + after;
-                            }
-                        }
-                        const $sug = $("<div>")
-                            .addClass("autocomplete-suggestion")
-                            .html(displayHtml)
-                            .attr("data-value", opt);
-                        $sug.on("click", function() {
-                            $input.val(opt);
-                            field.value = opt;
-                            $suggestions.hide();
-                            $("#saveJson").fadeIn();
-                        });
-                        $suggestions.append($sug);
-                    });
+                rawOptions.forEach(opt => {
+                    if (opt.startsWith("#")) {
+                        currentGroup = { label: opt.replace("#", ""), options: [] };
+                        groups.push(currentGroup);
+                    } else if (currentGroup) {
+                        currentGroup.options.push(opt);
+                    } else {
+                        if (!groups[0]) groups.push({ label: "Options", options: [] });
+                        groups[0].options.push(opt);
+                    }
                 });
+
+                // Flatten for search but keep group context for rendering
+                const allOptions = groups.flatMap(g => g.options);
                 
-                if (!hasMatches) {
-                    $suggestions.hide();
-                } else {
-                    $suggestions.show();
+                // Create wrapper and input
+                const $wrapper = $("<div>").addClass("autocomplete-wrapper");
+                const $input = $("<input>").addClass("autocomplete-input editable").attr({
+                    type: "text",
+                    value: field.value || "",
+                    placeholder: "Type or select from list"
+                });
+                const $suggestions = $("<div>").addClass("autocomplete-suggestions").hide();
+                
+                $wrapper.append($input, $suggestions);
+                $fieldValue = $wrapper;
+
+                // Update suggestions with groups
+                function updateSuggestions(filterText) {
+                    const filter = filterText.toLowerCase().trim();
+                    $suggestions.empty();
+                    
+                    let hasMatches = false;
+                    
+                    groups.forEach(group => {
+                        const matchedOptions = group.options.filter(opt => 
+                            filter === "" || opt.toLowerCase().includes(filter)
+                        );
+                        if (matchedOptions.length === 0) return;
+                        hasMatches = true;
+                        
+                        const $groupHeader = $("<div>")
+                            .addClass("autocomplete-group-header")
+                            .text(group.label);
+                        $suggestions.append($groupHeader);
+                        
+                        matchedOptions.forEach(opt => {
+                            let displayHtml = opt;
+                            const filterLower = filterText.toLowerCase().trim();
+                            if (filterLower !== "") {
+                                const index = opt.toLowerCase().indexOf(filterLower);
+                                if (index !== -1) {
+                                    const before = opt.slice(0, index);
+                                    const match = opt.slice(index, index + filterLower.length);
+                                    const after = opt.slice(index + filterLower.length);
+                                    displayHtml = before + "<strong>" + match + "</strong>" + after;
+                                }
+                            }
+                            const $sug = $("<div>")
+                                .addClass("autocomplete-suggestion")
+                                .html(displayHtml)
+                                .attr("data-value", opt);
+                            $sug.on("click", function() {
+                                $input.val(opt);
+                                field.value = opt;
+                                $suggestions.hide();
+                                $("#saveJson").fadeIn();
+                            });
+                            $suggestions.append($sug);
+                        });
+                    });
+                    
+                    if (!hasMatches) {
+                        $suggestions.hide();
+                    } else {
+                        $suggestions.show();
+                    }
                 }
+
+                // Show suggestions on focus/input
+                $input.on("focus", function() { updateSuggestions($input.val()); });
+                $input.on("input", function() {
+                    updateSuggestions($input.val());
+                    field.value = $input.val();
+                    $("#saveJson").fadeIn();
+                });
+
+                // Hide suggestions when clicking outside
+                $(document).on("click", function(e) {
+                    if (!$wrapper.is(e.target) && !$wrapper.has(e.target).length) {
+                        $suggestions.hide();
+                    }
+                });
+
+            } else if (field.type === 'date') {
+                    $fieldValue = $("<input>", {type: "date", readonly: is_logged_in? false: true}).addClass("field-value").val(field.value || "");
+                    $fieldValue.on("change", function () {field.value = $(this).val();});
+                    if(is_logged_in) $fieldValue.attr("contenteditable", "true");
+                    
+            } 
+            else if (field.type.startsWith('unit') && is_logged_in){
+                const units = field.type.split(':')[1]?.split(',') ?? [];
+                const match = field.value.match(/^(\d+)(.*)$/) || [];
+                const number = match[1] || '';
+                const unit = match[2] || '';
+                const displayHtml = match[0] || '';
+
+                const $unit = $('<span>')
+                    .attr('contenteditable', 'false')
+                    .addClass('unit')
+                    .css('position', 'absolute')
+                    .attr('id', 'units')
+                    .text(unit)
+                $fieldValue = $("<span>")
+                    .addClass("field-value")
+                    .attr("contenteditable", "true")
+                    .html(number)
+                    .append($unit);
+                $fieldValue.on('input', function () {
+                    const $field = $(this);
+                    const $unit = $field.children('.unit');
+                    const number = $field.contents()
+                        .filter(function () { return this !== $unit[0]; })
+                        .text()
+                        .replace(/\u200B/g, '')
+                        .trim();
+                    // add an invisible character if empy (instead of <br>)
+                    if (!number) {
+                        $field.contents()
+                            .filter(function () { return this.nodeName === 'BR'; })
+                            .remove();
+                        if (!$field.contents().filter(function () { return this.nodeType === Node.TEXT_NODE; }).length) 
+                        {
+                            $unit.before(document.createTextNode('\u200B'));
+                        }
+                    }
+                });
+                // remove the invisible character on blur if there is content
+                $fieldValue.on('blur', function () {
+                    console.log('Field lost focus');
+                    const $field = $(this);
+                    const number = $field.contents()
+                        .filter(function () { return this !== $unit[0]; })
+                        .text()
+                        .replace(/\u200B/g, '')
+                        .trim();
+                    if (number) {
+                        $field.html($field.html().replace(/\u200B/g, ''));
+                    }
+                });
             }
-
-            // Show suggestions on focus/input
-            $input.on("focus", function() { updateSuggestions($input.val()); });
-            $input.on("input", function() {
-                updateSuggestions($input.val());
-                field.value = $input.val();
-                $("#saveJson").fadeIn();
-            });
-
-            // Hide suggestions when clicking outside
-            $(document).on("click", function(e) {
-                if (!$wrapper.is(e.target) && !$wrapper.has(e.target).length) {
-                    $suggestions.hide();
-                }
-            });
-
-        } else if (field.type === 'date') {
-                $fieldValue = $("<input>", {type: "date", readonly: is_logged_in? false: true}).addClass("field-value").val(field.value || "");
-                $fieldValue.on("change", function () {field.value = $(this).val();});
-                if(is_logged_in) $fieldValue.attr("contenteditable", "true");
-                
-            } else {
+            else {
                 let displayHtml = field.value || "";
                 if (!field.type.startsWith("list:") && field.type !== 'date') {
                     displayHtml = markdownToHtml(displayHtml);

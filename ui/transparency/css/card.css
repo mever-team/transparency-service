@@ -183,6 +183,24 @@ ul.nacc .field-value[contenteditable="true"] {
     cursor: text;
     transition: border 0.2s, background 0.2s;
 }
+.number-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.number-wrapper::after {
+    content: var(--unit);
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.number-wrapper input {
+    padding-right: 30px;
+}
+
 .medium-editor-element span {
     background: transparent !important;
 }
