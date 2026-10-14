@@ -378,13 +378,11 @@ $(function() {
                 const match = field.value.match(/^(\d+)(.*)$/) || [];
                 const number = match[1] || '';
                 const unit = match[2] || '';
-                const displayHtml = match[0] || '';
 
                 const $unit = $('<span>')
                     .attr('contenteditable', 'false')
                     .addClass('unit')
                     .css('position', 'absolute')
-                    .attr('id', 'units')
                     .text(unit)
                 $fieldValue = $("<span>")
                     .addClass("field-value")
@@ -412,7 +410,6 @@ $(function() {
                 });
                 // remove the invisible character on blur if there is content
                 $fieldValue.on('blur', function () {
-                    console.log('Field lost focus');
                     const $field = $(this);
                     const number = $field.contents()
                         .filter(function () { return this !== $unit[0]; })
@@ -423,6 +420,20 @@ $(function() {
                         $field.html($field.html().replace(/\u200B/g, ''));
                     }
                 });
+                const $select = $('<select>');
+                units.forEach(option => {
+                    $select.append($('<option>', {
+                        value: option,
+                        text: option
+                    }));
+                });
+                $select.val(unit);
+                $select.on('change', function() {
+                    $(this).parent().find('span[contenteditable="true"] .unit').text(this.value);
+                    $("#saveJson").fadeIn();
+                });
+                $fieldValue = $fieldValue.add($select);
+                console.log($fieldValue);
             }
             else {
                 let displayHtml = field.value || "";
@@ -433,7 +444,7 @@ $(function() {
                 if(is_logged_in) $fieldValue.attr("contenteditable", "true");
             }
 
-            if(is_logged_in) $fieldValue.addClass("editable");
+            if(is_logged_in) $fieldValue.first().addClass("editable");
 
             // Editable field value
             let val = String(field.value || "").trim();
