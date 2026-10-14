@@ -86,6 +86,22 @@ class Date(Field):
     def __html__(self):
         return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "date"}
 
+class Number(Field):
+    def __init__(self, description: str="", is_simple: bool=False):
+        self.__contents = ""
+        self.description = description
+        self.is_simple = is_simple
+        self.is_refinable = False
+    def set(self, value):
+        if isinstance(value, Field): value = value.get()
+        self.__contents = str(value)
+    def get(self):
+        return self.__contents
+    def __bool__(self):
+        return bool(self.__contents)
+    def __html__(self):
+        return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "number"}
+
 # Ollama pattern issue: https://github.com/ollama/ollama/issues/10591
 class Pattern(Field):
     def __init__(self, regex: str, description: str="", is_simple: bool=False):

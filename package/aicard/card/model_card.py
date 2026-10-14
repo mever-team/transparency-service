@@ -9,7 +9,7 @@ from rich.markdown import Markdown
 from pydantic import BaseModel, create_model
 from pydantic import Field as pydantic_Field
 from aicard.card.dot_dict import DotDict
-from aicard.card.fields import ShortText, LongText, Options, Field, Pattern, Date
+from aicard.card.fields import ShortText, LongText, Options, Field, Pattern, Date, Number
 
 
 def truncate(text, size):
@@ -70,6 +70,7 @@ class ModelCard:
                 metrics=LongText("Benchmark results for any performance metrics.", technical_nature=True),
                 thresholds=LongText("If decision thresholds are used, what are they, and why were those parameters chosen?"),
                 methodology=LongText("Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method.", is_refinable=True, technical_nature=True),
+                energy_score=Number("An summary energy score and measurement unit.", is_simple=True),
                 environmental_impact=LongText("Report of energy consumption, CO2 emissions or any other environmental impact.", technical_nature=True),
                 bias=LongText("Performance and bias across different groups (e.g. ethnicity, gender)", is_refinable=True, technical_nature=True),
             ),
@@ -291,6 +292,9 @@ class ModelCard:
         if self.data.overview.version:
             summary += " "+truncate(self.data.overview.version, 50)
         return summary[1:] if summary else ""
+
+    def energy(self):
+        return self.data.performance.energy_score
 
     def quality(self) -> float:
         nom = 0

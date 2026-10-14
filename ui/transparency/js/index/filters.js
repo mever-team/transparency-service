@@ -353,6 +353,7 @@ $(function () {
                 it.quality > 0.7 ? 'var(--green-primary)' :
                 it.quality > 0.4 ? 'var(--yellow-primary)' :
                 '#F87F76';
+            const energy = Math.max(0, Math.min(5, Number(it.energy) || 0));
             const view = {
                 id: it.id,
                 name: name,
@@ -360,6 +361,10 @@ $(function () {
                 dashOffset: 100 - percent,
                 qualityColor: qualityColor,
                 description: it.description || "",
+                energy: energy,
+                hasEnergy: it.energy != null,
+                energyDashOffset: 100 - (energy / 5) * 100,
+                energyColor: `hsl(${energy * 6}, 85%, 50%)`,
                 isDraft: !it.desc,
                 creatorText:
                     (it.desc || "") +

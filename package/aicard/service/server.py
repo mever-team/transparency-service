@@ -198,7 +198,7 @@ def serve(
         def fetch_cards(cursor, owner, WHERE="user=?"):
             # TODO: return only fields relevant to the frontend here (progress: removed overview)
             cursor.execute(f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__type, overview__task, overview__date, report_count
+                SELECT id, title, user, desc, quality, timestamp, overview__type, overview__task, overview__date, report_count, performance__energy_score
                 FROM cards
                 WHERE {WHERE}
                 """,
@@ -215,10 +215,11 @@ def serve(
                 overview_task = row[7]
                 overview_date = row[8]
                 report_count  = row[9]
+                energy  = row[10]
                 with card_cache_lock:
                     card = card_cache.get(row[0], None)
                 is_working = bool(card and card.check_completion())
-                results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality,
+                results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality, "energy": energy,
                                 "type": overview_type, "task": overview_task,
                                 "date": overview_date, "report_count": report_count, "working": is_working})
             return results
@@ -478,6 +479,7 @@ def serve(
                     cards.overview__type, 
                     cards.overview__task,
                     cards.overview__date,
+                    cards.performance__energy_score,
                     bm25(cards_fts) AS rank
                 FROM cards_fts
                 JOIN cards ON cards_fts.rowid = cards.id
@@ -502,6 +504,7 @@ def serve(
                     cards.overview__type, 
                     cards.overview__task,
                     cards.overview__date,
+                    cards.performance__energy_score,
                     9999 AS rank   -- fallback rank for LIKE matches
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
@@ -531,6 +534,7 @@ def serve(
                     cards.overview__type, 
                     cards.overview__task,
                     cards.overview__date,
+                    cards.performance__energy_score,
                     bm25(cards_fts) AS rank
                 FROM cards_fts
                 JOIN cards ON cards_fts.rowid = cards.id
@@ -554,6 +558,7 @@ def serve(
                     cards.overview__type, 
                     cards.overview__task,
                     cards.overview__date,
+                    cards.performance__energy_score,
                     9999 AS rank
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
@@ -571,7 +576,7 @@ def serve(
         elif query and owner:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, performance__energy_score
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   AND LOWER(user) IN ({placeholders})
@@ -587,7 +592,7 @@ def serve(
         elif query:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, performance__energy_score
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   AND quality >= {quality_limits}
@@ -602,7 +607,7 @@ def serve(
         elif owner:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, performance__energy_score
                 FROM cards
                 WHERE LOWER(user) IN ({placeholders})
                   AND quality >= {quality_limits}
@@ -617,7 +622,7 @@ def serve(
         else:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, performance__energy_score
                 FROM cards
                 WHERE quality >= {quality_limits}
                 {type_filter}
@@ -648,7 +653,8 @@ def serve(
             overview_type = row[7]
             overview_task = row[8]
             overview_date = row[9]
-            results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality, "description": overview, "type": overview_type, "task": overview_task, "date": overview_date})
+            energy = row[10]
+            results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality, "description": overview, "type": overview_type, "task": overview_task, "date": overview_date, "energy": energy})
         jsonified = jsonify({"results": results, "pages": num_pages, "total": total})
         if recache: 
             last_front_page_data["jsonified"] = jsonified
@@ -777,7 +783,7 @@ def serve(
         found = find_card(card_id)
         card = exists(found, "Model card does not exist or has been deleted.").card
         return jsonify(converters.dict2dynamic(card.data, {"title"})
-                       |{"description": card.summary(), "message": found.message, "quality": card.quality(), "history": found.history(), "creator": found.creator})
+                       |{"description": card.summary(), "message": found.message, "quality": card.quality(), "energy": card.energy(), "creator": found.creator})
 
     @app.route(domain_prefix+'/card/history/<int:card_id>', methods=['GET'])
     def get_card_history(card_id):
@@ -937,7 +943,7 @@ def serve(
             except Exception as e: abort(404, "Wrong data: "+str(e))
             logger.info("updated a card", user=creator)
             return jsonify(converters.dict2dynamic(card.data, {"title"})
-                           |{"description": card.summary(), "quality": card.quality(), "history": card_entry.history(), "creator": card_entry.creator})
+                           |{"description": card.summary(), "quality": card.quality(), "energy": card.energy(), "creator": card_entry.creator})
 
     @app.route(domain_prefix + '/card/simple/<int:card_id>', methods=['PUT'])
     @users.require_auth(token2expiration)
@@ -960,7 +966,7 @@ def serve(
                 abort(404, "Wrong data: " + str(e))
             logger.info("updated a card/simple", user=creator)
             return jsonify(converters.dict2dynamic(card.data, {"title"})
-                           | {"description": card.summary(), "quality": card.quality(),
+                           | {"description": card.summary(), "quality": card.quality(), "energy": card.energy(),
                               "creator": card_entry.creator})
 
     @app.route(domain_prefix+'/card', methods=['POST'])
@@ -1115,7 +1121,7 @@ def serve(
             except Exception as e: abort(404, "Exception: "+str(e))
             logger.info("updated a card with eval data", user=creator)
             return jsonify(converters.dict2dynamic(card.data, {"title"})
-                |{"description": card.summary(), "quality": card.quality(), "history": card_entry.history(), "creator": card_entry.creator})
+                |{"description": card.summary(), "quality": card.quality(), "energy": card.energy(), "creator": card_entry.creator})
 
     @app.route(domain_prefix+"/options/<string:section>/<string:field>", methods=["GET"])
     def get_options(section, field):

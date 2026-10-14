@@ -145,6 +145,7 @@ class UserDB:
             desc TEXT NOT NULL,
             quality DOUBLE,
             timestamp INT,
+            report_count INTEGER NOT NULL DEFAULT 0,
             {col_defs},
             FOREIGN KEY(user) REFERENCES users(username) ON DELETE CASCADE
         )'''
