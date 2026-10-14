@@ -1183,7 +1183,7 @@ $('.contents').on('click', '.refine-field', async function () {
                         let emissions = response['emissions'];
 
                         if (energy_consumed && emissions) {
-                            phone_charge_equivalent = formatHours(Number(energy_consumed) / 0.02) // the argument is in hours assuming a charger consumes 20W
+                            let phone_charge_equivalent = formatHours(Number(energy_consumed) / 0.02) // the argument is in hours assuming a charger consumes 20W
                             energy_consumed = formatKWh(energy_consumed);
                             emissions = formatKg(emissions);
 
