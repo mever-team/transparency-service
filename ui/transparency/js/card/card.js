@@ -223,6 +223,7 @@ $(function() {
         $('.nacc li').first().addClass('active');
         $('.menu').find('div').removeClass('active');
         $('.menu div:first-child').addClass('active');
+        $(window).trigger('resize');
     })
 
 
@@ -384,7 +385,7 @@ $(function() {
                     .addClass('unit')
                     .css('position', 'absolute')
                     .text(unit)
-                $fieldValue = $("<span>")
+                $fieldValue = $("<div>")
                     .addClass("field-value")
                     .attr("contenteditable", "true")
                     .html(number)
@@ -420,7 +421,7 @@ $(function() {
                         $field.html($field.html().replace(/\u200B/g, ''));
                     }
                 });
-                const $select = $('<select>');
+                const $select = $('<select>').attr('id', `${field.name}-unit-selector`).addClass('unit-selector');
                 units.forEach(option => {
                     $select.append($('<option>', {
                         value: option,
@@ -429,11 +430,10 @@ $(function() {
                 });
                 $select.val(unit);
                 $select.on('change', function() {
-                    $(this).parent().find('span[contenteditable="true"] .unit').text(this.value);
+                    $(this).parent().find('.field-value .unit').text(this.value);
                     $("#saveJson").fadeIn();
                 });
                 $fieldValue = $fieldValue.add($select);
-                console.log($fieldValue);
             }
             else {
                 let displayHtml = field.value || "";
@@ -470,6 +470,37 @@ $(function() {
                 $field.append($baseFieldValue);
             }
         });
+        if (is_logged_in){
+            function positionUnitSelectors() {
+                $section.find('.unit-selector').each(function () {
+                    const $field = $(this).parent();
+                    const $fieldUnit = $field.find('span.unit');
+                    $(this).css({
+                        top: $fieldUnit.position().top,
+                        left: $fieldUnit.position().left,
+                        height: $fieldUnit.outerHeight(),
+                        width: $fieldUnit.outerWidth(),
+                        width: $fieldUnit.outerWidth()+ parseFloat($fieldUnit.css('font-size')) + 'px'
+                    });
+                });
+            }
+            $(window).on('resize', positionUnitSelectors);
+            $section.find('.unit-selector').each(function () {
+                const $unit = $(this)
+                const $field = $unit.parent();
+                const $fieldValue = $field.find('.field-value');
+                const $fieldUnit = $field.find('span.unit');
+                $fieldValue.on('input',() => {
+                    $unit.css({
+                        top: $fieldUnit.position().top,
+                        left: $fieldUnit.position().left,
+                        height: $fieldUnit.outerHeight(),
+                        width: $fieldUnit.outerWidth()+ parseFloat($fieldUnit.css('font-size')) + 'px'
+
+                    });
+                })
+            });
+        }
         return $section;
     }
     function normalRender(interval=null){
@@ -530,9 +561,7 @@ $(function() {
                 $ul.append($li);
                 $('.menu').find('div').removeClass('active');
                 $('.menu div:first-child').addClass('active');
-
             });
-
             if (!($('.light.arrow').length > 0)&& is_logged_in) {
                 // TODO: we have the option of just opening the import, which may be more practical
                 $('#modal-autocomplete-screen').css('display' , 'flex');
@@ -546,7 +575,7 @@ $(function() {
                 el.setAttribute('translate', 'no');
             });
 
-
+            
         }
 
 
