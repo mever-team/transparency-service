@@ -640,8 +640,9 @@ def serve(
             quality = float(row[4])
             timestamp = int(row[5])
             overview = row[6]
-            if "<img" in overview: overview = ""
             if len(overview)>120: overview = overview[:(120-3)]+"..."
+            if "<img" in overview: overview = ""
+            overview = overview.replace("#","").replace("**","").strip()
             overview_type = row[7]
             overview_task = row[8]
             overview_date = row[9]

@@ -291,7 +291,7 @@ class ModelCard:
         #    summary += " "+truncate(self.data.overview.name.split(" ")[0].split("\n")[0], 50)
         if self.data.overview.version:
             summary += " "+truncate(self.data.overview.version, 50)
-        return summary[1:] if summary else ""
+        return summary[1:].replace("#","").replace("**","").strip() if summary else ""
 
     def energy(self):
         return self.data.performance.energy_score
