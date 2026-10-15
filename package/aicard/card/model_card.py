@@ -33,7 +33,7 @@ class ModelCard:
                 date=Date("Model development completion date."),
                 version=ShortText("Version of the model."),
                 type=Options(self._type_options,"Model architecture or algorithm type.", is_simple=True),
-                parameters=Unit("Number of parameters", is_simple=True, units=['K', 'M', 'B', 'T'], format=r'^\d+(?:K|M|B|T)$'),
+                parameters=Unit("Number of parameters", is_simple=True, units_symbol=['K', 'M', 'B', 'T'], units_name=['Thousand (K)', 'Million (M)', 'Billion (B)', 'Trillion (T)'], format=r'^\d+(?:K|M|B|T)$'),
                 task=Options(self._task_options, "Model task.", is_simple=True),
                 license=ShortText("Licence and intellectual property (IP) information."),
                 home=ShortText("URL hosting the model.", is_simple=True),

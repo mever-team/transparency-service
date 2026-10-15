@@ -202,7 +202,8 @@ ul.nacc .field-value[contenteditable="true"] {
 }
 .unit-selector option {
     font-size: initial;
-
+    padding: 1rem;
+    border-radius: 10px;
 }
 .medium-editor-element span {
     background: transparent !important;

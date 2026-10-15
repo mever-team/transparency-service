@@ -1,6 +1,7 @@
 from datetime import datetime
 import re
 import os
+import json
 
 class Field:
     def set(self, value: str): raise Exception("Cannot set to abstract Field")
@@ -87,10 +88,11 @@ class Date(Field):
         return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "date"}
     
 class Unit(Field):
-    def __init__(self, description: str="", is_simple: bool=False, units:list[str]=[], format:str=r""):
+    def __init__(self, description: str="", is_simple: bool=False, units_symbol:list[str]=[], units_name:list[str]=[], format:str=r""):
         self.__contents = ""
         self.description = description
-        self.__units = units
+        self.__units_symbol = units_symbol
+        self.__units_name = units_name
         self.__format = format
         self.is_simple = is_simple
         self.is_refinable = False
@@ -110,7 +112,12 @@ class Unit(Field):
     def __bool__(self):
         return bool(self.__contents)
     def __html__(self):
-        return {"value": self.__contents if self.__contents else "", "description": self.description, "type": "unit:"+",".join(self.__units)}
+        unit = {
+            "symbol": self.__units_symbol,
+            "name": self.__units_name
+        }
+        this_type = "unit:" + json.dumps(unit)
+        return {"value": self.__contents if self.__contents else "", "description": self.description, "type": this_type}
 
 # Ollama pattern issue: https://github.com/ollama/ollama/issues/10591
 class Pattern(Field):

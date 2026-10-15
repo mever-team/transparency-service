@@ -375,10 +375,12 @@ $(function() {
                     
             } 
             else if (field.type.startsWith('unit') && is_logged_in){
-                const units = field.type.split(':')[1]?.split(',') ?? [];
-                const match = field.value.match(/^(\d+)(.*)$/) || [];
-                const number = match[1] || '';
-                const unit = match[2] || '';
+                const jsonLoad = JSON.parse(field.type.replace('unit:', ""));
+                const units_symbol = jsonLoad.symbol;
+                const units_name = jsonLoad.name;
+                const value = field.value.match(/^(\d+)(.*)$/) || [];
+                const number = value[1] || '';
+                const unit = value[2] || '';
 
                 const $unit = $('<span>')
                     .attr('contenteditable', 'false')
@@ -422,10 +424,10 @@ $(function() {
                     }
                 });
                 const $select = $('<select>').attr('id', `${field.name}-unit-selector`).addClass('unit-selector');
-                units.forEach(option => {
+                units_symbol.forEach((option, index) => {
                     $select.append($('<option>', {
                         value: option,
-                        text: option
+                        text: units_name[index]
                     }));
                 });
                 $select.val(unit);
@@ -489,8 +491,9 @@ $(function() {
                 const $unit = $(this)
                 const $field = $unit.parent();
                 const $fieldValue = $field.find('.field-value');
-                const $fieldUnit = $field.find('span.unit');
-                $fieldValue.on('input',() => {
+                $fieldValue.on('input',function(e) {
+                    const $field = $(this).parent();
+                    const $fieldUnit = $field.find('span.unit');
                     $unit.css({
                         top: $fieldUnit.position().top,
                         left: $fieldUnit.position().left,
@@ -499,7 +502,15 @@ $(function() {
 
                     });
                 })
+                // prevent non numbers
+                $fieldValue.on('beforeinput', function (event) {
+                    const e = event.originalEvent;
+                    if (e.data && /[^0-9]/.test(e.data)) {
+                        event.preventDefault();
+                    }
+                });
             });
+
         }
         return $section;
     }
