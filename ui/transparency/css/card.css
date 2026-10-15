@@ -134,6 +134,7 @@ ul.nacc li h2 {
 
 /* Field rows */
 ul.nacc .field {
+    position: relative;
     display: grid;
     grid-template-columns: 200px 1fr;
     gap: 1rem;
@@ -182,6 +183,27 @@ ul.nacc .field-value[contenteditable="true"] {
     line-height: 1.4;
     cursor: text;
     transition: border 0.2s, background 0.2s;
+}
+.unit {
+    padding-left: .3rem;
+}
+.unit-selector{
+    position: absolute;
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    width: auto;
+    height: 32px;
+    border-radius: 6px;
+    font-size: 0;
+    padding: 0;
+    cursor: pointer;
+}
+.unit-selector option {
+    font-size: initial;
+    padding: 1rem;
+    border-radius: 10px;
 }
 .medium-editor-element span {
     background: transparent !important;

@@ -4,8 +4,85 @@ $(function() {
     let cardJson;
     let comparedJson;
     let comparedJsonSimple;
-    let menuOffsetTop=0;
     let historyLoading = false;
+    const hasNumberOfParams = [    
+        "Neural Networks",
+        "Convolutional Neural Network",
+        "Recurrent Neural Network",
+        "Multilayer Perceptron",
+        "Transformer",
+        "Graph Neural Network",
+        "Autoencoder",
+        "Generative Adversarial Network"
+    ]
+
+    function renderQuality(jsonData) {
+        $("#model-pending").html(jsonData.description?"":"DRAFT (needs version to be searchable)");
+
+        const percent = Math.round(jsonData.quality * 100);
+        const qualityColor =
+            percent > 70 ? 'var(--green-primary)' :
+            percent > 40  ? 'var(--yellow-primary)' :
+            '#F87F76';
+        const dashOffset = 100 - percent;
+        $("#model-quality").html(`
+             <div style="position:relative;display:flex;align-items:center;justify-content:center;">
+                <svg class="quality-circle" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="18"
+                        fill="none" stroke="var(--bg-tertiary)" stroke-width="3"/>
+
+                <circle cx="18" cy="18" r="18"
+                        fill="none"
+                        stroke="${qualityColor}"
+                        stroke-width="3"
+                        stroke-dasharray="100"
+                        pathLength="100"
+                        stroke-dashoffset="${dashOffset}"/>
+                <text x="18" y="0" class="quality-text" opacity="0.6">info</text>
+                </svg>
+                <i class="fa-solid fa-list-check"
+                   style="position:absolute;
+                          top:50%;
+                          left:50%;
+                          transform:translate(-50%,-50%);
+                          font-size:22px;
+                          color:${qualityColor};">
+                </i>
+            </div>
+        `);
+        const energy= Math.max(0, Math.min(200, parseFloat(jsonData.energy) || 0));
+        if(energy) {
+            const energyColor =
+                100-energy/2 > 70 ? 'var(--green-primary)' :
+                100-energy/2 > 40 ? 'var(--yellow-primary)' :
+                '#F87F76';
+            const energyDashOffset = 100 - (energy / 2);
+            $("#model-eco").html(`
+                <div style="position:relative;display:flex;align-items:center-top;justify-content:center;">
+                    <svg class="quality-circle" viewBox="0 0 36 36">
+                    <circle cx="18" cy="18" r="18" fill="none" stroke="var(--bg-tertiary)" stroke-width="3"/>
+                    <circle cx="18" cy="18" r="18"
+                            fill="none"
+                            stroke="${energyColor}"
+                            stroke-width="3"
+                            stroke-dasharray="100"
+                            pathLength="100"
+                            stroke-dashoffset="${energyDashOffset}"/>
+                    <text x="18" y="0" class="quality-text" opacity="0.6">eco</text>
+                    </svg>
+                    <i class="fa-solid fa-leaf"
+                       style="position:absolute;
+                              top:50%;
+                              left:50%;
+                              transform:translate(-50%,-50%);
+                              font-size:22px;
+                              color:${energyColor};">
+                    </i>
+                    </div>
+            `);
+        }
+        else $("#model-eco").html("");
+    }
 
 
     function formatFieldName(name) {
@@ -223,6 +300,7 @@ $(function() {
         $('.nacc li').first().addClass('active');
         $('.menu').find('div').removeClass('active');
         $('.menu div:first-child').addClass('active');
+        $(window).trigger('resize');
     })
 
 
@@ -267,112 +345,177 @@ $(function() {
             $fieldInfo = $("<span>").addClass("field-info").append($fieldInfo).append($fieldName);
             let $fieldValue;
             
-        if (field.type.startsWith("list:") && is_logged_in) {
-            // Parse the raw list
-            const rawOptions = field.type.replace("list:", "").split(",");
-            const groups = []; // { label: "GroupName", options: [...] }
-            let currentGroup = null;
-            
-            rawOptions.forEach(opt => {
-                if (opt.startsWith("#")) {
-                    currentGroup = { label: opt.replace("#", ""), options: [] };
-                    groups.push(currentGroup);
-                } else if (currentGroup) {
-                    currentGroup.options.push(opt);
-                } else {
-                    if (!groups[0]) groups.push({ label: "Options", options: [] });
-                    groups[0].options.push(opt);
-                }
-            });
-
-            // Flatten for search but keep group context for rendering
-            const allOptions = groups.flatMap(g => g.options);
-            
-            // Create wrapper and input
-            const $wrapper = $("<div>").addClass("autocomplete-wrapper");
-            const $input = $("<input>").addClass("autocomplete-input editable").attr({
-                type: "text",
-                value: field.value || "",
-                placeholder: "Type or select from list"
-            });
-            const $suggestions = $("<div>").addClass("autocomplete-suggestions").hide();
-            
-            $wrapper.append($input, $suggestions);
-            $fieldValue = $wrapper;
-
-            // Update suggestions with groups
-            function updateSuggestions(filterText) {
-                const filter = filterText.toLowerCase().trim();
-                $suggestions.empty();
+            if (field.type.startsWith("list:") && is_logged_in) {
+                // Parse the raw list
+                const rawOptions = field.type.replace("list:", "").split(",");
+                const groups = []; // { label: "GroupName", options: [...] }
+                let currentGroup = null;
                 
-                let hasMatches = false;
-                
-                groups.forEach(group => {
-                    const matchedOptions = group.options.filter(opt => 
-                        filter === "" || opt.toLowerCase().includes(filter)
-                    );
-                    if (matchedOptions.length === 0) return;
-                    hasMatches = true;
-                    
-                    const $groupHeader = $("<div>")
-                        .addClass("autocomplete-group-header")
-                        .text(group.label);
-                    $suggestions.append($groupHeader);
-                    
-                    matchedOptions.forEach(opt => {
-                        let displayHtml = opt;
-                        const filterLower = filterText.toLowerCase().trim();
-                        if (filterLower !== "") {
-                            const index = opt.toLowerCase().indexOf(filterLower);
-                            if (index !== -1) {
-                                const before = opt.slice(0, index);
-                                const match = opt.slice(index, index + filterLower.length);
-                                const after = opt.slice(index + filterLower.length);
-                                displayHtml = before + "<strong>" + match + "</strong>" + after;
-                            }
-                        }
-                        const $sug = $("<div>")
-                            .addClass("autocomplete-suggestion")
-                            .html(displayHtml)
-                            .attr("data-value", opt);
-                        $sug.on("click", function() {
-                            $input.val(opt);
-                            field.value = opt;
-                            $suggestions.hide();
-                            $("#saveJson").fadeIn();
-                        });
-                        $suggestions.append($sug);
-                    });
+                rawOptions.forEach(opt => {
+                    if (opt.startsWith("#")) {
+                        currentGroup = { label: opt.replace("#", ""), options: [] };
+                        groups.push(currentGroup);
+                    } else if (currentGroup) {
+                        currentGroup.options.push(opt);
+                    } else {
+                        if (!groups[0]) groups.push({ label: "Options", options: [] });
+                        groups[0].options.push(opt);
+                    }
                 });
+
+                // Flatten for search but keep group context for rendering
+                const allOptions = groups.flatMap(g => g.options);
                 
-                if (!hasMatches) {
-                    $suggestions.hide();
-                } else {
-                    $suggestions.show();
+                // Create wrapper and input
+                const $wrapper = $("<div>").addClass("autocomplete-wrapper");
+                const $input = $("<input>").addClass("autocomplete-input editable").attr({
+                    type: "text",
+                    value: field.value || "",
+                    placeholder: "Type or select from list"
+                });
+                const $suggestions = $("<div>").addClass("autocomplete-suggestions").hide();
+                
+                $wrapper.append($input, $suggestions);
+                $fieldValue = $wrapper;
+
+                // Update suggestions with groups
+                function updateSuggestions(filterText) {
+                    const filter = filterText.toLowerCase().trim();
+                    $suggestions.empty();
+                    
+                    let hasMatches = false;
+                    
+                    groups.forEach(group => {
+                        const matchedOptions = group.options.filter(opt => 
+                            filter === "" || opt.toLowerCase().includes(filter)
+                        );
+                        if (matchedOptions.length === 0) return;
+                        hasMatches = true;
+                        
+                        const $groupHeader = $("<div>")
+                            .addClass("autocomplete-group-header")
+                            .text(group.label);
+                        $suggestions.append($groupHeader);
+                        
+                        matchedOptions.forEach(opt => {
+                            let displayHtml = opt;
+                            const filterLower = filterText.toLowerCase().trim();
+                            if (filterLower !== "") {
+                                const index = opt.toLowerCase().indexOf(filterLower);
+                                if (index !== -1) {
+                                    const before = opt.slice(0, index);
+                                    const match = opt.slice(index, index + filterLower.length);
+                                    const after = opt.slice(index + filterLower.length);
+                                    displayHtml = before + "<strong>" + match + "</strong>" + after;
+                                }
+                            }
+                            const $sug = $("<div>")
+                                .addClass("autocomplete-suggestion")
+                                .html(displayHtml)
+                                .attr("data-value", opt);
+                            $sug.on("click", function() {
+                                $input.val(opt);
+                                $input.trigger('input');
+                                field.value = opt;
+                                $suggestions.hide();
+                                $("#saveJson").fadeIn();
+                            });
+                            $suggestions.append($sug);
+                        });
+                    });
+                    
+                    if (!hasMatches) {
+                        $suggestions.hide();
+                    } else {
+                        $suggestions.show();
+                    }
                 }
+
+                // Show suggestions on focus/input
+                $input.on("focus", function() { updateSuggestions($input.val()); });
+                $input.on("input", function() {
+                    updateSuggestions($input.val());
+                    field.value = $input.val();
+                    $("#saveJson").fadeIn();
+                });
+
+                // Hide suggestions when clicking outside
+                $(document).on("click", function(e) {
+                    if (!$wrapper.is(e.target) && !$wrapper.has(e.target).length) {
+                        $suggestions.hide();
+                    }
+                });
+
+            } else if (field.type === 'date') {
+                    $fieldValue = $("<input>", {type: "date", readonly: is_logged_in? false: true}).addClass("field-value").val(field.value || "");
+                    $fieldValue.on("change", function () {field.value = $(this).val();});
+                    if(is_logged_in) $fieldValue.attr("contenteditable", "true");
+                    
+            } 
+            else if (field.type.startsWith('unit') && is_logged_in){
+                const jsonLoad = JSON.parse(field.type.replace('unit:', ""));
+                const units_symbol = jsonLoad.symbol;
+                const units_name = jsonLoad.name;
+                const value = field.value.match(/^(\d+)(.*)$/) || [];
+                const number = value[1] || '0';
+                const unit = value[2] || units_symbol[0];
+
+                const $unit = $('<span>')
+                    .attr('contenteditable', 'false')
+                    .addClass('unit')
+                    .css('position', 'absolute')
+                    .text(unit)
+                $fieldValue = $("<div>")
+                    .addClass("field-value")
+                    .attr("contenteditable", "true")
+                    .html(number)
+                    .append($unit);
+                $fieldValue.on('input', function () {
+                    const $field = $(this);
+                    const $unit = $field.children('.unit');
+                    const number = $field.contents()
+                        .filter(function () { return this !== $unit[0]; })
+                        .text()
+                        .replace(/\u200B/g, '')
+                        .trim();
+                    // add an invisible character if empy (instead of <br>)
+                    if (!number) {
+                        $field.contents()
+                            .filter(function () { return this.nodeName === 'BR'; })
+                            .remove();
+                        if (!$field.contents().filter(function () { return this.nodeType === Node.TEXT_NODE; }).length) 
+                        {
+                            $unit.before(document.createTextNode('\u200B'));
+                        }
+                    }
+                });
+                // remove the invisible character on blur if there is content
+                $fieldValue.on('blur', function () {
+                    const $field = $(this);
+                    const number = $field.contents()
+                        .filter(function () { return this !== $unit[0]; })
+                        .text()
+                        .replace(/\u200B/g, '')
+                        .trim();
+                    if (number) {
+                        $field.html($field.html().replace(/\u200B/g, ''));
+                    }
+                });
+                const $select = $('<select>').attr('id', `${field.name}-unit-selector`).addClass('unit-selector');
+                units_symbol.forEach((option, index) => {
+                    $select.append($('<option>', {
+                        value: option,
+                        text: units_name[index]
+                    }));
+                });
+                $select.val(unit);
+                $select.on('change', function() {
+                    $(this).parent().find('.field-value .unit').text(this.value);
+                    $("#saveJson").fadeIn();
+                });
+                $fieldValue = $fieldValue.add($select);
             }
-
-            // Show suggestions on focus/input
-            $input.on("focus", function() { updateSuggestions($input.val()); });
-            $input.on("input", function() {
-                updateSuggestions($input.val());
-                field.value = $input.val();
-                $("#saveJson").fadeIn();
-            });
-
-            // Hide suggestions when clicking outside
-            $(document).on("click", function(e) {
-                if (!$wrapper.is(e.target) && !$wrapper.has(e.target).length) {
-                    $suggestions.hide();
-                }
-            });
-
-        } else if (field.type === 'date') {
-                $fieldValue = $("<input>", {type: "date", readonly: is_logged_in? false: true}).addClass("field-value").val(field.value || "");
-                $fieldValue.on("change", function () {field.value = $(this).val();});
-                if(is_logged_in) $fieldValue.attr("contenteditable", "true");
-                
-            } else {
+            else {
                 let displayHtml = field.value || "";
                 if (!field.type.startsWith("list:") && field.type !== 'date') {
                     displayHtml = markdownToHtml(displayHtml);
@@ -381,7 +524,7 @@ $(function() {
                 if(is_logged_in) $fieldValue.attr("contenteditable", "true");
             }
 
-            if(is_logged_in) $fieldValue.addClass("editable");
+            if(is_logged_in) $fieldValue.first().addClass("editable");
 
             // Editable field value
             let val = String(field.value || "").trim();
@@ -390,6 +533,29 @@ $(function() {
                 $('.menu').find('div').eq(index).find('.light').addClass('arrow');
             }
             $field.append($fieldInfo).append($fieldValue);
+            // hide or show params
+            const fieldName = $fieldInfo.find('.field-name').text().trim().toLowerCase();
+            if(fieldName === 'parameters'){
+                let modelType = 
+                    $section.find('.field[data-name="Type"] .field-value').text() ||
+                    $section.find('.field[data-name="Type"] input').val();
+                if (modelType) modelType = modelType.trim().toLowerCase()
+                if (!modelType || !hasNumberOfParams.some(type => modelType.includes(type.toLowerCase()))){
+                    $field.hide();
+                }
+                const $typeInput = $section.find('.field[data-name="Type"] input');
+                if ($typeInput.length !== 0) {
+                    $typeInput.on('input', function(){
+                        const value = $(this).val().trim().toLowerCase();
+                        if (hasNumberOfParams.some(type => value.includes(type.toLowerCase()))){
+                            $('.field[data-name="Parameters"]').slideDown(400, function(){$(window).trigger('resize')});
+                        }
+                        else{
+                            $('.field[data-name="Parameters"]').slideUp();
+                        }
+                    })
+                }
+            }
             $section.append($field);
 
             // compared value
@@ -407,6 +573,46 @@ $(function() {
                 $field.append($baseFieldValue);
             }
         });
+        if (is_logged_in){
+            function positionUnitSelectors() {
+                $section.find('.unit-selector').each(function () {
+                    const $field = $(this).parent();
+                    const $fieldUnit = $field.find('span.unit');
+                    $(this).css({
+                        top: $fieldUnit.position().top,
+                        left: $fieldUnit.position().left,
+                        height: $fieldUnit.outerHeight(),
+                        width: $fieldUnit.outerWidth(),
+                        width: $fieldUnit.outerWidth()+ parseFloat($fieldUnit.css('font-size')) + 'px'
+                    });
+                });
+            }
+            $(window).on('resize', positionUnitSelectors);
+            $section.find('.unit-selector').each(function () {
+                const $unit = $(this)
+                const $field = $unit.parent();
+                const $fieldValue = $field.find('.field-value');
+                $fieldValue.on('input',function(e) {
+                    const $field = $(this).parent();
+                    const $fieldUnit = $field.find('span.unit');
+                    $unit.css({
+                        top: $fieldUnit.position().top,
+                        left: $fieldUnit.position().left,
+                        height: $fieldUnit.outerHeight(),
+                        width: $fieldUnit.outerWidth()+ parseFloat($fieldUnit.css('font-size')) + 'px'
+
+                    });
+                })
+                // prevent non numbers
+                $fieldValue.on('beforeinput', function (event) {
+                    const e = event.originalEvent;
+                    if (e.data && /[^0-9]/.test(e.data)) {
+                        event.preventDefault();
+                    }
+                });
+            });
+
+        }
         return $section;
     }
     function normalRender(interval=null){
@@ -434,16 +640,7 @@ $(function() {
             if (compareto && comparedJson && comparedJson.creator) {
                 $("#model-description-compare").html("Comparing differences to version " + (comparedJson.message || comparedJson.title || "model") + " by " + comparedJson.creator).show();
             } else $("#model-description-compare").hide();
-            $("#model-pending").html(jsonData.description?"":"DRAFT (needs version to be searchable)");
-            $("#model-quality").html(`
-                    <svg class="quality-circle" viewBox="0 0 36 36">
-                    <circle cx="18" cy="18" r="18" fill="none" stroke="var(--bg-tertiary)" stroke-width="3"/>
-                    <circle cx="18" cy="18" r="18" fill="none" stroke="${jsonData.quality>0.7?'var(--green-primary)':jsonData.quality>0.4?'var(--yellow-primary)':'#F87F76'}" stroke-width="3"
-                    stroke-dasharray="100" stroke-dashoffset="${100 - Math.round(jsonData.quality * 100)}"/>
-                    <text x="18" y="14" class="quality-text"> ${Math.round(jsonData.quality * 100)}%</text>
-                    <text x="18" y="24" class="quality-text">info</text>
-                </svg>
-            `);
+            renderQuality(jsonData);
 
             const $historyContainer = $("#history-dropdown");
             $historyContainer.html(""); // clear previous content
@@ -467,9 +664,7 @@ $(function() {
                 $ul.append($li);
                 $('.menu').find('div').removeClass('active');
                 $('.menu div:first-child').addClass('active');
-
             });
-
             if (!($('.light.arrow').length > 0)&& is_logged_in) {
                 // TODO: we have the option of just opening the import, which may be more practical
                 $('#modal-autocomplete-screen').css('display' , 'flex');
@@ -483,7 +678,7 @@ $(function() {
                 el.setAttribute('translate', 'no');
             });
 
-
+            
         }
 
 
@@ -928,15 +1123,8 @@ $('.contents').on('click', '.refine-field', async function () {
                 $("#model-title").text(response.title);
                 $("#model-description").html(response.description+" uploaded by "+response.creator);
                 $("#model-pending").html(response.description?"":"DRAFT (needs version to be searchable)");
-                $("#model-quality").html(`
-                     <svg class="quality-circle" viewBox="0 0 36 36">
-                      <circle cx="18" cy="18" r="18" fill="none" stroke="var(--bg-tertiary)" stroke-width="3"/>
-                      <circle cx="18" cy="18" r="18" fill="none" stroke="${response.quality>0.7?'var(--green-primary)':response.quality>0.4?'var(--yellow-primary)':'#F87F76'}" stroke-width="3"
-                        stroke-dasharray="100" stroke-dashoffset="${100 - Math.round(response.quality * 100)}"/>
-                      <text x="18" y="14" class="quality-text"> ${Math.round(response.quality * 100)}%</text>
-                      <text x="18" y="24" class="quality-text">info</text>
-                    </svg>
-                `);
+                renderQuality(response);
+
                 const $historyContainer = $("#history-dropdown");
                 $historyContainer.html(''); // clear previous content
                 if (response.history) {
@@ -1183,7 +1371,7 @@ $('.contents').on('click', '.refine-field', async function () {
                         let emissions = response['emissions'];
 
                         if (energy_consumed && emissions) {
-                            phone_charge_equivalent = formatHours(Number(energy_consumed) / 0.02) // the argument is in hours assuming a charger consumes 20W
+                            let phone_charge_equivalent = formatHours(Number(energy_consumed) / 0.02) // the argument is in hours assuming a charger consumes 20W
                             energy_consumed = formatKWh(energy_consumed);
                             emissions = formatKg(emissions);
 

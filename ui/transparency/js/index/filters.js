@@ -350,10 +350,14 @@ $(function () {
         cardRowRender: function (it, name, type, task) {
             const percent = Math.round(it.quality * 100);
             const qualityColor =
-                it.quality > 0.7 ? 'var(--green-primary)' :
-                it.quality > 0.4 ? 'var(--yellow-primary)' :
+                percent > 70 ? 'var(--green-primary)' :
+                percent > 40  ? 'var(--yellow-primary)' :
                 '#F87F76';
-            const energy = Math.max(0, Math.min(5, Number(it.energy) || 0));
+            const energy= Math.max(0, Math.min(200, parseFloat(it.energy) || 0));
+            const energyColor =
+                100-energy/2 > 70 ? 'var(--green-primary)' :
+                100-energy/2 > 40 ? 'var(--yellow-primary)' :
+                '#F87F76';
             const view = {
                 id: it.id,
                 name: name,
@@ -362,9 +366,9 @@ $(function () {
                 qualityColor: qualityColor,
                 description: it.description || "",
                 energy: energy,
-                hasEnergy: it.energy != null,
-                energyDashOffset: 100 - (energy / 5) * 100,
-                energyColor: `hsl(${energy * 6}, 85%, 50%)`,
+                hasEnergy: it.energy!=0,
+                energyDashOffset: (energy / 2),
+                energyColor: energyColor,
                 isDraft: !it.desc,
                 creatorText:
                     (it.desc || "") +

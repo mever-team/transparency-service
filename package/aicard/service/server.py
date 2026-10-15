@@ -198,7 +198,7 @@ def serve(
         def fetch_cards(cursor, owner, WHERE="user=?"):
             # TODO: return only fields relevant to the frontend here (progress: removed overview)
             cursor.execute(f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__type, overview__task, overview__date, report_count, performance__energy_score
+                SELECT id, title, user, desc, quality, timestamp, overview__type, overview__task, overview__date, report_count, performance__energy_consumption
                 FROM cards
                 WHERE {WHERE}
                 """,
@@ -477,7 +477,7 @@ def serve(
                     cards.overview__type, 
                     cards.overview__task,
                     cards.overview__date,
-                    cards.performance__energy_score,
+                    cards.performance__energy_consumption,
                     bm25(cards_fts) AS rank
                 FROM cards_fts
                 JOIN cards ON cards_fts.rowid = cards.id
@@ -502,7 +502,7 @@ def serve(
                     cards.overview__type, 
                     cards.overview__task,
                     cards.overview__date,
-                    cards.performance__energy_score,
+                    cards.performance__energy_consumption,
                     9999 AS rank   -- fallback rank for LIKE matches
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
@@ -532,7 +532,7 @@ def serve(
                     cards.overview__type, 
                     cards.overview__task,
                     cards.overview__date,
-                    cards.performance__energy_score,
+                    cards.performance__energy_consumption,
                     bm25(cards_fts) AS rank
                 FROM cards_fts
                 JOIN cards ON cards_fts.rowid = cards.id
@@ -556,7 +556,7 @@ def serve(
                     cards.overview__type, 
                     cards.overview__task,
                     cards.overview__date,
-                    cards.performance__energy_score,
+                    cards.performance__energy_consumption,
                     9999 AS rank
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
@@ -574,7 +574,7 @@ def serve(
         elif query and owner:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, performance__energy_score
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, performance__energy_consumption
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   AND LOWER(user) IN ({placeholders})
@@ -590,7 +590,7 @@ def serve(
         elif query:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, performance__energy_score
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, performance__energy_consumption
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   AND quality >= {quality_limits}
@@ -605,7 +605,7 @@ def serve(
         elif owner:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, performance__energy_score
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, performance__energy_consumption
                 FROM cards
                 WHERE LOWER(user) IN ({placeholders})
                   AND quality >= {quality_limits}
@@ -620,7 +620,7 @@ def serve(
         else:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, performance__energy_score
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, performance__energy_consumption
                 FROM cards
                 WHERE quality >= {quality_limits}
                 {type_filter}
