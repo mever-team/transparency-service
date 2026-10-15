@@ -4,8 +4,17 @@ $(function() {
     let cardJson;
     let comparedJson;
     let comparedJsonSimple;
-    let menuOffsetTop=0;
     let historyLoading = false;
+    const hasNumberOfParams = [    
+        "Neural Networks",
+        "Convolutional Neural Network",
+        "Recurrent Neural Network",
+        "Multilayer Perceptron",
+        "Transformer",
+        "Graph Neural Network",
+        "Autoencoder",
+        "Generative Adversarial Network"
+    ]
 
 
     function formatFieldName(name) {
@@ -338,6 +347,7 @@ $(function() {
                                 .attr("data-value", opt);
                             $sug.on("click", function() {
                                 $input.val(opt);
+                                $input.trigger('input');
                                 field.value = opt;
                                 $suggestions.hide();
                                 $("#saveJson").fadeIn();
@@ -379,8 +389,8 @@ $(function() {
                 const units_symbol = jsonLoad.symbol;
                 const units_name = jsonLoad.name;
                 const value = field.value.match(/^(\d+)(.*)$/) || [];
-                const number = value[1] || '';
-                const unit = value[2] || '';
+                const number = value[1] || '0';
+                const unit = value[2] || units_symbol[0];
 
                 const $unit = $('<span>')
                     .attr('contenteditable', 'false')
@@ -455,6 +465,29 @@ $(function() {
                 $('.menu').find('div').eq(index).find('.light').addClass('arrow');
             }
             $field.append($fieldInfo).append($fieldValue);
+            // hide or show params
+            const fieldName = $fieldInfo.find('.field-name').text().trim().toLowerCase();
+            if(fieldName === 'parameters'){
+                let modelType = 
+                    $section.find('.field[data-name="Type"] .field-value').text() ||
+                    $section.find('.field[data-name="Type"] input').val();
+                if (modelType) modelType = modelType.trim().toLowerCase()
+                if (!modelType || !hasNumberOfParams.some(type => modelType.includes(type.toLowerCase()))){
+                    $field.hide();
+                }
+                const $typeInput = $section.find('.field[data-name="Type"] input');
+                if ($typeInput.length !== 0) {
+                    $typeInput.on('input', function(){
+                        const value = $(this).val().trim().toLowerCase();
+                        if (hasNumberOfParams.some(type => value.includes(type.toLowerCase()))){
+                            $('.field[data-name="Parameters"]').slideDown(400, function(){$(window).trigger('resize')});
+                        }
+                        else{
+                            $('.field[data-name="Parameters"]').slideUp();
+                        }
+                    })
+                }
+            }
             $section.append($field);
 
             // compared value

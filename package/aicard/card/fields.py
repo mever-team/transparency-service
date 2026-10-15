@@ -98,8 +98,7 @@ class Unit(Field):
         self.is_refinable = False
     def set(self, value):
         if isinstance(value, Field): value = value.get()
-        value = value.strip()
-        print(value)
+        if value: value = value.strip()
         try:
             is_in_format = bool(re.fullmatch(self.__format, value))
             if not is_in_format:
