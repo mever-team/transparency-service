@@ -1120,7 +1120,10 @@ def serve(
     @app.route(domain_prefix+"/options/<string:section>/<string:field>", methods=["GET"])
     def get_options(section, field):
         try:
-            return jsonify(ModelCard().data[section][field].options())
+            result = ModelCard().data[section][field].options()
+            del result[-3:]
+            print(result)
+            return jsonify(result)
         except Exception as e:
             logger.error("No options for " + section + " " + field)
             abort(400, "No options for " + section + " " + field)
