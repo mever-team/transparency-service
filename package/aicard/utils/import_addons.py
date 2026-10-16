@@ -3,6 +3,16 @@ from aicard.card import ModelCard
 from urllib.parse import urlparse
 import markdown2
 
+def format_parameters(n):
+    if not n: return ""
+    n = str(n)
+    try: n = float(n)
+    except: return str(n)
+    if n >= 3_000_000_000: return f"{n / 1_000_000_000:.0f}B"
+    if n >= 3_000_000: return f"{n / 1_000_000:.0f}M"
+    if n >= 3_000: return f"{n / 1_000:.0f}K"
+    return str(n)
+
 def huggingface_redirect(card: ModelCard, url: str, external_get_timeout_sec: float):
     def md(s): return markdown2.markdown(str(s), extras=["markdown-in-html", "code-friendly"]) if s else ""
 
@@ -54,6 +64,9 @@ def huggingface_redirect(card: ModelCard, url: str, external_get_timeout_sec: fl
     }
     pipeline = meta.get("pipeline_tag", "")
     lib = meta.get("library_name", "") or ""
+    safetensors = meta.get("safetensors") or {}
+    parameters = safetensors.get("parameters") or {}
+    params = sum(parameters.values()) if parameters else safetensors.get("total")
     tags = set(meta.get("tags", []))
     o.task = (pipelines.get(pipeline, "unknown"))
     o.type = (
@@ -62,6 +75,7 @@ def huggingface_redirect(card: ModelCard, url: str, external_get_timeout_sec: fl
         else "Generative Adversarial Network"
         if "diffusers" in lib else "unknown"
     )
+    card.overview.parameters = format_parameters(params)
     udata = card.data.use
     udata.use_cases = str(cd.get("intended_uses") or pipeline)
     udata.out_of_scope_use = str(cd.get("out_of_scope_use", ""))

@@ -71,6 +71,7 @@ class ModelCard:
                 metrics=LongText("Benchmark results for any performance metrics.", technical_nature=True),
                 thresholds=LongText("If decision thresholds are used, what are they, and why were those parameters chosen?"),
                 methodology=LongText("Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method.", is_refinable=True, technical_nature=True),
+                energy_consumption=Unit("A summary of energy consumption. Unit measuring is a centi-llama, meaning that 100 corresponds to the energy needed per output token by Llama3.2 3B, with greater values indicating higher energy consumption per token. Determines eco friendliness.", is_simple=True, units_symbol=['cll'], units_name=['Centi-llama (cLl)'], format=r'^\d+(?:cll)$'),
                 environmental_impact=LongText("Report of energy consumption, CO2 emissions or any other environmental impact.", technical_nature=True),
                 bias=LongText("Performance and bias across different groups (e.g. ethnicity, gender)", is_refinable=True, technical_nature=True),
             ),
@@ -291,7 +292,10 @@ class ModelCard:
         #    summary += " "+truncate(self.data.overview.name.split(" ")[0].split("\n")[0], 50)
         if self.data.overview.version:
             summary += " "+truncate(self.data.overview.version, 50)
-        return summary[1:] if summary else ""
+        return summary[1:].replace("#","").replace("**","").strip() if summary else ""
+
+    def energy(self):
+        return self.data.performance.energy_consumption
 
     def quality(self) -> float:
         nom = 0

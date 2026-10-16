@@ -16,6 +16,74 @@ $(function() {
         "Generative Adversarial Network"
     ]
 
+    function renderQuality(jsonData) {
+        $("#model-pending").html(jsonData.description?"":"DRAFT (needs version to be searchable)");
+
+        const percent = Math.round(jsonData.quality * 100);
+        const qualityColor =
+            percent > 70 ? 'var(--green-primary)' :
+            percent > 40  ? 'var(--yellow-primary)' :
+            '#F87F76';
+        const dashOffset = 100 - percent;
+        $("#model-quality").html(`
+             <div style="position:relative;display:flex;align-items:center;justify-content:center;">
+                <svg class="quality-circle" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="18"
+                        fill="none" stroke="var(--bg-tertiary)" stroke-width="3"/>
+
+                <circle cx="18" cy="18" r="18"
+                        fill="none"
+                        stroke="${qualityColor}"
+                        stroke-width="3"
+                        stroke-dasharray="100"
+                        pathLength="100"
+                        stroke-dashoffset="${dashOffset}"/>
+                <text x="18" y="0" class="quality-text" opacity="0.6">info</text>
+                </svg>
+                <i class="fa-solid fa-list-check"
+                   style="position:absolute;
+                          top:50%;
+                          left:50%;
+                          transform:translate(-50%,-50%);
+                          font-size:22px;
+                          color:${qualityColor};">
+                </i>
+            </div>
+        `);
+        const energy= Math.max(0, Math.min(200, parseFloat(jsonData.energy) || 0));
+        if(energy) {
+            const energyColor =
+                100-energy/2 > 70 ? 'var(--green-primary)' :
+                100-energy/2 > 40 ? 'var(--yellow-primary)' :
+                '#F87F76';
+            const energyDashOffset = 100 - (energy / 2);
+            $("#model-eco").html(`
+                <div style="position:relative;display:flex;align-items:center-top;justify-content:center;">
+                    <svg class="quality-circle" viewBox="0 0 36 36">
+                    <circle cx="18" cy="18" r="18" fill="none" stroke="var(--bg-tertiary)" stroke-width="3"/>
+                    <circle cx="18" cy="18" r="18"
+                            fill="none"
+                            stroke="${energyColor}"
+                            stroke-width="3"
+                            stroke-dasharray="100"
+                            pathLength="100"
+                            stroke-dashoffset="${energyDashOffset}"/>
+                    <text x="18" y="0" class="quality-text" opacity="0.6">eco</text>
+                    </svg>
+                    <i class="fa-solid fa-leaf"
+                       style="position:absolute;
+                              top:50%;
+                              left:50%;
+                              transform:translate(-50%,-50%);
+                              font-size:22px;
+                              color:${energyColor};">
+                    </i>
+                    </div>
+            `);
+        }
+        else $("#model-eco").html("");
+    }
+
 
     function formatFieldName(name) {
         const text = name.replace(/_/g, " ");
@@ -572,16 +640,7 @@ $(function() {
             if (compareto && comparedJson && comparedJson.creator) {
                 $("#model-description-compare").html("Comparing differences to version " + (comparedJson.message || comparedJson.title || "model") + " by " + comparedJson.creator).show();
             } else $("#model-description-compare").hide();
-            $("#model-pending").html(jsonData.description?"":"DRAFT (needs version to be searchable)");
-            $("#model-quality").html(`
-                    <svg class="quality-circle" viewBox="0 0 36 36">
-                    <circle cx="18" cy="18" r="18" fill="none" stroke="var(--bg-tertiary)" stroke-width="3"/>
-                    <circle cx="18" cy="18" r="18" fill="none" stroke="${jsonData.quality>0.7?'var(--green-primary)':jsonData.quality>0.4?'var(--yellow-primary)':'#F87F76'}" stroke-width="3"
-                    stroke-dasharray="100" stroke-dashoffset="${100 - Math.round(jsonData.quality * 100)}"/>
-                    <text x="18" y="14" class="quality-text"> ${Math.round(jsonData.quality * 100)}%</text>
-                    <text x="18" y="24" class="quality-text">info</text>
-                </svg>
-            `);
+            renderQuality(jsonData);
 
             const $historyContainer = $("#history-dropdown");
             $historyContainer.html(""); // clear previous content
@@ -1064,15 +1123,8 @@ $('.contents').on('click', '.refine-field', async function () {
                 $("#model-title").text(response.title);
                 $("#model-description").html(response.description+" uploaded by "+response.creator);
                 $("#model-pending").html(response.description?"":"DRAFT (needs version to be searchable)");
-                $("#model-quality").html(`
-                     <svg class="quality-circle" viewBox="0 0 36 36">
-                      <circle cx="18" cy="18" r="18" fill="none" stroke="var(--bg-tertiary)" stroke-width="3"/>
-                      <circle cx="18" cy="18" r="18" fill="none" stroke="${response.quality>0.7?'var(--green-primary)':response.quality>0.4?'var(--yellow-primary)':'#F87F76'}" stroke-width="3"
-                        stroke-dasharray="100" stroke-dashoffset="${100 - Math.round(response.quality * 100)}"/>
-                      <text x="18" y="14" class="quality-text"> ${Math.round(response.quality * 100)}%</text>
-                      <text x="18" y="24" class="quality-text">info</text>
-                    </svg>
-                `);
+                renderQuality(response);
+
                 const $historyContainer = $("#history-dropdown");
                 $historyContainer.html(''); // clear previous content
                 if (response.history) {

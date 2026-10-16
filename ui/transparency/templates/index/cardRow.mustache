@@ -2,7 +2,7 @@
     <td>
         <a style="display:block;width:100%;height:100%;text-decoration:none;text-align:left" href="model_card.html?id={{id}}">
             <div class="row">
-                <div>
+                <div style="position:relative;display:flex;align-items:center;justify-content:center;">
                     <svg class="quality-circle" viewBox="0 0 36 36">
                     <circle cx="18" cy="18" r="18"
                             fill="none" stroke="var(--bg-tertiary)" stroke-width="3"/>
@@ -12,12 +12,44 @@
                             stroke="{{qualityColor}}"
                             stroke-width="3"
                             stroke-dasharray="100"
+                            pathLength="100"
                             stroke-dashoffset="{{dashOffset}}"/>
-
-                    <text x="18" y="14" class="quality-text">{{percent}}%</text>
-                    <text x="18" y="24" class="quality-text">info</text>
+                    <text x="18" y="0" class="quality-text" opacity="0.6">info</text>
                     </svg>
+                    <i class="fa-solid fa-list-check"
+                       style="position:absolute;
+                              top:50%;
+                              left:50%;
+                              transform:translate(-50%,-50%);
+                              font-size:22px;
+                              color:{{qualityColor}};">
+                    </i>
                 </div>
+
+                {{#hasEnergy}}
+                    <div style="position:relative;display:flex;align-items:center-top;justify-content:center;">
+                    <svg class="quality-circle" viewBox="0 0 36 36">
+                    <circle cx="18" cy="18" r="18" fill="none" stroke="var(--bg-tertiary)" stroke-width="3"/>
+                    <circle cx="18" cy="18" r="18"
+                            fill="none"
+                            stroke="{{energyColor}}"
+                            stroke-width="3"
+                            stroke-dasharray="100"
+                            pathLength="100"
+                            stroke-dashoffset="{{energyDashOffset}}"/>
+
+                    <text x="18" y="0" class="quality-text" opacity="0.6">eco</text>
+                    </svg>
+                    <i class="fa-solid fa-leaf"
+                       style="position:absolute;
+                              top:50%;
+                              left:50%;
+                              transform:translate(-50%,-50%);
+                              font-size:22px;
+                              color:{{energyColor}};">
+                    </i>
+                    </div>
+                {{/hasEnergy}}
 
                 <div>
                     <span style="display:block;color:var(--text-primary)">{{{name}}}</span>
@@ -43,6 +75,6 @@
             <div style="font-size:13px;color: color-mix(in srgb, var(--text-primary) 90%, transparent);margin-top:7px;text-align:left">
                 {{description}}
             </div>
-        </a>    
+        </a>
     </td>
 </tr>
