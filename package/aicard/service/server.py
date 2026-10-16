@@ -446,11 +446,11 @@ def serve(
         task_list = data.get('task', [])
         if isinstance(type_list, str): type_list = [type_list]
         if isinstance(task_list, str): task_list = [task_list]
-        type_filter = f"AND cards.overview__type IN ("+",".join("?" for _ in type_list)+")" if type_list else ""
-        task_filter = f"AND cards.overview__task IN ("+",".join("?" for _ in task_list)+")" if task_list else ""
+        type_filter = "AND (" + " OR ".join("cards.overview__type LIKE ?" for _ in type_list) + ")" if type_list else ""
+        task_filter = "AND (" + " OR ".join("cards.overview__task LIKE ?" for _ in task_list) + ")" if task_list else ""
         safe_argument_list = list() # order and positioning matters
-        if type_list: safe_argument_list.extend(type_list)
-        if task_list: safe_argument_list.extend(task_list)
+        if type_list: safe_argument_list.extend(f"%{t}%" for t in type_list)
+        if task_list: safe_argument_list.extend(f"%{t}%" for t in task_list)
 
         owner = " ".join(owner)
         query = query.strip()
@@ -1120,7 +1120,8 @@ def serve(
     @app.route(domain_prefix+"/options/<string:section>/<string:field>", methods=["GET"])
     def get_options(section, field):
         try:
-            return jsonify(ModelCard().data[section][field].options())
+            result = ModelCard().data[section][field].options()[:-3]
+            return jsonify(result)
         except Exception as e:
             logger.error("No options for " + section + " " + field)
             abort(400, "No options for " + section + " " + field)
