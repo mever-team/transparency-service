@@ -38,7 +38,7 @@ $(function() {
                         stroke-dasharray="100"
                         pathLength="100"
                         stroke-dashoffset="${dashOffset}"/>
-                <text x="18" y="0" class="quality-text" opacity="0.6">info</text>
+                <text x="18" y="-5" class="quality-text">info</text>
                 </svg>
                 <i class="fa-solid fa-list-check"
                    style="position:absolute;
@@ -68,7 +68,7 @@ $(function() {
                             stroke-dasharray="100"
                             pathLength="100"
                             stroke-dashoffset="${energyDashOffset}"/>
-                    <text x="18" y="0" class="quality-text" opacity="0.6">eco</text>
+                    <text x="18" y="-5" class="quality-text">eco</text>
                     </svg>
                     <i class="fa-solid fa-leaf"
                        style="position:absolute;
