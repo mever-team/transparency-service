@@ -23,10 +23,16 @@ class Client():
         self.session = requests.Session()
         self.session.headers.update({"Authorization": f"Bearer {token}"})
 
-    def search(self, query: str="Model Card", owned_only: bool=True, top: int=10):
-        response = requests.post(self.url+"/transparency/cards", json={"query": query, "page_size": top, "creator": self.username if owned_only else ""})
+    def search(self, query: str="", owned_only: bool=True, top: int=10):
+        response = requests.post(self.url+"/transparency/cards", json={"query": query, "page_size": top, "user": self.username if owned_only else ""})
         if response.status_code != 200: self.logger.fatal(f"Card search failed: {response.status_code} {response.text}")
         results = response.json()["results"]
+        return results
+
+    def owned_cards(self):
+        response = self.get("/transparency/users")
+        if response.status_code != 200: self.logger.fatal(f"Card retrieval failed: {response.status_code} {response.text}")
+        results = response.json()["cards"]
         return results
 
     def status(self):
@@ -51,7 +57,7 @@ class Client():
         prototype = data
         response = self.get(f"/transparency/card/{card_id}")
         if response.status_code != 200: self.logger.fatal(f"Remote card could not be found: {response.status_code} {response.text}")
-        prototype.data.assign(converters.dynamic2dict(response.json()))
+        prototype.data.assign(converters.dynamic2dict(response.json()['data']))
         new_card = ModelCard(connector=CardConnector(card_id, self, prototype))
         new_card.data.assign(prototype.data)
         return new_card

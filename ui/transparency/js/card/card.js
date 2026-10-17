@@ -56,7 +56,7 @@ $(function() {
                 100-energy/2 > 70 ? 'var(--green-primary)' :
                 100-energy/2 > 40 ? 'var(--yellow-primary)' :
                 '#F87F76';
-            const energyDashOffset = 100 - (energy / 2);
+            const energyDashOffset = (energy / 2);
             $("#model-eco").html(`
                 <div style="position:relative;display:flex;align-items:center-top;justify-content:center;">
                     <svg class="quality-circle" viewBox="0 0 36 36">
@@ -1121,7 +1121,7 @@ $('.contents').on('click', '.refine-field', async function () {
                 });
 
                 $("#model-title").text(response.title);
-                $("#model-description").html(response.description+" uploaded by "+response.creator);
+                $("#model-description").html("version "+response.description+" uploaded by "+response.creator);
                 $("#model-pending").html(response.description?"":"DRAFT (needs version to be searchable)");
                 renderQuality(response);
 

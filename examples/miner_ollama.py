@@ -1,6 +1,8 @@
 import requests
 import aicard as aic
 import trafilatura
+import time
+from gpuest import Energy
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 from urllib.parse import urlparse
@@ -15,6 +17,9 @@ matcher = SemanticMatcher(
     fuzzer_weight=0.25,
     promote_filling_simple_fields=0.1)
 matcher.start(logger=logger)
+
+energy = Energy("energy_profiles.toml")
+base_model = "llama3.2:latest"
 
 def fetch_ollama_models(limit: int) -> list[str]:
     models = []
@@ -41,7 +46,94 @@ def fetch_ollama_models(limit: int) -> list[str]:
 
 
 def technical_assessment(card, model_name):
-    card.performance.energy_consumption = "100cll"
+    model_name = model_name if ":" in model_name else f"{model_name}:latest"
+    vendor = energy.vendor.who()
+
+    def has_profile(name):
+        profile = energy.profiles.get(name, {}).get(vendor)
+        return profile is not None and profile.get("count", 0) > 0
+
+    def ensure_model(name):
+        resp = requests.get("http://localhost:11434/api/tags", timeout=15)
+        resp.raise_for_status()
+        installed = {m["name"] for m in resp.json()["models"]}
+        if name not in installed:
+            logger.info(f"Pulling {name}")
+            resp = requests.post(
+                "http://localhost:11434/api/pull",
+                json={"model": name, "stream": False},
+                timeout=3600)
+            resp.raise_for_status()
+
+    def generate(name):
+        resp = requests.post(
+            "http://localhost:11434/api/generate",
+            json={
+                "model": name,
+                "prompt": "Explain the differences between CPUs and GPUs in detail.",
+                "stream": False,
+                "keep_alive": "5m",
+                "options": {"temperature": 0, "seed": 42, "num_predict": 128}},
+            timeout=600)
+        resp.raise_for_status()
+        tokens = resp.json().get("eval_count", 0)
+        if not tokens: raise ValueError(f"No output tokens from {name}")
+        return tokens
+
+    def unload(name):
+        resp = requests.post(
+            "http://localhost:11434/api/generate",
+            json={"model": name, "keep_alive": 0},
+            timeout=120)
+        resp.raise_for_status()
+
+    def measure(name):
+        generate(name)
+        try:
+            energy.record(
+                name,
+                lambda: generate(name),
+                batches=3,
+                repetitions_per_batch=3,
+                reset=True)
+        finally:
+            unload(name)
+
+    try:
+        ensure_model(model_name)
+        if not has_profile(base_model): ensure_model(base_model)
+
+        unload(model_name)
+        if model_name != base_model and not has_profile(base_model): unload(base_model)
+        time.sleep(2)
+
+        energy.record_idle(
+            intervals=2.0,
+            batches=3,
+            repetitions_per_batch=4,
+            reset=True)
+
+        if not has_profile(base_model):
+            logger.info(f"Recording base energy for {base_model}")
+            measure(base_model)
+
+        base_energy = energy.estimate(base_model, 1.0)[1]
+        if base_energy <= 0: raise ValueError("Invalid base energy")
+
+        if model_name == base_model:
+            model_energy = base_energy
+        else:
+            measure(model_name)
+            model_energy = energy.estimate(model_name, 1.0)[1]
+
+        if model_energy <= 0: raise ValueError("Invalid model energy")
+
+        card.performance.energy_consumption = f"{round(100 * model_energy / base_energy)}cll"
+        logger.info(f"Energy for {model_name}: {card.performance.energy_consumption}")
+
+    except Exception as e:
+        logger.warn(f"Failed energy assessment for {model_name}: {e}")
+
 
 conn = aic.connect("http://127.0.0.1:5000", username="admin", password="admin")
 card_names = {card["name"] for card in conn.status()["cards"]}
@@ -68,7 +160,9 @@ for model_id in tqdm(missing_models):
         if not urlparse(url).path.lower().endswith((".md", ".markdown")):
             text = trafilatura.extract(text, output_format="markdown", include_formatting=True, include_links=True)
         if not text: continue
+        measured_energy = local_card.performance.energy_consumption
         matcher.complete_from_markdown(local_card, url, text, ["",""])
+        if measured_energy: local_card.performance.energy_consumption = measured_energy
         quality = local_card.quality()
         if any(existing_name in local_card.overview.name for existing_name in card_names):
             logger.warn(f"It was not immediately obvious but after parsing {model_id} was already found")
