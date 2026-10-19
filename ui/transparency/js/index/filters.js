@@ -366,7 +366,7 @@ $(function () {
                 qualityColor: qualityColor,
                 description: it.description || "",
                 energy: energy,
-                hasEnergy: it.energy!=0,
+                hasEnergy: energy!==0,
                 energyDashOffset: (energy / 2),
                 energyColor: energyColor,
                 isDraft: !it.desc,
