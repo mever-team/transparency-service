@@ -661,7 +661,7 @@ def serve(
         question = data.get("question", "")
         assert question, "No question provided."
         card_entry = exists(find_card(card_id), "Model card does not exist or has been deleted.")
-        with card_entry: question_id = card_entry.chat_ask(question, feature_extractor)
+        with card_entry: question_id = card_entry.chat_ask(question, feature_extractor, logger, jobs_tracker)
         return jsonify({"id": question_id,})
 
     @app.route(domain_prefix + '/card/<int:card_id>/ask/<int:question_id>', methods=['POST'])
