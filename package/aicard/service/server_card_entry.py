@@ -249,7 +249,7 @@ class ModelCardEntry(contextlib.AbstractContextManager):
                     job_name = f'chat_fields_{self.__chat_answer_counter}'
                     job_tracker.set(job_name, job)
                     job_id = job_tracker.get(job_name).id
-                    tracker = EmissionsTracker( project_name=job_id, save_to_file=False, log_level="WARNING", tracking_mode="process")
+                    tracker = EmissionsTracker( project_name=job_id, save_to_file=False, log_level="WARNING", tracking_mode="process", gpu_ids=[])
                     tracker.start()
                     self.__extracted_sentences[feature_extractor] = sentences
                     for category, values in self.card.data.items():
@@ -294,7 +294,7 @@ class ModelCardEntry(contextlib.AbstractContextManager):
                 job_name = f'chat_answer_{self.__chat_answer_counter}'
                 job_tracker.set(job_name, job)
                 job_id = job_tracker.get(job_name).id
-                tracker = EmissionsTracker( project_name=job_id, save_to_file=False, log_level="WARNING", tracking_mode="process")
+                tracker = EmissionsTracker( project_name=job_id, save_to_file=False, log_level="WARNING", tracking_mode="process", gpu_ids=[])
                 tracker.start()
                 question_embeddings = feature_extractor.get_embeddings("question: "+question)
                 mu = self.__average_sentence_embeddings[feature_extractor]
