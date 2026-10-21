@@ -131,7 +131,7 @@ describe('Testing card.js...', function() {
     it('Testing import', async function(){
         let importURL = 'http://localhost:5000'
         $('#import-btn').trigger('click');
-        expect($('.quality-text').html().trim()).toBe('0%');
+        expect($('#simpleSection .field[data-name="Home"] .field-value').text()).toBe('');
         $('#card-url').val(importURL);
         $('#modal-autocomplete-screen .card-button[data-type=url]').trigger('click');
         /* Manual reload */
@@ -141,19 +141,19 @@ describe('Testing card.js...', function() {
         while (assistantRuning){
             if (currentTry>maxTries) {
                 console.log('Failed to import. Max tries reached')
-                expect($('.quality-text').text().trim()).not.toBe('0%');
+                expect($('#simpleSection .field[data-name="Home"] .field-value').text()).not.toBe('');
                 break;
             }
             await new Promise(resolve => setTimeout(resolve, 5000)); // wait for trai to import
             let url = '/base/ui/transparency/model_card.html'
             await loadPage(url, username = 'admin', password = 'admin');
-            if ($('.quality-text').text().trim() !== '0%') {
+            if ($('#simpleSection .field[data-name="Home"] .field-value').text() !== '') {
                 break;
                 assistantRuning = false;
             }
             currentTry+=1;
         }
-        expect($('.quality-text').text().trim()).not.toBe('0%');
+        expect($('#simpleSection .field[data-name="Home"] .field-value').text()).not.toBe('');
         await wait4ajax(); // wait for all polling to finish
     });
 

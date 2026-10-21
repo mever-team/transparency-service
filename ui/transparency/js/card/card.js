@@ -118,6 +118,7 @@ $(function() {
             $(".naccs ul").children("li").eq(numberIndex).addClass("active");
             $(this).addClass("active");
         }
+        $(window).trigger('resize');
     });
 
 
