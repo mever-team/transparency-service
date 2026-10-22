@@ -6,11 +6,13 @@ from aicard.service.jobs_tracker import CardJobsTracker, Job
 from flask import abort
 from threading import Lock, Thread
 from werkzeug.exceptions import Forbidden, NotFound, Unauthorized
+from codecarbon import EmissionsTracker
 import traceback
 import re
 import time
 import numpy as np
 import contextlib
+import json
 
 class ModelCardEntry(contextlib.AbstractContextManager):
     def __init__(self, card: ModelCard, creator: str, conn):
@@ -31,6 +33,7 @@ class ModelCardEntry(contextlib.AbstractContextManager):
         self.__num_answered = 0
         self.__extracted_sentences = dict()
         self.__average_sentence_embeddings = dict()
+        self.__chat_answer_counter = 0
 
     def history(self, k: int = 5):
         if self.card_id is None or k <= 0:
@@ -224,7 +227,7 @@ class ModelCardEntry(contextlib.AbstractContextManager):
         if self.check_completion(): return {"status": "locked", "message": "AI assistant is working on the model card"}
         return {"status": "editable", "message": "You can edit the model card"}
 
-    def __answer_chats(self):
+    def __answer_chats(self, logger: Logger, job_tracker: CardJobsTracker):
         # answers all pending chats while allowing new ones, but locking modifications to the card
         self.start_completion()
         while True:
@@ -241,6 +244,13 @@ class ModelCardEntry(contextlib.AbstractContextManager):
                         sentences = dict()
                         need_to_recompute_embeddings = True
                 if need_to_recompute_embeddings:
+                    job = Job( worker = 'chat', operation = 'fields', data={})
+                    self.__chat_answer_counter += 1
+                    job_name = f'chat_fields_{self.__chat_answer_counter}'
+                    job_tracker.set(job_name, job)
+                    job_id = job_tracker.get(job_name).id
+                    tracker = EmissionsTracker( project_name=job_id, save_to_file=False, log_level="WARNING", tracking_mode="process", gpu_ids=[])
+                    tracker.start()
                     self.__extracted_sentences[feature_extractor] = sentences
                     for category, values in self.card.data.items():
                         if not isinstance(values, dict): continue
@@ -275,6 +285,17 @@ class ModelCardEntry(contextlib.AbstractContextManager):
                         sentences[sentence] -= (np.dot(x, mu) / np.dot(mu, mu)) * mu # remove projection
                     with self.lock:
                         self.__average_sentence_embeddings[feature_extractor] = average_sentence_embeddings
+                    emissions = tracker.stop()
+                    emissions_data = json.loads(tracker.final_emissions_data.toJSON())
+                    job_tracker.delete(job_name, emissions_data)
+                    logger.info(f'Card feild embeddings computed. Energy consumed: {emissions_data["cpu_energy"]} kWh {emissions_data["emissions"]} kg CO₂eq')
+                job = Job( worker = 'chat', operation = 'answer', data={})
+                self.__chat_answer_counter += 1
+                job_name = f'chat_answer_{self.__chat_answer_counter}'
+                job_tracker.set(job_name, job)
+                job_id = job_tracker.get(job_name).id
+                tracker = EmissionsTracker( project_name=job_id, save_to_file=False, log_level="WARNING", tracking_mode="process", gpu_ids=[])
+                tracker.start()
                 question_embeddings = feature_extractor.get_embeddings("question: "+question)
                 mu = self.__average_sentence_embeddings[feature_extractor]
                 x = question_embeddings
@@ -311,6 +332,10 @@ class ModelCardEntry(contextlib.AbstractContextManager):
                                 if not trigger_vague_question_warning: trigger_vague_question_warning = k
                                 n = k
                                 continue
+                            emissions = tracker.stop()
+                            emissions_data = json.loads(tracker.final_emissions_data.toJSON())
+                            job_tracker.delete(job_name, emissions_data)
+                            logger.info(f'Chat answer energy consumed: {emissions_data["cpu_energy"]} kWh {emissions_data["emissions"]} kg CO₂eq')
                             break
                         n = k
                         continue
@@ -338,20 +363,28 @@ class ModelCardEntry(contextlib.AbstractContextManager):
                 if trigger_vague_question_warning > MAX_NUMBER_OF_QUOTES: reply += f"<h3 class='error'>Vague question</h3><span>There are {trigger_vague_question_warning-added} more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
                 if errors: reply += "<h3 class='error'>Missing info</h3>"+errors
                 if not reply: reply = "I was unable to find relevant information."
-            except Exception as e: reply = "<h3 class='error'>Something went wrong</h3>"+str(e)
-            except: reply = "<h3 class='error'>Something went wrong. Please try again.</h3>"
+            except Exception as e: 
+                emissions = tracker.stop()
+                emissions_data = json.loads(tracker.final_emissions_data.toJSON())
+                job_tracker.delete(job_name, emissions_data)
+                reply = "<h3 class='error'>Something went wrong</h3>"+str(e)
+            except: 
+                emissions = tracker.stop()
+                emissions_data = json.loads(tracker.final_emissions_data.toJSON())
+                job_tracker.delete(job_name, emissions_data)
+                reply = "<h3 class='error'>Something went wrong. Please try again.</h3>"
             self.__questions[self.__num_answered] = question, feature_extractor, True, reply
             self.__num_answered += 1
         with self.lock:
             self.__chat_thread = None
         self.end_completion()
 
-    def chat_ask(self, question: str, feature_extractor: SemanticMatcher|None):
+    def chat_ask(self, question: str, feature_extractor: SemanticMatcher|None, logger: Logger, job_tracker: CardJobsTracker):
         assert feature_extractor, "Chat capabilities are not available"
         self.__questions.append((question, feature_extractor, False, "..."))
         self.touch()
         if not self.__chat_thread:
-            self.__chat_thread = Thread(target=self.__answer_chats)
+            self.__chat_thread = Thread(target=self.__answer_chats, args=(logger, job_tracker,))
             self.__chat_thread.start()
         return len(self.__questions)-1
 

@@ -1,7 +1,19 @@
 import requests
 from aicard.card import ModelCard
-from urllib.parse import urlparse
+from bs4 import BeautifulSoup
+from urllib.parse import urlparse, urljoin
+from typing import Callable
 import markdown2
+
+def format_parameters(n):
+    if not n: return ""
+    n = str(n)
+    try: n = float(n)
+    except: return str(n)
+    if n >= 3_000_000_000: return f"{n / 1_000_000_000:.0f}B"
+    if n >= 3_000_000: return f"{n / 1_000_000:.0f}M"
+    if n >= 3_000: return f"{n / 1_000:.0f}K"
+    return str(n)
 
 def huggingface_redirect(card: ModelCard, url: str, external_get_timeout_sec: float):
     def md(s): return markdown2.markdown(str(s), extras=["markdown-in-html", "code-friendly"]) if s else ""
@@ -10,7 +22,7 @@ def huggingface_redirect(card: ModelCard, url: str, external_get_timeout_sec: fl
     assert isinstance(card, ModelCard)
     url = urlparse(url)
     parts = [x for x in url.path.split("/") if x]
-    model_id = "/".join(parts[:2]) if url.netloc in ("huggingface.co", "www.huggingface.co") and len(parts) >= 2 else ""
+    model_id = "/".join(parts[:2]) if url.netloc in ("huggingface.co", "www.huggingface.co", "hf.co") and len(parts) >= 2 else ""
     if not model_id: return ""#raise ValueError(f"Invalid Hugging Face model URL: {url}")
     r = requests.get(f"https://huggingface.co/api/models/{model_id}", timeout=external_get_timeout_sec)
     r.raise_for_status()
@@ -54,6 +66,9 @@ def huggingface_redirect(card: ModelCard, url: str, external_get_timeout_sec: fl
     }
     pipeline = meta.get("pipeline_tag", "")
     lib = meta.get("library_name", "") or ""
+    safetensors = meta.get("safetensors") or {}
+    parameters = safetensors.get("parameters") or {}
+    params = sum(parameters.values()) if parameters else safetensors.get("total")
     tags = set(meta.get("tags", []))
     o.task = (pipelines.get(pipeline, "unknown"))
     o.type = (
@@ -62,6 +77,7 @@ def huggingface_redirect(card: ModelCard, url: str, external_get_timeout_sec: fl
         else "Generative Adversarial Network"
         if "diffusers" in lib else "unknown"
     )
+    card.overview.parameters = format_parameters(params)
     udata = card.data.use
     udata.use_cases = str(cd.get("intended_uses") or pipeline)
     udata.out_of_scope_use = str(cd.get("out_of_scope_use", ""))
@@ -103,3 +119,22 @@ def github_redirect(card: ModelCard, url: str, external_get_timeout_sec: float):
     if url.netloc not in ("github.com", "www.github.com") or len(parts) != 2: return ""
     r = requests.get(f"https://github.com/{parts[0]}/{parts[1]}/blob/HEAD/README.md", timeout=external_get_timeout_sec)
     return r.url.replace("https://github.com/", "https://raw.githubusercontent.com/").replace("/blob/", "/") if r.ok else ""
+
+def ollama_redirect(card: ModelCard, url: str, external_get_timeout_sec: float, callback: Callable[[ModelCard, str], None] | None = None):
+    assert isinstance(url, str)
+    assert isinstance(card, ModelCard)
+    p = urlparse(url)
+    parts = [x for x in p.path.split("/") if x]
+    if p.netloc not in ("ollama.com", "www.ollama.com", "registry.ollama.com") or len(parts) < 2 or parts[0] != "library": return ""
+    model_name = parts[1] + (f":{parts[2]}" if len(parts) > 2 else "")
+    if callback is not None: callback(card, model_name)
+    r = requests.get(url, timeout=external_get_timeout_sec)
+    if not r.ok: return ""
+    soup = BeautifulSoup(r.text, "html.parser")
+    for a in soup.select("a[href]"):
+        if a.get_text(" ", strip=True).lower() not in ("hugging face", "huggingface"): continue
+        link = urljoin(r.url, a["href"])
+        p = urlparse(link)
+        if p.netloc not in ("huggingface.co", "www.huggingface.co", "hf.co"): continue
+        return link
+    return ""

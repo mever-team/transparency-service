@@ -134,6 +134,7 @@ ul.nacc li h2 {
 
 /* Field rows */
 ul.nacc .field {
+    position: relative;
     display: grid;
     grid-template-columns: 200px 1fr;
     gap: 1rem;
@@ -165,7 +166,7 @@ ul.nacc .field-name.comparison {
 }
 
 /* Scrollbars for card elements */
-ul.nacc .field-value {padding: .1rem 0; max-height: 400px; overflow: auto;}
+ul.nacc .field-value {padding: .1rem 0; max-height: 400px; overflow: auto; line-height: 1.2rem;}
 ul.nacc .field-value::-webkit-scrollbar {width: 12px;}
 ul.nacc .field-value::-webkit-scrollbar-thumb {background: #aaa;}
 
@@ -182,6 +183,27 @@ ul.nacc .field-value[contenteditable="true"] {
     line-height: 1.4;
     cursor: text;
     transition: border 0.2s, background 0.2s;
+}
+.unit {
+    padding-left: .3rem;
+}
+.unit-selector{
+    position: absolute;
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    width: auto;
+    height: 32px;
+    border-radius: 6px;
+    font-size: 0;
+    padding: 0;
+    cursor: pointer;
+}
+.unit-selector option {
+    font-size: initial;
+    padding: 1rem;
+    border-radius: 10px;
 }
 .medium-editor-element span {
     background: transparent !important;
@@ -1015,8 +1037,8 @@ pre,code {
     white-space: pre-wrap;
     min-width: 1rem;
     min-height: 1rem;
-    padding: 1rem;
 }
+pre {padding: 1rem;}
 
 span[class*="hljs-"]:not(pre span[class*="hljs-"]) {
   color: #30323D !important;
@@ -1039,4 +1061,51 @@ table {
 table th,
 table td {
     border: 1px solid #ccc;
+    height: 1.5rem;
+    min-width: 5rem;
+    padding: .5rem;
+}
+.field-value table td:empty::after,
+.field-value table th:empty::after {
+    content: "\00a0";
+}
+
+.medium-editor-table-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .4rem;
+    padding: .4rem;
+    margin-top: .4rem;
+    border-top: 1px solid var(--aicode-surface-dark);
+    background: var(--aicode-surface-light);
+    border-radius: 0 0 5px 5px;
+}
+
+.medium-editor-table-controls button {
+    padding: .2rem .6rem;
+    border: 1px solid var(--aicode-surface-dark);
+    border-radius: 4px;
+    background: var(--aicode-surface);
+    color: var(--aicode-primary-dark);
+    font-size: .8rem;
+    cursor: pointer;
+}
+
+.medium-editor-table-controls button:hover {
+    background: var(--aicode-surface-ligh);
+}
+
+.medium-editor-table-controls button[data-table-action="delete-table"] {
+    margin-left: auto;
+    color: var(--aicode-error-dark);
+    border-color: var(--aicode-error-light);
+}
+
+.medium-editor-table-controls button[data-table-action="delete-table"]:hover {
+    background: color-mix(in srgb, var(--aicode-error-light) 50%, transparent);
+}
+
+.medium-editor-anchor-preview, .medium-editor-toolbar {
+    z-index: 900!important;
 }

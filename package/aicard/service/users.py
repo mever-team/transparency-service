@@ -60,8 +60,7 @@ def _ensure_db_integrity(db_path: str, logger):
             probe.execute("PRAGMA journal_mode=WAL")
             result = probe.execute("PRAGMA integrity_check").fetchone()
             healthy = result and result[0] == "ok"
-            if not healthy:
-                logger.warn(f"Integrity check returned: {result[0] if result else 'no result'}")
+            if not healthy: logger.warn(f"Integrity check returned: {result[0] if result else 'no result'}")
     except sqlite3.DatabaseError as e:
         logger.warn(f"Could not open database for integrity check: {e}")
     if healthy:
@@ -95,6 +94,10 @@ def _ensure_db_integrity(db_path: str, logger):
                 raise RuntimeError(f"Recovered database failed integrity check: {result}")
     except sqlite3.DatabaseError as e:
         raise RuntimeError(f"[DB] Recovered database is unreadable: {e}")
+
+    with sqlite3.connect(str(p), timeout=10) as conn:
+        result = conn.execute("PRAGMA wal_checkpoint(TRUNCATE)").fetchone()
+        if result[0] != 0: logger.warn("WAL checkpoint could not complete")
     os.replace(str(recovered), str(p))
     logger.info(f"Recovery successful. Original backed up at {backup}.")
 
@@ -145,6 +148,7 @@ class UserDB:
             desc TEXT NOT NULL,
             quality DOUBLE,
             timestamp INT,
+            report_count INTEGER NOT NULL DEFAULT 0,
             {col_defs},
             FOREIGN KEY(user) REFERENCES users(username) ON DELETE CASCADE
         )'''
@@ -302,6 +306,10 @@ class UserDB:
         END;
         """)
 
+        fk_errors = conn.execute("PRAGMA foreign_key_check").fetchall()
+        if fk_errors:logger.warn(f"Database contains {len(fk_errors)} foreign-key violations: {fk_errors[:10]}")
+        self._ensure_fts_integrity(conn, logger)
+
         conn.commit()
         atexit.register(conn.close)
         self.conn = conn
@@ -319,6 +327,34 @@ class UserDB:
             logger.ok("Database loaded.")
             if admin_password=="admin": logger.warn("REMEMBER TO CHANGE THE DEFAULT ADMINISTRATOR PASSWORD")
 
+    def _ensure_fts_integrity(self, conn, logger):
+        try:
+            conn.execute("""
+                INSERT INTO cards_fts(cards_fts, rank)
+                VALUES('integrity-check', 1)
+            """)
+            logger.ok("FTS5 index integrity verified.")
+        except sqlite3.DatabaseError as e:
+            logger.warn(f"FTS5 index integrity check failed: {e}")
+            logger.warn("Attempting to rebuild FTS5 index...")
+            try:
+                conn.rollback()
+                conn.execute("""
+                    INSERT INTO cards_fts(cards_fts)
+                    VALUES('rebuild')
+                """)
+                conn.commit()
+                conn.execute("""
+                    INSERT INTO cards_fts(cards_fts, rank)
+                    VALUES('integrity-check', 1)
+                """)
+                logger.ok("FTS5 index successfully rebuilt.")
+            except sqlite3.DatabaseError as recovery_error:
+                conn.rollback()
+                raise RuntimeError(
+                    "FTS5 index recovery failed: "
+                    f"{recovery_error}"
+                ) from recovery_error
 
 
     def find_user(self, table: str, username: str):
