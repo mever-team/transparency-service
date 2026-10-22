@@ -1,4 +1,3 @@
-```bash
 #!/bin/bash
 set -e
 
@@ -19,4 +18,3 @@ git restore --source="$saved_commit" --staged --worktree -- agent_eval/ merge-de
 
 # Complete the merge
 git commit -m "Merge dev into eval"
-```
