@@ -1,0 +1,489 @@
+{
+  "_meta": {
+    "model_card": "dataset/4/Online__RINE.json",
+    "started_at": "2026-10-22T14:00:42.282285Z",
+    "matcher": "sentence-transformers/all-mpnet-base-v2",
+    "matching_strictness": 0.5,
+    "finished_at": "2026-10-22T14:07:47.476572Z"
+  },
+  "overview": [
+    {
+      "question": "What is the name of this model?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-05-01<br>\n<h3 class='success title'>From citation in overview</h3>@inproceedings{pantsios2026automated,  title={Automated In-the-Wild Data Collection for Continual AI Generated Image Detection},  author={Pantsios, Athanasios and Karageorgiou, Dimitrios and Koutlis, Christos and Karantaidis, George and Papadopoulou, Olga and Papadopoulos, Symeon},  booktitle={The 5th ACM International Workshop on Multimedia AI against Disinformation (MAD '26)},  year={2026},  doi={10.1145/3810988.3812662}  }.<br>\n<h3 class='success title'>From contact in overview</h3>Thanasis Pantsios: [apantsios@iti.gr](mailto:apantsios@iti.gr).<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From task in overview</h3>Image Classification.<br>\n<h3 class='success title'>Home in overview is</h3>[https://github.com/mever-team/WildFC](https://github.com/mever-team/WildFC)<br>\n<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br>\n<h3 class='success title'>Security in safety is</h3>No<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "What is this model used for?",
+      "answer": "<h3 class='success title'>Type in overview is</h3>Transformer<br>"
+    },
+    {
+      "question": "Who created this model?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>"
+    },
+    {
+      "question": "When was this model released?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-05-01<br>"
+    },
+    {
+      "question": "What version is this model?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-05-01<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br>"
+    },
+    {
+      "question": "What type of model is this?",
+      "answer": "<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br>"
+    },
+    {
+      "question": "How many parameters does this model have?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at parameters in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "What is the task of this model?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-05-01<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From inputs outputs in use</h3>The model accepts an image as input and returns a probability score indicating whether the image is synthetic.<br>\n<h3 class='success title'>From task in overview</h3>Image Classification.<br>\n<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "What is the license of this model?",
+      "answer": "<h3 class='success title'>From license in overview</h3>Apache License 2.0.<br><h3 class='error'>Vague question</h3><span>There are 12 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "Where can I find this model?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>Home in overview is</h3>[https://github.com/mever-team/WildFC](https://github.com/mever-team/WildFC)<br>\n<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "Who can I contact about this model?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>Security in safety is</h3>No<br><h3 class='error'>Vague question</h3><span>There are 10 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "How should I cite this model?",
+      "answer": "<h3 class='success title'>From citation in overview</h3>@inproceedings{pantsios2026automated,  title={Automated In-the-Wild Data Collection for Continual AI Generated Image Detection},  author={Pantsios, Athanasios and Karageorgiou, Dimitrios and Koutlis, Christos and Karantaidis, George and Papadopoulou, Olga and Papadopoulos, Symeon},  booktitle={The 5th ACM International Workshop on Multimedia AI against Disinformation (MAD '26)},  year={2026},  doi={10.1145/3810988.3812662}  }.<br>"
+    }
+  ],
+  "use": [
+    {
+      "question": "What are the intended use cases?",
+      "answer": "<h3 class='success title'>From use cases in use</h3>Detecting ai-generated images.<br>\n<h3 class='success title'>From user groups in use</h3>Journalists, Fact-checkers, Researchers, General public.<br>\n<h3 class='success title'>Standards in evaluation is</h3>IEEE<br><h3 class='error'>Missing info</h3><span>Would have looked at more in use, but that is empty.</span><br>"
+    },
+    {
+      "question": "What level of human oversight is required?",
+      "answer": "<h3 class='success title'>From ethics in safety</h3>Mislabeling authentic images as AI-generated (false positives) can undermine trust in genuine visual evidence and may contribute to the dismissal of authentic documentation of real-world events..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>Oversight in use is</h3>human-in-the-loop<br>"
+    },
+    {
+      "question": "Who are the intended user groups?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>The model was not tested for bias across demographic groups..<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From fairness in safety</h3>Fairness is defined as invariance of the model's predictions to an image's semantic content, such that classification depends on generation-related forensic artifacts rather than the depicted subject or context.<br>This aims to reduce implicit biases that may cause certain types of content to be systematically classified as more or less likely to be AI-generated..<br>\n<h3 class='success title'>From methodology in performance</h3>ACC reflects performance at a specific operating point, offering a more practical, deployment-relevant measure..<br>\n<h3 class='success title'>From user groups in use</h3>Journalists, Fact-checkers, Researchers, General public.<br>\n<h3 class='success title'>Oversight in use is</h3>human-in-the-loop<br>\n<h3 class='success title'>Standards in evaluation is</h3>IEEE<br>\n<h3 class='success title'>Standards in training is</h3>IEEE<br>\n<h3 class='success title'>Update in training is</h3>yes<br><h3 class='error'>Missing info</h3><span>Would have looked at more in use, but that is empty.</span><br>"
+    },
+    {
+      "question": "What is this model not intended for?",
+      "answer": "<h3 class='success title'>From out of scope use in use</h3>Treating the probability score as a final verdict rather than a helpful indicator, or relying on it for unsupervised decision-making without human review..<br>\n<h3 class='success title'>From user groups in use</h3>Journalists, Fact-checkers, Researchers, General public.<br><h3 class='error'>Missing info</h3><span>Would have looked at more in use, but that is empty.</span><br>"
+    },
+    {
+      "question": "What software does this model require?",
+      "answer": "<h3 class='success title'>From software in use</h3>Detailed software implementation is available at: [https://github.com/mever-team/WildFC/](https://github.com/mever-team/WildFC/)..<br>"
+    },
+    {
+      "question": "How do I run / use this model?",
+      "answer": "<h3 class='success title'>Home in overview is</h3>[https://github.com/mever-team/WildFC](https://github.com/mever-team/WildFC)<br>"
+    },
+    {
+      "question": "What are the inputs and outputs of the model?",
+      "answer": "<h3 class='success title'>From inputs outputs in use</h3>The model accepts an image as input and returns a probability score indicating whether the image is synthetic.<br>"
+    },
+    {
+      "question": "What factors affect the model's performance?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>The model was not tested for bias across demographic groups..<br>\n<h3 class='success title'>From factors in use</h3>Model performance is highly dependent on data quality, e.g., multi-cycle social media operations (repeated upload/download cycles) and heavy compression, both of which impair detection accuracy independently..<br>\n<h3 class='success title'>From methodology in performance</h3>ACC reflects performance at a specific operating point, offering a more practical, deployment-relevant measure..<br>AUC measures overall ranking capability independent of a fixed decision threshold, providing a threshold-agnostic view of discriminative ability.<br>\n<h3 class='success title'>From metrics in performance</h3>**AUC / ACC (%), threshold = 0.5**  AIGenImages2026: 97.75 / 92.13   MNW: 95.74 / 88.59   Echo-4o: 88.45 / 76.80   Nano-Consistent: 78.35 / 71.01  Synthbuster: 94.81 / 77.75   Chameleon: 89.64 / 78.58   DeepFake-Eval: 87.59 / 78.63   ITW-SM: 95.74 / 82.50   MediaEval:  91.09 / 78.80.<br>\n<h3 class='success title'>From motivation in evaluation</h3>The evaluation datasets were chosen to cover both sources of distribution shift identified as driving AID's non-stationary nature: shift from the continuous development of recent generative models (AIGenImages2026, MNW, Synthbuster, Nano-Consistent, and Echo-4o), and shift arising from real-world usage dynamics and platform-specific processing (Chameleon, ITW-SM, MediaEval-ITW, and Deepfake-Eval)..<br>\n<h3 class='success title'>From out of scope use in use</h3>Treating the probability score as a final verdict rather than a helpful indicator, or relying on it for unsupervised decision-making without human review..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br>"
+    },
+    {
+      "question": "What hardware is required?",
+      "answer": "<h3 class='success title'>From hardware in use</h3>Running the model requires a GPU with at least 4 GB of VRAM..<br>\n<h3 class='success title'>Security in safety is</h3>No<br>"
+    }
+  ],
+  "training": [
+    {
+      "question": "What datasets were used for training?",
+      "answer": "<h3 class='success title'>From datasets in training</h3>[WildFC](https://huggingface.co/datasets/pthan12/WildFC) , [AIGenImages2026](https://huggingface.co/datasets/pthan12/AIGenImages2026), [Twigma](https://yiqunchen.github.io/TWIGMA/), [LDM](https://github.com/grip-unina/DMimageDetection), [COCO]((https://cocodataset.org/)), [LSUN](https://arxiv.org/abs/1506.03365), [OpenImages]((https://storage.googleapis.com/openimages/web/index.html) datasets.<br>\n<h3 class='success title'>From motivation in training</h3>The training data combines in-the-wild images with outputs from recent diffusion models along with real images from recent datasets.<br>\n<h3 class='success title'>From preprocessing in training</h3>Gaussian blurring and JPEG compression with probability 0.5, TextureCrop for a 224x224 crop, random horizontal flip with probability 0.5..<br><h3 class='error'>Missing info</h3><span>Would have looked at more in training, but that is empty.</span><br>"
+    },
+    {
+      "question": "Why were these training datasets chosen?",
+      "answer": "<h3 class='success title'>From datasets in evaluation</h3>WildFC is an evolving in-the-wild dataset collected through an automated fact-check retrieval pipeline..<br>\n<h3 class='success title'>From datasets in training</h3>[WildFC](https://huggingface.co/datasets/pthan12/WildFC) , [AIGenImages2026](https://huggingface.co/datasets/pthan12/AIGenImages2026), [Twigma](https://yiqunchen.github.io/TWIGMA/), [LDM](https://github.com/grip-unina/DMimageDetection), [COCO]((https://cocodataset.org/)), [LSUN](https://arxiv.org/abs/1506.03365), [OpenImages]((https://storage.googleapis.com/openimages/web/index.html) datasets.<br>\n<h3 class='success title'>From motivation in training</h3>The training data combines in-the-wild images with outputs from recent diffusion models along with real images from recent datasets.<br>This selection ensures the model remains adaptive by  learning modern generative artifacts while building resilience against real-world media degradations..<br><h3 class='error'>Missing info</h3><span>Would have looked at more in training, but that is empty.</span><br>"
+    },
+    {
+      "question": "What preprocessing was applied during training?",
+      "answer": "<h3 class='success title'>From preprocessing in evaluation</h3>The validation and test images are center-cropped at 224×224..<br>\n<h3 class='success title'>From preprocessing in training</h3>Gaussian blurring and JPEG compression with probability 0.5, TextureCrop for a 224x224 crop, random horizontal flip with probability 0.5..<br>"
+    },
+    {
+      "question": "What standards were followed during training?",
+      "answer": "<h3 class='success title'>From preprocessing in evaluation</h3>The validation and test images are center-cropped at 224×224..<br>\n<h3 class='success title'>Security in safety is</h3>No<br>\n<h3 class='success title'>Standards in evaluation is</h3>IEEE<br>\n<h3 class='success title'>Standards in training is</h3>IEEE<br>\n<h3 class='success title'>Update in training is</h3>yes<br><h3 class='error'>Missing info</h3><span>Would have looked at caveats in safety, but that is empty.</span><br><span>Would have looked at more in training, but that is empty.</span><br>"
+    },
+    {
+      "question": "Is the training data up to date?",
+      "answer": "<h3 class='success title'>Security in safety is</h3>No<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br>\n<h3 class='success title'>Update in training is</h3>yes<br><h3 class='error'>Missing info</h3><span>Would have looked at more in training, but that is empty.</span><br>"
+    }
+  ],
+  "evaluation": [
+    {
+      "question": "What datasets were used for evaluation?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>The model was not tested for bias across demographic groups..<br>\n<h3 class='success title'>From datasets in evaluation</h3>WildFC is an evolving in-the-wild dataset collected through an automated fact-check retrieval pipeline..<br>\n<h3 class='success title'>From methodology in performance</h3>AUC measures overall ranking capability independent of a fixed decision threshold, providing a threshold-agnostic view of discriminative ability.<br>\n<h3 class='success title'>From metrics in performance</h3>**AUC / ACC (%), threshold = 0.5**  AIGenImages2026: 97.75 / 92.13   MNW: 95.74 / 88.59   Echo-4o: 88.45 / 76.80   Nano-Consistent: 78.35 / 71.01  Synthbuster: 94.81 / 77.75   Chameleon: 89.64 / 78.58   DeepFake-Eval: 87.59 / 78.63   ITW-SM: 95.74 / 82.50   MediaEval:  91.09 / 78.80.<br>\n<h3 class='success title'>From motivation in evaluation</h3>The evaluation datasets were chosen to cover both sources of distribution shift identified as driving AID's non-stationary nature: shift from the continuous development of recent generative models (AIGenImages2026, MNW, Synthbuster, Nano-Consistent, and Echo-4o), and shift arising from real-world usage dynamics and platform-specific processing (Chameleon, ITW-SM, MediaEval-ITW, and Deepfake-Eval)..<br>\n<h3 class='success title'>From preprocessing in evaluation</h3>The validation and test images are center-cropped at 224×224..<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br>"
+    },
+    {
+      "question": "Why were these evaluation datasets chosen?",
+      "answer": "<h3 class='success title'>From motivation in evaluation</h3>The evaluation datasets were chosen to cover both sources of distribution shift identified as driving AID's non-stationary nature: shift from the continuous development of recent generative models (AIGenImages2026, MNW, Synthbuster, Nano-Consistent, and Echo-4o), and shift arising from real-world usage dynamics and platform-specific processing (Chameleon, ITW-SM, MediaEval-ITW, and Deepfake-Eval)..<br>"
+    },
+    {
+      "question": "What preprocessing was applied during evaluation?",
+      "answer": "<h3 class='success title'>From preprocessing in evaluation</h3>The validation and test images are center-cropped at 224×224..<br>\n<h3 class='success title'>From preprocessing in training</h3>Gaussian blurring and JPEG compression with probability 0.5, TextureCrop for a 224x224 crop, random horizontal flip with probability 0.5..<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br>"
+    },
+    {
+      "question": "What standards were followed during evaluation?",
+      "answer": "<h3 class='success title'>Standards in evaluation is</h3>IEEE<br><h3 class='error'>Vague question</h3><span>There are 10 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "Is the evaluation data up to date?",
+      "answer": "<h3 class='success title'>Update in evaluation is</h3>yes<br>"
+    }
+  ],
+  "performance": [
+    {
+      "question": "What does the performance analysis say?",
+      "answer": "<h3 class='success title'>From methodology in performance</h3>ACC reflects performance at a specific operating point, offering a more practical, deployment-relevant measure..<br>\n<h3 class='success title'>From metrics in performance</h3>**AUC / ACC (%), threshold = 0.5**  AIGenImages2026: 97.75 / 92.13   MNW: 95.74 / 88.59   Echo-4o: 88.45 / 76.80   Nano-Consistent: 78.35 / 71.01  Synthbuster: 94.81 / 77.75   Chameleon: 89.64 / 78.58   DeepFake-Eval: 87.59 / 78.63   ITW-SM: 95.74 / 82.50   MediaEval:  91.09 / 78.80.<br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br><span>Would have looked at environmental impact in performance, but that is empty.</span><br>"
+    },
+    {
+      "question": "What are the benchmark metrics?",
+      "answer": "<h3 class='success title'>From metrics in performance</h3>**AUC / ACC (%), threshold = 0.5**  AIGenImages2026: 97.75 / 92.13   MNW: 95.74 / 88.59   Echo-4o: 88.45 / 76.80   Nano-Consistent: 78.35 / 71.01  Synthbuster: 94.81 / 77.75   Chameleon: 89.64 / 78.58   DeepFake-Eval: 87.59 / 78.63   ITW-SM: 95.74 / 82.50   MediaEval:  91.09 / 78.80.<br>"
+    },
+    {
+      "question": "What decision thresholds are used?",
+      "answer": "<h3 class='success title'>From thresholds in performance</h3>> Accuracy decision threshold: **0.5**    > Applied at detector evaluation to compute Accuracy across all benchmarks.<br>> Segmentation threshold: 0.4    > Applied during image segmentation with Grounding DINO Tiny to isolate visual regions and remove platform-specific overlays or UI elements..<br>> TopK: 500    > Applied during real–fake pair construction to cap the number of real images retrieved per AI-generated image.<br>"
+    },
+    {
+      "question": "What is the evaluation methodology?",
+      "answer": "<h3 class='success title'>From methodology in performance</h3>ACC reflects performance at a specific operating point, offering a more practical, deployment-relevant measure..<br>\n<h3 class='success title'>Standards in evaluation is</h3>IEEE<br><h3 class='error'>Vague question</h3><span>There are 9 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "What is the energy consumption?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
+    },
+    {
+      "question": "What is the environmental impact?",
+      "answer": "<h3 class='error'>Vague question</h3><span>There are 12 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br><h3 class='error'>Missing info</h3><span>Would have looked at environmental impact in performance, but that is empty.</span><br>"
+    },
+    {
+      "question": "Was the model tested for bias?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>The model was not tested for bias across demographic groups..<br>"
+    }
+  ],
+  "safety": [
+    {
+      "question": "What are the ethical considerations?",
+      "answer": "<h3 class='success title'>From ethics in safety</h3>Mislabeling authentic images as AI-generated (false positives) can undermine trust in genuine visual evidence and may contribute to the dismissal of authentic documentation of real-world events..<br><h3 class='error'>Vague question</h3><span>There are 11 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "How is fairness defined / assessed?",
+      "answer": "<h3 class='success title'>From fairness in safety</h3>Fairness is defined as invariance of the model's predictions to an image's semantic content, such that classification depends on generation-related forensic artifacts rather than the depicted subject or context.<br>"
+    },
+    {
+      "question": "What are the risks of this model?",
+      "answer": "<h3 class='success title'>From out of scope use in use</h3>Treating the probability score as a final verdict rather than a helpful indicator, or relying on it for unsupervised decision-making without human review..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>Security in safety is</h3>No<br><h3 class='error'>Missing info</h3><span>Would have looked at caveats in safety, but that is empty.</span><br><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "Is the model secure / compliant with security standards?",
+      "answer": "<h3 class='success title'>Security in safety is</h3>No<br>"
+    },
+    {
+      "question": "What are the caveats of this model?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-05-01<br>\n<h3 class='success title'>From bias in performance</h3>The model was not tested for bias across demographic groups..<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From factors in use</h3>Model performance is highly dependent on data quality, e.g., multi-cycle social media operations (repeated upload/download cycles) and heavy compression, both of which impair detection accuracy independently..<br>\n<h3 class='success title'>From out of scope use in use</h3>Treating the probability score as a final verdict rather than a helpful indicator, or relying on it for unsupervised decision-making without human review..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>Home in overview is</h3>[https://github.com/mever-team/WildFC](https://github.com/mever-team/WildFC)<br>\n<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br><h3 class='error'>Missing info</h3><span>Would have looked at caveats in safety, but that is empty.</span><br><span>Would have looked at more in overview, but that is empty.</span><br>"
+    }
+  ],
+  "paraphrased": [
+    {
+      "question": "What is the purpose of this model?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From use cases in use</h3>Detecting ai-generated images.<br>\n<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "What does this model do?",
+      "answer": "<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br>\n<h3 class='success title'>Security in safety is</h3>No<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
+    },
+    {
+      "question": "Which organization built this model?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-05-01<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br>"
+    },
+    {
+      "question": "When did this model come out?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-05-01<br><h3 class='error'>Vague question</h3><span>There are 11 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "What kind of architecture is used?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From software in use</h3>Detailed software implementation is available at: [https://github.com/mever-team/WildFC/](https://github.com/mever-team/WildFC/)..<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>"
+    },
+    {
+      "question": "What is the size of the model?",
+      "answer": "<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "Where do I download it from?",
+      "answer": "<h3 class='success title'>From software in use</h3>Detailed software implementation is available at: [https://github.com/mever-team/WildFC/](https://github.com/mever-team/WildFC/)..<br><h3 class='error'>Vague question</h3><span>There are 12 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "Who should I email about it?",
+      "answer": "<h3 class='error'>Vague question</h3><span>There are 10 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br><h3 class='error'>Missing info</h3><span>Would have looked at caveats in safety, but that is empty.</span><br>"
+    },
+    {
+      "question": "What Python packages do I need?",
+      "answer": "<h3 class='success title'>From contact in overview</h3>Thanasis Pantsios: [apantsios@iti.gr](mailto:apantsios@iti.gr).<br>\n<h3 class='success title'>From hardware in use</h3>Running the model requires a GPU with at least 4 GB of VRAM..<br>\n<h3 class='success title'>From instructions in use</h3>Detailed usage instructions are available at: [https://github.com/mever-team/WildFC/](https://github.com/mever-team/WildFC/).<br>\n<h3 class='success title'>From software in use</h3>Detailed software implementation is available at: [https://github.com/mever-team/WildFC/](https://github.com/mever-team/WildFC/)..<br>\n<h3 class='success title'>Home in overview is</h3>[https://github.com/mever-team/WildFC](https://github.com/mever-team/WildFC)<br><h3 class='error'>Missing info</h3><span>Would have looked at more in training, but that is empty.</span><br>"
+    },
+    {
+      "question": "What GPU do I need to run it?",
+      "answer": "<h3 class='success title'>From hardware in use</h3>Running the model requires a GPU with at least 4 GB of VRAM..<br>\n<h3 class='success title'>From preprocessing in training</h3>Gaussian blurring and JPEG compression with probability 0.5, TextureCrop for a 224x224 crop, random horizontal flip with probability 0.5..<br>\n<h3 class='success title'>From thresholds in performance</h3>> Segmentation threshold: 0.4    > Applied during image segmentation with Grounding DINO Tiny to isolate visual regions and remove platform-specific overlays or UI elements..<br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br><span>Would have looked at environmental impact in performance, but that is empty.</span><br>"
+    },
+    {
+      "question": "What does the model take as input, and what does it return?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-05-01<br>\n<h3 class='success title'>From inputs outputs in use</h3>It also identifies the top ten image patches that most influenced the decision, providing bounding boxes and probability scores for each..<br>The model accepts an image as input and returns a probability score indicating whether the image is synthetic.<br>\n<h3 class='success title'>Home in overview is</h3>[https://github.com/mever-team/WildFC](https://github.com/mever-team/WildFC)<br>\n<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>"
+    },
+    {
+      "question": "How do I load and run the model on data?",
+      "answer": "<h3 class='success title'>Home in overview is</h3>[https://github.com/mever-team/WildFC](https://github.com/mever-team/WildFC)<br>"
+    },
+    {
+      "question": "What could make its performance worse?",
+      "answer": "<h3 class='success title'>From analysis in performance</h3>Online RINE raises average performance by +8.01% accuracy across both recent-generator and in-the-wild benchmarks combined, with particularly strong gains on previously challenging recent generators such as Echo-4o (48.75% → 76.80% accuracy) and Nano-Consistent (63.81% → 71.01% accuracy), while also improving in-the-wild robustness(+1.01% ACC on ITW-SM, +2.39% ACC on MediaEval).<br>\n<h3 class='success title'>From bias in performance</h3>The model was not tested for bias across demographic groups..<br>\n<h3 class='success title'>From factors in use</h3>Model performance is highly dependent on data quality, e.g., multi-cycle social media operations (repeated upload/download cycles) and heavy compression, both of which impair detection accuracy independently..<br>\n<h3 class='success title'>From metrics in performance</h3>**AUC / ACC (%), threshold = 0.5**  AIGenImages2026: 97.75 / 92.13   MNW: 95.74 / 88.59   Echo-4o: 88.45 / 76.80   Nano-Consistent: 78.35 / 71.01  Synthbuster: 94.81 / 77.75   Chameleon: 89.64 / 78.58   DeepFake-Eval: 87.59 / 78.63   ITW-SM: 95.74 / 82.50   MediaEval:  91.09 / 78.80.<br>"
+    },
+    {
+      "question": "What should this model not be used for?",
+      "answer": "<h3 class='success title'>From out of scope use in use</h3>Treating the probability score as a final verdict rather than a helpful indicator, or relying on it for unsupervised decision-making without human review..<br>"
+    },
+    {
+      "question": "Who is this model for?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From user groups in use</h3>Journalists, Fact-checkers, Researchers, General public.<br>\n<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "Does a human need to review the outputs?",
+      "answer": "<h3 class='success title'>Update in evaluation is</h3>yes<br>"
+    },
+    {
+      "question": "What does it say about its accuracy?",
+      "answer": "<h3 class='success title'>From analysis in performance</h3>Online RINE raises average performance by +8.01% accuracy across both recent-generator and in-the-wild benchmarks combined, with particularly strong gains on previously challenging recent generators such as Echo-4o (48.75% → 76.80% accuracy) and Nano-Consistent (63.81% → 71.01% accuracy), while also improving in-the-wild robustness(+1.01% ACC on ITW-SM, +2.39% ACC on MediaEval).<br>\n<h3 class='success title'>From factors in use</h3>Model performance is highly dependent on data quality, e.g., multi-cycle social media operations (repeated upload/download cycles) and heavy compression, both of which impair detection accuracy independently..<br>\n<h3 class='success title'>From methodology in performance</h3>ACC reflects performance at a specific operating point, offering a more practical, deployment-relevant measure..<br>AUC measures overall ranking capability independent of a fixed decision threshold, providing a threshold-agnostic view of discriminative ability.<br>We evaluate our detector using two complementary metrics: AUC (Area Under the ROC Curve) and ACC (Accuracy).<br>\n<h3 class='success title'>From thresholds in performance</h3>> Accuracy decision threshold: **0.5**    > Applied at detector evaluation to compute Accuracy across all benchmarks.<br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
+    },
+    {
+      "question": "What threshold is used to make predictions?",
+      "answer": "<h3 class='success title'>From thresholds in performance</h3>> Accuracy decision threshold: **0.5**    > Applied at detector evaluation to compute Accuracy across all benchmarks.<br>> TopK: 500    > Applied during real–fake pair construction to cap the number of real images retrieved per AI-generated image.<br>"
+    },
+    {
+      "question": "What could go wrong if I use this model?",
+      "answer": "<h3 class='success title'>From factors in use</h3>Model performance is highly dependent on data quality, e.g., multi-cycle social media operations (repeated upload/download cycles) and heavy compression, both of which impair detection accuracy independently..<br>\n<h3 class='success title'>From out of scope use in use</h3>Treating the probability score as a final verdict rather than a helpful indicator, or relying on it for unsupervised decision-making without human review..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>Security in safety is</h3>No<br><h3 class='error'>Missing info</h3><span>Would have looked at caveats in safety, but that is empty.</span><br>"
+    },
+    {
+      "question": "Are there ethical concerns with using this?",
+      "answer": "<h3 class='success title'>From ethics in safety</h3>Mislabeling authentic images as AI-generated (false positives) can undermine trust in genuine visual evidence and may contribute to the dismissal of authentic documentation of real-world events..<br>\n<h3 class='success title'>From fairness in safety</h3>This aims to reduce implicit biases that may cause certain types of content to be systematically classified as more or less likely to be AI-generated..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br><h3 class='error'>Missing info</h3><span>Would have looked at caveats in safety, but that is empty.</span><br>"
+    },
+    {
+      "question": "How much energy does it consume?",
+      "answer": "<h3 class='error'>Vague question</h3><span>There are 12 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
+    },
+    {
+      "question": "Is it compliant with any security standard?",
+      "answer": "<h3 class='success title'>Security in safety is</h3>No<br>"
+    },
+    {
+      "question": "Is the model fair across subgroups?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>The model was not tested for bias across demographic groups..<br>\n<h3 class='success title'>From fairness in safety</h3>This aims to reduce implicit biases that may cause certain types of content to be systematically classified as more or less likely to be AI-generated..<br>"
+    },
+    {
+      "question": "What are its known limitations?",
+      "answer": "<h3 class='success title'>From metrics in performance</h3>**AUC / ACC (%), threshold = 0.5**  AIGenImages2026: 97.75 / 92.13   MNW: 95.74 / 88.59   Echo-4o: 88.45 / 76.80   Nano-Consistent: 78.35 / 71.01  Synthbuster: 94.81 / 77.75   Chameleon: 89.64 / 78.58   DeepFake-Eval: 87.59 / 78.63   ITW-SM: 95.74 / 82.50   MediaEval:  91.09 / 78.80.<br>\n<h3 class='success title'>Security in safety is</h3>No<br>"
+    },
+    {
+      "question": "What datasets was it trained and evaluated on?",
+      "answer": "<h3 class='success title'>From datasets in training</h3>[WildFC](https://huggingface.co/datasets/pthan12/WildFC) , [AIGenImages2026](https://huggingface.co/datasets/pthan12/AIGenImages2026), [Twigma](https://yiqunchen.github.io/TWIGMA/), [LDM](https://github.com/grip-unina/DMimageDetection), [COCO]((https://cocodataset.org/)), [LSUN](https://arxiv.org/abs/1506.03365), [OpenImages]((https://storage.googleapis.com/openimages/web/index.html) datasets.<br>"
+    },
+    {
+      "question": "How was the model evaluated?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>The model was not tested for bias across demographic groups..<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From out of scope use in use</h3>Treating the probability score as a final verdict rather than a helpful indicator, or relying on it for unsupervised decision-making without human review..<br>\n<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br>"
+    },
+    {
+      "question": "What standards does it follow?",
+      "answer": "<h3 class='success title'>Standards in evaluation is</h3>IEEE<br><h3 class='error'>Vague question</h3><span>There are 11 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    }
+  ],
+  "cross_field": [
+    {
+      "question": "Who created this model and what kind of model is it?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>"
+    },
+    {
+      "question": "What is the model's task and its intended use?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-05-01<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From inputs outputs in use</h3>The model accepts an image as input and returns a probability score indicating whether the image is synthetic.<br>\n<h3 class='success title'>From out of scope use in use</h3>Treating the probability score as a final verdict rather than a helpful indicator, or relying on it for unsupervised decision-making without human review..<br>\n<h3 class='success title'>From task in overview</h3>Image Classification.<br>\n<h3 class='success title'>From use cases in use</h3>Detecting ai-generated images.<br>\n<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>"
+    },
+    {
+      "question": "When was the model released and what version is it?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-05-01<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From metrics in performance</h3>**AUC / ACC (%), threshold = 0.5**  AIGenImages2026: 97.75 / 92.13   MNW: 95.74 / 88.59   Echo-4o: 88.45 / 76.80   Nano-Consistent: 78.35 / 71.01  Synthbuster: 94.81 / 77.75   Chameleon: 89.64 / 78.58   DeepFake-Eval: 87.59 / 78.63   ITW-SM: 95.74 / 82.50   MediaEval:  91.09 / 78.80.<br>\n<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br>\n<h3 class='success title'>Security in safety is</h3>No<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "What hardware and software do I need to run this model?",
+      "answer": "<h3 class='success title'>From hardware in use</h3>Running the model requires a GPU with at least 4 GB of VRAM..<br>\n<h3 class='success title'>From software in use</h3>Detailed software implementation is available at: [https://github.com/mever-team/WildFC/](https://github.com/mever-team/WildFC/)..<br>"
+    },
+    {
+      "question": "What are the risks and ethical concerns of using this model?",
+      "answer": "<h3 class='success title'>From ethics in safety</h3>Mislabeling authentic images as AI-generated (false positives) can undermine trust in genuine visual evidence and may contribute to the dismissal of authentic documentation of real-world events..<br>\n<h3 class='success title'>From fairness in safety</h3>This aims to reduce implicit biases that may cause certain types of content to be systematically classified as more or less likely to be AI-generated..<br>\n<h3 class='success title'>From out of scope use in use</h3>Treating the probability score as a final verdict rather than a helpful indicator, or relying on it for unsupervised decision-making without human review..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>Standards in training is</h3>IEEE<br><h3 class='error'>Missing info</h3><span>Would have looked at caveats in safety, but that is empty.</span><br>"
+    },
+    {
+      "question": "What is the energy consumption and environmental impact?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
+    },
+    {
+      "question": "Who are the intended users and what oversight is required?",
+      "answer": "<h3 class='success title'>Oversight in use is</h3>human-in-the-loop<br>"
+    },
+    {
+      "question": "What are the caveats and out-of-scope uses?",
+      "answer": "<h3 class='success title'>From out of scope use in use</h3>Treating the probability score as a final verdict rather than a helpful indicator, or relying on it for unsupervised decision-making without human review..<br>"
+    },
+    {
+      "question": "How was the model trained and evaluated?",
+      "answer": "<h3 class='success title'>From preprocessing in training</h3>Gaussian blurring and JPEG compression with probability 0.5, TextureCrop for a 224x224 crop, random horizontal flip with probability 0.5..<br>"
+    },
+    {
+      "question": "What are the input/output formats, and how do I run the model?",
+      "answer": "<h3 class='success title'>From citation in overview</h3>@inproceedings{pantsios2026automated,  title={Automated In-the-Wild Data Collection for Continual AI Generated Image Detection},  author={Pantsios, Athanasios and Karageorgiou, Dimitrios and Koutlis, Christos and Karantaidis, George and Papadopoulou, Olga and Papadopoulos, Symeon},  booktitle={The 5th ACM International Workshop on Multimedia AI against Disinformation (MAD '26)},  year={2026},  doi={10.1145/3810988.3812662}  }.<br>\n<h3 class='success title'>From inputs outputs in use</h3>It also identifies the top ten image patches that most influenced the decision, providing bounding boxes and probability scores for each..<br>The model accepts an image as input and returns a probability score indicating whether the image is synthetic.<br>\n<h3 class='success title'>Home in overview is</h3>[https://github.com/mever-team/WildFC](https://github.com/mever-team/WildFC)<br>"
+    },
+    {
+      "question": "What technical or ethical standards does the model follow?",
+      "answer": "<h3 class='success title'>From ethics in safety</h3>Mislabeling authentic images as AI-generated (false positives) can undermine trust in genuine visual evidence and may contribute to the dismissal of authentic documentation of real-world events..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>Security in safety is</h3>No<br>\n<h3 class='success title'>Standards in evaluation is</h3>IEEE<br>"
+    },
+    {
+      "question": "What factors could degrade performance, and what are the known caveats?",
+      "answer": "<h3 class='success title'>From factors in use</h3>Model performance is highly dependent on data quality, e.g., multi-cycle social media operations (repeated upload/download cycles) and heavy compression, both of which impair detection accuracy independently..<br>"
+    },
+    {
+      "question": "How do I install the software, and what hardware does it need?",
+      "answer": "<h3 class='success title'>From software in use</h3>Detailed software implementation is available at: [https://github.com/mever-team/WildFC/](https://github.com/mever-team/WildFC/)..<br><h3 class='error'>Vague question</h3><span>There are 13 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "Who should use this model, and what should they not do with it?",
+      "answer": "<h3 class='success title'>From out of scope use in use</h3>Treating the probability score as a final verdict rather than a helpful indicator, or relying on it for unsupervised decision-making without human review..<br>"
+    },
+    {
+      "question": "What is the model's license and how do I cite it?",
+      "answer": "<h3 class='success title'>From license in overview</h3>Apache License 2.0.<br>"
+    }
+  ],
+  "negative": [
+    {
+      "question": "What is the CO₂ emissions footprint of training?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at environmental impact in performance, but that is empty.</span><br>"
+    },
+    {
+      "question": "What is the training compute in FLOPs?",
+      "answer": "<h3 class='success title'>From preprocessing in training</h3>Gaussian blurring and JPEG compression with probability 0.5, TextureCrop for a 224x224 crop, random horizontal flip with probability 0.5..<br><h3 class='error'>Vague question</h3><span>There are 11 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "How many individual samples were in the training dataset?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at more in training, but that is empty.</span><br>"
+    },
+    {
+      "question": "What demographic groups were used for bias evaluation?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>The model was not tested for bias across demographic groups..<br>\n<h3 class='success title'>From fairness in safety</h3>This aims to reduce implicit biases that may cause certain types of content to be systematically classified as more or less likely to be AI-generated..<br>"
+    },
+    {
+      "question": "What is the model's robustness to adversarial attacks?",
+      "answer": "<h3 class='success title'>From analysis in performance</h3>Together, these results confirm that jointly leveraging in-the-wild and generator-driven data within a continual learning strategy allows the model to adapt to newly emerging generators while preserving real-world robustness and avoiding catastrophic forgetting..<br>Under continual adaptation  Online RINE improves average AUC over its baseline by +3.49% after the first round and reaches its peak by the final round with a +7.36% average AUC gain and +20.14% accuracy improvement on AIGenImages2026, while also strengthening in-the-wild robustness along the way (+3.30% AUC on Deepfake-Eval by the second round).<br>\n<h3 class='success title'>From description in overview</h3>The proposed framework introduces a continual adaptive pipeline for robust AI-generated image detection under evolving real-world conditions..<br>\n<h3 class='success title'>From ethics in safety</h3>Mislabeling authentic images as AI-generated (false positives) can undermine trust in genuine visual evidence and may contribute to the dismissal of authentic documentation of real-world events..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>Home in overview is</h3>[https://github.com/mever-team/WildFC](https://github.com/mever-team/WildFC)<br>\n<h3 class='success title'>Security in safety is</h3>No<br>"
+    },
+    {
+      "question": "What is the model's water usage?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
+    },
+    {
+      "question": "Who are the individual authors (not the institution)?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br><h3 class='error'>Vague question</h3><span>There are 10 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "Can you provide the citation in BibTeX format?",
+      "answer": "<h3 class='success title'>From citation in overview</h3>@inproceedings{pantsios2026automated,  title={Automated In-the-Wild Data Collection for Continual AI Generated Image Detection},  author={Pantsios, Athanasios and Karageorgiou, Dimitrios and Koutlis, Christos and Karantaidis, George and Papadopoulou, Olga and Papadopoulos, Symeon},  booktitle={The 5th ACM International Workshop on Multimedia AI against Disinformation (MAD '26)},  year={2026},  doi={10.1145/3810988.3812662}  }.<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From license in overview</h3>Apache License 2.0.<br>"
+    },
+    {
+      "question": "What is the inference latency per request?",
+      "answer": "<h3 class='success title'>From analysis in performance</h3>Online RINE raises average performance by +8.01% accuracy across both recent-generator and in-the-wild benchmarks combined, with particularly strong gains on previously challenging recent generators such as Echo-4o (48.75% → 76.80% accuracy) and Nano-Consistent (63.81% → 71.01% accuracy), while also improving in-the-wild robustness(+1.01% ACC on ITW-SM, +2.39% ACC on MediaEval).<br>\n<h3 class='success title'>From factors in use</h3>Model performance is highly dependent on data quality, e.g., multi-cycle social media operations (repeated upload/download cycles) and heavy compression, both of which impair detection accuracy independently..<br>\n<h3 class='success title'>From hardware in use</h3>Running the model requires a GPU with at least 4 GB of VRAM..<br>\n<h3 class='success title'>From methodology in performance</h3>ACC reflects performance at a specific operating point, offering a more practical, deployment-relevant measure..<br>AUC measures overall ranking capability independent of a fixed decision threshold, providing a threshold-agnostic view of discriminative ability.<br>We evaluate our detector using two complementary metrics: AUC (Area Under the ROC Curve) and ACC (Accuracy).<br>\n<h3 class='success title'>From metrics in performance</h3>**AUC / ACC (%), threshold = 0.5**  AIGenImages2026: 97.75 / 92.13   MNW: 95.74 / 88.59   Echo-4o: 88.45 / 76.80   Nano-Consistent: 78.35 / 71.01  Synthbuster: 94.81 / 77.75   Chameleon: 89.64 / 78.58   DeepFake-Eval: 87.59 / 78.63   ITW-SM: 95.74 / 82.50   MediaEval:  91.09 / 78.80.<br>\n<h3 class='success title'>From thresholds in performance</h3>> Accuracy decision threshold: **0.5**    > Applied at detector evaluation to compute Accuracy across all benchmarks.<br>> TopK: 500    > Applied during real–fake pair construction to cap the number of real images retrieved per AI-generated image.<br>\n<h3 class='success title'>Home in overview is</h3>[https://github.com/mever-team/WildFC](https://github.com/mever-team/WildFC)<br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
+    },
+    {
+      "question": "What is the model file size on disk?",
+      "answer": "<h3 class='success title'>From hardware in use</h3>Running the model requires a GPU with at least 4 GB of VRAM..<br>"
+    },
+    {
+      "question": "What data privacy measures are in place?",
+      "answer": "<h3 class='success title'>Security in safety is</h3>No<br>"
+    },
+    {
+      "question": "Is the model explainable / interpretable?",
+      "answer": "<h3 class='success title'>From factors in use</h3>Model performance is highly dependent on data quality, e.g., multi-cycle social media operations (repeated upload/download cycles) and heavy compression, both of which impair detection accuracy independently..<br>\n<h3 class='success title'>From inputs outputs in use</h3>The model accepts an image as input and returns a probability score indicating whether the image is synthetic.<br>\n<h3 class='success title'>Home in overview is</h3>[https://github.com/mever-team/WildFC](https://github.com/mever-team/WildFC)<br>\n<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "Does the model handle audio / video modalities (if not applicable)?",
+      "answer": "<h3 class='success title'>From hardware in use</h3>Running the model requires a GPU with at least 4 GB of VRAM..<br>\n<h3 class='success title'>From inputs outputs in use</h3>The model accepts an image as input and returns a probability score indicating whether the image is synthetic.<br>\n<h3 class='success title'>From metrics in performance</h3>**AUC / ACC (%), threshold = 0.5**  AIGenImages2026: 97.75 / 92.13   MNW: 95.74 / 88.59   Echo-4o: 88.45 / 76.80   Nano-Consistent: 78.35 / 71.01  Synthbuster: 94.81 / 77.75   Chameleon: 89.64 / 78.58   DeepFake-Eval: 87.59 / 78.63   ITW-SM: 95.74 / 82.50   MediaEval:  91.09 / 78.80.<br>\n<h3 class='success title'>From motivation in evaluation</h3>The evaluation datasets were chosen to cover both sources of distribution shift identified as driving AID's non-stationary nature: shift from the continuous development of recent generative models (AIGenImages2026, MNW, Synthbuster, Nano-Consistent, and Echo-4o), and shift arising from real-world usage dynamics and platform-specific processing (Chameleon, ITW-SM, MediaEval-ITW, and Deepfake-Eval)..<br>\n<h3 class='success title'>From software in use</h3>Detailed software implementation is available at: [https://github.com/mever-team/WildFC/](https://github.com/mever-team/WildFC/)..<br>\n<h3 class='success title'>From use cases in use</h3>Detecting ai-generated images.<br>\n<h3 class='success title'>Security in safety is</h3>No<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br>\n<h3 class='success title'>Update in training is</h3>yes<br>"
+    },
+    {
+      "question": "What is the model's update / changelog history?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-05-01<br>\n<h3 class='success title'>Home in overview is</h3>[https://github.com/mever-team/WildFC](https://github.com/mever-team/WildFC)<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br>"
+    },
+    {
+      "question": "Is there any additional information not covered elsewhere on this card?",
+      "answer": "<h3 class='success title'>Security in safety is</h3>No<br>"
+    }
+  ],
+  "ambiguous": [
+    {
+      "question": "Is this model safe?",
+      "answer": "<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>Security in safety is</h3>No<br><h3 class='error'>Vague question</h3><span>There are 10 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "What are the limitations of this model?",
+      "answer": "<h3 class='success title'>From factors in use</h3>Model performance is highly dependent on data quality, e.g., multi-cycle social media operations (repeated upload/download cycles) and heavy compression, both of which impair detection accuracy independently..<br>\n<h3 class='success title'>From out of scope use in use</h3>Treating the probability score as a final verdict rather than a helpful indicator, or relying on it for unsupervised decision-making without human review..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br>"
+    },
+    {
+      "question": "Is this model accurate?",
+      "answer": "<h3 class='success title'>From methodology in performance</h3>We evaluate our detector using two complementary metrics: AUC (Area Under the ROC Curve) and ACC (Accuracy).<br>"
+    },
+    {
+      "question": "Is this model good?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-05-01<br>\n<h3 class='success title'>From analysis in performance</h3>Online RINE raises average performance by +8.01% accuracy across both recent-generator and in-the-wild benchmarks combined, with particularly strong gains on previously challenging recent generators such as Echo-4o (48.75% → 76.80% accuracy) and Nano-Consistent (63.81% → 71.01% accuracy), while also improving in-the-wild robustness(+1.01% ACC on ITW-SM, +2.39% ACC on MediaEval).<br>Together, these results confirm that jointly leveraging in-the-wild and generator-driven data within a continual learning strategy allows the model to adapt to newly emerging generators while preserving real-world robustness and avoiding catastrophic forgetting..<br>\n<h3 class='success title'>From methodology in performance</h3>We evaluate our detector using two complementary metrics: AUC (Area Under the ROC Curve) and ACC (Accuracy).<br>\n<h3 class='success title'>From metrics in performance</h3>**AUC / ACC (%), threshold = 0.5**  AIGenImages2026: 97.75 / 92.13   MNW: 95.74 / 88.59   Echo-4o: 88.45 / 76.80   Nano-Consistent: 78.35 / 71.01  Synthbuster: 94.81 / 77.75   Chameleon: 89.64 / 78.58   DeepFake-Eval: 87.59 / 78.63   ITW-SM: 95.74 / 82.50   MediaEval:  91.09 / 78.80.<br>\n<h3 class='success title'>Home in overview is</h3>[https://github.com/mever-team/WildFC](https://github.com/mever-team/WildFC)<br>\n<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br>\n<h3 class='success title'>Security in safety is</h3>No<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br>"
+    },
+    {
+      "question": "How does this model work?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From inputs outputs in use</h3>The model accepts an image as input and returns a probability score indicating whether the image is synthetic.<br>\n<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>"
+    },
+    {
+      "question": "Is this model trustworthy?",
+      "answer": "<h3 class='success title'>From ethics in safety</h3>Mislabeling authentic images as AI-generated (false positives) can undermine trust in genuine visual evidence and may contribute to the dismissal of authentic documentation of real-world events..<br>\n<h3 class='success title'>From methodology in performance</h3>We evaluate our detector using two complementary metrics: AUC (Area Under the ROC Curve) and ACC (Accuracy).<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>Home in overview is</h3>[https://github.com/mever-team/WildFC](https://github.com/mever-team/WildFC)<br>\n<h3 class='success title'>Security in safety is</h3>No<br>"
+    },
+    {
+      "question": "What is this model's main contribution?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "Is this model reliable?",
+      "answer": "<h3 class='success title'>Security in safety is</h3>No<br>"
+    },
+    {
+      "question": "What makes this model novel?",
+      "answer": "<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "Is this model ready for production?",
+      "answer": "<h3 class='success title'>Security in safety is</h3>No<br>"
+    },
+    {
+      "question": "Is this model eco-friendly?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>Security in safety is</h3>No<br>\n<h3 class='success title'>Standards in evaluation is</h3>IEEE<br>\n<h3 class='success title'>Standards in training is</h3>IEEE<br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br><span>Would have looked at environmental impact in performance, but that is empty.</span><br>"
+    },
+    {
+      "question": "How do I use this model?",
+      "answer": "<h3 class='success title'>From instructions in use</h3>Detailed usage instructions are available at: [https://github.com/mever-team/WildFC/](https://github.com/mever-team/WildFC/).<br>\n<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "What should I know before using this model?",
+      "answer": "<h3 class='success title'>From hardware in use</h3>Running the model requires a GPU with at least 4 GB of VRAM..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>Home in overview is</h3>[https://github.com/mever-team/WildFC](https://github.com/mever-team/WildFC)<br>\n<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br>\n<h3 class='success title'>Security in safety is</h3>No<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "Can I use this model commercially?",
+      "answer": "<h3 class='success title'>Security in safety is</h3>No<br>"
+    },
+    {
+      "question": "What are the main takeaways about this model?",
+      "answer": "<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>"
+    }
+  ]
+}

@@ -1,0 +1,489 @@
+{
+  "_meta": {
+    "model_card": "dataset/5/Video-FaceSwap.json",
+    "started_at": "2026-10-22T14:07:47.480506Z",
+    "matcher": "sentence-transformers/all-mpnet-base-v2",
+    "matching_strictness": 0.5,
+    "finished_at": "2026-10-22T14:14:53.263828Z"
+  },
+  "overview": [
+    {
+      "question": "What is the name of this model?",
+      "answer": "<h3 class='success title'>From name in overview</h3>Video-FaceSwap Detector.<br>"
+    },
+    {
+      "question": "What is this model used for?",
+      "answer": "<h3 class='success title'>Type in overview is</h3>Transformer<br>"
+    },
+    {
+      "question": "Who created this model?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br><h3 class='error'>Missing info</h3><span>Would have looked at citation in overview, but that is empty.</span><br><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "When was this model released?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br><h3 class='error'>Vague question</h3><span>There are 10 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "What version is this model?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br>\n<h3 class='success title'>From name in overview</h3>Video-FaceSwap Detector.<br>\n<h3 class='success title'>From security in safety</h3>The model does not take into account any cybersecurity standards.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br><h3 class='error'>Missing info</h3><span>Would have looked at citation in overview, but that is empty.</span><br><span>Would have looked at home in overview, but that is empty.</span><br><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "What type of model is this?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br><h3 class='error'>Missing info</h3><span>Would have looked at home in overview, but that is empty.</span><br><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "How many parameters does this model have?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br><span>Would have looked at parameters in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "What is the task of this model?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From inputs outputs in use</h3>Input: Video  Output: Score in range \\[0,1\\] indicating whether the video has been manipulated or not.<br>\n<h3 class='success title'>From task in overview</h3>Video Classification.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>"
+    },
+    {
+      "question": "What is the license of this model?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From name in overview</h3>Video-FaceSwap Detector.<br>\n<h3 class='success title'>From security in safety</h3>The model does not take into account any cybersecurity standards.<br>\n<h3 class='success title'>License in overview is</h3>Apache-2.0<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br><h3 class='error'>Missing info</h3><span>Would have looked at citation in overview, but that is empty.</span><br><span>Would have looked at home in overview, but that is empty.</span><br><span>Would have looked at more in overview, but that is empty.</span><br><span>Would have looked at software in use, but that is empty.</span><br>"
+    },
+    {
+      "question": "Where can I find this model?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at home in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "Who can I contact about this model?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>"
+    },
+    {
+      "question": "How should I cite this model?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br><h3 class='error'>Missing info</h3><span>Would have looked at citation in overview, but that is empty.</span><br>"
+    }
+  ],
+  "use": [
+    {
+      "question": "What are the intended use cases?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at more in use, but that is empty.</span><br><span>Would have looked at software in use, but that is empty.</span><br>"
+    },
+    {
+      "question": "What level of human oversight is required?",
+      "answer": "<h3 class='success title'>From ethics in safety</h3>It is recommended to cross-validate your results with several deepfake detectors..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>Oversight in use is</h3>human-in-the-loop<br>\n<h3 class='success title'>Standards in evaluation is</h3>IEEE<br>"
+    },
+    {
+      "question": "Who are the intended user groups?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>The model was not tested for its bias across various demographic groups..<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From fairness in safety</h3>Fairness is defined as the property that the model’s prediction error rates (false positives and false negatives) remain consistent across different  demographic subgroups..<br>\n<h3 class='success title'>From methodology in performance</h3>For Celeb-DF-v3 and DF40, the scores presented are averaged across the different manipulation methods..<br>\n<h3 class='success title'>From user groups in use</h3>Researchers, media professionals, fact-checkers.<br>\n<h3 class='success title'>Oversight in use is</h3>human-in-the-loop<br>\n<h3 class='success title'>Standards in training is</h3>IEEE<br>\n<h3 class='success title'>Update in training is</h3>yes<br><h3 class='error'>Missing info</h3><span>Would have looked at hardware in use, but that is empty.</span><br><span>Would have looked at more in use, but that is empty.</span><br><span>Would have looked at software in use, but that is empty.</span><br>"
+    },
+    {
+      "question": "What is this model not intended for?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at more in use, but that is empty.</span><br>"
+    },
+    {
+      "question": "What software does this model require?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at software in use, but that is empty.</span><br>"
+    },
+    {
+      "question": "How do I run / use this model?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br>\n<h3 class='success title'>From inputs outputs in use</h3>Input: Video  Output: Score in range \\[0,1\\] indicating whether the video has been manipulated or not.<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br><h3 class='error'>Missing info</h3><span>Would have looked at citation in overview, but that is empty.</span><br><span>Would have looked at hardware in use, but that is empty.</span><br><span>Would have looked at home in overview, but that is empty.</span><br><span>Would have looked at instructions in use, but that is empty.</span><br><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "What are the inputs and outputs of the model?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From inputs outputs in use</h3>Input: Video  Output: Score in range \\[0,1\\] indicating whether the video has been manipulated or not.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br><h3 class='error'>Missing info</h3><span>Would have looked at citation in overview, but that is empty.</span><br><span>Would have looked at home in overview, but that is empty.</span><br><span>Would have looked at more in overview, but that is empty.</span><br><span>Would have looked at parameters in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "What factors affect the model's performance?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>The model was not tested for its bias across various demographic groups..<br>"
+    },
+    {
+      "question": "What hardware is required?",
+      "answer": "<h3 class='success title'>From environmental impact in performance</h3>Energy consumptions depends on input size and hardware..<br>\n<h3 class='success title'>From preprocessing in evaluation</h3>\\- Sample the video at 1 FPS  \\- Face detection  \\- Enlarge faces by a factor of 1.3  \\- Crop faces and resize to 224x224.<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br><h3 class='error'>Missing info</h3><span>Would have looked at hardware in use, but that is empty.</span><br><span>Would have looked at software in use, but that is empty.</span><br>"
+    }
+  ],
+  "training": [
+    {
+      "question": "What datasets were used for training?",
+      "answer": "<h3 class='success title'>From datasets in training</h3>FaceForensics++, CelebDF-v2, DFDC, ForgeryNet.<br>"
+    },
+    {
+      "question": "Why were these training datasets chosen?",
+      "answer": "<h3 class='success title'>From datasets in training</h3>FaceForensics++, CelebDF-v2, DFDC, ForgeryNet.<br>\n<h3 class='success title'>From motivation in evaluation</h3>It also includes two 'in-the-wild' datasets helping us to measure the model's performance on real and unrestricted conditions..<br>"
+    },
+    {
+      "question": "What preprocessing was applied during training?",
+      "answer": "<h3 class='success title'>From preprocessing in training</h3>\\- Face detection   \\- Enlarge faces by a factor of 1.3   \\- Crop faces and resize to 224x224   \\- Data augmentation during training (random resized crop, random flipping, color jittering, cutout).<br>"
+    },
+    {
+      "question": "What standards were followed during training?",
+      "answer": "<h3 class='success title'>From ethics in safety</h3>It is recommended to cross-validate your results with several deepfake detectors..<br>\n<h3 class='success title'>From security in safety</h3>The model does not take into account any cybersecurity standards.<br>\n<h3 class='success title'>Standards in evaluation is</h3>IEEE<br>\n<h3 class='success title'>Standards in training is</h3>IEEE<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br>\n<h3 class='success title'>Update in training is</h3>yes<br><h3 class='error'>Missing info</h3><span>Would have looked at more in training, but that is empty.</span><br>"
+    },
+    {
+      "question": "Is the training data up to date?",
+      "answer": "<h3 class='success title'>Update in evaluation is</h3>yes<br>\n<h3 class='success title'>Update in training is</h3>yes<br>"
+    }
+  ],
+  "evaluation": [
+    {
+      "question": "What datasets were used for evaluation?",
+      "answer": "<h3 class='success title'>From analysis in performance</h3>We present video-level AUC scores and Average Precision (AP) for each dataset..<br>\n<h3 class='success title'>From datasets in evaluation</h3>Celeb-DF-v3, DF40, DeepSpeak-v1, DeepSpeak-v2, WDF, Deepfake-Eval-2024.<br>\n<h3 class='success title'>From datasets in training</h3>FaceForensics++, CelebDF-v2, DFDC, ForgeryNet.<br>\n<h3 class='success title'>From methodology in performance</h3>For Celeb-DF-v3 and DF40, the scores presented are averaged across the different manipulation methods..<br>\n<h3 class='success title'>From metrics in performance</h3>Dataset                     AUC(%)     AP(%)       -----------------------------------------------------  *   Celeb-DF-v3:               86.7          89.9 *   DF40:                           87.6          95.1   *   DeepSpeak-v1:            91.5          93.4 *   DeepSpeak-v2:            77.5          77.4 *   WDF:                            94.9          93.6 *   DeepFake-Eval-2024:  62.8          92.8.<br>\n<h3 class='success title'>From motivation in evaluation</h3>It also includes two 'in-the-wild' datasets helping us to measure the model's performance on real and unrestricted conditions..<br>The evaluation set covers multiple recent datasets reflecting the wide diversity of manipulation techniques currently available.<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br>"
+    },
+    {
+      "question": "Why were these evaluation datasets chosen?",
+      "answer": "<h3 class='success title'>From motivation in evaluation</h3>It also includes two 'in-the-wild' datasets helping us to measure the model's performance on real and unrestricted conditions..<br>"
+    },
+    {
+      "question": "What preprocessing was applied during evaluation?",
+      "answer": "<h3 class='success title'>From methodology in performance</h3>For Celeb-DF-v3 and DF40, the scores presented are averaged across the different manipulation methods..<br>"
+    },
+    {
+      "question": "What standards were followed during evaluation?",
+      "answer": "<h3 class='success title'>From environmental impact in performance</h3>Energy consumptions depends on input size and hardware..<br>\n<h3 class='success title'>From ethics in safety</h3>It is recommended to cross-validate your results with several deepfake detectors..<br>\n<h3 class='success title'>From methodology in performance</h3>For Celeb-DF-v3 and DF40, the scores presented are averaged across the different manipulation methods..<br>\n<h3 class='success title'>From motivation in evaluation</h3>The evaluation set covers multiple recent datasets reflecting the wide diversity of manipulation techniques currently available.<br>\n<h3 class='success title'>From security in safety</h3>The model does not take into account any cybersecurity standards.<br>\n<h3 class='success title'>From thresholds in performance</h3>AUC and AP do not need any calibration threshold.<br>\n<h3 class='success title'>Standards in evaluation is</h3>IEEE<br>\n<h3 class='success title'>Standards in training is</h3>IEEE<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br>"
+    },
+    {
+      "question": "Is the evaluation data up to date?",
+      "answer": "<h3 class='success title'>From analysis in performance</h3>We present video-level AUC scores and Average Precision (AP) for each dataset..<br>\n<h3 class='success title'>From datasets in evaluation</h3>Celeb-DF-v3, DF40, DeepSpeak-v1, DeepSpeak-v2, WDF, Deepfake-Eval-2024.<br>\n<h3 class='success title'>From environmental impact in performance</h3>Energy consumptions depends on input size and hardware..<br>\n<h3 class='success title'>From methodology in performance</h3>For Celeb-DF-v3 and DF40, the scores presented are averaged across the different manipulation methods..<br>\n<h3 class='success title'>From metrics in performance</h3>Dataset                     AUC(%)     AP(%)       -----------------------------------------------------  *   Celeb-DF-v3:               86.7          89.9 *   DF40:                           87.6          95.1   *   DeepSpeak-v1:            91.5          93.4 *   DeepSpeak-v2:            77.5          77.4 *   WDF:                            94.9          93.6 *   DeepFake-Eval-2024:  62.8          92.8.<br>\n<h3 class='success title'>From motivation in evaluation</h3>It also includes two 'in-the-wild' datasets helping us to measure the model's performance on real and unrestricted conditions..<br>The evaluation set covers multiple recent datasets reflecting the wide diversity of manipulation techniques currently available.<br>\n<h3 class='success title'>From thresholds in performance</h3>AUC and AP do not need any calibration threshold.<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br>\n<h3 class='success title'>Update in training is</h3>yes<br><h3 class='error'>Missing info</h3><span>Would have looked at more in evaluation, but that is empty.</span><br>"
+    }
+  ],
+  "performance": [
+    {
+      "question": "What does the performance analysis say?",
+      "answer": "<h3 class='success title'>From metrics in performance</h3>Dataset                     AUC(%)     AP(%)       -----------------------------------------------------  *   Celeb-DF-v3:               86.7          89.9 *   DF40:                           87.6          95.1   *   DeepSpeak-v1:            91.5          93.4 *   DeepSpeak-v2:            77.5          77.4 *   WDF:                            94.9          93.6 *   DeepFake-Eval-2024:  62.8          92.8.<br>"
+    },
+    {
+      "question": "What are the benchmark metrics?",
+      "answer": "<h3 class='success title'>From methodology in performance</h3>For Celeb-DF-v3 and DF40, the scores presented are averaged across the different manipulation methods..<br>\n<h3 class='success title'>From metrics in performance</h3>Dataset                     AUC(%)     AP(%)       -----------------------------------------------------  *   Celeb-DF-v3:               86.7          89.9 *   DF40:                           87.6          95.1   *   DeepSpeak-v1:            91.5          93.4 *   DeepSpeak-v2:            77.5          77.4 *   WDF:                            94.9          93.6 *   DeepFake-Eval-2024:  62.8          92.8.<br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
+    },
+    {
+      "question": "What decision thresholds are used?",
+      "answer": "<h3 class='success title'>From ethics in safety</h3>It is recommended to cross-validate your results with several deepfake detectors..<br>\n<h3 class='success title'>From methodology in performance</h3>For Celeb-DF-v3 and DF40, the scores presented are averaged across the different manipulation methods..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>From thresholds in performance</h3>AUC and AP do not need any calibration threshold.<br>"
+    },
+    {
+      "question": "What is the evaluation methodology?",
+      "answer": "<h3 class='success title'>From methodology in performance</h3>For Celeb-DF-v3 and DF40, the scores presented are averaged across the different manipulation methods..<br>\n<h3 class='success title'>From metrics in performance</h3>Dataset                     AUC(%)     AP(%)       -----------------------------------------------------  *   Celeb-DF-v3:               86.7          89.9 *   DF40:                           87.6          95.1   *   DeepSpeak-v1:            91.5          93.4 *   DeepSpeak-v2:            77.5          77.4 *   WDF:                            94.9          93.6 *   DeepFake-Eval-2024:  62.8          92.8.<br>\n<h3 class='success title'>From motivation in evaluation</h3>The evaluation set covers multiple recent datasets reflecting the wide diversity of manipulation techniques currently available.<br>\n<h3 class='success title'>Standards in evaluation is</h3>IEEE<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br><h3 class='error'>Missing info</h3><span>Would have looked at more in evaluation, but that is empty.</span><br>"
+    },
+    {
+      "question": "What is the energy consumption?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br>\n<h3 class='success title'>From contact in overview</h3>Stelios Mylonas: [smylonas@iti.gr](mailto:smylonas@iti.gr).<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From environmental impact in performance</h3>Energy consumptions depends on input size and hardware..<br>\n<h3 class='success title'>From methodology in performance</h3>For Celeb-DF-v3 and DF40, the scores presented are averaged across the different manipulation methods..<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br><span>Would have looked at hardware in use, but that is empty.</span><br><span>Would have looked at instructions in use, but that is empty.</span><br><span>Would have looked at software in use, but that is empty.</span><br>"
+    },
+    {
+      "question": "What is the environmental impact?",
+      "answer": "<h3 class='success title'>From environmental impact in performance</h3>Energy consumptions depends on input size and hardware..<br>"
+    },
+    {
+      "question": "Was the model tested for bias?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>The model was not tested for its bias across various demographic groups..<br>\n<h3 class='success title'>From ethics in safety</h3>It is recommended to cross-validate your results with several deepfake detectors..<br>\n<h3 class='success title'>From fairness in safety</h3>Fairness is defined as the property that the model’s prediction error rates (false positives and false negatives) remain consistent across different  demographic subgroups..<br><h3 class='error'>Vague question</h3><span>There are 9 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    }
+  ],
+  "safety": [
+    {
+      "question": "What are the ethical considerations?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>The model was not tested for its bias across various demographic groups..<br>\n<h3 class='success title'>From caveats in safety</h3>The Video FaceSwap detector is not future-proof and it may have low accuracy on new face manipulation methods without fine-tuning..<br>\n<h3 class='success title'>From ethics in safety</h3>It is recommended to cross-validate your results with several deepfake detectors..<br>Risk of false positives: mislabeling authentic videos as fake could undermine trust in legitimate sources or individuals.<br>\n<h3 class='success title'>From fairness in safety</h3>Fairness is defined as the property that the model’s prediction error rates (false positives and false negatives) remain consistent across different  demographic subgroups..<br>\n<h3 class='success title'>From out of scope use in use</h3>Unsupervised decision making, Detection of AI-generated videos.<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>From use cases in use</h3>Detection of face-swap or face-reenactment manipulations in a video..<br>\n<h3 class='success title'>Oversight in use is</h3>human-in-the-loop<br>\n<h3 class='success title'>Standards in evaluation is</h3>IEEE<br>\n<h3 class='success title'>Standards in training is</h3>IEEE<br>"
+    },
+    {
+      "question": "How is fairness defined / assessed?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>The model was not tested for its bias across various demographic groups..<br>\n<h3 class='success title'>From fairness in safety</h3>Fairness is defined as the property that the model’s prediction error rates (false positives and false negatives) remain consistent across different  demographic subgroups..<br>\n<h3 class='success title'>Standards in evaluation is</h3>IEEE<br>"
+    },
+    {
+      "question": "What are the risks of this model?",
+      "answer": "<h3 class='success title'>From caveats in safety</h3>The Video FaceSwap detector is not future-proof and it may have low accuracy on new face manipulation methods without fine-tuning..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br><h3 class='error'>Vague question</h3><span>There are 9 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "Is the model secure / compliant with security standards?",
+      "answer": "<h3 class='success title'>From caveats in safety</h3>The Video FaceSwap detector is not future-proof and it may have low accuracy on new face manipulation methods without fine-tuning..<br>\n<h3 class='success title'>From ethics in safety</h3>It is recommended to cross-validate your results with several deepfake detectors..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>From security in safety</h3>The model does not take into account any cybersecurity standards.<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br>\n<h3 class='success title'>Update in training is</h3>yes<br>"
+    },
+    {
+      "question": "What are the caveats of this model?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br>\n<h3 class='success title'>From caveats in safety</h3>The Video FaceSwap detector is not future-proof and it may have low accuracy on new face manipulation methods without fine-tuning..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>"
+    }
+  ],
+  "paraphrased": [
+    {
+      "question": "What is the purpose of this model?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>"
+    },
+    {
+      "question": "What does this model do?",
+      "answer": "<h3 class='success title'>Type in overview is</h3>Transformer<br>"
+    },
+    {
+      "question": "Which organization built this model?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br><h3 class='error'>Missing info</h3><span>Would have looked at citation in overview, but that is empty.</span><br><span>Would have looked at home in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "When did this model come out?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br>"
+    },
+    {
+      "question": "What kind of architecture is used?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From environmental impact in performance</h3>Energy consumptions depends on input size and hardware..<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br><h3 class='error'>Missing info</h3><span>Would have looked at home in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "What is the size of the model?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From description in overview</h3>It focuses on the participants faces and by utilizing only the vision stream of the video (not the audio) determines whether a person’s face has been replaced or manipulated within the video..<br>\n<h3 class='success title'>From name in overview</h3>Video-FaceSwap Detector.<br>\n<h3 class='success title'>From preprocessing in training</h3>\\- Face detection   \\- Enlarge faces by a factor of 1.3   \\- Crop faces and resize to 224x224   \\- Data augmentation during training (random resized crop, random flipping, color jittering, cutout).<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br><h3 class='error'>Missing info</h3><span>Would have looked at citation in overview, but that is empty.</span><br><span>Would have looked at home in overview, but that is empty.</span><br><span>Would have looked at more in overview, but that is empty.</span><br><span>Would have looked at parameters in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "Where do I download it from?",
+      "answer": "<h3 class='error'>Vague question</h3><span>There are 10 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br><h3 class='error'>Missing info</h3><span>Would have looked at software in use, but that is empty.</span><br>"
+    },
+    {
+      "question": "Who should I email about it?",
+      "answer": "<h3 class='success title'>From ethics in safety</h3>It is recommended to cross-validate your results with several deepfake detectors..<br>"
+    },
+    {
+      "question": "What Python packages do I need?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at software in use, but that is empty.</span><br>"
+    },
+    {
+      "question": "What GPU do I need to run it?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at hardware in use, but that is empty.</span><br>"
+    },
+    {
+      "question": "What does the model take as input, and what does it return?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br>\n<h3 class='success title'>From description in overview</h3>It focuses on the participants faces and by utilizing only the vision stream of the video (not the audio) determines whether a person’s face has been replaced or manipulated within the video..<br>\n<h3 class='success title'>From inputs outputs in use</h3>Input: Video  Output: Score in range \\[0,1\\] indicating whether the video has been manipulated or not.<br>\n<h3 class='success title'>From name in overview</h3>Video-FaceSwap Detector.<br>\n<h3 class='success title'>From task in overview</h3>Video Classification.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br><h3 class='error'>Missing info</h3><span>Would have looked at citation in overview, but that is empty.</span><br><span>Would have looked at energy consumption in performance, but that is empty.</span><br><span>Would have looked at home in overview, but that is empty.</span><br><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "How do I load and run the model on data?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at citation in overview, but that is empty.</span><br><span>Would have looked at home in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "What could make its performance worse?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>The model was not tested for its bias across various demographic groups..<br>\n<h3 class='success title'>From caveats in safety</h3>The Video FaceSwap detector is not future-proof and it may have low accuracy on new face manipulation methods without fine-tuning..<br>\n<h3 class='success title'>From environmental impact in performance</h3>Energy consumptions depends on input size and hardware..<br>\n<h3 class='success title'>From factors in use</h3>May present low accuracy on low resolution videos or videos with blurred and very small faces..<br>\n<h3 class='success title'>From metrics in performance</h3>Dataset                     AUC(%)     AP(%)       -----------------------------------------------------  *   Celeb-DF-v3:               86.7          89.9 *   DF40:                           87.6          95.1   *   DeepSpeak-v1:            91.5          93.4 *   DeepSpeak-v2:            77.5          77.4 *   WDF:                            94.9          93.6 *   DeepFake-Eval-2024:  62.8          92.8.<br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
+    },
+    {
+      "question": "What should this model not be used for?",
+      "answer": "<h3 class='success title'>From out of scope use in use</h3>Unsupervised decision making, Detection of AI-generated videos.<br><h3 class='error'>Vague question</h3><span>There are 10 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "Who is this model for?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From description in overview</h3>It focuses on the participants faces and by utilizing only the vision stream of the video (not the audio) determines whether a person’s face has been replaced or manipulated within the video..<br>\n<h3 class='success title'>From use cases in use</h3>Detection of face-swap or face-reenactment manipulations in a video..<br>\n<h3 class='success title'>From user groups in use</h3>Researchers, media professionals, fact-checkers.<br><h3 class='error'>Missing info</h3><span>Would have looked at citation in overview, but that is empty.</span><br><span>Would have looked at home in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "Does a human need to review the outputs?",
+      "answer": "<h3 class='success title'>Oversight in use is</h3>human-in-the-loop<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br>"
+    },
+    {
+      "question": "What does it say about its accuracy?",
+      "answer": "<h3 class='success title'>From methodology in performance</h3>For Celeb-DF-v3 and DF40, the scores presented are averaged across the different manipulation methods..<br>\n<h3 class='success title'>From thresholds in performance</h3>AUC and AP do not need any calibration threshold.<br>"
+    },
+    {
+      "question": "What threshold is used to make predictions?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br>\n<h3 class='success title'>From analysis in performance</h3>We present video-level AUC scores and Average Precision (AP) for each dataset..<br>\n<h3 class='success title'>From ethics in safety</h3>It is recommended to cross-validate your results with several deepfake detectors..<br>\n<h3 class='success title'>From factors in use</h3>May present low accuracy on low resolution videos or videos with blurred and very small faces..<br>\n<h3 class='success title'>From fairness in safety</h3>Fairness is defined as the property that the model’s prediction error rates (false positives and false negatives) remain consistent across different  demographic subgroups..<br>\n<h3 class='success title'>From inputs outputs in use</h3>Input: Video  Output: Score in range \\[0,1\\] indicating whether the video has been manipulated or not.<br>\n<h3 class='success title'>From methodology in performance</h3>For Celeb-DF-v3 and DF40, the scores presented are averaged across the different manipulation methods..<br>\n<h3 class='success title'>From metrics in performance</h3>Dataset                     AUC(%)     AP(%)       -----------------------------------------------------  *   Celeb-DF-v3:               86.7          89.9 *   DF40:                           87.6          95.1   *   DeepSpeak-v1:            91.5          93.4 *   DeepSpeak-v2:            77.5          77.4 *   WDF:                            94.9          93.6 *   DeepFake-Eval-2024:  62.8          92.8.<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>From thresholds in performance</h3>AUC and AP do not need any calibration threshold.<br>"
+    },
+    {
+      "question": "What could go wrong if I use this model?",
+      "answer": "<h3 class='success title'>From caveats in safety</h3>The Video FaceSwap detector is not future-proof and it may have low accuracy on new face manipulation methods without fine-tuning..<br>\n<h3 class='success title'>From ethics in safety</h3>It is recommended to cross-validate your results with several deepfake detectors..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>"
+    },
+    {
+      "question": "Are there ethical concerns with using this?",
+      "answer": "<h3 class='success title'>From ethics in safety</h3>It is recommended to cross-validate your results with several deepfake detectors..<br>"
+    },
+    {
+      "question": "How much energy does it consume?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
+    },
+    {
+      "question": "Is it compliant with any security standard?",
+      "answer": "<h3 class='success title'>From caveats in safety</h3>The Video FaceSwap detector is not future-proof and it may have low accuracy on new face manipulation methods without fine-tuning..<br>\n<h3 class='success title'>From fairness in safety</h3>Fairness is defined as the property that the model’s prediction error rates (false positives and false negatives) remain consistent across different  demographic subgroups..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>From security in safety</h3>The model does not take into account any cybersecurity standards.<br>\n<h3 class='success title'>Standards in evaluation is</h3>IEEE<br>\n<h3 class='success title'>Standards in training is</h3>IEEE<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br>\n<h3 class='success title'>Update in training is</h3>yes<br>"
+    },
+    {
+      "question": "Is the model fair across subgroups?",
+      "answer": "<h3 class='success title'>From fairness in safety</h3>Fairness is defined as the property that the model’s prediction error rates (false positives and false negatives) remain consistent across different  demographic subgroups..<br>"
+    },
+    {
+      "question": "What are its known limitations?",
+      "answer": "<h3 class='success title'>From caveats in safety</h3>The Video FaceSwap detector is not future-proof and it may have low accuracy on new face manipulation methods without fine-tuning..<br>\n<h3 class='success title'>From environmental impact in performance</h3>Energy consumptions depends on input size and hardware..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>From security in safety</h3>The model does not take into account any cybersecurity standards.<br>\n<h3 class='success title'>From thresholds in performance</h3>AUC and AP do not need any calibration threshold.<br><h3 class='error'>Missing info</h3><span>Would have looked at hardware in use, but that is empty.</span><br><span>Would have looked at more in use, but that is empty.</span><br>"
+    },
+    {
+      "question": "What datasets was it trained and evaluated on?",
+      "answer": "<h3 class='success title'>From motivation in evaluation</h3>It also includes two 'in-the-wild' datasets helping us to measure the model's performance on real and unrestricted conditions..<br><h3 class='error'>Vague question</h3><span>There are 11 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "How was the model evaluated?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>The model was not tested for its bias across various demographic groups..<br>\n<h3 class='success title'>From methodology in performance</h3>For Celeb-DF-v3 and DF40, the scores presented are averaged across the different manipulation methods..<br>"
+    },
+    {
+      "question": "What standards does it follow?",
+      "answer": "<h3 class='success title'>From ethics in safety</h3>It is recommended to cross-validate your results with several deepfake detectors..<br>\n<h3 class='success title'>From methodology in performance</h3>For Celeb-DF-v3 and DF40, the scores presented are averaged across the different manipulation methods..<br>\n<h3 class='success title'>From security in safety</h3>The model does not take into account any cybersecurity standards.<br>\n<h3 class='success title'>Standards in evaluation is</h3>IEEE<br>\n<h3 class='success title'>Standards in training is</h3>IEEE<br>"
+    }
+  ],
+  "cross_field": [
+    {
+      "question": "Who created this model and what kind of model is it?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>"
+    },
+    {
+      "question": "What is the model's task and its intended use?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>"
+    },
+    {
+      "question": "When was the model released and what version is it?",
+      "answer": "<h3 class='success title'>Version in overview is</h3>1.0<br>"
+    },
+    {
+      "question": "What hardware and software do I need to run this model?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at hardware in use, but that is empty.</span><br>"
+    },
+    {
+      "question": "What are the risks and ethical concerns of using this model?",
+      "answer": "<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>"
+    },
+    {
+      "question": "What is the energy consumption and environmental impact?",
+      "answer": "<h3 class='success title'>From environmental impact in performance</h3>Energy consumptions depends on input size and hardware..<br>"
+    },
+    {
+      "question": "Who are the intended users and what oversight is required?",
+      "answer": "<h3 class='success title'>From ethics in safety</h3>It is recommended to cross-validate your results with several deepfake detectors..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>From security in safety</h3>The model does not take into account any cybersecurity standards.<br>\n<h3 class='success title'>From user groups in use</h3>Researchers, media professionals, fact-checkers.<br>\n<h3 class='success title'>Oversight in use is</h3>human-in-the-loop<br>\n<h3 class='success title'>Standards in evaluation is</h3>IEEE<br><h3 class='error'>Missing info</h3><span>Would have looked at software in use, but that is empty.</span><br>"
+    },
+    {
+      "question": "What are the caveats and out-of-scope uses?",
+      "answer": "<h3 class='success title'>From out of scope use in use</h3>Unsupervised decision making, Detection of AI-generated videos.<br>"
+    },
+    {
+      "question": "How was the model trained and evaluated?",
+      "answer": "<h3 class='success title'>From motivation in evaluation</h3>It also includes two 'in-the-wild' datasets helping us to measure the model's performance on real and unrestricted conditions..<br>"
+    },
+    {
+      "question": "What are the input/output formats, and how do I run the model?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br>\n<h3 class='success title'>From inputs outputs in use</h3>Input: Video  Output: Score in range \\[0,1\\] indicating whether the video has been manipulated or not.<br>\n<h3 class='success title'>From preprocessing in evaluation</h3>\\- Sample the video at 1 FPS  \\- Face detection  \\- Enlarge faces by a factor of 1.3  \\- Crop faces and resize to 224x224.<br>\n<h3 class='success title'>From preprocessing in training</h3>\\- Face detection   \\- Enlarge faces by a factor of 1.3   \\- Crop faces and resize to 224x224   \\- Data augmentation during training (random resized crop, random flipping, color jittering, cutout).<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br><h3 class='error'>Missing info</h3><span>Would have looked at citation in overview, but that is empty.</span><br><span>Would have looked at energy consumption in performance, but that is empty.</span><br><span>Would have looked at home in overview, but that is empty.</span><br><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "What technical or ethical standards does the model follow?",
+      "answer": "<h3 class='success title'>From ethics in safety</h3>It is recommended to cross-validate your results with several deepfake detectors..<br>"
+    },
+    {
+      "question": "What factors could degrade performance, and what are the known caveats?",
+      "answer": "<h3 class='success title'>From analysis in performance</h3>We present video-level AUC scores and Average Precision (AP) for each dataset..<br>\n<h3 class='success title'>From caveats in safety</h3>The Video FaceSwap detector is not future-proof and it may have low accuracy on new face manipulation methods without fine-tuning..<br>\n<h3 class='success title'>From environmental impact in performance</h3>Energy consumptions depends on input size and hardware..<br>\n<h3 class='success title'>From factors in use</h3>May present low accuracy on low resolution videos or videos with blurred and very small faces..<br>"
+    },
+    {
+      "question": "How do I install the software, and what hardware does it need?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at software in use, but that is empty.</span><br>"
+    },
+    {
+      "question": "Who should use this model, and what should they not do with it?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From ethics in safety</h3>It is recommended to cross-validate your results with several deepfake detectors..<br>\n<h3 class='success title'>From out of scope use in use</h3>Unsupervised decision making, Detection of AI-generated videos.<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>From security in safety</h3>The model does not take into account any cybersecurity standards.<br>\n<h3 class='success title'>From user groups in use</h3>Researchers, media professionals, fact-checkers.<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "What is the model's license and how do I cite it?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at citation in overview, but that is empty.</span><br>"
+    }
+  ],
+  "negative": [
+    {
+      "question": "What is the CO₂ emissions footprint of training?",
+      "answer": "<h3 class='success title'>From environmental impact in performance</h3>Energy consumptions depends on input size and hardware..<br>"
+    },
+    {
+      "question": "What is the training compute in FLOPs?",
+      "answer": "<h3 class='success title'>From preprocessing in training</h3>\\- Face detection   \\- Enlarge faces by a factor of 1.3   \\- Crop faces and resize to 224x224   \\- Data augmentation during training (random resized crop, random flipping, color jittering, cutout).<br><h3 class='error'>Missing info</h3><span>Would have looked at hardware in use, but that is empty.</span><br>"
+    },
+    {
+      "question": "How many individual samples were in the training dataset?",
+      "answer": "<h3 class='success title'>From analysis in performance</h3>We present video-level AUC scores and Average Precision (AP) for each dataset..<br>\n<h3 class='success title'>From datasets in evaluation</h3>Celeb-DF-v3, DF40, DeepSpeak-v1, DeepSpeak-v2, WDF, Deepfake-Eval-2024.<br>\n<h3 class='success title'>From datasets in training</h3>FaceForensics++, CelebDF-v2, DFDC, ForgeryNet.<br>\n<h3 class='success title'>From motivation in evaluation</h3>It also includes two 'in-the-wild' datasets helping us to measure the model's performance on real and unrestricted conditions..<br>\n<h3 class='success title'>From motivation in training</h3>These datasets cover a wide range of manipulation techniques spanning multiple context and filming conditions.<br><h3 class='error'>Missing info</h3><span>Would have looked at more in training, but that is empty.</span><br><span>Would have looked at parameters in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "What demographic groups were used for bias evaluation?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>The model was not tested for its bias across various demographic groups..<br>\n<h3 class='success title'>From ethics in safety</h3>It is recommended to cross-validate your results with several deepfake detectors..<br>Risk of false positives: mislabeling authentic videos as fake could undermine trust in legitimate sources or individuals.<br>\n<h3 class='success title'>From fairness in safety</h3>Fairness is defined as the property that the model’s prediction error rates (false positives and false negatives) remain consistent across different  demographic subgroups..<br>\n<h3 class='success title'>From user groups in use</h3>Researchers, media professionals, fact-checkers.<br>"
+    },
+    {
+      "question": "What is the model's robustness to adversarial attacks?",
+      "answer": "<h3 class='success title'>From ethics in safety</h3>It is recommended to cross-validate your results with several deepfake detectors..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>"
+    },
+    {
+      "question": "What is the model's water usage?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From environmental impact in performance</h3>Energy consumptions depends on input size and hardware..<br>\n<h3 class='success title'>From inputs outputs in use</h3>Input: Video  Output: Score in range \\[0,1\\] indicating whether the video has been manipulated or not.<br>\n<h3 class='success title'>From security in safety</h3>The model does not take into account any cybersecurity standards.<br><h3 class='error'>Missing info</h3><span>Would have looked at citation in overview, but that is empty.</span><br><span>Would have looked at energy consumption in performance, but that is empty.</span><br><span>Would have looked at hardware in use, but that is empty.</span><br><span>Would have looked at home in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "Who are the individual authors (not the institution)?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>The model was not tested for its bias across various demographic groups..<br>\n<h3 class='success title'>From contact in overview</h3>Stelios Mylonas: [smylonas@iti.gr](mailto:smylonas@iti.gr).<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From methodology in performance</h3>For Celeb-DF-v3 and DF40, the scores presented are averaged across the different manipulation methods..<br>\n<h3 class='success title'>From user groups in use</h3>Researchers, media professionals, fact-checkers.<br>\n<h3 class='success title'>License in overview is</h3>Apache-2.0<br>\n<h3 class='success title'>Oversight in use is</h3>human-in-the-loop<br><h3 class='error'>Missing info</h3><span>Would have looked at citation in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "Can you provide the citation in BibTeX format?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at citation in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "What is the inference latency per request?",
+      "answer": "<h3 class='success title'>From analysis in performance</h3>We present video-level AUC scores and Average Precision (AP) for each dataset..<br>\n<h3 class='success title'>From environmental impact in performance</h3>Energy consumptions depends on input size and hardware..<br>\n<h3 class='success title'>From metrics in performance</h3>Dataset                     AUC(%)     AP(%)       -----------------------------------------------------  *   Celeb-DF-v3:               86.7          89.9 *   DF40:                           87.6          95.1   *   DeepSpeak-v1:            91.5          93.4 *   DeepSpeak-v2:            77.5          77.4 *   WDF:                            94.9          93.6 *   DeepFake-Eval-2024:  62.8          92.8.<br>\n<h3 class='success title'>From thresholds in performance</h3>AUC and AP do not need any calibration threshold.<br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br><span>Would have looked at hardware in use, but that is empty.</span><br>"
+    },
+    {
+      "question": "What is the model file size on disk?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br>\n<h3 class='success title'>From inputs outputs in use</h3>Input: Video  Output: Score in range \\[0,1\\] indicating whether the video has been manipulated or not.<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br><span>Would have looked at home in overview, but that is empty.</span><br><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "What data privacy measures are in place?",
+      "answer": "<h3 class='success title'>From ethics in safety</h3>Risk of false positives: mislabeling authentic videos as fake could undermine trust in legitimate sources or individuals.<br>"
+    },
+    {
+      "question": "Is the model explainable / interpretable?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "Does the model handle audio / video modalities (if not applicable)?",
+      "answer": "<h3 class='success title'>From description in overview</h3>It focuses on the participants faces and by utilizing only the vision stream of the video (not the audio) determines whether a person’s face has been replaced or manipulated within the video..<br><h3 class='error'>Vague question</h3><span>There are 11 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "What is the model's update / changelog history?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br>\n<h3 class='success title'>Update in training is</h3>yes<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br><h3 class='error'>Missing info</h3><span>Would have looked at citation in overview, but that is empty.</span><br><span>Would have looked at home in overview, but that is empty.</span><br><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "Is there any additional information not covered elsewhere on this card?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at hardware in use, but that is empty.</span><br>"
+    }
+  ],
+  "ambiguous": [
+    {
+      "question": "Is this model safe?",
+      "answer": "<h3 class='success title'>From caveats in safety</h3>The Video FaceSwap detector is not future-proof and it may have low accuracy on new face manipulation methods without fine-tuning..<br>\n<h3 class='success title'>From ethics in safety</h3>It is recommended to cross-validate your results with several deepfake detectors..<br>Risk of false positives: mislabeling authentic videos as fake could undermine trust in legitimate sources or individuals.<br>\n<h3 class='success title'>From fairness in safety</h3>Fairness is defined as the property that the model’s prediction error rates (false positives and false negatives) remain consistent across different  demographic subgroups..<br>\n<h3 class='success title'>From out of scope use in use</h3>Unsupervised decision making, Detection of AI-generated videos.<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>From security in safety</h3>The model does not take into account any cybersecurity standards.<br>"
+    },
+    {
+      "question": "What are the limitations of this model?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br>\n<h3 class='success title'>From bias in performance</h3>The model was not tested for its bias across various demographic groups..<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From out of scope use in use</h3>Unsupervised decision making, Detection of AI-generated videos.<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>From security in safety</h3>The model does not take into account any cybersecurity standards.<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br><span>Would have looked at parameters in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "Is this model accurate?",
+      "answer": "<h3 class='success title'>From methodology in performance</h3>For Celeb-DF-v3 and DF40, the scores presented are averaged across the different manipulation methods..<br>"
+    },
+    {
+      "question": "Is this model good?",
+      "answer": "<h3 class='success title'>From caveats in safety</h3>The Video FaceSwap detector is not future-proof and it may have low accuracy on new face manipulation methods without fine-tuning..<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br>"
+    },
+    {
+      "question": "How does this model work?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From inputs outputs in use</h3>Input: Video  Output: Score in range \\[0,1\\] indicating whether the video has been manipulated or not.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>"
+    },
+    {
+      "question": "Is this model trustworthy?",
+      "answer": "<h3 class='success title'>From caveats in safety</h3>The Video FaceSwap detector is not future-proof and it may have low accuracy on new face manipulation methods without fine-tuning..<br>\n<h3 class='success title'>From ethics in safety</h3>It is recommended to cross-validate your results with several deepfake detectors..<br>\n<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br>\n<h3 class='success title'>From security in safety</h3>The model does not take into account any cybersecurity standards.<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br>"
+    },
+    {
+      "question": "What is this model's main contribution?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "Is this model reliable?",
+      "answer": "<h3 class='success title'>From caveats in safety</h3>The Video FaceSwap detector is not future-proof and it may have low accuracy on new face manipulation methods without fine-tuning..<br><h3 class='error'>Vague question</h3><span>There are 10 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "What makes this model novel?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "Is this model ready for production?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br>"
+    },
+    {
+      "question": "Is this model eco-friendly?",
+      "answer": "<h3 class='success title'>From environmental impact in performance</h3>Energy consumptions depends on input size and hardware..<br>"
+    },
+    {
+      "question": "How do I use this model?",
+      "answer": "<h3 class='error'>Vague question</h3><span>There are 10 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br><h3 class='error'>Missing info</h3><span>Would have looked at home in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "What should I know before using this model?",
+      "answer": "<h3 class='success title'>From caveats in safety</h3>The Video FaceSwap detector is not future-proof and it may have low accuracy on new face manipulation methods without fine-tuning..<br>"
+    },
+    {
+      "question": "Can I use this model commercially?",
+      "answer": "<h3 class='success title'>From caveats in safety</h3>The Video FaceSwap detector is not future-proof and it may have low accuracy on new face manipulation methods without fine-tuning..<br>\n<h3 class='success title'>From ethics in safety</h3>It is recommended to cross-validate your results with several deepfake detectors..<br>\n<h3 class='success title'>From security in safety</h3>The model does not take into account any cybersecurity standards.<br><h3 class='error'>Missing info</h3><span>Would have looked at hardware in use, but that is empty.</span><br>"
+    },
+    {
+      "question": "What are the main takeaways about this model?",
+      "answer": "<h3 class='success title'>From risks in safety</h3>Over-reliance on automated detection without human oversight could lead to unfair consequences in sensitive domains (e.g., journalism, legal evidence)..<br><h3 class='error'>Vague question</h3><span>There are 10 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    }
+  ]
+}
