@@ -288,7 +288,7 @@ class ModelCardEntry(contextlib.AbstractContextManager):
                     emissions = tracker.stop()
                     emissions_data = json.loads(tracker.final_emissions_data.toJSON())
                     job_tracker.delete(job_name, emissions_data)
-                    logger.info(f'Card feild embeddings computed. Energy consumed: {emissions_data['cpu_energy']} kWh {emissions_data['emissions']} kg CO₂eq')
+                    logger.info(f'Card feild embeddings computed. Energy consumed: {emissions_data["cpu_energy"]} kWh {emissions_data["emissions"]} kg CO₂eq')
                 job = Job( worker = 'chat', operation = 'answer', data={})
                 self.__chat_answer_counter += 1
                 job_name = f'chat_answer_{self.__chat_answer_counter}'
@@ -335,7 +335,7 @@ class ModelCardEntry(contextlib.AbstractContextManager):
                             emissions = tracker.stop()
                             emissions_data = json.loads(tracker.final_emissions_data.toJSON())
                             job_tracker.delete(job_name, emissions_data)
-                            logger.info(f'Chat answer energy consumed: {emissions_data['cpu_energy']} kWh {emissions_data['emissions']} kg CO₂eq')
+                            logger.info(f'Chat answer energy consumed: {emissions_data["cpu_energy"]} kWh {emissions_data["emissions"]} kg CO₂eq')
                             break
                         n = k
                         continue
