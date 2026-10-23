@@ -1,9 +1,8 @@
-# generate_predictions.py
+# run_chat.py
 import json
-import importlib.util
 import time
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 
 from aicard.card.model_card import ModelCard
 from aicard.service.server_card_entry import ModelCardEntry
@@ -20,6 +19,9 @@ job_tracker = CardJobsTracker()
 
 QUESTION_TIMEOUT_SEC = 300  # 5 minutes per question
 POLL_INTERVAL_SEC = 0.5
+
+# Shared ground-truth file: one file for all cards
+GT_FILE = dataset / "gt.json"
 
 
 def convert_structure(source: dict, template: dict) -> dict:
@@ -49,7 +51,9 @@ def ask_question(md_entry, question: str) -> str:
     started = time.time()
     while True:
         if time.time() - started > QUESTION_TIMEOUT_SEC:
-            raise TimeoutError(f"Question timed out after {QUESTION_TIMEOUT_SEC}s: {question}")
+            raise TimeoutError(
+                f"Question timed out after {QUESTION_TIMEOUT_SEC}s: {question}"
+            )
         if md_entry.check_completion():
             time.sleep(POLL_INTERVAL_SEC)
             continue
@@ -58,11 +62,21 @@ def ask_question(md_entry, question: str) -> str:
         return answer
 
 
-# Load questions
-spec_q = importlib.util.spec_from_file_location("evaluation_questions", "evaluation_questions.py")
-mod_q = importlib.util.module_from_spec(spec_q)
-spec_q.loader.exec_module(mod_q)
-QUESTIONS = mod_q.QUESTIONS
+# ── Load questions from the shared gt.json ────────────────────────────
+with GT_FILE.open(encoding="utf-8") as f:
+    gt = json.load(f)
+
+# gt.json structure:
+# {
+#   "overview":   [{"question": "...", "target_fields": [...]}, ...],
+#   "use":        [{"question": "...", "target_fields": [...]}, ...],
+#   ...
+# }
+# We only need the question strings for prediction generation.
+QUESTIONS = {
+    category: [entry["question"] for entry in entries]
+    for category, entries in gt.items()
+}
 
 
 matcher = SemanticMatcher(
@@ -93,9 +107,10 @@ for folder in sorted(dataset.iterdir(), key=numeric_key):
     model_predictions = {
         "_meta": {
             "model_card": str(json_file),
-            "started_at": datetime.utcnow().isoformat() + "Z",
+            "started_at": datetime.now(timezone.utc).isoformat(),
             "matcher": "sentence-transformers/all-mpnet-base-v2",
             "matching_strictness": 0.5,
+            "questions_source": str(GT_FILE),
         }
     }
 
@@ -116,7 +131,7 @@ for folder in sorted(dataset.iterdir(), key=numeric_key):
             )
         model_predictions[category] = category_predictions
 
-    model_predictions["_meta"]["finished_at"] = datetime.utcnow().isoformat() + "Z"
+    model_predictions["_meta"]["finished_at"] = datetime.now(timezone.utc).isoformat()
 
     out_file = predictions_dir / f"{folder.name}.json"
     with out_file.open("w", encoding="utf-8") as f:

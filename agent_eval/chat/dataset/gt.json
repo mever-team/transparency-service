@@ -1,0 +1,366 @@
+{
+  "overview": [
+    {
+      "question": "What is the name of this model?",
+      "target_fields": ["overview.name"]
+    },
+    {
+      "question": "What is this model used for?",
+      "target_fields": ["use.use_cases"]
+    },
+    {
+      "question": "Who created this model?",
+      "target_fields": ["overview.creator"]
+    },
+    {
+      "question": "When was this model released?",
+      "target_fields": ["overview.date"]
+    },
+    {
+      "question": "What version is this model?",
+      "target_fields": ["overview.version"]
+    },
+    {
+      "question": "What is the type of the model?",
+      "target_fields": ["overview.type"]
+    },
+    {
+      "question": "How many parameters does this model have?",
+      "target_fields": ["overview.parameters"]
+    },
+    {
+      "question": "What is the task of this model?",
+      "target_fields": ["overview.task"]
+    },
+    {
+      "question": "What is the license of this model?",
+      "target_fields": ["overview.license"]
+    },
+    {
+      "question": "Where can I find this model?",
+      "target_fields": ["overview.home"]
+    },
+    {
+      "question": "Who can I contact about this model?",
+      "target_fields": ["overview.contact"]
+    },
+    {
+      "question": "How should I cite this model?",
+      "target_fields": ["overview.citation"]
+    }
+  ],
+  "use": [
+    {
+      "question": "What are the intended use cases?",
+      "target_fields": ["use.use_cases"]
+    },
+    {
+      "question": "What level of human oversight is required?",
+      "target_fields": ["use.oversight"]
+    },
+    {
+      "question": "Who are the intended user groups?",
+      "target_fields": ["use.user_groups"]
+    },
+    {
+      "question": "What is this model not intended for?",
+      "target_fields": ["use.out_of_scope_use"]
+    },
+    {
+      "question": "What software does this model require?",
+      "target_fields": ["use.software"]
+    },
+    {
+      "question": "How do I run / use this model?",
+      "target_fields": ["use.instructions"]
+    },
+    {
+      "question": "What are the inputs and outputs of the model?",
+      "target_fields": ["use.inputs_outputs"]
+    },
+    {
+      "question": "What factors affect the model's performance?",
+      "target_fields": ["use.factors"]
+    },
+    {
+      "question": "What hardware is required?",
+      "target_fields": ["use.hardware"]
+    }
+  ],
+  "training": [
+    {
+      "question": "What datasets were used for training?",
+      "target_fields": ["training.datasets"]
+    },
+    {
+      "question": "Why were these training datasets chosen?",
+      "target_fields": ["training.motivation"]
+    },
+    {
+      "question": "What preprocessing was applied during training?",
+      "target_fields": ["training.preprocessing"]
+    },
+    {
+      "question": "What standards were followed during training?",
+      "target_fields": ["training.standards"]
+    },
+    {
+      "question": "Is the training data up to date?",
+      "target_fields": ["training.update"]
+    }
+  ],
+  "evaluation": [
+    {
+      "question": "What datasets were used for evaluation?",
+      "target_fields": ["evaluation.datasets"]
+    },
+    {
+      "question": "Why were these evaluation datasets chosen?",
+      "target_fields": ["evaluation.motivation"]
+    },
+    {
+      "question": "What preprocessing was applied during evaluation?",
+      "target_fields": ["evaluation.preprocessing"]
+    },
+    {
+      "question": "What standards were followed during evaluation?",
+      "target_fields": ["evaluation.standards"]
+    },
+    {
+      "question": "Is the evaluation data up to date?",
+      "target_fields": ["evaluation.update"]
+    }
+  ],
+  "performance": [
+    {
+      "question": "What does the performance analysis say?",
+      "target_fields": ["performance.analysis"]
+    },
+    {
+      "question": "What are the benchmark metrics?",
+      "target_fields": ["performance.metrics"]
+    },
+    {
+      "question": "What decision thresholds are used?",
+      "target_fields": ["performance.thresholds"]
+    },
+    {
+      "question": "What is the evaluation methodology?",
+      "target_fields": ["performance.methodology"]
+    },
+    {
+      "question": "What is the energy consumption?",
+      "target_fields": ["performance.environmental_impact"]
+    },
+    {
+      "question": "What is the environmental impact?",
+      "target_fields": ["performance.environmental_impact"]
+    },
+    {
+      "question": "Was the model tested for bias?",
+      "target_fields": ["performance.bias"]
+    }
+  ],
+  "safety": [
+    {
+      "question": "What are the ethical considerations?",
+      "target_fields": ["safety.ethics"]
+    },
+    {
+      "question": "How is fairness defined / assessed?",
+      "target_fields": ["safety.fairness"]
+    },
+    {
+      "question": "What are the risks of this model?",
+      "target_fields": ["safety.risks"]
+    },
+    {
+      "question": "Is the model secure / compliant with security standards?",
+      "target_fields": ["safety.security"]
+    },
+    {
+      "question": "What are the caveats of this model?",
+      "target_fields": ["safety.caveats"]
+    }
+  ],
+  "paraphrased": [
+    {
+      "question": "What is the purpose of this model?",
+      "target_fields": ["use.use_cases"]
+    },
+    {
+      "question": "What does this model do?",
+      "target_fields": ["overview.description"]
+    },
+    {
+      "question": "Which organization built this model?",
+      "target_fields": ["overview.creator"]
+    },
+    {
+      "question": "When did this model come out?",
+      "target_fields": ["overview.date"]
+    },
+    {
+      "question": "What kind of architecture is used?",
+      "target_fields": ["overview.type"]
+    },
+    {
+      "question": "What is the size of the model?",
+      "target_fields": ["overview.parameters"]
+    },
+    {
+      "question": "Where do I download it from?",
+      "target_fields": ["overview.home"]
+    },
+    {
+      "question": "Who should I email about it?",
+      "target_fields": ["overview.contact"]
+    },
+    {
+      "question": "What Python packages do I need?",
+      "target_fields": ["use.software"]
+    },
+    {
+      "question": "What GPU do I need to run it?",
+      "target_fields": ["use.hardware"]
+    },
+    {
+      "question": "What does the model take as input, and what does it return?",
+      "target_fields": ["use.inputs_outputs"]
+    },
+    {
+      "question": "How do I load and run the model on data?",
+      "target_fields": ["use.instructions"]
+    },
+    {
+      "question": "What could make its performance worse?",
+      "target_fields": ["use.factors"]
+    },
+    {
+      "question": "What should this model not be used for?",
+      "target_fields": ["use.out_of_scope_use"]
+    },
+    {
+      "question": "Who is this model for?",
+      "target_fields": ["use.user_groups"]
+    },
+    {
+      "question": "Does a human need to review the outputs?",
+      "target_fields": ["use.oversight"]
+    },
+    {
+      "question": "What does it say about its accuracy?",
+      "target_fields": ["performance.metrics"]
+    },
+    {
+      "question": "What threshold is used to make predictions?",
+      "target_fields": ["performance.thresholds"]
+    },
+    {
+      "question": "What could go wrong if I use this model?",
+      "target_fields": ["safety.risks"]
+    },
+    {
+      "question": "Are there ethical concerns with using this?",
+      "target_fields": ["safety.ethics"]
+    },
+    {
+      "question": "How much energy does it consume?",
+      "target_fields": ["performance.environmental_impact"]
+    },
+    {
+      "question": "Is it compliant with any security standard?",
+      "target_fields": ["safety.security"]
+    },
+    {
+      "question": "Is the model fair across subgroups?",
+      "target_fields": ["safety.fairness"]
+    },
+    {
+      "question": "What are its known limitations?",
+      "target_fields": ["safety.caveats"]
+    },
+    {
+      "question": "What datasets was it trained and evaluated on?",
+      "target_fields": ["training.datasets", "evaluation.datasets"]
+    },
+    {
+      "question": "How was the model evaluated?",
+      "target_fields": ["performance.methodology", "evaluation.preprocessing"]
+    },
+    {
+      "question": "What standards does it follow?",
+      "target_fields": ["training.standards", "evaluation.standards"]
+    }
+  ],
+  "cross_field": [
+    {
+      "question": "Who created this model and what kind of model is it?",
+      "target_fields": ["overview.creator", "overview.type"]
+    },
+    {
+      "question": "What is the model's task and its intended use?",
+      "target_fields": ["overview.task", "use.use_cases"]
+    },
+    {
+      "question": "When was the model released and what version is it?",
+      "target_fields": ["overview.date", "overview.version"]
+    },
+    {
+      "question": "What hardware and software do I need to run this model?",
+      "target_fields": ["use.hardware", "use.software"]
+    },
+    {
+      "question": "What are the risks and ethical concerns of using this model?",
+      "target_fields": ["safety.risks", "safety.ethics"]
+    },
+    {
+      "question": "What is the energy consumption and environmental impact?",
+      "target_fields": ["performance.environmental_impact"]
+    },
+    {
+      "question": "Who are the intended users and what oversight is required?",
+      "target_fields": ["use.user_groups", "use.oversight"]
+    },
+    {
+      "question": "What are the caveats and out-of-scope uses?",
+      "target_fields": ["safety.caveats", "use.out_of_scope_use"]
+    },
+    {
+      "question": "How was the model trained and evaluated?",
+      "target_fields": [
+        "training.datasets",
+        "training.motivation",
+        "training.preprocessing",
+        "evaluation.datasets",
+        "evaluation.motivation",
+        "evaluation.preprocessing",
+        "performance.methodology"
+      ]
+    },
+    {
+      "question": "What are the input/output formats, and how do I run the model?",
+      "target_fields": ["use.inputs_outputs", "use.instructions"]
+    },
+    {
+      "question": "What technical or ethical standards does the model follow?",
+      "target_fields": ["training.standards", "evaluation.standards", "safety.ethics"]
+    },
+    {
+      "question": "What factors could degrade performance, and what are the known caveats?",
+      "target_fields": ["use.factors", "safety.caveats"]
+    },
+    {
+      "question": "How do I install the software, and what hardware does it need?",
+      "target_fields": ["use.software", "use.hardware"]
+    },
+    {
+      "question": "Who should use this model, and what should they not do with it?",
+      "target_fields": ["use.user_groups", "use.out_of_scope_use"]
+    },
+    {
+      "question": "What is the model's license and how do I cite it?",
+      "target_fields": ["overview.license", "overview.citation"]
+    }
+  ]
+}

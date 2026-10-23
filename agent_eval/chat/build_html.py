@@ -23,17 +23,11 @@ def bar(score):
     return f'<span class="bar"><span style="width:{w:.1f}%"></span></span>'
 
 def status_pill(q):
-    if q.get("score") == 1.0: return pill("correct", "correct")
-    if q.get("score") == 0.0: return pill("wrong", "miss")
+    if q.get("correct"): return pill("correct", "correct")
+    if q.get("wrong"): return pill("wrong", "miss")
     n_h = len(q.get("hit") or [])
-    n_t = q.get("n_targets") or 0
+    n_t = len(q.get("targets") or [])
     return pill(f"partial {n_h}/{n_t}", "partial")
-
-def question_badges(q):
-    out = []
-    if q.get("vague_question"): out.append(pill("vague question", "vague"))
-    if q.get("missing_info"): out.append(pill("missing info", "missing"))
-    return "".join(out)
 
 def render_question(q):
     parts = ['<div class="q">']
@@ -41,7 +35,6 @@ def render_question(q):
         '<div class="q-head">'
         + status_pill(q)
         + f'<span class="q-text">{esc(q.get("question"))}</span>'
-        + question_badges(q)
         + '</div>'
     )
     parts.append('<div class="q-fields">')
@@ -53,30 +46,59 @@ def render_question(q):
         parts.append('<div class="row"><span class="lbl">missed</span>' + "".join(chip(t, "miss") for t in q["missed"]) + '</div>')
     if q.get("off_target"):
         parts.append('<div class="row"><span class="lbl">off-target</span>' + "".join(chip(t, "off") for t in q["off_target"]) + '</div>')
-    if q.get("unparsed_headers"):
-        parts.append('<div class="row"><span class="lbl">unparsed</span>' + "".join(chip(u, "off") for u in q["unparsed_headers"]) + '</div>')
     parts.append('</div></div>')
     return "".join(parts)
 
 def render_category_block(cat, items):
     n = len(items)
     if n == 0: return ""
-    c = sum(1 for r in items if r.get("score") == 1.0)
-    p = sum(1 for r in items if r.get("score") and r.get("score") < 1.0)
-    w = sum(1 for r in items if r.get("score") == 0.0)
-    v = sum(1 for r in items if r.get("vague_question"))
-    
+    c = sum(1 for r in items if r.get("correct"))
+    p = sum(1 for r in items if r.get("partial"))
+    w = sum(1 for r in items if r.get("wrong"))
+
     summary = f'{esc(cat)} — {c} correct · {p} partial · {w} wrong'
-    if v: summary += f' · {v} vague'
-    
     body = "".join(render_question(q) for q in items)
     return f'<details><summary>{summary}</summary><div class="qlist">{body}</div></details>'
+
+# ------------------------------------------------------------------ derived aggregates
+
+def compute_per_field(models_data):
+    """Aggregate per-field recall from each model's per_question data."""
+    stats = defaultdict(lambda: {"n_questions": 0, "n_hit": 0})
+    for data in models_data:
+        for items in data.get("per_question", {}).values():
+            for r in items:
+                for t in r.get("targets", []):
+                    stats[t]["n_questions"] += 1
+                    if t in r.get("hit", []):
+                        stats[t]["n_hit"] += 1
+    return {
+        fid: {
+            "n_questions": s["n_questions"],
+            "n_hit": s["n_hit"],
+            "recall": s["n_hit"] / s["n_questions"] if s["n_questions"] else None,
+        }
+        for fid, s in sorted(stats.items())
+    }
+
+def compute_confusions(models_data, limit=50):
+    """Aggregate (missed_target → returned_off_target) pairs."""
+    pairs = defaultdict(int)
+    for data in models_data:
+        for items in data.get("per_question", {}).values():
+            for r in items:
+                for t in r.get("missed", []):
+                    for o in r.get("off_target", []):
+                        pairs[(t, o)] += 1
+    return [
+        {"missed": t, "returned": o, "n": n}
+        for (t, o), n in sorted(pairs.items(), key=lambda kv: -kv[1])[:limit]
+    ]
 
 # ------------------------------------------------------------------ tables
 
 def per_category_table(per_cat):
     rows = []
-    # Sort by category name, but keep cross_field at the end
     cats = sorted(per_cat.keys(), key=lambda x: (x == "cross_field", x))
     for cat in cats:
         s = per_cat[cat]
@@ -86,9 +108,9 @@ def per_category_table(per_cat):
             '<tr>'
             f'<td>{esc(cat)}</td>'
             f'<td class="num">{s["n_questions"]}</td>'
-            f'<td class="num">{s["questions_correct"]}</td>'
-            f'<td class="num">{s["questions_partial"]}</td>'
-            f'<td class="num">{s["questions_wrong"]}</td>'
+            f'<td class="num">{s["correct"]}</td>'
+            f'<td class="num">{s["partial"]}</td>'
+            f'<td class="num">{s["wrong"]}</td>'
             f'<td class="num">{bar(s["avg_score"])}{pct(s["avg_score"])}</td>'
             '</tr>'
         )
@@ -142,32 +164,37 @@ def confusion_table(confusions, limit=None):
 # ------------------------------------------------------------------ aggregation & layout
 
 def aggregate_categories(summary):
-    """Sum up per_category stats across all models for the top overview."""
     agg = defaultdict(lambda: {
-        "n_questions": 0, "questions_correct": 0, "questions_partial": 0,
-        "questions_wrong": 0, "total_score": 0.0, "avg_score": 0.0
+        "n_questions": 0, "correct": 0, "partial": 0, "wrong": 0,
+        "total_score": 0.0, "avg_score": 0.0,
     })
     for mdata in summary.get("per_model", {}).values():
         for cat, cdata in mdata.get("per_category", {}).items():
             agg[cat]["n_questions"] += cdata.get("n_questions", 0)
-            agg[cat]["questions_correct"] += cdata.get("questions_correct", 0)
-            agg[cat]["questions_partial"] += cdata.get("questions_partial", 0)
-            agg[cat]["questions_wrong"] += cdata.get("questions_wrong", 0)
-            agg[cat]["total_score"] += cdata.get("total_score", 0.0)
-    
+            agg[cat]["correct"] += cdata.get("correct", 0)
+            agg[cat]["partial"] += cdata.get("partial", 0)
+            agg[cat]["wrong"] += cdata.get("wrong", 0)
+            agg[cat]["total_score"] += cdata.get("avg_score", 0.0) * cdata.get("n_questions", 0)
+
     for cat, data in agg.items():
         n = data["n_questions"]
         data["avg_score"] = (data["total_score"] / n) if n else 0.0
-        
+
     return dict(agg)
 
 def render_model(mid, data):
     ov = data["overall"]
     meta_bits = []
-    if data.get("_meta", {}).get("model_card_folder"):
-        meta_bits.append(f'card: <code>{esc(data["_meta"]["model_card_folder"])}</code>')
-    
-    cat_blocks = "".join(render_category_block(cat, data["per_question"].get(cat, [])) for cat in data["per_question"])
+    if data.get("_meta", {}).get("card"):
+        meta_bits.append(f'card: <code>{esc(data["_meta"]["card"])}</code>')
+
+    per_field = compute_per_field([data])
+    confusions = compute_confusions([data])
+
+    cat_blocks = "".join(
+        render_category_block(cat, data["per_question"].get(cat, []))
+        for cat in data["per_question"]
+    )
 
     return (
         f'<section id="model-{esc(mid)}">'
@@ -176,13 +203,13 @@ def render_model(mid, data):
         '<div class="cards">'
         f'<div class="card"><div class="num">{ov["n_questions"]}</div><div class="lbl">questions</div></div>'
         f'<div class="card"><div class="num">{pct(ov["avg_score"])}</div><div class="lbl">avg score</div></div>'
-        f'<div class="card"><div class="num">{ov["questions_correct"]}</div><div class="lbl">correct</div></div>'
-        f'<div class="card"><div class="num">{ov["questions_partial"]}</div><div class="lbl">partial</div></div>'
-        f'<div class="card"><div class="num">{ov["questions_wrong"]}</div><div class="lbl">wrong</div></div>'
+        f'<div class="card"><div class="num">{ov["correct"]}</div><div class="lbl">correct</div></div>'
+        f'<div class="card"><div class="num">{ov["partial"]}</div><div class="lbl">partial</div></div>'
+        f'<div class="card"><div class="num">{ov["wrong"]}</div><div class="lbl">wrong</div></div>'
         '</div>'
         '<h3>Per category</h3>' + per_category_table(data["per_category"]) +
-        '<h3>Per field</h3>' + per_field_table(data["per_field"]) +
-        '<h3>Confusion pairs</h3>' + confusion_table(data["confusions"]) +
+        '<h3>Per field</h3>' + per_field_table(per_field) +
+        '<h3>Confusion pairs</h3>' + confusion_table(confusions) +
         '<h3>Per question</h3>' + cat_blocks +
         '</section>'
     )
@@ -190,7 +217,7 @@ def render_model(mid, data):
 def render_overview(summary):
     ov = summary["overall"]
     per_model = summary["per_model"]
-    
+
     model_rows = []
     for mid in sorted(per_model, key=lambda x: (not str(x).isdigit(), str(x).zfill(4))):
         s = per_model[mid]["overall"]
@@ -198,25 +225,28 @@ def render_overview(summary):
             '<tr>'
             f'<td><a href="#model-{esc(mid)}">Model {esc(mid)}</a></td>'
             f'<td class="num">{s["n_questions"]}</td>'
-            f'<td class="num">{s["questions_correct"]}</td>'
-            f'<td class="num">{s["questions_partial"]}</td>'
-            f'<td class="num">{s["questions_wrong"]}</td>'
+            f'<td class="num">{s["correct"]}</td>'
+            f'<td class="num">{s["partial"]}</td>'
+            f'<td class="num">{s["wrong"]}</td>'
             f'<td class="num">{bar(s["avg_score"])}{pct(s["avg_score"])}</td>'
             '</tr>'
         )
 
     cat_agg = aggregate_categories(summary)
+    all_data = list(per_model.values())
+    per_field = compute_per_field(all_data)
+    confusions = compute_confusions(all_data)
 
     return (
         '<section id="overview">'
         '<h2>Overview <a class="toplink" href="#top">↑ top</a></h2>'
-        
+
         '<div class="cards">'
         f'<div class="card"><div class="num">{ov["n_questions"]}</div><div class="lbl">questions</div></div>'
         f'<div class="card"><div class="num">{pct(ov["avg_score"])}</div><div class="lbl">avg score</div></div>'
-        f'<div class="card"><div class="num">{ov["questions_correct"]}</div><div class="lbl">correct</div></div>'
-        f'<div class="card"><div class="num">{ov["questions_partial"]}</div><div class="lbl">partial</div></div>'
-        f'<div class="card"><div class="num">{ov["questions_wrong"]}</div><div class="lbl">wrong</div></div>'
+        f'<div class="card"><div class="num">{ov["correct"]}</div><div class="lbl">correct</div></div>'
+        f'<div class="card"><div class="num">{ov["partial"]}</div><div class="lbl">partial</div></div>'
+        f'<div class="card"><div class="num">{ov["wrong"]}</div><div class="lbl">wrong</div></div>'
         '</div>'
 
         '<h3>Per question type (across all models)</h3>'
@@ -228,9 +258,9 @@ def render_overview(summary):
         '<th class="num">correct</th><th class="num">partial</th><th class="num">wrong</th>'
         '<th class="num">avg score</th>'
         '</tr></thead><tbody>' + "".join(model_rows) + '</tbody></table>'
-        
-        '<h3>Per field (across all models)</h3>' + per_field_table(summary.get("per_field", {})) +
-        '<h3>Confusion pairs (across all models)</h3>' + confusion_table(summary.get("confusions", []), limit=30) +
+
+        '<h3>Per field (across all models)</h3>' + per_field_table(per_field) +
+        '<h3>Confusion pairs (across all models)</h3>' + confusion_table(confusions, limit=30) +
         '</section>'
     )
 
@@ -261,8 +291,6 @@ tr:hover td { background: #fafbfc; }
 .pill-correct { background: #dafbe1; color: #1a7f37; }
 .pill-partial { background: #fff8c5; color: #7d4e00; }
 .pill-miss    { background: #ffebe9; color: #cf222e; }
-.pill-vague   { background: #fbefff; color: #8250df; }
-.pill-missing { background: #ddf4ff; color: #0969da; }
 .chip { display: inline-block; padding: 1px 7px; margin: 1px 3px 1px 0; border-radius: 4px; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 11.5px; }
 .chip-target { background: #eaeef2; color: #1f2328; }
 .chip-hit    { background: #dafbe1; color: #1a7f37; }
@@ -291,7 +319,10 @@ def main():
         raise SystemExit(f"missing {summary_path}; run score_fields.py first")
     summary = json.loads(summary_path.read_text(encoding="utf-8"))
 
-    model_files = sorted([p for p in SCORES.glob("*.json") if p.stem.isdigit()], key=lambda p: int(p.stem))
+    model_files = sorted(
+        [p for p in SCORES.glob("*.json") if p.stem.isdigit()],
+        key=lambda p: int(p.stem),
+    )
 
     model_blocks = []
     for p in model_files:

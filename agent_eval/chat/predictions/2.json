@@ -1,10 +1,11 @@
 {
   "_meta": {
     "model_card": "dataset/2/ITW-SPAI.json",
-    "started_at": "2026-10-23T10:28:46.114804Z",
+    "started_at": "2026-10-23T13:32:51.570570+00:00",
     "matcher": "sentence-transformers/all-mpnet-base-v2",
     "matching_strictness": 0.5,
-    "finished_at": "2026-10-23T10:36:14.914903Z"
+    "questions_source": "dataset/gt.json",
+    "finished_at": "2026-10-23T13:37:58.172895+00:00"
   },
   "overview": [
     {
@@ -360,130 +361,6 @@
     {
       "question": "What is the model's license and how do I cite it?",
       "answer": "<h3 class='success title'>From license in overview</h3>Training and evaluation datasets keep their own licences..<br>\n<h3 class='success title'>From software in use</h3>*   Third-party software and data keep their original licences..<br>"
-    }
-  ],
-  "negative": [
-    {
-      "question": "What is the CO₂ emissions footprint of training?",
-      "answer": "<h3 class='success title'>From environmental impact in performance</h3>For reference, training the original SPAI on the 360K-image LDM set took about 50 hours on a single NVIDIA L40S GPU; ITW-SPAI uses a training set about four times larger and a larger backbone, so its training cost is expected to be higher.<br>The ITW-SM study states that all its experiments, covering several detectors and training configurations, took more than 1,000 GPU hours in total.<br>"
-    },
-    {
-      "question": "What is the training compute in FLOPs?",
-      "answer": "<h3 class='success title'>From preprocessing in training</h3>*   Augmentations, each applied with probability 0.5: horizontal and vertical flips, rotation of up to 90°, Gaussian blur (kernel 3–9, sigma 0.01–0.5), Gaussian noise and JPEG compression (quality 50–100).<br>"
-    },
-    {
-      "question": "How many individual samples were in the training dataset?",
-      "answer": "<h3 class='success title'>From datasets in training</h3>How the subset was selected is not reported.<br>"
-    },
-    {
-      "question": "What demographic groups were used for bias evaluation?",
-      "answer": "<h3 class='success title'>From bias in performance</h3>skin tone, gender, age) has not been evaluated.<br>"
-    },
-    {
-      "question": "What is the model's robustness to adversarial attacks?",
-      "answer": "<h3 class='success title'>From security in safety</h3>Robustness to adversarial attacks has not been evaluated.<br><h3 class='error'>Vague question</h3><span>There are 26 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
-    },
-    {
-      "question": "What is the model's water usage?",
-      "answer": "<h3 class='success title'>From environmental impact in performance</h3>Not measured for ITW-SPAI, and no energy or CO2 figures are reported.<br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
-    },
-    {
-      "question": "Who are the individual authors (not the institution)?",
-      "answer": "<h3 class='success title'>From bias in performance</h3>Performance across demographic groups (e.g.<br>\n<h3 class='success title'>From creator in overview</h3>Developed within the ITW-SM study (Konstantinidou, Karageorgiou, Koutlis, Papadopoulou, Schinas and Papadopoulos, MAD '26), building on SPAI by Karageorgiou, Papadopoulos, Kompatsiaris and Gavves (CVPR 2025)..<br>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>"
-    },
-    {
-      "question": "Can you provide the citation in BibTeX format?",
-      "answer": "<h3 class='success title'>From citation in overview</h3>``` @inproceedings{konstantinidou2026navigating,   title={Navigating the Challenges of AI-Generated Image Detection in the Wild: What Truly Matters?},   author={Konstantinidou, Despina and Karageorgiou, Dimitrios and Koutlis, Christos and Papadopoulou, Olga and Schinas, Emmanouil and Papadopoulos, Symeon},   booktitle={The 5th ACM International Workshop on Multimedia AI against Disinformation (MAD '26)},   year={2026},   doi={10.1145/3810988.3812665},   url={https://arxiv.org/abs/2507.10236} }  @inproceedings{karageorgiou2025any,   title={Any-resolution ai-generated image detection by spectral learning},   author={Karageorgiou, Dimitrios and Papadopoulos, Symeon and Kompatsiaris, Ioannis and Gavves, Efstratios},   booktitle={Proceedings of the Computer Vision and Pattern Recognition Conference},   pages={18706--18717},   year={2025} } ```.<br>\n<h3 class='success title'>From creator in overview</h3>Developed within the ITW-SM study (Konstantinidou, Karageorgiou, Koutlis, Papadopoulou, Schinas and Papadopoulos, MAD '26), building on SPAI by Karageorgiou, Papadopoulos, Kompatsiaris and Gavves (CVPR 2025)..<br><h3 class='error'>Vague question</h3><span>There are 10 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
-    },
-    {
-      "question": "What is the inference latency per request?",
-      "answer": "<h3 class='success title'>From thresholds in performance</h3>The rates were measured on the same data the thresholds were set on and can differ on other platforms, processing chains or content.<br>"
-    },
-    {
-      "question": "What is the model file size on disk?",
-      "answer": "<h3 class='success title'>From inputs outputs in use</h3>It must be at least 256×256 pixels (smaller images are rejected with BAD\\_IMAGE\\_TOO\\_LOW\\_RESOLUTION); the service sets no maximum image size for this model.<br>"
-    },
-    {
-      "question": "What data privacy measures are in place?",
-      "answer": "<h3 class='success title'>From ethics in safety</h3>*   Recommended mitigations: keep a human expert in charge of every decision; report the evidence level rather than a binary verdict; corroborate with independent evidence such as provenance checks, reverse image search and detectors from other families; analyse the original file; explain the model's limits whenever its output is cited in public..<br><h3 class='error'>Vague question</h3><span>There are 39 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
-    },
-    {
-      "question": "Is the model explainable / interpretable?",
-      "answer": "<h3 class='success title'>From more in overview</h3>*   Funding: Horizon Europe projects vera.ai (GA 101070093), AI-CODE (GA 101135437) and ELIAS (GA 101120237); computing resources from GRNET..<br>"
-    },
-    {
-      "question": "Does the model handle audio / video modalities (if not applicable)?",
-      "answer": "<h3 class='success title'>From out of scope use in use</h3>*   Video and audio.<br><h3 class='error'>Vague question</h3><span>There are 14 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
-    },
-    {
-      "question": "What is the model's update / changelog history?",
-      "answer": "<h3 class='success title'>Date in overview is</h3>2025-02-01<br>\n<h3 class='success title'>From creator in overview</h3>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>\n<h3 class='success title'>From factors in use</h3>*   Processing history: recompression, downscaling, cropping, filters and repeated re-sharing weaken or erase the low-level traces the model relies on.<br>\n<h3 class='success title'>From inputs outputs in use</h3>*   \"version\": the model version (currently \"1\"); \"completed\": true when the analysis succeeded.<br>Example report (abridged):  ``` {\"status\": \"COMPLETED\", \"itw_spai_mever_report\": {\"version\": \"1\", \"completed\": true, \"prediction\": 0.99976, \"label\": \"VERY_STRONG_EVIDENCE\"}} ```.<br>On failure the report contains completed: false, a \"message\", an \"error\\_code\" such as INTERNAL\\_ERROR\\_INFERENCE, and an \"error\\_id\".<br>\n<h3 class='success title'>From more in overview</h3>*   Funding: Horizon Europe projects vera.ai (GA 101070093), AI-CODE (GA 101135437) and ELIAS (GA 101120237); computing resources from GRNET..<br>\n<h3 class='success title'>From software in use</h3>*   Deployed model: nothing to install.<br>\n<h3 class='success title'>Home in overview is</h3>[https://docs.mever.gr/deepfake](https://docs.mever.gr/deepfake)<br>\n<h3 class='success title'>Update in evaluation is</h3>no<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br>"
-    },
-    {
-      "question": "Is there any additional information not covered elsewhere on this card?",
-      "answer": "<h3 class='success title'>From caveats in safety</h3>\"online\\_spai\\_mever\", a later model with the same architecture trained on more recent data, is available in the same API; its performance is not covered by this card..<br>\n<h3 class='success title'>From hardware in use</h3>*   Training: the SPAI recipe was designed for a single NVIDIA L40S GPU with 48 GB of memory..<br>ITW-SPAI uses the larger DINOv2-L/14 encoder (about 300M parameters), so higher memory needs should be expected, and time grows with the number of 224×224 patches, i.e.<br>The original SPAI (ViT-B/16 backbone) runs with less than 8 GB of GPU memory for typical image sizes.<br>\n<h3 class='success title'>From more in use</h3>*   \"online\\_spai\\_mever\" is additionally trained on in-the-wild images from fact-checks and on images from 19 recent generators (AIGenImages2026), so it may cover recent generators better; its performance is not covered by this card.<br>"
-    }
-  ],
-  "ambiguous": [
-    {
-      "question": "Is this model safe?",
-      "answer": "<h3 class='success title'>From caveats in safety</h3>*   It is a research model deployed to support verification and has not been validated for forensic or legal use.<br>*   Newer generators may be missed.<br>*   The ITW-SPAI weights are not public, so third parties cannot reproduce its results exactly.<br>\n<h3 class='success title'>From risks in safety</h3>*   Environmental threats: new generators and AI editing tools appear continuously, so accuracy decays over time; deliberate post-processing or adversarial perturbations can be used to evade detection; platforms change how they process images.<br>*   Possible consequences: synthetic images accepted as authentic and spread as disinformation; authentic images wrongly discredited; misplaced trust in automated verdicts..<br>*   Technical faults: pipelines that downscale, re-encode or screenshot images before submission degrade results; very small images provide little evidence; service errors return an error report instead of a score.<br>\n<h3 class='success title'>From security in safety</h3>Robustness to adversarial attacks has not been evaluated.<br>The model and the service are not certified for cybersecurity, and no compliance with specific security standards is reported.<br>"
-    },
-    {
-      "question": "What are the limitations of this model?",
-      "answer": "<h3 class='success title'>From out of scope use in use</h3>*   Serving as the sole basis for publishing a verdict, for legal or disciplinary decisions, or for accusations against individuals.<br>\n<h3 class='success title'>From risks in safety</h3>*   Environmental threats: new generators and AI editing tools appear continuously, so accuracy decays over time; deliberate post-processing or adversarial perturbations can be used to evade detection; platforms change how they process images.<br>*   Possible consequences: synthetic images accepted as authentic and spread as disinformation; authentic images wrongly discredited; misplaced trust in automated verdicts..<br>"
-    },
-    {
-      "question": "Is this model accurate?",
-      "answer": "<h3 class='success title'>From methodology in performance</h3>The paper reports a single result per configuration: no repeated runs, standard deviations or confidence intervals.<br><h3 class='error'>Vague question</h3><span>There are 43 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
-    },
-    {
-      "question": "Is this model good?",
-      "answer": "<h3 class='success title'>From description in overview</h3>In the ITW-SM study this configuration reaches 98.10% AUC on the ITW-SM social-media benchmark, 97.45% on Synthbuster and 90.21% on Chameleon.<br>"
-    },
-    {
-      "question": "How does this model work?",
-      "answer": "<h3 class='success title'>Date in overview is</h3>2025-02-01<br>\n<h3 class='success title'>From creator in overview</h3>Developed within the ITW-SM study (Konstantinidou, Karageorgiou, Koutlis, Papadopoulou, Schinas and Papadopoulos, MAD '26), building on SPAI by Karageorgiou, Papadopoulos, Kompatsiaris and Gavves (CVPR 2025)..<br>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>\n<h3 class='success title'>From inputs outputs in use</h3>*   \"version\": the model version (currently \"1\"); \"completed\": true when the analysis succeeded.<br>Input: one still image, given as a URL or an uploaded file and converted to RGB.<br>It is not calibrated, so it should not be read as a probability or compared with 0.5.<br>\n<h3 class='success title'>From more in overview</h3>*   Funding: Horizon Europe projects vera.ai (GA 101070093), AI-CODE (GA 101135437) and ELIAS (GA 101120237); computing resources from GRNET..<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>"
-    },
-    {
-      "question": "Is this model trustworthy?",
-      "answer": "<h3 class='success title'>From caveats in safety</h3>*   It is a research model deployed to support verification and has not been validated for forensic or legal use.<br><h3 class='error'>Vague question</h3><span>There are 13 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
-    },
-    {
-      "question": "What is this model's main contribution?",
-      "answer": "<h3 class='success title'>From creator in overview</h3>Developed within the ITW-SM study (Konstantinidou, Karageorgiou, Koutlis, Papadopoulou, Schinas and Papadopoulos, MAD '26), building on SPAI by Karageorgiou, Papadopoulos, Kompatsiaris and Gavves (CVPR 2025)..<br>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br><h3 class='error'>Vague question</h3><span>There are 17 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
-    },
-    {
-      "question": "Is this model reliable?",
-      "answer": "<h3 class='success title'>From security in safety</h3>Robustness to adversarial attacks has not been evaluated.<br>"
-    },
-    {
-      "question": "What makes this model novel?",
-      "answer": "<h3 class='success title'>From creator in overview</h3>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>"
-    },
-    {
-      "question": "Is this model ready for production?",
-      "answer": "<h3 class='success title'>From caveats in safety</h3>*   Newer generators may be missed.<br>"
-    },
-    {
-      "question": "Is this model eco-friendly?",
-      "answer": "<h3 class='success title'>From environmental impact in performance</h3>For reference, training the original SPAI on the 360K-image LDM set took about 50 hours on a single NVIDIA L40S GPU; ITW-SPAI uses a training set about four times larger and a larger backbone, so its training cost is expected to be higher.<br>Not measured for ITW-SPAI, and no energy or CO2 figures are reported.<br>The ITW-SM study states that all its experiments, covering several detectors and training configurations, took more than 1,000 GPU hours in total.<br>"
-    },
-    {
-      "question": "How do I use this model?",
-      "answer": "<h3 class='success title'>From instructions in use</h3>The model can be used only through the MeVer Deepfake Detection API, which works asynchronously:  1.<br>\n<h3 class='success title'>Home in overview is</h3>[https://docs.mever.gr/deepfake](https://docs.mever.gr/deepfake)<br>"
-    },
-    {
-      "question": "What should I know before using this model?",
-      "answer": "<h3 class='success title'>From caveats in safety</h3>*   Newer generators may be missed.<br>\n<h3 class='success title'>From instructions in use</h3>The model can be used only through the MeVer Deepfake Detection API, which works asynchronously:  1.<br>"
-    },
-    {
-      "question": "Can I use this model commercially?",
-      "answer": "<h3 class='success title'>From hardware in use</h3>*   Deployed model: runs on MeVer GPU servers; no local hardware is needed.<br>"
-    },
-    {
-      "question": "What are the main takeaways about this model?",
-      "answer": "<h3 class='success title'>From creator in overview</h3>Developed within the ITW-SM study (Konstantinidou, Karageorgiou, Koutlis, Papadopoulou, Schinas and Papadopoulos, MAD '26), building on SPAI by Karageorgiou, Papadopoulos, Kompatsiaris and Gavves (CVPR 2025)..<br>\n<h3 class='success title'>From risks in safety</h3>*   Environmental threats: new generators and AI editing tools appear continuously, so accuracy decays over time; deliberate post-processing or adversarial perturbations can be used to evade detection; platforms change how they process images.<br>"
     }
   ]
 }
