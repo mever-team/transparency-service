@@ -1,10 +1,10 @@
 {
   "_meta": {
     "model_card": "dataset/1/GRIP.json",
-    "started_at": "2026-10-22T13:39:16.401945Z",
+    "started_at": "2026-10-23T10:21:18.904049Z",
     "matcher": "sentence-transformers/all-mpnet-base-v2",
     "matching_strictness": 0.5,
-    "finished_at": "2026-10-22T13:46:24.119355Z"
+    "finished_at": "2026-10-23T10:28:46.101513Z"
   },
   "overview": [
     {
@@ -28,8 +28,8 @@
       "answer": "<h3 class='success title'>Version in overview is</h3>1.0<br>"
     },
     {
-      "question": "What type of model is this?",
-      "answer": "<h3 class='success title'>From creator in overview</h3>Image Processing Research Group (GRIP), University Federico II of Naples.<br>"
+      "question": "What is the type of the model?",
+      "answer": "<h3 class='success title'>From type in overview</h3>Convolutional Neural Network.<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br>"
     },
     {
       "question": "How many parameters does this model have?",

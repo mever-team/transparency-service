@@ -1,10 +1,10 @@
 {
   "_meta": {
     "model_card": "dataset/5/Video-FaceSwap.json",
-    "started_at": "2026-10-22T14:07:47.480506Z",
+    "started_at": "2026-10-23T10:51:14.921934Z",
     "matcher": "sentence-transformers/all-mpnet-base-v2",
     "matching_strictness": 0.5,
-    "finished_at": "2026-10-22T14:14:53.263828Z"
+    "finished_at": "2026-10-23T10:58:57.357761Z"
   },
   "overview": [
     {
@@ -28,8 +28,8 @@
       "answer": "<h3 class='success title'>Date in overview is</h3>2026-03-20<br>\n<h3 class='success title'>From name in overview</h3>Video-FaceSwap Detector.<br>\n<h3 class='success title'>From security in safety</h3>The model does not take into account any cybersecurity standards.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br><h3 class='error'>Missing info</h3><span>Would have looked at citation in overview, but that is empty.</span><br><span>Would have looked at home in overview, but that is empty.</span><br><span>Would have looked at more in overview, but that is empty.</span><br>"
     },
     {
-      "question": "What type of model is this?",
-      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br><h3 class='error'>Missing info</h3><span>Would have looked at home in overview, but that is empty.</span><br><span>Would have looked at more in overview, but that is empty.</span><br>"
+      "question": "What is the type of the model?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br><h3 class='error'>Missing info</h3><span>Would have looked at citation in overview, but that is empty.</span><br><span>Would have looked at home in overview, but that is empty.</span><br>"
     },
     {
       "question": "How many parameters does this model have?",

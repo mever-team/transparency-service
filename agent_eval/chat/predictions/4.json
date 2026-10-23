@@ -1,10 +1,10 @@
 {
   "_meta": {
     "model_card": "dataset/4/Online__RINE.json",
-    "started_at": "2026-10-22T14:00:42.282285Z",
+    "started_at": "2026-10-23T10:43:39.289388Z",
     "matcher": "sentence-transformers/all-mpnet-base-v2",
     "matching_strictness": 0.5,
-    "finished_at": "2026-10-22T14:07:47.476572Z"
+    "finished_at": "2026-10-23T10:51:14.917693Z"
   },
   "overview": [
     {
@@ -28,8 +28,8 @@
       "answer": "<h3 class='success title'>Date in overview is</h3>2026-05-01<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br>"
     },
     {
-      "question": "What type of model is this?",
-      "answer": "<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br>"
+      "question": "What is the type of the model?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>Name in overview is</h3>Online\\_RINE<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>"
     },
     {
       "question": "How many parameters does this model have?",

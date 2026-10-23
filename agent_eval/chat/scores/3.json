@@ -1,0 +1,4875 @@
+{
+  "_meta": {
+    "model_card_folder": "dataset/3",
+    "predictions_file": "predictions/3.json"
+  },
+  "overall": {
+    "n_questions": 115,
+    "total_ground_truth_sentences": 261,
+    "right": 70,
+    "missed": 191,
+    "wrong": 202,
+    "questions_fully_correct": 12,
+    "questions_fully_missed": 6,
+    "questions_with_wrong_predictions": 74,
+    "questions_with_missed_predictions": 77,
+    "questions_with_missing_info_error": 30,
+    "questions_with_vague_question_error": 10
+  },
+  "per_category": {
+    "overview": {
+      "n_questions": 12,
+      "total_ground_truth_sentences": 15,
+      "right": 9,
+      "missed": 6,
+      "wrong": 16,
+      "questions_fully_correct": 3,
+      "questions_fully_missed": 1,
+      "questions_with_wrong_predictions": 7,
+      "questions_with_missed_predictions": 6,
+      "questions_with_missing_info_error": 6,
+      "questions_with_vague_question_error": 2
+    },
+    "use": {
+      "n_questions": 9,
+      "total_ground_truth_sentences": 16,
+      "right": 7,
+      "missed": 9,
+      "wrong": 10,
+      "questions_fully_correct": 1,
+      "questions_fully_missed": 2,
+      "questions_with_wrong_predictions": 2,
+      "questions_with_missed_predictions": 6,
+      "questions_with_missing_info_error": 2,
+      "questions_with_vague_question_error": 1
+    },
+    "training": {
+      "n_questions": 5,
+      "total_ground_truth_sentences": 7,
+      "right": 4,
+      "missed": 3,
+      "wrong": 4,
+      "questions_fully_correct": 1,
+      "questions_fully_missed": 0,
+      "questions_with_wrong_predictions": 4,
+      "questions_with_missed_predictions": 1,
+      "questions_with_missing_info_error": 1,
+      "questions_with_vague_question_error": 1
+    },
+    "evaluation": {
+      "n_questions": 5,
+      "total_ground_truth_sentences": 5,
+      "right": 3,
+      "missed": 2,
+      "wrong": 12,
+      "questions_fully_correct": 0,
+      "questions_fully_missed": 0,
+      "questions_with_wrong_predictions": 4,
+      "questions_with_missed_predictions": 2,
+      "questions_with_missing_info_error": 2,
+      "questions_with_vague_question_error": 0
+    },
+    "performance": {
+      "n_questions": 7,
+      "total_ground_truth_sentences": 17,
+      "right": 3,
+      "missed": 14,
+      "wrong": 2,
+      "questions_fully_correct": 1,
+      "questions_fully_missed": 2,
+      "questions_with_wrong_predictions": 2,
+      "questions_with_missed_predictions": 5,
+      "questions_with_missing_info_error": 4,
+      "questions_with_vague_question_error": 1
+    },
+    "safety": {
+      "n_questions": 5,
+      "total_ground_truth_sentences": 15,
+      "right": 4,
+      "missed": 11,
+      "wrong": 18,
+      "questions_fully_correct": 0,
+      "questions_fully_missed": 0,
+      "questions_with_wrong_predictions": 5,
+      "questions_with_missed_predictions": 5,
+      "questions_with_missing_info_error": 1,
+      "questions_with_vague_question_error": 0
+    },
+    "paraphrased": {
+      "n_questions": 27,
+      "total_ground_truth_sentences": 65,
+      "right": 15,
+      "missed": 50,
+      "wrong": 35,
+      "questions_fully_correct": 4,
+      "questions_fully_missed": 1,
+      "questions_with_wrong_predictions": 15,
+      "questions_with_missed_predictions": 19,
+      "questions_with_missing_info_error": 4,
+      "questions_with_vague_question_error": 1
+    },
+    "cross_field": {
+      "n_questions": 15,
+      "total_ground_truth_sentences": 49,
+      "right": 13,
+      "missed": 36,
+      "wrong": 12,
+      "questions_fully_correct": 1,
+      "questions_fully_missed": 0,
+      "questions_with_wrong_predictions": 8,
+      "questions_with_missed_predictions": 13,
+      "questions_with_missing_info_error": 2,
+      "questions_with_vague_question_error": 2
+    },
+    "negative": {
+      "n_questions": 15,
+      "total_ground_truth_sentences": 9,
+      "right": 2,
+      "missed": 7,
+      "wrong": 34,
+      "questions_fully_correct": 1,
+      "questions_fully_missed": 0,
+      "questions_with_wrong_predictions": 13,
+      "questions_with_missed_predictions": 6,
+      "questions_with_missing_info_error": 3,
+      "questions_with_vague_question_error": 1
+    },
+    "ambiguous": {
+      "n_questions": 15,
+      "total_ground_truth_sentences": 63,
+      "right": 10,
+      "missed": 53,
+      "wrong": 59,
+      "questions_fully_correct": 0,
+      "questions_fully_missed": 0,
+      "questions_with_wrong_predictions": 14,
+      "questions_with_missed_predictions": 14,
+      "questions_with_missing_info_error": 5,
+      "questions_with_vague_question_error": 1
+    }
+  },
+  "per_question": {
+    "overview": [
+      {
+        "n_gt": 1,
+        "n_pred": 3,
+        "right": 0,
+        "missed": 1,
+        "wrong": 3,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "TrAI-Import",
+            "section": "overview",
+            "field": "name"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "CERTH - The Centre for Research & Technology, Hellas.",
+            "header": "From creator in overview",
+            "header_html": "<h3 class='success title'>From creator in overview</h3>"
+          },
+          {
+            "sentence": "Transformer",
+            "header": "Type in overview is",
+            "header_html": "<h3 class='success title'>Type in overview is</h3>"
+          },
+          {
+            "sentence": "Use this model card as a citation.",
+            "header": "From citation in overview",
+            "header_html": "<h3 class='success title'>From citation in overview</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at more in overview, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "What is the name of this model?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 2,
+        "right": 1,
+        "missed": 1,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "Import external information into a model card",
+            "section": "use",
+            "field": "use_cases",
+            "pred_header": "From use cases in use",
+            "pred_header_html": "<h3 class='success title'>From use cases in use</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "section": "overview",
+            "field": "description"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "Transformer",
+            "header": "Type in overview is",
+            "header_html": "<h3 class='success title'>Type in overview is</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Vague question",
+            "message": "There are 12 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply."
+          }
+        ],
+        "has_missing_info": false,
+        "has_vague_question": true,
+        "question": "What is this model used for?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 4,
+        "right": 1,
+        "missed": 0,
+        "wrong": 3,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "CERTH - The Centre for Research & Technology, Hellas",
+            "section": "overview",
+            "field": "creator",
+            "pred_header": "From creator in overview",
+            "pred_header_html": "<h3 class='success title'>From creator in overview</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "Use this model card as a citation.",
+            "header": "From citation in overview",
+            "header_html": "<h3 class='success title'>From citation in overview</h3>"
+          },
+          {
+            "sentence": "[gnikoul@iti.gr](mailto:gnikoul@iti.gr), [maniospas@iti.gr](mailto:maniospas@iti.gr), [laaposto@iti.gr](mailto:laaposto@iti.gr)",
+            "header": "Contact in overview is",
+            "header_html": "<h3 class='success title'>Contact in overview is</h3>"
+          },
+          {
+            "sentence": "[https://trai.mever.gr](https://trai.mever.gr/)",
+            "header": "Home in overview is",
+            "header_html": "<h3 class='success title'>Home in overview is</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at more in overview, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "Who created this model?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 0,
+        "wrong": 0,
+        "fully_correct": true,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "2025-11-11",
+            "section": "overview",
+            "field": "date",
+            "pred_header": "Date in overview is",
+            "pred_header_html": "<h3 class='success title'>Date in overview is</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "When was this model released?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 0,
+        "wrong": 0,
+        "fully_correct": true,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "1.0",
+            "section": "overview",
+            "field": "version",
+            "pred_header": "Version in overview is",
+            "pred_header_html": "<h3 class='success title'>Version in overview is</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What version is this model?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 2,
+        "right": 1,
+        "missed": 1,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "Transformer",
+            "section": "overview",
+            "field": "type",
+            "pred_header": "Type in overview is",
+            "pred_header_html": "<h3 class='success title'>Type in overview is</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "This function is powered by the BGE model.",
+            "section": "overview",
+            "field": "description"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "CERTH - The Centre for Research & Technology, Hellas.",
+            "header": "From creator in overview",
+            "header_html": "<h3 class='success title'>From creator in overview</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at more in overview, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "What is the type of the model?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 0,
+        "right": 0,
+        "missed": 1,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": true,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory",
+            "section": "performance",
+            "field": "analysis"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [
+          {
+            "type": "Vague question",
+            "message": "There are 11 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply."
+          },
+          {
+            "type": "Missing info",
+            "message": "Would have looked at parameters in overview, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": true,
+        "question": "How many parameters does this model have?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 1,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "Model Card Auto-Fill",
+            "section": "overview",
+            "field": "task",
+            "pred_header": "From task in overview",
+            "pred_header_html": "<h3 class='success title'>From task in overview</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "section": "overview",
+            "field": "description"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What is the task of this model?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 0,
+        "wrong": 0,
+        "fully_correct": true,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "TBD",
+            "section": "overview",
+            "field": "license",
+            "pred_header": "License in overview is",
+            "pred_header_html": "<h3 class='success title'>License in overview is</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What is the license of this model?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 4,
+        "right": 1,
+        "missed": 0,
+        "wrong": 3,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "[https://trai.mever.gr](https://trai.mever.gr/)",
+            "section": "overview",
+            "field": "home",
+            "pred_header": "Home in overview is",
+            "pred_header_html": "<h3 class='success title'>Home in overview is</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "CERTH - The Centre for Research & Technology, Hellas.",
+            "header": "From creator in overview",
+            "header_html": "<h3 class='success title'>From creator in overview</h3>"
+          },
+          {
+            "sentence": "This function is powered by the BGE model.",
+            "header": "From description in overview",
+            "header_html": "<h3 class='success title'>From description in overview</h3>"
+          },
+          {
+            "sentence": "Use this model card as a citation.",
+            "header": "From citation in overview",
+            "header_html": "<h3 class='success title'>From citation in overview</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at more in overview, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "Where can I find this model?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 1,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "[gnikoul@iti.gr](mailto:gnikoul@iti.gr), [maniospas@iti.gr](mailto:maniospas@iti.gr), [laaposto@iti.gr](mailto:laaposto@iti.gr)",
+            "section": "overview",
+            "field": "contact"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "CERTH - The Centre for Research & Technology, Hellas.",
+            "header": "From creator in overview",
+            "header_html": "<h3 class='success title'>From creator in overview</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Who can I contact about this model?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 5,
+        "right": 1,
+        "missed": 0,
+        "wrong": 4,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "Use this model card as a citation",
+            "section": "overview",
+            "field": "citation",
+            "pred_header": "From citation in overview",
+            "pred_header_html": "<h3 class='success title'>From citation in overview</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "CERTH - The Centre for Research & Technology, Hellas.",
+            "header": "From creator in overview",
+            "header_html": "<h3 class='success title'>From creator in overview</h3>"
+          },
+          {
+            "sentence": "Import external information into a model card.",
+            "header": "From use cases in use",
+            "header_html": "<h3 class='success title'>From use cases in use</h3>"
+          },
+          {
+            "sentence": "This function is powered by the BGE model.<br>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "header": "From description in overview",
+            "header_html": "<h3 class='success title'>From description in overview</h3>"
+          },
+          {
+            "sentence": "[https://trai.mever.gr](https://trai.mever.gr/)",
+            "header": "Home in overview is",
+            "header_html": "<h3 class='success title'>Home in overview is</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at more in overview, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "How should I cite this model?"
+      }
+    ],
+    "use": [
+      {
+        "n_gt": 2,
+        "n_pred": 0,
+        "right": 0,
+        "missed": 2,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": true,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "Import external information into a model card",
+            "section": "use",
+            "field": "use_cases"
+          },
+          {
+            "sentence": "This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "section": "overview",
+            "field": "description"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at more in use, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "What are the intended use cases?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 1,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "human-on-the-loop",
+            "section": "use",
+            "field": "oversight",
+            "pred_header": "Oversight in use is",
+            "pred_header_html": "<h3 class='success title'>Oversight in use is</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "Users should review all auto‑populated fields before publication.",
+            "section": "safety",
+            "field": "ethics"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What level of human oversight is required?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 0,
+        "wrong": 0,
+        "fully_correct": true,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "Model card creators",
+            "section": "use",
+            "field": "user_groups",
+            "pred_header": "From user groups in use",
+            "pred_header_html": "<h3 class='success title'>From user groups in use</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Who are the intended user groups?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 0,
+        "right": 0,
+        "missed": 1,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": true,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "Do not use unrelated sources to import information",
+            "section": "use",
+            "field": "out_of_scope_use"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at more in use, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "What is this model not intended for?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 7,
+        "right": 1,
+        "missed": 0,
+        "wrong": 6,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "Python, transformers",
+            "section": "use",
+            "field": "software",
+            "pred_header": "From software in use",
+            "pred_header_html": "<h3 class='success title'>From software in use</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "CERTH - The Centre for Research & Technology, Hellas.",
+            "header": "From creator in overview",
+            "header_html": "<h3 class='success title'>From creator in overview</h3>"
+          },
+          {
+            "sentence": "Initially, the system fetches textual and image content from the provided URL.<br>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "header": "From description in overview",
+            "header_html": "<h3 class='success title'>From description in overview</h3>"
+          },
+          {
+            "sentence": "The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.",
+            "header": "From hardware in use",
+            "header_html": "<h3 class='success title'>From hardware in use</h3>"
+          },
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..",
+            "header": "From security in safety",
+            "header_html": "<h3 class='success title'>From security in safety</h3>"
+          },
+          {
+            "sentence": "Use this model card as a citation.",
+            "header": "From citation in overview",
+            "header_html": "<h3 class='success title'>From citation in overview</h3>"
+          },
+          {
+            "sentence": "You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.",
+            "header": "From instructions in use",
+            "header_html": "<h3 class='success title'>From instructions in use</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What software does this model require?"
+      },
+      {
+        "n_gt": 4,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 3,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.",
+            "section": "use",
+            "field": "instructions",
+            "pred_header": "From instructions in use",
+            "pred_header_html": "<h3 class='success title'>From instructions in use</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "Input: URL -> Output: model card",
+            "section": "use",
+            "field": "inputs_outputs"
+          },
+          {
+            "sentence": "Python, transformers",
+            "section": "use",
+            "field": "software"
+          },
+          {
+            "sentence": "You can also find more information in our [handbook](https://trai.mever.gr/transparency/handbook.html).",
+            "section": "use",
+            "field": "instructions"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "How do I run / use this model?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 1,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "Input: URL -> Output: model card",
+            "section": "use",
+            "field": "inputs_outputs",
+            "pred_header": "From inputs outputs in use",
+            "pred_header_html": "<h3 class='success title'>From inputs outputs in use</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "section": "overview",
+            "field": "description"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What are the inputs and outputs of the model?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 1,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "The quality of the output directly depends on the quality of the information withing the provided URL.",
+            "section": "use",
+            "field": "factors",
+            "pred_header": "From factors in use",
+            "pred_header_html": "<h3 class='success title'>From factors in use</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields.",
+            "section": "safety",
+            "field": "risks"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [
+          {
+            "type": "Vague question",
+            "message": "There are 12 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply."
+          }
+        ],
+        "has_missing_info": false,
+        "has_vague_question": true,
+        "question": "What factors affect the model's performance?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 5,
+        "right": 1,
+        "missed": 0,
+        "wrong": 4,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz",
+            "section": "use",
+            "field": "hardware",
+            "pred_header": "From hardware in use",
+            "pred_header_html": "<h3 class='success title'>From hardware in use</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "Python, transformers.",
+            "header": "From software in use",
+            "header_html": "<h3 class='success title'>From software in use</h3>"
+          },
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..",
+            "header": "From security in safety",
+            "header_html": "<h3 class='success title'>From security in safety</h3>"
+          },
+          {
+            "sentence": "You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.",
+            "header": "From instructions in use",
+            "header_html": "<h3 class='success title'>From instructions in use</h3>"
+          },
+          {
+            "sentence": "bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.",
+            "header": "From analysis in performance",
+            "header_html": "<h3 class='success title'>From analysis in performance</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What hardware is required?"
+      }
+    ],
+    "training": [
+      {
+        "n_gt": 3,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 3,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "No fine tuning was made.",
+            "section": "training",
+            "field": "datasets"
+          },
+          {
+            "sentence": "The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.",
+            "section": "training",
+            "field": "datasets"
+          },
+          {
+            "sentence": "This function is powered by the BGE model.",
+            "section": "overview",
+            "field": "description"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "N/A",
+            "header": "Motivation in training is",
+            "header_html": "<h3 class='success title'>Motivation in training is</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What datasets were used for training?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 2,
+        "right": 1,
+        "missed": 0,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "N/A",
+            "section": "training",
+            "field": "motivation",
+            "pred_header": "Motivation in training is",
+            "pred_header_html": "<h3 class='success title'>Motivation in training is</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "No fine tuning was made..<br>The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.",
+            "header": "From datasets in training",
+            "header_html": "<h3 class='success title'>From datasets in training</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Why were these training datasets chosen?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 2,
+        "right": 1,
+        "missed": 0,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "N/A",
+            "section": "training",
+            "field": "preprocessing",
+            "pred_header": "Preprocessing in training is",
+            "pred_header_html": "<h3 class='success title'>Preprocessing in training is</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "No fine tuning was made..",
+            "header": "From datasets in training",
+            "header_html": "<h3 class='success title'>From datasets in training</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at preprocessing in evaluation, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "What preprocessing was applied during training?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 0,
+        "wrong": 0,
+        "fully_correct": true,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "N/A",
+            "section": "training",
+            "field": "standards",
+            "pred_header": "Standards in training is",
+            "pred_header_html": "<h3 class='success title'>Standards in training is</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [],
+        "errors": [
+          {
+            "type": "Vague question",
+            "message": "There are 12 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply."
+          }
+        ],
+        "has_missing_info": false,
+        "has_vague_question": true,
+        "question": "What standards were followed during training?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 2,
+        "right": 1,
+        "missed": 0,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "N/A",
+            "section": "training",
+            "field": "update",
+            "pred_header": "Update in training is",
+            "pred_header_html": "<h3 class='success title'>Update in training is</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "No fine tuning was made..",
+            "header": "From datasets in training",
+            "header_html": "<h3 class='success title'>From datasets in training</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Is the training data up to date?"
+      }
+    ],
+    "evaluation": [
+      {
+        "n_gt": 2,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 1,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "These include MTEB (Massive Text Embedding Benchmark) for English tasks and C-MTEB for Chinese tasks, BEIR (Benchmarking IR), MSMARCO, MIRACL, MLDR, MKQA, AIR-Bench, BRIGHT, and others.",
+            "section": "evaluation",
+            "field": "datasets",
+            "pred_header": "From datasets in evaluation",
+            "pred_header_html": "<h3 class='success title'>From datasets in evaluation</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "FlagEmbedding models are evaluated on a comprehensive suite of established information retrieval and text embedding benchmarks.",
+            "section": "evaluation",
+            "field": "datasets"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What datasets were used for evaluation?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 6,
+        "right": 1,
+        "missed": 0,
+        "wrong": 5,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "The primary motivation is to provide a standardized and holistic evaluation of the model's ability to generate embeddings for a wide range of tasks, including retrieval, classification, clustering, pair classification, reranking, and semantic textual similarity (STS).",
+            "section": "evaluation",
+            "field": "motivation",
+            "pred_header": "From motivation in evaluation",
+            "pred_header_html": "<h3 class='success title'>From motivation in evaluation</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "*   Retrieval: 51.68 *   Clustering: 43.82 *   Pair Classification: 84.92 *   Reranking: 58.36 *   STS: 81.59 *   Summarization: 30.12 *   Classification: 74.14  *   **Average: 62.17**.",
+            "header": "From metrics in performance",
+            "header_html": "<h3 class='success title'>From metrics in performance</h3>"
+          },
+          {
+            "sentence": "**0.337** minimum matching.",
+            "header": "From thresholds in performance",
+            "header_html": "<h3 class='success title'>From thresholds in performance</h3>"
+          },
+          {
+            "sentence": "FlagEmbedding models are evaluated on a comprehensive suite of established information retrieval and text embedding benchmarks.<br>These include MTEB (Massive Text Embedding Benchmark) for English tasks and C-MTEB for Chinese tasks, BEIR (Benchmarking IR), MSMARCO, MIRACL, MLDR, MKQA, AIR-Bench, BRIGHT, and others..",
+            "header": "From datasets in evaluation",
+            "header_html": "<h3 class='success title'>From datasets in evaluation</h3>"
+          },
+          {
+            "sentence": "N/A",
+            "header": "Motivation in training is",
+            "header_html": "<h3 class='success title'>Motivation in training is</h3>"
+          },
+          {
+            "sentence": "No fine tuning was made..",
+            "header": "From datasets in training",
+            "header_html": "<h3 class='success title'>From datasets in training</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Why were these evaluation datasets chosen?"
+      },
+      {
+        "n_gt": 0,
+        "n_pred": 5,
+        "right": 0,
+        "missed": 0,
+        "wrong": 5,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "*   Retrieval: 51.68 *   Clustering: 43.82 *   Pair Classification: 84.92 *   Reranking: 58.36 *   STS: 81.59 *   Summarization: 30.12 *   Classification: 74.14  *   **Average: 62.17**.",
+            "header": "From metrics in performance",
+            "header_html": "<h3 class='success title'>From metrics in performance</h3>"
+          },
+          {
+            "sentence": "**0.337** minimum matching.<br>Semantic similarity lesser than this is considered irrelevant.",
+            "header": "From thresholds in performance",
+            "header_html": "<h3 class='success title'>From thresholds in performance</h3>"
+          },
+          {
+            "sentence": "N/A",
+            "header": "Preprocessing in training is",
+            "header_html": "<h3 class='success title'>Preprocessing in training is</h3>"
+          },
+          {
+            "sentence": "These include MTEB (Massive Text Embedding Benchmark) for English tasks and C-MTEB for Chinese tasks, BEIR (Benchmarking IR), MSMARCO, MIRACL, MLDR, MKQA, AIR-Bench, BRIGHT, and others..",
+            "header": "From datasets in evaluation",
+            "header_html": "<h3 class='success title'>From datasets in evaluation</h3>"
+          },
+          {
+            "sentence": "yes",
+            "header": "Update in evaluation is",
+            "header_html": "<h3 class='success title'>Update in evaluation is</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at environmental impact in performance, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "What preprocessing was applied during evaluation?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 1,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "unknown",
+            "section": "evaluation",
+            "field": "standards"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "N/A",
+            "header": "Standards in training is",
+            "header_html": "<h3 class='success title'>Standards in training is</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at standards in evaluation, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "What standards were followed during evaluation?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 2,
+        "right": 1,
+        "missed": 0,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "yes",
+            "section": "evaluation",
+            "field": "update",
+            "pred_header": "Update in evaluation is",
+            "pred_header_html": "<h3 class='success title'>Update in evaluation is</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "N/A",
+            "header": "Update in training is",
+            "header_html": "<h3 class='success title'>Update in training is</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Is the evaluation data up to date?"
+      }
+    ],
+    "performance": [
+      {
+        "n_gt": 2,
+        "n_pred": 0,
+        "right": 0,
+        "missed": 2,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": true,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory",
+            "section": "performance",
+            "field": "analysis"
+          },
+          {
+            "sentence": "bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.",
+            "section": "performance",
+            "field": "analysis"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [
+          {
+            "type": "Vague question",
+            "message": "There are 11 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply."
+          },
+          {
+            "type": "Missing info",
+            "message": "Would have looked at energy consumption in performance, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": true,
+        "question": "What does the performance analysis say?"
+      },
+      {
+        "n_gt": 8,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 8,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "**Average: 62.17**",
+            "section": "performance",
+            "field": "metrics"
+          },
+          {
+            "sentence": "Classification: 74.14 ",
+            "section": "performance",
+            "field": "metrics"
+          },
+          {
+            "sentence": "Clustering: 43.82",
+            "section": "performance",
+            "field": "metrics"
+          },
+          {
+            "sentence": "Pair Classification: 84.92",
+            "section": "performance",
+            "field": "metrics"
+          },
+          {
+            "sentence": "Reranking: 58.36",
+            "section": "performance",
+            "field": "metrics"
+          },
+          {
+            "sentence": "Retrieval: 51.68",
+            "section": "performance",
+            "field": "metrics"
+          },
+          {
+            "sentence": "STS: 81.59",
+            "section": "performance",
+            "field": "metrics"
+          },
+          {
+            "sentence": "Summarization: 30.12",
+            "section": "performance",
+            "field": "metrics"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "*   Retrieval: 51.68 *   Clustering: 43.82 *   Pair Classification: 84.92 *   Reranking: 58.36 *   STS: 81.59 *   Summarization: 30.12 *   Classification: 74.14  *   **Average: 62.17**.",
+            "header": "From metrics in performance",
+            "header_html": "<h3 class='success title'>From metrics in performance</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What are the benchmark metrics?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 1,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "**0.337** minimum matching.",
+            "section": "performance",
+            "field": "thresholds",
+            "pred_header": "From thresholds in performance",
+            "pred_header_html": "<h3 class='success title'>From thresholds in performance</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "Semantic similarity lesser than this is considered irrelevant",
+            "section": "performance",
+            "field": "thresholds"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What decision thresholds are used?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 0,
+        "right": 0,
+        "missed": 2,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": true,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "For more information see [FlagEmbedding](https://github.com/FlagOpen/FlagEmbedding/tree/master)",
+            "section": "performance",
+            "field": "methodology"
+          },
+          {
+            "sentence": "The primary motivation is to provide a standardized and holistic evaluation of the model's ability to generate embeddings for a wide range of tasks, including retrieval, classification, clustering, pair classification, reranking, and semantic textual similarity (STS).",
+            "section": "evaluation",
+            "field": "motivation"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at standards in evaluation, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "What is the evaluation methodology?"
+      },
+      {
+        "n_gt": 0,
+        "n_pred": 0,
+        "right": 0,
+        "missed": 0,
+        "wrong": 0,
+        "fully_correct": true,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [],
+        "wrong_sentences": [],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at energy consumption in performance, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "What is the energy consumption?"
+      },
+      {
+        "n_gt": 0,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 0,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "yes",
+            "header": "Update in evaluation is",
+            "header_html": "<h3 class='success title'>Update in evaluation is</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at energy consumption in performance, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "What is the environmental impact?"
+      },
+      {
+        "n_gt": 3,
+        "n_pred": 2,
+        "right": 2,
+        "missed": 1,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task.",
+            "section": "safety",
+            "field": "fairness",
+            "pred_header": "From fairness in safety",
+            "pred_header_html": "<h3 class='success title'>From fairness in safety</h3>"
+          },
+          {
+            "sentence": "There are no official documented bias metrics for bge-small-en-v1.5",
+            "section": "performance",
+            "field": "bias",
+            "pred_header": "From bias in performance",
+            "pred_header_html": "<h3 class='success title'>From bias in performance</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "BGE models are state-of-the-art and trained on diverse datasets, making them strong candidates for more robust and fair inference.",
+            "section": "safety",
+            "field": "fairness"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Was the model tested for bias?"
+      }
+    ],
+    "safety": [
+      {
+        "n_gt": 2,
+        "n_pred": 2,
+        "right": 0,
+        "missed": 2,
+        "wrong": 2,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.",
+            "section": "safety",
+            "field": "ethics"
+          },
+          {
+            "sentence": "Users should review all auto‑populated fields before publication.",
+            "section": "safety",
+            "field": "ethics"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..",
+            "header": "From fairness in safety",
+            "header_html": "<h3 class='success title'>From fairness in safety</h3>"
+          },
+          {
+            "sentence": "The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.<br>Users should review all auto‑populated fields before publication..",
+            "header": "From ethics in safety",
+            "header_html": "<h3 class='success title'>From ethics in safety</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What are the ethical considerations?"
+      },
+      {
+        "n_gt": 3,
+        "n_pred": 5,
+        "right": 1,
+        "missed": 2,
+        "wrong": 4,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "There are no official documented bias metrics for bge-small-en-v1.5",
+            "section": "performance",
+            "field": "bias",
+            "pred_header": "From bias in performance",
+            "pred_header_html": "<h3 class='success title'>From bias in performance</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "BGE models are state-of-the-art and trained on diverse datasets, making them strong candidates for more robust and fair inference.",
+            "section": "safety",
+            "field": "fairness"
+          },
+          {
+            "sentence": "However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task.",
+            "section": "safety",
+            "field": "fairness"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "**0.337** minimum matching.<br>Semantic similarity lesser than this is considered irrelevant.",
+            "header": "From thresholds in performance",
+            "header_html": "<h3 class='success title'>From thresholds in performance</h3>"
+          },
+          {
+            "sentence": "BGE models are state-of-the-art and trained on diverse datasets, making them strong candidates for more robust and fair inference.<br>However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..",
+            "header": "From fairness in safety",
+            "header_html": "<h3 class='success title'>From fairness in safety</h3>"
+          },
+          {
+            "sentence": "The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.<br>Users should review all auto‑populated fields before publication..",
+            "header": "From ethics in safety",
+            "header_html": "<h3 class='success title'>From ethics in safety</h3>"
+          },
+          {
+            "sentence": "yes",
+            "header": "Update in evaluation is",
+            "header_html": "<h3 class='success title'>Update in evaluation is</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at standards in evaluation, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "How is fairness defined / assessed?"
+      },
+      {
+        "n_gt": 4,
+        "n_pred": 7,
+        "right": 1,
+        "missed": 3,
+        "wrong": 6,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields.",
+            "section": "safety",
+            "field": "risks",
+            "pred_header": "From risks in safety",
+            "pred_header_html": "<h3 class='success title'>From risks in safety</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.",
+            "section": "safety",
+            "field": "ethics"
+          },
+          {
+            "sentence": "The system lacks automated validation step.",
+            "section": "safety",
+            "field": "caveats"
+          },
+          {
+            "sentence": "Wrong classification must be corrected by the user.",
+            "section": "safety",
+            "field": "caveats"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "BGE models are state-of-the-art and trained on diverse datasets, making them strong candidates for more robust and fair inference.<br>However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..",
+            "header": "From fairness in safety",
+            "header_html": "<h3 class='success title'>From fairness in safety</h3>"
+          },
+          {
+            "sentence": "Do not use unrelated sources to import information.",
+            "header": "From out of scope use in use",
+            "header_html": "<h3 class='success title'>From out of scope use in use</h3>"
+          },
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..",
+            "header": "From security in safety",
+            "header_html": "<h3 class='success title'>From security in safety</h3>"
+          },
+          {
+            "sentence": "The system lacks automated validation step.<br>Wrong classification must be corrected by the user..",
+            "header": "From caveats in safety",
+            "header_html": "<h3 class='success title'>From caveats in safety</h3>"
+          },
+          {
+            "sentence": "This function is powered by the BGE model.",
+            "header": "From description in overview",
+            "header_html": "<h3 class='success title'>From description in overview</h3>"
+          },
+          {
+            "sentence": "Users should review all auto‑populated fields before publication..",
+            "header": "From ethics in safety",
+            "header_html": "<h3 class='success title'>From ethics in safety</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What are the risks of this model?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 2,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "However, no red teaming has been performed.",
+            "section": "safety",
+            "field": "security"
+          },
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection.",
+            "section": "safety",
+            "field": "security"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..",
+            "header": "From security in safety",
+            "header_html": "<h3 class='success title'>From security in safety</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Is the model secure / compliant with security standards?"
+      },
+      {
+        "n_gt": 4,
+        "n_pred": 7,
+        "right": 2,
+        "missed": 2,
+        "wrong": 5,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields.",
+            "section": "safety",
+            "field": "risks",
+            "pred_header": "From risks in safety",
+            "pred_header_html": "<h3 class='success title'>From risks in safety</h3>"
+          },
+          {
+            "sentence": "The system lacks automated validation step.",
+            "section": "safety",
+            "field": "caveats",
+            "pred_header": "From caveats in safety",
+            "pred_header_html": "<h3 class='success title'>From caveats in safety</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "The quality of the output directly depends on the quality of the information withing the provided URL.",
+            "section": "use",
+            "field": "factors"
+          },
+          {
+            "sentence": "Wrong classification must be corrected by the user.",
+            "section": "safety",
+            "field": "caveats"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "2025-11-11",
+            "header": "Date in overview is",
+            "header_html": "<h3 class='success title'>Date in overview is</h3>"
+          },
+          {
+            "sentence": "BGE models are state-of-the-art and trained on diverse datasets, making them strong candidates for more robust and fair inference.",
+            "header": "From fairness in safety",
+            "header_html": "<h3 class='success title'>From fairness in safety</h3>"
+          },
+          {
+            "sentence": "Do not use unrelated sources to import information.",
+            "header": "From out of scope use in use",
+            "header_html": "<h3 class='success title'>From out of scope use in use</h3>"
+          },
+          {
+            "sentence": "This function is powered by the BGE model.",
+            "header": "From description in overview",
+            "header_html": "<h3 class='success title'>From description in overview</h3>"
+          },
+          {
+            "sentence": "bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.",
+            "header": "From analysis in performance",
+            "header_html": "<h3 class='success title'>From analysis in performance</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What are the caveats of this model?"
+      }
+    ],
+    "paraphrased": [
+      {
+        "n_gt": 2,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 1,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "Import external information into a model card",
+            "section": "use",
+            "field": "use_cases",
+            "pred_header": "From use cases in use",
+            "pred_header_html": "<h3 class='success title'>From use cases in use</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "section": "overview",
+            "field": "description"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What is the purpose of this model?"
+      },
+      {
+        "n_gt": 4,
+        "n_pred": 6,
+        "right": 0,
+        "missed": 4,
+        "wrong": 6,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "Import external information into a model card",
+            "section": "use",
+            "field": "use_cases"
+          },
+          {
+            "sentence": "Initially, the system fetches textual and image content from the provided URL.",
+            "section": "overview",
+            "field": "description"
+          },
+          {
+            "sentence": "The BGE extracts the text and image embeddings which then gets classified into the model card fields by comparing the field description embeddings.",
+            "section": "overview",
+            "field": "description"
+          },
+          {
+            "sentence": "This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "section": "overview",
+            "field": "description"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "Initially, the system fetches textual and image content from the provided URL.<br>This function is powered by the BGE model.<br>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "header": "From description in overview",
+            "header_html": "<h3 class='success title'>From description in overview</h3>"
+          },
+          {
+            "sentence": "Input: URL -> Output: model card.",
+            "header": "From inputs outputs in use",
+            "header_html": "<h3 class='success title'>From inputs outputs in use</h3>"
+          },
+          {
+            "sentence": "The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.",
+            "header": "From hardware in use",
+            "header_html": "<h3 class='success title'>From hardware in use</h3>"
+          },
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..",
+            "header": "From security in safety",
+            "header_html": "<h3 class='success title'>From security in safety</h3>"
+          },
+          {
+            "sentence": "Transformer",
+            "header": "Type in overview is",
+            "header_html": "<h3 class='success title'>Type in overview is</h3>"
+          },
+          {
+            "sentence": "bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.",
+            "header": "From analysis in performance",
+            "header_html": "<h3 class='success title'>From analysis in performance</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at energy consumption in performance, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "What does this model do?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 2,
+        "right": 1,
+        "missed": 0,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "CERTH - The Centre for Research & Technology, Hellas",
+            "section": "overview",
+            "field": "creator",
+            "pred_header": "From creator in overview",
+            "pred_header_html": "<h3 class='success title'>From creator in overview</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "2025-11-11",
+            "header": "Date in overview is",
+            "header_html": "<h3 class='success title'>Date in overview is</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Which organization built this model?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 0,
+        "wrong": 0,
+        "fully_correct": true,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "2025-11-11",
+            "section": "overview",
+            "field": "date",
+            "pred_header": "Date in overview is",
+            "pred_header_html": "<h3 class='success title'>Date in overview is</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "When did this model come out?"
+      },
+      {
+        "n_gt": 3,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 2,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "Transformer",
+            "section": "overview",
+            "field": "type",
+            "pred_header": "Type in overview is",
+            "pred_header_html": "<h3 class='success title'>Type in overview is</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.",
+            "section": "training",
+            "field": "datasets"
+          },
+          {
+            "sentence": "This function is powered by the BGE model.",
+            "section": "overview",
+            "field": "description"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What kind of architecture is used?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 2,
+        "right": 0,
+        "missed": 1,
+        "wrong": 2,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory",
+            "section": "performance",
+            "field": "analysis"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "2025-11-11",
+            "header": "Date in overview is",
+            "header_html": "<h3 class='success title'>Date in overview is</h3>"
+          },
+          {
+            "sentence": "bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.",
+            "header": "From analysis in performance",
+            "header_html": "<h3 class='success title'>From analysis in performance</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at more in overview, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "What is the size of the model?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 6,
+        "right": 2,
+        "missed": 0,
+        "wrong": 4,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.",
+            "section": "training",
+            "field": "datasets",
+            "pred_header": "From datasets in training",
+            "pred_header_html": "<h3 class='success title'>From datasets in training</h3>"
+          },
+          {
+            "sentence": "[https://trai.mever.gr](https://trai.mever.gr/)",
+            "section": "overview",
+            "field": "home",
+            "pred_header": "Home in overview is",
+            "pred_header_html": "<h3 class='success title'>Home in overview is</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "Initially, the system fetches textual and image content from the provided URL.<br>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "header": "From description in overview",
+            "header_html": "<h3 class='success title'>From description in overview</h3>"
+          },
+          {
+            "sentence": "The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.",
+            "header": "From hardware in use",
+            "header_html": "<h3 class='success title'>From hardware in use</h3>"
+          },
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..",
+            "header": "From security in safety",
+            "header_html": "<h3 class='success title'>From security in safety</h3>"
+          },
+          {
+            "sentence": "You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.",
+            "header": "From instructions in use",
+            "header_html": "<h3 class='success title'>From instructions in use</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Where do I download it from?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 1,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "[gnikoul@iti.gr](mailto:gnikoul@iti.gr), [maniospas@iti.gr](mailto:maniospas@iti.gr), [laaposto@iti.gr](mailto:laaposto@iti.gr)",
+            "section": "overview",
+            "field": "contact"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "The system lacks automated validation step.<br>Wrong classification must be corrected by the user..",
+            "header": "From caveats in safety",
+            "header_html": "<h3 class='success title'>From caveats in safety</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Who should I email about it?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 0,
+        "wrong": 0,
+        "fully_correct": true,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "Python, transformers",
+            "section": "use",
+            "field": "software",
+            "pred_header": "From software in use",
+            "pred_header_html": "<h3 class='success title'>From software in use</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What Python packages do I need?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 0,
+        "wrong": 0,
+        "fully_correct": true,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz",
+            "section": "use",
+            "field": "hardware",
+            "pred_header": "From hardware in use",
+            "pred_header_html": "<h3 class='success title'>From hardware in use</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What GPU do I need to run it?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 8,
+        "right": 1,
+        "missed": 0,
+        "wrong": 7,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "Input: URL -> Output: model card",
+            "section": "use",
+            "field": "inputs_outputs",
+            "pred_header": "From inputs outputs in use",
+            "pred_header_html": "<h3 class='success title'>From inputs outputs in use</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "Model Card Auto-Fill.",
+            "header": "From task in overview",
+            "header_html": "<h3 class='success title'>From task in overview</h3>"
+          },
+          {
+            "sentence": "The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.",
+            "header": "From datasets in training",
+            "header_html": "<h3 class='success title'>From datasets in training</h3>"
+          },
+          {
+            "sentence": "This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "header": "From description in overview",
+            "header_html": "<h3 class='success title'>From description in overview</h3>"
+          },
+          {
+            "sentence": "Transformer",
+            "header": "Type in overview is",
+            "header_html": "<h3 class='success title'>Type in overview is</h3>"
+          },
+          {
+            "sentence": "You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.",
+            "header": "From instructions in use",
+            "header_html": "<h3 class='success title'>From instructions in use</h3>"
+          },
+          {
+            "sentence": "[https://trai.mever.gr](https://trai.mever.gr/)",
+            "header": "Home in overview is",
+            "header_html": "<h3 class='success title'>Home in overview is</h3>"
+          },
+          {
+            "sentence": "bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.",
+            "header": "From analysis in performance",
+            "header_html": "<h3 class='success title'>From analysis in performance</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What does the model take as input, and what does it return?"
+      },
+      {
+        "n_gt": 4,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 3,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.",
+            "section": "use",
+            "field": "instructions",
+            "pred_header": "From instructions in use",
+            "pred_header_html": "<h3 class='success title'>From instructions in use</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "Input: URL -> Output: model card",
+            "section": "use",
+            "field": "inputs_outputs"
+          },
+          {
+            "sentence": "Python, transformers",
+            "section": "use",
+            "field": "software"
+          },
+          {
+            "sentence": "You can also find more information in our [handbook](https://trai.mever.gr/transparency/handbook.html).",
+            "section": "use",
+            "field": "instructions"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "How do I load and run the model on data?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 2,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "The quality of the output directly depends on the quality of the information withing the provided URL.",
+            "section": "use",
+            "field": "factors"
+          },
+          {
+            "sentence": "The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields.",
+            "section": "safety",
+            "field": "risks"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.",
+            "header": "From hardware in use",
+            "header_html": "<h3 class='success title'>From hardware in use</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What could make its performance worse?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 0,
+        "wrong": 0,
+        "fully_correct": true,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "Do not use unrelated sources to import information",
+            "section": "use",
+            "field": "out_of_scope_use",
+            "pred_header": "From out of scope use in use",
+            "pred_header_html": "<h3 class='success title'>From out of scope use in use</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What should this model not be used for?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 1,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "Model card creators",
+            "section": "use",
+            "field": "user_groups"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "CERTH - The Centre for Research & Technology, Hellas.",
+            "header": "From creator in overview",
+            "header_html": "<h3 class='success title'>From creator in overview</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Who is this model for?"
+      },
+      {
+        "n_gt": 3,
+        "n_pred": 2,
+        "right": 0,
+        "missed": 3,
+        "wrong": 2,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "Users should review all auto‑populated fields before publication.",
+            "section": "safety",
+            "field": "ethics"
+          },
+          {
+            "sentence": "Wrong classification must be corrected by the user.",
+            "section": "safety",
+            "field": "caveats"
+          },
+          {
+            "sentence": "human-on-the-loop",
+            "section": "use",
+            "field": "oversight"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "The system lacks automated validation step.",
+            "header": "From caveats in safety",
+            "header_html": "<h3 class='success title'>From caveats in safety</h3>"
+          },
+          {
+            "sentence": "yes",
+            "header": "Update in evaluation is",
+            "header_html": "<h3 class='success title'>Update in evaluation is</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Does a human need to review the outputs?"
+      },
+      {
+        "n_gt": 9,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 9,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "**Average: 62.17**",
+            "section": "performance",
+            "field": "metrics"
+          },
+          {
+            "sentence": "Classification: 74.14 ",
+            "section": "performance",
+            "field": "metrics"
+          },
+          {
+            "sentence": "Clustering: 43.82",
+            "section": "performance",
+            "field": "metrics"
+          },
+          {
+            "sentence": "Pair Classification: 84.92",
+            "section": "performance",
+            "field": "metrics"
+          },
+          {
+            "sentence": "Reranking: 58.36",
+            "section": "performance",
+            "field": "metrics"
+          },
+          {
+            "sentence": "Retrieval: 51.68",
+            "section": "performance",
+            "field": "metrics"
+          },
+          {
+            "sentence": "STS: 81.59",
+            "section": "performance",
+            "field": "metrics"
+          },
+          {
+            "sentence": "Summarization: 30.12",
+            "section": "performance",
+            "field": "metrics"
+          },
+          {
+            "sentence": "bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.",
+            "section": "performance",
+            "field": "analysis"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "**0.337** minimum matching.",
+            "header": "From thresholds in performance",
+            "header_html": "<h3 class='success title'>From thresholds in performance</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What does it say about its accuracy?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 1,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "**0.337** minimum matching.",
+            "section": "performance",
+            "field": "thresholds",
+            "pred_header": "From thresholds in performance",
+            "pred_header_html": "<h3 class='success title'>From thresholds in performance</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "Semantic similarity lesser than this is considered irrelevant",
+            "section": "performance",
+            "field": "thresholds"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What threshold is used to make predictions?"
+      },
+      {
+        "n_gt": 5,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 4,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields.",
+            "section": "safety",
+            "field": "risks",
+            "pred_header": "From risks in safety",
+            "pred_header_html": "<h3 class='success title'>From risks in safety</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "The quality of the output directly depends on the quality of the information withing the provided URL.",
+            "section": "use",
+            "field": "factors"
+          },
+          {
+            "sentence": "The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.",
+            "section": "safety",
+            "field": "ethics"
+          },
+          {
+            "sentence": "The system lacks automated validation step.",
+            "section": "safety",
+            "field": "caveats"
+          },
+          {
+            "sentence": "Wrong classification must be corrected by the user.",
+            "section": "safety",
+            "field": "caveats"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What could go wrong if I use this model?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 3,
+        "right": 0,
+        "missed": 2,
+        "wrong": 3,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.",
+            "section": "safety",
+            "field": "ethics"
+          },
+          {
+            "sentence": "Users should review all auto‑populated fields before publication.",
+            "section": "safety",
+            "field": "ethics"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..",
+            "header": "From fairness in safety",
+            "header_html": "<h3 class='success title'>From fairness in safety</h3>"
+          },
+          {
+            "sentence": "The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.<br>Users should review all auto‑populated fields before publication..",
+            "header": "From ethics in safety",
+            "header_html": "<h3 class='success title'>From ethics in safety</h3>"
+          },
+          {
+            "sentence": "The system lacks automated validation step.<br>Wrong classification must be corrected by the user..",
+            "header": "From caveats in safety",
+            "header_html": "<h3 class='success title'>From caveats in safety</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Are there ethical concerns with using this?"
+      },
+      {
+        "n_gt": 0,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 0,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.",
+            "header": "From hardware in use",
+            "header_html": "<h3 class='success title'>From hardware in use</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Vague question",
+            "message": "There are 9 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply."
+          },
+          {
+            "type": "Missing info",
+            "message": "Would have looked at energy consumption in performance, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": true,
+        "question": "How much energy does it consume?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 3,
+        "right": 0,
+        "missed": 2,
+        "wrong": 3,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "However, no red teaming has been performed.",
+            "section": "safety",
+            "field": "security"
+          },
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection.",
+            "section": "safety",
+            "field": "security"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "N/A",
+            "header": "Standards in training is",
+            "header_html": "<h3 class='success title'>Standards in training is</h3>"
+          },
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..",
+            "header": "From security in safety",
+            "header_html": "<h3 class='success title'>From security in safety</h3>"
+          },
+          {
+            "sentence": "The system lacks automated validation step.",
+            "header": "From caveats in safety",
+            "header_html": "<h3 class='success title'>From caveats in safety</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Is it compliant with any security standard?"
+      },
+      {
+        "n_gt": 3,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 2,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task.",
+            "section": "safety",
+            "field": "fairness",
+            "pred_header": "From fairness in safety",
+            "pred_header_html": "<h3 class='success title'>From fairness in safety</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "BGE models are state-of-the-art and trained on diverse datasets, making them strong candidates for more robust and fair inference.",
+            "section": "safety",
+            "field": "fairness"
+          },
+          {
+            "sentence": "There are no official documented bias metrics for bge-small-en-v1.5",
+            "section": "performance",
+            "field": "bias"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Is the model fair across subgroups?"
+      },
+      {
+        "n_gt": 4,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 4,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "The quality of the output directly depends on the quality of the information withing the provided URL.",
+            "section": "use",
+            "field": "factors"
+          },
+          {
+            "sentence": "The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields.",
+            "section": "safety",
+            "field": "risks"
+          },
+          {
+            "sentence": "The system lacks automated validation step.",
+            "section": "safety",
+            "field": "caveats"
+          },
+          {
+            "sentence": "Wrong classification must be corrected by the user.",
+            "section": "safety",
+            "field": "caveats"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..",
+            "header": "From security in safety",
+            "header_html": "<h3 class='success title'>From security in safety</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What are its known limitations?"
+      },
+      {
+        "n_gt": 4,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 3,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "These include MTEB (Massive Text Embedding Benchmark) for English tasks and C-MTEB for Chinese tasks, BEIR (Benchmarking IR), MSMARCO, MIRACL, MLDR, MKQA, AIR-Bench, BRIGHT, and others.",
+            "section": "evaluation",
+            "field": "datasets",
+            "pred_header": "From datasets in evaluation",
+            "pred_header_html": "<h3 class='success title'>From datasets in evaluation</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "FlagEmbedding models are evaluated on a comprehensive suite of established information retrieval and text embedding benchmarks.",
+            "section": "evaluation",
+            "field": "datasets"
+          },
+          {
+            "sentence": "No fine tuning was made.",
+            "section": "training",
+            "field": "datasets"
+          },
+          {
+            "sentence": "The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.",
+            "section": "training",
+            "field": "datasets"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What datasets was it trained and evaluated on?"
+      },
+      {
+        "n_gt": 3,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 3,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "FlagEmbedding models are evaluated on a comprehensive suite of established information retrieval and text embedding benchmarks.",
+            "section": "evaluation",
+            "field": "datasets"
+          },
+          {
+            "sentence": "For more information see [FlagEmbedding](https://github.com/FlagOpen/FlagEmbedding/tree/master)",
+            "section": "performance",
+            "field": "methodology"
+          },
+          {
+            "sentence": "The primary motivation is to provide a standardized and holistic evaluation of the model's ability to generate embeddings for a wide range of tasks, including retrieval, classification, clustering, pair classification, reranking, and semantic textual similarity (STS).",
+            "section": "evaluation",
+            "field": "motivation"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "This function is powered by the BGE model.",
+            "header": "From description in overview",
+            "header_html": "<h3 class='success title'>From description in overview</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "How was the model evaluated?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 0,
+        "right": 0,
+        "missed": 2,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": true,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "N/A",
+            "section": "training",
+            "field": "standards"
+          },
+          {
+            "sentence": "unknown",
+            "section": "evaluation",
+            "field": "standards"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at standards in evaluation, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "What standards does it follow?"
+      }
+    ],
+    "cross_field": [
+      {
+        "n_gt": 3,
+        "n_pred": 3,
+        "right": 2,
+        "missed": 1,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "CERTH - The Centre for Research & Technology, Hellas",
+            "section": "overview",
+            "field": "creator",
+            "pred_header": "From creator in overview",
+            "pred_header_html": "<h3 class='success title'>From creator in overview</h3>"
+          },
+          {
+            "sentence": "Transformer",
+            "section": "overview",
+            "field": "type",
+            "pred_header": "Type in overview is",
+            "pred_header_html": "<h3 class='success title'>Type in overview is</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "This function is powered by the BGE model.",
+            "section": "overview",
+            "field": "description"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "Use this model card as a citation.",
+            "header": "From citation in overview",
+            "header_html": "<h3 class='success title'>From citation in overview</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at more in overview, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "Who created this model and what kind of model is it?"
+      },
+      {
+        "n_gt": 3,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 2,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "Import external information into a model card",
+            "section": "use",
+            "field": "use_cases",
+            "pred_header": "From use cases in use",
+            "pred_header_html": "<h3 class='success title'>From use cases in use</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "Model Card Auto-Fill",
+            "section": "overview",
+            "field": "task"
+          },
+          {
+            "sentence": "This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "section": "overview",
+            "field": "description"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What is the model's task and its intended use?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 1,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "1.0",
+            "section": "overview",
+            "field": "version",
+            "pred_header": "Version in overview is",
+            "pred_header_html": "<h3 class='success title'>Version in overview is</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "2025-11-11",
+            "section": "overview",
+            "field": "date"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "When was the model released and what version is it?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 1,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz",
+            "section": "use",
+            "field": "hardware",
+            "pred_header": "From hardware in use",
+            "pred_header_html": "<h3 class='success title'>From hardware in use</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "Python, transformers",
+            "section": "use",
+            "field": "software"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What hardware and software do I need to run this model?"
+      },
+      {
+        "n_gt": 5,
+        "n_pred": 2,
+        "right": 1,
+        "missed": 4,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "The system lacks automated validation step.",
+            "section": "safety",
+            "field": "caveats",
+            "pred_header": "From caveats in safety",
+            "pred_header_html": "<h3 class='success title'>From caveats in safety</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.",
+            "section": "safety",
+            "field": "ethics"
+          },
+          {
+            "sentence": "The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields.",
+            "section": "safety",
+            "field": "risks"
+          },
+          {
+            "sentence": "Users should review all auto‑populated fields before publication.",
+            "section": "safety",
+            "field": "ethics"
+          },
+          {
+            "sentence": "Wrong classification must be corrected by the user.",
+            "section": "safety",
+            "field": "caveats"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.<br>Users should review all auto‑populated fields before publication..",
+            "header": "From ethics in safety",
+            "header_html": "<h3 class='success title'>From ethics in safety</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What are the risks and ethical concerns of using this model?"
+      },
+      {
+        "n_gt": 0,
+        "n_pred": 0,
+        "right": 0,
+        "missed": 0,
+        "wrong": 0,
+        "fully_correct": true,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [],
+        "wrong_sentences": [],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at energy consumption in performance, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "What is the energy consumption and environmental impact?"
+      },
+      {
+        "n_gt": 3,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 2,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "human-on-the-loop",
+            "section": "use",
+            "field": "oversight",
+            "pred_header": "Oversight in use is",
+            "pred_header_html": "<h3 class='success title'>Oversight in use is</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "Model card creators",
+            "section": "use",
+            "field": "user_groups"
+          },
+          {
+            "sentence": "Users should review all auto‑populated fields before publication.",
+            "section": "safety",
+            "field": "ethics"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Who are the intended users and what oversight is required?"
+      },
+      {
+        "n_gt": 5,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 4,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "Do not use unrelated sources to import information",
+            "section": "use",
+            "field": "out_of_scope_use",
+            "pred_header": "From out of scope use in use",
+            "pred_header_html": "<h3 class='success title'>From out of scope use in use</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "The quality of the output directly depends on the quality of the information withing the provided URL.",
+            "section": "use",
+            "field": "factors"
+          },
+          {
+            "sentence": "The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields.",
+            "section": "safety",
+            "field": "risks"
+          },
+          {
+            "sentence": "The system lacks automated validation step.",
+            "section": "safety",
+            "field": "caveats"
+          },
+          {
+            "sentence": "Wrong classification must be corrected by the user.",
+            "section": "safety",
+            "field": "caveats"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [
+          {
+            "type": "Vague question",
+            "message": "There are 11 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply."
+          }
+        ],
+        "has_missing_info": false,
+        "has_vague_question": true,
+        "question": "What are the caveats and out-of-scope uses?"
+      },
+      {
+        "n_gt": 7,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 7,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "FlagEmbedding models are evaluated on a comprehensive suite of established information retrieval and text embedding benchmarks.",
+            "section": "evaluation",
+            "field": "datasets"
+          },
+          {
+            "sentence": "For more information see [FlagEmbedding](https://github.com/FlagOpen/FlagEmbedding/tree/master)",
+            "section": "performance",
+            "field": "methodology"
+          },
+          {
+            "sentence": "N/A",
+            "section": "training",
+            "field": "motivation"
+          },
+          {
+            "sentence": "No fine tuning was made.",
+            "section": "training",
+            "field": "datasets"
+          },
+          {
+            "sentence": "The primary motivation is to provide a standardized and holistic evaluation of the model's ability to generate embeddings for a wide range of tasks, including retrieval, classification, clustering, pair classification, reranking, and semantic textual similarity (STS).",
+            "section": "evaluation",
+            "field": "motivation"
+          },
+          {
+            "sentence": "The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.",
+            "section": "training",
+            "field": "datasets"
+          },
+          {
+            "sentence": "These include MTEB (Massive Text Embedding Benchmark) for English tasks and C-MTEB for Chinese tasks, BEIR (Benchmarking IR), MSMARCO, MIRACL, MLDR, MKQA, AIR-Bench, BRIGHT, and others.",
+            "section": "evaluation",
+            "field": "datasets"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "No fine tuning was made..<br>The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.",
+            "header": "From datasets in training",
+            "header_html": "<h3 class='success title'>From datasets in training</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "How was the model trained and evaluated?"
+      },
+      {
+        "n_gt": 4,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 3,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "Input: URL -> Output: model card",
+            "section": "use",
+            "field": "inputs_outputs",
+            "pred_header": "From inputs outputs in use",
+            "pred_header_html": "<h3 class='success title'>From inputs outputs in use</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "Python, transformers",
+            "section": "use",
+            "field": "software"
+          },
+          {
+            "sentence": "You can also find more information in our [handbook](https://trai.mever.gr/transparency/handbook.html).",
+            "section": "use",
+            "field": "instructions"
+          },
+          {
+            "sentence": "You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.",
+            "section": "use",
+            "field": "instructions"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What are the input/output formats, and how do I run the model?"
+      },
+      {
+        "n_gt": 4,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 4,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "N/A",
+            "section": "training",
+            "field": "standards"
+          },
+          {
+            "sentence": "The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.",
+            "section": "safety",
+            "field": "ethics"
+          },
+          {
+            "sentence": "Users should review all auto‑populated fields before publication.",
+            "section": "safety",
+            "field": "ethics"
+          },
+          {
+            "sentence": "unknown",
+            "section": "evaluation",
+            "field": "standards"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..",
+            "header": "From security in safety",
+            "header_html": "<h3 class='success title'>From security in safety</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What technical or ethical standards does the model follow?"
+      },
+      {
+        "n_gt": 4,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 4,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "The quality of the output directly depends on the quality of the information withing the provided URL.",
+            "section": "use",
+            "field": "factors"
+          },
+          {
+            "sentence": "The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields.",
+            "section": "safety",
+            "field": "risks"
+          },
+          {
+            "sentence": "The system lacks automated validation step.",
+            "section": "safety",
+            "field": "caveats"
+          },
+          {
+            "sentence": "Wrong classification must be corrected by the user.",
+            "section": "safety",
+            "field": "caveats"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.",
+            "header": "From hardware in use",
+            "header_html": "<h3 class='success title'>From hardware in use</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What factors could degrade performance, and what are the known caveats?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 2,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "Python, transformers",
+            "section": "use",
+            "field": "software"
+          },
+          {
+            "sentence": "The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz",
+            "section": "use",
+            "field": "hardware"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.",
+            "header": "From instructions in use",
+            "header_html": "<h3 class='success title'>From instructions in use</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "How do I install the software, and what hardware does it need?"
+      },
+      {
+        "n_gt": 3,
+        "n_pred": 3,
+        "right": 2,
+        "missed": 1,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "Do not use unrelated sources to import information",
+            "section": "use",
+            "field": "out_of_scope_use",
+            "pred_header": "From out of scope use in use",
+            "pred_header_html": "<h3 class='success title'>From out of scope use in use</h3>"
+          },
+          {
+            "sentence": "Model card creators",
+            "section": "use",
+            "field": "user_groups",
+            "pred_header": "From user groups in use",
+            "pred_header_html": "<h3 class='success title'>From user groups in use</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "Import external information into a model card",
+            "section": "use",
+            "field": "use_cases"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "Users should review all auto‑populated fields before publication..",
+            "header": "From ethics in safety",
+            "header_html": "<h3 class='success title'>From ethics in safety</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Vague question",
+            "message": "There are 11 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply."
+          }
+        ],
+        "has_missing_info": false,
+        "has_vague_question": true,
+        "question": "Who should use this model, and what should they not do with it?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 7,
+        "right": 2,
+        "missed": 0,
+        "wrong": 5,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "TBD",
+            "section": "overview",
+            "field": "license",
+            "pred_header": "License in overview is",
+            "pred_header_html": "<h3 class='success title'>License in overview is</h3>"
+          },
+          {
+            "sentence": "Use this model card as a citation",
+            "section": "overview",
+            "field": "citation",
+            "pred_header": "From citation in overview",
+            "pred_header_html": "<h3 class='success title'>From citation in overview</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "1.0",
+            "header": "Version in overview is",
+            "header_html": "<h3 class='success title'>Version in overview is</h3>"
+          },
+          {
+            "sentence": "CERTH - The Centre for Research & Technology, Hellas.",
+            "header": "From creator in overview",
+            "header_html": "<h3 class='success title'>From creator in overview</h3>"
+          },
+          {
+            "sentence": "Import external information into a model card.",
+            "header": "From use cases in use",
+            "header_html": "<h3 class='success title'>From use cases in use</h3>"
+          },
+          {
+            "sentence": "This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "header": "From description in overview",
+            "header_html": "<h3 class='success title'>From description in overview</h3>"
+          },
+          {
+            "sentence": "You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.",
+            "header": "From instructions in use",
+            "header_html": "<h3 class='success title'>From instructions in use</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What is the model's license and how do I cite it?"
+      }
+    ],
+    "negative": [
+      {
+        "n_gt": 0,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 0,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "N/A",
+            "header": "Update in training is",
+            "header_html": "<h3 class='success title'>Update in training is</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at energy consumption in performance, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "What is the CO₂ emissions footprint of training?"
+      },
+      {
+        "n_gt": 0,
+        "n_pred": 3,
+        "right": 0,
+        "missed": 0,
+        "wrong": 3,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "N/A",
+            "header": "More in training is",
+            "header_html": "<h3 class='success title'>More in training is</h3>"
+          },
+          {
+            "sentence": "No fine tuning was made..<br>The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.",
+            "header": "From datasets in training",
+            "header_html": "<h3 class='success title'>From datasets in training</h3>"
+          },
+          {
+            "sentence": "The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.",
+            "header": "From hardware in use",
+            "header_html": "<h3 class='success title'>From hardware in use</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What is the training compute in FLOPs?"
+      },
+      {
+        "n_gt": 0,
+        "n_pred": 2,
+        "right": 0,
+        "missed": 0,
+        "wrong": 2,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "N/A",
+            "header": "More in training is",
+            "header_html": "<h3 class='success title'>More in training is</h3>"
+          },
+          {
+            "sentence": "No fine tuning was made..",
+            "header": "From datasets in training",
+            "header_html": "<h3 class='success title'>From datasets in training</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "How many individual samples were in the training dataset?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 1,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "There are no official documented bias metrics for bge-small-en-v1.5",
+            "section": "performance",
+            "field": "bias",
+            "pred_header": "From bias in performance",
+            "pred_header_html": "<h3 class='success title'>From bias in performance</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task.",
+            "section": "safety",
+            "field": "fairness"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What demographic groups were used for bias evaluation?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 2,
+        "right": 0,
+        "missed": 2,
+        "wrong": 2,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "However, no red teaming has been performed.",
+            "section": "safety",
+            "field": "security"
+          },
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection.",
+            "section": "safety",
+            "field": "security"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "BGE models are state-of-the-art and trained on diverse datasets, making them strong candidates for more robust and fair inference.",
+            "header": "From fairness in safety",
+            "header_html": "<h3 class='success title'>From fairness in safety</h3>"
+          },
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..",
+            "header": "From security in safety",
+            "header_html": "<h3 class='success title'>From security in safety</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Vague question",
+            "message": "There are 10 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply."
+          }
+        ],
+        "has_missing_info": false,
+        "has_vague_question": true,
+        "question": "What is the model's robustness to adversarial attacks?"
+      },
+      {
+        "n_gt": 0,
+        "n_pred": 0,
+        "right": 0,
+        "missed": 0,
+        "wrong": 0,
+        "fully_correct": true,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [],
+        "wrong_sentences": [],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at energy consumption in performance, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "What is the model's water usage?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 2,
+        "right": 1,
+        "missed": 0,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "[gnikoul@iti.gr](mailto:gnikoul@iti.gr), [maniospas@iti.gr](mailto:maniospas@iti.gr), [laaposto@iti.gr](mailto:laaposto@iti.gr)",
+            "section": "overview",
+            "field": "contact",
+            "pred_header": "Contact in overview is",
+            "pred_header_html": "<h3 class='success title'>Contact in overview is</h3>"
+          }
+        ],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "CERTH - The Centre for Research & Technology, Hellas.",
+            "header": "From creator in overview",
+            "header_html": "<h3 class='success title'>From creator in overview</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Who are the individual authors (not the institution)?"
+      },
+      {
+        "n_gt": 0,
+        "n_pred": 2,
+        "right": 0,
+        "missed": 0,
+        "wrong": 2,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "CERTH - The Centre for Research & Technology, Hellas.",
+            "header": "From creator in overview",
+            "header_html": "<h3 class='success title'>From creator in overview</h3>"
+          },
+          {
+            "sentence": "Use this model card as a citation.",
+            "header": "From citation in overview",
+            "header_html": "<h3 class='success title'>From citation in overview</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Can you provide the citation in BibTeX format?"
+      },
+      {
+        "n_gt": 0,
+        "n_pred": 4,
+        "right": 0,
+        "missed": 0,
+        "wrong": 4,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "*   Retrieval: 51.68 *   Clustering: 43.82 *   Pair Classification: 84.92 *   Reranking: 58.36 *   STS: 81.59 *   Summarization: 30.12 *   Classification: 74.14  *   **Average: 62.17**.",
+            "header": "From metrics in performance",
+            "header_html": "<h3 class='success title'>From metrics in performance</h3>"
+          },
+          {
+            "sentence": "**0.337** minimum matching.",
+            "header": "From thresholds in performance",
+            "header_html": "<h3 class='success title'>From thresholds in performance</h3>"
+          },
+          {
+            "sentence": "[https://trai.mever.gr](https://trai.mever.gr/)",
+            "header": "Home in overview is",
+            "header_html": "<h3 class='success title'>Home in overview is</h3>"
+          },
+          {
+            "sentence": "bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.",
+            "header": "From analysis in performance",
+            "header_html": "<h3 class='success title'>From analysis in performance</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What is the inference latency per request?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 3,
+        "right": 0,
+        "missed": 1,
+        "wrong": 3,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory",
+            "section": "performance",
+            "field": "analysis"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "Input: URL -> Output: model card.",
+            "header": "From inputs outputs in use",
+            "header_html": "<h3 class='success title'>From inputs outputs in use</h3>"
+          },
+          {
+            "sentence": "The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.",
+            "header": "From hardware in use",
+            "header_html": "<h3 class='success title'>From hardware in use</h3>"
+          },
+          {
+            "sentence": "You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.",
+            "header": "From instructions in use",
+            "header_html": "<h3 class='success title'>From instructions in use</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What is the model file size on disk?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 7,
+        "right": 0,
+        "missed": 1,
+        "wrong": 7,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.",
+            "section": "safety",
+            "field": "ethics"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "BGE models are state-of-the-art and trained on diverse datasets, making them strong candidates for more robust and fair inference.<br>However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..",
+            "header": "From fairness in safety",
+            "header_html": "<h3 class='success title'>From fairness in safety</h3>"
+          },
+          {
+            "sentence": "N/A",
+            "header": "Standards in training is",
+            "header_html": "<h3 class='success title'>Standards in training is</h3>"
+          },
+          {
+            "sentence": "The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.<br>Users should review all auto‑populated fields before publication..",
+            "header": "From ethics in safety",
+            "header_html": "<h3 class='success title'>From ethics in safety</h3>"
+          },
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..",
+            "header": "From security in safety",
+            "header_html": "<h3 class='success title'>From security in safety</h3>"
+          },
+          {
+            "sentence": "The system lacks automated validation step.",
+            "header": "From caveats in safety",
+            "header_html": "<h3 class='success title'>From caveats in safety</h3>"
+          },
+          {
+            "sentence": "These include MTEB (Massive Text Embedding Benchmark) for English tasks and C-MTEB for Chinese tasks, BEIR (Benchmarking IR), MSMARCO, MIRACL, MLDR, MKQA, AIR-Bench, BRIGHT, and others..",
+            "header": "From datasets in evaluation",
+            "header_html": "<h3 class='success title'>From datasets in evaluation</h3>"
+          },
+          {
+            "sentence": "human-on-the-loop",
+            "header": "Oversight in use is",
+            "header_html": "<h3 class='success title'>Oversight in use is</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at standards in evaluation, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "What data privacy measures are in place?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 2,
+        "right": 0,
+        "missed": 1,
+        "wrong": 2,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "The BGE extracts the text and image embeddings which then gets classified into the model card fields by comparing the field description embeddings.",
+            "section": "overview",
+            "field": "description"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "The quality of the output directly depends on the quality of the information withing the provided URL..",
+            "header": "From factors in use",
+            "header_html": "<h3 class='success title'>From factors in use</h3>"
+          },
+          {
+            "sentence": "[https://trai.mever.gr](https://trai.mever.gr/)",
+            "header": "Home in overview is",
+            "header_html": "<h3 class='success title'>Home in overview is</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Is the model explainable / interpretable?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 1,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "Initially, the system fetches textual and image content from the provided URL.",
+            "section": "overview",
+            "field": "description"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..",
+            "header": "From security in safety",
+            "header_html": "<h3 class='success title'>From security in safety</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Does the model handle audio / video modalities (if not applicable)?"
+      },
+      {
+        "n_gt": 0,
+        "n_pred": 5,
+        "right": 0,
+        "missed": 0,
+        "wrong": 5,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "1.0",
+            "header": "Version in overview is",
+            "header_html": "<h3 class='success title'>Version in overview is</h3>"
+          },
+          {
+            "sentence": "2025-11-11",
+            "header": "Date in overview is",
+            "header_html": "<h3 class='success title'>Date in overview is</h3>"
+          },
+          {
+            "sentence": "The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.",
+            "header": "From datasets in training",
+            "header_html": "<h3 class='success title'>From datasets in training</h3>"
+          },
+          {
+            "sentence": "TrAI-Import",
+            "header": "Name in overview is",
+            "header_html": "<h3 class='success title'>Name in overview is</h3>"
+          },
+          {
+            "sentence": "Use this model card as a citation.",
+            "header": "From citation in overview",
+            "header_html": "<h3 class='success title'>From citation in overview</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What is the model's update / changelog history?"
+      },
+      {
+        "n_gt": 0,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 0,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.",
+            "header": "From hardware in use",
+            "header_html": "<h3 class='success title'>From hardware in use</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Is there any additional information not covered elsewhere on this card?"
+      }
+    ],
+    "ambiguous": [
+      {
+        "n_gt": 7,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 7,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "However, no red teaming has been performed.",
+            "section": "safety",
+            "field": "security"
+          },
+          {
+            "sentence": "The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.",
+            "section": "safety",
+            "field": "ethics"
+          },
+          {
+            "sentence": "The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields.",
+            "section": "safety",
+            "field": "risks"
+          },
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection.",
+            "section": "safety",
+            "field": "security"
+          },
+          {
+            "sentence": "The system lacks automated validation step.",
+            "section": "safety",
+            "field": "caveats"
+          },
+          {
+            "sentence": "Users should review all auto‑populated fields before publication.",
+            "section": "safety",
+            "field": "ethics"
+          },
+          {
+            "sentence": "Wrong classification must be corrected by the user.",
+            "section": "safety",
+            "field": "caveats"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..",
+            "header": "From security in safety",
+            "header_html": "<h3 class='success title'>From security in safety</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Is this model safe?"
+      },
+      {
+        "n_gt": 5,
+        "n_pred": 8,
+        "right": 3,
+        "missed": 2,
+        "wrong": 5,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "The quality of the output directly depends on the quality of the information withing the provided URL.",
+            "section": "use",
+            "field": "factors",
+            "pred_header": "From factors in use",
+            "pred_header_html": "<h3 class='success title'>From factors in use</h3>"
+          },
+          {
+            "sentence": "The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields.",
+            "section": "safety",
+            "field": "risks",
+            "pred_header": "From risks in safety",
+            "pred_header_html": "<h3 class='success title'>From risks in safety</h3>"
+          },
+          {
+            "sentence": "The system lacks automated validation step.",
+            "section": "safety",
+            "field": "caveats",
+            "pred_header": "From caveats in safety",
+            "pred_header_html": "<h3 class='success title'>From caveats in safety</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.",
+            "section": "safety",
+            "field": "ethics"
+          },
+          {
+            "sentence": "Wrong classification must be corrected by the user.",
+            "section": "safety",
+            "field": "caveats"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "2025-11-11",
+            "header": "Date in overview is",
+            "header_html": "<h3 class='success title'>Date in overview is</h3>"
+          },
+          {
+            "sentence": "Do not use unrelated sources to import information.",
+            "header": "From out of scope use in use",
+            "header_html": "<h3 class='success title'>From out of scope use in use</h3>"
+          },
+          {
+            "sentence": "However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..",
+            "header": "From fairness in safety",
+            "header_html": "<h3 class='success title'>From fairness in safety</h3>"
+          },
+          {
+            "sentence": "This function is powered by the BGE model.",
+            "header": "From description in overview",
+            "header_html": "<h3 class='success title'>From description in overview</h3>"
+          },
+          {
+            "sentence": "bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.",
+            "header": "From analysis in performance",
+            "header_html": "<h3 class='success title'>From analysis in performance</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at more in overview, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "What are the limitations of this model?"
+      },
+      {
+        "n_gt": 2,
+        "n_pred": 2,
+        "right": 0,
+        "missed": 2,
+        "wrong": 2,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "**Average: 62.17**",
+            "section": "performance",
+            "field": "metrics"
+          },
+          {
+            "sentence": "bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.",
+            "section": "performance",
+            "field": "analysis"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.",
+            "header": "From hardware in use",
+            "header_html": "<h3 class='success title'>From hardware in use</h3>"
+          },
+          {
+            "sentence": "bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.",
+            "header": "From analysis in performance",
+            "header_html": "<h3 class='success title'>From analysis in performance</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Is this model accurate?"
+      },
+      {
+        "n_gt": 4,
+        "n_pred": 7,
+        "right": 0,
+        "missed": 4,
+        "wrong": 7,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "**Average: 62.17**",
+            "section": "performance",
+            "field": "metrics"
+          },
+          {
+            "sentence": "BGE models are state-of-the-art and trained on diverse datasets, making them strong candidates for more robust and fair inference.",
+            "section": "safety",
+            "field": "fairness"
+          },
+          {
+            "sentence": "The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory",
+            "section": "performance",
+            "field": "analysis"
+          },
+          {
+            "sentence": "bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.",
+            "section": "performance",
+            "field": "analysis"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "*   Retrieval: 51.68 *   Clustering: 43.82 *   Pair Classification: 84.92 *   Reranking: 58.36 *   STS: 81.59 *   Summarization: 30.12 *   Classification: 74.14  *   **Average: 62.17**.",
+            "header": "From metrics in performance",
+            "header_html": "<h3 class='success title'>From metrics in performance</h3>"
+          },
+          {
+            "sentence": "The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.",
+            "header": "From hardware in use",
+            "header_html": "<h3 class='success title'>From hardware in use</h3>"
+          },
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..",
+            "header": "From security in safety",
+            "header_html": "<h3 class='success title'>From security in safety</h3>"
+          },
+          {
+            "sentence": "This function is powered by the BGE model.<br>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "header": "From description in overview",
+            "header_html": "<h3 class='success title'>From description in overview</h3>"
+          },
+          {
+            "sentence": "[https://trai.mever.gr](https://trai.mever.gr/)",
+            "header": "Home in overview is",
+            "header_html": "<h3 class='success title'>Home in overview is</h3>"
+          },
+          {
+            "sentence": "bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.",
+            "header": "From analysis in performance",
+            "header_html": "<h3 class='success title'>From analysis in performance</h3>"
+          },
+          {
+            "sentence": "yes",
+            "header": "Update in evaluation is",
+            "header_html": "<h3 class='success title'>Update in evaluation is</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at energy consumption in performance, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "Is this model good?"
+      },
+      {
+        "n_gt": 4,
+        "n_pred": 6,
+        "right": 0,
+        "missed": 4,
+        "wrong": 6,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "Initially, the system fetches textual and image content from the provided URL.",
+            "section": "overview",
+            "field": "description"
+          },
+          {
+            "sentence": "The BGE extracts the text and image embeddings which then gets classified into the model card fields by comparing the field description embeddings.",
+            "section": "overview",
+            "field": "description"
+          },
+          {
+            "sentence": "This function is powered by the BGE model.",
+            "section": "overview",
+            "field": "description"
+          },
+          {
+            "sentence": "This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "section": "overview",
+            "field": "description"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "Input: URL -> Output: model card.",
+            "header": "From inputs outputs in use",
+            "header_html": "<h3 class='success title'>From inputs outputs in use</h3>"
+          },
+          {
+            "sentence": "Model Card Auto-Fill.",
+            "header": "From task in overview",
+            "header_html": "<h3 class='success title'>From task in overview</h3>"
+          },
+          {
+            "sentence": "The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.",
+            "header": "From datasets in training",
+            "header_html": "<h3 class='success title'>From datasets in training</h3>"
+          },
+          {
+            "sentence": "This function is powered by the BGE model.<br>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "header": "From description in overview",
+            "header_html": "<h3 class='success title'>From description in overview</h3>"
+          },
+          {
+            "sentence": "Transformer",
+            "header": "Type in overview is",
+            "header_html": "<h3 class='success title'>Type in overview is</h3>"
+          },
+          {
+            "sentence": "[https://trai.mever.gr](https://trai.mever.gr/)",
+            "header": "Home in overview is",
+            "header_html": "<h3 class='success title'>Home in overview is</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "How does this model work?"
+      },
+      {
+        "n_gt": 6,
+        "n_pred": 4,
+        "right": 2,
+        "missed": 4,
+        "wrong": 2,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields.",
+            "section": "safety",
+            "field": "risks",
+            "pred_header": "From risks in safety",
+            "pred_header_html": "<h3 class='success title'>From risks in safety</h3>"
+          },
+          {
+            "sentence": "The system lacks automated validation step.",
+            "section": "safety",
+            "field": "caveats",
+            "pred_header": "From caveats in safety",
+            "pred_header_html": "<h3 class='success title'>From caveats in safety</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "However, no red teaming has been performed.",
+            "section": "safety",
+            "field": "security"
+          },
+          {
+            "sentence": "The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.",
+            "section": "safety",
+            "field": "ethics"
+          },
+          {
+            "sentence": "Users should review all auto‑populated fields before publication.",
+            "section": "safety",
+            "field": "ethics"
+          },
+          {
+            "sentence": "Wrong classification must be corrected by the user.",
+            "section": "safety",
+            "field": "caveats"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..",
+            "header": "From fairness in safety",
+            "header_html": "<h3 class='success title'>From fairness in safety</h3>"
+          },
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..",
+            "header": "From security in safety",
+            "header_html": "<h3 class='success title'>From security in safety</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Is this model trustworthy?"
+      },
+      {
+        "n_gt": 3,
+        "n_pred": 9,
+        "right": 0,
+        "missed": 3,
+        "wrong": 9,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "Initially, the system fetches textual and image content from the provided URL.",
+            "section": "overview",
+            "field": "description"
+          },
+          {
+            "sentence": "The BGE extracts the text and image embeddings which then gets classified into the model card fields by comparing the field description embeddings.",
+            "section": "overview",
+            "field": "description"
+          },
+          {
+            "sentence": "This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "section": "overview",
+            "field": "description"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "BGE models are state-of-the-art and trained on diverse datasets, making them strong candidates for more robust and fair inference.",
+            "header": "From fairness in safety",
+            "header_html": "<h3 class='success title'>From fairness in safety</h3>"
+          },
+          {
+            "sentence": "CERTH - The Centre for Research & Technology, Hellas.",
+            "header": "From creator in overview",
+            "header_html": "<h3 class='success title'>From creator in overview</h3>"
+          },
+          {
+            "sentence": "Import external information into a model card.",
+            "header": "From use cases in use",
+            "header_html": "<h3 class='success title'>From use cases in use</h3>"
+          },
+          {
+            "sentence": "The quality of the output directly depends on the quality of the information withing the provided URL..",
+            "header": "From factors in use",
+            "header_html": "<h3 class='success title'>From factors in use</h3>"
+          },
+          {
+            "sentence": "The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.",
+            "header": "From datasets in training",
+            "header_html": "<h3 class='success title'>From datasets in training</h3>"
+          },
+          {
+            "sentence": "This function is powered by the BGE model.<br>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "header": "From description in overview",
+            "header_html": "<h3 class='success title'>From description in overview</h3>"
+          },
+          {
+            "sentence": "Transformer",
+            "header": "Type in overview is",
+            "header_html": "<h3 class='success title'>Type in overview is</h3>"
+          },
+          {
+            "sentence": "[https://trai.mever.gr](https://trai.mever.gr/)",
+            "header": "Home in overview is",
+            "header_html": "<h3 class='success title'>Home in overview is</h3>"
+          },
+          {
+            "sentence": "bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.",
+            "header": "From analysis in performance",
+            "header_html": "<h3 class='success title'>From analysis in performance</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at more in overview, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "What is this model's main contribution?"
+      },
+      {
+        "n_gt": 4,
+        "n_pred": 7,
+        "right": 2,
+        "missed": 2,
+        "wrong": 5,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields.",
+            "section": "safety",
+            "field": "risks",
+            "pred_header": "From risks in safety",
+            "pred_header_html": "<h3 class='success title'>From risks in safety</h3>"
+          },
+          {
+            "sentence": "The system lacks automated validation step.",
+            "section": "safety",
+            "field": "caveats",
+            "pred_header": "From caveats in safety",
+            "pred_header_html": "<h3 class='success title'>From caveats in safety</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "The quality of the output directly depends on the quality of the information withing the provided URL.",
+            "section": "use",
+            "field": "factors"
+          },
+          {
+            "sentence": "Wrong classification must be corrected by the user.",
+            "section": "safety",
+            "field": "caveats"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "*   Retrieval: 51.68 *   Clustering: 43.82 *   Pair Classification: 84.92 *   Reranking: 58.36 *   STS: 81.59 *   Summarization: 30.12 *   Classification: 74.14  *   **Average: 62.17**.",
+            "header": "From metrics in performance",
+            "header_html": "<h3 class='success title'>From metrics in performance</h3>"
+          },
+          {
+            "sentence": "N/A",
+            "header": "Update in training is",
+            "header_html": "<h3 class='success title'>Update in training is</h3>"
+          },
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..",
+            "header": "From security in safety",
+            "header_html": "<h3 class='success title'>From security in safety</h3>"
+          },
+          {
+            "sentence": "bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.",
+            "header": "From analysis in performance",
+            "header_html": "<h3 class='success title'>From analysis in performance</h3>"
+          },
+          {
+            "sentence": "yes",
+            "header": "Update in evaluation is",
+            "header_html": "<h3 class='success title'>Update in evaluation is</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Is this model reliable?"
+      },
+      {
+        "n_gt": 3,
+        "n_pred": 8,
+        "right": 0,
+        "missed": 3,
+        "wrong": 8,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "Initially, the system fetches textual and image content from the provided URL.",
+            "section": "overview",
+            "field": "description"
+          },
+          {
+            "sentence": "The BGE extracts the text and image embeddings which then gets classified into the model card fields by comparing the field description embeddings.",
+            "section": "overview",
+            "field": "description"
+          },
+          {
+            "sentence": "This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "section": "overview",
+            "field": "description"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "1.0",
+            "header": "Version in overview is",
+            "header_html": "<h3 class='success title'>Version in overview is</h3>"
+          },
+          {
+            "sentence": "2025-11-11",
+            "header": "Date in overview is",
+            "header_html": "<h3 class='success title'>Date in overview is</h3>"
+          },
+          {
+            "sentence": "CERTH - The Centre for Research & Technology, Hellas.",
+            "header": "From creator in overview",
+            "header_html": "<h3 class='success title'>From creator in overview</h3>"
+          },
+          {
+            "sentence": "The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields..",
+            "header": "From risks in safety",
+            "header_html": "<h3 class='success title'>From risks in safety</h3>"
+          },
+          {
+            "sentence": "This function is powered by the BGE model.<br>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "header": "From description in overview",
+            "header_html": "<h3 class='success title'>From description in overview</h3>"
+          },
+          {
+            "sentence": "Transformer",
+            "header": "Type in overview is",
+            "header_html": "<h3 class='success title'>Type in overview is</h3>"
+          },
+          {
+            "sentence": "[https://trai.mever.gr](https://trai.mever.gr/)",
+            "header": "Home in overview is",
+            "header_html": "<h3 class='success title'>Home in overview is</h3>"
+          },
+          {
+            "sentence": "bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.",
+            "header": "From analysis in performance",
+            "header_html": "<h3 class='success title'>From analysis in performance</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Missing info",
+            "message": "Would have looked at more in overview, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": false,
+        "question": "What makes this model novel?"
+      },
+      {
+        "n_gt": 3,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 3,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields.",
+            "section": "safety",
+            "field": "risks"
+          },
+          {
+            "sentence": "The system lacks automated validation step.",
+            "section": "safety",
+            "field": "caveats"
+          },
+          {
+            "sentence": "Wrong classification must be corrected by the user.",
+            "section": "safety",
+            "field": "caveats"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..",
+            "header": "From security in safety",
+            "header_html": "<h3 class='success title'>From security in safety</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Is this model ready for production?"
+      },
+      {
+        "n_gt": 0,
+        "n_pred": 2,
+        "right": 0,
+        "missed": 0,
+        "wrong": 2,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [],
+        "wrong_sentences": [
+          {
+            "sentence": "The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.",
+            "header": "From ethics in safety",
+            "header_html": "<h3 class='success title'>From ethics in safety</h3>"
+          },
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..",
+            "header": "From security in safety",
+            "header_html": "<h3 class='success title'>From security in safety</h3>"
+          }
+        ],
+        "errors": [
+          {
+            "type": "Vague question",
+            "message": "There are 9 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply."
+          },
+          {
+            "type": "Missing info",
+            "message": "Would have looked at energy consumption in performance, but that is empty."
+          }
+        ],
+        "has_missing_info": true,
+        "has_vague_question": true,
+        "question": "Is this model eco-friendly?"
+      },
+      {
+        "n_gt": 5,
+        "n_pred": 1,
+        "right": 1,
+        "missed": 4,
+        "wrong": 0,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.",
+            "section": "use",
+            "field": "instructions",
+            "pred_header": "From instructions in use",
+            "pred_header_html": "<h3 class='success title'>From instructions in use</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "Input: URL -> Output: model card",
+            "section": "use",
+            "field": "inputs_outputs"
+          },
+          {
+            "sentence": "Python, transformers",
+            "section": "use",
+            "field": "software"
+          },
+          {
+            "sentence": "The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz",
+            "section": "use",
+            "field": "hardware"
+          },
+          {
+            "sentence": "You can also find more information in our [handbook](https://trai.mever.gr/transparency/handbook.html).",
+            "section": "use",
+            "field": "instructions"
+          }
+        ],
+        "wrong_sentences": [],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "How do I use this model?"
+      },
+      {
+        "n_gt": 8,
+        "n_pred": 4,
+        "right": 1,
+        "missed": 7,
+        "wrong": 3,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "The system lacks automated validation step.",
+            "section": "safety",
+            "field": "caveats",
+            "pred_header": "From caveats in safety",
+            "pred_header_html": "<h3 class='success title'>From caveats in safety</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "Do not use unrelated sources to import information",
+            "section": "use",
+            "field": "out_of_scope_use"
+          },
+          {
+            "sentence": "However, no red teaming has been performed.",
+            "section": "safety",
+            "field": "security"
+          },
+          {
+            "sentence": "The quality of the output directly depends on the quality of the information withing the provided URL.",
+            "section": "use",
+            "field": "factors"
+          },
+          {
+            "sentence": "The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.",
+            "section": "safety",
+            "field": "ethics"
+          },
+          {
+            "sentence": "The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields.",
+            "section": "safety",
+            "field": "risks"
+          },
+          {
+            "sentence": "Users should review all auto‑populated fields before publication.",
+            "section": "safety",
+            "field": "ethics"
+          },
+          {
+            "sentence": "Wrong classification must be corrected by the user.",
+            "section": "safety",
+            "field": "caveats"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.",
+            "header": "From hardware in use",
+            "header_html": "<h3 class='success title'>From hardware in use</h3>"
+          },
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..",
+            "header": "From security in safety",
+            "header_html": "<h3 class='success title'>From security in safety</h3>"
+          },
+          {
+            "sentence": "You can also find more information in our [handbook](https://trai.mever.gr/transparency/handbook.html)..",
+            "header": "From instructions in use",
+            "header_html": "<h3 class='success title'>From instructions in use</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What should I know before using this model?"
+      },
+      {
+        "n_gt": 1,
+        "n_pred": 1,
+        "right": 0,
+        "missed": 1,
+        "wrong": 1,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [],
+        "missed_sentences": [
+          {
+            "sentence": "TBD",
+            "section": "overview",
+            "field": "license"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..",
+            "header": "From security in safety",
+            "header_html": "<h3 class='success title'>From security in safety</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "Can I use this model commercially?"
+      },
+      {
+        "n_gt": 8,
+        "n_pred": 8,
+        "right": 1,
+        "missed": 7,
+        "wrong": 7,
+        "fully_correct": false,
+        "fully_missed": false,
+        "right_sentences": [
+          {
+            "sentence": "This function is powered by the BGE model.",
+            "section": "overview",
+            "field": "description",
+            "pred_header": "From description in overview",
+            "pred_header_html": "<h3 class='success title'>From description in overview</h3>"
+          }
+        ],
+        "missed_sentences": [
+          {
+            "sentence": "Initially, the system fetches textual and image content from the provided URL.",
+            "section": "overview",
+            "field": "description"
+          },
+          {
+            "sentence": "The BGE extracts the text and image embeddings which then gets classified into the model card fields by comparing the field description embeddings.",
+            "section": "overview",
+            "field": "description"
+          },
+          {
+            "sentence": "The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory",
+            "section": "performance",
+            "field": "analysis"
+          },
+          {
+            "sentence": "The system lacks automated validation step.",
+            "section": "safety",
+            "field": "caveats"
+          },
+          {
+            "sentence": "This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.",
+            "section": "overview",
+            "field": "description"
+          },
+          {
+            "sentence": "Wrong classification must be corrected by the user.",
+            "section": "safety",
+            "field": "caveats"
+          },
+          {
+            "sentence": "bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.",
+            "section": "performance",
+            "field": "analysis"
+          }
+        ],
+        "wrong_sentences": [
+          {
+            "sentence": "2025-11-11",
+            "header": "Date in overview is",
+            "header_html": "<h3 class='success title'>Date in overview is</h3>"
+          },
+          {
+            "sentence": "BGE models are state-of-the-art and trained on diverse datasets, making them strong candidates for more robust and fair inference.",
+            "header": "From fairness in safety",
+            "header_html": "<h3 class='success title'>From fairness in safety</h3>"
+          },
+          {
+            "sentence": "CERTH - The Centre for Research & Technology, Hellas.",
+            "header": "From creator in overview",
+            "header_html": "<h3 class='success title'>From creator in overview</h3>"
+          },
+          {
+            "sentence": "The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.",
+            "header": "From hardware in use",
+            "header_html": "<h3 class='success title'>From hardware in use</h3>"
+          },
+          {
+            "sentence": "The quality of the output directly depends on the quality of the information withing the provided URL..",
+            "header": "From factors in use",
+            "header_html": "<h3 class='success title'>From factors in use</h3>"
+          },
+          {
+            "sentence": "The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields..",
+            "header": "From risks in safety",
+            "header_html": "<h3 class='success title'>From risks in safety</h3>"
+          },
+          {
+            "sentence": "bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.",
+            "header": "From analysis in performance",
+            "header_html": "<h3 class='success title'>From analysis in performance</h3>"
+          }
+        ],
+        "errors": [],
+        "has_missing_info": false,
+        "has_vague_question": false,
+        "question": "What are the main takeaways about this model?"
+      }
+    ]
+  }
+}

@@ -1,10 +1,10 @@
 {
   "_meta": {
     "model_card": "dataset/2/ITW-SPAI.json",
-    "started_at": "2026-10-22T13:46:24.132314Z",
+    "started_at": "2026-10-23T10:28:46.114804Z",
     "matcher": "sentence-transformers/all-mpnet-base-v2",
     "matching_strictness": 0.5,
-    "finished_at": "2026-10-22T13:53:35.716128Z"
+    "finished_at": "2026-10-23T10:36:14.914903Z"
   },
   "overview": [
     {
@@ -28,8 +28,8 @@
       "answer": "<h3 class='success title'>Date in overview is</h3>2025-02-01<br>\n<h3 class='success title'>From caveats in safety</h3>\"online\\_spai\\_mever\", a later model with the same architecture trained on more recent data, is available in the same API; its performance is not covered by this card..<br>\n<h3 class='success title'>From description in overview</h3>In the ITW-SM study this configuration reaches 98.10% AUC on the ITW-SM social-media benchmark, 97.45% on Synthbuster and 90.21% on Chameleon.<br>\n<h3 class='success title'>From inputs outputs in use</h3>*   \"version\": the model version (currently \"1\"); \"completed\": true when the analysis succeeded.<br>\n<h3 class='success title'>From more in evaluation</h3>Performance on generators released in 2025–2026 has not been reported..<br>\n<h3 class='success title'>From more in training</h3>*   Age: the newest training images date from March 2023 (TWIGMA), so generators released since then are not represented.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br>"
     },
     {
-      "question": "What type of model is this?",
-      "answer": "<h3 class='success title'>Date in overview is</h3>2025-02-01<br>\n<h3 class='success title'>From creator in overview</h3>Developed within the ITW-SM study (Konstantinidou, Karageorgiou, Koutlis, Papadopoulou, Schinas and Papadopoulos, MAD '26), building on SPAI by Karageorgiou, Papadopoulos, Kompatsiaris and Gavves (CVPR 2025)..<br>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>\n<h3 class='success title'>From description in overview</h3>How it works: the image is analysed at its native resolution, without resizing, as a grid of 224×224 patches.<br>\n<h3 class='success title'>From inputs outputs in use</h3>*   \"version\": the model version (currently \"1\"); \"completed\": true when the analysis succeeded.<br>\n<h3 class='success title'>From more in overview</h3>*   Funding: Horizon Europe projects vera.ai (GA 101070093), AI-CODE (GA 101135437) and ELIAS (GA 101120237); computing resources from GRNET..<br>\n<h3 class='success title'>From name in overview</h3>ITW-SPAI (SPAI tuned for in-the-wild images).<br>\n<h3 class='success title'>From software in use</h3>*   Deployed model: nothing to install.<br>\n<h3 class='success title'>Home in overview is</h3>[https://docs.mever.gr/deepfake](https://docs.mever.gr/deepfake)<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br>"
+      "question": "What is the type of the model?",
+      "answer": "<h3 class='success title'>Type in overview is</h3>Transformer<br>"
     },
     {
       "question": "How many parameters does this model have?",

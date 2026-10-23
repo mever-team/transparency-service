@@ -1,0 +1,2898 @@
+{
+  "_meta": {
+    "model_card_folder": "dataset/2",
+    "predictions_file": "predictions/2.json",
+    "scorer": "score_fields.py"
+  },
+  "overall": {
+    "n_questions": 78,
+    "n_target_fields": 100,
+    "target_fields_hit": 62,
+    "target_fields_missed": 38,
+    "field_recall": 0.62,
+    "questions_correct": 49,
+    "questions_partial": 11,
+    "questions_wrong": 18,
+    "total_score": 54.166666666666664,
+    "avg_score": 0.6944444444444444,
+    "questions_vague": 22,
+    "questions_missing_info": 1,
+    "avg_off_target_fields": 1.358974358974359,
+    "cross_field": {
+      "n_questions": 15,
+      "fully_covered": 1,
+      "avg_coverage": 0.41111111111111115
+    }
+  },
+  "per_category": {
+    "overview": {
+      "n_questions": 12,
+      "n_target_fields": 12,
+      "target_fields_hit": 8,
+      "target_fields_missed": 4,
+      "field_recall": 0.6666666666666666,
+      "questions_correct": 8,
+      "questions_partial": 0,
+      "questions_wrong": 4,
+      "total_score": 8.0,
+      "avg_score": 0.6666666666666666,
+      "questions_vague": 4,
+      "questions_missing_info": 1,
+      "avg_off_target_fields": 2.1666666666666665,
+      "cross_field": {
+        "n_questions": 0,
+        "fully_covered": 0,
+        "avg_coverage": null
+      }
+    },
+    "use": {
+      "n_questions": 9,
+      "n_target_fields": 9,
+      "target_fields_hit": 9,
+      "target_fields_missed": 0,
+      "field_recall": 1.0,
+      "questions_correct": 9,
+      "questions_partial": 0,
+      "questions_wrong": 0,
+      "total_score": 9.0,
+      "avg_score": 1.0,
+      "questions_vague": 3,
+      "questions_missing_info": 0,
+      "avg_off_target_fields": 0.5555555555555556,
+      "cross_field": {
+        "n_questions": 0,
+        "fully_covered": 0,
+        "avg_coverage": null
+      }
+    },
+    "training": {
+      "n_questions": 5,
+      "n_target_fields": 5,
+      "target_fields_hit": 4,
+      "target_fields_missed": 1,
+      "field_recall": 0.8,
+      "questions_correct": 4,
+      "questions_partial": 0,
+      "questions_wrong": 1,
+      "total_score": 4.0,
+      "avg_score": 0.8,
+      "questions_vague": 0,
+      "questions_missing_info": 0,
+      "avg_off_target_fields": 1.6,
+      "cross_field": {
+        "n_questions": 0,
+        "fully_covered": 0,
+        "avg_coverage": null
+      }
+    },
+    "evaluation": {
+      "n_questions": 3,
+      "n_target_fields": 3,
+      "target_fields_hit": 3,
+      "target_fields_missed": 0,
+      "field_recall": 1.0,
+      "questions_correct": 3,
+      "questions_partial": 0,
+      "questions_wrong": 0,
+      "total_score": 3.0,
+      "avg_score": 1.0,
+      "questions_vague": 2,
+      "questions_missing_info": 0,
+      "avg_off_target_fields": 0.0,
+      "cross_field": {
+        "n_questions": 0,
+        "fully_covered": 0,
+        "avg_coverage": null
+      }
+    },
+    "performance": {
+      "n_questions": 5,
+      "n_target_fields": 5,
+      "target_fields_hit": 3,
+      "target_fields_missed": 2,
+      "field_recall": 0.6,
+      "questions_correct": 3,
+      "questions_partial": 0,
+      "questions_wrong": 2,
+      "total_score": 3.0,
+      "avg_score": 0.6,
+      "questions_vague": 3,
+      "questions_missing_info": 0,
+      "avg_off_target_fields": 0.4,
+      "cross_field": {
+        "n_questions": 0,
+        "fully_covered": 0,
+        "avg_coverage": null
+      }
+    },
+    "safety": {
+      "n_questions": 5,
+      "n_target_fields": 5,
+      "target_fields_hit": 4,
+      "target_fields_missed": 1,
+      "field_recall": 0.8,
+      "questions_correct": 4,
+      "questions_partial": 0,
+      "questions_wrong": 1,
+      "total_score": 4.0,
+      "avg_score": 0.8,
+      "questions_vague": 2,
+      "questions_missing_info": 0,
+      "avg_off_target_fields": 0.4,
+      "cross_field": {
+        "n_questions": 0,
+        "fully_covered": 0,
+        "avg_coverage": null
+      }
+    },
+    "paraphrased": {
+      "n_questions": 25,
+      "n_target_fields": 28,
+      "target_fields_hit": 19,
+      "target_fields_missed": 9,
+      "field_recall": 0.6785714285714286,
+      "questions_correct": 17,
+      "questions_partial": 1,
+      "questions_wrong": 7,
+      "total_score": 17.333333333333332,
+      "avg_score": 0.6933333333333332,
+      "questions_vague": 3,
+      "questions_missing_info": 0,
+      "avg_off_target_fields": 2.16,
+      "cross_field": {
+        "n_questions": 2,
+        "fully_covered": 1,
+        "avg_coverage": 0.6666666666666666
+      }
+    },
+    "cross_field": {
+      "n_questions": 14,
+      "n_target_fields": 33,
+      "target_fields_hit": 12,
+      "target_fields_missed": 21,
+      "field_recall": 0.36363636363636365,
+      "questions_correct": 1,
+      "questions_partial": 10,
+      "questions_wrong": 3,
+      "total_score": 5.833333333333333,
+      "avg_score": 0.41666666666666663,
+      "questions_vague": 5,
+      "questions_missing_info": 0,
+      "avg_off_target_fields": 0.6428571428571429,
+      "cross_field": {
+        "n_questions": 13,
+        "fully_covered": 0,
+        "avg_coverage": 0.37179487179487175
+      }
+    }
+  },
+  "per_field": {
+    "evaluation.datasets": {
+      "n_questions": 4,
+      "n_hit": 2,
+      "recall": 0.5
+    },
+    "evaluation.motivation": {
+      "n_questions": 3,
+      "n_hit": 1,
+      "recall": 0.3333333333333333
+    },
+    "evaluation.update": {
+      "n_questions": 1,
+      "n_hit": 1,
+      "recall": 1.0
+    },
+    "overview.citation": {
+      "n_questions": 2,
+      "n_hit": 1,
+      "recall": 0.5
+    },
+    "overview.contact": {
+      "n_questions": 2,
+      "n_hit": 0,
+      "recall": 0.0
+    },
+    "overview.creator": {
+      "n_questions": 3,
+      "n_hit": 3,
+      "recall": 1.0
+    },
+    "overview.date": {
+      "n_questions": 3,
+      "n_hit": 2,
+      "recall": 0.6666666666666666
+    },
+    "overview.description": {
+      "n_questions": 1,
+      "n_hit": 0,
+      "recall": 0.0
+    },
+    "overview.home": {
+      "n_questions": 2,
+      "n_hit": 0,
+      "recall": 0.0
+    },
+    "overview.license": {
+      "n_questions": 2,
+      "n_hit": 2,
+      "recall": 1.0
+    },
+    "overview.name": {
+      "n_questions": 1,
+      "n_hit": 1,
+      "recall": 1.0
+    },
+    "overview.task": {
+      "n_questions": 2,
+      "n_hit": 1,
+      "recall": 0.5
+    },
+    "overview.type": {
+      "n_questions": 3,
+      "n_hit": 2,
+      "recall": 0.6666666666666666
+    },
+    "overview.version": {
+      "n_questions": 2,
+      "n_hit": 2,
+      "recall": 1.0
+    },
+    "performance.analysis": {
+      "n_questions": 3,
+      "n_hit": 1,
+      "recall": 0.3333333333333333
+    },
+    "performance.bias": {
+      "n_questions": 1,
+      "n_hit": 0,
+      "recall": 0.0
+    },
+    "performance.methodology": {
+      "n_questions": 3,
+      "n_hit": 2,
+      "recall": 0.6666666666666666
+    },
+    "performance.metrics": {
+      "n_questions": 2,
+      "n_hit": 0,
+      "recall": 0.0
+    },
+    "performance.thresholds": {
+      "n_questions": 2,
+      "n_hit": 2,
+      "recall": 1.0
+    },
+    "safety.caveats": {
+      "n_questions": 4,
+      "n_hit": 1,
+      "recall": 0.25
+    },
+    "safety.ethics": {
+      "n_questions": 4,
+      "n_hit": 3,
+      "recall": 0.75
+    },
+    "safety.fairness": {
+      "n_questions": 2,
+      "n_hit": 2,
+      "recall": 1.0
+    },
+    "safety.risks": {
+      "n_questions": 4,
+      "n_hit": 3,
+      "recall": 0.75
+    },
+    "safety.security": {
+      "n_questions": 2,
+      "n_hit": 2,
+      "recall": 1.0
+    },
+    "training.datasets": {
+      "n_questions": 3,
+      "n_hit": 3,
+      "recall": 1.0
+    },
+    "training.motivation": {
+      "n_questions": 2,
+      "n_hit": 0,
+      "recall": 0.0
+    },
+    "training.preprocessing": {
+      "n_questions": 2,
+      "n_hit": 2,
+      "recall": 1.0
+    },
+    "training.standards": {
+      "n_questions": 1,
+      "n_hit": 1,
+      "recall": 1.0
+    },
+    "training.update": {
+      "n_questions": 1,
+      "n_hit": 1,
+      "recall": 1.0
+    },
+    "use.factors": {
+      "n_questions": 3,
+      "n_hit": 1,
+      "recall": 0.3333333333333333
+    },
+    "use.hardware": {
+      "n_questions": 4,
+      "n_hit": 3,
+      "recall": 0.75
+    },
+    "use.inputs_outputs": {
+      "n_questions": 3,
+      "n_hit": 3,
+      "recall": 1.0
+    },
+    "use.instructions": {
+      "n_questions": 3,
+      "n_hit": 2,
+      "recall": 0.6666666666666666
+    },
+    "use.out_of_scope_use": {
+      "n_questions": 4,
+      "n_hit": 3,
+      "recall": 0.75
+    },
+    "use.oversight": {
+      "n_questions": 3,
+      "n_hit": 3,
+      "recall": 1.0
+    },
+    "use.software": {
+      "n_questions": 4,
+      "n_hit": 3,
+      "recall": 0.75
+    },
+    "use.use_cases": {
+      "n_questions": 5,
+      "n_hit": 2,
+      "recall": 0.4
+    },
+    "use.user_groups": {
+      "n_questions": 4,
+      "n_hit": 1,
+      "recall": 0.25
+    }
+  },
+  "confusions": [
+    {
+      "missed": "overview.contact",
+      "returned": "use.instructions",
+      "n": 2
+    },
+    {
+      "missed": "performance.metrics",
+      "returned": "performance.methodology",
+      "n": 2
+    },
+    {
+      "missed": "use.factors",
+      "returned": "performance.environmental_impact",
+      "n": 2
+    },
+    {
+      "missed": "use.user_groups",
+      "returned": "overview.creator",
+      "n": 2
+    },
+    {
+      "missed": "use.use_cases",
+      "returned": "overview.creator",
+      "n": 2
+    },
+    {
+      "missed": "use.use_cases",
+      "returned": "overview.type",
+      "n": 1
+    },
+    {
+      "missed": "overview.home",
+      "returned": "overview.date",
+      "n": 1
+    },
+    {
+      "missed": "overview.contact",
+      "returned": "evaluation.more",
+      "n": 1
+    },
+    {
+      "missed": "overview.contact",
+      "returned": "overview.creator",
+      "n": 1
+    },
+    {
+      "missed": "overview.contact",
+      "returned": "overview.date",
+      "n": 1
+    },
+    {
+      "missed": "overview.contact",
+      "returned": "overview.home",
+      "n": 1
+    },
+    {
+      "missed": "overview.contact",
+      "returned": "safety.caveats",
+      "n": 1
+    },
+    {
+      "missed": "overview.contact",
+      "returned": "safety.security",
+      "n": 1
+    },
+    {
+      "missed": "training.motivation",
+      "returned": "training.datasets",
+      "n": 1
+    },
+    {
+      "missed": "performance.bias",
+      "returned": "safety.fairness",
+      "n": 1
+    },
+    {
+      "missed": "safety.caveats",
+      "returned": "safety.risks",
+      "n": 1
+    },
+    {
+      "missed": "overview.description",
+      "returned": "overview.creator",
+      "n": 1
+    },
+    {
+      "missed": "overview.description",
+      "returned": "overview.type",
+      "n": 1
+    },
+    {
+      "missed": "overview.description",
+      "returned": "use.inputs_outputs",
+      "n": 1
+    },
+    {
+      "missed": "overview.description",
+      "returned": "use.use_cases",
+      "n": 1
+    },
+    {
+      "missed": "performance.analysis",
+      "returned": "overview.creator",
+      "n": 1
+    },
+    {
+      "missed": "performance.analysis",
+      "returned": "overview.date",
+      "n": 1
+    },
+    {
+      "missed": "performance.analysis",
+      "returned": "overview.description",
+      "n": 1
+    },
+    {
+      "missed": "performance.analysis",
+      "returned": "overview.home",
+      "n": 1
+    },
+    {
+      "missed": "performance.analysis",
+      "returned": "overview.type",
+      "n": 1
+    },
+    {
+      "missed": "performance.analysis",
+      "returned": "overview.version",
+      "n": 1
+    },
+    {
+      "missed": "performance.analysis",
+      "returned": "use.inputs_outputs",
+      "n": 1
+    },
+    {
+      "missed": "overview.home",
+      "returned": "use.software",
+      "n": 1
+    },
+    {
+      "missed": "overview.contact",
+      "returned": "performance.bias",
+      "n": 1
+    },
+    {
+      "missed": "overview.contact",
+      "returned": "safety.ethics",
+      "n": 1
+    },
+    {
+      "missed": "overview.contact",
+      "returned": "training.datasets",
+      "n": 1
+    },
+    {
+      "missed": "overview.task",
+      "returned": "overview.creator",
+      "n": 1
+    },
+    {
+      "missed": "safety.caveats",
+      "returned": "performance.environmental_impact",
+      "n": 1
+    },
+    {
+      "missed": "safety.risks",
+      "returned": "performance.environmental_impact",
+      "n": 1
+    },
+    {
+      "missed": "use.out_of_scope_use",
+      "returned": "overview.creator",
+      "n": 1
+    },
+    {
+      "missed": "overview.citation",
+      "returned": "use.software",
+      "n": 1
+    }
+  ],
+  "per_question": {
+    "overview": [
+      {
+        "targets": [
+          "overview.name"
+        ],
+        "predicted": [
+          "overview.name"
+        ],
+        "hit": [
+          "overview.name"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What is the name of this model?"
+      },
+      {
+        "targets": [
+          "use.use_cases"
+        ],
+        "predicted": [
+          "overview.type"
+        ],
+        "hit": [],
+        "missed": [
+          "use.use_cases"
+        ],
+        "off_target": [
+          "overview.type"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 1,
+        "coverage": 0.0,
+        "score": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What is this model used for?"
+      },
+      {
+        "targets": [
+          "overview.creator"
+        ],
+        "predicted": [
+          "overview.creator"
+        ],
+        "hit": [
+          "overview.creator"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Who created this model?"
+      },
+      {
+        "targets": [
+          "overview.date"
+        ],
+        "predicted": [
+          "evaluation.more",
+          "overview.creator",
+          "overview.date",
+          "overview.version"
+        ],
+        "hit": [
+          "overview.date"
+        ],
+        "missed": [],
+        "off_target": [
+          "evaluation.more",
+          "overview.creator",
+          "overview.version"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 4,
+        "n_off_target": 3,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "When was this model released?"
+      },
+      {
+        "targets": [
+          "overview.version"
+        ],
+        "predicted": [
+          "evaluation.more",
+          "overview.date",
+          "overview.description",
+          "overview.type",
+          "overview.version",
+          "safety.caveats",
+          "training.more",
+          "use.inputs_outputs"
+        ],
+        "hit": [
+          "overview.version"
+        ],
+        "missed": [],
+        "off_target": [
+          "evaluation.more",
+          "overview.date",
+          "overview.description",
+          "overview.type",
+          "safety.caveats",
+          "training.more",
+          "use.inputs_outputs"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 8,
+        "n_off_target": 7,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What version is this model?"
+      },
+      {
+        "targets": [
+          "overview.type"
+        ],
+        "predicted": [
+          "overview.type"
+        ],
+        "hit": [
+          "overview.type"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What is the type of the model?"
+      },
+      {
+        "targets": [
+          "performance.analysis"
+        ],
+        "predicted": [],
+        "hit": [],
+        "missed": [
+          "performance.analysis"
+        ],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 0,
+        "n_off_target": 0,
+        "coverage": 0.0,
+        "score": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true,
+        "vague_question": true,
+        "missing_info": true,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "How many parameters does this model have?"
+      },
+      {
+        "targets": [
+          "overview.task"
+        ],
+        "predicted": [
+          "overview.creator",
+          "overview.date",
+          "overview.description",
+          "overview.more",
+          "overview.task",
+          "overview.type",
+          "use.inputs_outputs",
+          "use.software"
+        ],
+        "hit": [
+          "overview.task"
+        ],
+        "missed": [],
+        "off_target": [
+          "overview.creator",
+          "overview.date",
+          "overview.description",
+          "overview.more",
+          "overview.type",
+          "use.inputs_outputs",
+          "use.software"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 8,
+        "n_off_target": 7,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What is the task of this model?"
+      },
+      {
+        "targets": [
+          "overview.license"
+        ],
+        "predicted": [
+          "overview.license"
+        ],
+        "hit": [
+          "overview.license"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What is the license of this model?"
+      },
+      {
+        "targets": [
+          "overview.home"
+        ],
+        "predicted": [
+          "overview.date"
+        ],
+        "hit": [],
+        "missed": [
+          "overview.home"
+        ],
+        "off_target": [
+          "overview.date"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 1,
+        "coverage": 0.0,
+        "score": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Where can I find this model?"
+      },
+      {
+        "targets": [
+          "overview.contact"
+        ],
+        "predicted": [
+          "evaluation.more",
+          "overview.creator",
+          "overview.date",
+          "overview.home",
+          "safety.caveats",
+          "safety.security",
+          "use.instructions"
+        ],
+        "hit": [],
+        "missed": [
+          "overview.contact"
+        ],
+        "off_target": [
+          "evaluation.more",
+          "overview.creator",
+          "overview.date",
+          "overview.home",
+          "safety.caveats",
+          "safety.security",
+          "use.instructions"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 7,
+        "n_off_target": 7,
+        "coverage": 0.0,
+        "score": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Who can I contact about this model?"
+      },
+      {
+        "targets": [
+          "overview.citation"
+        ],
+        "predicted": [
+          "overview.citation"
+        ],
+        "hit": [
+          "overview.citation"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "How should I cite this model?"
+      }
+    ],
+    "use": [
+      {
+        "targets": [
+          "use.use_cases"
+        ],
+        "predicted": [
+          "use.use_cases"
+        ],
+        "hit": [
+          "use.use_cases"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What are the intended use cases?"
+      },
+      {
+        "targets": [
+          "use.oversight"
+        ],
+        "predicted": [
+          "use.oversight"
+        ],
+        "hit": [
+          "use.oversight"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What level of human oversight is required?"
+      },
+      {
+        "targets": [
+          "use.user_groups"
+        ],
+        "predicted": [
+          "use.oversight",
+          "use.user_groups"
+        ],
+        "hit": [
+          "use.user_groups"
+        ],
+        "missed": [],
+        "off_target": [
+          "use.oversight"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 2,
+        "n_off_target": 1,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Who are the intended user groups?"
+      },
+      {
+        "targets": [
+          "use.out_of_scope_use"
+        ],
+        "predicted": [
+          "use.out_of_scope_use",
+          "use.use_cases"
+        ],
+        "hit": [
+          "use.out_of_scope_use"
+        ],
+        "missed": [],
+        "off_target": [
+          "use.use_cases"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 2,
+        "n_off_target": 1,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What is this model not intended for?"
+      },
+      {
+        "targets": [
+          "use.software"
+        ],
+        "predicted": [
+          "use.software"
+        ],
+        "hit": [
+          "use.software"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What software does this model require?"
+      },
+      {
+        "targets": [
+          "use.instructions"
+        ],
+        "predicted": [
+          "overview.home",
+          "use.instructions"
+        ],
+        "hit": [
+          "use.instructions"
+        ],
+        "missed": [],
+        "off_target": [
+          "overview.home"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 2,
+        "n_off_target": 1,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "How do I run / use this model?"
+      },
+      {
+        "targets": [
+          "use.inputs_outputs"
+        ],
+        "predicted": [
+          "use.inputs_outputs"
+        ],
+        "hit": [
+          "use.inputs_outputs"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What are the inputs and outputs of the model?"
+      },
+      {
+        "targets": [
+          "use.factors"
+        ],
+        "predicted": [
+          "performance.analysis",
+          "performance.thresholds",
+          "use.factors"
+        ],
+        "hit": [
+          "use.factors"
+        ],
+        "missed": [],
+        "off_target": [
+          "performance.analysis",
+          "performance.thresholds"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 3,
+        "n_off_target": 2,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What factors affect the model's performance?"
+      },
+      {
+        "targets": [
+          "use.hardware"
+        ],
+        "predicted": [
+          "use.hardware"
+        ],
+        "hit": [
+          "use.hardware"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What hardware is required?"
+      }
+    ],
+    "training": [
+      {
+        "targets": [
+          "training.datasets"
+        ],
+        "predicted": [
+          "training.datasets"
+        ],
+        "hit": [
+          "training.datasets"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What datasets were used for training?"
+      },
+      {
+        "targets": [
+          "training.motivation"
+        ],
+        "predicted": [
+          "training.datasets"
+        ],
+        "hit": [],
+        "missed": [
+          "training.motivation"
+        ],
+        "off_target": [
+          "training.datasets"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 1,
+        "coverage": 0.0,
+        "score": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Why were these training datasets chosen?"
+      },
+      {
+        "targets": [
+          "training.preprocessing"
+        ],
+        "predicted": [
+          "training.preprocessing",
+          "training.update"
+        ],
+        "hit": [
+          "training.preprocessing"
+        ],
+        "missed": [],
+        "off_target": [
+          "training.update"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 2,
+        "n_off_target": 1,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What preprocessing was applied during training?"
+      },
+      {
+        "targets": [
+          "training.standards"
+        ],
+        "predicted": [
+          "evaluation.standards",
+          "performance.methodology",
+          "training.more",
+          "training.standards",
+          "training.update"
+        ],
+        "hit": [
+          "training.standards"
+        ],
+        "missed": [],
+        "off_target": [
+          "evaluation.standards",
+          "performance.methodology",
+          "training.more",
+          "training.update"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 5,
+        "n_off_target": 4,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What standards were followed during training?"
+      },
+      {
+        "targets": [
+          "training.update"
+        ],
+        "predicted": [
+          "evaluation.update",
+          "training.more",
+          "training.update"
+        ],
+        "hit": [
+          "training.update"
+        ],
+        "missed": [],
+        "off_target": [
+          "evaluation.update",
+          "training.more"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 3,
+        "n_off_target": 2,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Is the training data up to date?"
+      }
+    ],
+    "evaluation": [
+      {
+        "targets": [
+          "evaluation.datasets"
+        ],
+        "predicted": [
+          "evaluation.datasets"
+        ],
+        "hit": [
+          "evaluation.datasets"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What datasets were used for evaluation?"
+      },
+      {
+        "targets": [
+          "evaluation.motivation"
+        ],
+        "predicted": [
+          "evaluation.motivation"
+        ],
+        "hit": [
+          "evaluation.motivation"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Why were these evaluation datasets chosen?"
+      },
+      {
+        "targets": [
+          "evaluation.update"
+        ],
+        "predicted": [
+          "evaluation.update"
+        ],
+        "hit": [
+          "evaluation.update"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Is the evaluation data up to date?"
+      }
+    ],
+    "performance": [
+      {
+        "targets": [
+          "performance.analysis"
+        ],
+        "predicted": [
+          "performance.analysis"
+        ],
+        "hit": [
+          "performance.analysis"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What does the performance analysis say?"
+      },
+      {
+        "targets": [
+          "performance.metrics"
+        ],
+        "predicted": [
+          "performance.methodology"
+        ],
+        "hit": [],
+        "missed": [
+          "performance.metrics"
+        ],
+        "off_target": [
+          "performance.methodology"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 1,
+        "coverage": 0.0,
+        "score": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What are the benchmark metrics?"
+      },
+      {
+        "targets": [
+          "performance.thresholds"
+        ],
+        "predicted": [
+          "performance.thresholds"
+        ],
+        "hit": [
+          "performance.thresholds"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What decision thresholds are used?"
+      },
+      {
+        "targets": [
+          "performance.methodology"
+        ],
+        "predicted": [
+          "performance.methodology"
+        ],
+        "hit": [
+          "performance.methodology"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What is the evaluation methodology?"
+      },
+      {
+        "targets": [
+          "performance.bias"
+        ],
+        "predicted": [
+          "safety.fairness"
+        ],
+        "hit": [],
+        "missed": [
+          "performance.bias"
+        ],
+        "off_target": [
+          "safety.fairness"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 1,
+        "coverage": 0.0,
+        "score": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Was the model tested for bias?"
+      }
+    ],
+    "safety": [
+      {
+        "targets": [
+          "safety.ethics"
+        ],
+        "predicted": [
+          "safety.ethics"
+        ],
+        "hit": [
+          "safety.ethics"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What are the ethical considerations?"
+      },
+      {
+        "targets": [
+          "safety.fairness"
+        ],
+        "predicted": [
+          "performance.bias",
+          "safety.fairness"
+        ],
+        "hit": [
+          "safety.fairness"
+        ],
+        "missed": [],
+        "off_target": [
+          "performance.bias"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 2,
+        "n_off_target": 1,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "How is fairness defined / assessed?"
+      },
+      {
+        "targets": [
+          "safety.risks"
+        ],
+        "predicted": [
+          "safety.risks"
+        ],
+        "hit": [
+          "safety.risks"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What are the risks of this model?"
+      },
+      {
+        "targets": [
+          "safety.security"
+        ],
+        "predicted": [
+          "safety.security"
+        ],
+        "hit": [
+          "safety.security"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Is the model secure / compliant with security standards?"
+      },
+      {
+        "targets": [
+          "safety.caveats"
+        ],
+        "predicted": [
+          "safety.risks"
+        ],
+        "hit": [],
+        "missed": [
+          "safety.caveats"
+        ],
+        "off_target": [
+          "safety.risks"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 1,
+        "coverage": 0.0,
+        "score": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What are the caveats of this model?"
+      }
+    ],
+    "paraphrased": [
+      {
+        "targets": [
+          "use.use_cases"
+        ],
+        "predicted": [
+          "overview.creator",
+          "overview.date",
+          "overview.description",
+          "overview.type",
+          "overview.version",
+          "use.inputs_outputs",
+          "use.out_of_scope_use",
+          "use.software",
+          "use.use_cases"
+        ],
+        "hit": [
+          "use.use_cases"
+        ],
+        "missed": [],
+        "off_target": [
+          "overview.creator",
+          "overview.date",
+          "overview.description",
+          "overview.type",
+          "overview.version",
+          "use.inputs_outputs",
+          "use.out_of_scope_use",
+          "use.software"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 9,
+        "n_off_target": 8,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What is the purpose of this model?"
+      },
+      {
+        "targets": [
+          "overview.description"
+        ],
+        "predicted": [
+          "overview.creator",
+          "overview.type",
+          "use.inputs_outputs",
+          "use.use_cases"
+        ],
+        "hit": [],
+        "missed": [
+          "overview.description"
+        ],
+        "off_target": [
+          "overview.creator",
+          "overview.type",
+          "use.inputs_outputs",
+          "use.use_cases"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 4,
+        "n_off_target": 4,
+        "coverage": 0.0,
+        "score": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What does this model do?"
+      },
+      {
+        "targets": [
+          "overview.creator"
+        ],
+        "predicted": [
+          "overview.creator"
+        ],
+        "hit": [
+          "overview.creator"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Which organization built this model?"
+      },
+      {
+        "targets": [
+          "overview.date"
+        ],
+        "predicted": [
+          "evaluation.more",
+          "overview.creator",
+          "overview.date",
+          "overview.description",
+          "overview.type",
+          "overview.version",
+          "safety.security"
+        ],
+        "hit": [
+          "overview.date"
+        ],
+        "missed": [],
+        "off_target": [
+          "evaluation.more",
+          "overview.creator",
+          "overview.description",
+          "overview.type",
+          "overview.version",
+          "safety.security"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 7,
+        "n_off_target": 6,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "When did this model come out?"
+      },
+      {
+        "targets": [
+          "overview.type"
+        ],
+        "predicted": [
+          "overview.creator",
+          "overview.date",
+          "overview.description",
+          "overview.type",
+          "training.standards",
+          "use.software"
+        ],
+        "hit": [
+          "overview.type"
+        ],
+        "missed": [],
+        "off_target": [
+          "overview.creator",
+          "overview.date",
+          "overview.description",
+          "training.standards",
+          "use.software"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 6,
+        "n_off_target": 5,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What kind of architecture is used?"
+      },
+      {
+        "targets": [
+          "performance.analysis"
+        ],
+        "predicted": [
+          "overview.creator",
+          "overview.date",
+          "overview.description",
+          "overview.home",
+          "overview.type",
+          "overview.version",
+          "use.inputs_outputs"
+        ],
+        "hit": [],
+        "missed": [
+          "performance.analysis"
+        ],
+        "off_target": [
+          "overview.creator",
+          "overview.date",
+          "overview.description",
+          "overview.home",
+          "overview.type",
+          "overview.version",
+          "use.inputs_outputs"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 7,
+        "n_off_target": 7,
+        "coverage": 0.0,
+        "score": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What is the size of the model?"
+      },
+      {
+        "targets": [
+          "overview.home"
+        ],
+        "predicted": [
+          "use.software"
+        ],
+        "hit": [],
+        "missed": [
+          "overview.home"
+        ],
+        "off_target": [
+          "use.software"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 1,
+        "coverage": 0.0,
+        "score": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Where do I download it from?"
+      },
+      {
+        "targets": [
+          "overview.contact"
+        ],
+        "predicted": [
+          "performance.bias",
+          "safety.ethics",
+          "training.datasets",
+          "use.instructions"
+        ],
+        "hit": [],
+        "missed": [
+          "overview.contact"
+        ],
+        "off_target": [
+          "performance.bias",
+          "safety.ethics",
+          "training.datasets",
+          "use.instructions"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 4,
+        "n_off_target": 4,
+        "coverage": 0.0,
+        "score": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Who should I email about it?"
+      },
+      {
+        "targets": [
+          "use.software"
+        ],
+        "predicted": [
+          "use.software"
+        ],
+        "hit": [
+          "use.software"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What Python packages do I need?"
+      },
+      {
+        "targets": [
+          "use.hardware"
+        ],
+        "predicted": [
+          "use.hardware"
+        ],
+        "hit": [
+          "use.hardware"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What GPU do I need to run it?"
+      },
+      {
+        "targets": [
+          "use.inputs_outputs"
+        ],
+        "predicted": [
+          "use.inputs_outputs"
+        ],
+        "hit": [
+          "use.inputs_outputs"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What does the model take as input, and what does it return?"
+      },
+      {
+        "targets": [
+          "use.instructions"
+        ],
+        "predicted": [
+          "use.inputs_outputs",
+          "use.instructions"
+        ],
+        "hit": [
+          "use.instructions"
+        ],
+        "missed": [],
+        "off_target": [
+          "use.inputs_outputs"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 2,
+        "n_off_target": 1,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "How do I load and run the model on data?"
+      },
+      {
+        "targets": [
+          "use.factors"
+        ],
+        "predicted": [
+          "performance.environmental_impact"
+        ],
+        "hit": [],
+        "missed": [
+          "use.factors"
+        ],
+        "off_target": [
+          "performance.environmental_impact"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 1,
+        "coverage": 0.0,
+        "score": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What could make its performance worse?"
+      },
+      {
+        "targets": [
+          "use.out_of_scope_use"
+        ],
+        "predicted": [
+          "use.out_of_scope_use"
+        ],
+        "hit": [
+          "use.out_of_scope_use"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What should this model not be used for?"
+      },
+      {
+        "targets": [
+          "use.user_groups"
+        ],
+        "predicted": [
+          "overview.creator"
+        ],
+        "hit": [],
+        "missed": [
+          "use.user_groups"
+        ],
+        "off_target": [
+          "overview.creator"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 1,
+        "coverage": 0.0,
+        "score": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Who is this model for?"
+      },
+      {
+        "targets": [
+          "use.oversight"
+        ],
+        "predicted": [
+          "evaluation.more",
+          "evaluation.standards",
+          "evaluation.update",
+          "performance.analysis",
+          "safety.fairness",
+          "use.inputs_outputs",
+          "use.instructions",
+          "use.oversight"
+        ],
+        "hit": [
+          "use.oversight"
+        ],
+        "missed": [],
+        "off_target": [
+          "evaluation.more",
+          "evaluation.standards",
+          "evaluation.update",
+          "performance.analysis",
+          "safety.fairness",
+          "use.inputs_outputs",
+          "use.instructions"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 8,
+        "n_off_target": 7,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Does a human need to review the outputs?"
+      },
+      {
+        "targets": [
+          "performance.metrics"
+        ],
+        "predicted": [
+          "performance.methodology"
+        ],
+        "hit": [],
+        "missed": [
+          "performance.metrics"
+        ],
+        "off_target": [
+          "performance.methodology"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 1,
+        "coverage": 0.0,
+        "score": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What does it say about its accuracy?"
+      },
+      {
+        "targets": [
+          "performance.thresholds"
+        ],
+        "predicted": [
+          "performance.thresholds"
+        ],
+        "hit": [
+          "performance.thresholds"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What threshold is used to make predictions?"
+      },
+      {
+        "targets": [
+          "safety.risks"
+        ],
+        "predicted": [
+          "safety.caveats",
+          "safety.risks"
+        ],
+        "hit": [
+          "safety.risks"
+        ],
+        "missed": [],
+        "off_target": [
+          "safety.caveats"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 2,
+        "n_off_target": 1,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What could go wrong if I use this model?"
+      },
+      {
+        "targets": [
+          "safety.ethics"
+        ],
+        "predicted": [
+          "safety.caveats",
+          "safety.ethics"
+        ],
+        "hit": [
+          "safety.ethics"
+        ],
+        "missed": [],
+        "off_target": [
+          "safety.caveats"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 2,
+        "n_off_target": 1,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Are there ethical concerns with using this?"
+      },
+      {
+        "targets": [
+          "safety.security"
+        ],
+        "predicted": [
+          "safety.security"
+        ],
+        "hit": [
+          "safety.security"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Is it compliant with any security standard?"
+      },
+      {
+        "targets": [
+          "safety.fairness"
+        ],
+        "predicted": [
+          "performance.bias",
+          "safety.fairness",
+          "use.user_groups"
+        ],
+        "hit": [
+          "safety.fairness"
+        ],
+        "missed": [],
+        "off_target": [
+          "performance.bias",
+          "use.user_groups"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 3,
+        "n_off_target": 2,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Is the model fair across subgroups?"
+      },
+      {
+        "targets": [
+          "safety.caveats"
+        ],
+        "predicted": [
+          "safety.caveats"
+        ],
+        "hit": [
+          "safety.caveats"
+        ],
+        "missed": [],
+        "off_target": [],
+        "n_targets": 1,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What are its known limitations?"
+      },
+      {
+        "targets": [
+          "evaluation.datasets",
+          "training.datasets"
+        ],
+        "predicted": [
+          "evaluation.datasets",
+          "evaluation.motivation",
+          "performance.methodology",
+          "training.datasets",
+          "training.motivation",
+          "training.preprocessing"
+        ],
+        "hit": [
+          "evaluation.datasets",
+          "training.datasets"
+        ],
+        "missed": [],
+        "off_target": [
+          "evaluation.motivation",
+          "performance.methodology",
+          "training.motivation",
+          "training.preprocessing"
+        ],
+        "n_targets": 2,
+        "n_predicted_fields": 6,
+        "n_off_target": 4,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What datasets was it trained and evaluated on?"
+      },
+      {
+        "targets": [
+          "evaluation.datasets",
+          "evaluation.motivation",
+          "performance.methodology"
+        ],
+        "predicted": [
+          "performance.methodology"
+        ],
+        "hit": [
+          "performance.methodology"
+        ],
+        "missed": [
+          "evaluation.datasets",
+          "evaluation.motivation"
+        ],
+        "off_target": [],
+        "n_targets": 3,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 0.3333333333333333,
+        "score": 0.3333333333333333,
+        "correct": false,
+        "partial": true,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "How was the model evaluated?"
+      }
+    ],
+    "cross_field": [
+      {
+        "targets": [
+          "overview.creator",
+          "overview.type"
+        ],
+        "predicted": [
+          "overview.creator"
+        ],
+        "hit": [
+          "overview.creator"
+        ],
+        "missed": [
+          "overview.type"
+        ],
+        "off_target": [],
+        "n_targets": 2,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 0.5,
+        "score": 0.5,
+        "correct": false,
+        "partial": true,
+        "wrong": false,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Who created this model and what kind of model is it?"
+      },
+      {
+        "targets": [
+          "overview.task",
+          "use.use_cases"
+        ],
+        "predicted": [
+          "overview.creator"
+        ],
+        "hit": [],
+        "missed": [
+          "overview.task",
+          "use.use_cases"
+        ],
+        "off_target": [
+          "overview.creator"
+        ],
+        "n_targets": 2,
+        "n_predicted_fields": 1,
+        "n_off_target": 1,
+        "coverage": 0.0,
+        "score": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What is the model's task and its intended use?"
+      },
+      {
+        "targets": [
+          "overview.date",
+          "overview.version"
+        ],
+        "predicted": [
+          "overview.version"
+        ],
+        "hit": [
+          "overview.version"
+        ],
+        "missed": [
+          "overview.date"
+        ],
+        "off_target": [],
+        "n_targets": 2,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 0.5,
+        "score": 0.5,
+        "correct": false,
+        "partial": true,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "When was the model released and what version is it?"
+      },
+      {
+        "targets": [
+          "use.hardware",
+          "use.software"
+        ],
+        "predicted": [
+          "use.hardware"
+        ],
+        "hit": [
+          "use.hardware"
+        ],
+        "missed": [
+          "use.software"
+        ],
+        "off_target": [],
+        "n_targets": 2,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 0.5,
+        "score": 0.5,
+        "correct": false,
+        "partial": true,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What hardware and software do I need to run this model?"
+      },
+      {
+        "targets": [
+          "safety.ethics",
+          "safety.risks"
+        ],
+        "predicted": [
+          "safety.risks"
+        ],
+        "hit": [
+          "safety.risks"
+        ],
+        "missed": [
+          "safety.ethics"
+        ],
+        "off_target": [],
+        "n_targets": 2,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 0.5,
+        "score": 0.5,
+        "correct": false,
+        "partial": true,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What are the risks and ethical concerns of using this model?"
+      },
+      {
+        "targets": [
+          "use.oversight",
+          "use.user_groups"
+        ],
+        "predicted": [
+          "use.oversight"
+        ],
+        "hit": [
+          "use.oversight"
+        ],
+        "missed": [
+          "use.user_groups"
+        ],
+        "off_target": [],
+        "n_targets": 2,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 0.5,
+        "score": 0.5,
+        "correct": false,
+        "partial": true,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Who are the intended users and what oversight is required?"
+      },
+      {
+        "targets": [
+          "safety.caveats",
+          "use.out_of_scope_use"
+        ],
+        "predicted": [
+          "use.out_of_scope_use"
+        ],
+        "hit": [
+          "use.out_of_scope_use"
+        ],
+        "missed": [
+          "safety.caveats"
+        ],
+        "off_target": [],
+        "n_targets": 2,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 0.5,
+        "score": 0.5,
+        "correct": false,
+        "partial": true,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What are the caveats and out-of-scope uses?"
+      },
+      {
+        "targets": [
+          "evaluation.datasets",
+          "evaluation.motivation",
+          "performance.methodology",
+          "training.datasets",
+          "training.motivation",
+          "training.preprocessing"
+        ],
+        "predicted": [
+          "training.datasets",
+          "training.preprocessing"
+        ],
+        "hit": [
+          "training.datasets",
+          "training.preprocessing"
+        ],
+        "missed": [
+          "evaluation.datasets",
+          "evaluation.motivation",
+          "performance.methodology",
+          "training.motivation"
+        ],
+        "off_target": [],
+        "n_targets": 6,
+        "n_predicted_fields": 2,
+        "n_off_target": 0,
+        "coverage": 0.3333333333333333,
+        "score": 0.3333333333333333,
+        "correct": false,
+        "partial": true,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "How was the model trained and evaluated?"
+      },
+      {
+        "targets": [
+          "use.inputs_outputs",
+          "use.instructions"
+        ],
+        "predicted": [
+          "use.inputs_outputs"
+        ],
+        "hit": [
+          "use.inputs_outputs"
+        ],
+        "missed": [
+          "use.instructions"
+        ],
+        "off_target": [],
+        "n_targets": 2,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 0.5,
+        "score": 0.5,
+        "correct": false,
+        "partial": true,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What are the input/output formats, and how do I run the model?"
+      },
+      {
+        "targets": [
+          "safety.ethics"
+        ],
+        "predicted": [
+          "evaluation.standards",
+          "overview.creator",
+          "safety.caveats",
+          "safety.ethics",
+          "safety.fairness",
+          "training.standards"
+        ],
+        "hit": [
+          "safety.ethics"
+        ],
+        "missed": [],
+        "off_target": [
+          "evaluation.standards",
+          "overview.creator",
+          "safety.caveats",
+          "safety.fairness",
+          "training.standards"
+        ],
+        "n_targets": 1,
+        "n_predicted_fields": 6,
+        "n_off_target": 5,
+        "coverage": 1.0,
+        "score": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What technical or ethical standards does the model follow?"
+      },
+      {
+        "targets": [
+          "safety.caveats",
+          "safety.risks",
+          "use.factors"
+        ],
+        "predicted": [
+          "performance.environmental_impact"
+        ],
+        "hit": [],
+        "missed": [
+          "safety.caveats",
+          "safety.risks",
+          "use.factors"
+        ],
+        "off_target": [
+          "performance.environmental_impact"
+        ],
+        "n_targets": 3,
+        "n_predicted_fields": 1,
+        "n_off_target": 1,
+        "coverage": 0.0,
+        "score": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What factors could degrade performance, and what are the known caveats?"
+      },
+      {
+        "targets": [
+          "use.hardware",
+          "use.software"
+        ],
+        "predicted": [
+          "use.software"
+        ],
+        "hit": [
+          "use.software"
+        ],
+        "missed": [
+          "use.hardware"
+        ],
+        "off_target": [],
+        "n_targets": 2,
+        "n_predicted_fields": 1,
+        "n_off_target": 0,
+        "coverage": 0.5,
+        "score": 0.5,
+        "correct": false,
+        "partial": true,
+        "wrong": false,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "How do I install the software, and what hardware does it need?"
+      },
+      {
+        "targets": [
+          "use.out_of_scope_use",
+          "use.use_cases",
+          "use.user_groups"
+        ],
+        "predicted": [
+          "overview.creator"
+        ],
+        "hit": [],
+        "missed": [
+          "use.out_of_scope_use",
+          "use.use_cases",
+          "use.user_groups"
+        ],
+        "off_target": [
+          "overview.creator"
+        ],
+        "n_targets": 3,
+        "n_predicted_fields": 1,
+        "n_off_target": 1,
+        "coverage": 0.0,
+        "score": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true,
+        "vague_question": true,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "Who should use this model, and what should they not do with it?"
+      },
+      {
+        "targets": [
+          "overview.citation",
+          "overview.license"
+        ],
+        "predicted": [
+          "overview.license",
+          "use.software"
+        ],
+        "hit": [
+          "overview.license"
+        ],
+        "missed": [
+          "overview.citation"
+        ],
+        "off_target": [
+          "use.software"
+        ],
+        "n_targets": 2,
+        "n_predicted_fields": 2,
+        "n_off_target": 1,
+        "coverage": 0.5,
+        "score": 0.5,
+        "correct": false,
+        "partial": true,
+        "wrong": false,
+        "vague_question": false,
+        "missing_info": false,
+        "invalid_targets": [],
+        "unparsed_headers": [],
+        "question": "What is the model's license and how do I cite it?"
+      }
+    ]
+  }
+}

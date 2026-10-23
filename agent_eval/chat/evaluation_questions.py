@@ -8,7 +8,7 @@ QUESTIONS = {
         "Who created this model?",
         "When was this model released?",
         "What version is this model?",
-        "What type of model is this?",
+        "What is the type of the model?",
         "How many parameters does this model have?",
         "What is the task of this model?",
         "What is the license of this model?",

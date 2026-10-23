@@ -1,0 +1,231 @@
+{
+  "meta": {
+    "version": "1.0",
+    "source": "model card schema (data.json)",
+    "total_fields": 43,
+    "sections": ["overview", "use", "training", "evaluation", "performance", "safety"],
+    "kinds": ["text", "date", "enum", "unit"],
+    "question_types": ["field", "paraphrase", "cross_field"],
+    "scoring_rule": "A question is correct if any returned chunk's field tag is in target_fields. Chunk content is not scored."
+  },
+  "excluded": [
+    "overview.more",
+    "use.more",
+    "training.more",
+    "evaluation.more"
+  ],
+  "excluded_reason": "Not scored. Never a valid target. A prediction tagged 'more' on a non-'more' question is a miss.",
+  "fields": {
+    "overview.name": {
+      "section": "overview", "field": "name", "kind": "text", "type": "short text",
+      "description": "Name of the model."
+    },
+    "overview.description": {
+      "section": "overview", "field": "description", "kind": "text", "type": "long text",
+      "description": "Model introduction, purpose, capabilities, novelty and caveats."
+    },
+    "overview.creator": {
+      "section": "overview", "field": "creator", "kind": "text", "type": "short text",
+      "description": "Person or organization developed the model."
+    },
+    "overview.date": {
+      "section": "overview", "field": "date", "kind": "date", "type": "date",
+      "description": "Model development completion date."
+    },
+    "overview.version": {
+      "section": "overview", "field": "version", "kind": "text", "type": "short text",
+      "description": "Version of the model."
+    },
+    "overview.type": {
+      "section": "overview", "field": "type", "kind": "enum", "type_label": "list",
+      "description": "Model architecture or algorithm type.",
+      "enum_groups": {
+        "Neural Networks": ["Convolutional Neural Network", "Recurrent Neural Network", "Multilayer Perceptron", "Transformer", "Graph Neural Network", "Autoencoder", "Generative Adversarial Network"],
+        "Classical Machine Learning": ["Linear Regression", "Logistic Regression", "K-Nearest Neighbors", "Naive Bayes", "Support Vector Machine", "Decision Tree"],
+        "Ensemble Methods": ["Random Forest", "Gradient Boosting", "Ensemble Model"],
+        "Unsupervised / Representation Learning": ["Clustering Model", "Dimensionality Reduction Model"],
+        "Reinforcement Learning": ["Reinforcement Learning Agent"],
+        "Other": ["Other", "unknown"]
+      }
+    },
+    "overview.parameters": {
+      "section": "overview", "field": "parameters", "kind": "unit",
+      "description": "Number of parameters",
+      "unit": { "symbol": ["K", "M", "B", "T"], "name": ["Thousand (K)", "Million (M)", "Billion (B)", "Trillion (T)"] }
+    },
+    "overview.task": {
+      "section": "overview", "field": "task", "kind": "enum", "type_label": "list",
+      "description": "Model task.",
+      "enum_groups": {
+        "Multimodal": ["Audio-Text-to-Text", "Image-Text-to-Text", "Image-Text-to-Image", "Image-Text-to-Video", "Visual Question Answering", "Document Question Answering", "Video-Text-to-Text", "Visual Document Retrieval", "Any-to-Any"],
+        "Computer Vision": ["Depth Estimation", "Image Classification", "Object Detection", "Image Segmentation", "Text-to-Image", "Image-to-Text", "Image-to-Image", "Image-to-Video", "Unconditional Image Generation", "Video Classification", "Text-to-Video", "Zero-Shot Image Classification", "Mask Generation", "Zero-Shot Object Detection", "Text-to-3D", "Image-to-3D", "Image Feature Extraction", "Keypoint Detection", "Video-to-Video"],
+        "Natural Language Processing": ["Text Classification", "Token Classification", "Table Question Answering", "Question Answering", "Zero-Shot Classification", "Translation", "Summarization", "Feature Extraction", "Text Generation", "Fill-Mask", "Sentence Similarity", "Text Ranking"],
+        "Audio": ["Text-to-Speech", "Text-to-Audio", "Automatic Speech Recognition", "Audio-to-Audio", "Audio Classification", "Voice Activity Detection"],
+        "Tabular": ["Tabular Classification", "Tabular Regression", "Time Series Forecasting"],
+        "Reinforcement Learning": ["Reinforcement Learning", "Robotics"],
+        "Other": ["Other", "unknown"]
+      }
+    },
+    "overview.license": {
+      "section": "overview", "field": "license", "kind": "text", "type": "short text",
+      "description": "Licence and intellectual property (IP) information."
+    },
+    "overview.home": {
+      "section": "overview", "field": "home", "kind": "text", "type": "short text",
+      "description": "URL hosting the model."
+    },
+    "overview.contact": {
+      "section": "overview", "field": "contact", "kind": "text", "type": "short text",
+      "description": "Author contact information."
+    },
+    "overview.citation": {
+      "section": "overview", "field": "citation", "kind": "text", "type": "long text",
+      "description": "How should the model be cited? Typically includes title, author, year, and publisher. May be a formatted citation or bibtex entries like @article."
+    },
+
+    "use.use_cases": {
+      "section": "use", "field": "use_cases", "kind": "text", "type": "long text",
+      "description": "Intended use of the model."
+    },
+    "use.oversight": {
+      "section": "use", "field": "oversight", "kind": "enum", "type_label": "list",
+      "description": "Defines the level of human control over the system.",
+      "enum": ["self-learning/autonomous", "human-in-the-loop", "human-on-the-loop", "human-in-command", "unknown"]
+    },
+    "use.user_groups": {
+      "section": "use", "field": "user_groups", "kind": "text", "type": "long text",
+      "description": "Intended users, for example categorized by background, role, or expertise."
+    },
+    "use.out_of_scope_use": {
+      "section": "use", "field": "out_of_scope_use", "kind": "text", "type": "long text",
+      "description": "Unintended or improper use of the model, for example in scenarios that could degrade its quality."
+    },
+    "use.software": {
+      "section": "use", "field": "software", "kind": "text", "type": "long text",
+      "description": "Software requirements and dependencies?"
+    },
+    "use.instructions": {
+      "section": "use", "field": "instructions", "kind": "text", "type": "long text",
+      "description": "Use instructions."
+    },
+    "use.inputs_outputs": {
+      "section": "use", "field": "inputs_outputs", "kind": "text", "type": "long text",
+      "description": "Description of the model's inputs and outputs"
+    },
+    "use.factors": {
+      "section": "use", "field": "factors", "kind": "text", "type": "long text",
+      "description": "Foreseeable salient factors for which model performance may vary."
+    },
+    "use.hardware": {
+      "section": "use", "field": "hardware", "kind": "text", "type": "long text",
+      "description": "Hardware requirements for training and inference."
+    },
+
+    "training.datasets": {
+      "section": "training", "field": "datasets", "kind": "text", "type": "long text",
+      "description": "Dataset(s) used during training.",
+      "sibling": "evaluation.datasets"
+    },
+    "training.motivation": {
+      "section": "training", "field": "motivation", "kind": "text", "type": "long text",
+      "description": "Why were training datasets chosen?",
+      "sibling": "evaluation.motivation"
+    },
+    "training.preprocessing": {
+      "section": "training", "field": "preprocessing", "kind": "text", "type": "long text",
+      "description": "Data pre-processing for training (tokenizer, data augmentation etc.).",
+      "sibling": "evaluation.preprocessing"
+    },
+    "training.standards": {
+      "section": "training", "field": "standards", "kind": "enum", "type_label": "list",
+      "description": "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management.",
+      "enum": ["none", "ISO", "IEEE", "unknown"],
+      "sibling": "evaluation.standards"
+    },
+    "training.update": {
+      "section": "training", "field": "update", "kind": "enum", "type_label": "list",
+      "description": "Is the training set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?",
+      "enum": ["no", "yes", "unknown"],
+      "sibling": "evaluation.update"
+    },
+
+    "evaluation.datasets": {
+      "section": "evaluation", "field": "datasets", "kind": "text", "type": "long text",
+      "description": "Dataset(s) used during evaluation.",
+      "sibling": "training.datasets"
+    },
+    "evaluation.motivation": {
+      "section": "evaluation", "field": "motivation", "kind": "text", "type": "long text",
+      "description": "Why were evaluation datasets chosen?",
+      "sibling": "training.motivation"
+    },
+    "evaluation.preprocessing": {
+      "section": "evaluation", "field": "preprocessing", "kind": "text", "type": "long text",
+      "description": "Data pre-processing for evaluation (tokenizer, data augmentation etc.).",
+      "sibling": "training.preprocessing"
+    },
+    "evaluation.standards": {
+      "section": "evaluation", "field": "standards", "kind": "enum", "type_label": "list",
+      "description": "Technical or ethical frameworks used that define best practices for safety, quality, transparency, or risk management.",
+      "enum": ["none", "ISO", "IEEE", "unknown"],
+      "sibling": "training.standards"
+    },
+    "evaluation.update": {
+      "section": "evaluation", "field": "update", "kind": "enum", "type_label": "list",
+      "description": "Is the evaluation set up-to-date, of high quality, complete and representative of the environment the system will be deployed in?",
+      "enum": ["no", "yes", "unknown"],
+      "sibling": "training.update"
+    },
+
+    "performance.analysis": {
+      "section": "performance", "field": "analysis", "kind": "text", "type": "long text",
+      "description": "Analysis and explanation of performance results."
+    },
+    "performance.metrics": {
+      "section": "performance", "field": "metrics", "kind": "text", "type": "long text",
+      "description": "Benchmark results for any performance metrics."
+    },
+    "performance.thresholds": {
+      "section": "performance", "field": "thresholds", "kind": "text", "type": "long text",
+      "description": "If decision thresholds are used, what are they, and why were those parameters chosen?"
+    },
+    "performance.methodology": {
+      "section": "performance", "field": "methodology", "kind": "text", "type": "long text",
+      "description": "Explanation of how metrics are calculated and averaged, with uncertainty measures and evaluation method."
+    },
+    "performance.energy_consumption": {
+      "section": "performance", "field": "energy_consumption", "kind": "unit",
+      "description": "A summary of energy consumption. Unit measuring is a centi-llama, meaning that 100 corresponds to the energy needed per output token by Llama3.2 3B, with greater values indicating higher energy consumption per token. Determines eco friendliness.",
+      "unit": { "symbol": ["cll"], "name": ["Centi-llama (cLl)"] }
+    },
+    "performance.environmental_impact": {
+      "section": "performance", "field": "environmental_impact", "kind": "text", "type": "long text",
+      "description": "Report of energy consumption, CO2 emissions or any other environmental impact."
+    },
+    "performance.bias": {
+      "section": "performance", "field": "bias", "kind": "text", "type": "long text",
+      "description": "Performance and bias across different groups (e.g. ethnicity, gender)"
+    },
+
+    "safety.ethics": {
+      "section": "safety", "field": "ethics", "kind": "text", "type": "long text",
+      "description": "Ethical considerations regarding datasets and usage of model, including harmful bias and discrimination concerns. Recommended mitigation measures."
+    },
+    "safety.fairness": {
+      "section": "safety", "field": "fairness", "kind": "text", "type": "long text",
+      "description": "Bias or fairness assessments of the model, for example that indicate discrimination against demographic groups."
+    },
+    "safety.risks": {
+      "section": "safety", "field": "risks", "kind": "text", "type": "long text",
+      "description": "Possible threats to the model's validity (design and technical faults) and consequences."
+    },
+    "safety.security": {
+      "section": "safety", "field": "security", "kind": "text", "type": "long text",
+      "description": "Is the model certified for cybersecurity or is it compliant with specific security standards?"
+    },
+    "safety.caveats": {
+      "section": "safety", "field": "caveats", "kind": "text", "type": "long text",
+      "description": "Additional concerns that were not covered in the previous sections."
+    }
+  }
+}

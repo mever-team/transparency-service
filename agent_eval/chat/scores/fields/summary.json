@@ -1,0 +1,2367 @@
+{
+  "per_model": {
+    "1": {
+      "overall": {
+        "n_questions": 80,
+        "n_target_fields": 100,
+        "target_fields_hit": 73,
+        "target_fields_missed": 27,
+        "field_recall": 0.73,
+        "questions_correct": 57,
+        "questions_partial": 11,
+        "questions_wrong": 12,
+        "total_score": 62.42857142857143,
+        "avg_score": 0.7803571428571429,
+        "questions_vague": 12,
+        "questions_missing_info": 10,
+        "avg_off_target_fields": 1.4375,
+        "cross_field": {
+          "n_questions": 15,
+          "fully_covered": 3,
+          "avg_coverage": 0.5619047619047619
+        }
+      },
+      "per_category": {
+        "overview": {
+          "n_questions": 11,
+          "n_target_fields": 11,
+          "target_fields_hit": 9,
+          "target_fields_missed": 2,
+          "field_recall": 0.8181818181818182,
+          "questions_correct": 9,
+          "questions_partial": 0,
+          "questions_wrong": 2,
+          "total_score": 9.0,
+          "avg_score": 0.8181818181818182,
+          "questions_vague": 2,
+          "questions_missing_info": 1,
+          "avg_off_target_fields": 1.8181818181818181,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "use": {
+          "n_questions": 9,
+          "n_target_fields": 9,
+          "target_fields_hit": 9,
+          "target_fields_missed": 0,
+          "field_recall": 1.0,
+          "questions_correct": 9,
+          "questions_partial": 0,
+          "questions_wrong": 0,
+          "total_score": 9.0,
+          "avg_score": 1.0,
+          "questions_vague": 1,
+          "questions_missing_info": 2,
+          "avg_off_target_fields": 3.111111111111111,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "training": {
+          "n_questions": 4,
+          "n_target_fields": 4,
+          "target_fields_hit": 3,
+          "target_fields_missed": 1,
+          "field_recall": 0.75,
+          "questions_correct": 3,
+          "questions_partial": 0,
+          "questions_wrong": 1,
+          "total_score": 3.0,
+          "avg_score": 0.75,
+          "questions_vague": 1,
+          "questions_missing_info": 0,
+          "avg_off_target_fields": 0.25,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "evaluation": {
+          "n_questions": 4,
+          "n_target_fields": 4,
+          "target_fields_hit": 4,
+          "target_fields_missed": 0,
+          "field_recall": 1.0,
+          "questions_correct": 4,
+          "questions_partial": 0,
+          "questions_wrong": 0,
+          "total_score": 4.0,
+          "avg_score": 1.0,
+          "questions_vague": 0,
+          "questions_missing_info": 0,
+          "avg_off_target_fields": 0.25,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "performance": {
+          "n_questions": 7,
+          "n_target_fields": 7,
+          "target_fields_hit": 4,
+          "target_fields_missed": 3,
+          "field_recall": 0.5714285714285714,
+          "questions_correct": 4,
+          "questions_partial": 0,
+          "questions_wrong": 3,
+          "total_score": 4.0,
+          "avg_score": 0.5714285714285714,
+          "questions_vague": 1,
+          "questions_missing_info": 2,
+          "avg_off_target_fields": 1.2857142857142858,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "safety": {
+          "n_questions": 5,
+          "n_target_fields": 5,
+          "target_fields_hit": 5,
+          "target_fields_missed": 0,
+          "field_recall": 1.0,
+          "questions_correct": 5,
+          "questions_partial": 0,
+          "questions_wrong": 0,
+          "total_score": 5.0,
+          "avg_score": 1.0,
+          "questions_vague": 0,
+          "questions_missing_info": 0,
+          "avg_off_target_fields": 1.2,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "paraphrased": {
+          "n_questions": 25,
+          "n_target_fields": 27,
+          "target_fields_hit": 21,
+          "target_fields_missed": 6,
+          "field_recall": 0.7777777777777778,
+          "questions_correct": 19,
+          "questions_partial": 2,
+          "questions_wrong": 4,
+          "total_score": 20.0,
+          "avg_score": 0.8,
+          "questions_vague": 5,
+          "questions_missing_info": 4,
+          "avg_off_target_fields": 1.12,
+          "cross_field": {
+            "n_questions": 2,
+            "fully_covered": 0,
+            "avg_coverage": 0.5
+          }
+        },
+        "cross_field": {
+          "n_questions": 15,
+          "n_target_fields": 33,
+          "target_fields_hit": 18,
+          "target_fields_missed": 15,
+          "field_recall": 0.5454545454545454,
+          "questions_correct": 4,
+          "questions_partial": 9,
+          "questions_wrong": 2,
+          "total_score": 8.428571428571429,
+          "avg_score": 0.5619047619047619,
+          "questions_vague": 2,
+          "questions_missing_info": 1,
+          "avg_off_target_fields": 1.4666666666666666,
+          "cross_field": {
+            "n_questions": 13,
+            "fully_covered": 3,
+            "avg_coverage": 0.5714285714285714
+          }
+        }
+      },
+      "per_field": {
+        "evaluation.datasets": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "evaluation.motivation": {
+          "n_questions": 2,
+          "n_hit": 1,
+          "recall": 0.5
+        },
+        "evaluation.preprocessing": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "evaluation.update": {
+          "n_questions": 1,
+          "n_hit": 1,
+          "recall": 1.0
+        },
+        "overview.citation": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "overview.contact": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "overview.creator": {
+          "n_questions": 3,
+          "n_hit": 3,
+          "recall": 1.0
+        },
+        "overview.date": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "overview.description": {
+          "n_questions": 1,
+          "n_hit": 1,
+          "recall": 1.0
+        },
+        "overview.home": {
+          "n_questions": 2,
+          "n_hit": 1,
+          "recall": 0.5
+        },
+        "overview.license": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "overview.name": {
+          "n_questions": 1,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "overview.task": {
+          "n_questions": 2,
+          "n_hit": 1,
+          "recall": 0.5
+        },
+        "overview.type": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "overview.version": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "performance.analysis": {
+          "n_questions": 1,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "performance.bias": {
+          "n_questions": 1,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "performance.environmental_impact": {
+          "n_questions": 4,
+          "n_hit": 2,
+          "recall": 0.5
+        },
+        "performance.methodology": {
+          "n_questions": 3,
+          "n_hit": 3,
+          "recall": 1.0
+        },
+        "performance.metrics": {
+          "n_questions": 2,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "performance.thresholds": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "safety.caveats": {
+          "n_questions": 4,
+          "n_hit": 2,
+          "recall": 0.5
+        },
+        "safety.ethics": {
+          "n_questions": 4,
+          "n_hit": 4,
+          "recall": 1.0
+        },
+        "safety.fairness": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "safety.risks": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "safety.security": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "training.datasets": {
+          "n_questions": 3,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "training.motivation": {
+          "n_questions": 2,
+          "n_hit": 1,
+          "recall": 0.5
+        },
+        "training.preprocessing": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "training.update": {
+          "n_questions": 1,
+          "n_hit": 1,
+          "recall": 1.0
+        },
+        "use.factors": {
+          "n_questions": 3,
+          "n_hit": 3,
+          "recall": 1.0
+        },
+        "use.hardware": {
+          "n_questions": 4,
+          "n_hit": 4,
+          "recall": 1.0
+        },
+        "use.inputs_outputs": {
+          "n_questions": 3,
+          "n_hit": 3,
+          "recall": 1.0
+        },
+        "use.instructions": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "use.out_of_scope_use": {
+          "n_questions": 4,
+          "n_hit": 4,
+          "recall": 1.0
+        },
+        "use.oversight": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "use.software": {
+          "n_questions": 4,
+          "n_hit": 4,
+          "recall": 1.0
+        },
+        "use.use_cases": {
+          "n_questions": 4,
+          "n_hit": 2,
+          "recall": 0.5
+        },
+        "use.user_groups": {
+          "n_questions": 4,
+          "n_hit": 2,
+          "recall": 0.5
+        }
+      }
+    },
+    "2": {
+      "overall": {
+        "n_questions": 78,
+        "n_target_fields": 100,
+        "target_fields_hit": 62,
+        "target_fields_missed": 38,
+        "field_recall": 0.62,
+        "questions_correct": 49,
+        "questions_partial": 11,
+        "questions_wrong": 18,
+        "total_score": 54.166666666666664,
+        "avg_score": 0.6944444444444444,
+        "questions_vague": 22,
+        "questions_missing_info": 1,
+        "avg_off_target_fields": 1.358974358974359,
+        "cross_field": {
+          "n_questions": 15,
+          "fully_covered": 1,
+          "avg_coverage": 0.41111111111111115
+        }
+      },
+      "per_category": {
+        "overview": {
+          "n_questions": 12,
+          "n_target_fields": 12,
+          "target_fields_hit": 8,
+          "target_fields_missed": 4,
+          "field_recall": 0.6666666666666666,
+          "questions_correct": 8,
+          "questions_partial": 0,
+          "questions_wrong": 4,
+          "total_score": 8.0,
+          "avg_score": 0.6666666666666666,
+          "questions_vague": 4,
+          "questions_missing_info": 1,
+          "avg_off_target_fields": 2.1666666666666665,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "use": {
+          "n_questions": 9,
+          "n_target_fields": 9,
+          "target_fields_hit": 9,
+          "target_fields_missed": 0,
+          "field_recall": 1.0,
+          "questions_correct": 9,
+          "questions_partial": 0,
+          "questions_wrong": 0,
+          "total_score": 9.0,
+          "avg_score": 1.0,
+          "questions_vague": 3,
+          "questions_missing_info": 0,
+          "avg_off_target_fields": 0.5555555555555556,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "training": {
+          "n_questions": 5,
+          "n_target_fields": 5,
+          "target_fields_hit": 4,
+          "target_fields_missed": 1,
+          "field_recall": 0.8,
+          "questions_correct": 4,
+          "questions_partial": 0,
+          "questions_wrong": 1,
+          "total_score": 4.0,
+          "avg_score": 0.8,
+          "questions_vague": 0,
+          "questions_missing_info": 0,
+          "avg_off_target_fields": 1.6,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "evaluation": {
+          "n_questions": 3,
+          "n_target_fields": 3,
+          "target_fields_hit": 3,
+          "target_fields_missed": 0,
+          "field_recall": 1.0,
+          "questions_correct": 3,
+          "questions_partial": 0,
+          "questions_wrong": 0,
+          "total_score": 3.0,
+          "avg_score": 1.0,
+          "questions_vague": 2,
+          "questions_missing_info": 0,
+          "avg_off_target_fields": 0.0,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "performance": {
+          "n_questions": 5,
+          "n_target_fields": 5,
+          "target_fields_hit": 3,
+          "target_fields_missed": 2,
+          "field_recall": 0.6,
+          "questions_correct": 3,
+          "questions_partial": 0,
+          "questions_wrong": 2,
+          "total_score": 3.0,
+          "avg_score": 0.6,
+          "questions_vague": 3,
+          "questions_missing_info": 0,
+          "avg_off_target_fields": 0.4,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "safety": {
+          "n_questions": 5,
+          "n_target_fields": 5,
+          "target_fields_hit": 4,
+          "target_fields_missed": 1,
+          "field_recall": 0.8,
+          "questions_correct": 4,
+          "questions_partial": 0,
+          "questions_wrong": 1,
+          "total_score": 4.0,
+          "avg_score": 0.8,
+          "questions_vague": 2,
+          "questions_missing_info": 0,
+          "avg_off_target_fields": 0.4,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "paraphrased": {
+          "n_questions": 25,
+          "n_target_fields": 28,
+          "target_fields_hit": 19,
+          "target_fields_missed": 9,
+          "field_recall": 0.6785714285714286,
+          "questions_correct": 17,
+          "questions_partial": 1,
+          "questions_wrong": 7,
+          "total_score": 17.333333333333332,
+          "avg_score": 0.6933333333333332,
+          "questions_vague": 3,
+          "questions_missing_info": 0,
+          "avg_off_target_fields": 2.16,
+          "cross_field": {
+            "n_questions": 2,
+            "fully_covered": 1,
+            "avg_coverage": 0.6666666666666666
+          }
+        },
+        "cross_field": {
+          "n_questions": 14,
+          "n_target_fields": 33,
+          "target_fields_hit": 12,
+          "target_fields_missed": 21,
+          "field_recall": 0.36363636363636365,
+          "questions_correct": 1,
+          "questions_partial": 10,
+          "questions_wrong": 3,
+          "total_score": 5.833333333333333,
+          "avg_score": 0.41666666666666663,
+          "questions_vague": 5,
+          "questions_missing_info": 0,
+          "avg_off_target_fields": 0.6428571428571429,
+          "cross_field": {
+            "n_questions": 13,
+            "fully_covered": 0,
+            "avg_coverage": 0.37179487179487175
+          }
+        }
+      },
+      "per_field": {
+        "evaluation.datasets": {
+          "n_questions": 4,
+          "n_hit": 2,
+          "recall": 0.5
+        },
+        "evaluation.motivation": {
+          "n_questions": 3,
+          "n_hit": 1,
+          "recall": 0.3333333333333333
+        },
+        "evaluation.update": {
+          "n_questions": 1,
+          "n_hit": 1,
+          "recall": 1.0
+        },
+        "overview.citation": {
+          "n_questions": 2,
+          "n_hit": 1,
+          "recall": 0.5
+        },
+        "overview.contact": {
+          "n_questions": 2,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "overview.creator": {
+          "n_questions": 3,
+          "n_hit": 3,
+          "recall": 1.0
+        },
+        "overview.date": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "overview.description": {
+          "n_questions": 1,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "overview.home": {
+          "n_questions": 2,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "overview.license": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "overview.name": {
+          "n_questions": 1,
+          "n_hit": 1,
+          "recall": 1.0
+        },
+        "overview.task": {
+          "n_questions": 2,
+          "n_hit": 1,
+          "recall": 0.5
+        },
+        "overview.type": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "overview.version": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "performance.analysis": {
+          "n_questions": 3,
+          "n_hit": 1,
+          "recall": 0.3333333333333333
+        },
+        "performance.bias": {
+          "n_questions": 1,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "performance.methodology": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "performance.metrics": {
+          "n_questions": 2,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "performance.thresholds": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "safety.caveats": {
+          "n_questions": 4,
+          "n_hit": 1,
+          "recall": 0.25
+        },
+        "safety.ethics": {
+          "n_questions": 4,
+          "n_hit": 3,
+          "recall": 0.75
+        },
+        "safety.fairness": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "safety.risks": {
+          "n_questions": 4,
+          "n_hit": 3,
+          "recall": 0.75
+        },
+        "safety.security": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "training.datasets": {
+          "n_questions": 3,
+          "n_hit": 3,
+          "recall": 1.0
+        },
+        "training.motivation": {
+          "n_questions": 2,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "training.preprocessing": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "training.standards": {
+          "n_questions": 1,
+          "n_hit": 1,
+          "recall": 1.0
+        },
+        "training.update": {
+          "n_questions": 1,
+          "n_hit": 1,
+          "recall": 1.0
+        },
+        "use.factors": {
+          "n_questions": 3,
+          "n_hit": 1,
+          "recall": 0.3333333333333333
+        },
+        "use.hardware": {
+          "n_questions": 4,
+          "n_hit": 3,
+          "recall": 0.75
+        },
+        "use.inputs_outputs": {
+          "n_questions": 3,
+          "n_hit": 3,
+          "recall": 1.0
+        },
+        "use.instructions": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "use.out_of_scope_use": {
+          "n_questions": 4,
+          "n_hit": 3,
+          "recall": 0.75
+        },
+        "use.oversight": {
+          "n_questions": 3,
+          "n_hit": 3,
+          "recall": 1.0
+        },
+        "use.software": {
+          "n_questions": 4,
+          "n_hit": 3,
+          "recall": 0.75
+        },
+        "use.use_cases": {
+          "n_questions": 5,
+          "n_hit": 2,
+          "recall": 0.4
+        },
+        "use.user_groups": {
+          "n_questions": 4,
+          "n_hit": 1,
+          "recall": 0.25
+        }
+      }
+    },
+    "3": {
+      "overall": {
+        "n_questions": 78,
+        "n_target_fields": 100,
+        "target_fields_hit": 63,
+        "target_fields_missed": 37,
+        "field_recall": 0.63,
+        "questions_correct": 50,
+        "questions_partial": 10,
+        "questions_wrong": 18,
+        "total_score": 54.833333333333336,
+        "avg_score": 0.702991452991453,
+        "questions_vague": 7,
+        "questions_missing_info": 14,
+        "avg_off_target_fields": 1.2692307692307692,
+        "cross_field": {
+          "n_questions": 15,
+          "fully_covered": 2,
+          "avg_coverage": 0.45555555555555555
+        }
+      },
+      "per_category": {
+        "overview": {
+          "n_questions": 12,
+          "n_target_fields": 12,
+          "target_fields_hit": 9,
+          "target_fields_missed": 3,
+          "field_recall": 0.75,
+          "questions_correct": 9,
+          "questions_partial": 0,
+          "questions_wrong": 3,
+          "total_score": 9.0,
+          "avg_score": 0.75,
+          "questions_vague": 2,
+          "questions_missing_info": 5,
+          "avg_off_target_fields": 1.5833333333333333,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "use": {
+          "n_questions": 9,
+          "n_target_fields": 9,
+          "target_fields_hit": 7,
+          "target_fields_missed": 2,
+          "field_recall": 0.7777777777777778,
+          "questions_correct": 7,
+          "questions_partial": 0,
+          "questions_wrong": 2,
+          "total_score": 7.0,
+          "avg_score": 0.7777777777777778,
+          "questions_vague": 1,
+          "questions_missing_info": 2,
+          "avg_off_target_fields": 1.1111111111111112,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "training": {
+          "n_questions": 5,
+          "n_target_fields": 5,
+          "target_fields_hit": 4,
+          "target_fields_missed": 1,
+          "field_recall": 0.8,
+          "questions_correct": 4,
+          "questions_partial": 0,
+          "questions_wrong": 1,
+          "total_score": 4.0,
+          "avg_score": 0.8,
+          "questions_vague": 1,
+          "questions_missing_info": 1,
+          "avg_off_target_fields": 0.8,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "evaluation": {
+          "n_questions": 3,
+          "n_target_fields": 3,
+          "target_fields_hit": 3,
+          "target_fields_missed": 0,
+          "field_recall": 1.0,
+          "questions_correct": 3,
+          "questions_partial": 0,
+          "questions_wrong": 0,
+          "total_score": 3.0,
+          "avg_score": 1.0,
+          "questions_vague": 0,
+          "questions_missing_info": 0,
+          "avg_off_target_fields": 2.0,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "performance": {
+          "n_questions": 5,
+          "n_target_fields": 5,
+          "target_fields_hit": 3,
+          "target_fields_missed": 2,
+          "field_recall": 0.6,
+          "questions_correct": 3,
+          "questions_partial": 0,
+          "questions_wrong": 2,
+          "total_score": 3.0,
+          "avg_score": 0.6,
+          "questions_vague": 1,
+          "questions_missing_info": 2,
+          "avg_off_target_fields": 0.2,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "safety": {
+          "n_questions": 5,
+          "n_target_fields": 5,
+          "target_fields_hit": 5,
+          "target_fields_missed": 0,
+          "field_recall": 1.0,
+          "questions_correct": 5,
+          "questions_partial": 0,
+          "questions_wrong": 0,
+          "total_score": 5.0,
+          "avg_score": 1.0,
+          "questions_vague": 0,
+          "questions_missing_info": 1,
+          "avg_off_target_fields": 3.4,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "paraphrased": {
+          "n_questions": 25,
+          "n_target_fields": 28,
+          "target_fields_hit": 18,
+          "target_fields_missed": 10,
+          "field_recall": 0.6428571428571429,
+          "questions_correct": 17,
+          "questions_partial": 1,
+          "questions_wrong": 7,
+          "total_score": 17.5,
+          "avg_score": 0.7,
+          "questions_vague": 0,
+          "questions_missing_info": 2,
+          "avg_off_target_fields": 1.24,
+          "cross_field": {
+            "n_questions": 2,
+            "fully_covered": 0,
+            "avg_coverage": 0.25
+          }
+        },
+        "cross_field": {
+          "n_questions": 14,
+          "n_target_fields": 33,
+          "target_fields_hit": 14,
+          "target_fields_missed": 19,
+          "field_recall": 0.42424242424242425,
+          "questions_correct": 2,
+          "questions_partial": 9,
+          "questions_wrong": 3,
+          "total_score": 6.333333333333333,
+          "avg_score": 0.4523809523809524,
+          "questions_vague": 2,
+          "questions_missing_info": 1,
+          "avg_off_target_fields": 0.7857142857142857,
+          "cross_field": {
+            "n_questions": 13,
+            "fully_covered": 2,
+            "avg_coverage": 0.48717948717948717
+          }
+        }
+      },
+      "per_field": {
+        "evaluation.datasets": {
+          "n_questions": 4,
+          "n_hit": 2,
+          "recall": 0.5
+        },
+        "evaluation.motivation": {
+          "n_questions": 3,
+          "n_hit": 1,
+          "recall": 0.3333333333333333
+        },
+        "evaluation.update": {
+          "n_questions": 1,
+          "n_hit": 1,
+          "recall": 1.0
+        },
+        "overview.citation": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "overview.contact": {
+          "n_questions": 2,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "overview.creator": {
+          "n_questions": 3,
+          "n_hit": 3,
+          "recall": 1.0
+        },
+        "overview.date": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "overview.description": {
+          "n_questions": 1,
+          "n_hit": 1,
+          "recall": 1.0
+        },
+        "overview.home": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "overview.license": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "overview.name": {
+          "n_questions": 1,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "overview.task": {
+          "n_questions": 2,
+          "n_hit": 1,
+          "recall": 0.5
+        },
+        "overview.type": {
+          "n_questions": 3,
+          "n_hit": 3,
+          "recall": 1.0
+        },
+        "overview.version": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "performance.analysis": {
+          "n_questions": 3,
+          "n_hit": 1,
+          "recall": 0.3333333333333333
+        },
+        "performance.bias": {
+          "n_questions": 1,
+          "n_hit": 1,
+          "recall": 1.0
+        },
+        "performance.methodology": {
+          "n_questions": 3,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "performance.metrics": {
+          "n_questions": 2,
+          "n_hit": 1,
+          "recall": 0.5
+        },
+        "performance.thresholds": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "safety.caveats": {
+          "n_questions": 4,
+          "n_hit": 1,
+          "recall": 0.25
+        },
+        "safety.ethics": {
+          "n_questions": 4,
+          "n_hit": 3,
+          "recall": 0.75
+        },
+        "safety.fairness": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "safety.risks": {
+          "n_questions": 4,
+          "n_hit": 2,
+          "recall": 0.5
+        },
+        "safety.security": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "training.datasets": {
+          "n_questions": 3,
+          "n_hit": 1,
+          "recall": 0.3333333333333333
+        },
+        "training.motivation": {
+          "n_questions": 2,
+          "n_hit": 1,
+          "recall": 0.5
+        },
+        "training.preprocessing": {
+          "n_questions": 2,
+          "n_hit": 1,
+          "recall": 0.5
+        },
+        "training.standards": {
+          "n_questions": 1,
+          "n_hit": 1,
+          "recall": 1.0
+        },
+        "training.update": {
+          "n_questions": 1,
+          "n_hit": 1,
+          "recall": 1.0
+        },
+        "use.factors": {
+          "n_questions": 3,
+          "n_hit": 1,
+          "recall": 0.3333333333333333
+        },
+        "use.hardware": {
+          "n_questions": 4,
+          "n_hit": 3,
+          "recall": 0.75
+        },
+        "use.inputs_outputs": {
+          "n_questions": 3,
+          "n_hit": 3,
+          "recall": 1.0
+        },
+        "use.instructions": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "use.out_of_scope_use": {
+          "n_questions": 4,
+          "n_hit": 3,
+          "recall": 0.75
+        },
+        "use.oversight": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "use.software": {
+          "n_questions": 4,
+          "n_hit": 2,
+          "recall": 0.5
+        },
+        "use.use_cases": {
+          "n_questions": 5,
+          "n_hit": 3,
+          "recall": 0.6
+        },
+        "use.user_groups": {
+          "n_questions": 4,
+          "n_hit": 2,
+          "recall": 0.5
+        }
+      }
+    },
+    "4": {
+      "overall": {
+        "n_questions": 79,
+        "n_target_fields": 111,
+        "target_fields_hit": 71,
+        "target_fields_missed": 40,
+        "field_recall": 0.6396396396396397,
+        "questions_correct": 54,
+        "questions_partial": 12,
+        "questions_wrong": 13,
+        "total_score": 58.67619047619048,
+        "avg_score": 0.7427365883062086,
+        "questions_vague": 10,
+        "questions_missing_info": 24,
+        "avg_off_target_fields": 1.759493670886076,
+        "cross_field": {
+          "n_questions": 17,
+          "fully_covered": 4,
+          "avg_coverage": 0.5103641456582633
+        }
+      },
+      "per_category": {
+        "overview": {
+          "n_questions": 11,
+          "n_target_fields": 11,
+          "target_fields_hit": 9,
+          "target_fields_missed": 2,
+          "field_recall": 0.8181818181818182,
+          "questions_correct": 9,
+          "questions_partial": 0,
+          "questions_wrong": 2,
+          "total_score": 9.0,
+          "avg_score": 0.8181818181818182,
+          "questions_vague": 2,
+          "questions_missing_info": 3,
+          "avg_off_target_fields": 2.0,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "use": {
+          "n_questions": 9,
+          "n_target_fields": 9,
+          "target_fields_hit": 8,
+          "target_fields_missed": 1,
+          "field_recall": 0.8888888888888888,
+          "questions_correct": 8,
+          "questions_partial": 0,
+          "questions_wrong": 1,
+          "total_score": 8.0,
+          "avg_score": 0.8888888888888888,
+          "questions_vague": 0,
+          "questions_missing_info": 3,
+          "avg_off_target_fields": 2.4444444444444446,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "training": {
+          "n_questions": 5,
+          "n_target_fields": 5,
+          "target_fields_hit": 5,
+          "target_fields_missed": 0,
+          "field_recall": 1.0,
+          "questions_correct": 5,
+          "questions_partial": 0,
+          "questions_wrong": 0,
+          "total_score": 5.0,
+          "avg_score": 1.0,
+          "questions_vague": 0,
+          "questions_missing_info": 4,
+          "avg_off_target_fields": 2.2,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "evaluation": {
+          "n_questions": 5,
+          "n_target_fields": 5,
+          "target_fields_hit": 5,
+          "target_fields_missed": 0,
+          "field_recall": 1.0,
+          "questions_correct": 5,
+          "questions_partial": 0,
+          "questions_wrong": 0,
+          "total_score": 5.0,
+          "avg_score": 1.0,
+          "questions_vague": 1,
+          "questions_missing_info": 0,
+          "avg_off_target_fields": 1.6,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "performance": {
+          "n_questions": 5,
+          "n_target_fields": 5,
+          "target_fields_hit": 4,
+          "target_fields_missed": 1,
+          "field_recall": 0.8,
+          "questions_correct": 4,
+          "questions_partial": 0,
+          "questions_wrong": 1,
+          "total_score": 4.0,
+          "avg_score": 0.8,
+          "questions_vague": 1,
+          "questions_missing_info": 1,
+          "avg_off_target_fields": 0.6,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "safety": {
+          "n_questions": 5,
+          "n_target_fields": 5,
+          "target_fields_hit": 4,
+          "target_fields_missed": 1,
+          "field_recall": 0.8,
+          "questions_correct": 4,
+          "questions_partial": 0,
+          "questions_wrong": 1,
+          "total_score": 4.0,
+          "avg_score": 0.8,
+          "questions_vague": 1,
+          "questions_missing_info": 2,
+          "avg_off_target_fields": 2.2,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "paraphrased": {
+          "n_questions": 25,
+          "n_target_fields": 28,
+          "target_fields_hit": 17,
+          "target_fields_missed": 11,
+          "field_recall": 0.6071428571428571,
+          "questions_correct": 15,
+          "questions_partial": 2,
+          "questions_wrong": 8,
+          "total_score": 16.0,
+          "avg_score": 0.64,
+          "questions_vague": 4,
+          "questions_missing_info": 9,
+          "avg_off_target_fields": 1.8,
+          "cross_field": {
+            "n_questions": 3,
+            "fully_covered": 0,
+            "avg_coverage": 0.3333333333333333
+          }
+        },
+        "cross_field": {
+          "n_questions": 14,
+          "n_target_fields": 43,
+          "target_fields_hit": 19,
+          "target_fields_missed": 24,
+          "field_recall": 0.4418604651162791,
+          "questions_correct": 4,
+          "questions_partial": 10,
+          "questions_wrong": 0,
+          "total_score": 7.6761904761904765,
+          "avg_score": 0.5482993197278911,
+          "questions_vague": 1,
+          "questions_missing_info": 2,
+          "avg_off_target_fields": 1.2142857142857142,
+          "cross_field": {
+            "n_questions": 14,
+            "fully_covered": 4,
+            "avg_coverage": 0.5482993197278911
+          }
+        }
+      },
+      "per_field": {
+        "evaluation.datasets": {
+          "n_questions": 3,
+          "n_hit": 1,
+          "recall": 0.3333333333333333
+        },
+        "evaluation.motivation": {
+          "n_questions": 2,
+          "n_hit": 1,
+          "recall": 0.5
+        },
+        "evaluation.preprocessing": {
+          "n_questions": 2,
+          "n_hit": 1,
+          "recall": 0.5
+        },
+        "evaluation.standards": {
+          "n_questions": 3,
+          "n_hit": 3,
+          "recall": 1.0
+        },
+        "evaluation.update": {
+          "n_questions": 1,
+          "n_hit": 1,
+          "recall": 1.0
+        },
+        "overview.citation": {
+          "n_questions": 2,
+          "n_hit": 1,
+          "recall": 0.5
+        },
+        "overview.contact": {
+          "n_questions": 2,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "overview.creator": {
+          "n_questions": 3,
+          "n_hit": 3,
+          "recall": 1.0
+        },
+        "overview.date": {
+          "n_questions": 3,
+          "n_hit": 3,
+          "recall": 1.0
+        },
+        "overview.description": {
+          "n_questions": 1,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "overview.home": {
+          "n_questions": 2,
+          "n_hit": 1,
+          "recall": 0.5
+        },
+        "overview.license": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "overview.name": {
+          "n_questions": 1,
+          "n_hit": 1,
+          "recall": 1.0
+        },
+        "overview.task": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "overview.type": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "overview.version": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "performance.analysis": {
+          "n_questions": 1,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "performance.bias": {
+          "n_questions": 3,
+          "n_hit": 1,
+          "recall": 0.3333333333333333
+        },
+        "performance.methodology": {
+          "n_questions": 3,
+          "n_hit": 1,
+          "recall": 0.3333333333333333
+        },
+        "performance.metrics": {
+          "n_questions": 2,
+          "n_hit": 1,
+          "recall": 0.5
+        },
+        "performance.thresholds": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "safety.caveats": {
+          "n_questions": 2,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "safety.ethics": {
+          "n_questions": 6,
+          "n_hit": 4,
+          "recall": 0.6666666666666666
+        },
+        "safety.fairness": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "safety.risks": {
+          "n_questions": 5,
+          "n_hit": 3,
+          "recall": 0.6
+        },
+        "safety.security": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "training.datasets": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "training.motivation": {
+          "n_questions": 2,
+          "n_hit": 1,
+          "recall": 0.5
+        },
+        "training.preprocessing": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "training.standards": {
+          "n_questions": 3,
+          "n_hit": 1,
+          "recall": 0.3333333333333333
+        },
+        "training.update": {
+          "n_questions": 1,
+          "n_hit": 1,
+          "recall": 1.0
+        },
+        "use.factors": {
+          "n_questions": 4,
+          "n_hit": 3,
+          "recall": 0.75
+        },
+        "use.hardware": {
+          "n_questions": 5,
+          "n_hit": 3,
+          "recall": 0.6
+        },
+        "use.inputs_outputs": {
+          "n_questions": 3,
+          "n_hit": 3,
+          "recall": 1.0
+        },
+        "use.instructions": {
+          "n_questions": 4,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "use.out_of_scope_use": {
+          "n_questions": 4,
+          "n_hit": 4,
+          "recall": 1.0
+        },
+        "use.oversight": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "use.software": {
+          "n_questions": 5,
+          "n_hit": 4,
+          "recall": 0.8
+        },
+        "use.use_cases": {
+          "n_questions": 5,
+          "n_hit": 3,
+          "recall": 0.6
+        },
+        "use.user_groups": {
+          "n_questions": 4,
+          "n_hit": 2,
+          "recall": 0.5
+        }
+      }
+    },
+    "5": {
+      "overall": {
+        "n_questions": 74,
+        "n_target_fields": 100,
+        "target_fields_hit": 60,
+        "target_fields_missed": 40,
+        "field_recall": 0.6,
+        "questions_correct": 46,
+        "questions_partial": 10,
+        "questions_wrong": 18,
+        "total_score": 50.375,
+        "avg_score": 0.6807432432432432,
+        "questions_vague": 5,
+        "questions_missing_info": 26,
+        "avg_off_target_fields": 2.27027027027027,
+        "cross_field": {
+          "n_questions": 14,
+          "fully_covered": 2,
+          "avg_coverage": 0.45535714285714285
+        }
+      },
+      "per_category": {
+        "overview": {
+          "n_questions": 9,
+          "n_target_fields": 9,
+          "target_fields_hit": 7,
+          "target_fields_missed": 2,
+          "field_recall": 0.7777777777777778,
+          "questions_correct": 7,
+          "questions_partial": 0,
+          "questions_wrong": 2,
+          "total_score": 7.0,
+          "avg_score": 0.7777777777777778,
+          "questions_vague": 1,
+          "questions_missing_info": 4,
+          "avg_off_target_fields": 2.0,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "use": {
+          "n_questions": 7,
+          "n_target_fields": 7,
+          "target_fields_hit": 3,
+          "target_fields_missed": 4,
+          "field_recall": 0.42857142857142855,
+          "questions_correct": 3,
+          "questions_partial": 0,
+          "questions_wrong": 4,
+          "total_score": 3.0,
+          "avg_score": 0.42857142857142855,
+          "questions_vague": 0,
+          "questions_missing_info": 5,
+          "avg_off_target_fields": 2.4285714285714284,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "training": {
+          "n_questions": 5,
+          "n_target_fields": 5,
+          "target_fields_hit": 4,
+          "target_fields_missed": 1,
+          "field_recall": 0.8,
+          "questions_correct": 4,
+          "questions_partial": 0,
+          "questions_wrong": 1,
+          "total_score": 4.0,
+          "avg_score": 0.8,
+          "questions_vague": 0,
+          "questions_missing_info": 1,
+          "avg_off_target_fields": 1.6,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "evaluation": {
+          "n_questions": 5,
+          "n_target_fields": 5,
+          "target_fields_hit": 4,
+          "target_fields_missed": 1,
+          "field_recall": 0.8,
+          "questions_correct": 4,
+          "questions_partial": 0,
+          "questions_wrong": 1,
+          "total_score": 4.0,
+          "avg_score": 0.8,
+          "questions_vague": 0,
+          "questions_missing_info": 1,
+          "avg_off_target_fields": 4.6,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "performance": {
+          "n_questions": 7,
+          "n_target_fields": 7,
+          "target_fields_hit": 6,
+          "target_fields_missed": 1,
+          "field_recall": 0.8571428571428571,
+          "questions_correct": 6,
+          "questions_partial": 0,
+          "questions_wrong": 1,
+          "total_score": 6.0,
+          "avg_score": 0.8571428571428571,
+          "questions_vague": 1,
+          "questions_missing_info": 3,
+          "avg_off_target_fields": 2.2857142857142856,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "safety": {
+          "n_questions": 5,
+          "n_target_fields": 5,
+          "target_fields_hit": 5,
+          "target_fields_missed": 0,
+          "field_recall": 1.0,
+          "questions_correct": 5,
+          "questions_partial": 0,
+          "questions_wrong": 0,
+          "total_score": 5.0,
+          "avg_score": 1.0,
+          "questions_vague": 1,
+          "questions_missing_info": 0,
+          "avg_off_target_fields": 3.8,
+          "cross_field": {
+            "n_questions": 0,
+            "fully_covered": 0,
+            "avg_coverage": null
+          }
+        },
+        "paraphrased": {
+          "n_questions": 23,
+          "n_target_fields": 27,
+          "target_fields_hit": 17,
+          "target_fields_missed": 10,
+          "field_recall": 0.6296296296296297,
+          "questions_correct": 15,
+          "questions_partial": 1,
+          "questions_wrong": 7,
+          "total_score": 15.333333333333334,
+          "avg_score": 0.6666666666666667,
+          "questions_vague": 2,
+          "questions_missing_info": 8,
+          "avg_off_target_fields": 2.0869565217391304,
+          "cross_field": {
+            "n_questions": 3,
+            "fully_covered": 1,
+            "avg_coverage": 0.4444444444444444
+          }
+        },
+        "cross_field": {
+          "n_questions": 13,
+          "n_target_fields": 35,
+          "target_fields_hit": 14,
+          "target_fields_missed": 21,
+          "field_recall": 0.4,
+          "questions_correct": 2,
+          "questions_partial": 9,
+          "questions_wrong": 2,
+          "total_score": 6.041666666666667,
+          "avg_score": 0.46474358974358976,
+          "questions_vague": 0,
+          "questions_missing_info": 4,
+          "avg_off_target_fields": 1.4615384615384615,
+          "cross_field": {
+            "n_questions": 11,
+            "fully_covered": 1,
+            "avg_coverage": 0.45833333333333337
+          }
+        }
+      },
+      "per_field": {
+        "evaluation.datasets": {
+          "n_questions": 3,
+          "n_hit": 1,
+          "recall": 0.3333333333333333
+        },
+        "evaluation.motivation": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "evaluation.preprocessing": {
+          "n_questions": 2,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "evaluation.standards": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "evaluation.update": {
+          "n_questions": 1,
+          "n_hit": 1,
+          "recall": 1.0
+        },
+        "overview.contact": {
+          "n_questions": 2,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "overview.creator": {
+          "n_questions": 3,
+          "n_hit": 3,
+          "recall": 1.0
+        },
+        "overview.date": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "overview.description": {
+          "n_questions": 1,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "overview.license": {
+          "n_questions": 2,
+          "n_hit": 1,
+          "recall": 0.5
+        },
+        "overview.name": {
+          "n_questions": 1,
+          "n_hit": 1,
+          "recall": 1.0
+        },
+        "overview.task": {
+          "n_questions": 2,
+          "n_hit": 1,
+          "recall": 0.5
+        },
+        "overview.type": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "overview.version": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "performance.analysis": {
+          "n_questions": 3,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "performance.bias": {
+          "n_questions": 3,
+          "n_hit": 1,
+          "recall": 0.3333333333333333
+        },
+        "performance.environmental_impact": {
+          "n_questions": 4,
+          "n_hit": 3,
+          "recall": 0.75
+        },
+        "performance.methodology": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "performance.metrics": {
+          "n_questions": 2,
+          "n_hit": 1,
+          "recall": 0.5
+        },
+        "performance.thresholds": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "safety.caveats": {
+          "n_questions": 4,
+          "n_hit": 3,
+          "recall": 0.75
+        },
+        "safety.ethics": {
+          "n_questions": 4,
+          "n_hit": 3,
+          "recall": 0.75
+        },
+        "safety.fairness": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "safety.risks": {
+          "n_questions": 3,
+          "n_hit": 3,
+          "recall": 1.0
+        },
+        "safety.security": {
+          "n_questions": 2,
+          "n_hit": 2,
+          "recall": 1.0
+        },
+        "training.datasets": {
+          "n_questions": 3,
+          "n_hit": 1,
+          "recall": 0.3333333333333333
+        },
+        "training.motivation": {
+          "n_questions": 2,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "training.preprocessing": {
+          "n_questions": 2,
+          "n_hit": 1,
+          "recall": 0.5
+        },
+        "training.standards": {
+          "n_questions": 3,
+          "n_hit": 2,
+          "recall": 0.6666666666666666
+        },
+        "training.update": {
+          "n_questions": 1,
+          "n_hit": 1,
+          "recall": 1.0
+        },
+        "use.factors": {
+          "n_questions": 4,
+          "n_hit": 2,
+          "recall": 0.5
+        },
+        "use.inputs_outputs": {
+          "n_questions": 3,
+          "n_hit": 3,
+          "recall": 1.0
+        },
+        "use.instructions": {
+          "n_questions": 3,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "use.out_of_scope_use": {
+          "n_questions": 4,
+          "n_hit": 3,
+          "recall": 0.75
+        },
+        "use.oversight": {
+          "n_questions": 3,
+          "n_hit": 3,
+          "recall": 1.0
+        },
+        "use.use_cases": {
+          "n_questions": 5,
+          "n_hit": 0,
+          "recall": 0.0
+        },
+        "use.user_groups": {
+          "n_questions": 4,
+          "n_hit": 4,
+          "recall": 1.0
+        }
+      }
+    }
+  },
+  "overall": {
+    "n_questions": 389,
+    "n_target_fields": 511,
+    "target_fields_hit": 329,
+    "target_fields_missed": 182,
+    "field_recall": 0.6438356164383562,
+    "questions_correct": 256,
+    "questions_partial": 54,
+    "questions_wrong": 79,
+    "total_score": 280.4797619047619,
+    "avg_score": 0.7210276655649407,
+    "questions_vague": 56,
+    "questions_missing_info": 75
+  },
+  "per_field": {
+    "evaluation.datasets": {
+      "n_questions": 17,
+      "n_hit": 8,
+      "recall": 0.47058823529411764
+    },
+    "evaluation.motivation": {
+      "n_questions": 12,
+      "n_hit": 6,
+      "recall": 0.5
+    },
+    "evaluation.preprocessing": {
+      "n_questions": 7,
+      "n_hit": 3,
+      "recall": 0.42857142857142855
+    },
+    "evaluation.standards": {
+      "n_questions": 6,
+      "n_hit": 5,
+      "recall": 0.8333333333333334
+    },
+    "evaluation.update": {
+      "n_questions": 5,
+      "n_hit": 5,
+      "recall": 1.0
+    },
+    "overview.citation": {
+      "n_questions": 8,
+      "n_hit": 6,
+      "recall": 0.75
+    },
+    "overview.contact": {
+      "n_questions": 10,
+      "n_hit": 2,
+      "recall": 0.2
+    },
+    "overview.creator": {
+      "n_questions": 15,
+      "n_hit": 15,
+      "recall": 1.0
+    },
+    "overview.date": {
+      "n_questions": 15,
+      "n_hit": 11,
+      "recall": 0.7333333333333333
+    },
+    "overview.description": {
+      "n_questions": 5,
+      "n_hit": 2,
+      "recall": 0.4
+    },
+    "overview.home": {
+      "n_questions": 8,
+      "n_hit": 4,
+      "recall": 0.5
+    },
+    "overview.license": {
+      "n_questions": 10,
+      "n_hit": 9,
+      "recall": 0.9
+    },
+    "overview.name": {
+      "n_questions": 5,
+      "n_hit": 3,
+      "recall": 0.6
+    },
+    "overview.task": {
+      "n_questions": 10,
+      "n_hit": 6,
+      "recall": 0.6
+    },
+    "overview.type": {
+      "n_questions": 15,
+      "n_hit": 11,
+      "recall": 0.7333333333333333
+    },
+    "overview.version": {
+      "n_questions": 10,
+      "n_hit": 10,
+      "recall": 1.0
+    },
+    "performance.analysis": {
+      "n_questions": 11,
+      "n_hit": 2,
+      "recall": 0.18181818181818182
+    },
+    "performance.bias": {
+      "n_questions": 9,
+      "n_hit": 3,
+      "recall": 0.3333333333333333
+    },
+    "performance.environmental_impact": {
+      "n_questions": 8,
+      "n_hit": 5,
+      "recall": 0.625
+    },
+    "performance.methodology": {
+      "n_questions": 15,
+      "n_hit": 8,
+      "recall": 0.5333333333333333
+    },
+    "performance.metrics": {
+      "n_questions": 10,
+      "n_hit": 3,
+      "recall": 0.3
+    },
+    "performance.thresholds": {
+      "n_questions": 12,
+      "n_hit": 10,
+      "recall": 0.8333333333333334
+    },
+    "safety.caveats": {
+      "n_questions": 18,
+      "n_hit": 7,
+      "recall": 0.3888888888888889
+    },
+    "safety.ethics": {
+      "n_questions": 22,
+      "n_hit": 17,
+      "recall": 0.7727272727272727
+    },
+    "safety.fairness": {
+      "n_questions": 10,
+      "n_hit": 10,
+      "recall": 1.0
+    },
+    "safety.risks": {
+      "n_questions": 19,
+      "n_hit": 13,
+      "recall": 0.6842105263157895
+    },
+    "safety.security": {
+      "n_questions": 10,
+      "n_hit": 10,
+      "recall": 1.0
+    },
+    "training.datasets": {
+      "n_questions": 15,
+      "n_hit": 7,
+      "recall": 0.4666666666666667
+    },
+    "training.motivation": {
+      "n_questions": 10,
+      "n_hit": 3,
+      "recall": 0.3
+    },
+    "training.preprocessing": {
+      "n_questions": 10,
+      "n_hit": 8,
+      "recall": 0.8
+    },
+    "training.standards": {
+      "n_questions": 8,
+      "n_hit": 5,
+      "recall": 0.625
+    },
+    "training.update": {
+      "n_questions": 5,
+      "n_hit": 5,
+      "recall": 1.0
+    },
+    "use.factors": {
+      "n_questions": 17,
+      "n_hit": 10,
+      "recall": 0.5882352941176471
+    },
+    "use.hardware": {
+      "n_questions": 17,
+      "n_hit": 13,
+      "recall": 0.7647058823529411
+    },
+    "use.inputs_outputs": {
+      "n_questions": 15,
+      "n_hit": 15,
+      "recall": 1.0
+    },
+    "use.instructions": {
+      "n_questions": 16,
+      "n_hit": 6,
+      "recall": 0.375
+    },
+    "use.out_of_scope_use": {
+      "n_questions": 20,
+      "n_hit": 17,
+      "recall": 0.85
+    },
+    "use.oversight": {
+      "n_questions": 15,
+      "n_hit": 12,
+      "recall": 0.8
+    },
+    "use.software": {
+      "n_questions": 17,
+      "n_hit": 13,
+      "recall": 0.7647058823529411
+    },
+    "use.use_cases": {
+      "n_questions": 24,
+      "n_hit": 10,
+      "recall": 0.4166666666666667
+    },
+    "use.user_groups": {
+      "n_questions": 20,
+      "n_hit": 11,
+      "recall": 0.55
+    }
+  },
+  "confusions": [
+    {
+      "missed": "performance.metrics",
+      "returned": "performance.methodology",
+      "n": 6
+    },
+    {
+      "missed": "use.use_cases",
+      "returned": "overview.creator",
+      "n": 6
+    },
+    {
+      "missed": "use.use_cases",
+      "returned": "overview.type",
+      "n": 4
+    },
+    {
+      "missed": "overview.contact",
+      "returned": "overview.creator",
+      "n": 4
+    },
+    {
+      "missed": "use.use_cases",
+      "returned": "overview.date",
+      "n": 3
+    },
+    {
+      "missed": "use.user_groups",
+      "returned": "overview.creator",
+      "n": 3
+    },
+    {
+      "missed": "overview.description",
+      "returned": "overview.type",
+      "n": 3
+    },
+    {
+      "missed": "performance.metrics",
+      "returned": "performance.thresholds",
+      "n": 3
+    },
+    {
+      "missed": "use.instructions",
+      "returned": "overview.home",
+      "n": 3
+    },
+    {
+      "missed": "overview.name",
+      "returned": "overview.creator",
+      "n": 2
+    },
+    {
+      "missed": "performance.analysis",
+      "returned": "performance.methodology",
+      "n": 2
+    },
+    {
+      "missed": "performance.bias",
+      "returned": "safety.fairness",
+      "n": 2
+    },
+    {
+      "missed": "overview.task",
+      "returned": "overview.date",
+      "n": 2
+    },
+    {
+      "missed": "safety.risks",
+      "returned": "safety.caveats",
+      "n": 2
+    },
+    {
+      "missed": "overview.contact",
+      "returned": "use.instructions",
+      "n": 2
+    },
+    {
+      "missed": "use.factors",
+      "returned": "performance.environmental_impact",
+      "n": 2
+    },
+    {
+      "missed": "overview.contact",
+      "returned": "safety.caveats",
+      "n": 2
+    },
+    {
+      "missed": "overview.contact",
+      "returned": "safety.security",
+      "n": 2
+    },
+    {
+      "missed": "training.motivation",
+      "returned": "training.datasets",
+      "n": 2
+    },
+    {
+      "missed": "safety.caveats",
+      "returned": "safety.risks",
+      "n": 2
+    },
+    {
+      "missed": "overview.home",
+      "returned": "use.software",
+      "n": 2
+    },
+    {
+      "missed": "overview.contact",
+      "returned": "safety.ethics",
+      "n": 2
+    },
+    {
+      "missed": "overview.task",
+      "returned": "overview.creator",
+      "n": 2
+    },
+    {
+      "missed": "use.factors",
+      "returned": "use.hardware",
+      "n": 2
+    },
+    {
+      "missed": "use.oversight",
+      "returned": "evaluation.update",
+      "n": 2
+    },
+    {
+      "missed": "safety.caveats",
+      "returned": "safety.security",
+      "n": 2
+    },
+    {
+      "missed": "use.use_cases",
+      "returned": "safety.ethics",
+      "n": 2
+    },
+    {
+      "missed": "performance.analysis",
+      "returned": "performance.metrics",
+      "n": 2
+    },
+    {
+      "missed": "performance.thresholds",
+      "returned": "performance.bias",
+      "n": 2
+    },
+    {
+      "missed": "use.instructions",
+      "returned": "overview.date",
+      "n": 2
+    },
+    {
+      "missed": "use.instructions",
+      "returned": "overview.version",
+      "n": 2
+    },
+    {
+      "missed": "overview.home",
+      "returned": "overview.creator",
+      "n": 1
+    },
+    {
+      "missed": "training.datasets",
+      "returned": "evaluation.datasets",
+      "n": 1
+    },
+    {
+      "missed": "use.oversight",
+      "returned": "use.instructions",
+      "n": 1
+    },
+    {
+      "missed": "training.datasets",
+      "returned": "performance.metrics",
+      "n": 1
+    },
+    {
+      "missed": "overview.type",
+      "returned": "overview.more",
+      "n": 1
+    },
+    {
+      "missed": "overview.task",
+      "returned": "overview.version",
+      "n": 1
+    },
+    {
+      "missed": "use.use_cases",
+      "returned": "overview.version",
+      "n": 1
+    },
+    {
+      "missed": "evaluation.datasets",
+      "returned": "overview.creator",
+      "n": 1
+    },
+    {
+      "missed": "evaluation.datasets",
+      "returned": "safety.security",
+      "n": 1
+    },
+    {
+      "missed": "evaluation.datasets",
+      "returned": "use.instructions",
+      "n": 1
+    },
+    {
+      "missed": "evaluation.motivation",
+      "returned": "overview.creator",
+      "n": 1
+    },
+    {
+      "missed": "evaluation.motivation",
+      "returned": "safety.security",
+      "n": 1
+    },
+    {
+      "missed": "evaluation.motivation",
+      "returned": "use.instructions",
+      "n": 1
+    },
+    {
+      "missed": "training.datasets",
+      "returned": "overview.creator",
+      "n": 1
+    },
+    {
+      "missed": "training.datasets",
+      "returned": "safety.security",
+      "n": 1
+    },
+    {
+      "missed": "training.datasets",
+      "returned": "use.instructions",
+      "n": 1
+    },
+    {
+      "missed": "training.motivation",
+      "returned": "overview.creator",
+      "n": 1
+    },
+    {
+      "missed": "training.motivation",
+      "returned": "safety.security",
+      "n": 1
+    },
+    {
+      "missed": "training.motivation",
+      "returned": "use.instructions",
+      "n": 1
+    }
+  ]
+}

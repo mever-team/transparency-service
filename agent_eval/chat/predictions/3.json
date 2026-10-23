@@ -1,10 +1,10 @@
 {
   "_meta": {
     "model_card": "dataset/3/TrAI-Import.json",
-    "started_at": "2026-10-22T13:53:35.721734Z",
+    "started_at": "2026-10-23T10:36:14.919937Z",
     "matcher": "sentence-transformers/all-mpnet-base-v2",
     "matching_strictness": 0.5,
-    "finished_at": "2026-10-22T14:00:42.276635Z"
+    "finished_at": "2026-10-23T10:43:39.284043Z"
   },
   "overview": [
     {
@@ -28,8 +28,8 @@
       "answer": "<h3 class='success title'>Version in overview is</h3>1.0<br>"
     },
     {
-      "question": "What type of model is this?",
-      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+      "question": "What is the type of the model?",
+      "answer": "<h3 class='success title'>From citation in overview</h3>Use this model card as a citation.<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From description in overview</h3>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br>"
     },
     {
       "question": "How many parameters does this model have?",
