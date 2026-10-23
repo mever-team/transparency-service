@@ -1,11 +1,11 @@
 {
   "_meta": {
     "model_card": "dataset/3/TrAI-Import.json",
-    "started_at": "2026-10-23T13:37:58.177309+00:00",
+    "started_at": "2026-10-23T14:21:23.502858+00:00",
     "matcher": "sentence-transformers/all-mpnet-base-v2",
     "matching_strictness": 0.5,
     "questions_source": "dataset/gt.json",
-    "finished_at": "2026-10-23T13:43:00.277153+00:00"
+    "finished_at": "2026-10-23T14:26:26.599569+00:00"
   },
   "overview": [
     {
@@ -13,8 +13,8 @@
       "answer": "<h3 class='success title'>From citation in overview</h3>Use this model card as a citation.<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
     },
     {
-      "question": "What is this model used for?",
-      "answer": "<h3 class='success title'>From use cases in use</h3>Import external information into a model card.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br><h3 class='error'>Vague question</h3><span>There are 12 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+      "question": "What are the use cases?",
+      "answer": "<h3 class='success title'>From software in use</h3>Python, transformers.<br>\n<h3 class='success title'>From use cases in use</h3>Import external information into a model card.<br><h3 class='error'>Missing info</h3><span>Would have looked at more in use, but that is empty.</span><br>"
     },
     {
       "question": "Who created this model?",
@@ -29,143 +29,143 @@
       "answer": "<h3 class='success title'>Version in overview is</h3>1.0<br>"
     },
     {
-      "question": "What is the type of the model?",
-      "answer": "<h3 class='success title'>From citation in overview</h3>Use this model card as a citation.<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From description in overview</h3>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br>"
+      "question": "What type of model is this?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
     },
     {
       "question": "How many parameters does this model have?",
       "answer": "<h3 class='error'>Vague question</h3><span>There are 11 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br><h3 class='error'>Missing info</h3><span>Would have looked at parameters in overview, but that is empty.</span><br>"
     },
     {
-      "question": "What is the task of this model?",
-      "answer": "<h3 class='success title'>From task in overview</h3>Model Card Auto-Fill.<br>"
+      "question": "What task is this model designed to perform?",
+      "answer": "<h3 class='success title'>From analysis in performance</h3>bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.<br>\n<h3 class='success title'>From hardware in use</h3>The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.<br><h3 class='error'>Vague question</h3><span>There are 11 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "What is the license of this model?",
+      "question": "What license does this model use?",
       "answer": "<h3 class='success title'>License in overview is</h3>TBD<br>"
     },
     {
-      "question": "Where can I find this model?",
-      "answer": "<h3 class='success title'>From citation in overview</h3>Use this model card as a citation.<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From description in overview</h3>This function is powered by the BGE model.<br>\n<h3 class='success title'>Home in overview is</h3>[https://trai.mever.gr](https://trai.mever.gr/)<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+      "question": "Where can I access or download this model?",
+      "answer": "<h3 class='success title'>From instructions in use</h3>You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.<br>"
     },
     {
-      "question": "Who can I contact about this model?",
+      "question": "Who should I contact for information about this model?",
       "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>"
     },
     {
       "question": "How should I cite this model?",
-      "answer": "<h3 class='success title'>From citation in overview</h3>Use this model card as a citation.<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From description in overview</h3>This function is powered by the BGE model.<br>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.<br>\n<h3 class='success title'>From use cases in use</h3>Import external information into a model card.<br>\n<h3 class='success title'>Home in overview is</h3>[https://trai.mever.gr](https://trai.mever.gr/)<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+      "answer": "<h3 class='success title'>From citation in overview</h3>Use this model card as a citation.<br>"
     }
   ],
   "use": [
     {
       "question": "What are the intended use cases?",
-      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at more in use, but that is empty.</span><br>"
+      "answer": "<h3 class='error'>Vague question</h3><span>There are 11 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br><h3 class='error'>Missing info</h3><span>Would have looked at more in use, but that is empty.</span><br>"
     },
     {
-      "question": "What level of human oversight is required?",
-      "answer": "<h3 class='success title'>Oversight in use is</h3>human-on-the-loop<br>"
+      "question": "What is the level of human oversight?",
+      "answer": "<h3 class='success title'>From caveats in safety</h3>The system lacks automated validation step.<br>Wrong classification must be corrected by the user..<br>\n<h3 class='success title'>From ethics in safety</h3>The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.<br>Users should review all auto‑populated fields before publication..<br>\n<h3 class='success title'>From fairness in safety</h3>However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..<br>\n<h3 class='success title'>From security in safety</h3>The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..<br>\n<h3 class='success title'>Oversight in use is</h3>human-on-the-loop<br><h3 class='error'>Missing info</h3><span>Would have looked at standards in evaluation, but that is empty.</span><br><span>Would have looked at standards in training, but that is empty.</span><br>"
     },
     {
-      "question": "Who are the intended user groups?",
-      "answer": "<h3 class='success title'>From user groups in use</h3>Model card creators.<br>"
+      "question": "Who are the intended users of this model?",
+      "answer": "<h3 class='success title'>From user groups in use</h3>Model card creators.<br><h3 class='error'>Vague question</h3><span>There are 11 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "What is this model not intended for?",
-      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at more in use, but that is empty.</span><br>"
+      "question": "What uses are outside the intended scope of this model?",
+      "answer": "<h3 class='success title'>From description in overview</h3>This function is powered by the BGE model.<br>\n<h3 class='success title'>From out of scope use in use</h3>Do not use unrelated sources to import information.<br>\n<h3 class='success title'>From use cases in use</h3>Import external information into a model card.<br><h3 class='error'>Missing info</h3><span>Would have looked at more in use, but that is empty.</span><br>"
     },
     {
-      "question": "What software does this model require?",
-      "answer": "<h3 class='success title'>From citation in overview</h3>Use this model card as a citation.<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From description in overview</h3>Initially, the system fetches textual and image content from the provided URL.<br>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.<br>\n<h3 class='success title'>From hardware in use</h3>The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.<br>\n<h3 class='success title'>From instructions in use</h3>You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.<br>\n<h3 class='success title'>From security in safety</h3>The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..<br>\n<h3 class='success title'>From software in use</h3>Python, transformers.<br>"
+      "question": "What are the software requirements?",
+      "answer": "<h3 class='success title'>From software in use</h3>Python, transformers.<br>"
     },
     {
-      "question": "How do I run / use this model?",
+      "question": "What instructions are provided for running this model?",
       "answer": "<h3 class='success title'>From instructions in use</h3>You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.<br>"
     },
     {
-      "question": "What are the inputs and outputs of the model?",
-      "answer": "<h3 class='success title'>From inputs outputs in use</h3>Input: URL -> Output: model card.<br>"
+      "question": "What are the model's input and output?",
+      "answer": "<h3 class='success title'>From analysis in performance</h3>bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.<br>\n<h3 class='success title'>From citation in overview</h3>Use this model card as a citation.<br>\n<h3 class='success title'>From datasets in training</h3>The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.<br>\n<h3 class='success title'>From description in overview</h3>This function is powered by the BGE model.<br>\n<h3 class='success title'>From inputs outputs in use</h3>Input: URL -> Output: model card.<br>\n<h3 class='success title'>From instructions in use</h3>You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.<br>\n<h3 class='success title'>From use cases in use</h3>Import external information into a model card.<br>\n<h3 class='success title'>Home in overview is</h3>[https://trai.mever.gr](https://trai.mever.gr/)<br>\n<h3 class='success title'>Name in overview is</h3>TrAI-Import<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
     },
     {
-      "question": "What factors affect the model's performance?",
-      "answer": "<h3 class='success title'>From factors in use</h3>The quality of the output directly depends on the quality of the information withing the provided URL..<br><h3 class='error'>Vague question</h3><span>There are 12 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+      "question": "What factors can affect the model's performance?",
+      "answer": "<h3 class='success title'>From analysis in performance</h3>bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.<br>\n<h3 class='success title'>From description in overview</h3>This function is powered by the BGE model.<br>\n<h3 class='success title'>From factors in use</h3>The quality of the output directly depends on the quality of the information withing the provided URL..<br>\n<h3 class='success title'>From fairness in safety</h3>BGE models are state-of-the-art and trained on diverse datasets, making them strong candidates for more robust and fair inference.<br>However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..<br>\n<h3 class='success title'>From hardware in use</h3>The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.<br>\n<h3 class='success title'>From out of scope use in use</h3>Do not use unrelated sources to import information.<br>\n<h3 class='success title'>From risks in safety</h3>The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields..<br>"
     },
     {
       "question": "What hardware is required?",
-      "answer": "<h3 class='success title'>From analysis in performance</h3>bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.<br>\n<h3 class='success title'>From hardware in use</h3>The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.<br>\n<h3 class='success title'>From instructions in use</h3>You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.<br>\n<h3 class='success title'>From security in safety</h3>The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..<br>\n<h3 class='success title'>From software in use</h3>Python, transformers.<br>"
+      "answer": "<h3 class='success title'>From hardware in use</h3>The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.<br>"
     }
   ],
   "training": [
     {
-      "question": "What datasets were used for training?",
-      "answer": "<h3 class='success title'>Motivation in training is</h3>N/A<br>"
+      "question": "Which datasets were used to train the model?",
+      "answer": "<h3 class='success title'>From datasets in training</h3>The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.<br><h3 class='error'>Missing info</h3><span>Would have looked at motivation in training, but that is empty.</span><br>"
     },
     {
-      "question": "Why were these training datasets chosen?",
-      "answer": "<h3 class='success title'>From datasets in training</h3>No fine tuning was made..<br>The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.<br>\n<h3 class='success title'>Motivation in training is</h3>N/A<br>"
+      "question": "What was the motivation for selecting these datasets for training?",
+      "answer": "<h3 class='success title'>From datasets in evaluation</h3>These include MTEB (Massive Text Embedding Benchmark) for English tasks and C-MTEB for Chinese tasks, BEIR (Benchmarking IR), MSMARCO, MIRACL, MLDR, MKQA, AIR-Bench, BRIGHT, and others..<br>\n<h3 class='success title'>From datasets in training</h3>No fine tuning was made..<br><h3 class='error'>Missing info</h3><span>Would have looked at motivation in training, but that is empty.</span><br>"
     },
     {
-      "question": "What preprocessing was applied during training?",
-      "answer": "<h3 class='success title'>From datasets in training</h3>No fine tuning was made..<br>\n<h3 class='success title'>Preprocessing in training is</h3>N/A<br><h3 class='error'>Missing info</h3><span>Would have looked at preprocessing in evaluation, but that is empty.</span><br>"
+      "question": "What preprocessing was applied to the training data?",
+      "answer": "<h3 class='success title'>From datasets in training</h3>No fine tuning was made..<br><h3 class='error'>Vague question</h3><span>There are 12 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br><h3 class='error'>Missing info</h3><span>Would have looked at preprocessing in training, but that is empty.</span><br>"
     },
     {
-      "question": "What standards were followed during training?",
-      "answer": "<h3 class='success title'>Standards in training is</h3>N/A<br><h3 class='error'>Vague question</h3><span>There are 12 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+      "question": "Which standards were followed during training?",
+      "answer": "<h3 class='success title'>From security in safety</h3>The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..<br><h3 class='error'>Missing info</h3><span>Would have looked at standards in evaluation, but that is empty.</span><br><span>Would have looked at standards in training, but that is empty.</span><br><span>Would have looked at update in training, but that is empty.</span><br>"
     },
     {
-      "question": "Is the training data up to date?",
-      "answer": "<h3 class='success title'>From datasets in training</h3>No fine tuning was made..<br>\n<h3 class='success title'>Update in training is</h3>N/A<br>"
+      "question": "How recently was the training data updated?",
+      "answer": "<h3 class='success title'>From datasets in training</h3>No fine tuning was made..<br>The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.<br><h3 class='error'>Missing info</h3><span>Would have looked at motivation in training, but that is empty.</span><br><span>Would have looked at update in training, but that is empty.</span><br>"
     }
   ],
   "evaluation": [
     {
-      "question": "What datasets were used for evaluation?",
+      "question": "Which datasets were used to evaluate the model?",
       "answer": "<h3 class='success title'>From datasets in evaluation</h3>These include MTEB (Massive Text Embedding Benchmark) for English tasks and C-MTEB for Chinese tasks, BEIR (Benchmarking IR), MSMARCO, MIRACL, MLDR, MKQA, AIR-Bench, BRIGHT, and others..<br>"
     },
     {
-      "question": "Why were these evaluation datasets chosen?",
-      "answer": "<h3 class='success title'>From datasets in evaluation</h3>FlagEmbedding models are evaluated on a comprehensive suite of established information retrieval and text embedding benchmarks.<br>These include MTEB (Massive Text Embedding Benchmark) for English tasks and C-MTEB for Chinese tasks, BEIR (Benchmarking IR), MSMARCO, MIRACL, MLDR, MKQA, AIR-Bench, BRIGHT, and others..<br>\n<h3 class='success title'>From datasets in training</h3>No fine tuning was made..<br>\n<h3 class='success title'>From metrics in performance</h3>*   Retrieval: 51.68 *   Clustering: 43.82 *   Pair Classification: 84.92 *   Reranking: 58.36 *   STS: 81.59 *   Summarization: 30.12 *   Classification: 74.14  *   **Average: 62.17**.<br>\n<h3 class='success title'>From motivation in evaluation</h3>The primary motivation is to provide a standardized and holistic evaluation of the model's ability to generate embeddings for a wide range of tasks, including retrieval, classification, clustering, pair classification, reranking, and semantic textual similarity (STS)..<br>\n<h3 class='success title'>From thresholds in performance</h3>**0.337** minimum matching.<br>\n<h3 class='success title'>Motivation in training is</h3>N/A<br>"
+      "question": "What was the motivation for selecting these datasets for evaluation",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at motivation in training, but that is empty.</span><br>"
     },
     {
-      "question": "What preprocessing was applied during evaluation?",
-      "answer": "<h3 class='success title'>From datasets in evaluation</h3>These include MTEB (Massive Text Embedding Benchmark) for English tasks and C-MTEB for Chinese tasks, BEIR (Benchmarking IR), MSMARCO, MIRACL, MLDR, MKQA, AIR-Bench, BRIGHT, and others..<br>\n<h3 class='success title'>From metrics in performance</h3>*   Retrieval: 51.68 *   Clustering: 43.82 *   Pair Classification: 84.92 *   Reranking: 58.36 *   STS: 81.59 *   Summarization: 30.12 *   Classification: 74.14  *   **Average: 62.17**.<br>\n<h3 class='success title'>From thresholds in performance</h3>**0.337** minimum matching.<br>Semantic similarity lesser than this is considered irrelevant.<br>\n<h3 class='success title'>Preprocessing in training is</h3>N/A<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br><h3 class='error'>Missing info</h3><span>Would have looked at environmental impact in performance, but that is empty.</span><br><span>Would have looked at preprocessing in evaluation, but that is empty.</span><br><span>Would have looked at standards in evaluation, but that is empty.</span><br>"
+      "question": "What preprocessing was applied to the evaluation data?",
+      "answer": "<h3 class='success title'>From datasets in evaluation</h3>These include MTEB (Massive Text Embedding Benchmark) for English tasks and C-MTEB for Chinese tasks, BEIR (Benchmarking IR), MSMARCO, MIRACL, MLDR, MKQA, AIR-Bench, BRIGHT, and others..<br>\n<h3 class='success title'>From methodology in performance</h3>For more information see [FlagEmbedding](https://github.com/FlagOpen/FlagEmbedding/tree/master).<br>\n<h3 class='success title'>From metrics in performance</h3>*   Retrieval: 51.68 *   Clustering: 43.82 *   Pair Classification: 84.92 *   Reranking: 58.36 *   STS: 81.59 *   Summarization: 30.12 *   Classification: 74.14  *   **Average: 62.17**.<br>\n<h3 class='success title'>From motivation in evaluation</h3>The primary motivation is to provide a standardized and holistic evaluation of the model's ability to generate embeddings for a wide range of tasks, including retrieval, classification, clustering, pair classification, reranking, and semantic textual similarity (STS)..<br>\n<h3 class='success title'>From thresholds in performance</h3>**0.337** minimum matching.<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br><h3 class='error'>Missing info</h3><span>Would have looked at environmental impact in performance, but that is empty.</span><br><span>Would have looked at preprocessing in evaluation, but that is empty.</span><br><span>Would have looked at preprocessing in training, but that is empty.</span><br><span>Would have looked at standards in evaluation, but that is empty.</span><br>"
     },
     {
-      "question": "What standards were followed during evaluation?",
-      "answer": "<h3 class='success title'>Standards in training is</h3>N/A<br><h3 class='error'>Missing info</h3><span>Would have looked at standards in evaluation, but that is empty.</span><br>"
+      "question": "Which standards or guidelines were followed during evaluation?",
+      "answer": "<h3 class='error'>Vague question</h3><span>There are 10 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br><h3 class='error'>Missing info</h3><span>Would have looked at standards in evaluation, but that is empty.</span><br>"
     },
     {
-      "question": "Is the evaluation data up to date?",
-      "answer": "<h3 class='success title'>Update in evaluation is</h3>yes<br>\n<h3 class='success title'>Update in training is</h3>N/A<br>"
+      "question": "How recently was the evaluation data updated?",
+      "answer": "<h3 class='success title'>Update in evaluation is</h3>yes<br>"
     }
   ],
   "performance": [
     {
-      "question": "What does the performance analysis say?",
-      "answer": "<h3 class='error'>Vague question</h3><span>There are 11 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
+      "question": "What conclusions does the performance analysis report?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>There are no official documented bias metrics for bge-small-en-v1.5.<br>\n<h3 class='success title'>From methodology in performance</h3>For more information see [FlagEmbedding](https://github.com/FlagOpen/FlagEmbedding/tree/master).<br>\n<h3 class='success title'>From metrics in performance</h3>*   Retrieval: 51.68 *   Clustering: 43.82 *   Pair Classification: 84.92 *   Reranking: 58.36 *   STS: 81.59 *   Summarization: 30.12 *   Classification: 74.14  *   **Average: 62.17**.<br>\n<h3 class='success title'>From thresholds in performance</h3>Semantic similarity lesser than this is considered irrelevant.<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br><span>Would have looked at environmental impact in performance, but that is empty.</span><br><span>Would have looked at standards in evaluation, but that is empty.</span><br>"
     },
     {
-      "question": "What are the benchmark metrics?",
+      "question": "What are the performance metrics?",
       "answer": "<h3 class='success title'>From metrics in performance</h3>*   Retrieval: 51.68 *   Clustering: 43.82 *   Pair Classification: 84.92 *   Reranking: 58.36 *   STS: 81.59 *   Summarization: 30.12 *   Classification: 74.14  *   **Average: 62.17**.<br>"
     },
     {
       "question": "What decision thresholds are used?",
-      "answer": "<h3 class='success title'>From thresholds in performance</h3>**0.337** minimum matching.<br>"
+      "answer": "<h3 class='success title'>From thresholds in performance</h3>**0.337** minimum matching.<br><h3 class='error'>Vague question</h3><span>There are 12 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "What is the evaluation methodology?",
-      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at standards in evaluation, but that is empty.</span><br>"
+      "question": "What methodology was used to evaluate model performance?",
+      "answer": "<h3 class='success title'>From analysis in performance</h3>bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From description in overview</h3>This function is powered by the BGE model.<br>\n<h3 class='success title'>From methodology in performance</h3>For more information see [FlagEmbedding](https://github.com/FlagOpen/FlagEmbedding/tree/master).<br>\n<h3 class='success title'>From metrics in performance</h3>*   Retrieval: 51.68 *   Clustering: 43.82 *   Pair Classification: 84.92 *   Reranking: 58.36 *   STS: 81.59 *   Summarization: 30.12 *   Classification: 74.14  *   **Average: 62.17**.<br><h3 class='error'>Missing info</h3><span>Would have looked at standards in evaluation, but that is empty.</span><br>"
     },
     {
-      "question": "What is the energy consumption?",
-      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
+      "question": "How much energy does the model consume?",
+      "answer": "<h3 class='success title'>From analysis in performance</h3>bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.<br>\n<h3 class='success title'>From hardware in use</h3>The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.<br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
     },
     {
       "question": "What is the environmental impact?",
       "answer": "<h3 class='success title'>Update in evaluation is</h3>yes<br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br><span>Would have looked at environmental impact in performance, but that is empty.</span><br>"
     },
     {
-      "question": "Was the model tested for bias?",
+      "question": "Was the model assessed for bias?",
       "answer": "<h3 class='success title'>From bias in performance</h3>There are no official documented bias metrics for bge-small-en-v1.5.<br>\n<h3 class='success title'>From fairness in safety</h3>However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..<br>"
     }
   ],
@@ -175,192 +175,192 @@
       "answer": "<h3 class='success title'>From ethics in safety</h3>The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.<br>Users should review all auto‑populated fields before publication..<br>\n<h3 class='success title'>From fairness in safety</h3>However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..<br>"
     },
     {
-      "question": "How is fairness defined / assessed?",
-      "answer": "<h3 class='success title'>From bias in performance</h3>There are no official documented bias metrics for bge-small-en-v1.5.<br>\n<h3 class='success title'>From ethics in safety</h3>The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.<br>Users should review all auto‑populated fields before publication..<br>\n<h3 class='success title'>From fairness in safety</h3>BGE models are state-of-the-art and trained on diverse datasets, making them strong candidates for more robust and fair inference.<br>However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..<br>\n<h3 class='success title'>From thresholds in performance</h3>**0.337** minimum matching.<br>Semantic similarity lesser than this is considered irrelevant.<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br><h3 class='error'>Missing info</h3><span>Would have looked at standards in evaluation, but that is empty.</span><br>"
+      "question": "How is the model's fairness assessed?",
+      "answer": "<h3 class='success title'>From fairness in safety</h3>However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..<br>"
     },
     {
-      "question": "What are the risks of this model?",
-      "answer": "<h3 class='success title'>From caveats in safety</h3>The system lacks automated validation step.<br>Wrong classification must be corrected by the user..<br>\n<h3 class='success title'>From description in overview</h3>This function is powered by the BGE model.<br>\n<h3 class='success title'>From ethics in safety</h3>Users should review all auto‑populated fields before publication..<br>\n<h3 class='success title'>From fairness in safety</h3>BGE models are state-of-the-art and trained on diverse datasets, making them strong candidates for more robust and fair inference.<br>However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..<br>\n<h3 class='success title'>From out of scope use in use</h3>Do not use unrelated sources to import information.<br>\n<h3 class='success title'>From risks in safety</h3>The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields..<br>\n<h3 class='success title'>From security in safety</h3>The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..<br>"
+      "question": "What risks are associated with using this model?",
+      "answer": "<h3 class='success title'>From risks in safety</h3>The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields..<br>"
     },
     {
-      "question": "Is the model secure / compliant with security standards?",
+      "question": "What security measures or standards are documented for this model?",
       "answer": "<h3 class='success title'>From security in safety</h3>The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..<br>"
     },
     {
-      "question": "What are the caveats of this model?",
-      "answer": "<h3 class='success title'>Date in overview is</h3>2025-11-11<br>\n<h3 class='success title'>From analysis in performance</h3>bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.<br>\n<h3 class='success title'>From caveats in safety</h3>The system lacks automated validation step.<br>\n<h3 class='success title'>From description in overview</h3>This function is powered by the BGE model.<br>\n<h3 class='success title'>From fairness in safety</h3>BGE models are state-of-the-art and trained on diverse datasets, making them strong candidates for more robust and fair inference.<br>\n<h3 class='success title'>From out of scope use in use</h3>Do not use unrelated sources to import information.<br>\n<h3 class='success title'>From risks in safety</h3>The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields..<br>"
+      "question": "What are the known limitations of this model?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2025-11-11<br>\n<h3 class='success title'>From analysis in performance</h3>bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.<br>\n<h3 class='success title'>From description in overview</h3>This function is powered by the BGE model.<br>\n<h3 class='success title'>From factors in use</h3>The quality of the output directly depends on the quality of the information withing the provided URL..<br>\n<h3 class='success title'>From risks in safety</h3>The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields..<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
     }
   ],
   "paraphrased": [
     {
       "question": "What is the purpose of this model?",
-      "answer": "<h3 class='success title'>From use cases in use</h3>Import external information into a model card.<br>"
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From description in overview</h3>This function is powered by the BGE model.<br>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.<br>\n<h3 class='success title'>From use cases in use</h3>Import external information into a model card.<br><h3 class='error'>Missing info</h3><span>Would have looked at motivation in training, but that is empty.</span><br>"
     },
     {
       "question": "What does this model do?",
-      "answer": "<h3 class='success title'>From analysis in performance</h3>bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.<br>\n<h3 class='success title'>From description in overview</h3>Initially, the system fetches textual and image content from the provided URL.<br>This function is powered by the BGE model.<br>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.<br>\n<h3 class='success title'>From hardware in use</h3>The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.<br>\n<h3 class='success title'>From inputs outputs in use</h3>Input: URL -> Output: model card.<br>\n<h3 class='success title'>From security in safety</h3>The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
+      "answer": "<h3 class='success title'>From description in overview</h3>This function is powered by the BGE model.<br>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.<br>"
     },
     {
-      "question": "Which organization built this model?",
-      "answer": "<h3 class='success title'>Date in overview is</h3>2025-11-11<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>"
+      "question": "Which organization developed this model?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From description in overview</h3>This function is powered by the BGE model.<br>\n<h3 class='success title'>From security in safety</h3>The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..<br>"
     },
     {
       "question": "When did this model come out?",
       "answer": "<h3 class='success title'>Date in overview is</h3>2025-11-11<br>"
     },
     {
-      "question": "What kind of architecture is used?",
+      "question": "What kind of architecture does this model use?",
       "answer": "<h3 class='success title'>Type in overview is</h3>Transformer<br>"
     },
     {
-      "question": "What is the size of the model?",
-      "answer": "<h3 class='success title'>Date in overview is</h3>2025-11-11<br>\n<h3 class='success title'>From analysis in performance</h3>bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+      "question": "How large is the model in terms of parameter count?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at parameters in overview, but that is empty.</span><br>"
     },
     {
-      "question": "Where do I download it from?",
-      "answer": "<h3 class='success title'>From datasets in training</h3>The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.<br>\n<h3 class='success title'>From description in overview</h3>Initially, the system fetches textual and image content from the provided URL.<br>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.<br>\n<h3 class='success title'>From hardware in use</h3>The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.<br>\n<h3 class='success title'>From instructions in use</h3>You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.<br>\n<h3 class='success title'>From security in safety</h3>The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..<br>\n<h3 class='success title'>Home in overview is</h3>[https://trai.mever.gr](https://trai.mever.gr/)<br>"
+      "question": "Where can I get a copy of the model?",
+      "answer": "<h3 class='success title'>From citation in overview</h3>Use this model card as a citation.<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From description in overview</h3>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.<br>\n<h3 class='success title'>From inputs outputs in use</h3>Input: URL -> Output: model card.<br>\n<h3 class='success title'>From instructions in use</h3>You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.<br>\n<h3 class='success title'>Home in overview is</h3>[https://trai.mever.gr](https://trai.mever.gr/)<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
     },
     {
-      "question": "Who should I email about it?",
-      "answer": "<h3 class='success title'>From caveats in safety</h3>The system lacks automated validation step.<br>Wrong classification must be corrected by the user..<br>"
+      "question": "Who should I email with questions about the model?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2025-11-11<br>\n<h3 class='success title'>From citation in overview</h3>Use this model card as a citation.<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From description in overview</h3>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.<br>\n<h3 class='success title'>From hardware in use</h3>The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.<br>\n<h3 class='success title'>From instructions in use</h3>You can also find more information in our [handbook](https://trai.mever.gr/transparency/handbook.html)..<br>You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.<br>\n<h3 class='success title'>From security in safety</h3>The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..<br>\n<h3 class='success title'>Home in overview is</h3>[https://trai.mever.gr](https://trai.mever.gr/)<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
     },
     {
-      "question": "What Python packages do I need?",
+      "question": "Which Python packages or other software dependencies do I need?",
       "answer": "<h3 class='success title'>From software in use</h3>Python, transformers.<br>"
     },
     {
-      "question": "What GPU do I need to run it?",
-      "answer": "<h3 class='success title'>From hardware in use</h3>The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.<br>"
+      "question": "What GPU or other hardware is needed to run it?",
+      "answer": "<h3 class='success title'>From analysis in performance</h3>bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.<br>\n<h3 class='success title'>From datasets in evaluation</h3>These include MTEB (Massive Text Embedding Benchmark) for English tasks and C-MTEB for Chinese tasks, BEIR (Benchmarking IR), MSMARCO, MIRACL, MLDR, MKQA, AIR-Bench, BRIGHT, and others..<br>\n<h3 class='success title'>From hardware in use</h3>The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.<br>\n<h3 class='success title'>From instructions in use</h3>You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.<br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
     },
     {
-      "question": "What does the model take as input, and what does it return?",
-      "answer": "<h3 class='success title'>From analysis in performance</h3>bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.<br>\n<h3 class='success title'>From datasets in training</h3>The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.<br>\n<h3 class='success title'>From description in overview</h3>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.<br>\n<h3 class='success title'>From inputs outputs in use</h3>Input: URL -> Output: model card.<br>\n<h3 class='success title'>From instructions in use</h3>You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.<br>\n<h3 class='success title'>From task in overview</h3>Model Card Auto-Fill.<br>\n<h3 class='success title'>Home in overview is</h3>[https://trai.mever.gr](https://trai.mever.gr/)<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>"
+      "question": "What data does the model accept, and what does it produce?",
+      "answer": "<h3 class='success title'>From datasets in training</h3>The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.<br>\n<h3 class='success title'>From description in overview</h3>This function is powered by the BGE model.<br>\n<h3 class='success title'>From inputs outputs in use</h3>Input: URL -> Output: model card.<br>\n<h3 class='success title'>From use cases in use</h3>Import external information into a model card.<br><h3 class='error'>Vague question</h3><span>There are 10 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "How do I load and run the model on data?",
-      "answer": "<h3 class='success title'>From instructions in use</h3>You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.<br>"
+      "question": "How can I load the model and run predictions on data?",
+      "answer": "<h3 class='success title'>From instructions in use</h3>You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.<br>\n<h3 class='success title'>Name in overview is</h3>TrAI-Import<br>"
     },
     {
-      "question": "What could make its performance worse?",
-      "answer": "<h3 class='success title'>From hardware in use</h3>The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.<br>"
+      "question": "Under what conditions might the model perform poorly?",
+      "answer": "<h3 class='success title'>From analysis in performance</h3>bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.<br>\n<h3 class='success title'>From caveats in safety</h3>The system lacks automated validation step.<br>\n<h3 class='success title'>From description in overview</h3>This function is powered by the BGE model.<br>\n<h3 class='success title'>From factors in use</h3>The quality of the output directly depends on the quality of the information withing the provided URL..<br>\n<h3 class='success title'>From fairness in safety</h3>BGE models are state-of-the-art and trained on diverse datasets, making them strong candidates for more robust and fair inference.<br>However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..<br>\n<h3 class='success title'>From hardware in use</h3>The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.<br>\n<h3 class='success title'>From out of scope use in use</h3>Do not use unrelated sources to import information.<br>\n<h3 class='success title'>From risks in safety</h3>The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields..<br>"
     },
     {
-      "question": "What should this model not be used for?",
-      "answer": "<h3 class='success title'>From out of scope use in use</h3>Do not use unrelated sources to import information.<br>"
+      "question": "Which applications or scenarios should this model not be used for?",
+      "answer": "<h3 class='success title'>From caveats in safety</h3>The system lacks automated validation step.<br>\n<h3 class='success title'>From description in overview</h3>This function is powered by the BGE model.<br>\n<h3 class='success title'>From fairness in safety</h3>BGE models are state-of-the-art and trained on diverse datasets, making them strong candidates for more robust and fair inference.<br>However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..<br>\n<h3 class='success title'>From out of scope use in use</h3>Do not use unrelated sources to import information.<br>\n<h3 class='success title'>From risks in safety</h3>The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields..<br>\n<h3 class='success title'>From security in safety</h3>The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..<br>\n<h3 class='success title'>From use cases in use</h3>Import external information into a model card.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>"
     },
     {
-      "question": "Who is this model for?",
-      "answer": "<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>"
+      "question": "Who is this model designed for?",
+      "answer": "<h3 class='success title'>From user groups in use</h3>Model card creators.<br>"
     },
     {
-      "question": "Does a human need to review the outputs?",
-      "answer": "<h3 class='success title'>From caveats in safety</h3>The system lacks automated validation step.<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br>"
+      "question": "Do the model's outputs need to be reviewed by a person?",
+      "answer": "<h3 class='success title'>From fairness in safety</h3>However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..<br>\n<h3 class='success title'>From inputs outputs in use</h3>Input: URL -> Output: model card.<br>\n<h3 class='success title'>From security in safety</h3>The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..<br>"
     },
     {
-      "question": "What does it say about its accuracy?",
+      "question": "What accuracy and other performance metrics are reported?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>There are no official documented bias metrics for bge-small-en-v1.5.<br>\n<h3 class='success title'>From metrics in performance</h3>*   Retrieval: 51.68 *   Clustering: 43.82 *   Pair Classification: 84.92 *   Reranking: 58.36 *   STS: 81.59 *   Summarization: 30.12 *   Classification: 74.14  *   **Average: 62.17**.<br>\n<h3 class='success title'>From thresholds in performance</h3>**0.337** minimum matching.<br>\n<h3 class='success title'>Update in evaluation is</h3>yes<br><h3 class='error'>Vague question</h3><span>There are 10 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "What cutoff values are used to make predictions?",
       "answer": "<h3 class='success title'>From thresholds in performance</h3>**0.337** minimum matching.<br>"
     },
     {
-      "question": "What threshold is used to make predictions?",
-      "answer": "<h3 class='success title'>From thresholds in performance</h3>**0.337** minimum matching.<br>"
+      "question": "What could go wrong when this model is used?",
+      "answer": "<h3 class='success title'>From caveats in safety</h3>The system lacks automated validation step.<br>\n<h3 class='success title'>From risks in safety</h3>The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields..<br>"
     },
     {
-      "question": "What could go wrong if I use this model?",
-      "answer": "<h3 class='success title'>From risks in safety</h3>The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields..<br>"
+      "question": "What ethical issues should be considered when using this model?",
+      "answer": "<h3 class='success title'>From caveats in safety</h3>The system lacks automated validation step.<br>\n<h3 class='success title'>From ethics in safety</h3>The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.<br>Users should review all auto‑populated fields before publication..<br>\n<h3 class='success title'>From fairness in safety</h3>BGE models are state-of-the-art and trained on diverse datasets, making them strong candidates for more robust and fair inference.<br>However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..<br>\n<h3 class='success title'>From out of scope use in use</h3>Do not use unrelated sources to import information.<br>\n<h3 class='success title'>From risks in safety</h3>The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields..<br><h3 class='error'>Missing info</h3><span>Would have looked at standards in evaluation, but that is empty.</span><br>"
     },
     {
-      "question": "Are there ethical concerns with using this?",
-      "answer": "<h3 class='success title'>From caveats in safety</h3>The system lacks automated validation step.<br>Wrong classification must be corrected by the user..<br>\n<h3 class='success title'>From ethics in safety</h3>The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.<br>Users should review all auto‑populated fields before publication..<br>\n<h3 class='success title'>From fairness in safety</h3>However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..<br>"
+      "question": "How much electricity does running this model use?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
     },
     {
-      "question": "How much energy does it consume?",
-      "answer": "<h3 class='success title'>From hardware in use</h3>The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.<br><h3 class='error'>Vague question</h3><span>There are 9 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br><span>Would have looked at environmental impact in performance, but that is empty.</span><br>"
+      "question": "Does the model document compliance with any security standards?",
+      "answer": "<h3 class='success title'>From risks in safety</h3>The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields..<br>\n<h3 class='success title'>From security in safety</h3>The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..<br><h3 class='error'>Vague question</h3><span>There are 12 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "Is it compliant with any security standard?",
-      "answer": "<h3 class='success title'>From caveats in safety</h3>The system lacks automated validation step.<br>\n<h3 class='success title'>From security in safety</h3>The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..<br>\n<h3 class='success title'>Standards in training is</h3>N/A<br>"
+      "question": "Does the model perform fairly across different subgroups?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>There are no official documented bias metrics for bge-small-en-v1.5.<br>\n<h3 class='success title'>From fairness in safety</h3>BGE models are state-of-the-art and trained on diverse datasets, making them strong candidates for more robust and fair inference.<br>\n<h3 class='success title'>From user groups in use</h3>Model card creators.<br>"
     },
     {
-      "question": "Is the model fair across subgroups?",
-      "answer": "<h3 class='success title'>From fairness in safety</h3>However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..<br>"
-    },
-    {
-      "question": "What are its known limitations?",
-      "answer": "<h3 class='success title'>From security in safety</h3>The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..<br>"
-    },
-    {
-      "question": "What datasets was it trained and evaluated on?",
-      "answer": "<h3 class='success title'>From datasets in evaluation</h3>These include MTEB (Massive Text Embedding Benchmark) for English tasks and C-MTEB for Chinese tasks, BEIR (Benchmarking IR), MSMARCO, MIRACL, MLDR, MKQA, AIR-Bench, BRIGHT, and others..<br>"
-    },
-    {
-      "question": "How was the model evaluated?",
-      "answer": "<h3 class='success title'>From description in overview</h3>This function is powered by the BGE model.<br>"
-    },
-    {
-      "question": "What standards does it follow?",
-      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at standards in evaluation, but that is empty.</span><br>"
+      "question": "What limitations or shortcomings are known about this model?",
+      "answer": "<h3 class='success title'>From analysis in performance</h3>bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.<br>\n<h3 class='success title'>From caveats in safety</h3>The system lacks automated validation step.<br>\n<h3 class='success title'>From description in overview</h3>This function is powered by the BGE model.<br>\n<h3 class='success title'>From risks in safety</h3>The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields..<br>\n<h3 class='success title'>From security in safety</h3>The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
     }
   ],
   "cross_field": [
     {
-      "question": "Who created this model and what kind of model is it?",
-      "answer": "<h3 class='success title'>From citation in overview</h3>Use this model card as a citation.<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+      "question": "Which datasets were used for training, and which were used for evaluation?",
+      "answer": "<h3 class='success title'>From datasets in evaluation</h3>These include MTEB (Massive Text Embedding Benchmark) for English tasks and C-MTEB for Chinese tasks, BEIR (Benchmarking IR), MSMARCO, MIRACL, MLDR, MKQA, AIR-Bench, BRIGHT, and others..<br>"
     },
     {
-      "question": "What is the model's task and its intended use?",
+      "question": "What evaluation methodology and data preprocessing were used to assess the model?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>There are no official documented bias metrics for bge-small-en-v1.5.<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From description in overview</h3>This function is powered by the BGE model.<br>\n<h3 class='success title'>From metrics in performance</h3>*   Retrieval: 51.68 *   Clustering: 43.82 *   Pair Classification: 84.92 *   Reranking: 58.36 *   STS: 81.59 *   Summarization: 30.12 *   Classification: 74.14  *   **Average: 62.17**.<br>\n<h3 class='success title'>From motivation in evaluation</h3>The primary motivation is to provide a standardized and holistic evaluation of the model's ability to generate embeddings for a wide range of tasks, including retrieval, classification, clustering, pair classification, reranking, and semantic textual similarity (STS)..<br><h3 class='error'>Missing info</h3><span>Would have looked at standards in evaluation, but that is empty.</span><br>"
+    },
+    {
+      "question": "Which standards or guidelines were followed during training and evaluation?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at standards in training, but that is empty.</span><br>"
+    },
+    {
+      "question": "Who developed this model, and what type of model is it?",
+      "answer": "<h3 class='success title'>Contact in overview is</h3>[gnikoul@iti.gr](mailto:gnikoul@iti.gr), [maniospas@iti.gr](mailto:maniospas@iti.gr), [laaposto@iti.gr](mailto:laaposto@iti.gr)<br>\n<h3 class='success title'>Date in overview is</h3>2025-11-11<br>\n<h3 class='success title'>From citation in overview</h3>Use this model card as a citation.<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From datasets in training</h3>The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.<br>\n<h3 class='success title'>From description in overview</h3>This function is powered by the BGE model.<br>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.<br>\n<h3 class='success title'>Home in overview is</h3>[https://trai.mever.gr](https://trai.mever.gr/)<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
+    },
+    {
+      "question": "What task does the model perform, and what are its intended use cases?",
       "answer": "<h3 class='success title'>From use cases in use</h3>Import external information into a model card.<br>"
     },
     {
-      "question": "When was the model released and what version is it?",
-      "answer": "<h3 class='success title'>Version in overview is</h3>1.0<br>"
+      "question": "When was the model released, and which version is documented?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2025-11-11<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From description in overview</h3>This function is powered by the BGE model.<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br><h3 class='error'>Missing info</h3><span>Would have looked at more in overview, but that is empty.</span><br>"
     },
     {
-      "question": "What hardware and software do I need to run this model?",
+      "question": "What hardware and software dependencies are required to run this model?",
       "answer": "<h3 class='success title'>From hardware in use</h3>The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.<br>"
     },
     {
-      "question": "What are the risks and ethical concerns of using this model?",
-      "answer": "<h3 class='success title'>From caveats in safety</h3>The system lacks automated validation step.<br>\n<h3 class='success title'>From ethics in safety</h3>The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.<br>Users should review all auto‑populated fields before publication..<br>"
+      "question": "What risks and ethical considerations should users be aware of?",
+      "answer": "<h3 class='success title'>From caveats in safety</h3>The system lacks automated validation step.<br>Wrong classification must be corrected by the user..<br>\n<h3 class='success title'>From ethics in safety</h3>The system extracts and classifies content from third-party URLs without human oversight, which may lead to misrepresentation of information.<br>Users should review all auto‑populated fields before publication..<br>\n<h3 class='success title'>From fairness in safety</h3>However, fairness is not a concern in this system, as sensitive attributes such as gender, ethnicity, disabilities, and others are not relevant to the task..<br>\n<h3 class='success title'>From risks in safety</h3>The system is designed for HuggingFace‑style documentation pages and may fail on other website layouts, producing empty or incorrect fields..<br>\n<h3 class='success title'>From security in safety</h3>The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..<br>\n<h3 class='success title'>Oversight in use is</h3>human-on-the-loop<br><h3 class='error'>Missing info</h3><span>Would have looked at standards in evaluation, but that is empty.</span><br><span>Would have looked at standards in training, but that is empty.</span><br>"
     },
     {
-      "question": "What is the energy consumption and environmental impact?",
-      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
+      "question": "What energy consumption and environmental impact are reported for the model?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at environmental impact in performance, but that is empty.</span><br>"
     },
     {
-      "question": "Who are the intended users and what oversight is required?",
+      "question": "Who is the model intended for, and what level of human oversight is required?",
       "answer": "<h3 class='success title'>Oversight in use is</h3>human-on-the-loop<br>"
     },
     {
-      "question": "What are the caveats and out-of-scope uses?",
-      "answer": "<h3 class='success title'>From out of scope use in use</h3>Do not use unrelated sources to import information.<br><h3 class='error'>Vague question</h3><span>There are 11 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+      "question": "What limitations are documented, and which uses are outside the model's intended scope?",
+      "answer": "<h3 class='success title'>From out of scope use in use</h3>Do not use unrelated sources to import information.<br>"
     },
     {
-      "question": "How was the model trained and evaluated?",
-      "answer": "<h3 class='success title'>From datasets in training</h3>No fine tuning was made..<br>The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.<br>"
+      "question": "Which datasets were used for training and evaluation, why were they chosen, and what preprocessing was applied? What evaluation methodology was used?",
+      "answer": "<h3 class='success title'>From datasets in evaluation</h3>FlagEmbedding models are evaluated on a comprehensive suite of established information retrieval and text embedding benchmarks.<br>These include MTEB (Massive Text Embedding Benchmark) for English tasks and C-MTEB for Chinese tasks, BEIR (Benchmarking IR), MSMARCO, MIRACL, MLDR, MKQA, AIR-Bench, BRIGHT, and others..<br>\n<h3 class='success title'>From datasets in training</h3>No fine tuning was made..<br>The system uses the [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) base model.<br>\n<h3 class='success title'>From metrics in performance</h3>*   Retrieval: 51.68 *   Clustering: 43.82 *   Pair Classification: 84.92 *   Reranking: 58.36 *   STS: 81.59 *   Summarization: 30.12 *   Classification: 74.14  *   **Average: 62.17**.<br>\n<h3 class='success title'>From motivation in evaluation</h3>The primary motivation is to provide a standardized and holistic evaluation of the model's ability to generate embeddings for a wide range of tasks, including retrieval, classification, clustering, pair classification, reranking, and semantic textual similarity (STS)..<br>\n<h3 class='success title'>From thresholds in performance</h3>**0.337** minimum matching.<br><h3 class='error'>Missing info</h3><span>Would have looked at motivation in training, but that is empty.</span><br><span>Would have looked at preprocessing in evaluation, but that is empty.</span><br><span>Would have looked at preprocessing in training, but that is empty.</span><br>"
     },
     {
-      "question": "What are the input/output formats, and how do I run the model?",
+      "question": "What input and output formats does the model use, and how can it be run?",
       "answer": "<h3 class='success title'>From inputs outputs in use</h3>Input: URL -> Output: model card.<br>"
     },
     {
-      "question": "What technical or ethical standards does the model follow?",
-      "answer": "<h3 class='success title'>From security in safety</h3>The system is designed to prevent malicious content like JavaScript injection. However, no red teaming has been performed..<br>"
+      "question": "Which standards or guidelines were followed during training and evaluation, and what ethical considerations are documented?",
+      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at standards in training, but that is empty.</span><br>"
     },
     {
-      "question": "What factors could degrade performance, and what are the known caveats?",
+      "question": "What factors can reduce the model's performance, and what limitations are documented?",
+      "answer": "<h3 class='success title'>From analysis in performance</h3>bge-small-en-v1.5 achieves an average of 62.17 over 7 tasks.The model is highly efficient, using 33 million parameters to produce 384-dimension vectors at 130MB runtime memory.<br><h3 class='error'>Vague question</h3><span>There are 10 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "Which software dependencies must be installed, and what hardware is needed to run the model?",
       "answer": "<h3 class='success title'>From hardware in use</h3>The model runs on an Intel Xeon CPU E5-2620 0 @ 2.00GHz.<br>"
     },
     {
-      "question": "How do I install the software, and what hardware does it need?",
-      "answer": "<h3 class='success title'>From instructions in use</h3>You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.<br>"
+      "question": "Who is the model intended for, and which uses should be avoided?",
+      "answer": "<h3 class='success title'>From out of scope use in use</h3>Do not use unrelated sources to import information.<br>"
     },
     {
-      "question": "Who should use this model, and what should they not do with it?",
-      "answer": "<h3 class='success title'>From ethics in safety</h3>Users should review all auto‑populated fields before publication..<br>\n<h3 class='success title'>From out of scope use in use</h3>Do not use unrelated sources to import information.<br>\n<h3 class='success title'>From user groups in use</h3>Model card creators.<br><h3 class='error'>Vague question</h3><span>There are 11 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
-    },
-    {
-      "question": "What is the model's license and how do I cite it?",
-      "answer": "<h3 class='success title'>From citation in overview</h3>Use this model card as a citation.<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>From description in overview</h3>This operation enables the automated retrieval of information from a specified URL and the autocompletion of model card fields.<br>\n<h3 class='success title'>From instructions in use</h3>You can use this operation from any model card by navigating to the **Actions -> Import** at the top right corner of the screen.<br>\n<h3 class='success title'>From use cases in use</h3>Import external information into a model card.<br>\n<h3 class='success title'>License in overview is</h3>TBD<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br>"
+      "question": "What license governs the model, and how should it be cited?",
+      "answer": "<h3 class='success title'>From citation in overview</h3>Use this model card as a citation.<br>\n<h3 class='success title'>From creator in overview</h3>CERTH - The Centre for Research & Technology, Hellas.<br>\n<h3 class='success title'>Home in overview is</h3>[https://trai.mever.gr](https://trai.mever.gr/)<br>\n<h3 class='success title'>License in overview is</h3>TBD<br><h3 class='error'>Vague question</h3><span>There are 10 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     }
   ]
 }

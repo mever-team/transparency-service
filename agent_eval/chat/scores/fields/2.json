@@ -5,13 +5,13 @@
   },
   "overall": {
     "n_questions": 83,
-    "correct": 53,
+    "correct": 50,
     "partial": 12,
-    "wrong": 18,
-    "avg_score": 0.7082616179001721,
+    "wrong": 21,
+    "avg_score": 0.6683878370625358,
     "n_target_fields": 106,
-    "n_hit": 69,
-    "field_recall": 0.6509433962264151
+    "n_hit": 65,
+    "field_recall": 0.6132075471698113
   },
   "per_category": {
     "overview": {
@@ -36,16 +36,6 @@
     },
     "training": {
       "n_questions": 5,
-      "correct": 4,
-      "partial": 0,
-      "wrong": 1,
-      "avg_score": 0.8,
-      "n_target_fields": 5,
-      "n_hit": 4,
-      "field_recall": 0.8
-    },
-    "evaluation": {
-      "n_questions": 5,
       "correct": 5,
       "partial": 0,
       "wrong": 0,
@@ -54,15 +44,25 @@
       "n_hit": 5,
       "field_recall": 1.0
     },
+    "evaluation": {
+      "n_questions": 5,
+      "correct": 3,
+      "partial": 0,
+      "wrong": 2,
+      "avg_score": 0.6,
+      "n_target_fields": 5,
+      "n_hit": 3,
+      "field_recall": 0.6
+    },
     "performance": {
       "n_questions": 7,
-      "correct": 4,
+      "correct": 3,
       "partial": 0,
-      "wrong": 3,
-      "avg_score": 0.5714285714285714,
+      "wrong": 4,
+      "avg_score": 0.42857142857142855,
       "n_target_fields": 7,
-      "n_hit": 4,
-      "field_recall": 0.5714285714285714
+      "n_hit": 3,
+      "field_recall": 0.42857142857142855
     },
     "safety": {
       "n_questions": 5,
@@ -75,24 +75,24 @@
       "field_recall": 0.8
     },
     "paraphrased": {
-      "n_questions": 26,
-      "correct": 17,
-      "partial": 2,
-      "wrong": 7,
-      "avg_score": 0.6923076923076923,
-      "n_target_fields": 29,
-      "n_hit": 20,
-      "field_recall": 0.6896551724137931
+      "n_questions": 23,
+      "correct": 14,
+      "partial": 0,
+      "wrong": 9,
+      "avg_score": 0.6086956521739131,
+      "n_target_fields": 23,
+      "n_hit": 14,
+      "field_recall": 0.6086956521739131
     },
     "cross_field": {
-      "n_questions": 15,
-      "correct": 2,
-      "partial": 10,
-      "wrong": 3,
-      "avg_score": 0.4523809523809524,
-      "n_target_fields": 35,
-      "n_hit": 15,
-      "field_recall": 0.42857142857142855
+      "n_questions": 18,
+      "correct": 4,
+      "partial": 12,
+      "wrong": 2,
+      "avg_score": 0.5264550264550265,
+      "n_target_fields": 41,
+      "n_hit": 19,
+      "field_recall": 0.4634146341463415
     }
   },
   "skipped_questions": [
@@ -102,7 +102,7 @@
     },
     {
       "category": "paraphrased",
-      "question": "What is the size of the model?"
+      "question": "How large is the model in terms of parameter count?"
     }
   ],
   "per_question": {
@@ -126,24 +126,22 @@
         "wrong": false
       },
       {
-        "question": "What is this model used for?",
+        "question": "What are the use cases?",
         "targets": [
           "use.use_cases"
         ],
         "predicted": [
-          "overview.type"
-        ],
-        "hit": [],
-        "missed": [
           "use.use_cases"
         ],
-        "off_target": [
-          "overview.type"
+        "hit": [
+          "use.use_cases"
         ],
-        "coverage": 0.0,
-        "correct": false,
+        "missed": [],
+        "off_target": [],
+        "coverage": 1.0,
+        "correct": true,
         "partial": false,
-        "wrong": true
+        "wrong": false
       },
       {
         "question": "Who created this model?",
@@ -216,46 +214,32 @@
         "wrong": false
       },
       {
-        "question": "What is the type of the model?",
+        "question": "What type of model is this?",
         "targets": [
           "overview.type"
-        ],
-        "predicted": [
-          "overview.type"
-        ],
-        "hit": [
-          "overview.type"
-        ],
-        "missed": [],
-        "off_target": [],
-        "coverage": 1.0,
-        "correct": true,
-        "partial": false,
-        "wrong": false
-      },
-      {
-        "question": "What is the task of this model?",
-        "targets": [
-          "overview.task"
         ],
         "predicted": [
           "overview.creator",
           "overview.date",
           "overview.description",
-          "overview.task",
+          "overview.home",
+          "overview.name",
           "overview.type",
+          "overview.version",
           "use.inputs_outputs",
           "use.software"
         ],
         "hit": [
-          "overview.task"
+          "overview.type"
         ],
         "missed": [],
         "off_target": [
           "overview.creator",
           "overview.date",
           "overview.description",
-          "overview.type",
+          "overview.home",
+          "overview.name",
+          "overview.version",
           "use.inputs_outputs",
           "use.software"
         ],
@@ -265,37 +249,19 @@
         "wrong": false
       },
       {
-        "question": "What is the license of this model?",
+        "question": "What task is this model designed to perform?",
         "targets": [
-          "overview.license"
+          "overview.task"
         ],
         "predicted": [
-          "overview.license"
-        ],
-        "hit": [
-          "overview.license"
-        ],
-        "missed": [],
-        "off_target": [],
-        "coverage": 1.0,
-        "correct": true,
-        "partial": false,
-        "wrong": false
-      },
-      {
-        "question": "Where can I find this model?",
-        "targets": [
-          "overview.home"
-        ],
-        "predicted": [
-          "overview.date"
+          "overview.type"
         ],
         "hit": [],
         "missed": [
-          "overview.home"
+          "overview.task"
         ],
         "off_target": [
-          "overview.date"
+          "overview.type"
         ],
         "coverage": 0.0,
         "correct": false,
@@ -303,29 +269,60 @@
         "wrong": true
       },
       {
-        "question": "Who can I contact about this model?",
+        "question": "What license does this model use?",
+        "targets": [
+          "overview.license"
+        ],
+        "predicted": [
+          "use.software"
+        ],
+        "hit": [],
+        "missed": [
+          "overview.license"
+        ],
+        "off_target": [
+          "use.software"
+        ],
+        "coverage": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true
+      },
+      {
+        "question": "Where can I access or download this model?",
+        "targets": [
+          "overview.home"
+        ],
+        "predicted": [
+          "overview.date",
+          "overview.home"
+        ],
+        "hit": [
+          "overview.home"
+        ],
+        "missed": [],
+        "off_target": [
+          "overview.date"
+        ],
+        "coverage": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false
+      },
+      {
+        "question": "Who should I contact for information about this model?",
         "targets": [
           "overview.contact"
         ],
         "predicted": [
-          "overview.creator",
-          "overview.date",
-          "overview.home",
-          "safety.caveats",
-          "safety.security",
-          "use.instructions"
+          "overview.creator"
         ],
         "hit": [],
         "missed": [
           "overview.contact"
         ],
         "off_target": [
-          "overview.creator",
-          "overview.date",
-          "overview.home",
-          "safety.caveats",
-          "safety.security",
-          "use.instructions"
+          "overview.creator"
         ],
         "coverage": 0.0,
         "correct": false,
@@ -371,15 +368,36 @@
         "wrong": false
       },
       {
-        "question": "What level of human oversight is required?",
+        "question": "What is the level of human oversight?",
         "targets": [
           "use.oversight"
         ],
         "predicted": [
+          "evaluation.standards",
           "use.oversight"
         ],
         "hit": [
           "use.oversight"
+        ],
+        "missed": [],
+        "off_target": [
+          "evaluation.standards"
+        ],
+        "coverage": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false
+      },
+      {
+        "question": "Who are the intended users of this model?",
+        "targets": [
+          "use.user_groups"
+        ],
+        "predicted": [
+          "use.user_groups"
+        ],
+        "hit": [
+          "use.user_groups"
         ],
         "missed": [],
         "off_target": [],
@@ -389,28 +407,7 @@
         "wrong": false
       },
       {
-        "question": "Who are the intended user groups?",
-        "targets": [
-          "use.user_groups"
-        ],
-        "predicted": [
-          "use.oversight",
-          "use.user_groups"
-        ],
-        "hit": [
-          "use.user_groups"
-        ],
-        "missed": [],
-        "off_target": [
-          "use.oversight"
-        ],
-        "coverage": 1.0,
-        "correct": true,
-        "partial": false,
-        "wrong": false
-      },
-      {
-        "question": "What is this model not intended for?",
+        "question": "What uses are outside the intended scope of this model?",
         "targets": [
           "use.out_of_scope_use"
         ],
@@ -431,7 +428,7 @@
         "wrong": false
       },
       {
-        "question": "What software does this model require?",
+        "question": "What are the software requirements?",
         "targets": [
           "use.software"
         ],
@@ -449,28 +446,25 @@
         "wrong": false
       },
       {
-        "question": "How do I run / use this model?",
+        "question": "What instructions are provided for running this model?",
         "targets": [
           "use.instructions"
         ],
         "predicted": [
-          "overview.home",
           "use.instructions"
         ],
         "hit": [
           "use.instructions"
         ],
         "missed": [],
-        "off_target": [
-          "overview.home"
-        ],
+        "off_target": [],
         "coverage": 1.0,
         "correct": true,
         "partial": false,
         "wrong": false
       },
       {
-        "question": "What are the inputs and outputs of the model?",
+        "question": "What are the model's input and output?",
         "targets": [
           "use.inputs_outputs"
         ],
@@ -488,23 +482,18 @@
         "wrong": false
       },
       {
-        "question": "What factors affect the model's performance?",
+        "question": "What factors can affect the model's performance?",
         "targets": [
           "use.factors"
         ],
         "predicted": [
-          "performance.analysis",
-          "performance.thresholds",
           "use.factors"
         ],
         "hit": [
           "use.factors"
         ],
         "missed": [],
-        "off_target": [
-          "performance.analysis",
-          "performance.thresholds"
-        ],
+        "off_target": [],
         "coverage": 1.0,
         "correct": true,
         "partial": false,
@@ -531,7 +520,7 @@
     ],
     "training": [
       {
-        "question": "What datasets were used for training?",
+        "question": "Which datasets were used to train the model?",
         "targets": [
           "training.datasets"
         ],
@@ -549,78 +538,67 @@
         "wrong": false
       },
       {
-        "question": "Why were these training datasets chosen?",
+        "question": "What was the motivation for selecting these datasets for training?",
         "targets": [
           "training.motivation"
         ],
         "predicted": [
-          "training.datasets"
-        ],
-        "hit": [],
-        "missed": [
           "training.motivation"
-        ],
-        "off_target": [
-          "training.datasets"
-        ],
-        "coverage": 0.0,
-        "correct": false,
-        "partial": false,
-        "wrong": true
-      },
-      {
-        "question": "What preprocessing was applied during training?",
-        "targets": [
-          "training.preprocessing"
-        ],
-        "predicted": [
-          "training.preprocessing",
-          "training.update"
         ],
         "hit": [
-          "training.preprocessing"
+          "training.motivation"
         ],
         "missed": [],
-        "off_target": [
-          "training.update"
-        ],
+        "off_target": [],
         "coverage": 1.0,
         "correct": true,
         "partial": false,
         "wrong": false
       },
       {
-        "question": "What standards were followed during training?",
+        "question": "What preprocessing was applied to the training data?",
         "targets": [
-          "training.standards"
+          "training.preprocessing"
         ],
         "predicted": [
-          "evaluation.standards",
-          "performance.methodology",
-          "training.standards",
-          "training.update"
+          "training.preprocessing"
         ],
         "hit": [
-          "training.standards"
+          "training.preprocessing"
         ],
         "missed": [],
-        "off_target": [
-          "evaluation.standards",
-          "performance.methodology",
-          "training.update"
-        ],
+        "off_target": [],
         "coverage": 1.0,
         "correct": true,
         "partial": false,
         "wrong": false
       },
       {
-        "question": "Is the training data up to date?",
+        "question": "Which standards were followed during training?",
+        "targets": [
+          "training.standards"
+        ],
+        "predicted": [
+          "training.standards"
+        ],
+        "hit": [
+          "training.standards"
+        ],
+        "missed": [],
+        "off_target": [],
+        "coverage": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false
+      },
+      {
+        "question": "How recently was the training data updated?",
         "targets": [
           "training.update"
         ],
         "predicted": [
           "evaluation.update",
+          "training.datasets",
           "training.update"
         ],
         "hit": [
@@ -628,7 +606,8 @@
         ],
         "missed": [],
         "off_target": [
-          "evaluation.update"
+          "evaluation.update",
+          "training.datasets"
         ],
         "coverage": 1.0,
         "correct": true,
@@ -638,15 +617,35 @@
     ],
     "evaluation": [
       {
-        "question": "What datasets were used for evaluation?",
+        "question": "Which datasets were used to evaluate the model?",
         "targets": [
           "evaluation.datasets"
         ],
         "predicted": [
+          "evaluation.motivation"
+        ],
+        "hit": [],
+        "missed": [
           "evaluation.datasets"
         ],
+        "off_target": [
+          "evaluation.motivation"
+        ],
+        "coverage": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true
+      },
+      {
+        "question": "What was the motivation for selecting these datasets for evaluation",
+        "targets": [
+          "evaluation.motivation"
+        ],
+        "predicted": [
+          "evaluation.motivation"
+        ],
         "hit": [
-          "evaluation.datasets"
+          "evaluation.motivation"
         ],
         "missed": [],
         "off_target": [],
@@ -656,15 +655,35 @@
         "wrong": false
       },
       {
-        "question": "Why were these evaluation datasets chosen?",
+        "question": "What preprocessing was applied to the evaluation data?",
         "targets": [
-          "evaluation.motivation"
+          "evaluation.preprocessing"
         ],
         "predicted": [
-          "evaluation.motivation"
+          "performance.methodology"
+        ],
+        "hit": [],
+        "missed": [
+          "evaluation.preprocessing"
+        ],
+        "off_target": [
+          "performance.methodology"
+        ],
+        "coverage": 0.0,
+        "correct": false,
+        "partial": false,
+        "wrong": true
+      },
+      {
+        "question": "Which standards or guidelines were followed during evaluation?",
+        "targets": [
+          "evaluation.standards"
+        ],
+        "predicted": [
+          "evaluation.standards"
         ],
         "hit": [
-          "evaluation.motivation"
+          "evaluation.standards"
         ],
         "missed": [],
         "off_target": [],
@@ -674,63 +693,7 @@
         "wrong": false
       },
       {
-        "question": "What preprocessing was applied during evaluation?",
-        "targets": [
-          "evaluation.preprocessing"
-        ],
-        "predicted": [
-          "evaluation.preprocessing",
-          "evaluation.standards",
-          "performance.analysis",
-          "performance.methodology",
-          "performance.thresholds",
-          "training.preprocessing"
-        ],
-        "hit": [
-          "evaluation.preprocessing"
-        ],
-        "missed": [],
-        "off_target": [
-          "evaluation.standards",
-          "performance.analysis",
-          "performance.methodology",
-          "performance.thresholds",
-          "training.preprocessing"
-        ],
-        "coverage": 1.0,
-        "correct": true,
-        "partial": false,
-        "wrong": false
-      },
-      {
-        "question": "What standards were followed during evaluation?",
-        "targets": [
-          "evaluation.standards"
-        ],
-        "predicted": [
-          "evaluation.standards",
-          "performance.bias",
-          "performance.methodology",
-          "performance.thresholds",
-          "training.standards"
-        ],
-        "hit": [
-          "evaluation.standards"
-        ],
-        "missed": [],
-        "off_target": [
-          "performance.bias",
-          "performance.methodology",
-          "performance.thresholds",
-          "training.standards"
-        ],
-        "coverage": 1.0,
-        "correct": true,
-        "partial": false,
-        "wrong": false
-      },
-      {
-        "question": "Is the evaluation data up to date?",
+        "question": "How recently was the evaluation data updated?",
         "targets": [
           "evaluation.update"
         ],
@@ -750,29 +713,32 @@
     ],
     "performance": [
       {
-        "question": "What does the performance analysis say?",
+        "question": "What conclusions does the performance analysis report?",
         "targets": [
           "performance.analysis"
         ],
         "predicted": [
+          "performance.methodology"
+        ],
+        "hit": [],
+        "missed": [
           "performance.analysis"
         ],
-        "hit": [
-          "performance.analysis"
+        "off_target": [
+          "performance.methodology"
         ],
-        "missed": [],
-        "off_target": [],
-        "coverage": 1.0,
-        "correct": true,
+        "coverage": 0.0,
+        "correct": false,
         "partial": false,
-        "wrong": false
+        "wrong": true
       },
       {
-        "question": "What are the benchmark metrics?",
+        "question": "What are the performance metrics?",
         "targets": [
           "performance.metrics"
         ],
         "predicted": [
+          "performance.analysis",
           "performance.methodology"
         ],
         "hit": [],
@@ -780,6 +746,7 @@
           "performance.metrics"
         ],
         "off_target": [
+          "performance.analysis",
           "performance.methodology"
         ],
         "coverage": 0.0,
@@ -806,7 +773,7 @@
         "wrong": false
       },
       {
-        "question": "What is the evaluation methodology?",
+        "question": "What methodology was used to evaluate model performance?",
         "targets": [
           "performance.methodology"
         ],
@@ -824,7 +791,7 @@
         "wrong": false
       },
       {
-        "question": "What is the energy consumption?",
+        "question": "How much energy does the model consume?",
         "targets": [
           "performance.environmental_impact"
         ],
@@ -858,7 +825,7 @@
         "wrong": false
       },
       {
-        "question": "Was the model tested for bias?",
+        "question": "Was the model assessed for bias?",
         "targets": [
           "performance.bias"
         ],
@@ -898,20 +865,68 @@
         "wrong": false
       },
       {
-        "question": "How is fairness defined / assessed?",
+        "question": "How is the model's fairness assessed?",
         "targets": [
           "safety.fairness"
         ],
         "predicted": [
-          "performance.bias",
           "safety.fairness"
         ],
         "hit": [
           "safety.fairness"
+        ],
+        "missed": [],
+        "off_target": [],
+        "coverage": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false
+      },
+      {
+        "question": "What risks are associated with using this model?",
+        "targets": [
+          "safety.risks"
+        ],
+        "predicted": [
+          "safety.risks"
+        ],
+        "hit": [
+          "safety.risks"
+        ],
+        "missed": [],
+        "off_target": [],
+        "coverage": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false
+      },
+      {
+        "question": "What security measures or standards are documented for this model?",
+        "targets": [
+          "safety.security"
+        ],
+        "predicted": [
+          "evaluation.standards",
+          "overview.creator",
+          "performance.methodology",
+          "safety.caveats",
+          "safety.ethics",
+          "safety.security",
+          "training.standards",
+          "use.software"
+        ],
+        "hit": [
+          "safety.security"
         ],
         "missed": [],
         "off_target": [
-          "performance.bias"
+          "evaluation.standards",
+          "overview.creator",
+          "performance.methodology",
+          "safety.caveats",
+          "safety.ethics",
+          "training.standards",
+          "use.software"
         ],
         "coverage": 1.0,
         "correct": true,
@@ -919,43 +934,7 @@
         "wrong": false
       },
       {
-        "question": "What are the risks of this model?",
-        "targets": [
-          "safety.risks"
-        ],
-        "predicted": [
-          "safety.risks"
-        ],
-        "hit": [
-          "safety.risks"
-        ],
-        "missed": [],
-        "off_target": [],
-        "coverage": 1.0,
-        "correct": true,
-        "partial": false,
-        "wrong": false
-      },
-      {
-        "question": "Is the model secure / compliant with security standards?",
-        "targets": [
-          "safety.security"
-        ],
-        "predicted": [
-          "safety.security"
-        ],
-        "hit": [
-          "safety.security"
-        ],
-        "missed": [],
-        "off_target": [],
-        "coverage": 1.0,
-        "correct": true,
-        "partial": false,
-        "wrong": false
-      },
-      {
-        "question": "What are the caveats of this model?",
+        "question": "What are the known limitations of this model?",
         "targets": [
           "safety.caveats"
         ],
@@ -1038,18 +1017,27 @@
         "wrong": true
       },
       {
-        "question": "Which organization built this model?",
+        "question": "Which organization developed this model?",
         "targets": [
           "overview.creator"
         ],
         "predicted": [
-          "overview.creator"
+          "overview.creator",
+          "overview.date",
+          "overview.type",
+          "safety.ethics",
+          "safety.fairness"
         ],
         "hit": [
           "overview.creator"
         ],
         "missed": [],
-        "off_target": [],
+        "off_target": [
+          "overview.date",
+          "overview.type",
+          "safety.ethics",
+          "safety.fairness"
+        ],
         "coverage": 1.0,
         "correct": true,
         "partial": false,
@@ -1085,28 +1073,40 @@
         "wrong": false
       },
       {
-        "question": "What kind of architecture is used?",
+        "question": "What kind of architecture does this model use?",
         "targets": [
           "overview.type"
         ],
         "predicted": [
-          "overview.creator",
-          "overview.date",
-          "overview.description",
-          "overview.type",
-          "training.standards",
-          "use.software"
+          "overview.type"
         ],
         "hit": [
           "overview.type"
         ],
         "missed": [],
-        "off_target": [
+        "off_target": [],
+        "coverage": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false
+      },
+      {
+        "question": "Where can I get a copy of the model?",
+        "targets": [
+          "overview.home"
+        ],
+        "predicted": [
           "overview.creator",
           "overview.date",
-          "overview.description",
-          "training.standards",
-          "use.software"
+          "overview.home"
+        ],
+        "hit": [
+          "overview.home"
+        ],
+        "missed": [],
+        "off_target": [
+          "overview.creator",
+          "overview.date"
         ],
         "coverage": 1.0,
         "correct": true,
@@ -1114,45 +1114,19 @@
         "wrong": false
       },
       {
-        "question": "Where do I download it from?",
-        "targets": [
-          "overview.home"
-        ],
-        "predicted": [
-          "use.software"
-        ],
-        "hit": [],
-        "missed": [
-          "overview.home"
-        ],
-        "off_target": [
-          "use.software"
-        ],
-        "coverage": 0.0,
-        "correct": false,
-        "partial": false,
-        "wrong": true
-      },
-      {
-        "question": "Who should I email about it?",
+        "question": "Who should I email with questions about the model?",
         "targets": [
           "overview.contact"
         ],
         "predicted": [
-          "performance.bias",
-          "safety.ethics",
-          "training.datasets",
-          "use.instructions"
+          "overview.creator"
         ],
         "hit": [],
         "missed": [
           "overview.contact"
         ],
         "off_target": [
-          "performance.bias",
-          "safety.ethics",
-          "training.datasets",
-          "use.instructions"
+          "overview.creator"
         ],
         "coverage": 0.0,
         "correct": false,
@@ -1160,7 +1134,7 @@
         "wrong": true
       },
       {
-        "question": "What Python packages do I need?",
+        "question": "Which Python packages or other software dependencies do I need?",
         "targets": [
           "use.software"
         ],
@@ -1178,7 +1152,7 @@
         "wrong": false
       },
       {
-        "question": "What GPU do I need to run it?",
+        "question": "What GPU or other hardware is needed to run it?",
         "targets": [
           "use.hardware"
         ],
@@ -1196,7 +1170,7 @@
         "wrong": false
       },
       {
-        "question": "What does the model take as input, and what does it return?",
+        "question": "What data does the model accept, and what does it produce?",
         "targets": [
           "use.inputs_outputs"
         ],
@@ -1214,40 +1188,39 @@
         "wrong": false
       },
       {
-        "question": "How do I load and run the model on data?",
+        "question": "How can I load the model and run predictions on data?",
         "targets": [
           "use.instructions"
         ],
         "predicted": [
-          "use.inputs_outputs",
+          "use.inputs_outputs"
+        ],
+        "hit": [],
+        "missed": [
           "use.instructions"
         ],
-        "hit": [
-          "use.instructions"
-        ],
-        "missed": [],
         "off_target": [
           "use.inputs_outputs"
         ],
-        "coverage": 1.0,
-        "correct": true,
+        "coverage": 0.0,
+        "correct": false,
         "partial": false,
-        "wrong": false
+        "wrong": true
       },
       {
-        "question": "What could make its performance worse?",
+        "question": "Under what conditions might the model perform poorly?",
         "targets": [
           "use.factors"
         ],
         "predicted": [
-          "performance.environmental_impact"
+          "safety.risks"
         ],
         "hit": [],
         "missed": [
           "use.factors"
         ],
         "off_target": [
-          "performance.environmental_impact"
+          "safety.risks"
         ],
         "coverage": 0.0,
         "correct": false,
@@ -1255,25 +1228,28 @@
         "wrong": true
       },
       {
-        "question": "What should this model not be used for?",
+        "question": "Which applications or scenarios should this model not be used for?",
         "targets": [
           "use.out_of_scope_use"
         ],
         "predicted": [
-          "use.out_of_scope_use"
+          "use.out_of_scope_use",
+          "use.use_cases"
         ],
         "hit": [
           "use.out_of_scope_use"
         ],
         "missed": [],
-        "off_target": [],
+        "off_target": [
+          "use.use_cases"
+        ],
         "coverage": 1.0,
         "correct": true,
         "partial": false,
         "wrong": false
       },
       {
-        "question": "Who is this model for?",
+        "question": "Who is this model designed for?",
         "targets": [
           "use.user_groups"
         ],
@@ -1293,38 +1269,29 @@
         "wrong": true
       },
       {
-        "question": "Does a human need to review the outputs?",
+        "question": "Do the model's outputs need to be reviewed by a person?",
         "targets": [
           "use.oversight"
         ],
         "predicted": [
-          "evaluation.standards",
-          "evaluation.update",
-          "performance.analysis",
-          "safety.fairness",
           "use.inputs_outputs",
-          "use.instructions",
+          "use.out_of_scope_use"
+        ],
+        "hit": [],
+        "missed": [
           "use.oversight"
         ],
-        "hit": [
-          "use.oversight"
-        ],
-        "missed": [],
         "off_target": [
-          "evaluation.standards",
-          "evaluation.update",
-          "performance.analysis",
-          "safety.fairness",
           "use.inputs_outputs",
-          "use.instructions"
+          "use.out_of_scope_use"
         ],
-        "coverage": 1.0,
-        "correct": true,
+        "coverage": 0.0,
+        "correct": false,
         "partial": false,
-        "wrong": false
+        "wrong": true
       },
       {
-        "question": "What does it say about its accuracy?",
+        "question": "What accuracy and other performance metrics are reported?",
         "targets": [
           "performance.metrics"
         ],
@@ -1344,7 +1311,7 @@
         "wrong": true
       },
       {
-        "question": "What threshold is used to make predictions?",
+        "question": "What cutoff values are used to make predictions?",
         "targets": [
           "performance.thresholds"
         ],
@@ -1362,20 +1329,40 @@
         "wrong": false
       },
       {
-        "question": "What could go wrong if I use this model?",
+        "question": "What could go wrong when this model is used?",
         "targets": [
           "safety.risks"
         ],
         "predicted": [
-          "safety.caveats",
           "safety.risks"
         ],
         "hit": [
           "safety.risks"
         ],
         "missed": [],
+        "off_target": [],
+        "coverage": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false
+      },
+      {
+        "question": "What ethical issues should be considered when using this model?",
+        "targets": [
+          "safety.ethics"
+        ],
+        "predicted": [
+          "safety.ethics",
+          "safety.fairness",
+          "safety.risks"
+        ],
+        "hit": [
+          "safety.ethics"
+        ],
+        "missed": [],
         "off_target": [
-          "safety.caveats"
+          "safety.fairness",
+          "safety.risks"
         ],
         "coverage": 1.0,
         "correct": true,
@@ -1383,103 +1370,85 @@
         "wrong": false
       },
       {
-        "question": "Are there ethical concerns with using this?",
-        "targets": [
-          "safety.ethics"
-        ],
-        "predicted": [
-          "safety.caveats",
-          "safety.ethics"
-        ],
-        "hit": [
-          "safety.ethics"
-        ],
-        "missed": [],
-        "off_target": [
-          "safety.caveats"
-        ],
-        "coverage": 1.0,
-        "correct": true,
-        "partial": false,
-        "wrong": false
-      },
-      {
-        "question": "How much energy does it consume?",
+        "question": "How much electricity does running this model use?",
         "targets": [
           "performance.environmental_impact"
         ],
-        "predicted": [],
+        "predicted": [
+          "performance.environmental_impact"
+        ],
+        "hit": [
+          "performance.environmental_impact"
+        ],
+        "missed": [],
+        "off_target": [],
+        "coverage": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false
+      },
+      {
+        "question": "Does the model document compliance with any security standards?",
+        "targets": [
+          "safety.security"
+        ],
+        "predicted": [
+          "safety.security"
+        ],
+        "hit": [
+          "safety.security"
+        ],
+        "missed": [],
+        "off_target": [],
+        "coverage": 1.0,
+        "correct": true,
+        "partial": false,
+        "wrong": false
+      },
+      {
+        "question": "Does the model perform fairly across different subgroups?",
+        "targets": [
+          "safety.fairness"
+        ],
+        "predicted": [
+          "performance.bias"
+        ],
         "hit": [],
         "missed": [
-          "performance.environmental_impact"
+          "safety.fairness"
         ],
-        "off_target": [],
+        "off_target": [
+          "performance.bias"
+        ],
         "coverage": 0.0,
         "correct": false,
         "partial": false,
         "wrong": true
       },
       {
-        "question": "Is it compliant with any security standard?",
+        "question": "What limitations or shortcomings are known about this model?",
         "targets": [
-          "safety.security"
+          "safety.caveats"
         ],
         "predicted": [
-          "safety.security"
+          "overview.creator"
         ],
-        "hit": [
-          "safety.security"
+        "hit": [],
+        "missed": [
+          "safety.caveats"
         ],
-        "missed": [],
-        "off_target": [],
-        "coverage": 1.0,
-        "correct": true,
-        "partial": false,
-        "wrong": false
-      },
-      {
-        "question": "Is the model fair across subgroups?",
-        "targets": [
-          "safety.fairness"
-        ],
-        "predicted": [
-          "performance.bias",
-          "safety.fairness",
-          "use.user_groups"
-        ],
-        "hit": [
-          "safety.fairness"
-        ],
-        "missed": [],
         "off_target": [
-          "performance.bias",
-          "use.user_groups"
+          "overview.creator"
         ],
-        "coverage": 1.0,
-        "correct": true,
+        "coverage": 0.0,
+        "correct": false,
         "partial": false,
-        "wrong": false
-      },
+        "wrong": true
+      }
+    ],
+    "cross_field": [
       {
-        "question": "What are its known limitations?",
-        "targets": [
-          "safety.caveats"
-        ],
-        "predicted": [
-          "safety.caveats"
-        ],
-        "hit": [
-          "safety.caveats"
-        ],
-        "missed": [],
-        "off_target": [],
-        "coverage": 1.0,
-        "correct": true,
-        "partial": false,
-        "wrong": false
-      },
-      {
-        "question": "What datasets was it trained and evaluated on?",
+        "question": "Which datasets were used for training, and which were used for evaluation?",
         "targets": [
           "evaluation.datasets",
           "training.datasets"
@@ -1487,10 +1456,9 @@
         "predicted": [
           "evaluation.datasets",
           "evaluation.motivation",
-          "performance.methodology",
+          "overview.license",
           "training.datasets",
-          "training.motivation",
-          "training.preprocessing"
+          "training.motivation"
         ],
         "hit": [
           "evaluation.datasets",
@@ -1499,9 +1467,8 @@
         "missed": [],
         "off_target": [
           "evaluation.motivation",
-          "performance.methodology",
-          "training.motivation",
-          "training.preprocessing"
+          "overview.license",
+          "training.motivation"
         ],
         "coverage": 1.0,
         "correct": true,
@@ -1509,12 +1476,13 @@
         "wrong": false
       },
       {
-        "question": "How was the model evaluated?",
+        "question": "What evaluation methodology and data preprocessing were used to assess the model?",
         "targets": [
           "evaluation.preprocessing",
           "performance.methodology"
         ],
         "predicted": [
+          "overview.creator",
           "performance.methodology"
         ],
         "hit": [
@@ -1523,6 +1491,29 @@
         "missed": [
           "evaluation.preprocessing"
         ],
+        "off_target": [
+          "overview.creator"
+        ],
+        "coverage": 0.5,
+        "correct": false,
+        "partial": true,
+        "wrong": false
+      },
+      {
+        "question": "Which standards or guidelines were followed during training and evaluation?",
+        "targets": [
+          "evaluation.standards",
+          "training.standards"
+        ],
+        "predicted": [
+          "training.standards"
+        ],
+        "hit": [
+          "training.standards"
+        ],
+        "missed": [
+          "evaluation.standards"
+        ],
         "off_target": [],
         "coverage": 0.5,
         "correct": false,
@@ -1530,30 +1521,7 @@
         "wrong": false
       },
       {
-        "question": "What standards does it follow?",
-        "targets": [
-          "evaluation.standards",
-          "training.standards"
-        ],
-        "predicted": [
-          "evaluation.standards"
-        ],
-        "hit": [
-          "evaluation.standards"
-        ],
-        "missed": [
-          "training.standards"
-        ],
-        "off_target": [],
-        "coverage": 0.5,
-        "correct": false,
-        "partial": true,
-        "wrong": false
-      }
-    ],
-    "cross_field": [
-      {
-        "question": "Who created this model and what kind of model is it?",
+        "question": "Who developed this model, and what type of model is it?",
         "targets": [
           "overview.creator",
           "overview.type"
@@ -1574,7 +1542,7 @@
         "wrong": false
       },
       {
-        "question": "What is the model's task and its intended use?",
+        "question": "What task does the model perform, and what are its intended use cases?",
         "targets": [
           "overview.task",
           "use.use_cases"
@@ -1596,7 +1564,7 @@
         "wrong": true
       },
       {
-        "question": "When was the model released and what version is it?",
+        "question": "When was the model released, and which version is documented?",
         "targets": [
           "overview.date",
           "overview.version"
@@ -1617,40 +1585,40 @@
         "wrong": false
       },
       {
-        "question": "What hardware and software do I need to run this model?",
+        "question": "What hardware and software dependencies are required to run this model?",
         "targets": [
           "use.hardware",
           "use.software"
         ],
         "predicted": [
-          "use.hardware"
-        ],
-        "hit": [
-          "use.hardware"
-        ],
-        "missed": [
+          "use.hardware",
           "use.software"
         ],
+        "hit": [
+          "use.hardware",
+          "use.software"
+        ],
+        "missed": [],
         "off_target": [],
-        "coverage": 0.5,
-        "correct": false,
-        "partial": true,
+        "coverage": 1.0,
+        "correct": true,
+        "partial": false,
         "wrong": false
       },
       {
-        "question": "What are the risks and ethical concerns of using this model?",
+        "question": "What risks and ethical considerations should users be aware of?",
         "targets": [
           "safety.ethics",
           "safety.risks"
         ],
         "predicted": [
-          "safety.risks"
+          "safety.ethics"
         ],
         "hit": [
-          "safety.risks"
+          "safety.ethics"
         ],
         "missed": [
-          "safety.ethics"
+          "safety.risks"
         ],
         "off_target": [],
         "coverage": 0.5,
@@ -1659,7 +1627,7 @@
         "wrong": false
       },
       {
-        "question": "What is the energy consumption and environmental impact?",
+        "question": "What energy consumption and environmental impact are reported for the model?",
         "targets": [
           "performance.environmental_impact"
         ],
@@ -1677,28 +1645,29 @@
         "wrong": false
       },
       {
-        "question": "Who are the intended users and what oversight is required?",
+        "question": "Who is the model intended for, and what level of human oversight is required?",
         "targets": [
           "use.oversight",
           "use.user_groups"
         ],
         "predicted": [
-          "use.oversight"
+          "overview.creator"
         ],
-        "hit": [
-          "use.oversight"
-        ],
+        "hit": [],
         "missed": [
+          "use.oversight",
           "use.user_groups"
         ],
-        "off_target": [],
-        "coverage": 0.5,
+        "off_target": [
+          "overview.creator"
+        ],
+        "coverage": 0.0,
         "correct": false,
-        "partial": true,
-        "wrong": false
+        "partial": false,
+        "wrong": true
       },
       {
-        "question": "What are the caveats and out-of-scope uses?",
+        "question": "What limitations are documented, and which uses are outside the model's intended scope?",
         "targets": [
           "safety.caveats",
           "use.out_of_scope_use"
@@ -1719,7 +1688,7 @@
         "wrong": false
       },
       {
-        "question": "How was the model trained and evaluated?",
+        "question": "Which datasets were used for training and evaluation, why were they chosen, and what preprocessing was applied? What evaluation methodology was used?",
         "targets": [
           "evaluation.datasets",
           "evaluation.motivation",
@@ -1730,28 +1699,27 @@
           "training.preprocessing"
         ],
         "predicted": [
-          "training.datasets",
-          "training.preprocessing"
+          "training.datasets"
         ],
         "hit": [
-          "training.datasets",
-          "training.preprocessing"
+          "training.datasets"
         ],
         "missed": [
           "evaluation.datasets",
           "evaluation.motivation",
           "evaluation.preprocessing",
           "performance.methodology",
-          "training.motivation"
+          "training.motivation",
+          "training.preprocessing"
         ],
         "off_target": [],
-        "coverage": 0.2857142857142857,
+        "coverage": 0.14285714285714285,
         "correct": false,
         "partial": true,
         "wrong": false
       },
       {
-        "question": "What are the input/output formats, and how do I run the model?",
+        "question": "What input and output formats does the model use, and how can it be run?",
         "targets": [
           "use.inputs_outputs",
           "use.instructions"
@@ -1772,72 +1740,66 @@
         "wrong": false
       },
       {
-        "question": "What technical or ethical standards does the model follow?",
+        "question": "Which standards or guidelines were followed during training and evaluation, and what ethical considerations are documented?",
         "targets": [
           "evaluation.standards",
           "safety.ethics",
           "training.standards"
         ],
         "predicted": [
-          "evaluation.standards",
-          "overview.creator",
-          "safety.caveats",
-          "safety.ethics",
-          "safety.fairness",
           "training.standards"
         ],
         "hit": [
-          "evaluation.standards",
-          "safety.ethics",
           "training.standards"
         ],
-        "missed": [],
-        "off_target": [
-          "overview.creator",
-          "safety.caveats",
-          "safety.fairness"
+        "missed": [
+          "evaluation.standards",
+          "safety.ethics"
         ],
-        "coverage": 1.0,
-        "correct": true,
-        "partial": false,
+        "off_target": [],
+        "coverage": 0.3333333333333333,
+        "correct": false,
+        "partial": true,
         "wrong": false
       },
       {
-        "question": "What factors could degrade performance, and what are the known caveats?",
+        "question": "What factors can reduce the model's performance, and what limitations are documented?",
         "targets": [
           "safety.caveats",
           "use.factors"
         ],
         "predicted": [
-          "performance.environmental_impact"
-        ],
-        "hit": [],
-        "missed": [
-          "safety.caveats",
+          "safety.risks",
           "use.factors"
         ],
-        "off_target": [
-          "performance.environmental_impact"
+        "hit": [
+          "use.factors"
         ],
-        "coverage": 0.0,
+        "missed": [
+          "safety.caveats"
+        ],
+        "off_target": [
+          "safety.risks"
+        ],
+        "coverage": 0.5,
         "correct": false,
-        "partial": false,
-        "wrong": true
+        "partial": true,
+        "wrong": false
       },
       {
-        "question": "How do I install the software, and what hardware does it need?",
+        "question": "Which software dependencies must be installed, and what hardware is needed to run the model?",
         "targets": [
           "use.hardware",
           "use.software"
         ],
         "predicted": [
-          "use.software"
+          "use.hardware"
         ],
         "hit": [
-          "use.software"
+          "use.hardware"
         ],
         "missed": [
-          "use.hardware"
+          "use.software"
         ],
         "off_target": [],
         "coverage": 0.5,
@@ -1846,49 +1808,51 @@
         "wrong": false
       },
       {
-        "question": "Who should use this model, and what should they not do with it?",
+        "question": "Who is the model intended for, and which uses should be avoided?",
         "targets": [
           "use.out_of_scope_use",
           "use.user_groups"
         ],
         "predicted": [
-          "overview.creator"
-        ],
-        "hit": [],
-        "missed": [
           "use.out_of_scope_use",
+          "use.use_cases"
+        ],
+        "hit": [
+          "use.out_of_scope_use"
+        ],
+        "missed": [
           "use.user_groups"
         ],
         "off_target": [
-          "overview.creator"
+          "use.use_cases"
         ],
-        "coverage": 0.0,
+        "coverage": 0.5,
         "correct": false,
-        "partial": false,
-        "wrong": true
+        "partial": true,
+        "wrong": false
       },
       {
-        "question": "What is the model's license and how do I cite it?",
+        "question": "What license governs the model, and how should it be cited?",
         "targets": [
           "overview.citation",
           "overview.license"
         ],
         "predicted": [
+          "overview.citation",
           "overview.license",
           "use.software"
         ],
         "hit": [
+          "overview.citation",
           "overview.license"
         ],
-        "missed": [
-          "overview.citation"
-        ],
+        "missed": [],
         "off_target": [
           "use.software"
         ],
-        "coverage": 0.5,
-        "correct": false,
-        "partial": true,
+        "coverage": 1.0,
+        "correct": true,
+        "partial": false,
         "wrong": false
       }
     ]

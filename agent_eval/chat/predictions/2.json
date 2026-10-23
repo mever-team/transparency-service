@@ -1,11 +1,11 @@
 {
   "_meta": {
     "model_card": "dataset/2/ITW-SPAI.json",
-    "started_at": "2026-10-23T13:32:51.570570+00:00",
+    "started_at": "2026-10-23T14:16:16.394248+00:00",
     "matcher": "sentence-transformers/all-mpnet-base-v2",
     "matching_strictness": 0.5,
     "questions_source": "dataset/gt.json",
-    "finished_at": "2026-10-23T13:37:58.172895+00:00"
+    "finished_at": "2026-10-23T14:21:23.497682+00:00"
   },
   "overview": [
     {
@@ -13,8 +13,8 @@
       "answer": "<h3 class='success title'>From name in overview</h3>ITW-SPAI (SPAI tuned for in-the-wild images).<br>"
     },
     {
-      "question": "What is this model used for?",
-      "answer": "<h3 class='success title'>Type in overview is</h3>Transformer<br>"
+      "question": "What are the use cases?",
+      "answer": "<h3 class='success title'>From use cases in use</h3>Other channels, such as messaging apps, were not evaluated.<br><h3 class='error'>Vague question</h3><span>There are 24 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
       "question": "Who created this model?",
@@ -29,28 +29,28 @@
       "answer": "<h3 class='success title'>Date in overview is</h3>2025-02-01<br>\n<h3 class='success title'>From caveats in safety</h3>\"online\\_spai\\_mever\", a later model with the same architecture trained on more recent data, is available in the same API; its performance is not covered by this card..<br>\n<h3 class='success title'>From description in overview</h3>In the ITW-SM study this configuration reaches 98.10% AUC on the ITW-SM social-media benchmark, 97.45% on Synthbuster and 90.21% on Chameleon.<br>\n<h3 class='success title'>From inputs outputs in use</h3>*   \"version\": the model version (currently \"1\"); \"completed\": true when the analysis succeeded.<br>\n<h3 class='success title'>From more in evaluation</h3>Performance on generators released in 2025–2026 has not been reported..<br>\n<h3 class='success title'>From more in training</h3>*   Age: the newest training images date from March 2023 (TWIGMA), so generators released since then are not represented.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br>"
     },
     {
-      "question": "What is the type of the model?",
-      "answer": "<h3 class='success title'>Type in overview is</h3>Transformer<br>"
+      "question": "What type of model is this?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2025-02-01<br>\n<h3 class='success title'>From creator in overview</h3>Developed within the ITW-SM study (Konstantinidou, Karageorgiou, Koutlis, Papadopoulou, Schinas and Papadopoulos, MAD '26), building on SPAI by Karageorgiou, Papadopoulos, Kompatsiaris and Gavves (CVPR 2025)..<br>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>\n<h3 class='success title'>From description in overview</h3>How it works: the image is analysed at its native resolution, without resizing, as a grid of 224×224 patches.<br>\n<h3 class='success title'>From inputs outputs in use</h3>*   \"version\": the model version (currently \"1\"); \"completed\": true when the analysis succeeded.<br>\n<h3 class='success title'>From more in overview</h3>*   Funding: Horizon Europe projects vera.ai (GA 101070093), AI-CODE (GA 101135437) and ELIAS (GA 101120237); computing resources from GRNET..<br>\n<h3 class='success title'>From name in overview</h3>ITW-SPAI (SPAI tuned for in-the-wild images).<br>\n<h3 class='success title'>From software in use</h3>*   Deployed model: nothing to install.<br>\n<h3 class='success title'>Home in overview is</h3>[https://docs.mever.gr/deepfake](https://docs.mever.gr/deepfake)<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br>"
     },
     {
       "question": "How many parameters does this model have?",
       "answer": "<h3 class='error'>Vague question</h3><span>There are 31 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br><h3 class='error'>Missing info</h3><span>Would have looked at parameters in overview, but that is empty.</span><br>"
     },
     {
-      "question": "What is the task of this model?",
-      "answer": "<h3 class='success title'>Date in overview is</h3>2025-02-01<br>\n<h3 class='success title'>From creator in overview</h3>Developed within the ITW-SM study (Konstantinidou, Karageorgiou, Koutlis, Papadopoulou, Schinas and Papadopoulos, MAD '26), building on SPAI by Karageorgiou, Papadopoulos, Kompatsiaris and Gavves (CVPR 2025)..<br>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>\n<h3 class='success title'>From description in overview</h3>How it works: the image is analysed at its native resolution, without resizing, as a grid of 224×224 patches.<br>Spectral context attention then weighs the patches and combines them into one image-level score between 0 (real) and 1 (AI-generated).<br>\n<h3 class='success title'>From inputs outputs in use</h3>*   \"version\": the model version (currently \"1\"); \"completed\": true when the analysis succeeded.<br>It is not calibrated, so it should not be read as a probability or compared with 0.5.<br>\n<h3 class='success title'>From more in overview</h3>*   Funding: Horizon Europe projects vera.ai (GA 101070093), AI-CODE (GA 101135437) and ELIAS (GA 101120237); computing resources from GRNET..<br>\n<h3 class='success title'>From software in use</h3>*   Deployed model: nothing to install.<br>\n<h3 class='success title'>From task in overview</h3>Image Classification.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>"
+      "question": "What task is this model designed to perform?",
+      "answer": "<h3 class='success title'>Type in overview is</h3>Transformer<br>"
     },
     {
-      "question": "What is the license of this model?",
-      "answer": "<h3 class='success title'>From license in overview</h3>Training and evaluation datasets keep their own licences..<br>"
+      "question": "What license does this model use?",
+      "answer": "<h3 class='success title'>From software in use</h3>*   Third-party software and data keep their original licences..<br><h3 class='error'>Vague question</h3><span>There are 16 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "Where can I find this model?",
-      "answer": "<h3 class='success title'>Date in overview is</h3>2025-02-01<br><h3 class='error'>Vague question</h3><span>There are 14 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+      "question": "Where can I access or download this model?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2025-02-01<br>\n<h3 class='success title'>Home in overview is</h3>[https://docs.mever.gr/deepfake](https://docs.mever.gr/deepfake)<br>"
     },
     {
-      "question": "Who can I contact about this model?",
-      "answer": "<h3 class='success title'>Date in overview is</h3>2025-02-01<br>\n<h3 class='success title'>From caveats in safety</h3>*   Newer generators may be missed.<br>\n<h3 class='success title'>From creator in overview</h3>Developed within the ITW-SM study (Konstantinidou, Karageorgiou, Koutlis, Papadopoulou, Schinas and Papadopoulos, MAD '26), building on SPAI by Karageorgiou, Papadopoulos, Kompatsiaris and Gavves (CVPR 2025)..<br>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>\n<h3 class='success title'>From instructions in use</h3>The model can be used only through the MeVer Deepfake Detection API, which works asynchronously:  1.<br>\n<h3 class='success title'>From more in evaluation</h3>Performance on generators released in 2025–2026 has not been reported..<br>\n<h3 class='success title'>From security in safety</h3>The model and the service are not certified for cybersecurity, and no compliance with specific security standards is reported.<br>\n<h3 class='success title'>Home in overview is</h3>[https://docs.mever.gr/deepfake](https://docs.mever.gr/deepfake)<br>"
+      "question": "Who should I contact for information about this model?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br><h3 class='error'>Vague question</h3><span>There are 32 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
       "question": "How should I cite this model?",
@@ -63,32 +63,32 @@
       "answer": "<h3 class='success title'>From use cases in use</h3>*   Providing one signal among several in the MeVer Deepfake Detection service, next to its other detectors.<br>*   Screening still images shared online, particularly on social media, for signs that they were fully generated by AI, to help journalists and fact-checkers decide which images need closer verification.<br>Other channels, such as messaging apps, were not evaluated.<br>"
     },
     {
-      "question": "What level of human oversight is required?",
-      "answer": "<h3 class='success title'>Oversight in use is</h3>human-in-the-loop<br><h3 class='error'>Vague question</h3><span>There are 44 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+      "question": "What is the level of human oversight?",
+      "answer": "<h3 class='success title'>Oversight in use is</h3>human-in-the-loop<br>\n<h3 class='success title'>Standards in evaluation is</h3>none<br><h3 class='error'>Vague question</h3><span>There are 20 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "Who are the intended user groups?",
-      "answer": "<h3 class='success title'>From user groups in use</h3>Journalists, fact-checkers and verification desks; OSINT and media-forensics analysts; trust-and-safety and content moderation teams, as a triage aid with human review; multimedia forensics researchers; developers who integrate the MeVer API into verification tools..<br>\n<h3 class='success title'>Oversight in use is</h3>human-in-the-loop<br>"
+      "question": "Who are the intended users of this model?",
+      "answer": "<h3 class='success title'>From user groups in use</h3>Journalists, fact-checkers and verification desks; OSINT and media-forensics analysts; trust-and-safety and content moderation teams, as a triage aid with human review; multimedia forensics researchers; developers who integrate the MeVer API into verification tools..<br>"
     },
     {
-      "question": "What is this model not intended for?",
-      "answer": "<h3 class='success title'>From out of scope use in use</h3>*   Serving as the sole basis for publishing a verdict, for legal or disciplinary decisions, or for accusations against individuals.<br>\n<h3 class='success title'>From use cases in use</h3>Other channels, such as messaging apps, were not evaluated.<br>"
+      "question": "What uses are outside the intended scope of this model?",
+      "answer": "<h3 class='success title'>From out of scope use in use</h3>*   Attributing an image to a specific generator.<br>*   Automated moderation or takedown at scale without human review..<br>*   Serving as the sole basis for publishing a verdict, for legal or disciplinary decisions, or for accusations against individuals.<br>*   Treating a low score as proof that an image is authentic, or a high score as proof that it is AI-generated.<br>*   Video and audio.<br>\n<h3 class='success title'>From use cases in use</h3>Other channels, such as messaging apps, were not evaluated.<br>"
     },
     {
-      "question": "What software does this model require?",
-      "answer": "<h3 class='success title'>From software in use</h3>*   Deployed model: nothing to install.<br>It runs on MeVer servers and is used over HTTPS through the MeVer Deepfake Detection API v4 (specification: [https://apis.mever.gr/deepfake/v4/openapi.json](https://apis.mever.gr/deepfake/v4/openapi.json)).<br>The code includes a DINOv2 backbone option loaded through torch.hub (facebookresearch/dinov2).<br>"
+      "question": "What are the software requirements?",
+      "answer": "<h3 class='success title'>From software in use</h3>*   Deployed model: nothing to install.<br>"
     },
     {
-      "question": "How do I run / use this model?",
-      "answer": "<h3 class='success title'>From instructions in use</h3>The model can be used only through the MeVer Deepfake Detection API, which works asynchronously:  1.<br>\n<h3 class='success title'>Home in overview is</h3>[https://docs.mever.gr/deepfake](https://docs.mever.gr/deepfake)<br><h3 class='error'>Vague question</h3><span>There are 9 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+      "question": "What instructions are provided for running this model?",
+      "answer": "<h3 class='success title'>From instructions in use</h3>The model can be used only through the MeVer Deepfake Detection API, which works asynchronously:  1.<br><h3 class='error'>Vague question</h3><span>There are 42 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "What are the inputs and outputs of the model?",
-      "answer": "<h3 class='success title'>From inputs outputs in use</h3>Example report (abridged):  ``` {\"status\": \"COMPLETED\", \"itw_spai_mever_report\": {\"version\": \"1\", \"completed\": true, \"prediction\": 0.99976, \"label\": \"VERY_STRONG_EVIDENCE\"}} ```.<br>Input: one still image, given as a URL or an uploaded file and converted to RGB.<br>"
+      "question": "What are the model's input and output?",
+      "answer": "<h3 class='success title'>From inputs outputs in use</h3>Example report (abridged):  ``` {\"status\": \"COMPLETED\", \"itw_spai_mever_report\": {\"version\": \"1\", \"completed\": true, \"prediction\": 0.99976, \"label\": \"VERY_STRONG_EVIDENCE\"}} ```.<br>Input: one still image, given as a URL or an uploaded file and converted to RGB.<br><h3 class='error'>Vague question</h3><span>There are 9 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "What factors affect the model's performance?",
-      "answer": "<h3 class='success title'>From analysis in performance</h3>*   AUC and AP do not depend on a decision threshold; a high AUC does not guarantee few errors at a particular operating point (see Thresholds)..<br>\n<h3 class='success title'>From factors in use</h3>*   Content and style: performance is lowest on highly realistic, artist-refined AI images (Chameleon, 90.21% AUC).<br>*   Platform: ITW-SM covers Facebook, Instagram, LinkedIn and X; other platforms and messaging apps process images differently.<br>*   Processing history: recompression, downscaling, cropping, filters and repeated re-sharing weaken or erase the low-level traces the model relies on.<br>\n<h3 class='success title'>From thresholds in performance</h3>The model outputs a continuous score, and the paper reports only threshold-free metrics (AUC, AP).<br><h3 class='error'>Vague question</h3><span>There are 23 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+      "question": "What factors can affect the model's performance?",
+      "answer": "<h3 class='success title'>From factors in use</h3>*   Processing history: recompression, downscaling, cropping, filters and repeated re-sharing weaken or erase the low-level traces the model relies on.<br><h3 class='error'>Vague question</h3><span>There are 38 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
       "question": "What hardware is required?",
@@ -97,76 +97,76 @@
   ],
   "training": [
     {
-      "question": "What datasets were used for training?",
-      "answer": "<h3 class='success title'>From datasets in training</h3>How the subset was selected is not reported.<br>"
+      "question": "Which datasets were used to train the model?",
+      "answer": "<h3 class='success title'>From datasets in training</h3>How the subset was selected is not reported.<br>In total about 1.6M images, balanced between real and AI-generated..<br>"
     },
     {
-      "question": "Why were these training datasets chosen?",
-      "answer": "<h3 class='success title'>From datasets in training</h3>How the subset was selected is not reported.<br>"
+      "question": "What was the motivation for selecting these datasets for training?",
+      "answer": "<h3 class='success title'>From motivation in training</h3>The combination pairs a lab-controlled benchmark with real-world data.<br>Using 600K + 600K instead of 200K + 200K TWIGMA and OpenImages images gave almost the same average AUC (95.25% and 95.26%): the larger set scored slightly higher on Chameleon (+0.83 points) and ITW-SM (+0.51), the smaller one on Synthbuster (+1.36).<br>"
     },
     {
-      "question": "What preprocessing was applied during training?",
-      "answer": "<h3 class='success title'>From preprocessing in training</h3>*   Augmentations, each applied with probability 0.5: horizontal and vertical flips, rotation of up to 90°, Gaussian blur (kernel 3–9, sigma 0.01–0.5), Gaussian noise and JPEG compression (quality 50–100).<br>*   Optimisation: binary cross-entropy loss, AdamW, base learning rate 5e-4 with 5 warm-up epochs and cosine decay, weight decay 0.05, batch size 72, 35 epochs.<br>They simulate the processing images undergo when shared online.<br>Training follows the default SPAI recipe:  *   Each training image yields four augmented views, each a random crop covering 20–100% of the image area, resized to 224×224.<br>\n<h3 class='success title'>Update in training is</h3>no<br>"
+      "question": "What preprocessing was applied to the training data?",
+      "answer": "<h3 class='success title'>From preprocessing in training</h3>*   Optimisation: binary cross-entropy loss, AdamW, base learning rate 5e-4 with 5 warm-up epochs and cosine decay, weight decay 0.05, batch size 72, 35 epochs.<br>"
     },
     {
-      "question": "What standards were followed during training?",
-      "answer": "<h3 class='success title'>From methodology in performance</h3>No independent evaluation of the deployed service is reported..<br>\n<h3 class='success title'>From more in training</h3>The images can show identifiable people..<br>\n<h3 class='success title'>Standards in evaluation is</h3>none<br>\n<h3 class='success title'>Standards in training is</h3>none<br>\n<h3 class='success title'>Update in training is</h3>no<br>"
+      "question": "Which standards were followed during training?",
+      "answer": "<h3 class='success title'>Standards in training is</h3>none<br><h3 class='error'>Vague question</h3><span>There are 16 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "Is the training data up to date?",
-      "answer": "<h3 class='success title'>From more in training</h3>*   Age: the newest training images date from March 2023 (TWIGMA), so generators released since then are not represented.<br>*   Licences: TWIGMA is distributed as tweet IDs and metadata under CC BY 4.0, while the images remain subject to the rights of their posters and the platform's terms; OpenImages images are listed under CC BY 2.0; COCO, LSUN and the LDM set keep their own terms.<br>The images can show identifiable people..<br>\n<h3 class='success title'>Update in evaluation is</h3>no<br>\n<h3 class='success title'>Update in training is</h3>no<br>"
+      "question": "How recently was the training data updated?",
+      "answer": "<h3 class='success title'>From datasets in training</h3>How the subset was selected is not reported.<br>\n<h3 class='success title'>From more in training</h3>*   Age: the newest training images date from March 2023 (TWIGMA), so generators released since then are not represented.<br>\n<h3 class='success title'>Update in evaluation is</h3>no<br>\n<h3 class='success title'>Update in training is</h3>no<br>"
     }
   ],
   "evaluation": [
     {
-      "question": "What datasets were used for evaluation?",
-      "answer": "<h3 class='success title'>From datasets in evaluation</h3>Real / AI images per platform: Facebook 1,318 / 1,033; Instagram 1,206 / 2,179; LinkedIn 1,269 / 931; X 1,207 / 857..<br><h3 class='error'>Vague question</h3><span>There are 14 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+      "question": "Which datasets were used to evaluate the model?",
+      "answer": "<h3 class='success title'>From motivation in evaluation</h3>The three sets move from controlled to real-world conditions.<br><h3 class='error'>Vague question</h3><span>There are 40 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "Why were these evaluation datasets chosen?",
-      "answer": "<h3 class='success title'>From motivation in evaluation</h3>The three sets move from controlled to real-world conditions.<br><h3 class='error'>Vague question</h3><span>There are 18 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+      "question": "What was the motivation for selecting these datasets for evaluation",
+      "answer": "<h3 class='success title'>From motivation in evaluation</h3>The three sets move from controlled to real-world conditions.<br><h3 class='error'>Vague question</h3><span>There are 10 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "What preprocessing was applied during evaluation?",
-      "answer": "<h3 class='success title'>From analysis in performance</h3>Both are clearly ahead of the study's modified DMID (89.46%) and NPR (68.38%) and of zero-shot Gemma 3 IT 27B (79.89%).<br>\n<h3 class='success title'>From methodology in performance</h3>No independent evaluation of the deployed service is reported..<br>The paper reports a single result per configuration: no repeated runs, standard deviations or confidence intervals.<br>\n<h3 class='success title'>From preprocessing in evaluation</h3>ITW-SM was curated with a multi-stage pipeline: images with heavy text overlays, watermarks or non-photographic content (memes, screenshots) were removed, duplicates were removed using similarity scores, and every label was checked manually.<br>\n<h3 class='success title'>From preprocessing in training</h3>*   Optimisation: binary cross-entropy loss, AdamW, base learning rate 5e-4 with 5 warm-up epochs and cosine decay, weight decay 0.05, batch size 72, 35 epochs.<br>They simulate the processing images undergo when shared online.<br>\n<h3 class='success title'>From thresholds in performance</h3>*   MODERATE\\_EVIDENCE: the score reaches the 10% threshold but not the 5% one.<br>*   STRONG\\_EVIDENCE: the score reaches the 5% threshold but not the 1% one.<br>\n<h3 class='success title'>Standards in evaluation is</h3>none<br><h3 class='error'>Vague question</h3><span>There are 33 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+      "question": "What preprocessing was applied to the evaluation data?",
+      "answer": "<h3 class='success title'>From methodology in performance</h3>The paper reports a single result per configuration: no repeated runs, standard deviations or confidence intervals.<br>"
     },
     {
-      "question": "What standards were followed during evaluation?",
-      "answer": "<h3 class='success title'>From bias in performance</h3>skin tone, gender, age) has not been evaluated.<br>\n<h3 class='success title'>From methodology in performance</h3>No independent evaluation of the deployed service is reported..<br>\n<h3 class='success title'>From thresholds in performance</h3>*   MODERATE\\_EVIDENCE: the score reaches the 10% threshold but not the 5% one.<br>\n<h3 class='success title'>Standards in evaluation is</h3>none<br>\n<h3 class='success title'>Standards in training is</h3>none<br>"
+      "question": "Which standards or guidelines were followed during evaluation?",
+      "answer": "<h3 class='success title'>Standards in evaluation is</h3>none<br><h3 class='error'>Vague question</h3><span>There are 14 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "Is the evaluation data up to date?",
+      "question": "How recently was the evaluation data updated?",
       "answer": "<h3 class='success title'>Update in evaluation is</h3>no<br>"
     }
   ],
   "performance": [
     {
-      "question": "What does the performance analysis say?",
-      "answer": "<h3 class='success title'>From analysis in performance</h3>Both are clearly ahead of the study's modified DMID (89.46%) and NPR (68.38%) and of zero-shot Gemma 3 IT 27B (79.89%).<br>These are single runs without uncertainty estimates, so differences below about one point should not be over-interpreted.<br>"
+      "question": "What conclusions does the performance analysis report?",
+      "answer": "<h3 class='success title'>From methodology in performance</h3>No independent evaluation of the deployed service is reported..<br>"
     },
     {
-      "question": "What are the benchmark metrics?",
-      "answer": "<h3 class='success title'>From methodology in performance</h3>No independent evaluation of the deployed service is reported..<br><h3 class='error'>Vague question</h3><span>There are 18 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+      "question": "What are the performance metrics?",
+      "answer": "<h3 class='success title'>From analysis in performance</h3>Both are clearly ahead of the study's modified DMID (89.46%) and NPR (68.38%) and of zero-shot Gemma 3 IT 27B (79.89%).<br>\n<h3 class='success title'>From methodology in performance</h3>No independent evaluation of the deployed service is reported..<br>The paper reports a single result per configuration: no repeated runs, standard deviations or confidence intervals.<br><h3 class='error'>Vague question</h3><span>There are 9 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
       "question": "What decision thresholds are used?",
       "answer": "<h3 class='success title'>From thresholds in performance</h3>The 10% threshold is far below 0.5: in a small API test on 1 October 2026, an AI-generated image scoring 0.0137 was labelled MODERATE\\_EVIDENCE, so this threshold is at or below that value.<br>The numeric threshold values are not published..<br>The raw score should therefore not be compared with 0.5.<br>"
     },
     {
-      "question": "What is the evaluation methodology?",
-      "answer": "<h3 class='success title'>From methodology in performance</h3>No independent evaluation of the deployed service is reported..<br><h3 class='error'>Vague question</h3><span>There are 15 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+      "question": "What methodology was used to evaluate model performance?",
+      "answer": "<h3 class='success title'>From methodology in performance</h3>The paper reports a single result per configuration: no repeated runs, standard deviations or confidence intervals.<br>"
     },
     {
-      "question": "What is the energy consumption?",
-      "answer": "<h3 class='error'>Vague question</h3><span>There are 32 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
+      "question": "How much energy does the model consume?",
+      "answer": "<h3 class='error'>Vague question</h3><span>There are 17 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
     },
     {
       "question": "What is the environmental impact?",
       "answer": "<h3 class='success title'>From environmental impact in performance</h3>Inference cost grows with image resolution because every 224×224 patch is analysed..<br>The ITW-SM study states that all its experiments, covering several detectors and training configurations, took more than 1,000 GPU hours in total.<br><h3 class='error'>Vague question</h3><span>There are 12 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "Was the model tested for bias?",
-      "answer": "<h3 class='success title'>From fairness in safety</h3>No formal fairness criterion was defined, applied or measured during development.<br><h3 class='error'>Vague question</h3><span>There are 28 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+      "question": "Was the model assessed for bias?",
+      "answer": "<h3 class='success title'>From fairness in safety</h3>No formal fairness criterion was defined, applied or measured during development.<br><h3 class='error'>Vague question</h3><span>There are 30 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     }
   ],
   "safety": [
@@ -175,20 +175,20 @@
       "answer": "<h3 class='success title'>From ethics in safety</h3>*   Data: training and evaluation images come from public datasets and social media posts and can show identifiable people.<br>*   False negatives can lend credibility to synthetic images used for disinformation, impersonation or fraud.<br>*   False positives can damage the credibility of genuine photographs, of their authors and of the outlets that publish them, and can be used to dismiss real documentation of events as fake.<br>"
     },
     {
-      "question": "How is fairness defined / assessed?",
-      "answer": "<h3 class='success title'>From bias in performance</h3>Performance across demographic groups (e.g.<br>Results are reported per dataset only, not per platform, topic or resolution, although ITW-SM records the source platform of every image and would allow such a breakdown..<br>skin tone, gender, age) has not been evaluated.<br>\n<h3 class='success title'>From fairness in safety</h3>For this task, the relevant notion is that the score should depend on generation traces and not on what the image shows, so that no subject, community, region or style of authentic imagery is systematically more likely to be flagged.<br>Given the topic and resolution differences between the real and AI-generated parts of ITW-SM (see Evaluation), this has not been verified..<br>No formal fairness criterion was defined, applied or measured during development.<br>"
+      "question": "How is the model's fairness assessed?",
+      "answer": "<h3 class='success title'>From fairness in safety</h3>No formal fairness criterion was defined, applied or measured during development.<br><h3 class='error'>Vague question</h3><span>There are 43 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "What are the risks of this model?",
+      "question": "What risks are associated with using this model?",
+      "answer": "<h3 class='success title'>From risks in safety</h3>*   Possible consequences: synthetic images accepted as authentic and spread as disinformation; authentic images wrongly discredited; misplaced trust in automated verdicts..<br>"
+    },
+    {
+      "question": "What security measures or standards are documented for this model?",
+      "answer": "<h3 class='success title'>From caveats in safety</h3>*   It is a research model deployed to support verification and has not been validated for forensic or legal use.<br>\n<h3 class='success title'>From creator in overview</h3>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>\n<h3 class='success title'>From ethics in safety</h3>*   Recommended mitigations: keep a human expert in charge of every decision; report the evidence level rather than a binary verdict; corroborate with independent evidence such as provenance checks, reverse image search and detectors from other families; analyse the original file; explain the model's limits whenever its output is cited in public..<br>\n<h3 class='success title'>From methodology in performance</h3>No independent evaluation of the deployed service is reported..<br>\n<h3 class='success title'>From security in safety</h3>Images submitted to the MeVer API are processed on MeVer servers, and the API can match new images against previously submitted ones (\"search\\_similar\"), so confidential or sensitive material should not be submitted without checking MeVer's data-handling terms..<br>Robustness to adversarial attacks has not been evaluated.<br>The model and the service are not certified for cybersecurity, and no compliance with specific security standards is reported.<br>\n<h3 class='success title'>From software in use</h3>It runs on MeVer servers and is used over HTTPS through the MeVer Deepfake Detection API v4 (specification: [https://apis.mever.gr/deepfake/v4/openapi.json](https://apis.mever.gr/deepfake/v4/openapi.json)).<br>\n<h3 class='success title'>Standards in evaluation is</h3>none<br>\n<h3 class='success title'>Standards in training is</h3>none<br>"
+    },
+    {
+      "question": "What are the known limitations of this model?",
       "answer": "<h3 class='success title'>From risks in safety</h3>*   Environmental threats: new generators and AI editing tools appear continuously, so accuracy decays over time; deliberate post-processing or adversarial perturbations can be used to evade detection; platforms change how they process images.<br>"
-    },
-    {
-      "question": "Is the model secure / compliant with security standards?",
-      "answer": "<h3 class='success title'>From security in safety</h3>The model and the service are not certified for cybersecurity, and no compliance with specific security standards is reported.<br><h3 class='error'>Vague question</h3><span>There are 36 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
-    },
-    {
-      "question": "What are the caveats of this model?",
-      "answer": "<h3 class='success title'>From risks in safety</h3>*   Environmental threats: new generators and AI editing tools appear continuously, so accuracy decays over time; deliberate post-processing or adversarial perturbations can be used to evade detection; platforms change how they process images.<br><h3 class='error'>Vague question</h3><span>There are 41 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     }
   ],
   "paraphrased": [
@@ -201,166 +201,166 @@
       "answer": "<h3 class='success title'>From creator in overview</h3>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>\n<h3 class='success title'>From inputs outputs in use</h3>Input: one still image, given as a URL or an uploaded file and converted to RGB.<br>\n<h3 class='success title'>From use cases in use</h3>*   Providing one signal among several in the MeVer Deepfake Detection service, next to its other detectors.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br><h3 class='error'>Vague question</h3><span>There are 14 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "Which organization built this model?",
-      "answer": "<h3 class='success title'>From creator in overview</h3>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>"
+      "question": "Which organization developed this model?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2025-02-01<br>\n<h3 class='success title'>From creator in overview</h3>Developed within the ITW-SM study (Konstantinidou, Karageorgiou, Koutlis, Papadopoulou, Schinas and Papadopoulos, MAD '26), building on SPAI by Karageorgiou, Papadopoulos, Kompatsiaris and Gavves (CVPR 2025)..<br>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>\n<h3 class='success title'>From ethics in safety</h3>*   Recommended mitigations: keep a human expert in charge of every decision; report the evidence level rather than a binary verdict; corroborate with independent evidence such as provenance checks, reverse image search and detectors from other families; analyse the original file; explain the model's limits whenever its output is cited in public..<br>\n<h3 class='success title'>From fairness in safety</h3>No formal fairness criterion was defined, applied or measured during development.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>"
     },
     {
       "question": "When did this model come out?",
       "answer": "<h3 class='success title'>Date in overview is</h3>2025-02-01<br>\n<h3 class='success title'>From creator in overview</h3>Developed within the ITW-SM study (Konstantinidou, Karageorgiou, Koutlis, Papadopoulou, Schinas and Papadopoulos, MAD '26), building on SPAI by Karageorgiou, Papadopoulos, Kompatsiaris and Gavves (CVPR 2025)..<br>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>\n<h3 class='success title'>From description in overview</h3>(MAD '26), and is deployed in the MeVer Deepfake Detection service as \"itw\\_spai\\_mever\".<br>\n<h3 class='success title'>From more in evaluation</h3>*   Synthbuster covers generators from 2021–2023; the generators behind the Chameleon and ITW-SM images are not labelled, and ITW-SM collection dates are not reported.<br>Performance on generators released in 2025–2026 has not been reported..<br>\n<h3 class='success title'>From security in safety</h3>Robustness to adversarial attacks has not been evaluated.<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br>"
     },
     {
-      "question": "What kind of architecture is used?",
-      "answer": "<h3 class='success title'>Date in overview is</h3>2025-02-01<br>\n<h3 class='success title'>From creator in overview</h3>Developed within the ITW-SM study (Konstantinidou, Karageorgiou, Koutlis, Papadopoulou, Schinas and Papadopoulos, MAD '26), building on SPAI by Karageorgiou, Papadopoulos, Kompatsiaris and Gavves (CVPR 2025)..<br>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>\n<h3 class='success title'>From description in overview</h3>How it works: the image is analysed at its native resolution, without resizing, as a grid of 224×224 patches.<br>\n<h3 class='success title'>From software in use</h3>*   Deployed model: nothing to install.<br>It runs on MeVer servers and is used over HTTPS through the MeVer Deepfake Detection API v4 (specification: [https://apis.mever.gr/deepfake/v4/openapi.json](https://apis.mever.gr/deepfake/v4/openapi.json)).<br>\n<h3 class='success title'>Standards in training is</h3>none<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>"
+      "question": "What kind of architecture does this model use?",
+      "answer": "<h3 class='success title'>Type in overview is</h3>Transformer<br>"
     },
     {
-      "question": "What is the size of the model?",
-      "answer": "<h3 class='success title'>Date in overview is</h3>2025-02-01<br>\n<h3 class='success title'>From creator in overview</h3>Developed within the ITW-SM study (Konstantinidou, Karageorgiou, Koutlis, Papadopoulou, Schinas and Papadopoulos, MAD '26), building on SPAI by Karageorgiou, Papadopoulos, Kompatsiaris and Gavves (CVPR 2025)..<br>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>\n<h3 class='success title'>From description in overview</h3>How it works: the image is analysed at its native resolution, without resizing, as a grid of 224×224 patches.<br>In the ITW-SM study this configuration reaches 98.10% AUC on the ITW-SM social-media benchmark, 97.45% on Synthbuster and 90.21% on Chameleon.<br>\n<h3 class='success title'>From inputs outputs in use</h3>*   \"version\": the model version (currently \"1\"); \"completed\": true when the analysis succeeded.<br>It must be at least 256×256 pixels (smaller images are rejected with BAD\\_IMAGE\\_TOO\\_LOW\\_RESOLUTION); the service sets no maximum image size for this model.<br>The image is not resized: it is tiled into non-overlapping 224×224 patches, and the border strips on the right and bottom that are narrower than a patch are not analysed (for a 1080×1080 image, about 31% of the area).<br>\n<h3 class='success title'>Home in overview is</h3>[https://docs.mever.gr/deepfake](https://docs.mever.gr/deepfake)<br>\n<h3 class='success title'>Type in overview is</h3>Transformer<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br>"
+      "question": "How large is the model in terms of parameter count?",
+      "answer": "<h3 class='success title'>From inputs outputs in use</h3>*   \"version\": the model version (currently \"1\"); \"completed\": true when the analysis succeeded.<br>It is not calibrated, so it should not be read as a probability or compared with 0.5.<br>It must be at least 256×256 pixels (smaller images are rejected with BAD\\_IMAGE\\_TOO\\_LOW\\_RESOLUTION); the service sets no maximum image size for this model.<br>\n<h3 class='success title'>From more in overview</h3>*   Funding: Horizon Europe projects vera.ai (GA 101070093), AI-CODE (GA 101135437) and ELIAS (GA 101120237); computing resources from GRNET..<br>\n<h3 class='success title'>Home in overview is</h3>[https://docs.mever.gr/deepfake](https://docs.mever.gr/deepfake)<br>\n<h3 class='success title'>Version in overview is</h3>1.0<br><h3 class='error'>Missing info</h3><span>Would have looked at parameters in overview, but that is empty.</span><br>"
     },
     {
-      "question": "Where do I download it from?",
-      "answer": "<h3 class='success title'>From software in use</h3>The code includes a DINOv2 backbone option loaded through torch.hub (facebookresearch/dinov2).<br>"
+      "question": "Where can I get a copy of the model?",
+      "answer": "<h3 class='success title'>Date in overview is</h3>2025-02-01<br>\n<h3 class='success title'>From creator in overview</h3>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>\n<h3 class='success title'>Home in overview is</h3>[https://docs.mever.gr/deepfake](https://docs.mever.gr/deepfake)<br><h3 class='error'>Vague question</h3><span>There are 36 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "Who should I email about it?",
-      "answer": "<h3 class='success title'>From bias in performance</h3>skin tone, gender, age) has not been evaluated.<br>\n<h3 class='success title'>From datasets in training</h3>How the subset was selected is not reported.<br>\n<h3 class='success title'>From ethics in safety</h3>*   Data: training and evaluation images come from public datasets and social media posts and can show identifiable people.<br>*   False positives can damage the credibility of genuine photographs, of their authors and of the outlets that publish them, and can be used to dismiss real documentation of events as fake.<br>*   Recommended mitigations: keep a human expert in charge of every decision; report the evidence level rather than a binary verdict; corroborate with independent evidence such as provenance checks, reverse image search and detectors from other families; analyse the original file; explain the model's limits whenever its output is cited in public..<br>\n<h3 class='success title'>From instructions in use</h3>The response contains a job \"id\".<br>"
-    },
-    {
-      "question": "What Python packages do I need?",
-      "answer": "<h3 class='success title'>From software in use</h3>*   Underlying code: the SPAI code base ([https://github.com/mever-team/spai](https://github.com/mever-team/spai)), which needs Python 3.11, PyTorch with CUDA 12.4 and the packages in its requirements.txt (e.g.<br>timm 0.4.12, albumentations 1.4.14, OpenCV, NumPy, pandas); NVIDIA APEX is needed for training.<br>"
-    },
-    {
-      "question": "What GPU do I need to run it?",
-      "answer": "<h3 class='success title'>From hardware in use</h3>*   Training: the SPAI recipe was designed for a single NVIDIA L40S GPU with 48 GB of memory..<br><h3 class='error'>Vague question</h3><span>There are 24 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
-    },
-    {
-      "question": "What does the model take as input, and what does it return?",
-      "answer": "<h3 class='success title'>From inputs outputs in use</h3>*   \"version\": the model version (currently \"1\"); \"completed\": true when the analysis succeeded.<br>Input: one still image, given as a URL or an uploaded file and converted to RGB.<br><h3 class='error'>Vague question</h3><span>There are 34 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
-    },
-    {
-      "question": "How do I load and run the model on data?",
-      "answer": "<h3 class='success title'>From inputs outputs in use</h3>*   \"version\": the model version (currently \"1\"); \"completed\": true when the analysis succeeded.<br>\n<h3 class='success title'>From instructions in use</h3>The model can be used only through the MeVer Deepfake Detection API, which works asynchronously:  1.<br>"
-    },
-    {
-      "question": "What could make its performance worse?",
-      "answer": "<h3 class='success title'>From environmental impact in performance</h3>The ITW-SM study states that all its experiments, covering several detectors and training configurations, took more than 1,000 GPU hours in total.<br>"
-    },
-    {
-      "question": "What should this model not be used for?",
-      "answer": "<h3 class='success title'>From out of scope use in use</h3>*   Serving as the sole basis for publishing a verdict, for legal or disciplinary decisions, or for accusations against individuals.<br>"
-    },
-    {
-      "question": "Who is this model for?",
+      "question": "Who should I email with questions about the model?",
       "answer": "<h3 class='success title'>From creator in overview</h3>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>"
     },
     {
-      "question": "Does a human need to review the outputs?",
-      "answer": "<h3 class='success title'>From analysis in performance</h3>These are single runs without uncertainty estimates, so differences below about one point should not be over-interpreted.<br>\n<h3 class='success title'>From fairness in safety</h3>Given the topic and resolution differences between the real and AI-generated parts of ITW-SM (see Evaluation), this has not been verified..<br>No formal fairness criterion was defined, applied or measured during development.<br>\n<h3 class='success title'>From inputs outputs in use</h3>On failure the report contains completed: false, a \"message\", an \"error\\_code\" such as INTERNAL\\_ERROR\\_INFERENCE, and an \"error\\_id\".<br>\n<h3 class='success title'>From instructions in use</h3>The response contains a job \"id\".<br>\n<h3 class='success title'>From more in evaluation</h3>A detector could partly exploit such differences, which would not carry over to other data.<br>\n<h3 class='success title'>Oversight in use is</h3>human-in-the-loop<br>\n<h3 class='success title'>Standards in evaluation is</h3>none<br>\n<h3 class='success title'>Update in evaluation is</h3>no<br>"
+      "question": "Which Python packages or other software dependencies do I need?",
+      "answer": "<h3 class='success title'>From software in use</h3>*   Underlying code: the SPAI code base ([https://github.com/mever-team/spai](https://github.com/mever-team/spai)), which needs Python 3.11, PyTorch with CUDA 12.4 and the packages in its requirements.txt (e.g.<br><h3 class='error'>Vague question</h3><span>There are 13 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "What does it say about its accuracy?",
-      "answer": "<h3 class='success title'>From methodology in performance</h3>The thresholds behind the API's evidence labels were set on the scores of ITW-SM real images at fixed false-positive rates of 1%, 5% and 10%.<br>"
+      "question": "What GPU or other hardware is needed to run it?",
+      "answer": "<h3 class='success title'>From hardware in use</h3>*   Deployed model: runs on MeVer GPU servers; no local hardware is needed.<br>*   Local inference with the SPAI code: a recent CUDA GPU.<br>*   Training: the SPAI recipe was designed for a single NVIDIA L40S GPU with 48 GB of memory..<br>"
     },
     {
-      "question": "What threshold is used to make predictions?",
-      "answer": "<h3 class='success title'>From thresholds in performance</h3>*   STRONG\\_EVIDENCE: the score reaches the 5% threshold but not the 1% one.<br>The 10% threshold is far below 0.5: in a small API test on 1 October 2026, an AI-generated image scoring 0.0137 was labelled MODERATE\\_EVIDENCE, so this threshold is at or below that value.<br>The model outputs a continuous score, and the paper reports only threshold-free metrics (AUC, AP).<br>The numeric threshold values are not published..<br>The rates are cumulative: on ITW-SM, about 10% of real images receive MODERATE\\_EVIDENCE or a stronger label, about 5% STRONG\\_EVIDENCE or stronger, and about 1% VERY\\_STRONG\\_EVIDENCE.<br>The raw score should therefore not be compared with 0.5.<br>"
+      "question": "What data does the model accept, and what does it produce?",
+      "answer": "<h3 class='success title'>From inputs outputs in use</h3>*   \"version\": the model version (currently \"1\"); \"completed\": true when the analysis succeeded.<br>Example report (abridged):  ``` {\"status\": \"COMPLETED\", \"itw_spai_mever_report\": {\"version\": \"1\", \"completed\": true, \"prediction\": 0.99976, \"label\": \"VERY_STRONG_EVIDENCE\"}} ```.<br>It is not calibrated, so it should not be read as a probability or compared with 0.5.<br><h3 class='error'>Vague question</h3><span>There are 33 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "What could go wrong if I use this model?",
-      "answer": "<h3 class='success title'>From caveats in safety</h3>*   It is a research model deployed to support verification and has not been validated for forensic or legal use.<br>*   The ITW-SPAI weights are not public, so third parties cannot reproduce its results exactly.<br>\n<h3 class='success title'>From risks in safety</h3>*   Environmental threats: new generators and AI editing tools appear continuously, so accuracy decays over time; deliberate post-processing or adversarial perturbations can be used to evade detection; platforms change how they process images.<br>*   Possible consequences: synthetic images accepted as authentic and spread as disinformation; authentic images wrongly discredited; misplaced trust in automated verdicts..<br>*   Technical faults: pipelines that downscale, re-encode or screenshot images before submission degrade results; very small images provide little evidence; service errors return an error report instead of a score.<br>"
+      "question": "How can I load the model and run predictions on data?",
+      "answer": "<h3 class='success title'>From inputs outputs in use</h3>Example report (abridged):  ``` {\"status\": \"COMPLETED\", \"itw_spai_mever_report\": {\"version\": \"1\", \"completed\": true, \"prediction\": 0.99976, \"label\": \"VERY_STRONG_EVIDENCE\"}} ```.<br><h3 class='error'>Vague question</h3><span>There are 27 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "Are there ethical concerns with using this?",
-      "answer": "<h3 class='success title'>From caveats in safety</h3>*   It is a research model deployed to support verification and has not been validated for forensic or legal use.<br>\n<h3 class='success title'>From ethics in safety</h3>*   Data: training and evaluation images come from public datasets and social media posts and can show identifiable people.<br>*   False negatives can lend credibility to synthetic images used for disinformation, impersonation or fraud.<br>"
+      "question": "Under what conditions might the model perform poorly?",
+      "answer": "<h3 class='success title'>From risks in safety</h3>*   Environmental threats: new generators and AI editing tools appear continuously, so accuracy decays over time; deliberate post-processing or adversarial perturbations can be used to evade detection; platforms change how they process images.<br>*   Possible consequences: synthetic images accepted as authentic and spread as disinformation; authentic images wrongly discredited; misplaced trust in automated verdicts..<br>*   Technical faults: pipelines that downscale, re-encode or screenshot images before submission degrade results; very small images provide little evidence; service errors return an error report instead of a score.<br>"
     },
     {
-      "question": "How much energy does it consume?",
-      "answer": "<h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
+      "question": "Which applications or scenarios should this model not be used for?",
+      "answer": "<h3 class='success title'>From out of scope use in use</h3>*   Serving as the sole basis for publishing a verdict, for legal or disciplinary decisions, or for accusations against individuals.<br>\n<h3 class='success title'>From use cases in use</h3>Other channels, such as messaging apps, were not evaluated.<br><h3 class='error'>Vague question</h3><span>There are 31 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "Is it compliant with any security standard?",
-      "answer": "<h3 class='success title'>From security in safety</h3>The model and the service are not certified for cybersecurity, and no compliance with specific security standards is reported.<br>"
+      "question": "Who is this model designed for?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>"
     },
     {
-      "question": "Is the model fair across subgroups?",
-      "answer": "<h3 class='success title'>From bias in performance</h3>Performance across demographic groups (e.g.<br>skin tone, gender, age) has not been evaluated.<br>\n<h3 class='success title'>From fairness in safety</h3>For this task, the relevant notion is that the score should depend on generation traces and not on what the image shows, so that no subject, community, region or style of authentic imagery is systematically more likely to be flagged.<br>Given the topic and resolution differences between the real and AI-generated parts of ITW-SM (see Evaluation), this has not been verified..<br>No formal fairness criterion was defined, applied or measured during development.<br>\n<h3 class='success title'>From user groups in use</h3>Journalists, fact-checkers and verification desks; OSINT and media-forensics analysts; trust-and-safety and content moderation teams, as a triage aid with human review; multimedia forensics researchers; developers who integrate the MeVer API into verification tools..<br>"
+      "question": "Do the model's outputs need to be reviewed by a person?",
+      "answer": "<h3 class='success title'>From inputs outputs in use</h3>Example report (abridged):  ``` {\"status\": \"COMPLETED\", \"itw_spai_mever_report\": {\"version\": \"1\", \"completed\": true, \"prediction\": 0.99976, \"label\": \"VERY_STRONG_EVIDENCE\"}} ```.<br>On failure the report contains completed: false, a \"message\", an \"error\\_code\" such as INTERNAL\\_ERROR\\_INFERENCE, and an \"error\\_id\".<br>\n<h3 class='success title'>From out of scope use in use</h3>*   Automated moderation or takedown at scale without human review..<br><h3 class='error'>Vague question</h3><span>There are 22 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "What are its known limitations?",
-      "answer": "<h3 class='success title'>From caveats in safety</h3>*   It is a research model deployed to support verification and has not been validated for forensic or legal use.<br>"
+      "question": "What accuracy and other performance metrics are reported?",
+      "answer": "<h3 class='success title'>From methodology in performance</h3>No independent evaluation of the deployed service is reported..<br>"
     },
     {
-      "question": "What datasets was it trained and evaluated on?",
-      "answer": "<h3 class='success title'>From datasets in evaluation</h3>*   Chameleon (Yan et al., ICLR 2025): 26,033 images: about 11K highly realistic AI-generated images from AI-art communities and about 15K real photos from Unsplash.<br>Real / AI images per platform: Facebook 1,318 / 1,033; Instagram 1,206 / 2,179; LinkedIn 1,269 / 931; X 1,207 / 857..<br>\n<h3 class='success title'>From datasets in training</h3>*   TWIGMA (Chen and Zou, NeurIPS 2023; [https://yiqunchen.github.io/TWIGMA/](https://yiqunchen.github.io/TWIGMA/)): 600K of the roughly 800K AI-generated images in TWIGMA, which were shared on Twitter between January 2021 and March 2023.<br>How the subset was selected is not reported.<br>In total about 1.6M images, balanced between real and AI-generated..<br>\n<h3 class='success title'>From methodology in performance</h3>The paper reports a single result per configuration: no repeated runs, standard deviations or confidence intervals.<br>\n<h3 class='success title'>From motivation in evaluation</h3>Chameleon holds highly realistic, artist-refined AI images from AI-art communities.<br>\n<h3 class='success title'>From motivation in training</h3>The combination pairs a lab-controlled benchmark with real-world data.<br>\n<h3 class='success title'>From preprocessing in training</h3>*   Augmentations, each applied with probability 0.5: horizontal and vertical flips, rotation of up to 90°, Gaussian blur (kernel 3–9, sigma 0.01–0.5), Gaussian noise and JPEG compression (quality 50–100).<br>"
+      "question": "What cutoff values are used to make predictions?",
+      "answer": "<h3 class='success title'>From thresholds in performance</h3>The numeric threshold values are not published..<br>The raw score should therefore not be compared with 0.5.<br><h3 class='error'>Vague question</h3><span>There are 29 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "How was the model evaluated?",
-      "answer": "<h3 class='success title'>From methodology in performance</h3>The paper reports a single result per configuration: no repeated runs, standard deviations or confidence intervals.<br>"
+      "question": "What could go wrong when this model is used?",
+      "answer": "<h3 class='success title'>From risks in safety</h3>*   Environmental threats: new generators and AI editing tools appear continuously, so accuracy decays over time; deliberate post-processing or adversarial perturbations can be used to evade detection; platforms change how they process images.<br><h3 class='error'>Vague question</h3><span>There are 20 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "What standards does it follow?",
-      "answer": "<h3 class='success title'>Standards in evaluation is</h3>none<br><h3 class='error'>Vague question</h3><span>There are 17 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+      "question": "What ethical issues should be considered when using this model?",
+      "answer": "<h3 class='success title'>From ethics in safety</h3>*   Data: training and evaluation images come from public datasets and social media posts and can show identifiable people.<br>*   False negatives can lend credibility to synthetic images used for disinformation, impersonation or fraud.<br>*   False positives can damage the credibility of genuine photographs, of their authors and of the outlets that publish them, and can be used to dismiss real documentation of events as fake.<br>*   Recommended mitigations: keep a human expert in charge of every decision; report the evidence level rather than a binary verdict; corroborate with independent evidence such as provenance checks, reverse image search and detectors from other families; analyse the original file; explain the model's limits whenever its output is cited in public..<br>ITW-SM was collected with a crawler that respects each platform's terms of service and is shared for research only, behind gated access.<br>\n<h3 class='success title'>From fairness in safety</h3>No formal fairness criterion was defined, applied or measured during development.<br>\n<h3 class='success title'>From risks in safety</h3>*   Possible consequences: synthetic images accepted as authentic and spread as disinformation; authentic images wrongly discredited; misplaced trust in automated verdicts..<br>"
+    },
+    {
+      "question": "How much electricity does running this model use?",
+      "answer": "<h3 class='success title'>From environmental impact in performance</h3>The ITW-SM study states that all its experiments, covering several detectors and training configurations, took more than 1,000 GPU hours in total.<br>"
+    },
+    {
+      "question": "Does the model document compliance with any security standards?",
+      "answer": "<h3 class='success title'>From security in safety</h3>Robustness to adversarial attacks has not been evaluated.<br>The model and the service are not certified for cybersecurity, and no compliance with specific security standards is reported.<br><h3 class='error'>Vague question</h3><span>There are 41 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "Does the model perform fairly across different subgroups?",
+      "answer": "<h3 class='success title'>From bias in performance</h3>Performance across demographic groups (e.g.<br>"
+    },
+    {
+      "question": "What limitations or shortcomings are known about this model?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>Developed within the ITW-SM study (Konstantinidou, Karageorgiou, Koutlis, Papadopoulou, Schinas and Papadopoulos, MAD '26), building on SPAI by Karageorgiou, Papadopoulos, Kompatsiaris and Gavves (CVPR 2025)..<br>"
     }
   ],
   "cross_field": [
     {
-      "question": "Who created this model and what kind of model is it?",
-      "answer": "<h3 class='success title'>From creator in overview</h3>Developed within the ITW-SM study (Konstantinidou, Karageorgiou, Koutlis, Papadopoulou, Schinas and Papadopoulos, MAD '26), building on SPAI by Karageorgiou, Papadopoulos, Kompatsiaris and Gavves (CVPR 2025)..<br><h3 class='error'>Vague question</h3><span>There are 25 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+      "question": "Which datasets were used for training, and which were used for evaluation?",
+      "answer": "<h3 class='success title'>From datasets in evaluation</h3>*   Chameleon (Yan et al., ICLR 2025): 26,033 images: about 11K highly realistic AI-generated images from AI-art communities and about 15K real photos from Unsplash.<br>5,000 real images come from verified accounts and 5,000 AI-generated ones from accounts and communities that openly share AI content.<br>Real / AI images per platform: Facebook 1,318 / 1,033; Instagram 1,206 / 2,179; LinkedIn 1,269 / 931; X 1,207 / 857..<br>\n<h3 class='success title'>From datasets in training</h3>How the subset was selected is not reported.<br>In total about 1.6M images, balanced between real and AI-generated..<br>The SPAI recipe uses its 180K + 180K training split.<br>\n<h3 class='success title'>From license in overview</h3>Training and evaluation datasets keep their own licences..<br>\n<h3 class='success title'>From more in evaluation</h3>3 and 4 of the paper).<br>\n<h3 class='success title'>From motivation in evaluation</h3>The three sets move from controlled to real-world conditions.<br>\n<h3 class='success title'>From motivation in training</h3>The combination pairs a lab-controlled benchmark with real-world data.<br>"
     },
     {
-      "question": "What is the model's task and its intended use?",
-      "answer": "<h3 class='success title'>From creator in overview</h3>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>"
+      "question": "What evaluation methodology and data preprocessing were used to assess the model?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>Developed within the ITW-SM study (Konstantinidou, Karageorgiou, Koutlis, Papadopoulou, Schinas and Papadopoulos, MAD '26), building on SPAI by Karageorgiou, Papadopoulos, Kompatsiaris and Gavves (CVPR 2025)..<br>\n<h3 class='success title'>From methodology in performance</h3>The paper reports a single result per configuration: no repeated runs, standard deviations or confidence intervals.<br>"
     },
     {
-      "question": "When was the model released and what version is it?",
+      "question": "Which standards or guidelines were followed during training and evaluation?",
+      "answer": "<h3 class='success title'>Standards in training is</h3>none<br><h3 class='error'>Vague question</h3><span>There are 34 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "Who developed this model, and what type of model is it?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>Developed within the ITW-SM study (Konstantinidou, Karageorgiou, Koutlis, Papadopoulou, Schinas and Papadopoulos, MAD '26), building on SPAI by Karageorgiou, Papadopoulos, Kompatsiaris and Gavves (CVPR 2025)..<br>"
+    },
+    {
+      "question": "What task does the model perform, and what are its intended use cases?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br><h3 class='error'>Vague question</h3><span>There are 15 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "When was the model released, and which version is documented?",
       "answer": "<h3 class='success title'>Version in overview is</h3>1.0<br>"
     },
     {
-      "question": "What hardware and software do I need to run this model?",
+      "question": "What hardware and software dependencies are required to run this model?",
+      "answer": "<h3 class='success title'>From hardware in use</h3>*   Deployed model: runs on MeVer GPU servers; no local hardware is needed.<br>*   Training: the SPAI recipe was designed for a single NVIDIA L40S GPU with 48 GB of memory..<br>\n<h3 class='success title'>From software in use</h3>*   Deployed model: nothing to install.<br>*   Underlying code: the SPAI code base ([https://github.com/mever-team/spai](https://github.com/mever-team/spai)), which needs Python 3.11, PyTorch with CUDA 12.4 and the packages in its requirements.txt (e.g.<br>It runs on MeVer servers and is used over HTTPS through the MeVer Deepfake Detection API v4 (specification: [https://apis.mever.gr/deepfake/v4/openapi.json](https://apis.mever.gr/deepfake/v4/openapi.json)).<br>"
+    },
+    {
+      "question": "What risks and ethical considerations should users be aware of?",
+      "answer": "<h3 class='success title'>From ethics in safety</h3>*   Data: training and evaluation images come from public datasets and social media posts and can show identifiable people.<br>*   False positives can damage the credibility of genuine photographs, of their authors and of the outlets that publish them, and can be used to dismiss real documentation of events as fake.<br><h3 class='error'>Vague question</h3><span>There are 22 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "What energy consumption and environmental impact are reported for the model?",
+      "answer": "<h3 class='success title'>From environmental impact in performance</h3>Not measured for ITW-SPAI, and no energy or CO2 figures are reported.<br>The ITW-SM study states that all its experiments, covering several detectors and training configurations, took more than 1,000 GPU hours in total.<br><h3 class='error'>Vague question</h3><span>There are 10 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "Who is the model intended for, and what level of human oversight is required?",
+      "answer": "<h3 class='success title'>From creator in overview</h3>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>"
+    },
+    {
+      "question": "What limitations are documented, and which uses are outside the model's intended scope?",
+      "answer": "<h3 class='success title'>From out of scope use in use</h3>*   Serving as the sole basis for publishing a verdict, for legal or disciplinary decisions, or for accusations against individuals.<br>"
+    },
+    {
+      "question": "Which datasets were used for training and evaluation, why were they chosen, and what preprocessing was applied? What evaluation methodology was used?",
+      "answer": "<h3 class='success title'>From datasets in training</h3>How the subset was selected is not reported.<br>"
+    },
+    {
+      "question": "What input and output formats does the model use, and how can it be run?",
+      "answer": "<h3 class='success title'>From inputs outputs in use</h3>*   \"version\": the model version (currently \"1\"); \"completed\": true when the analysis succeeded.<br>Input: one still image, given as a URL or an uploaded file and converted to RGB.<br>"
+    },
+    {
+      "question": "Which standards or guidelines were followed during training and evaluation, and what ethical considerations are documented?",
+      "answer": "<h3 class='success title'>Standards in training is</h3>none<br><h3 class='error'>Vague question</h3><span>There are 37 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
+    },
+    {
+      "question": "What factors can reduce the model's performance, and what limitations are documented?",
+      "answer": "<h3 class='success title'>From factors in use</h3>*   Processing history: recompression, downscaling, cropping, filters and repeated re-sharing weaken or erase the low-level traces the model relies on.<br>\n<h3 class='success title'>From risks in safety</h3>*   Technical faults: pipelines that downscale, re-encode or screenshot images before submission degrade results; very small images provide little evidence; service errors return an error report instead of a score.<br>"
+    },
+    {
+      "question": "Which software dependencies must be installed, and what hardware is needed to run the model?",
       "answer": "<h3 class='success title'>From hardware in use</h3>*   Deployed model: runs on MeVer GPU servers; no local hardware is needed.<br>"
     },
     {
-      "question": "What are the risks and ethical concerns of using this model?",
-      "answer": "<h3 class='success title'>From risks in safety</h3>*   Environmental threats: new generators and AI editing tools appear continuously, so accuracy decays over time; deliberate post-processing or adversarial perturbations can be used to evade detection; platforms change how they process images.<br>*   Possible consequences: synthetic images accepted as authentic and spread as disinformation; authentic images wrongly discredited; misplaced trust in automated verdicts..<br>"
+      "question": "Who is the model intended for, and which uses should be avoided?",
+      "answer": "<h3 class='success title'>From out of scope use in use</h3>*   Serving as the sole basis for publishing a verdict, for legal or disciplinary decisions, or for accusations against individuals.<br>\n<h3 class='success title'>From use cases in use</h3>Other channels, such as messaging apps, were not evaluated.<br><h3 class='error'>Vague question</h3><span>There are 9 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
     },
     {
-      "question": "What is the energy consumption and environmental impact?",
-      "answer": "<h3 class='success title'>From environmental impact in performance</h3>Not measured for ITW-SPAI, and no energy or CO2 figures are reported.<br>The ITW-SM study states that all its experiments, covering several detectors and training configurations, took more than 1,000 GPU hours in total.<br><h3 class='error'>Missing info</h3><span>Would have looked at energy consumption in performance, but that is empty.</span><br>"
-    },
-    {
-      "question": "Who are the intended users and what oversight is required?",
-      "answer": "<h3 class='success title'>Oversight in use is</h3>human-in-the-loop<br>"
-    },
-    {
-      "question": "What are the caveats and out-of-scope uses?",
-      "answer": "<h3 class='success title'>From out of scope use in use</h3>*   Attributing an image to a specific generator.<br>*   Automated moderation or takedown at scale without human review..<br>*   Serving as the sole basis for publishing a verdict, for legal or disciplinary decisions, or for accusations against individuals.<br>*   Video and audio.<br>"
-    },
-    {
-      "question": "How was the model trained and evaluated?",
-      "answer": "<h3 class='success title'>From datasets in training</h3>How the subset was selected is not reported.<br>\n<h3 class='success title'>From preprocessing in training</h3>*   Optimisation: binary cross-entropy loss, AdamW, base learning rate 5e-4 with 5 warm-up epochs and cosine decay, weight decay 0.05, batch size 72, 35 epochs.<br>"
-    },
-    {
-      "question": "What are the input/output formats, and how do I run the model?",
-      "answer": "<h3 class='success title'>From inputs outputs in use</h3>*   \"version\": the model version (currently \"1\"); \"completed\": true when the analysis succeeded.<br>Example report (abridged):  ``` {\"status\": \"COMPLETED\", \"itw_spai_mever_report\": {\"version\": \"1\", \"completed\": true, \"prediction\": 0.99976, \"label\": \"VERY_STRONG_EVIDENCE\"}} ```.<br>Input: one still image, given as a URL or an uploaded file and converted to RGB.<br>It is not calibrated, so it should not be read as a probability or compared with 0.5.<br>It must be at least 256×256 pixels (smaller images are rejected with BAD\\_IMAGE\\_TOO\\_LOW\\_RESOLUTION); the service sets no maximum image size for this model.<br>On failure the report contains completed: false, a \"message\", an \"error\\_code\" such as INTERNAL\\_ERROR\\_INFERENCE, and an \"error\\_id\".<br>Output, in the \"itw\\_spai\\_mever\\_report\" object:  *   \"prediction\": a score in \\[0, 1\\]; values near 0 indicate a real image and values near 1 an AI-generated one.<br>"
-    },
-    {
-      "question": "What technical or ethical standards does the model follow?",
-      "answer": "<h3 class='success title'>From caveats in safety</h3>*   It is a research model deployed to support verification and has not been validated for forensic or legal use.<br>\n<h3 class='success title'>From creator in overview</h3>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br>\n<h3 class='success title'>From ethics in safety</h3>*   Recommended mitigations: keep a human expert in charge of every decision; report the evidence level rather than a binary verdict; corroborate with independent evidence such as provenance checks, reverse image search and detectors from other families; analyse the original file; explain the model's limits whenever its output is cited in public..<br>ITW-SM was collected with a crawler that respects each platform's terms of service and is shared for research only, behind gated access.<br>\n<h3 class='success title'>From fairness in safety</h3>No formal fairness criterion was defined, applied or measured during development.<br>\n<h3 class='success title'>Standards in evaluation is</h3>none<br>\n<h3 class='success title'>Standards in training is</h3>none<br><h3 class='error'>Vague question</h3><span>There are 38 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
-    },
-    {
-      "question": "What factors could degrade performance, and what are the known caveats?",
-      "answer": "<h3 class='success title'>From environmental impact in performance</h3>The ITW-SM study states that all its experiments, covering several detectors and training configurations, took more than 1,000 GPU hours in total.<br><h3 class='error'>Vague question</h3><span>There are 25 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
-    },
-    {
-      "question": "How do I install the software, and what hardware does it need?",
-      "answer": "<h3 class='success title'>From software in use</h3>It runs on MeVer servers and is used over HTTPS through the MeVer Deepfake Detection API v4 (specification: [https://apis.mever.gr/deepfake/v4/openapi.json](https://apis.mever.gr/deepfake/v4/openapi.json)).<br>The code includes a DINOv2 backbone option loaded through torch.hub (facebookresearch/dinov2).<br>timm 0.4.12, albumentations 1.4.14, OpenCV, NumPy, pandas); NVIDIA APEX is needed for training.<br><h3 class='error'>Vague question</h3><span>There are 14 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
-    },
-    {
-      "question": "Who should use this model, and what should they not do with it?",
-      "answer": "<h3 class='success title'>From creator in overview</h3>MeVer team, Information Technologies Institute (ITI), Centre for Research and Technology Hellas (CERTH), Thessaloniki, Greece.<br><h3 class='error'>Vague question</h3><span>There are 12 more relevant excerpts that have similar relevance to each other and are not shown for brevity. Please make the question more specific for a complete reply.</span><br>"
-    },
-    {
-      "question": "What is the model's license and how do I cite it?",
-      "answer": "<h3 class='success title'>From license in overview</h3>Training and evaluation datasets keep their own licences..<br>\n<h3 class='success title'>From software in use</h3>*   Third-party software and data keep their original licences..<br>"
+      "question": "What license governs the model, and how should it be cited?",
+      "answer": "<h3 class='success title'>From citation in overview</h3>``` @inproceedings{konstantinidou2026navigating,   title={Navigating the Challenges of AI-Generated Image Detection in the Wild: What Truly Matters?},   author={Konstantinidou, Despina and Karageorgiou, Dimitrios and Koutlis, Christos and Papadopoulou, Olga and Schinas, Emmanouil and Papadopoulos, Symeon},   booktitle={The 5th ACM International Workshop on Multimedia AI against Disinformation (MAD '26)},   year={2026},   doi={10.1145/3810988.3812665},   url={https://arxiv.org/abs/2507.10236} }  @inproceedings{karageorgiou2025any,   title={Any-resolution ai-generated image detection by spectral learning},   author={Karageorgiou, Dimitrios and Papadopoulos, Symeon and Kompatsiaris, Ioannis and Gavves, Efstratios},   booktitle={Proceedings of the Computer Vision and Pattern Recognition Conference},   pages={18706--18717},   year={2025} } ```.<br>\n<h3 class='success title'>From license in overview</h3>Training and evaluation datasets keep their own licences..<br>\n<h3 class='success title'>From software in use</h3>*   Third-party software and data keep their original licences..<br>"
     }
   ]
 }
