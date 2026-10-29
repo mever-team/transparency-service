@@ -29,10 +29,10 @@ def test_remote_card_creation():
     time.sleep(10) # apparently 2 seconds are not enough for pytest
     conn = aic.connect("http://127.0.0.1:5000", username="admin", password="admin", silent=True)
     with conn.create() as card:
-        card.title = "my new card"
+        card.overview.name = "my new model"
         card_id = card.connector.id
     with conn.attach(card_id) as card:
-        assert card.title == "my new card"
-        card.title = "edited title"
+        assert card.overview.name == "my new model"
+        card.overview.name = "edited name"
     with conn.attach(card_id) as card:
-        assert card.title == "edited title"
+        assert card.overview.name == "edited name"
