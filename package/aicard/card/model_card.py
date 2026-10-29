@@ -372,6 +372,10 @@ class ModelCard:
         # Compute 5-star rating
         quality = self.quality()
         ret += "<div><i>"+str(int(round(quality*100)))+"% information completed</i></div>\n"
+        ret += "<h2>— Summary —</h2>\n"
+        for field_name, field_value in self.get_simple_fields().items():
+            ret += f"<p><b>{field_name}</b>: {field_value.get()}</p>\n"
+        ret += "<h2>— Full Model Card —</h2>\n"
         for key, dotdict in card.data.items():
             if isinstance(dotdict, DotDict):
                 segment = ""
