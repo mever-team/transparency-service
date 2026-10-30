@@ -502,19 +502,22 @@ $(function() {
                         $field.html($field.html().replace(/\u200B/g, ''));
                     }
                 });
-                const $select = $('<select>').attr('id', `${field.name}-unit-selector`).addClass('unit-selector');
-                units_symbol.forEach((option, index) => {
-                    $select.append($('<option>', {
-                        value: option,
-                        text: units_name[index]
-                    }));
-                });
-                $select.val(unit);
-                $select.on('change', function() {
-                    $(this).parent().find('.field-value .unit').text(this.value);
-                    $("#saveJson").fadeIn();
-                });
-                $fieldValue = $fieldValue.add($select);
+                if (units_symbol.length > 1)
+                {
+                    const $select = $('<select>').attr('id', `${field.name}-unit-selector`).addClass('unit-selector');
+                    units_symbol.forEach((option, index) => {
+                        $select.append($('<option>', {
+                            value: option,
+                            text: units_name[index]
+                        }));
+                    });
+                    $select.val(unit);
+                    $select.on('change', function() {
+                        $(this).parent().find('.field-value .unit').text(this.value);
+                        $("#saveJson").fadeIn();
+                    });
+                    $fieldValue = $fieldValue.add($select);
+                }
             }
             else {
                 let displayHtml = field.value || "";
