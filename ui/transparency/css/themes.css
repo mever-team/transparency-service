@@ -46,7 +46,7 @@
     --text-info: #356f78;
     --text-info-light: var(--aicode-info);
     --green-primary: var(--aicode-tertiary);
-    --yellow-primary: var(--aicode-warning-dark);
+    --yellow-primary: #89591F;
     --brightness-filter: 1.3; 
     --fonts: Manrope, "Public Sans", sans-serif;
     --filters-caption-border: none !important;
@@ -74,7 +74,7 @@
     --fonts: Hero_font, "Noto Emoji", sans-serif;
     --filters-caption-border: none !important;
     --a-color: var(--aicode-info);
-    --red-primary: var(--aicode-error);
+    --red-primary: var(--aicode-error-light);
     --button-primary: var(--aicode-primary);
     --card-view-mute: rgb(179, 179, 179);
     
@@ -97,6 +97,6 @@
     --fonts: Manrope, "Public Sans", sans-serif;
     --filters-caption-border: none !important;
     --a-color: #38bdf8;
-    --red-primary: #ef4444;
+    --red-primary: #FF7777;
     --button-primary: #1e293b;
 }
