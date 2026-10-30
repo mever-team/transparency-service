@@ -142,6 +142,10 @@ class CardJobsTracker():
                     
             return {}
         energy_consumed = job.data.get('energy_consumed', None)
+        is_chat = False
+        if not energy_consumed: 
+            energy_consumed = job.data.get('cpu_energy', None)
+            is_chat = True
         emissions = job.data.get('emissions', None)
         execution_time = job.finish - job.start
         if not energy_consumed or not emissions: 
@@ -151,6 +155,8 @@ class CardJobsTracker():
                 print(f"No code carbon data found in the job {job_name}")
                 
             return {}
+        if is_chat:
+            return {"emissions": emissions, "energy_consumed": energy_consumed}
         # Caluclate percentage worload
         all_jobs = self.__jobs | self.__last_job
         time_overlay = 0
