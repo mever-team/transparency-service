@@ -53,6 +53,8 @@
     --a-color: #356f78;
     --red-primary: var(--aicode-error-dark);
     --button-primary: white;
+    --card-view-mute: rgb(97, 97, 97);
+    
 }
 
 .dark-theme{
@@ -74,6 +76,8 @@
     --a-color: var(--aicode-info);
     --red-primary: var(--aicode-error);
     --button-primary: var(--aicode-primary);
+    --card-view-mute: rgb(179, 179, 179);
+    
 }
 
 .ocean-theme{
