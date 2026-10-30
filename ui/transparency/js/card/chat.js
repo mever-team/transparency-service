@@ -74,15 +74,25 @@ $(function() {
                             success: function (response) {
                                 let energy_consumed = response['energy_consumed'];
                                 let emissions = response['emissions'];
-
-                                console.log(response)
                                 if (energy_consumed && emissions) {
                                     let phone_charge_equivalent = formatHours(Number(energy_consumed) / 0.02) // the argument is in hours assuming a charger consumes 20W
                                     energy_consumed = formatKWh(energy_consumed);
                                     emissions = formatKg(emissions);
 
-                                    const text = `Job finished with energy consumed <strong>${energy_consumed}</strong> and CO2 emissions ${emissions}. This is equal to <strong>${phone_charge_equivalent}</strong> of fast phone charging.`;
-                                    console.log(text);
+                                    const energy_text = `Answer consumed ${energy_consumed} and CO2 emissions ${emissions}. This is equal to ${phone_charge_equivalent} of fast phone charging.`;
+                                    const energy_tooltip = $('<span>')
+                                                            .css({
+                                                                background: 'var(--text-primary)',
+                                                                color: 'var(--bg-primary)',
+                                                                transform: 'translate(8px, 8px)',
+                                                                'z-index': 10000,
+                                                                position: 'absolute',
+                                                            })
+                                                            .addClass('info-tooltip')
+                                                            .attr('data-tooltip', energy_text)
+                                                            .html('ⓘ');
+                                    $(messageElement).before(energy_tooltip)
+                                    messageElement.innerHTML = '<br>' + messageElement.innerHTML
                                 }
                             },
                             error: function (xhr, status, error) {
