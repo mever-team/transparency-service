@@ -622,8 +622,8 @@ section.buttons {
     text-align: center;
 }
 .card_view div {
-    border: solid 1px rgb(97, 97, 97);
-    color: rgb(97, 97, 97);
+    border: solid 1px var(--card-view-mute);
+    color: var(--card-view-mute);
     margin: 1rem 0 0 0;
     padding: 0.25rem 0.5rem;
     cursor: pointer;
