@@ -300,7 +300,8 @@ $(function () {
                             const name = it.name.replace(new RegExp("(" + this.filters.query + ")", "ig"),"<strong style='color:#79CFDC'>$1</strong>");
                             const type = (it.type || it.task || "").toLowerCase();
                             const task = it.task ? " for " + it.task.toLowerCase() : "";
-                            this.$tbody.append(this.templates.cardRow.render(it, name, type, task));
+                            const params = it.parameters && it.parameters[0] !==0 ? it.parameters : null;
+                            this.$tbody.append(this.templates.cardRow.render(it, name, type, task, params));
                         });
                     else this.$tbody.append(`<tr><td colspan="3" style="text-align:center;color: var(--text-primary);font-weight:bold;font-size:22px;">No matching results</td></tr>`);
                     $("#resultsTable").show();
@@ -347,7 +348,7 @@ $(function () {
                     .appendTo(this.$modal.find('#filter-select'));
             });
         },
-        cardRowRender: function (it, name, type, task) {
+        cardRowRender: function (it, name, type, task, params) {
             const percent = Math.round(it.quality * 100);
             const qualityColor =
                 percent > 70 ? 'var(--green-primary)' :
@@ -375,7 +376,9 @@ $(function () {
                     (it.creator ? " uploaded by " + it.creator : ""),
                 hasType: !!type,
                 type: type,
-                task: task
+                task: task,
+                hasParams: Boolean(params),
+                params: params
             };
             return Mustache.render(this.templates.cardRow.template, view);
         },

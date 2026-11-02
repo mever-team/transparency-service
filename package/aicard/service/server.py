@@ -477,6 +477,7 @@ def serve(
                     cards.overview__task,
                     cards.overview__date,
                     cards.performance__energy_consumption,
+                    cards.overview__parameters,
                     bm25(cards_fts) AS rank
                 FROM cards_fts
                 JOIN cards ON cards_fts.rowid = cards.id
@@ -502,6 +503,7 @@ def serve(
                     cards.overview__task,
                     cards.overview__date,
                     cards.performance__energy_consumption,
+                    cards.overview__parameters,
                     9999 AS rank   -- fallback rank for LIKE matches
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
@@ -532,6 +534,7 @@ def serve(
                     cards.overview__task,
                     cards.overview__date,
                     cards.performance__energy_consumption,
+                    cards.overview__parameters,
                     bm25(cards_fts) AS rank
                 FROM cards_fts
                 JOIN cards ON cards_fts.rowid = cards.id
@@ -556,6 +559,7 @@ def serve(
                     cards.overview__task,
                     cards.overview__date,
                     cards.performance__energy_consumption,
+                    cards.overview__parameters,
                     9999 AS rank
                 FROM cards
                 WHERE LOWER(cards.title) LIKE ?
@@ -573,7 +577,7 @@ def serve(
         elif query and owner:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, performance__energy_consumption
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, performance__energy_consumption, cards.overview__parameters
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   AND LOWER(user) IN ({placeholders})
@@ -589,7 +593,7 @@ def serve(
         elif query:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, performance__energy_consumption
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, performance__energy_consumption, cards.overview__parameters
                 FROM cards
                 WHERE LOWER(title) LIKE ?
                   AND quality >= {quality_limits}
@@ -604,7 +608,7 @@ def serve(
         elif owner:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, performance__energy_consumption
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, performance__energy_consumption, cards.overview__parameters
                 FROM cards
                 WHERE LOWER(user) IN ({placeholders})
                   AND quality >= {quality_limits}
@@ -619,7 +623,7 @@ def serve(
         else:
             cursor.execute(
                 f"""
-                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, performance__energy_consumption
+                SELECT id, title, user, desc, quality, timestamp, overview__description, overview__type, overview__task, overview__date, performance__energy_consumption, cards.overview__parameters
                 FROM cards
                 WHERE quality >= {quality_limits}
                 {type_filter}
@@ -646,7 +650,8 @@ def serve(
             overview_task = row[8]
             overview_date = row[9]
             energy = row[10]
-            results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality, "description": overview, "type": overview_type, "task": overview_task, "date": overview_date, "energy": energy})
+            parameters = row[11]
+            results.append({"id": row[0], "name": row[1], "creator": row[2], "desc": row[3], "quality": quality, "description": overview, "type": overview_type, "task": overview_task, "date": overview_date, "energy": energy, "parameters": parameters})
         jsonified = jsonify({"results": results, "pages": num_pages, "total": total})
         if can_reuse_cache:
             last_front_page_data["jsonified"] = jsonified
