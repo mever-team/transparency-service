@@ -82,11 +82,12 @@ $(function() {
                                     const energy_text = `Answer consumed ${energy_consumed} and CO2 emissions ${emissions}. This is equal to ${phone_charge_equivalent} of fast phone charging.`;
                                     const energy_tooltip = $('<span>')
                                                             .css({
-                                                                background: 'var(--text-primary)',
-                                                                color: 'var(--bg-primary)',
+                                                                background: 'none',
+                                                                color: 'var(--text-primary)',
                                                                 transform: 'translate(8px, 8px)',
                                                                 'z-index': 10000,
                                                                 position: 'absolute',
+                                                                'font-size': '1rem',
                                                             })
                                                             .addClass('info-tooltip')
                                                             .attr('data-tooltip', energy_text)
