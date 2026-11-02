@@ -5,7 +5,8 @@ const isInIframe = () => {
     return true;
   }
 };
-
-if (isInIframe()) {
-  document.body.classList.add('in-iframe');
-}
+document.addEventListener('DOMContentLoaded', () => {
+  if (isInIframe()) {
+    document.body.classList.add('in-iframe');
+  }
+});
