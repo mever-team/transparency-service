@@ -386,7 +386,8 @@ i.fa-brands:before {
     opacity: .7;
 }
 
-#paramsFilter {
+#paramsFilter,
+#energyFilter {
     padding: 1rem 2rem;
     input[type=range] {
         position: absolute;

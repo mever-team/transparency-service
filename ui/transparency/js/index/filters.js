@@ -52,14 +52,16 @@ $(function () {
         },
 
         init_dashboards: async function() {
-            this.dashboards.task = {html: "", setState: this.taskSetState.bind(this), description: 'Filter Model Cards by task.'};
-            this.dashboards.type = {html: "", setState: this.typeSetState.bind(this), description: 'Filter Model Cards by model architecture or algorithm.'};
+            this.dashboards.task = {html: "", setState: this.taskSetState.bind(this), description: 'Filter model cards by task.'};
+            this.dashboards.type = {html: "", setState: this.typeSetState.bind(this), description: 'Filter model cards by model architecture or algorithm.'};
             this.dashboards.info = {html: "", setState: this.infoSetState.bind(this), description: 'Show only model cards based on how complete their information is.'};
-            this.dashboards.params = {html: "", setState: this.paramsSetState.bind(this), description: 'Filter model Cards by number of parameters.'};
+            this.dashboards.params = {html: "", setState: this.paramsSetState.bind(this), description: 'Filter model cards by number of parameters.'};
+            this.dashboards.energy = {html: "", setState: this.energySetState.bind(this), description: 'Filter model cards by energy consumption.'};
             this.getTaskDashboard().then(function (html) { this.dashboards.task.html = html; }.bind(this));
             this.getTypeDashboard().then(function (html) { this.dashboards.type.html = html; }.bind(this));
             this.dashboards.info.html = this.getInfoDashboard();
             this.getParamsDashboard().then(function(html) { this.dashboards.params.html=html }.bind(this));
+            this.getEnergyDashboard().then(function(html) { this.dashboards.energy.html=html }.bind(this));
         },
 
         init_captions: function() {
@@ -67,6 +69,7 @@ $(function () {
             this.captions.type = {update: this.updateTypeCaption.bind(this)};
             this.captions.info = {update: this.updateInfoCaption.bind(this)};
             this.captions.params = {update: this.updateParamsCaption.bind(this)};
+            this.captions.energy = {update: this.updateEnergyCaption.bind(this)};
         },
 
         init_options: function() {
@@ -74,6 +77,7 @@ $(function () {
             this.options.type = {active: false};
             this.options.info = {active: false};
             this.options.params = {active: false};
+            this.options.energy = {active: false};
         },
 
         init_templates: async function () {
@@ -99,6 +103,7 @@ $(function () {
             this.$modal.on('click', '.filter-dashboard[data-filter="type"]', this.filterType.bind(this));
             this.$modal.on('input', '.filter-dashboard[data-filter="info"] .info-input', this.filterInfo.bind(this));
             this.$modal.on('input', '#paramsFilter input', this.filterParam.bind(this));
+            this.$modal.on('input', '#energyFilter input', this.filterEnergy.bind(this));
         },
 
 
@@ -142,6 +147,23 @@ $(function () {
             }
             const value = `<span class="captionValue">${inner}</span>`;
             this.captionBuilder('params', value);
+        },
+        updateEnergyCaption: function(){
+            let inner;
+            if (this.filters.energy[0] === '<0.1cll' && this.filters.energy[1] === '>500cll') {
+                inner = 'All';
+            }
+            else if (this.filters.energy[0] === '<0.1cll'){
+                inner = `≤ ${this.filters.energy[1]}`;
+            } 
+            else if (this.filters.energy[1] === '>500cll'){
+                inner = `≥ ${this.filters.energy[0]}`;
+            }
+            else{
+                inner= `${this.filters.energy[0]} - ${this.filters.energy[1]}`;
+            }
+            const value = `<span class="captionValue">${inner}</span>`;
+            this.captionBuilder('energy', value);
         },
         captionBuilder: function(filter, value){
             const icon = '<i class="fa-solid fa-pencil"></i>'
@@ -191,14 +213,24 @@ $(function () {
             const $params = $('#paramsFilter');
             const validValues = ['<1B', '3B', '6B', '9B', '12B', '24B', '32B', '64B', '128B', '256B', '>500B'];
             const index = this.current.findIndex(item => item.name === "params");
-            const $min = $params.find('#min');
-            const $max = $params.find('#max');
             let minVal = validValues.findIndex(item => item === this.current[index].value[0]);
             let maxVal = validValues.findIndex(item => item === this.current[index].value[1]);
             $params.find('#min').val(minVal);
             $params.find('#max').val(maxVal);
             $params.find('#fill').css({left: minVal*10+'%', width: (maxVal-minVal)*10+'%'});
             $params.find('.label').each((i,el)=> {el.classList.toggle('active', i===minVal || i===maxVal)})
+        },
+        energySetState: function() {
+            const $energy = $('#energyFilter');
+            const validValues = ['<0.1cll', '0.5cll', '1cll', '5cll', '10cll', '20cll', '40cll', '80cll', '160cll', '320cll', '>500cll'];
+            const index = this.current.findIndex(item => item.name === "energy");
+            console.log(this.current);
+            let minVal = validValues.findIndex(item => item === this.current[index].value[0]);
+            let maxVal = validValues.findIndex(item => item === this.current[index].value[1]);
+            $energy.find('#min').val(minVal);
+            $energy.find('#max').val(maxVal);
+            $energy.find('#fill').css({left: minVal*10+'%', width: (maxVal-minVal)*10+'%'});
+            $energy.find('.label').each((i,el)=> {el.classList.toggle('active', i===minVal || i===maxVal)})
         },
         editFilter: function(e) {
             if ($(e.target).closest('.remove-filter').length) return;
@@ -242,6 +274,33 @@ $(function () {
             }
             $params.find('#fill').css({left: minVal*10+'%', width: (maxVal-minVal)*10+'%'});
             $params.find('.label').each((i,el)=> {el.classList.toggle('active', i===minVal || i===maxVal)})
+            this.current[index].value[0] = validValues[minVal];
+            this.current[index].value[1] = validValues[maxVal];
+        },
+        filterEnergy: function (e){
+            const index = this.current.findIndex(item => item.name === "energy");
+            const validValues = ['<0.1cll', '0.5cll', '1cll', '5cll', '10cll', '20cll', '40cll', '80cll', '160cll', '320cll', '>500cll'];
+            const $energy = $('#energyFilter');
+            const $min = $energy.find('#min');
+            const $max = $energy.find('#max');
+            let minVal = Number($min.val());
+            let maxVal = Number($max.val());
+            if(e){
+                if(e.target===$min[0] && minVal >= maxVal && maxVal !==10 ) $min.val(maxVal-1);
+                else if( e.target === $max[0] && maxVal <= minVal && minVal !==0 ) $max.val(minVal+1);
+            }
+            minVal = Number($min.val());
+            maxVal = Number($max.val());
+            if( minVal === maxVal ){
+                $min.css('z-index', minVal===10 ? 4 : 3)
+                $max.css('z-index', minVal===0 ? 4 : 3)
+            }
+            else{
+                $min.css('z-index', 4)
+                $max.css('z-index', 4)
+            }
+            $energy.find('#fill').css({left: minVal*10+'%', width: (maxVal-minVal)*10+'%'});
+            $energy.find('.label').each((i,el)=> {el.classList.toggle('active', i===minVal || i===maxVal)})
             this.current[index].value[0] = validValues[minVal];
             this.current[index].value[1] = validValues[maxVal];
         },
@@ -453,6 +512,7 @@ $(function () {
             else if (filter === 'task'){ this.current.push({name: 'task', value: []}) }
             else if (filter === 'info'){ this.current.push({name: 'info', value: '0'}) }
             else if (filter === 'params'){ this.current.push({name: 'params', value: ['<1B','>500B']}) }
+            else if (filter === 'energy'){ this.current.push({name: 'energy', value: ['<0.1cll','>500cll']}) }
         },
         getTaskDashboard: function () {
             return $.getJSON('/transparency/options/overview/task').then(function (data) {
@@ -509,14 +569,20 @@ $(function () {
                     return Mustache.render(template, {});
                 });
         },
+        getEnergyDashboard: function() {
+            return $.get('templates/index/energyDashboard.mustache')
+                .then(function(template) {
+                    return Mustache.render(template, {});
+                });
+        },
         done: function() {
             for (let current of this.current) {
                 if (!(this.options[current.name].active)) {
-                    if (current.name === 'info' && current.value === '0') {
-                        this.$modal.removeClass('modal--active');
-                        continue;
-                    }
-                    if (current.name === 'params' && !current.value[0] || (current.value[0] === '<1B' && current.value[1] === '>500B')) {
+                    if (
+                        (current.name === 'info' && current.value === '0') ||
+                        (current.name === 'params' && !current.value[0] || (current.value[0] === '<1B' && current.value[1] === '>500B')) || 
+                        (current.name === 'energy' && !current.value[0] || (current.value[0] === '<0cll' && current.value[1] === '>500cll'))
+                    ) {
                         this.$modal.removeClass('modal--active');
                         continue;
                     }
