@@ -610,7 +610,9 @@ $(function() {
                 // prevent non numbers
                 $fieldValue.on('beforeinput', function (event) {
                     const e = event.originalEvent;
-                    if (e.data && /[^0-9]/.test(e.data)) {
+                    if (!e.data) return;
+                    const currentText = $(this).contents().filter(function () { return this.nodeType === Node.TEXT_NODE; }).text();
+                    if (/[^0-9.]/.test(e.data) || (e.data.includes('.') && currentText.includes('.'))) {
                         event.preventDefault();
                     }
                 });
