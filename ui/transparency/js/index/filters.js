@@ -20,9 +20,6 @@ init_captions()
     Design the caption and create an update function
 */
 $(function () {
-    var userFilterOn = false;
-    var draftFilterOn = false;
-
     var filters = {
         filters: {}, // goes to backend
         templates: {}, // {name: {template: .mustache, render: function()},...}
@@ -58,21 +55,25 @@ $(function () {
             this.dashboards.task = {html: "", setState: this.taskSetState.bind(this), description: 'Filter Model Cards by task.'};
             this.dashboards.type = {html: "", setState: this.typeSetState.bind(this), description: 'Filter Model Cards by model architecture or algorithm.'};
             this.dashboards.info = {html: "", setState: this.infoSetState.bind(this), description: 'Show only model cards based on how complete their information is.'};
+            this.dashboards.params = {html: "", setState: this.paramsSetState.bind(this), description: 'Filter model Cards by number of parameters.'};
             this.getTaskDashboard().then(function (html) { this.dashboards.task.html = html; }.bind(this));
             this.getTypeDashboard().then(function (html) { this.dashboards.type.html = html; }.bind(this));
             this.dashboards.info.html = this.getInfoDashboard();
+            this.getParamsDashboard().then(function(html) { this.dashboards.params.html=html }.bind(this));
         },
 
         init_captions: function() {
             this.captions.task = {update: this.updateTaskCaption.bind(this)};
             this.captions.type = {update: this.updateTypeCaption.bind(this)};
             this.captions.info = {update: this.updateInfoCaption.bind(this)};
+            this.captions.params = {update: this.updateParamsCaption.bind(this)};
         },
 
         init_options: function() {
             this.options.task = {active: false};
             this.options.type = {active: false};
             this.options.info = {active: false};
+            this.options.params = {active: false};
         },
 
         init_templates: async function () {
@@ -97,6 +98,7 @@ $(function () {
             this.$modal.on('click', '.filter-dashboard[data-filter="task"]', this.filterTask.bind(this));
             this.$modal.on('click', '.filter-dashboard[data-filter="type"]', this.filterType.bind(this));
             this.$modal.on('input', '.filter-dashboard[data-filter="info"] .info-input', this.filterInfo.bind(this));
+            this.$modal.on('input', '#paramsFilter input', this.filterParam.bind(this));
         },
 
 
@@ -124,14 +126,29 @@ $(function () {
             const value = `<span class="captionValue">${this.filters.info}&nbsp;%</span>`
             this.captionBuilder('info', value);
         },
-
+        updateParamsCaption: function(){
+            let inner;
+            if (this.filters.params[0] === '<1B' && this.filters.params[1] === '>500B') {
+                inner = 'All';
+            }
+            else if (this.filters.params[0] === '<1B'){
+                inner = `≤ ${this.filters.params[1]}`;
+            } 
+            else if (this.filters.params[1] === '>500B'){
+                inner = `≥ ${this.filters.params[0]}`;
+            }
+            else{
+                inner= `${this.filters.params[0]} - ${this.filters.params[1]}`;
+            }
+            const value = `<span class="captionValue">${inner}</span>`;
+            this.captionBuilder('params', value);
+        },
         captionBuilder: function(filter, value){
             const icon = '<i class="fa-solid fa-pencil"></i>'
             const $caption = $('<div>').html(`${icon}&nbsp;${capitalizeFirstLetter(filter)}:  ${value}`);
             const $cancel = $('<div>').html(`<span class="remove-filter">X</span>`);
             this.$filters.find(`[data-filter="${filter}"]`).empty().append($caption).append($cancel);
         },
-
         taskSetState: function() {
             const index = this.current.findIndex(item => item.name === "task");
             this.current[index].value.forEach(function(task){
@@ -166,9 +183,22 @@ $(function () {
             const index = this.current.findIndex(item => item.name === "info");
             $('.info-input')
                 .val(this.current[index].value)
-                .css('background', 'linear-gradient(90deg, #3e3e3e '+ this.current[index].value + '%, #EEEEEE '+this.current[index].value+'%)');
+                .css('background', 'linear-gradient(90deg, var(--text-primary) '+ this.current[index].value + '%, var(--bg-tertiary) '+this.current[index].value+'%)');
             $('.info-value').text(this.current[index].value);
             
+        },
+        paramsSetState: function() {
+            const $params = $('#paramsFilter');
+            const validValues = ['<1B', '3B', '6B', '9B', '12B', '24B', '32B', '64B', '128B', '256B', '>500B'];
+            const index = this.current.findIndex(item => item.name === "params");
+            const $min = $params.find('#min');
+            const $max = $params.find('#max');
+            let minVal = validValues.findIndex(item => item === this.current[index].value[0]);
+            let maxVal = validValues.findIndex(item => item === this.current[index].value[1]);
+            $params.find('#min').val(minVal);
+            $params.find('#max').val(maxVal);
+            $params.find('#fill').css({left: minVal*10+'%', width: (maxVal-minVal)*10+'%'});
+            $params.find('.label').each((i,el)=> {el.classList.toggle('active', i===minVal || i===maxVal)})
         },
         editFilter: function(e) {
             if ($(e.target).closest('.remove-filter').length) return;
@@ -188,12 +218,38 @@ $(function () {
                 .css('overflow-y', 'auto');
             $('.dashboard-description').text(capitalizeFirstLetter(filter)+': '+this.dashboards[filter].description);
         },
-
+        filterParam: function (e){
+            const index = this.current.findIndex(item => item.name === "params");
+            const validValues = ['<1B', '3B', '6B', '9B', '12B', '24B', '32B', '64B', '128B', '256B', '>500B'];
+            const $params = $('#paramsFilter');
+            const $min = $params.find('#min');
+            const $max = $params.find('#max');
+            let minVal = Number($min.val());
+            let maxVal = Number($max.val());
+            if(e){
+                if(e.target===$min[0] && minVal >= maxVal && maxVal !==10 ) $min.val(maxVal-1);
+                else if( e.target === $max[0] && maxVal <= minVal && minVal !==0 ) $max.val(minVal+1);
+            }
+            minVal = Number($min.val());
+            maxVal = Number($max.val());
+            if( minVal === maxVal ){
+                $min.css('z-index', minVal===10 ? 4 : 3)
+                $max.css('z-index', minVal===0 ? 4 : 3)
+            }
+            else{
+                $min.css('z-index', 4)
+                $max.css('z-index', 4)
+            }
+            $params.find('#fill').css({left: minVal*10+'%', width: (maxVal-minVal)*10+'%'});
+            $params.find('.label').each((i,el)=> {el.classList.toggle('active', i===minVal || i===maxVal)})
+            this.current[index].value[0] = validValues[minVal];
+            this.current[index].value[1] = validValues[maxVal];
+        },
         filterInfo: function(e) {
             const index = this.current.findIndex(item => item.name === "info");
             this.current[index].value = $(e.currentTarget).val();
             $('.info-value').text(this.current[index].value);
-            $(e.currentTarget).css('background', 'linear-gradient(90deg, #3e3e3e '+ this.current[index].value + '%, #EEEEEE '+this.current[index].value+'%)');
+            $(e.currentTarget).css('background', 'linear-gradient(90deg, var(--text-primary) '+ this.current[index].value + '%, var(--bg-tertiary) '+this.current[index].value+'%)');
         },
         filterTask: function(e) {
             const $target = $(e.target)
@@ -396,6 +452,7 @@ $(function () {
             if (filter === 'type'){ this.current.push({name: 'type', value: []}) }
             else if (filter === 'task'){ this.current.push({name: 'task', value: []}) }
             else if (filter === 'info'){ this.current.push({name: 'info', value: '0'}) }
+            else if (filter === 'params'){ this.current.push({name: 'params', value: ['<1B','>500B']}) }
         },
         getTaskDashboard: function () {
             return $.getJSON('/transparency/options/overview/task').then(function (data) {
@@ -444,12 +501,22 @@ $(function () {
             });
         }, 
         getInfoDashboard: function () {
-            return 'Info at least <span class="info-value">0</span>% <input type="range" class="info-input" min="0" max="100" step="1" value="0"/>'
+            return '<div id="infoFilter">Info at least <span class="info-value">0</span>% <input type="range" class="info-input" min="0" max="100" step="1" value="0"/></div>'
+        },
+        getParamsDashboard: function() {
+            return $.get('templates/index/paramsDashboard.mustache')
+                .then(function(template) {
+                    return Mustache.render(template, {});
+                });
         },
         done: function() {
             for (let current of this.current) {
                 if (!(this.options[current.name].active)) {
                     if (current.name === 'info' && current.value === '0') {
+                        this.$modal.removeClass('modal--active');
+                        continue;
+                    }
+                    if (current.name === 'params' && !current.value[0] || (current.value[0] === '<1B' && current.value[1] === '>500B')) {
                         this.$modal.removeClass('modal--active');
                         continue;
                     }
