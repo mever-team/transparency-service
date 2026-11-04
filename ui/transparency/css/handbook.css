@@ -1,8 +1,9 @@
 .handbook_section {color: var(--text-primary); display: flex;line-height: 20px!important;}
 .handbook_section img {
     display: block;
-    width: 95%;
-    max-width:50rem;
+    /* width: 95%;
+    max-width:50rem; */
+    max-height: 30rem;
     margin: 1rem;
     box-shadow: .1rem .1rem .5rem #747474;
     border: 1px solid #aaaaaa;

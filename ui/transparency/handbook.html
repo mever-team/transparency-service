@@ -48,8 +48,8 @@
                     <button class="menu_item2" id="importMenu" onclick="handbookGoTo('import')">Import</button>
                     <button class="menu_item2" id="refineMenu" onclick="handbookGoTo('refine')">Refine</button>
                     <button class="menu_item2" id="ai_chatMenu" onclick="handbookGoTo('ai_chat')">AI-Chat</button>
-                    <button class="menu_item2" id="cloneMenu" onclick="handbookGoTo('clone')">Clone</button>
                     <button class="menu_item2" id="shareMenu" onclick="handbookGoTo('share')">Share</button>
+                    <button class="menu_item2" id="reportMenu" onclick="handbookGoTo('report')">Report</button>
                 </div>
             </div>
 
@@ -225,11 +225,14 @@
                                                 <li>Description</li>
                                                 <li>Person or organization developing model</li>
                                                 <li>Date of model development</li>
+                                                <li>Version of the model</li>
                                                 <li>Model type</li>
-                                                <li>Paper or other resources for more information</li>
-                                                <li>Citation details</li>
+                                                <li>Number of parameters</li>
+                                                <li>Model task</li>
                                                 <li>License and IP</li>
-                                                <li>Feedback on the model (e.g. email contact)</li>
+                                                <li>Paper or other resources for more information</li>
+                                                <li>Contact details</li>
+                                                <li>Citation details</li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -239,21 +242,17 @@
                                 <td>Use</td>
                                 <td>
                                     <ul>
-                                        <li>Intended Use
+                                        <li> Usage Information
                                             <ul>
                                                 <li>Primary intended uses and purpose</li>
                                                 <li>Oversight level (self-learning/autonomous or human-in-the-loop, human-on-the-loop, or human-in-command)</li>
                                                 <li>Primary intended users</li>
                                                 <li>Out-of-scope use cases</li>
-                                            </ul>
-                                        </li>
-                                        <li>Usage Information
-                                            <ul>
                                                 <li>Software requirements</li>
-                                                <li>Hardware requirements (Training and Inference)</li>
                                                 <li>Technical usage instructions (e.g. a code snippet illustration)</li>
                                                 <li>Inputs and outputs</li>
                                                 <li>Factors that influence performance (e.g. demographics, environmental conditions, technical attributes etc.)</li>
+                                                <li>Hardware requirements (Training and Inference)</li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -295,15 +294,16 @@
                             <td>Performance</td>
                             <td>
                                 <ul>
-                                    <li>Metrics
+                                    <li> Performance benchmarks
                                         <ul>
-                                            <li>Model performance measures (e.g. Accuracy, F1 score etc.)</li>
+                                            <li>Analysis of benchamark results</li>
+                                            <li>Performance metrics (e.g. Accuracy, F1 score etc.)</li>
                                             <li>Decision thresholds</li>
-                                            <li>Approaches to uncertainty and variability (e.g. standard deviation, variance etc.)</li>
+                                            <li>Evaluation methodology</li>
+                                            <li>Energy consumption (in cll)</li>
+                                            <li>Environmental impact</li>
+                                            <li>Bias</li>
                                         </ul>
-                                    </li>
-                                    <li>Analysis
-                                        <ul><li>Disaggregated results and fairness</li></ul>
                                     </li>
                                 </ul>
                             </td>
@@ -316,6 +316,7 @@
                                         <ul>
                                             <li>Ethical Risks</li>
                                             <li>Model Fairness</li>
+                                            <li>Risks (e.g. design or technical faults)</li>
                                             <li>Security (e.g. certifications or security standards)</li>
                                             <li>Caveats (any additional concerns)</li>
                                         </ul>
@@ -495,154 +496,214 @@
                 <h2 id="workflow">Workflow</h2>
                 <h3 id="readers">Readers</h3>
                     <p>
-                        Readers can open, download, and share model cards without logging in. You can search and filter cards
-                        from the main screen. Follow the example bellow:
-                        <img alt="home page of the website" src="/transparency/img/handbook/readers1.webp">
-                        1. Search for a model you want to read a model card. For example translategemma.
-                        <img alt="illustration of a model card" src="/transparency/img/handbook/readers2.webp">
-                        2. Once you are inside a model card you can browse its content. On the right side of the screen you can
-                        find the different sections of the card namely:
-                        <ul>
-                            <li>Overview: General model information like description, author, date, version, citations etc.</li>
-                            <li>Use: Intended uses, user groups, hardware instructions etc. </li>
-                            <li>Training: The data set that was used for training.</li>
-                            <li>Evaluation: The data set that was used for evaluation.</li>
-                            <li>Performance: Metrics, and explanation of inference results.</li>
-                            <li>Safety: Ethical risks, security concerns caveats and more.</li>
-                        </ul>
+                        Readers require no login to access model cards, search functionalities, and sharing capabilities.<br><br>
+
+                        <strong>Search and Filtering.</strong> The catalogue can be searched by free text and narrowed down with 
+                        filters: by model task (e.g., image classification, text-to-speech), by model type (e.g., CNN, transformer, GAN), 
+                        and by completeness, to show only cards above a given information level.<br><br>
+                        <img alt="home page of the website" src="/transparency/img/handbook/readers1.webp"><br><br>
+
+
+
+                        <strong>Model cards.</strong> each card shows its completeness and version history at the top, can be viewed as a 
+                        summary or in full, and organises the full view into six sections with a navigation menu. Every field has a help 
+                        icon that explains its content, and operations such as import, refine, clone, report and sharing are available 
+                        from dedicated menus, with dialogs that explain each operation and link to this handbook.<br><br>
+                        <img alt="illustration of a model card" src="/transparency/img/handbook/readers2.webp"><br><br>
+                        
+
+                        <strong>Summary View.</strong> TrAI lets users switch at any time between a summary view and the 
+                        full view of a card. The summary view shows 16 fields, which describe what the model is, who it is for, 
+                        how it should and should not be used, and its safety aspects, while the full view shows all 47 fields 
+                        including technical information like code instructions, evaluation details, and more. <br><br>
+
+                        <strong>Versioning System.</strong> Each model card has a version history, shown as a timeline at the top of the card. 
+                        Readers can browse the complete history of 
+                        a card and compare any two versions: the text of the compared version is shown in red under each field of the current 
+                        version, so that changes are easy to spot.<br><br>
+                        <img alt="illustration of a model card" src="/transparency/img/handbook/readers3.webp"><br><br>
+
+                        <strong>Semantic Search.</strong> Model cards can sometimes may contain lengthy disclaimers and technical details that 
+                        discourage users from engaging with the full extent of captured information. To address this issue, TrAI offers a 
+                        semantic search allowing users to search the content of a model card. This takes the texture of a ChatBot that retrieves 
+                        only factual textual snippets from available information.<br><br>
+                        <img alt="illustration of a model card" src="/transparency/img/handbook/readers4.webp"><br><br>
+
                     </p>
                 <h3 id="creators">Creators</h3>
                     <p>
                         Creators must login with an acount to create and manage model cards. After you login you can create
-                        a model card as follow:
-                        <img alt="The search bar of TrAI" src="img/handbook/creator1.webp">
-                        1. Click the <i>New</i> button 
-                        <img alt="The modal confirm screen of import" src="img/handbook/creator2.webp">
-                        2. You will be greeted with this dialog window. Here you can enter a URL that contains model
-                        information (e.g. a huggingface URL). 
-                        The system will retrieve this information and try to fill the model card for you using an AI agent. 
-                        Instead of entering a URL you can instead upload a PDF with model information by clicking on 
-                        <i>"Do you have a file instead?"</i>. 
-                        You can also ignore 
-                        this step, close the dialog window and start drafting a model card from scratch.
-                        To learn more about the technical implementation of this process read the 
-                        <a href="handbook.html#import">Import</a> section.
+                        a model card and all TrAI capabilities.<br><br>
+                        
+                        <strong>Import Operation.</strong> The import operation allows users to autocomplete a model card based on an external URL. 
+                        An AI agent extracts the information from the given source and autocompletes the model cards based on a semantic matching 
+                        operation. Furthermore, the user can import metrics produced by TrAI’s evaluation package, which the service uses to 
+                        programmatically create an evaluation report section for the model card. Read more info in the <a href="handbook.html#import">Import</a> section.<br><br>
+                        <img alt="The search bar of TrAI" src="img/handbook/creator1.webp"><br><br>
+                        
+                        <strong>Refine Operation.</strong> The refine operation creates a simplified version of a model card for non-AI experts. 
+                        An LLM-based agent rewrites the descriptive fields of the card in plain language and explains the technical terms they 
+                        contain, while short and technical fields, such as the name or the metrics, are left unchanged. The result is stored as 
+                        a new version of the card, labelled as an agent refinement, which readers can compare with the original. Any registered 
+                        user can refine a public card; each user can run up to three agent operations at a time.
+                        Read more info in the <a href="handbook.html#refine">Refine</a> section<br><br>
+                        <img alt="The modal confirm screen of import" src="img/handbook/creator2.webp"><br><br>
+
+                        <strong>Energy Cost.</strong> TrAI is equipped with an energy consumption tracker for the import and refine operations as 
+                        seen in the green reporting message in the figure bellow. After each import or refine actions, the user is informed about 
+                        the energy consumption of the operation, the equivalent CO2 emissions, and the estimated amount of time a mobile phone 
+                        could be charged using the same amount of energy. This raises awareness about environmental impact for each user action.<br><br>
+                        <img alt="The modal confirm screen of import" src="img/handbook/creator4.webp"><br><br>
+
+                        <strong>Versioning System.</strong> Each model card has a version history, shown as a timeline at the top of the card, 
+                        and a new version can be created whenever the corresponding AI model is updated or a new model version is released. 
+                        New versions start as drafts, which are visible only to their creator and become searchable once they are published 
+                        with a version number. Users can also clone an existing card, for example to document a fine-tuned variant of a model, 
+                        which creates a new editable draft as a separate card in the same history. Readers can browse the complete history of 
+                        a card and compare any two versions: the text of the compared version is shown in red under each field of the current 
+                        version, so that changes are easy to spot. Refined versions created by the refine operation appear in the same history 
+                        and can be compared with the original in the same way.<br><br>
+                        <img alt="The modal confirm screen of import" src="img/handbook/creator3.webp"><br><br>
                     </p>
 
                 <h2 id="functionalities">Functionalities</h2>
                 <h3 id="import">Import</h3>
                     <p>
-                        The Import operation allows users to upload model information from various sources. 
-                        The source can be URL, File, or Metrics. 
-                    </p>
-                    <p>
-                        For the first two options the operation enables the automated retrieval of information from a specified URL or a file. 
-                        This function is powered by Ollama and CLIP and operates in a multi-step process. Initially, 
-                        the system fetches textual content from the provided URL. This text is then processed using a 
-                        large language model (LLM), which extracts relevant information and populates the corresponding fields 
-                        of the model card. Afterwards, the system retrieves any images present at the URL. These images are 
-                        classified using cosine similarity between the OpenAI’s CLIP image embedding and the field’s description 
-                        text embedding, allowing the system to assign them accurately to the appropriate field within the card. 
-                        Once the automated import process is complete, the user is able to review and modify the information, 
-                        ensuring accuracy and completeness. 
-                    </p>
-                    <p>
+                        The Import operation allows users to import model information from a given URL or an evaluation package report file. 
                         You can use the import functionality by going to <b>Actions > Import</b> from where a dialog window will appear.
                     </p>
-                    <img src="img/handbook/import1.webp" alt="">
                     <p>
-                        For the Ollama setup we use the prompt “You are a helpful assistant that provides information about 
-                        an AI model based on a given text. Output in plain text, no braces, no quotes”. This brevity is intentional 
-                        because the LLM is also provided with a JSON schema that forces it to output in a specific provided format. 
-                        This scheme contains guidelines that change the behavior of the model. Using this approach, the general 
-                        instruction prompt functions as a universal guideline applicable to all sections of the model card, while 
-                        the JSON schema supplies field-specific directions. Each field is accompanied by a description that defines 
-                        its intended content, along with optional constraints such as character limits or an enum keyword that restricts 
-                        the field to one of several predefined values. As such we can achieve a structured output that facilitates 
-                        the autofill process and limits the margin for error due to inconsistent and unstructured model outputs. 
-                    </p>
-                    <p>
-                        For the CLIP setup we use the ViT-B/32 variant. The images fetched from the URL are processed by CLIP to 
-                        produce their vector representations. Since model cards within the service have a standard schema, card fields 
-                        have pre-calculated vector representation stored to memory to avoid redundant calculations. Each image embedding 
-                        is compared with the card’s text embeddings to produce the cosine similarity which classifies the image to one 
-                        of the fields. However, most URLs will also have images that are irrelevant to the model such as site-related 
-                        images or profile pictures. To avoid pulling those into model cards we also compare the image embeddings with 
-                        irrelevant classes like symbols, people, and logos. Images that are classified into these categories are discarded. 
-                    </p>
-
-                    <p>
+                        Performs an AI-based yet deterministic import of model information. The preprocessing step prepares the input data for inference. 
+                        The user requests an import from the AI agent by providing a URL, which contains information about an AI model. 
+                        Then, a preprocessor retrieves URL content and removes irrelevant HTML elements and non-textual material. 
+                        Noisy information is also removed like symbols and equations, and metadata are extracted like title, creator, date, and URL sources. 
+                        <br><br>
+                        When well-known model hosting services, such as HuggingFace and Github, are recognized as part of the import URL, additional metadata 
+                        are extracted from public endpoints, and the import mechanism may be redirected from reading an html-parsed version of README files 
+                        to extracting information from equivalent markdown files; this makes processing more lightweight and ensures that no information is 
+                        lost due to the services weaving noisy interfaces throughout  information-rich segments. In the case of HuggingFace specifically, 
+                        task and type classifications and the number of parameters are extracted directly from platform metadata. Once information is gathered 
+                        in non-noisy but typically partially unstructured text, that is split into paragraphs while maintaining its context from surrounding 
+                        elements like titles; this process applies several ad-hoc rules for identification of paragraphs from unstructured text, including not 
+                        splitting code segments, accompanying markdown headings, or bullet lists that contain short descriptions (though bullet lists with 
+                        short descriptions are fragmented, as they are often used in lieu of headings).
+                        <br><br>
+                        Each paragraph is finally processed by the BGE (bge-small-en) model to extract a corresponding vector of numerical embedding capturing its semantic meaning. 
+                        Given these representations, all vectors are compared via dot similarity to the corresponding embedding vectors of model card field names 
+                        and descriptions. The embeddings of fields are precomputed on service load. As a means of refining this process, we ensure that card field 
+                        descriptions contain popular associated keywords and add fuzzy string similarity checks to the embeddings, where these checks are weighted 
+                        by only a small factor and mainly aim to disambiguate similar similarity scores. Fuzzy matching ignores stopwords (i.e., common semantically 
+                        meaningless words like propositions) helps disambiguate long paragraphs that touch on several concepts at once. 
+                        For fields that contain several known options (appearing as dropdown lists), the most similar option is chosen. 
+                        <br><br>
+                        Finally, ad-hoc rules are added to the similarity matching, such as preventing technical information like numbers and code from being 
+                        inserted into fields without the technical tag, refusing the completion of short text fields with long paragraphs, adding a small boost 
+                        to filling fields found in the model card summary, and imposing a similarity threshold to avoid importing non-relevant information, 
+                        such as web advertisements. <br><br>
+                        <img src="img/handbook/import1.webp" alt="import workflow"><br><br>
                         For the <i>Metrics</i> option we allow the user to upload an evaluation report from our <a href="https://pypi.org/project/aicard-eval/">evaluation tool</a>.
                         This report is in a JSON format and includes metric scores, inference details, and package information. 
                         The operations will convert the JSON format into a readable HTML format and insert it into the <i>Performance->Metrics</i> field of the model card.
+                        <img src="img/handbook/eval1.png" alt=""><br>
                     </p>
-                    <img src="img/handbook/eval1.png" alt="">
 
                     <h3 id="refine">Refine</h3>
                     <p>
-                        The service also provides the Refine operation. During this process, an already competed card can be forwarded to an LLM, 
-                        which then simplifies the content of each field. The simplification process is specifically designed to make technical 
-                        descriptions and model specifications accessible to non-experts, without altering the underlying information. This 
-                        ensures that model cards are readable and interpretable by a broader audience, supporting transparency and accessibility. 
-                        Refine is also powered by Ollama with the following prompt:
+                        For the refine operation, TrAI uses the Qwen2.5 7B model provided by a self-hosted Ollama server. 
+                        The agent has access to an glossary with 164 entries that provides definitions of AI related terms. 
+                        The system identifies if the input includes any of these terms and injects them in the system prompt 
+                        before inference, and tracks missing terms. These missing terms can then be manually reviewed by the admin and added into the glossary. 
+                        As the glossary expands, the goal is to further populate the glossary and impove the effectiveness of the refine. 
+                        Simple short fields like name, task, type, contact, and others are excluded from this process. Furthermore, technical fields like 
+                        instructions which can contain code instructions for inference or metrics that can contain tables and lists of numbers are also excluded. 
+                        At the end of this process the agent creates a new version model card targeting non-AI experts to provide more understandable information. 
+                        <br><br>
+                        The agent takes a model card as an input and inferences each field separately with the bellow prompt: 
+                        <br>
+                        <pre>
+                        <code>
+Your task is to rewrite the original text so that it is easier to understand for non-AI experts.
+Preserve the original meaning, information, and claims.
+
+### Rules
+1. Preserve information
+{specific instructions}
+
+2. Explain technical concepts
+{specific instructions}
+
+3. Use the provided glossary explanations
+{glossary injections}
+
+4. Use the technical-term explanation tool when necessary
+{specific instructions}
+
+5. Avoid unsupported claims
+{specific instructions}
+
+6. Preserve original claims
+{specific instructions}
+
+### Final verification
+Before returning the answer, verify that:
+1. Every original factual claim is preserved.
+2. Every important technical concept is preserved.
+3. Explicit attributes and qualifications are preserved.
+4. Unfamiliar technical terms are explained.
+5. Tool explanations are used accurately.
+6. No unsupported claims or qualifiers were added.
+7. No unsupported adjective or adverb was added.
+8. No unsupported purpose, benefit, comparison, or evaluation was added.
+9. No original claim was weakened, removed, or replaced.
+
+Return ONLY the final rewritten text.
+                        </code>
+                        </pre>
+                    <img src="img/handbook/refine1.webp" alt=""><br>
                     </p>
-                    <p>
-                        You are an AI assistant specialized in simplifying and summarizing technical texts. You will be given html, markdown, 
-                        or other text, and will produce a very short summary. <br>
-                        Instructions:<br>
-                        - Avoid technical jargon. Instead, explain concepts in a way that an educated reader can understand without specialized knowledge.<br>
-                        - Maintain an academic tone. <br>
-                        - Rephrase rather than omit: if a concept is difficult to explain simply, break it down into intuitive phrases.<br>
-                        - Use precise language. Do not oversimplify to the point of losing meaning.<br>
-                        - Make sure that the output contains at most a few sentences and reads tersely.<br>
-                        - Make sure that the output is considerably shorter than the input.<br>
-                        - The output should be in pure text format, with no lists, line breaks, or paragraphs.
-                    </p>
-                    <p>
-                        Using this prompt, we ensure that the AI assistant outputs a short, simplified summary for each field by also maintaining all 
-                        critical information. With this operation we aim to provide stakeholders with all necessary information without overwhelming 
-                        technical descriptions and terminology. 
-                    </p>
-                    <p>
-                        You can use the <i>Refine </i> action from <b>Actions > Refine</b> from where a dialog window will appear to 
-                        confirm your action.
-                    </p>
-                    <img src="img/handbook/refine1.webp" alt="">
+                    
                 <h3 id="ai_chat">AI-Chat</h3>
-                    The AI-Chat is a tool to extract information from the model card.
-                    It uses a BGE model to retrieve information from the model card based on the semantic meaning of the question that the user provides. 
-                    Each answer incudes the section and field from which the information is retrieved. 
-                    The user can ask several questions about the usability, performace, ethical concerns and more. 
-                    <img src="img/handbook/ai_chat1.webp" alt="">
+                    <p>
+                        This follows a similar methodology to model import by using the BGE (bge-small-en) model and aiming 
+                        at deterministic results. The main difference is that information is already structured into model card fields, the most relevant of 
+                        which are retrieved. In particular, it is easier to extract meaningful embeddings by splitting fields into individual sentences –rather 
+                        than paragraphs- and combining those with the field name and description. This enables an embedding representation to be generated for 
+                        each sentence and cached in memory for efficiency. The cached embeddings are invalidated when the Model Card is edited or after an 
+                        extended period of inactivity. Caches are not stored in the database, due to space considerations. The user query is also transformed 
+                        to the same embedding space to facilitate comparison. <br><br>
+                        An important detail of the embedding mechanism that yields better search results is that we ensure that generated embeddings are orthogonal 
+                        to the embeddings of their average representation, hence ensuring that their expected average similarity to random user queries is zero. 
+                        This mechanism is analogous to stopword removal, but operates in the embedding space by removing common embedding components rather than 
+                        frequent words. For example, even though the word "model" may occur several times in field descriptions, the embeddings of more meaningful 
+                        words related to the user query are prioritized; that is, asking about "model version" focuses more on the semantics related to the word 
+                        "version" to identify only the version information as unique.<br><br>
+                        For the final comparison step the semantic search calculates the dot product similarity between sentences and user query embeddings. 
+                        Contrary to the import task, multiple sources of information are extracted by considering the most similar embeddings. The threshold cutoff 
+                        for selecting the most similar embeddings is chosen in accordance to an automated implementation of the knee criterion, with the approach 
+                        merely warning the users about needing to specialize their query more if too many sentences would be found similar to it.<br><br>
+                        To support this feature for many concurrent users, we selected the aforementioned lightweight model and introduced a hierarchical caching 
+                        mechanism in the service’s backend that keeps track of recently viewed cards in random access memory instead of only the database storage. 
+                        The mechanism also caches semantic embeddings used in recent searches. As a result, embeddings are not recomputed for text fields when users 
+                        engage in lengthy conversations, or when interacting with cards that other users have recently interacted with. Furthermore, we account for 
+                        unexpected loads (user spikes, cyberattacks against the service, etc.) by queuing semantic embedding extraction across all requests so that 
+                        a priorly known compute budget is never exceeded.
 
-                <h3 id="clone">Clone</h3>
-                    <p>
-                        Clone creates a copy of your model card which you can use to create different versions of the card.
-                        This feature is particularly useful when a model is updated and changes to the model card must be made. 
-                        It also keeps track of the relation between the versions which is used to display the version tree in the card.
+                        <img src="img/handbook/chat1.webp" alt="">
                     </p>
-                    <p>
-                        You can use the <i>Clone</i> action from <b>Actions > Clone</b>. Once you do that you will automatically be
-                        redirected to the cloned card.
-                    </p>
-                    <img src="img/handbook/clone1.webp" alt="">
                 <h3 id="share">Share</h3>
-                    <p>
-                        With the <i>Share</i> functionality you can download a model card in various formats or share it on social media. <br>
-                    </p>
-                    <p>
-                        Currently supported download formats are:
-                        <ul>
-                            <li>PDF</li>
-                            <li>JSON</li>
-                            <li>Markdown</li>
-                        </ul>
-                    </p>
-                    <p>
-                        You can use the <i>Share</i> functionality directly from the <i>Share</i> button.
-                    </p>
-                    <img src="img/handbook/share1.webp" alt="">
-
+                    Each card version can be shared through a link and posted in social media, or 
+                    embedded as a banner in third-party pages, and exported as PDF, Markdown or JSON. The JSON and Markdown export provides 
+                    a machine-readable version of the card for integration into third-party applications, whereas the PDF export offers a 
+                    sharable human-readable document. 
+                    <img alt="illustration of a model card" src="/transparency/img/handbook/readers5.webp"><br><br>
+                <h3 id="report">Report</h3>
+                    Logged in Users can report a model card that they consider inaccurate, outdated or 
+                    inappropriate. Reports are reviewed by the administrator, who can contact the creator, hide the card (it can only be 
+                    unhidden via collaboration with its owner), or completely remove it. This gives the community a way to flag problematic 
+                    content, including automatically imported cards, and supports the monitoring of card reliability. 
+                    Furthermore, the reports are anonymous -no user info is attached to them- and confidential in that only the card owner 
+                    and the administrator can see the report.<br><br>
+                    <img alt="illustration of a model card" src="/transparency/img/handbook/readers6.webp"><br><br>
             </div>
         </main>
 
