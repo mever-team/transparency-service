@@ -863,6 +863,7 @@ section.buttons {
 }
 
 .info-tooltip::after {
+    font-size: 12px;
     content: attr(data-tooltip);
     position: absolute;
     bottom: 125%;

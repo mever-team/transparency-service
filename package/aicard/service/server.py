@@ -1087,6 +1087,12 @@ def serve(
         if creator!=card.creator: abort(403, "Only the card's creator can pop the emissions.")
         emissions_out = jobs_tracker.flash_codecarbon(card_id)
         return jsonify(emissions_out)
+    
+    @app.route(domain_prefix+'/emissions/<int:card_id>/chat/flash', methods=['GET'])
+    def flash_emissions_last_chat(card_id: int):
+        card = exists(find_card(card_id), "Model card does not exist or has been deleted.")
+        emissions_out = jobs_tracker.flash_codecarbon(str(card_id)+'_chat')
+        return jsonify(emissions_out)
 
     @app.route(domain_prefix+"/card/<int:card_id>/download/<string:fformat>", methods=["GET"])
     def download_card(card_id, fformat):

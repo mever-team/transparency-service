@@ -230,6 +230,15 @@ class ModelCardEntry(contextlib.AbstractContextManager):
     def __answer_chats(self, logger: Logger, job_tracker: CardJobsTracker):
         # answers all pending chats while allowing new ones, but locking modifications to the card
         self.start_completion()
+        emissions_out = {"cpu_energy": 0, "emissions": 0}
+        job = Job( worker = 'chat', operation = 'full-workflow', data={})
+        self.__chat_answer_counter += 1
+        job_name = f'{self.card_id}_chat'
+        job_tracker.set(job_name, job)
+        job_id = job_tracker.get(job_name).id
+        tracker_fields = EmissionsTracker( project_name=str(job_id)+'fields', save_to_file=False, log_level="WARNING", tracking_mode="process", gpu_ids=[])
+        tracker_answer = EmissionsTracker( project_name=str(job_id)+'answer', save_to_file=False, log_level="WARNING", tracking_mode="process", gpu_ids=[])
+        
         while True:
             with self.lock:
                 num_questions = len(self.__questions)
@@ -244,13 +253,7 @@ class ModelCardEntry(contextlib.AbstractContextManager):
                         sentences = dict()
                         need_to_recompute_embeddings = True
                 if need_to_recompute_embeddings:
-                    job = Job( worker = 'chat', operation = 'fields', data={})
-                    self.__chat_answer_counter += 1
-                    job_name = f'chat_fields_{self.__chat_answer_counter}'
-                    job_tracker.set(job_name, job)
-                    job_id = job_tracker.get(job_name).id
-                    tracker = EmissionsTracker( project_name=job_id, save_to_file=False, log_level="WARNING", tracking_mode="process", gpu_ids=[])
-                    tracker.start()
+                    tracker_fields.start()
                     self.__extracted_sentences[feature_extractor] = sentences
                     for category, values in self.card.data.items():
                         if not isinstance(values, dict): continue
@@ -285,17 +288,11 @@ class ModelCardEntry(contextlib.AbstractContextManager):
                         sentences[sentence] -= (np.dot(x, mu) / np.dot(mu, mu)) * mu # remove projection
                     with self.lock:
                         self.__average_sentence_embeddings[feature_extractor] = average_sentence_embeddings
-                    emissions = tracker.stop()
-                    emissions_data = json.loads(tracker.final_emissions_data.toJSON())
-                    job_tracker.delete(job_name, emissions_data)
-                    logger.info(f'Card feild embeddings computed. Energy consumed: {emissions_data["cpu_energy"]} kWh {emissions_data["emissions"]} kg CO₂eq')
-                job = Job( worker = 'chat', operation = 'answer', data={})
-                self.__chat_answer_counter += 1
-                job_name = f'chat_answer_{self.__chat_answer_counter}'
-                job_tracker.set(job_name, job)
-                job_id = job_tracker.get(job_name).id
-                tracker = EmissionsTracker( project_name=job_id, save_to_file=False, log_level="WARNING", tracking_mode="process", gpu_ids=[])
-                tracker.start()
+                    emissions = tracker_fields.stop()
+                    emissions_data = json.loads(tracker_fields.final_emissions_data.toJSON())
+                    emissions_out["cpu_energy"] =  float(emissions_data["cpu_energy"])
+                    emissions_out["emissions"] =  float(emissions_data["emissions"])
+                tracker_answer.start()
                 question_embeddings = feature_extractor.get_embeddings("question: "+question)
                 mu = self.__average_sentence_embeddings[feature_extractor]
                 x = question_embeddings
@@ -332,10 +329,12 @@ class ModelCardEntry(contextlib.AbstractContextManager):
                                 if not trigger_vague_question_warning: trigger_vague_question_warning = k
                                 n = k
                                 continue
-                            emissions = tracker.stop()
-                            emissions_data = json.loads(tracker.final_emissions_data.toJSON())
-                            job_tracker.delete(job_name, emissions_data)
-                            logger.info(f'Chat answer energy consumed: {emissions_data["cpu_energy"]} kWh {emissions_data["emissions"]} kg CO₂eq')
+                            emissions = tracker_answer.stop()
+                            emissions_data = json.loads(tracker_answer.final_emissions_data.toJSON())
+                            emissions_out["cpu_energy"] += float(emissions_data["cpu_energy"])
+                            emissions_out["emissions"] += float(emissions_data["emissions"])
+                            job_tracker.delete(job_name, emissions_out)
+                            # logger.info(f'Chat answer energy consumed: {emissions_data["cpu_energy"]} kWh {emissions_data["emissions"]} kg CO₂eq')
                             break
                         n = k
                         continue
@@ -364,14 +363,14 @@ class ModelCardEntry(contextlib.AbstractContextManager):
                 if errors: reply += "<h3 class='error'>Missing info</h3>"+errors
                 if not reply: reply = "I was unable to find relevant information."
             except Exception as e: 
-                emissions = tracker.stop()
-                emissions_data = json.loads(tracker.final_emissions_data.toJSON())
-                job_tracker.delete(job_name, emissions_data)
+                tracker_answer.stop()
+                tracker_fields.stop()
+                job_tracker.delete(job_name, {})
                 reply = "<h3 class='error'>Something went wrong</h3>"+str(e)
             except: 
-                emissions = tracker.stop()
-                emissions_data = json.loads(tracker.final_emissions_data.toJSON())
-                job_tracker.delete(job_name, emissions_data)
+                tracker_answer.stop()
+                tracker_fields.stop()
+                job_tracker.delete(job_name, {})
                 reply = "<h3 class='error'>Something went wrong. Please try again.</h3>"
             self.__questions[self.__num_answered] = question, feature_extractor, True, reply
             self.__num_answered += 1
