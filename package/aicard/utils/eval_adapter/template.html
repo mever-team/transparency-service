@@ -1,45 +1,28 @@
-<div class="aicardEval">
-    <h1>Evaluation Report</h1>
-    <span class="date">Reported in: {{ date }}</span>
+## Evaluation Report
+Reported in: {{ date }}
 
-    <section class="metrics">
-        <h2>Metric Scores</h2>
-        <ul>
-            {% for name, value in metrics.items() %}
-                <li>{{ name.replace('_', ' ') }}: {{ value }}</li>
-            {% endfor %}
-        </ul>
-    </section>
+### Metric Scores
+| Metric | Score |
+|--------|-------|{% for name, value in metrics.items() %} 
+| {{ name.replace('_', ' ') }} | {{ value }} | {% endfor %}
 
-    <section class="inference-details">
-        <h2>Inference Details</h2>
-        <ul>
-            {% if energy_consumption %}
-                <li class="energy_consumption">Energy Consumed: {{ energy_consumption }}</li>
-            {% endif %}
-            {% if hardware %}
-                <li class="hardware">Hardware: {{ hardware }}</li>
-            {% endif %}
-            {% if execution_time %}
-                <li class="execution_time">Execution Time: {{ execution_time }}</li>
-            {% endif %}
-            {% if batch_size %}
-                <li class="batch_size">Batch Size: {{ batch_size }}</li>
-            {% endif %}
-            {% if num_classes %}
-                <li class="num_classes">Number of Classes: {{ num_classes }}</li>
-            {% endif %}
-        </ul>
-    </section>
+### Inference Details
+{% if energy_consumption %}
+Energy Consumed: {{ energy_consumption }}
+{% endif %}
+{% if hardware %}
+Hardware: {{ hardware }}
+{% endif %}
+{% if execution_time %}
+Execution Time: {{ execution_time }}
+{% endif %}
+{% if batch_size %}
+Batch Size: {{ batch_size }}
+{% endif %}
+{% if num_classes %}
+Number of Classes: {{ num_classes }}
+{% endif %}
 
-    <section class="eval-info">
-        <h2>Package Info</h2>
-        <ul>
-            <li>PyPI: <a href="https://pypi.org/project/aicard-eval/">https://pypi.org/project/aicard-eval/</a></li>
-            <li>Version: {{ package_version }}</li>
-        </ul>
-    </section>
-</div>
-
-
-
+### Package Info
+PyPI: [https://pypi.org/project/aicard-eval/](https://pypi.org/project/aicard-eval/)
+Version: {{ package_version }}

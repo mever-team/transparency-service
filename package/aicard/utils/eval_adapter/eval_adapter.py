@@ -14,6 +14,6 @@ def eval_adapter(data:dict)->str:
     with open(template_path) as f:
         template_str = f.read()
     template = Template(template_str)
-    html_out = template.render(**data).replace('\n', '')
+    html_out = template.render(**data)
     
     return html_out
